@@ -1,0 +1,56 @@
+spack:
+  concretization: separately
+  view: false
+
+  include:
+  - $spack/../envs/modules.yaml
+  - $spack/../envs/packages.yaml
+
+  # Set package and module installation directories
+  config:
+    install_tree: $spack/../install
+    projections:
+      all: "${ARCHITECTURE}/${COMPILERNAME}-${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
+    module_roots:
+      lmod: $spack/../install/modulefiles
+    build_jobs: 20
+  
+  # Set compiler array
+  definitions:
+  - compilers: [intel@2021.4.0]
+  - packages:
+    - zlib
+    - hdf5
+    - netcdf-c
+    - netcdf-fortran
+    - libjpeg
+    - libpng
+    - jasper
+    - esmf
+    - fms
+    - bacio
+    - sigio
+    - sfcio
+    - gfsio
+    - w3nco
+    - w3emc
+    - sp
+    - ip
+    - ip2
+    - landsfcutil
+    - nemsio
+    - nemsiogfs
+    - g2
+    - g2c
+    - g2tmpl
+    - crtm
+    - upp
+    - wrf-io
+    - wgrib2
+    - prod-util
+    - grib-util
+
+  specs:
+  - matrix:
+    - [$%compilers]
+    - [$packages]

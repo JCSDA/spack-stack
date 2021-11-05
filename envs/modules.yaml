@@ -1,0 +1,68 @@
+modules::
+    enable:
+    - lmod
+    lmod:
+      projections:
+        nlohmann-json: 'json/{version}'
+      blacklist:
+      - berkeley-db
+      - bzip2
+      - expat
+      - hwloc
+      - libxml2
+      - libedit
+      - libevent
+      - libiconv
+      - libsigsegv
+      - libxml
+      - m4
+      - nasm
+      - gdbm
+      - ncurses
+      - openssh
+      - readline
+      - xz
+      - pkgconf
+      - libfabric
+      - findutils
+
+      hash_length: 0
+      
+      all:
+        environment:
+          set:
+            '{name}_ROOT': '{prefix}'
+            
+      esmf:
+        environment:
+          set:
+            'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+
+      hierarchy:
+      - mpi
+      core_specs:
+      - python
+
+    prefix_inspections:
+      bin:
+      - PATH
+      man:
+      - MANPATH
+      share/man:
+      - MANPATH
+      share/aclocal:
+      - ACLOCAL_PATH
+      lib:
+      - LIBRARY_PATH
+      - LD_LIBRARY_PATH
+      lib64:
+      - LIBRARY_PATH
+      - LD_LIBRARY_PATH
+      include:
+      - CPATH
+      lib/pkgconfig:
+      - PKG_CONFIG_PATH
+      lib64/pkgconfig:
+      - PKG_CONFIG_PATH
+      '':
+      - CMAKE_PREFIX_PATH
