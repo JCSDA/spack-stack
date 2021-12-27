@@ -1,0 +1,6 @@
+[submodule "spack"]
+  path = spack
+  #url = https://github.com/spack/spack
+  #branch = develop
+  url = https://github.com/climbfuji/spack
+  branch = bugfixes_noaa_packages_macos_monterey
