@@ -15,12 +15,13 @@ spack:
     module_roots:
       lmod: $spack/../install/modulefiles
     build_jobs: 20
-  
+
   # Set compiler array
   definitions:
-  - compilers: [intel@2021.4.0]
+  - compilers: [apple-clang@13.0.0]
   - packages:
     - zlib
+    - mpich
     - hdf5
     - netcdf-c
     - netcdf-fortran
