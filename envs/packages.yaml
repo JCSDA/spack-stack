@@ -31,7 +31,7 @@
       variants: ~xerces ~pnetcdf
     fms:
       version: [2021.03.01]
-      variants: +64bit +gfs_phys +openmp
+      variants: +64bit ~enable_quad_precision +gfs_phys ~openmp
     bacio:
       version: [2.4.1]
     sigio:
