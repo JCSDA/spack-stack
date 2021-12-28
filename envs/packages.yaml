@@ -1,9 +1,5 @@
 # Pin versions and specs when building packages
   packages:
-    all:
-      compiler: [apple-clang@13.0.0, gcc@11.2.0, intel@18.0.5.274]
-      providers:
-        mpi: [intel-mpi, mpich, openmpi]
     openmpi:
       version: [4.1.1]
       variants: +internal-hwloc

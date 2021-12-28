@@ -1,3 +1,6 @@
+config:
+  build_jobs: 8
+
 compilers:
 - compiler:
     spec: apple-clang@13.0.0

@@ -27,7 +27,7 @@ modules::
       - findutils
 
       hash_length: 0
-      
+
       all:
         environment:
           set:
