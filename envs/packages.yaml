@@ -1,5 +1,11 @@
 # Pin versions and specs when building packages
   packages:
+    apple-clang:
+      version: [13.0.0]
+    gcc:
+      version: [11.2.0]
+    cmake:
+      version: [3.22.1]
     openmpi:
       version: [4.1.1]
       variants: +internal-hwloc

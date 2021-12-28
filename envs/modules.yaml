@@ -1,4 +1,6 @@
-modules::
+modules:
+  default:
+    arch_folder: false
     enable:
     - lmod
     lmod:

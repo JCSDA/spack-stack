@@ -1,4 +1,17 @@
 packages:
+
+  apple-clang:
+    buildable: False
+    externals:
+    - spec: apple-clang@13.0.0
+      prefix: /usr
+
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@11.2.0
+      prefix: /opt/homebrew
+
   python:
     buildable: False
 
@@ -21,6 +34,6 @@ packages:
       prefix: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
   all:
-    compiler: [apple-clang@13.0.0, gcc@11.2.0]
+    compiler:: [apple-clang@13.0.0, gcc@11.2.0]
     providers:
       mpi: [mpich, openmpi]
