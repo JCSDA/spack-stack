@@ -76,3 +76,5 @@
       version: [1.2.2]
     grib-util:
       version: [1.2.3]
+    python:
+      version: [3.8.9]
