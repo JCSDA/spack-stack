@@ -10,6 +10,7 @@ compilers:
       f77: /opt/homebrew/bin/gfortran
       fc: /opt/homebrew/bin/gfortran
     flags: {}
+    #  ldlibs: -lm
     operating_system: monterey
     target: aarch64
     modules: []
