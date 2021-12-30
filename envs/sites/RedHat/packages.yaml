@@ -1,0 +1,24 @@
+packages:
+
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@11.2.1
+      prefix: /opt/rh/gcc-toolset-11/root/usr
+
+  python:
+    buildable: False
+    externals:
+    - spec: python@3.9.6
+      prefix: /usr
+
+  m4:
+    buildable: False
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+
+  all:
+    compiler:: [gcc@11.2.1]
+    providers:
+      mpi: [mpich, openmpi]

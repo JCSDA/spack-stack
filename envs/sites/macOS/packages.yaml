@@ -18,12 +18,6 @@ packages:
     - spec: python@3.8.9
       prefix: /usr
 
-  zlib:
-    buildable: False
-    externals:
-    - spec: zlib@1.2.11
-      prefix: /usr
-
   apple-libunwind:
     buildable: false
     externals:

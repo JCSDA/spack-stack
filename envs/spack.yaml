@@ -5,8 +5,8 @@ spack:
   - repos.yaml
   - modules.yaml
   - packages.yaml
-  - sites/macOS/compilers.yaml
-  - sites/macOS/packages.yaml
+  - sites/RedHat/compilers.yaml
+  - sites/RedHat/packages.yaml
 
   # Set package and module installation directories
   config:
@@ -18,8 +18,6 @@ spack:
       lmod: install/modulefiles
   definitions:
   - packages:
-    - apple-clang
-    - gcc
     - zlib
     - mpich
     - hdf5
@@ -55,4 +53,3 @@ spack:
   specs:
   - matrix:
     - [$packages]
-
