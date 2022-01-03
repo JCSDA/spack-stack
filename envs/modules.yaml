@@ -42,8 +42,9 @@ modules:
 
       hierarchy:
       - mpi
-      core_specs:
-      - python
+    #  - python
+    #  core_specs:
+    #  - python
 
     prefix_inspections:
       bin:
