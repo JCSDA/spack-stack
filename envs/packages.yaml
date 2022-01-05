@@ -33,7 +33,7 @@
       variants: ~xerces ~pnetcdf
     fms:
       version: [2021.03.01]
-      variants: +64bit ~enable_quad_precision +gfs_phys ~openmp
+      variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
     bacio:
       version: [2.4.1]
     sigio:
@@ -78,3 +78,28 @@
       version: [1.2.3]
     python:
       version: [3.8.9]
+    py-h5py:
+      version: [3.6.0]
+    jedi-cmake:
+      version: [1.2.0]
+    boost:
+      version: [1.78.0]
+      variants: +python +numpy +mpi +pic cxxstd=14
+    gsl-lite:
+      version: [0.4.0]
+    eigen:
+      version: [3.4.0]
+    ecbuild:
+      version: [3.6.1]
+    eckit:
+      version: [1.16.0]
+      variants: linalg=eigen,lapack compression=lz4,bzip2
+    fckit:
+      version: [0.9.5]
+      variants: +eckit
+    atlas:
+      version: [0.27.0]
+      variants: +fckit
+    git-lfs:
+      version: [2.11.0]
+
