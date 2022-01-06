@@ -29,10 +29,3 @@ compilers:
     modules: []
     environment: {}
     extra_rpaths: []
-
-modules:
-  default:
-    lmod:
-      core_compilers:
-      - apple-clang@13.0.0
-      - gcc@11.2.0

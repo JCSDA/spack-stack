@@ -5,8 +5,9 @@ spack:
   - repos.yaml
   - modules.yaml
   - packages.yaml
-  - sites/RedHat/compilers.yaml
-  - sites/RedHat/packages.yaml
+  - sites/macOS/compilers.yaml
+  - sites/macOS/modules.yaml
+  - sites/macOS/packages.yaml
 
   # Set package and module installation directories
   config:
@@ -16,40 +17,3 @@ spack:
         all: ${ARCHITECTURE}/${COMPILERNAME}-${COMPILERVER}/${PACKAGE}-${VERSION}
     module_roots:
       lmod: install/modulefiles
-  definitions:
-  - packages:
-    - zlib
-    - mpich
-    - hdf5
-    - netcdf-c
-    - netcdf-fortran
-    - libjpeg
-    - libpng
-    - jasper
-    - esmf
-    - fms
-    - bacio
-    - sigio
-    - sfcio
-    - gfsio
-    - w3nco
-    - w3emc
-    - sp
-    - ip
-    - ip2
-    - landsfcutil
-    - nemsio
-    - nemsiogfs
-    - g2
-    - g2c
-    - g2tmpl
-    - crtm
-    - upp
-    - wrf-io
-    - wgrib2
-    - prod-util
-    - grib-util
-
-  specs:
-  - matrix:
-    - [$packages]

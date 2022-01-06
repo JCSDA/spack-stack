@@ -36,6 +36,10 @@ packages:
     - spec: apple-libuuid@1353.100.2
       prefix: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
+  eckit::
+    version: [1.16.0]
+    variants: linalg=eigen compression=lz4,bzip2
+
   all:
     compiler:: [apple-clang@13.0.0, gcc@11.2.0]
     providers:
