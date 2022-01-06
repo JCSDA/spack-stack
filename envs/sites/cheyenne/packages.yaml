@@ -28,10 +28,10 @@ packages:
       modules:
       - impi/2021.2
 
-  sgi-mpt:
+  mpt:
     buildable: False
     externals:
-    - spec: "sgi-mpt@2.22"
+    - spec: "mpt@2.22"
       modules:
       - mpt/2.22
 
@@ -59,4 +59,4 @@ packages:
   all:
     compiler: [intel@2021.2.0, gcc@11.1.0]
     providers:
-      mpi: [intel-mpi, sgi-mpt]
+      mpi: [intel-mpi, mpt]
