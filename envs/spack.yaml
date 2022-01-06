@@ -5,9 +5,12 @@ spack:
   - repos.yaml
   - modules.yaml
   - packages.yaml
-  - sites/macOS/compilers.yaml
-  - sites/macOS/modules.yaml
-  - sites/macOS/packages.yaml
+  #- sites/macos/compilers.yaml
+  #- sites/macos/modules.yaml
+  #- sites/macos/packages.yaml
+  - sites/cheyenne/compilers.yaml
+  - sites/cheyenne/modules.yaml
+  - sites/cheyenne/packages.yaml
 
   # Set package and module installation directories
   config:

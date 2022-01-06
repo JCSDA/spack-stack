@@ -1,26 +1,48 @@
 packages:
-  mpi:
+
+  apple-clang:
     buildable: False
+    externals:
+    - spec: intel@2021.2.0
+      modules:
+      - intel/2021.2.0
+
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@11.1.0
+      modules:
+      - gnu/11.1.0
 
   python:
     buildable: False
+    externals:
+    - spec: python@3.7.9
+      modules:
+      - python/3.7.9
 
   intel-mpi:
+    buildable: False
     externals:
-      - spec: "intel-mpi@2018.0.4"
-        modules:
-          - impi/2018.0.4
+    - spec: "intel-mpi@2021.2.0"
+      modules:
+      - impi/2021.2
+
+  sgi-mpt:
+    buildable: False
+    externals:
+    - spec: "sgi-mpt@2.22"
+      modules:
+      - mpt/2.22
 
   openssl:
     externals:
-    - spec: openssl@1.0.2r
-      prefix: /apps/intel/intelpython3
-    - spec: openssl@1.0.2k-fips
+    - spec: openssl@1.0.2p
       prefix: /usr
 
   perl:
     externals:
-    - spec: perl@5.16.3~cpanm+shared+threads
+    - spec: perl@5.18.2~cpanm+shared+threads
       prefix: /usr
 
   m4:
@@ -30,11 +52,11 @@ packages:
 
   cmake:
     externals:
-    - spec: cmake@3.20.1
+    - spec: cmake@3.22.0
       modules:
-        - cmake/3.20.1
+      - cmake/3.22.0
 
   all:
-    compiler: [intel@18.0.5.274]
+    compiler: [intel@2021.2.0, gcc@11.1.0]
     providers:
-      mpi: [intel-mpi]
+      mpi: [intel-mpi, sgi-mpt]
