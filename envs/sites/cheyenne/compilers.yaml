@@ -1,3 +1,4 @@
+envs/sites/cheyenne/compilers.yaml
 config:
   build_jobs: 3
 
@@ -11,7 +12,7 @@ compilers:
         fc: /glade/u/apps/ch/opt/ncarcompilers/0.5.0/intel/2021.2/ifort
       flags: {}
       operating_system: sles12
-      target: any
+      target: x86_64
       modules:
       - intel/2021.2.0
       - ncarcompilers/0.5.0
@@ -28,7 +29,7 @@ compilers:
         fc: /glade/u/apps/ch/opt/ncarcompilers/0.5.0/gnu/11.1.0/gfortran
       flags: {}
       operating_system: sles12
-      target: any
+      target: x86_64
       modules:
       - gnu/11.1.0
       - ncarcompilers/0.5.0
