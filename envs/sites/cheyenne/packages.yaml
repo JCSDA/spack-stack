@@ -1,18 +1,18 @@
 packages:
 
-  intel:
-    buildable: False
-    externals:
-    - spec: intel@2021.2.0
-      modules:
-      - intel/2021.2
-
-  gcc:
-    buildable: False
-    externals:
-    - spec: gcc@11.1.0
-      modules:
-      - gnu/11.1.0
+  #intel:
+  #  buildable: False
+  #  externals:
+  #  - spec: intel@2021.2.0
+  #    modules:
+  #    - intel/2021.2
+  #
+  #gcc:
+  #  buildable: False
+  #  externals:
+  #  - spec: gcc@11.1.0
+  #    modules:
+  #    - gnu/11.1.0
 
   python:
     buildable: False
