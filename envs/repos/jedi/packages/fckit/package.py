@@ -26,14 +26,20 @@ class Fckit(CMakePackage):
     version('0.8.0', commit='4cd749f1eeac64eece00adb50abd072ea14fa2b1')
     version('0.7.0', commit='5a9ad884c087ae4c188a5937acf078514519778f')
 
+    depends_on('mpi')
+    depends_on('python')
     depends_on('ecbuild', type=('build'))
 
     variant('eckit', default=True)
-    depends_on('eckit', when='+eckit')
+    depends_on('eckit+mpi', when='+eckit')
 
     def cmake_args(self):
         res = [
-                self.define_from_variant('ENABLE_ECKIT', 'eckit')
+                self.define_from_variant('ENABLE_ECKIT', 'eckit'),
+                '-DCMAKE_C_COMPILER=%s' % self.spec['mpi'].mpicc,
+                '-DCMAKE_CXX_COMPILER=%s' % self.spec['mpi'].mpicxx,
+                '-DCMAKE_Fortran_COMPILER=%s' % self.spec['mpi'].mpifc,
+                "-DPYTHON_EXECUTABLE:FILEPATH=" + self.spec['python'].command.path
                 ] 
         return res
 

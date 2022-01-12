@@ -32,7 +32,10 @@ class Atlas(CMakePackage):
     depends_on('boost cxxstd=14 visibility=hidden', when='@0.26.0:', type=('build', 'run'))
     variant('fckit', default=True)
     depends_on('fckit', when='+fckit')
-    #depends_on('python')
+    depends_on('python')
+
+    patch('clang_include_array.patch', when='%apple-clang')
+    patch('clang_include_array.patch', when='%clang')
 
     #variant('transi', default=False)
     #depends_on('transi', when='+transi')
@@ -43,10 +46,10 @@ class Atlas(CMakePackage):
     #variant('fftw', default=False)
     #depends_on('fftw', when='+fftw')
 
-
     def cmake_args(self):
         res = [
-                self.define_from_variant('ENABLE_FCKIT', 'fckit')
+                self.define_from_variant('ENABLE_FCKIT', 'fckit'),
+                "-DPYTHON_EXECUTABLE:FILEPATH=" + self.spec['python'].command.path,
                 ] 
         return res
 
