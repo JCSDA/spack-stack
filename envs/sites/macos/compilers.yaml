@@ -1,31 +1,28 @@
-config:
-  build_jobs: 8
-
-compilers:
+compilers::
 - compiler:
     spec: apple-clang@13.0.0
     paths:
       cc: /usr/bin/clang
       cxx: /usr/bin/clang++
-      f77: /opt/homebrew/bin/gfortran
-      fc: /opt/homebrew/bin/gfortran
+      f77: /usr/local/bin/gfortran
+      fc: /usr/local/bin/gfortran
     flags: {}
     #  ldlibs: -lm
     operating_system: monterey
-    target: aarch64
+    target: any
     modules: []
     environment: {}
     extra_rpaths: []
 - compiler:
     spec: gcc@11.2.0
     paths:
-      cc: /opt/homebrew/bin/gcc-11
-      cxx: /opt/homebrew/bin/g++-11
-      f77: /opt/homebrew/bin/gfortran-11
-      fc: /opt/homebrew/bin/gfortran-11
+      cc: /usr/local/bin/gcc-11
+      cxx: /usr/local/bin/g++-11
+      f77: /usr/local/bin/gfortran-11
+      fc: /usr/local/bin/gfortran-11
     flags: {}
     operating_system: monterey
-    target: aarch64
+    target: any
     modules: []
     environment: {}
     extra_rpaths: []

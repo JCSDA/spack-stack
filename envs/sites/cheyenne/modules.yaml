@@ -1,16 +1,24 @@
 modules:
   default:
     lmod:
-      core_compilers:
+      core_compilers::
+      - intel-oneapi-compilers@2021.2.0
       - intel@2021.2.0
       - gcc@11.1.0
 
-      intel:
-        environment:
-          set:
-            'MODULEPATH_ROOT': '/glade/p/ral/jntp/GMTB/tools/compiler_mpi_modules'
-
-      gcc:
-        environment:
-          set:
-            'MODULEPATH_ROOT': '/glade/p/ral/jntp/GMTB/tools/compiler_mpi_modules'
+#      intel-oneapi-compilers:
+#        environment:
+#          prepend_path:
+#            PATH: '/glade/u/apps/ch/opt/ncarcompilers/0.5.0/intel/2021.2:/glade/u/apps/ch/opt/ncarcompilers/0.5.0/intel/2021.2/mpi'
+#            LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2021.2/compiler/2021.2.0/linux/compiler/lib/intel64_lin'
+#          set:
+#            'NCAR_EXCLUDE_ASNEEDED': '1'
+#            'NCAR_WRAPPER_MPI': '/glade/u/apps/ch/opt/ncarcompilers/0.5.0/intel/2021.2/mpi'
+#
+#      gcc:
+#        environment:
+#          prepend_path:
+#            PATH: '/glade/u/apps/ch/opt/ncarcompilers/0.5.0/gnu/11.1.0:/glade/u/apps/ch/opt/ncarcompilers/0.5.0/gnu/11.1.0/mpi'
+#          set:
+#            'NCAR_EXCLUDE_ASNEEDED': '1'
+#            'NCAR_WRAPPER_MPI': '/glade/u/apps/ch/opt/ncarcompilers/0.5.0/gnu/11.1.0/mpi'

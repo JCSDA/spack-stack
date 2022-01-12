@@ -10,18 +10,25 @@ packages:
     buildable: False
     externals:
     - spec: gcc@11.2.0
-      prefix: /opt/homebrew
+      prefix: /usr/local
+
+  mpich:
+    buildable: False
+    externals:
+    - spec: mpich@3.4.3
+      prefix: /usr/local
 
   python:
     buildable: False
     externals:
+    # Use the homebrew version, since the native macOS version is
+    # not suitable for development (missing python3-config, ...)
     - spec: python@3.8.9
-      prefix: /usr
+      prefix: /usr/local
 
   apple-libunwind:
     buildable: false
     externals:
-
     # Apple bundles libunwind version 35.3 with macOS 10.9 and later,
     # although the version number used here isn't critical
     - spec: apple-libunwind@35.3
@@ -30,17 +37,20 @@ packages:
   apple-libuuid:
     buildable: false
     externals:
-
     # Apple bundles libuuid in libsystem_c version 1353.100.2,
     # although the version number used here isn't critical
     - spec: apple-libuuid@1353.100.2
       prefix: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+
+  fms::
+    version: [2021.03.01]
+    variants: +64bit +enable_quad_precision +gfs_phys -openmp +pic
 
   eckit::
     version: [1.16.0]
     variants: linalg=eigen compression=lz4,bzip2
 
   all:
-    compiler:: [apple-clang@13.0.0, gcc@11.2.0]
+    compiler:: [apple-clang, gcc]
     providers:
-      mpi: [mpich, openmpi]
+      mpi:: [mpich, openmpi]

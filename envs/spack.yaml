@@ -2,21 +2,74 @@ spack:
   concretization: separately
   view: false
   include:
-  - repos.yaml
-  - modules.yaml
-  - packages.yaml
-  #- sites/macos/compilers.yaml
-  #- sites/macos/modules.yaml
-  #- sites/macos/packages.yaml
   - sites/cheyenne/compilers.yaml
   - sites/cheyenne/modules.yaml
   - sites/cheyenne/packages.yaml
+  - sites/cheyenne/config.yaml
+  #- sites/macos/compilers.yaml
+  #- sites/macos/modules.yaml
+  #- sites/macos/packages.yaml
+  #- sites/macos/config.yaml
+  - repos.yaml
+  - modules.yaml
+  - packages.yaml
 
   # Set package and module installation directories
   config:
     install_tree:
       root: install
       projections:
-        all: ${ARCHITECTURE}/${COMPILERNAME}-${COMPILERVER}/${PACKAGE}-${VERSION}
+        all: ${PACKAGE}-${VERSION}
     module_roots:
       lmod: install/modulefiles
+
+  definitions:
+    - packages:
+      - cmake
+      - zlib
+      - hdf5
+      - netcdf-c
+      - netcdf-fortran
+      - libjpeg
+      - libpng
+      - jasper
+      - esmf
+      - fms
+      - bacio
+      - sigio
+      - sfcio
+      - gfsio
+      - w3nco
+      - w3emc
+      - sp
+      - ip
+      - ip2
+      - landsfcutil
+      - nemsio
+      - nemsiogfs
+      - g2
+      - g2c
+      - g2tmpl
+      - crtm
+      - upp
+      - wrf-io
+      - wgrib2
+      - prod-util
+      - grib-util
+      - py-h5py
+      - jedi-cmake
+      - boost
+      - gsl-lite
+      - eigen
+      - ecbuild
+      - eckit
+      - fckit
+      - atlas
+      - git-lfs
+      - py-numpy
+      - diffutils
+      - findutils
+
+  specs:
+    - matrix:
+      - [$packages]
