@@ -91,6 +91,20 @@ packages:
     - spec: gawk@4.1.0
       prefix: /usr
 
+  git:
+    externals:
+    - spec: git@2.33.1
+      modules:
+      - git/2.33.1
+      prefix: /glade/u/apps/ch/opt/git/2.33.1/gnu/9.1.0
+
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.0.2
+      modules:
+      - git/2.33.1
+      prefix: /glade/u/apps/ch/opt/git/2.33.1/gnu/9.1.0
+
   all:
     #compiler:: [intel-oneapi-compilers, intel, gcc]
     compiler:: [intel-oneapi-compilers]

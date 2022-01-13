@@ -19,7 +19,7 @@
       variants: +hl +fortran +mpi +threadsafe
     netcdf-c:
       version: [4.7.4]
-      variants: +dap+mpi+parallel-netcdf
+      variants: +dap +mpi +parallel-netcdf
     netcdf-fortran:
       version: [4.5.3]
     jpeg:
