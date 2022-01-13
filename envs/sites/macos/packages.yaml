@@ -46,9 +46,9 @@ packages:
     version: [2021.03.01]
     variants: +64bit +enable_quad_precision +gfs_phys -openmp +pic
 
-  eckit::
-    version: [1.16.0]
-    variants: linalg=eigen compression=lz4,bzip2
+  #eckit::
+  #  version: [1.16.0]
+  #  variants: linalg=eigen compression=lz4,bzip2
 
   all:
     compiler:: [apple-clang, gcc]
