@@ -10,6 +10,7 @@ class AppleClang(Package):
     """Meta package to 'install' the native Apple clang compiler in spack."""
 
     homepage = "https://opensource.apple.com/projects/llvm-clang"
+    url = "https://notavalidurl.com/notavalidfile.tar.gz"
 
     maintainers = ['climbfuji']
 

@@ -1,41 +1,29 @@
 compilers::
+
   - compiler:
-      spec: intel@2022.0.1
+      spec: intel@2020.1.217
       paths:
-        cc: /glade/work/heinzell/intel-oneapi-2022.1.1/compiler/2022.0.1/linux/bin/intel64/icc
-        cxx: /glade/work/heinzell/intel-oneapi-2022.1.1/compiler/2022.0.1/linux/bin/intel64/icpc
-        f77: /glade/work/heinzell/intel-oneapi-2022.1.1/compiler/2022.0.1/linux/bin/intel64/ifort
-        fc: /glade/work/heinzell/intel-oneapi-2022.1.1/compiler/2022.0.1/linux/bin/intel64/ifort
+        cc: /glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/bin/intel64/icc
+        cxx: /glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/bin/intel64/icpc
+        f77: /glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
+        fc: /glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
       flags: {}
       operating_system: sles12
       target: x86_64
-      modules: []
+      modules:
+      - intel/19.1.1
+      #- ncarcompilers/0.5.0
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '/glade/work/heinzell/intel-oneapi-2022.1.1/compiler/2022.0.1/linux/compiler/lib/intel64_lin:/glade/work/heinzell/intel-oneapi-2022.1.1/mpi/2021.5.0/lib'
+          LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin'
+      #    LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/glade/u/apps/opt/intel/2020u1/impi/2019.7.217/intel64/lib'
         set:
-          CXXFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
-          LDFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
+          CXXFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
+          LDFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
+      #    # Maybe not needed if the impi module is loaded?
+      #    I_MPI_ROOT: '/glade/u/apps/opt/intel/2020u1/impi/2019.7.217/intel64'
+      extra_rpaths: []
 
-      #prefix: '/glade/work/heinzell/intel-oneapi-2022.1.1'
-#compilers::
-#  - compiler:
-#      spec: intel@2021.2.0
-#      paths:
-#        cc: /glade/u/apps/opt/intel/2021.2/compiler/latest/linux/bin/intel64/icc
-#        cxx: /glade/u/apps/opt/intel/2021.2/compiler/latest/linux/bin/intel64/icpc
-#        f77: /glade/u/apps/opt/intel/2021.2/compiler/latest/linux/bin/intel64/ifort
-#        fc: /glade/u/apps/opt/intel/2021.2/compiler/latest/linux/bin/intel64/ifort
-#      flags: {}
-#      operating_system: sles12
-#      target: x86_64
-#      modules:
-#      - intel/2021.2
-#      extra_rpaths: [
-#          '/glade/u/apps/opt/intel/2021.2/mpi/2021.2.0/lib',
-#          '/glade/u/apps/opt/intel/2021.2/compiler/2021.2.0/linux/compiler/lib/intel64_lin',
-#          ]
-#
 #  - compiler:
 #      spec: gcc@11.1.0
 #      paths:
@@ -49,3 +37,17 @@ compilers::
 #      modules:
 #      - gnu/11.1.0
 #      extra_rpaths: []
+
+  - compiler:
+      spec: gcc@4.8
+      paths:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        f77: /usr/bin/gfortran
+        fc: /usr/bin/gfortran
+      flags: {}
+      operating_system: sles12
+      target: x86_64
+      modules: []
+      environment: {}
+      extra_rpaths: []

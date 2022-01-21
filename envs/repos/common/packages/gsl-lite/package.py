@@ -24,14 +24,16 @@ from spack import *
 
 
 class GslLite(CMakePackage):
-    """FIXME: Put a proper description of your package here."""
+    """gsl-lite – A single-file header-only version of ISO C++ Guidelines Support Library (GSL) for C++98, C++11, and later"""
 
-    # FIXME: Add a proper url for your package's homepage here.
     homepage = "https://github.com/gsl-lite/gsl-lite"
+    git = "https://github.com/gsl-lite/gsl-lite.git"
     url      = "https://github.com/gsl-lite/gsl-lite/archive/refs/tags/v0.38.1.tar.gz"
 
     maintainers = ['kgerheiser', 'edwardhartnett', 'Hang-Lei-NOAA']
 
+    version('0.40.0', commit='d6c8af99a1d95b3db36f26b4f22dc3bad89952de')
+    version('0.39.0', commit='d0903fa87ff579c30f608bc363582e6563570342')
     version('0.38.1', sha256='c2fa2315fff312f3897958903ed4d4e027f73fa44235459ecb467ad7b7d62b18')
     version('0.38.0', sha256='5d25fcd31ea66dac9e14da1cad501d95450ccfcb2768fffcd1a4170258fcbc81')
     version('0.37.0', sha256='a31d51b73742bb234acab8d2411223cf299e760ed713f0840ffed0dabe57ca38')

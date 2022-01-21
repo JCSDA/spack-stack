@@ -17,11 +17,15 @@
     hdf5:
       version: [1.10.6]
       variants: +hl +fortran +mpi +threadsafe
+    parallel-netcdf:
+      version: [1.12.2]
     netcdf-c:
       version: [4.7.4]
       variants: +dap +mpi +parallel-netcdf
     netcdf-fortran:
       version: [4.5.3]
+    nccmp:
+      version: [1.9.0.1]
     jpeg:
       version: [9.1.0]
     libpng:
@@ -83,8 +87,10 @@
     jedi-cmake:
       version: [1.2.0]
     boost:
-      version: [1.68.0]
-      variants: +python +numpy +mpi +pic cxxstd=14
+      version: [1.72.0]
+      # Versions 1.73+ don't compile on platforms like orion (bootstrap.sh fails) ... on the todo list
+      #version: [1.78.0]
+      variants: ~atomic ~chrono ~date_time ~exception ~filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic ~program_options ~python ~random ~regex ~serialization ~signals ~test ~timer ~wave cxxstd=14
     gsl-lite:
       version: [0.37.0]
     eigen:
@@ -109,3 +115,5 @@
       version: [3.7]
     findutils:
       version: [4.7.0]
+    udunits:
+      version: [2.2.28]

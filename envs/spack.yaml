@@ -6,6 +6,10 @@ spack:
   - sites/cheyenne/modules.yaml
   - sites/cheyenne/packages.yaml
   - sites/cheyenne/config.yaml
+  #- sites/orion/compilers.yaml
+  #- sites/orion/modules.yaml
+  #- sites/orion/packages.yaml
+  #- sites/orion/config.yaml
   #- sites/macos/compilers.yaml
   #- sites/macos/modules.yaml
   #- sites/macos/packages.yaml
@@ -28,13 +32,17 @@ spack:
       - cmake
       - zlib
       - hdf5
+      - parallel-netcdf
       - netcdf-c
       - netcdf-fortran
+      - nccmp
       - libjpeg
       - libpng
       - jasper
       - esmf
       - fms
+      - fms-jcsda
+      - udunits
       - bacio
       - sigio
       - sfcio
@@ -65,6 +73,7 @@ spack:
       - eckit
       - fckit
       - atlas
+      - git
       - git-lfs
       - py-numpy
       - diffutils
