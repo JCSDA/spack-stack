@@ -1,5 +1,0 @@
-modules:
-  default:
-    lmod:
-      core_compilers::
-      - gcc@4.8.5

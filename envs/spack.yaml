@@ -2,18 +2,9 @@ spack:
   concretization: separately
   view: false
   include:
-  - sites/cheyenne/compilers.yaml
-  - sites/cheyenne/modules.yaml
-  - sites/cheyenne/packages.yaml
-  - sites/cheyenne/config.yaml
-  #- sites/orion/compilers.yaml
-  #- sites/orion/modules.yaml
-  #- sites/orion/packages.yaml
+  #- sites/cheyenne/config.yaml
   #- sites/orion/config.yaml
-  #- sites/macos/compilers.yaml
-  #- sites/macos/modules.yaml
-  #- sites/macos/packages.yaml
-  #- sites/macos/config.yaml
+  - sites/macos/config.yaml
   - repos.yaml
   - modules.yaml
   - packages.yaml
