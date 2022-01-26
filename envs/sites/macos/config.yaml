@@ -15,7 +15,10 @@ compilers::
     operating_system: monterey
     target: x86_64
     modules: []
-    environment: {}
+    environment:
+        prepend_path:
+          PATH: '/usr/local/opt/llvm/bin'
+          LD_LIBRARY_PATH: '/usr/local/opt/llvm/lib'
     extra_rpaths: []
 #- compiler:
 #    spec: gcc@11.2.0
@@ -118,9 +121,13 @@ packages:
 
   fms::
     version: [2021.03.01]
-    variants: +64bit +enable_quad_precision +gfs_phys -openmp +pic
+    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+
+  fms-jcsda::
+    version: [release-stable]
+    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
 
   all:
     compiler:: [clang] # [apple-clang, gcc]
     providers:
-      mpi:: [mpich] #, openmpi]
+      mpi:: [mpich] # [openmpi]

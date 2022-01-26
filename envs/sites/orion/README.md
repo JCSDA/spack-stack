@@ -12,9 +12,9 @@ module li
 
 # SPACK ENV
 
-cd /work/noaa/gsd-hpcs/dheinzel/jcsda/spack-stack-20220118
+/work/noaa/gsd-hpcs/dheinzel/jcsda/spack-stack-20220124
 source spack/share/spack/setup-env.sh
-spack env activate -p -d envs
+spack env activate -p -d envs_orion
 
 # fv3-bundle
 

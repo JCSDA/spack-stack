@@ -55,6 +55,9 @@
     fms:
       version: [2021.03.01]
       variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
+    fms-jcsda:
+      version: [release-stable]
+      variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
     bacio:
       version: [2.4.1]
     sigio:

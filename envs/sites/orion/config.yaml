@@ -16,6 +16,8 @@ compilers::
       modules:
       - intel/2020.2
       environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '/apps/gcc-10.2.0/gcc-10.2.0/lib64'
         set:
           CXXFLAGS: '-std=c++14 -gxx-name=/apps/gcc-10.2.0/gcc-10.2.0/bin/g++ -Wl,-rpath,/apps/gcc-10.2.0/gcc-10.2.0/lib64'
           LDFLAGS: '-std=c++14 -gxx-name=/apps/gcc-10.2.0/gcc-10.2.0/bin/g++ -Wl,-rpath,/apps/gcc-10.2.0/gcc-10.2.0/lib64'
