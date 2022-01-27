@@ -1,3 +1,4 @@
 repos:
 - repos/common
 - repos/jedi
+- repos/ufs

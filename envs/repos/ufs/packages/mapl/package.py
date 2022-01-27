@@ -40,11 +40,15 @@ class Mapl(CMakePackage):
         git='https://github.com/NOAA-EMC/CMakeModules.git',
         tag='v1.2.0')
 
+    # Patch to configure Apple M1 chip in x86_64 Rosetta 2 emulator mode
+    patch('esma_cmake_apple_m1.patch', when='@:2.8.1')
+
     variant('flap', default=False)
     variant('pflogger', default=False)
     variant('esma_gfe_namespace', default=True)
     variant('shared', default=True)
 
+    depends_on('mpi')
     depends_on('hdf5')
     depends_on('netcdf-c')
     depends_on('esmf')
@@ -63,7 +67,21 @@ class Mapl(CMakePackage):
             self.define_from_variant('ESMA_USE_GFE_NAMESPACE', 'esma_gfe_namespace'),
             self.define_from_variant('BUILD_SHARED_MAPL', 'shared'),
             long_arg.format(pwd=dir, ecbuild_prefix=ecbuild_prefix),
-            '-DCMAKE_Fortran_FLAGS=-ffree-line-length-none'
+            '-DCMAKE_Fortran_FLAGS=-ffree-line-length-none',
+            '-DCMAKE_C_COMPILER=%s' % self.spec['mpi'].mpicc,
+            '-DCMAKE_CXX_COMPILER=%s' % self.spec['mpi'].mpicxx,
+            '-DCMAKE_Fortran_COMPILER=%s' % self.spec['mpi'].mpifc
         ]
+
+        # Compatibility flags for gfortran-10+
+        fflags = []
+        if self.compiler.name in ['gcc', 'clang', 'apple-clang']:
+            fflags.append('-ffree-line-length-none')
+            gfortran_major_version = int(spack.compiler.get_compiler_version_output(self.compiler.fc, '-dumpversion').split('.')[0])
+            if gfortran_major_version>=10:
+                fflags.append('-fallow-invalid-boz')
+                fflags.append('-fallow-argument-mismatch')
+        if fflags:
+            args.append(self.define('CMAKE_Fortran_FLAGS', ' '.join(fflags)))
 
         return args
