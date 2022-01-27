@@ -25,14 +25,19 @@ class Fv3BundleEnv(BundlePackage):
     depends_on('zlib', type=('build', 'run'))
     depends_on('szip', type=('build', 'run'))
     depends_on('hdf5', type=('build', 'run'))
+    depends_on('netcdf-c', type=('build', 'run'))
+    depends_on('netcdf-fortran', type=('build', 'run'))
+    depends_on('nccmp', type=('build', 'run'))
+
     depends_on('eigen', type=('build', 'run'))
     depends_on('gsl-lite', type=('build', 'run'))
     depends_on('udunits', type=('build', 'run'))
 
-    depends_on('boost cxxstd=14 visibility=hidden', type=('build', 'run'))
+    depends_on('boost', type=('build', 'run'))
     #depends_on('libbacktrace', type=('build', 'run'))
     #depends_on('cgal+header_only', type=('build', 'run'))
 
+    depends_on('blas',  type=('build', 'run'))
     depends_on('eckit', type=('build', 'run'))
     depends_on('fckit', type=('build', 'run'))
     depends_on('atlas', type=('build', 'run'))
@@ -40,14 +45,6 @@ class Fv3BundleEnv(BundlePackage):
     depends_on('git', type='run')
     depends_on('git-lfs', type='run')
 
-    depends_on('blas', type=('build', 'run'))
-    #depends_on('openblas', type=('build', 'run')) # Depends on which MPI works for the system. Needs some pref config.
-    depends_on('netcdf-c+dap+mpi+parallel-netcdf', type=('build', 'run'))
-    depends_on('netcdf-fortran', type=('build', 'run'))
-    depends_on('nccmp', type=('build', 'run'))
-
-    #variant('python', default=True)
-    #depends_on('python@3.7:', when='+python')
     depends_on('python@3.7:')
 
     depends_on('fms-jcsda@release-stable')
