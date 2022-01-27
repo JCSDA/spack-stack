@@ -128,6 +128,6 @@ packages:
     variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
 
   all:
-    compiler:: [clang] # [apple-clang, gcc]
+    compiler:: [clang@13.0.0] # [apple-clang@13.0.0, gcc@11.2.0]
     providers:
-      mpi:: [mpich] # [openmpi]
+      mpi:: [mpich@3.4.3] # [openmpi]
