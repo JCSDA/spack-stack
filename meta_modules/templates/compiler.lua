@@ -8,11 +8,11 @@ local pkgNameVer = myModuleFullName()
 family("MetaCompiler")
 
 -- conflicts
---conflict("stack-compiler-clang")
---conflict("stack-compiler-gnu")
---conflict("stack-compiler-intel")
--- does this work?
-conflict("stack-compiler-")
+conflict("stack-apple-clang")
+conflict("stack-clang")
+conflict("stack-gnu")
+conflict("stack-intel")
+conflict("stack-intel-oneapi-compilers")
 
 -- prerequisite modules
 @MODULELOADS@
