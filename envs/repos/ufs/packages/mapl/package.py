@@ -73,7 +73,7 @@ class Mapl(CMakePackage):
             '-DCMAKE_Fortran_COMPILER=%s' % self.spec['mpi'].mpifc
         ]
 
-        # Compatibility flags for gfortran-10+
+        # Compatibility flags for gfortran
         fflags = []
         if self.compiler.name in ['gcc', 'clang', 'apple-clang']:
             fflags.append('-ffree-line-length-none')

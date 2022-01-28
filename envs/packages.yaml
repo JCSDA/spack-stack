@@ -39,9 +39,8 @@
       version: [2.0.32]
     eccodes:
       version: [2.21.0]
+      # Todo list: issues with eccodes on macOS ... currently installed via homebrew
       #variants: +netcdf
-      #  eccodes@2.13.0 +netcdf jp2k=none 2>&1 | tee spack.install.eccodes.log
-      #  spack install -v eccodes@2.18.0 +netcdf jp2k=none 2>&1 | tee spack.install.eccodes.log
     #libtiff:
     #  version: [4.3.0]
     proj:
@@ -115,6 +114,7 @@
       version: [1.72.0]
       # Versions 1.73+ don't compile on platforms like orion (bootstrap.sh fails) ... on the todo list
       #version: [1.78.0]
+      # Make this a boost-headers package by compiling basically nothing
       variants: ~atomic ~chrono ~date_time ~exception ~filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic ~program_options ~python ~random ~regex ~serialization ~signals ~test ~timer ~wave cxxstd=14 visibility=hidden
     gsl-lite:
       version: [0.37.0]

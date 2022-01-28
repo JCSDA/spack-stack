@@ -215,9 +215,20 @@ for mpi in mpi_list:
                         mpi_lua_file = os.path.join(mpi_lua_dir, mpi_version + '.lua')
                         substitutes = SUBSTITUTES_TEMPLATE.copy()
                         #
-                        if 'prefix' in package_config[mpi_name]['externals'][i].keys() and \
-                                'modules' in package_config[mpi_name]['externals'][i].keys():
-                            raise Exception("External packages must either have 'prefix' or 'modules' specified, not both or none")
+                        if 'modules' in package_config[mpi_name]['externals'][i].keys():
+                            # Existing non-spack modules to load
+                            for module in package_config[mpi_name]['externals'][i]['modules']:
+                                substitutes['MODULELOADS'] += 'load("{}")\n'.format(module)
+                                substitutes['MODULEPREREQS'] += 'prereq("{}")\n'.format(module)
+                            substitutes['MODULELOADS'] = substitutes['MODULELOADS'].rstrip('\n')
+                            substitutes['MODULEPREREQS'] = substitutes['MODULEPREREQS'].rstrip('\n')
+                            logging.debug("  ... ... MODULELOADS: {}".format(substitutes['MODULELOADS']))
+                            logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes['MODULEPREREQS']))
+                            # mpi_name_ROOT - replace "-" in mpi_name with "_" for environment variables
+                            if 'prefix' in package_config[mpi_name]['externals'][i].keys():
+                                prefix = package_config[mpi_name]['externals'][i]['prefix']
+                                substitutes['MPIROOT'] = 'setenv("{}_ROOT", "{}")'.format(mpi_name.replace('-','_'), prefix)
+                                logging.debug("  ... ... MPIROOT: {}".format(substitutes['MPIROOT']))
                         elif 'prefix' in package_config[mpi_name]['externals'][i].keys():
                             prefix = package_config[mpi_name]['externals'][i]['prefix']
                             # PATH and compiler wrapper environment variables
@@ -245,13 +256,10 @@ for mpi in mpi_list:
                             aclocaldir = os.path.join(prefix, 'share/aclocal')
                             if os.path.isdir(aclocaldir):
                                 substitutes['ENVVARS'] += 'prepend_path("ACLOCAL_PATH", "{}")\n'.format(aclocaldir)
-                            # mpi_name_ROOT
-                            substitutes['MPIROOT'] = 'setenv("{}_ROOT", "{}")'.format(mpi_name, prefix)
-                        elif 'modules' in package_config[mpi_name]['externals'][i].keys():
-                            logging.warning("package_config[mpi_name]['externals'][i]['modules'] = '{}'".format(package_config[mpi_name]['externals'][i]['modules']))
-                            raise Exception("NOT YET IMPLEMENTED")
+                            # mpi_name_ROOT - replace "-" in mpi_name with "_" for environment variables
+                            substitutes['MPIROOT'] = 'setenv("{}_ROOT", "{}")'.format(mpi_name.replace('-','_'), prefix)
                         else:
-                            raise Exception("External packages must either have 'prefix' or 'modules' specified, not both or none")
+                            raise Exception("External packages must have 'prefix' and/or 'modules'")
 
                         # Compiler wrapper environment variables
                         if 'intel' in mpi_name:
@@ -306,9 +314,21 @@ for package_name in package_config.keys():
                 python_lua_file = os.path.join(python_lua_dir, python_version + '.lua')
                 substitutes = SUBSTITUTES_TEMPLATE.copy()
                 #
-                if 'prefix' in package_config[python_name]['externals'][i].keys() and \
-                        'modules' in package_config[python_name]['externals'][i].keys():
-                    raise Exception("External packages must either have 'prefix' or 'modules' specified, not both or none")
+                if 'modules' in package_config[python_name]['externals'][i].keys():
+                    logging.warning("package_config[python_name]['externals'][i]['modules'] = '{}'".format(package_config[python_name]['externals'][i]['modules']))
+                    # Existing non-spack modules to load
+                    for module in package_config[python_name]['externals'][i]['modules']:
+                        substitutes['MODULELOADS'] += 'load("{}")\n'.format(module)
+                        substitutes['MODULEPREREQS'] += 'prereq("{}")\n'.format(module)
+                    substitutes['MODULELOADS'] = substitutes['MODULELOADS'].rstrip('\n')
+                    substitutes['MODULEPREREQS'] = substitutes['MODULEPREREQS'].rstrip('\n')
+                    logging.debug("  ... ... MODULELOADS: {}".format(substitutes['MODULELOADS']))
+                    logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes['MODULEPREREQS']))
+                    # python_name_ROOT - replace "-" in python_name with "_" for environment variables
+                    if 'prefix' in package_config[python_name]['externals'][i].keys():
+                        prefix = package_config[python_name]['externals'][i]['prefix']
+                        substitutes['PYTHONROOT'] = 'setenv("{}_ROOT", "{}")'.format(python_name.replace('-','_'), prefix)
+                        logging.debug("  ... ... PYTHONROOT: {}".format(substitutes['PYTHONROOT']))
                 elif 'prefix' in package_config[python_name]['externals'][i].keys():
                     prefix = package_config[python_name]['externals'][i]['prefix']
                     # PATH
@@ -352,13 +372,10 @@ for package_name in package_config.keys():
                     aclocaldir = os.path.join(prefix, 'share/aclocal')
                     if os.path.isdir(aclocaldir):
                         substitutes['ENVVARS'] += 'prepend_path("ACLOCAL_PATH", "{}")\n'.format(aclocaldir)
-                    # python_ROOT
-                    substitutes['PYTHONROOT'] = 'setenv("{}_ROOT", "{}")'.format(python_name, prefix)
-                elif 'modules' in package_config[python_name]['externals'][i].keys():
-                    logging.warning("package_config[python_name]['externals'][i]['modules'] = '{}'".format(package_config[python_]['externals'][i]['modules']))
-                    raise Exception("NOT YET IMPLEMENTED")
+                    # python_name_ROOT - replace "-" in python_name with "_" for environment variables
+                    substitutes['PYTHONROOT'] = 'setenv("{}_ROOT", "{}")'.format(python_name.replace('-','_'), prefix)
                 else:
-                    raise Exception("External packages must either have 'prefix' or 'modules' specified, not both or none")
+                    raise Exception("External packages must have 'prefix' and/or 'modules'")
 
                 # Read compiler lua template into module_content string
                 with open(PYTHON_LUA_TEMPLATE) as f:
@@ -374,3 +391,4 @@ for package_name in package_config.keys():
                 with open(python_lua_file, 'w') as f:
                     f.write(module_content)
                 logging.info("  ... writing {}".format(python_lua_file))
+
