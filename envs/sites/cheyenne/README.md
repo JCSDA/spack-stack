@@ -1,9 +1,17 @@
-CHEYENNE
+# Cheyenne
+## General instructions for getting the module environment right/fixed
 
 module purge
 module unuse /glade/u/apps/ch/modulefiles/default/compilers
 export MODULEPATH_ROOT=/glade/p/ral/jntp/GMTB/tools/compiler_mpi_modules
 module use /glade/p/ral/jntp/GMTB/tools/compiler_mpi_modules/compilers
+
+## Building your own spack stack
+
+... work in progress ...
+
+## Using spack stack
+
 
 module load intel/2021.2
 module load impi/2021.2

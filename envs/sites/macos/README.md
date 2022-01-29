@@ -10,6 +10,9 @@ It is recommended to install the following prerequisites via Homebrew, as instal
 ```
 brew install gcc@11.2.0
 llvm ?
+
+brew install coreutils
+
 brew install mpich@3.4.3
 brew install python@3.8.9
 brew install git@2.34.1
