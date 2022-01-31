@@ -2,16 +2,6 @@
   packages:
     cmake:
       version: [3.22.1]
-    #apple-clang:
-    #  version: [13.0.0]
-    #gcc:
-    #  version: [11.2.0]
-    #openmpi:
-    #  version: [4.1.1]
-    #  variants: +internal-hwloc
-    #mpich:
-    #  version: [3.4.2]
-    #  variants: ~libxml2 ~hwloc
     zlib:
       version: [1.2.11]
     hdf5:
