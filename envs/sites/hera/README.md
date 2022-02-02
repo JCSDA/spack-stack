@@ -1,4 +1,7 @@
-# Orion
+# Hera
+
+# WORK IN PROGRESS ... DO NOT USE YET
+
 ## General instructions for getting the module environment right/fixed
 ```
 module purge

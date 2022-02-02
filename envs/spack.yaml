@@ -3,7 +3,7 @@ spack:
   view: false
   include:
   #- sites/cheyenne/config.yaml
-  #- sites/hera/config.yaml
+  #- sites/hera/config.yaml - WORK IN PROGRESS DO NOT USE YET
   #- sites/macos/config.yaml
   #- sites/orion/config.yaml
   #- sites/s4/config.yaml
