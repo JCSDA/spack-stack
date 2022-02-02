@@ -21,6 +21,7 @@ spack:
     module_roots:
       lmod: install/modulefiles
 
+  # Probably don't need that if we install envs
   definitions:
     - packages:
       - cmake
@@ -73,6 +74,7 @@ spack:
       - diffutils
       - findutils
 
+  # Probably don't need that either
   specs:
     - matrix:
       - [$packages]
