@@ -18,6 +18,8 @@ class Fv3BundleEnv(BundlePackage):
 
     version('main', branch='main')
 
+    depends_on('base-env', type=('build', 'run'))
+
     depends_on('cmake', type=('build', 'run'))
     depends_on('ecbuild', type=('build', 'run'))
     depends_on('jedi-cmake', type=('build', 'run'))

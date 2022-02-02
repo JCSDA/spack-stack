@@ -315,7 +315,6 @@ for package_name in package_config.keys():
                 substitutes = SUBSTITUTES_TEMPLATE.copy()
                 #
                 if 'modules' in package_config[python_name]['externals'][i].keys():
-                    logging.warning("package_config[python_name]['externals'][i]['modules'] = '{}'".format(package_config[python_name]['externals'][i]['modules']))
                     # Existing non-spack modules to load
                     for module in package_config[python_name]['externals'][i]['modules']:
                         substitutes['MODULELOADS'] += 'load("{}")\n'.format(module)

@@ -3,8 +3,11 @@ spack:
   view: false
   include:
   #- sites/cheyenne/config.yaml
+  #- sites/hera/config.yaml
+  #- sites/macos/config.yaml
   #- sites/orion/config.yaml
-  - sites/macos/config.yaml
+  #- sites/s4/config.yaml
+  - please_configure_your_site.yaml
   - repos.yaml
   - modules.yaml
   - packages.yaml

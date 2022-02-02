@@ -1,5 +1,5 @@
 config:
-  build_jobs: 1
+  build_jobs: 4
 
 compilers::
 - compiler:
@@ -126,6 +126,9 @@ packages:
   fms-jcsda::
     version: [release-stable]
     variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+
+  libbacktrace:
+    version: [2020-02-19]
 
   all:
     compiler:: [clang@13.0.0] # [apple-clang@13.0.0, gcc@11.2.0]
