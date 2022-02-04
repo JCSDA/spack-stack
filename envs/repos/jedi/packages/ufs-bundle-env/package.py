@@ -68,4 +68,6 @@ class UfsBundleEnv(BundlePackage):
     depends_on('yafyaml',     type=('build', 'run'))
     depends_on('mapl',        type=('build', 'run'))
 
-    depends_on('py-pybind11', type='run')
+    depends_on('py-pybind11', type=('build', 'run'))
+    depends_on('py-netcdf4',  type=('build', 'run'))
+    depends_on('py-pycodestyle', type=('build', 'run'))

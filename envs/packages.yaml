@@ -128,6 +128,11 @@
       variants: +blas +lapack
     py-pybind11:
       version: [2.8.1]
+    py-netcdf4:
+      version: [1.5.3]
+      variants: +mpi
+    py-pycodestyle:
+      version: [2.8.0]
     diffutils:
       version: [3.7]
     findutils:
