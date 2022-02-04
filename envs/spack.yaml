@@ -71,6 +71,7 @@ spack:
       - git
       - git-lfs
       - py-numpy
+      - py-pybind11
       - diffutils
       - findutils
 

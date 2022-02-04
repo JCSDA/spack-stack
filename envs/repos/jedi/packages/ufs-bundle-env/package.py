@@ -67,3 +67,5 @@ class UfsBundleEnv(BundlePackage):
     depends_on('gftl-shared', type=('build', 'run'))
     depends_on('yafyaml',     type=('build', 'run'))
     depends_on('mapl',        type=('build', 'run'))
+
+    depends_on('py-pybind11', type='run')

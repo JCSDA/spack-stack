@@ -126,6 +126,8 @@
     py-numpy:
       version: [1.20.3]
       variants: +blas +lapack
+    py-pybind11:
+      version: [2.8.1]
     diffutils:
       version: [3.7]
     findutils:

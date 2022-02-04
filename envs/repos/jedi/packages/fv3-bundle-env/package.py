@@ -58,7 +58,7 @@ class Fv3BundleEnv(BundlePackage):
     #depends_on('py-numpy', when='+python')
     #depends_on('py-pandas', when='+python')
     #depends_on('py-pip', when='+python')
-    #depends_on('py-pybind11', when='+python')
+    depends_on('py-pybind11', type='run')
     ##depends_on('py-pyproj', when='+python')
     #depends_on('py-pyshp', when='+python')
     #depends_on('py-ruamel-yaml', when='+python')
