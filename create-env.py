@@ -6,9 +6,9 @@ import sys
 import shutil
 
 parser = argparse.ArgumentParser(description='Create a pre-configured Spack env folder.')
-parser.add_argument('site', help = 'Pre-configured platforms (hera, orion, cheyenne, etc).')
-parser.add_argument('app', help = 'Which app env to build (ufs, jedi).')
-parser.add_argument('name', help = 'Optional name for env dir. Defaults to site name.')
+parser.add_argument('--site', type=str, help = 'Pre-configured platform to setup env for (hera, orion, cheyenne, etc).')
+parser.add_argument('--app', type=str, help = 'Which app env to build (ufs, jedi).')
+parser.add_argument('--name', type=str, help = 'Optional name for env dir. Defaults to site name.')
 
 args = parser.parse_args()
 
