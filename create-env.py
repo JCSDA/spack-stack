@@ -16,7 +16,7 @@ site = args.site
 app = args.app
 env_name = args.name
 
-# spack-stack/envs
+# Get directory of this script
 stack_dir = os.path.dirname(os.path.realpath(__file__))
 env_dir = os.path.join(stack_dir, 'envs', env_name)
 
