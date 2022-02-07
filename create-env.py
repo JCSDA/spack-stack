@@ -14,7 +14,11 @@ args = parser.parse_args()
 
 site = args.site
 app = args.app
-env_name = args.name
+
+if args.name:
+    env_name = args.name
+else:
+    env_name = site
 
 # Get directory of this script
 stack_dir = os.path.dirname(os.path.realpath(__file__))
@@ -38,4 +42,4 @@ for common_config in ['config.yaml', 'modules.yaml', 'packages.yaml']:
 configs_to_copy = [site_config] + [app_config] + common_configs
 
 for config in configs_to_copy:
-    shutil.copy2(config, os.path.join(env_dir, ))
+    shutil.copy2(config, env_dir)
