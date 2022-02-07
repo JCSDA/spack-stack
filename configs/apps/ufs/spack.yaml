@@ -8,9 +8,7 @@ spack:
   - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
   - site.yaml
 
-  # Probably don't need that if we install envs
-  definitions:
-    - packages:
+ specs:
       - cmake
       - zlib
       - hdf5
@@ -63,8 +61,3 @@ spack:
       - py-pycodestyle
       - diffutils
       - findutils
-
-  # Probably don't need that either
-  specs:
-    - matrix:
-      - [$packages]
