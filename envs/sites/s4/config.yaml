@@ -1,0 +1,112 @@
+###################################################################################################
+# Spack site config for University of Wisconsin S4                                                #
+###################################################################################################
+
+config:
+  build_jobs: 10
+
+compilers::
+
+  - compiler:
+      spec: intel@19.0.5
+      paths:
+        cc: /opt/intel/19/compilers_and_libraries_2019.5.281/linux/bin/intel64/icc
+        cxx: /opt/intel/19/compilers_and_libraries_2019.5.281/linux/bin/intel64/icpc
+        f77: /opt/intel/19/compilers_and_libraries_2019.5.281/linux/bin/intel64/ifort
+        fc: /opt/intel/19/compilers_and_libraries_2019.5.281/linux/bin/intel64/ifort
+      flags: {}
+      operating_system: centos7
+      target: x86_64
+      modules:
+      - license_intel/S4
+      - intel/19.0.5
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '/opt/gcc/8.3/lib64'
+        set:
+          CXXFLAGS: '-std=c++14 -gxx-name=/opt/gcc/8.3/bin/g++ -Wl,-rpath,/opt/gcc/8.3/lib64'
+          LDFLAGS: '-std=c++14 -gxx-name=/opt/gcc/8.3/bin/g++ -Wl,-rpath,/opt/gcc/8.3/lib64'
+      extra_rpaths: []
+
+  - compiler:
+      spec: gcc@4.8
+      paths:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        f77: /usr/bin/gfortran
+        fc: /usr/bin/gfortran
+      flags: {}
+      operating_system: centos7
+      target: x86_64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+
+modules:
+  default:
+    lmod:
+      core_compilers::
+      - gcc@4.8.5
+
+packages:
+  mpi:
+    buildable: False
+
+  intel-mpi:
+    buildable: False
+    externals:
+    - spec: intel-mpi@2019.5.281
+      modules:
+      - impi/19.0.5
+
+  python:
+    buildable: False
+    externals:
+    - spec: python@3.8.5
+      modules:
+      - miniconda/3.8-s4
+
+  openssl:
+    externals:
+    #- spec: openssl@1.1.1m
+    #  prefix: /opt/miniconda/3.8-s4
+    - spec: openssl@1.0.2k-fips
+      prefix: /usr
+
+  perl:
+    externals:
+    - spec: perl@5.16.3~cpanm+shared+threads
+      prefix: /usr
+
+  m4:
+    externals:
+    - spec: m4@1.4.16
+      prefix: /usr
+
+  cmake:
+    # ecbuild requires cmake 3.18-ish
+    #buildable: False
+    externals:
+    - spec: cmake@3.20.5
+      prefix: /usr
+
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+
+  git:
+    externals:
+    - spec: git@2.30.0
+      modules:
+      - git/2.30.0
+
+  git-lfs:
+    externals:
+    - spec: git-lfs@2.10.0
+      prefix: /usr
+
+  all:
+    compiler:: [intel@19.0.5]
+    providers:
+      mpi:: [intel-mpi@2019.5.281]

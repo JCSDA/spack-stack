@@ -1,33 +1,53 @@
-modules::
+modules:
+  default:
+    arch_folder: false
     enable:
     - lmod
     lmod:
       projections:
         nlohmann-json: 'json/{version}'
       blacklist:
+      # List of packages for which we don't need modules
       - berkeley-db
+      - bison
       - bzip2
+      - curl
+      - diffutils
       - expat
+      - findutils
+      - flex
+      - gdbm
       - hwloc
-      - libxml2
+      - libaec
       - libedit
       - libevent
+      - libfabric
       - libiconv
+      - libjpeg-turbo
+      - libpciaccess
       - libsigsegv
       - libxml
+      - libxml2
+      - lz4
       - m4
       - nasm
-      - gdbm
       - ncurses
       - openssh
+      - openssl
+      - perl
+      - pkgconf
       - readline
       - xz
-      - pkgconf
-      - libfabric
-      - findutils
+      # Do not create MPI modules - we create our own meta modules
+      - mpich
+      - openmpi
+      - intel-mpi
+      - intel-oneapi-mpi
+      # Do not create python modules - we create our own meta modules
+      - python
 
       hash_length: 0
-      
+
       all:
         environment:
           set:
@@ -38,10 +58,15 @@ modules::
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
 
+      libpng:
+        environment:
+          set:
+            'PNG_ROOT': '{prefix}'
+
       hierarchy:
       - mpi
-      core_specs:
-      - python
+      #core_specs:
+      #- python
 
     prefix_inspections:
       bin:

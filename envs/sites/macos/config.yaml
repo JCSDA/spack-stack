@@ -1,0 +1,136 @@
+config:
+  build_jobs: 4
+
+compilers::
+- compiler:
+    spec: clang@13.0.0
+    paths:
+      cc: /usr/local/opt/llvm/bin/clang
+      cxx: /usr/local/opt/llvm/bin/clang++
+      f77: /usr/local/bin/gfortran
+      fc: /usr/local/bin/gfortran
+    flags:
+      cppflags: '-I/usr/local/opt/llvm/include'
+      ldflags: '-L/usr/local/opt/llvm/lib -Wl,-rpath,/usr/local/opt/llvm/lib'
+    operating_system: monterey
+    target: x86_64
+    modules: []
+    environment:
+        prepend_path:
+          PATH: '/usr/local/opt/llvm/bin'
+          LD_LIBRARY_PATH: '/usr/local/opt/llvm/lib'
+    extra_rpaths: []
+#- compiler:
+#    spec: gcc@11.2.0
+#    paths:
+#      cc: /usr/local/bin/gcc-11
+#      cxx: /usr/local/bin/g++-11
+#      f77: /usr/local/bin/gfortran-11
+#      fc: /usr/local/bin/gfortran-11
+#    flags: {}
+#    operating_system: monterey
+#    target: x86_64
+#    modules: []
+#    environment: {}
+#    extra_rpaths: []
+- compiler:
+    spec: apple-clang@13.0.0
+    paths:
+      cc: /usr/bin/clang
+      cxx: /usr/bin/clang++
+      f77: /usr/local/bin/gfortran
+      fc: /usr/local/bin/gfortran
+    flags: {}
+    operating_system: monterey
+    target: any
+    modules: []
+    environment: {}
+    extra_rpaths: []
+
+modules:
+  default:
+    lmod:
+      core_compilers:
+      - apple-clang@13.0.0
+
+packages:
+
+  #apple-clang:
+  #  buildable: False
+  #  externals:
+  #  - spec: apple-clang@13.0.0
+  #    prefix: /usr
+
+  #gcc:
+  #  buildable: False
+  #  externals:
+  #  - spec: gcc@11.2.0
+  #    prefix: /usr/local
+
+  mpich:
+    buildable: False
+    externals:
+    - spec: mpich@3.4.3
+      prefix: /usr/local
+
+  python:
+    buildable: False
+    externals:
+    # Use the homebrew version, since the native macOS version is
+    # not suitable for development (missing python3-config, ...)
+    - spec: python@3.9.10
+      prefix: /usr/local
+
+  apple-libunwind:
+    buildable: false
+    externals:
+    # Apple bundles libunwind version 35.3 with macOS 10.9 and later,
+    # although the version number used here isn't critical
+    - spec: apple-libunwind@35.3
+      prefix: /usr
+
+  apple-libuuid:
+    buildable: false
+    externals:
+    # Apple bundles libuuid in libsystem_c version 1353.100.2,
+    # although the version number used here isn't critical
+    - spec: apple-libuuid@1353.100.2
+      prefix: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
+
+  git:
+    externals:
+    - spec: git@2.34.1
+      prefix: /usr/local
+
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.0.2
+      prefix: /usr/local
+
+  #eccodes:
+  #  buildable: false
+  #  externals:
+  #  - spec: eccodes@2.24.2
+  #    prefix: /usr/local
+  #
+  #libtiff:
+  #  buildable: false
+  #  externals:
+  #  - spec: libtiff@4.3.0
+  #    prefix: /usr/local
+
+  fms::
+    version: [2021.03.01]
+    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+
+  fms-jcsda::
+    version: [release-stable]
+    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+
+  libbacktrace:
+    version: [2020-02-19]
+
+  all:
+    compiler:: [clang@13.0.0] # [apple-clang@13.0.0, gcc@11.2.0]
+    providers:
+      mpi:: [mpich@3.4.3] # [openmpi]
