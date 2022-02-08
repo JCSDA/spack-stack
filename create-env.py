@@ -28,20 +28,20 @@ def app_help():
         help_string += '\t' + app + os.linesep
     return help_string
 
-epilog_text = """
-Example usage:
-        source setup.sh
-        ./create-env.py --site default --app ufs --name ufs-env
-        cd envs/ufs-env
-        spack end create -d .
-        spack env activate .
-        spack install
-"""
-
 description_text = '''
     Create a pre-configured Spack environment. Envrionments are created in spack-stack/envs/<env>.
-
 '''
+
+epilog_text = """
+Example usage:
+    source setup.sh
+    ./create-env.py --site default --app ufs --name ufs-env
+    cd envs/ufs-env
+    spack end create -d .
+    spack env activate .
+    spack install
+"""
+
 parser = argparse.ArgumentParser(description=description_text,
     epilog=epilog_text,
     formatter_class=RawTextHelpFormatter)
@@ -56,15 +56,9 @@ site = args.site
 app = args.app
 env_name = args.name if args.name else site
 
-# Create spack-stack/envs if it doesn't exist to hold envrionments
+# Create spack-stack/envs to hold envrionments, if it doesn't exist
 if not os.path.exists(stack_path('envs')):
     os.makedirs(stack_path('envs'))
-
-env_dir = stack_path('envs', env_name)
-if not os.path.exists(env_dir):
-    os.makedirs(env_dir)
-else:
-    sys.exit('env {0} already exists'.format(env_dir))
 
 site_config = stack_path('configs', 'sites', site, 'site.yaml')
 app_config = stack_path('configs', 'apps', app, 'spack.yaml')
@@ -74,6 +68,18 @@ for common_config in ['config.yaml', 'modules.yaml', 'packages.yaml']:
     common_configs.append(stack_path('configs', 'common', common_config))
 
 configs_to_copy = [site_config] + [app_config] + common_configs
+
+# Check if files exist before copying them
+for config in configs_to_copy:
+    if not os.path.exists(config):
+        sys.exit('Error: file "{}" does not exist'.format(config))
+
+# Create env_dir after checking if source files exist
+env_dir = stack_path('envs', env_name)
+if not os.path.exists(env_dir):
+    os.makedirs(env_dir)
+else:
+    sys.exit('Error: env {0} already exists'.format(env_dir))
 
 for config in configs_to_copy:
     shutil.copy2(config, env_dir)
