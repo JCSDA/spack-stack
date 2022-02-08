@@ -4,6 +4,6 @@
     install_tree:
       root: install
       projections:
-        all:  "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}/${VERSION}-${HASH}"
+        all:  "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}"
     module_roots:
       lmod: install/modulefiles
