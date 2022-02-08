@@ -19,7 +19,7 @@ jobs:
 
 
       - name: setup
-      - run: |
+        run: |
           cd spack-stack
           source setup.sh
           spack external find
