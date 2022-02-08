@@ -28,7 +28,23 @@ def app_help():
         help_string += '\t' + app + os.linesep
     return help_string
 
-parser = argparse.ArgumentParser(description='Create a pre-configured Spack env folder.', formatter_class=RawTextHelpFormatter)
+epilog_text = """
+Example usage:
+        source setup.sh
+        ./create-env.py --site default --app ufs --name ufs-env
+        cd envs/ufs-env
+        spack end create -d .
+        spack env activate .
+        spack install
+"""
+
+description_text = '''
+    Create a pre-configured Spack environment. Envrionments are created in spack-stack/envs/<env>.
+
+'''
+parser = argparse.ArgumentParser(description=description_text,
+    epilog=epilog_text,
+    formatter_class=RawTextHelpFormatter)
 
 parser.add_argument('--site', type=str, required=True, help = site_help())
 parser.add_argument('--app', type=str, required=True, help = app_help())
