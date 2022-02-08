@@ -10,8 +10,8 @@ defaults:
 jobs:
   gcc-build:
     runs-on: ubuntu-latest
-    name: gcc-build
-
+    env:
+      env_name: env
     steps:
 
       - name: checkout
@@ -24,8 +24,8 @@ jobs:
         run: |
           cd spack-stack
           source setup.sh
-          ./create-env.py --site default --app ufs
-          cd envs/ufs.default
+          ./create-env.py --site default --app ufs --name $env_name
+          cd envs/$env_name
 
           spack env create -d .
           spack env activate .
@@ -35,7 +35,7 @@ jobs:
           spack config add "packages:all:compiler:[gcc@9]"
 
           echo "source ${GITHUB_WORKSPACE}/spack-stack/setup.sh" >> ~/.bash_profile
-          echo "spack env activate ${GITHUB_WORKSPACE}/spack-stack/envs/ufs" >> ~/.bash_profile
+          echo "spack env activate ${GITHUB_WORKSPACE}/spack-stack/envs/$env_name" >> ~/.bash_profile
 
       - name: concretize
         run: |
