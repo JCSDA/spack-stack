@@ -1,8 +1,7 @@
 name: gcc-build
 on: [push]
 
-# Use custom shell with -l so .bash_profile is sourced which loads intel/oneapi/setvars.sh
-# without having to do it in manually every step
+# Use custom shell with -l so .bash_profile is sourced
 defaults:
   run:
     shell: bash -leo pipefail {0}
