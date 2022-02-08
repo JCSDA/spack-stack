@@ -31,4 +31,8 @@ jobs:
           cd envs/default
           spack env create -d .
           spack env activate .
+
+          spack config add "packages:all:compiler:[gcc@9]"
+          spack concretize
+          spack install
           
