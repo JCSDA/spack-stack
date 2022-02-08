@@ -48,13 +48,13 @@ parser = argparse.ArgumentParser(description=description_text,
 
 parser.add_argument('--site', type=str, required=True, help = site_help())
 parser.add_argument('--app', type=str, required=True, help = app_help())
-parser.add_argument('--name', type=str, required=False, help = 'Optional name for env dir. Defaults to site name.')
+parser.add_argument('--name', type=str, required=False, help = 'Optional name for env dir. Defaults to app.site name.')
 
 args = parser.parse_args()
 
 site = args.site
 app = args.app
-env_name = args.name if args.name else site
+env_name = args.name if args.name else "{}.{}".format(app, site)
 
 # Create spack-stack/envs to hold envrionments, if it doesn't exist
 if not os.path.exists(stack_path('envs')):
