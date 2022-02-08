@@ -9,5 +9,5 @@ spack:
   - site.yaml
   - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
-  specs:
-  - fv3-bundle-env
+# File in specs
+  specs:  
