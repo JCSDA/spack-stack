@@ -25,7 +25,7 @@ jobs:
           cd spack-stack
           source setup.sh
           ./create-env.py --site default --app ufs
-          cd envs/default
+          cd envs/ufs.default
 
           spack env create -d .
           spack env activate .
@@ -36,7 +36,6 @@ jobs:
 
           echo "source ${GITHUB_WORKSPACE}/spack-stack/setup.sh" >> ~/.bash_profile
           echo "spack env activate ${GITHUB_WORKSPACE}/spack-stack/envs/ufs" >> ~/.bash_profile
-
 
       - name: concretize
         run: |
