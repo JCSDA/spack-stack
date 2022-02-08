@@ -1,0 +1,47 @@
+name: gcc-build
+on: [push]
+
+# Use custom shell with -l so .bash_profile is sourced
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+jobs:
+  gcc-build:
+    runs-on: ubuntu-latest
+    env:
+      env_name: env
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          path: spack-stack
+          submodules: true
+
+      - name: setup
+        run: |
+          sudo apt-get install libcurl4-openssl-dev
+          cd spack-stack
+          source setup.sh
+          ./create-env.py --site default --app ufs --name $env_name
+          cd envs/$env_name
+
+          spack env create -d .
+          spack env activate .
+
+          spack external find
+          spack compiler find
+          spack config add "packages:all:compiler:[gcc@9]"
+
+          echo "source ${GITHUB_WORKSPACE}/spack-stack/setup.sh" >> ~/.bash_profile
+          echo "spack env activate ${GITHUB_WORKSPACE}/spack-stack/envs/$env_name" >> ~/.bash_profile
+
+      - name: concretize
+        run: |
+          spack concretize --reuse
+      
+      - name: install
+        run: |
+          spack install
+          

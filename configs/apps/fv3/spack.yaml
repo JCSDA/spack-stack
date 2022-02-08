@@ -1,0 +1,12 @@
+spack:
+  concretization: separately
+  view: false
+  include:
+  - config.yaml
+  - packages.yaml
+  - modules.yaml
+  - site.yaml
+  - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
+
+  specs:
+  - fv3-bundle-env
