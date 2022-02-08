@@ -40,6 +40,7 @@ site = args.site
 app = args.app
 env_name = args.name if args.name else site
 
+# Create spack-stack/envs if it doesn't exist to hold envrionments
 if not os.path.exists(stack_path('envs')):
     os.makedirs(stack_path('envs'))
 
