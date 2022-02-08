@@ -24,15 +24,25 @@ jobs:
         run: |
           cd spack-stack
           source setup.sh
-          spack external find
-          spack compiler find
-
           ./create-env.py --site default --app ufs
           cd envs/default
+
           spack env create -d .
           spack env activate .
 
+          spack external find
+          spack compiler find
           spack config add "packages:all:compiler:[gcc@9]"
+
+          echo "source ${GITHUB_WORKSPACE}/spack-stack/setup.sh" >> ~/.bash_profile
+          echo "spack env activate ${GITHUB_WORKSPACE}/spack-stack/envs/ufs" >> ~/.bash_profile
+
+
+      - name: concretize
+        run: |
           spack concretize
+      
+      - name: install
+        run: |
           spack install
           
