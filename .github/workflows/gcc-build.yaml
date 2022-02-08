@@ -16,6 +16,9 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          path: spack-stack
+          submodules: true
 
 
       - name: setup
