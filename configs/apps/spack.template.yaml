@@ -1,3 +1,4 @@
+# Template spack.yaml for apps
 spack:
   concretization: separately
   view: false
@@ -9,4 +10,4 @@ spack:
   - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
   specs:
-  - ufs-bundle-env
+  - fv3-bundle-env
