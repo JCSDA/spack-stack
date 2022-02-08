@@ -21,6 +21,7 @@ jobs:
 
       - name: setup
         run: |
+          apt-get install libcurl4-openssl-dev
           cd spack-stack
           source setup.sh
           ./create-env.py --site default --app ufs --name $env_name
@@ -38,7 +39,7 @@ jobs:
 
       - name: concretize
         run: |
-          spack concretize
+          spack concretize --reuse
       
       - name: install
         run: |
