@@ -7,10 +7,11 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  gcc-build:
+  build:
+    strategy:
+      matrix:
+        app: [jedi-ufs, jedi-fv3, ufs-weather-model, nceplibs]
     runs-on: ubuntu-latest
-    env:
-      env_name: env
     steps:
 
       - name: checkout
@@ -24,8 +25,8 @@ jobs:
           sudo apt-get install libcurl4-openssl-dev
           cd spack-stack
           source setup.sh
-          ./create-env.py --site default --app ufs --name $env_name
-          cd envs/$env_name
+          ./create-env.py --site default --app ${{ matrix.app }} --name ${{ matrix.app }}
+          cd envs/${{ matrix.app }}
 
           spack env create -d .
           spack env activate .
@@ -35,7 +36,7 @@ jobs:
           spack config add "packages:all:compiler:[gcc@9]"
 
           echo "source ${GITHUB_WORKSPACE}/spack-stack/setup.sh" >> ~/.bash_profile
-          echo "spack env activate ${GITHUB_WORKSPACE}/spack-stack/envs/$env_name" >> ~/.bash_profile
+          echo "spack env activate ${GITHUB_WORKSPACE}/spack-stack/envs/${{ matrix.app }}" >> ~/.bash_profile
 
       - name: concretize
         run: |
