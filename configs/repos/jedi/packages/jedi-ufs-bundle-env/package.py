@@ -8,13 +8,13 @@ import sys
 
 from spack import *
 
-class Fv3BundleEnv(BundlePackage):
+class JediUfsBundleEnv(BundlePackage):
     """Development environment for fv3-bundle"""
 
-    homepage = "https://github.com/JCSDA-internal/fv3-bundle"
-    git      = "https://github.com/JCSDA-internal/fv3-bundle.git"
+    homepage = "https://github.com/JCSDA-internal/ufs-bundle"
+    git      = "https://github.com/JCSDA-internal/ufs-bundle.git"
 
-    maintainers = ['climbfuji', 'rhoneyager']
+    maintainers = ['climbfuji', 'mark-a-potts']
 
     version('main', branch='main')
 
@@ -29,13 +29,14 @@ class Fv3BundleEnv(BundlePackage):
     depends_on('hdf5', type=('build', 'run'))
     depends_on('netcdf-c', type=('build', 'run'))
     depends_on('netcdf-fortran', type=('build', 'run'))
+    depends_on('parallelio', type=('build', 'run'))
     depends_on('nccmp', type=('build', 'run'))
 
     depends_on('eigen', type=('build', 'run'))
     depends_on('gsl-lite', type=('build', 'run'))
     depends_on('udunits', type=('build', 'run'))
 
-    depends_on('boost', type=('build', 'run'))
+    depends_on('boost cxxstd=14 visibility=hidden', type=('build', 'run'))
     #depends_on('libbacktrace', type=('build', 'run'))
     #depends_on('cgal+header_only', type=('build', 'run'))
 
@@ -49,27 +50,24 @@ class Fv3BundleEnv(BundlePackage):
 
     depends_on('python@3.7:')
 
-    depends_on('fms-jcsda@release-stable')
+    depends_on('fms', type=('build', 'run'))
+    depends_on('esmf', type=('build', 'run'))
 
-    ##depends_on('py-cartopy', when='+python')
-    #depends_on('py-click', when='+python')
-    #depends_on('py-matplotlib', when='+python')
-    #depends_on('py-numpy', when='+python')
-    #depends_on('py-pandas', when='+python')
-    #depends_on('py-pip', when='+python')
+    depends_on('jasper', type=('build', 'run'))
+    depends_on('libpng', type=('build', 'run'))
+
+    depends_on('bacio',  type=('build', 'run'))
+    depends_on('crtm',   type=('build', 'run'))
+    depends_on('g2',     type=('build', 'run'))
+    depends_on('g2tmpl', type=('build', 'run'))
+    depends_on('ip',     type=('build', 'run'))
+    depends_on('sp',     type=('build', 'run'))
+    depends_on('w3nco',  type=('build', 'run'))
+
+    depends_on('gftl-shared', type=('build', 'run'))
+    depends_on('yafyaml',     type=('build', 'run'))
+    depends_on('mapl',        type=('build', 'run'))
+
     depends_on('py-pybind11', type=('build', 'run'))
     depends_on('py-netcdf4',  type=('build', 'run'))
     depends_on('py-pycodestyle', type=('build', 'run'))
-
-    ##depends_on('py-pyproj', when='+python')
-    #depends_on('py-pyshp', when='+python')
-    #depends_on('py-ruamel-yaml', when='+python')
-    #depends_on('py-scipy', when='+python')
-    #depends_on('py-shapely', when='+python')
-    #depends_on('py-yamlreader', when='+python')
-    ## TODO: nceplibs-bufr python
-    #
-    #
-    #def cmake_args(self):
-    #    res = [] 
-    #    return res

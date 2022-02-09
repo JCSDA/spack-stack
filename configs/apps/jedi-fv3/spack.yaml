@@ -9,4 +9,4 @@ spack:
   - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
   specs:
-  - ufs-bundle-env
+  - jedi-fv3-bundle-env
