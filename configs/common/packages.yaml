@@ -31,6 +31,8 @@
       version: [2.21.0]
       # Todo list: issues with eccodes on macOS ... currently installed via homebrew
       #variants: +netcdf
+    py-eccodes:
+      version: [1.3.2]
     #libtiff:
     #  version: [4.3.0]
     proj:
@@ -96,8 +98,6 @@
       version: [1.3.0]
     python:
       version: [3.8.9]
-    py-h5py:
-      version: [3.6.0]
     jedi-cmake:
       version: [1.2.0]
     boost:
@@ -128,11 +128,22 @@
       variants: +blas +lapack
     py-pybind11:
       version: [2.8.1]
+    py-h5py:
+      version: [3.6.0]
     py-netcdf4:
       version: [1.5.3]
       variants: +mpi
     py-pycodestyle:
       version: [2.8.0]
+    py-pyyaml:
+      version: [6.0]
+    py-python-dateutil:
+      version: [2.8.2]
+    py-pandas:
+      version: [1.3.5]
+    py-scipy:
+      # Does this version work with all the other packages listed here? 1.5.3 worked ...
+      version: [1.7.3]
     diffutils:
       version: [3.7]
     findutils:

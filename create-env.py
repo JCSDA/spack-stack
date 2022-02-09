@@ -83,3 +83,5 @@ else:
 
 for config in configs_to_copy:
     shutil.copy2(config, env_dir)
+
+print("Created environment {} in {}".format(env_name, env_dir))

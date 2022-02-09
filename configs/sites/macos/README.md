@@ -31,6 +31,7 @@ brew install git@2.34.1
 brew install git-lfs@3.0.2
 brew install lmod@8.6.6
 brew install wget@1.21.2
+brew install bash@5.1.16
 ```
 - DH This should not be required, check!
 ```
