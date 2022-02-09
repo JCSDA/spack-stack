@@ -1,0 +1,125 @@
+name: 'setup-spack-stack'
+description: 'Creates a Spack environment. Requires -l in shell so bash_profile is sourced.'
+inputs:
+  app:
+    description: 'Which application env to build'
+    required: true
+  compiler:
+    description: 'Compiler (available options gcc@9, gcc@10, intel)'
+    required: true
+    default: 'gcc@9'
+  mpi:
+    description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
+    required: false
+    default: 'mpich'
+  path:
+    description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
+    required: false
+    default: '${{ github.workspace }}/spack-stack'
+
+runs:
+  using: "composite"
+
+  steps:
+  
+  - name: checkout-spack-stack
+    if: ${{ inputs.use-local-checkout == 'false' }}
+    uses: actions/checkout@v2
+    with:
+      repository: ${{ github.action_repository }}
+      path: spack-stack
+      submodules: true
+
+  - name: os-setup
+    shell: bash  
+    run: |
+      if [ "$RUNNER_OS" == "Linux" ]; then
+        # Install Curl headers. Executable exists by default in spack external find.
+        sudo apt-get install libcurl4-openssl-dev
+
+        if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+            cd /tmp
+            wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+            sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+            rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+            echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+            sudo apt-get update
+            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-mpi-devel intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
+            echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
+        fi
+
+      elif [ "$RUNNER_OS" == "macOS" ]; then
+        echo ""
+      fi
+
+  - name: setup-spack-env
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+        source /opt/intel/oneapi/setvars.sh
+      fi
+      source setup.sh
+      ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
+      spack env activate envs/${{ inputs.app }}
+
+      spack external find
+      spack compiler find
+
+  - name: update-bash-profile
+    shell: bash
+    run: |
+      # Add newline that was missing at end of built-in bash_profile
+      # and messing up appended text in next section.
+      echo "" >> ~/.bash_profile
+      echo "source ${{ inputs.path }}/setup.sh" >> ~/.bash_profile
+      echo "spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}" >> ~/.bash_profile
+
+  - name: configure-options
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+
+      spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
+      spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
+
+      if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+        spack config add "packages:all:providers:blas:[intel-oneapi-mkl]"
+        # Problem with ifort "internal error: 04010003_1159"
+        # Disable AVX-512 for openblas by setting haswell arch
+        spack config add "packages:openblas:target:[haswell]"
+      fi
+
+      if [ "$RUNNER_OS" == "Linux" ]; then
+        echo ""
+      elif [ "$RUNNER_OS" == "macOS" ]; then
+        spack config add "packages:boost:version:[1.78.0]"
+        spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
+        spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
+      fi
+
+  - name: concretize
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      spack concretize
+
+  - name: build-env
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+        source /opt/intel/oneapi/setvars.sh
+        # Pass --dirty to fix Intel compiler environment
+        spack install --dirty
+      else
+        spack install
+      fi
+
+    
