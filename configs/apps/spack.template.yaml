@@ -3,10 +3,10 @@ spack:
   concretization: separately
   view: false
   include:
+  - site.yaml
   - config.yaml
   - packages.yaml
   - modules.yaml
-  - site.yaml
   - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
 # File in specs
