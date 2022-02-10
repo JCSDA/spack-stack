@@ -24,12 +24,8 @@ source setup.sh
 # Copies site-specific, application-specific, and common config files into the environment directory
 ./create-env.py --site hera --app jedi-fv3 --name jedi-fv3.hera
 
-cd envs/jedi-fv3
-
-# Create a Spack environment in this directory and activate it
-spack env create -d .
-# Decorate the command line prompt when activating
-spack env activate . -p
+# Activate spack environment; optional: decorate the command line prompt
+spack env activate [-p] envs/jedi-fv3
 
 # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
 emacs spack.yaml
