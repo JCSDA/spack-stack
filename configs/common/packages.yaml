@@ -29,7 +29,6 @@
       version: [2.0.32]
     eccodes:
       version: [2.21.0]
-      # Todo list: issues with eccodes on macOS ... currently installed via homebrew
       #variants: +netcdf
     py-eccodes:
       version: [1.3.2]

@@ -95,12 +95,6 @@ packages:
     - spec: git-lfs@3.0.2
       prefix: /usr/local
 
-  #eccodes:
-  #  buildable: false
-  #  externals:
-  #  - spec: eccodes@2.24.2
-  #    prefix: /usr/local
-  #
   #libtiff:
   #  buildable: false
   #  externals:
