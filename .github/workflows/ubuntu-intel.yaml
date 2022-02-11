@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-fv3]
+        app: [jedi-ufs, jedi-fv3, ufs-weather-model, nceplibs]
     runs-on: ubuntu-latest
     steps:
 
