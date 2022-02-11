@@ -86,11 +86,13 @@ runs:
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
       if [[ "${{ inputs.compiler }}" == "intel" ]]; then
-        spack config add "packages:all:providers:blas:[intel-oneapi-mkl]"
         # Problem with ifort "internal error: 04010003_1159"
         # Disable AVX-512 for openblas by setting haswell arch
         spack config add "packages:openblas:target:[haswell]"
       fi
+
+      cd ${{ inputs.path }}/envs/${{ inputs.app }}
+      cat spack.yaml
 
       if [ "$RUNNER_OS" == "Linux" ]; then
         echo ""
@@ -117,9 +119,10 @@ runs:
       if [[ "${{ inputs.compiler }}" == "intel" ]]; then
         source /opt/intel/oneapi/setvars.sh
         # Pass --dirty to fix Intel compiler environment
-        spack install --dirty
+        #spack install --dirty
+        spack install --dirty openblas
       else
-        spack install
+        #spack install
       fi
 
     
