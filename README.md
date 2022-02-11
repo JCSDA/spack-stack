@@ -39,4 +39,9 @@ emacs spack.yaml
 spack concretize
 spack install
 
+# Create lua module files
+spack module lmod refresh
+
+# Create meta modules for compiler, mpi, python
+./meta_modules/setup_meta_modules.py
 ```
