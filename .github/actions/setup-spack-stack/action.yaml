@@ -47,7 +47,6 @@ runs:
             sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-mpi-devel intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
-
       elif [ "$RUNNER_OS" == "macOS" ]; then
         echo ""
       fi
