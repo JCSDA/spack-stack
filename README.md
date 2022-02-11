@@ -14,6 +14,8 @@ spack-stack is mainly a collection of Spack configuration files, but a simple Py
 git clone https://github.com/NOAA-EMC/spack-stack.git
 cd spack-stack
 
+# Ensure Python 3.7+ is available and the default before sourcing spack
+
 # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
 source setup.sh
 

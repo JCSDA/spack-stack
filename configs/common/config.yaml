@@ -1,9 +1,9 @@
   # Set package and module installation directories
   config:
-#    install_hash_length: 3
+    install_hash_length: 7
     install_tree:
       root: install
       projections:
-        all:  "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}"
+        all:  "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
     module_roots:
       lmod: install/modulefiles

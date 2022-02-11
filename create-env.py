@@ -36,9 +36,8 @@ epilog_text = """
 Example usage:
     source setup.sh
     ./create-env.py --site default --app ufs --name ufs-env
-    cd envs/ufs-env
-    spack end create -d .
-    spack env activate .
+    spack env activate [-p] envs/ufs-env
+    spack concretize
     spack install
 """
 
