@@ -57,7 +57,7 @@ class JediFv3BundleEnv(BundlePackage):
     depends_on('eccodes', type=('build', 'run'))
     depends_on('py-eccodes', type=('build', 'run'))
 
-    depends_on('py-bufr', type=('build', 'run'))
+    depends_on('bufr', type=('build', 'run'))
 
     ##depends_on('py-pyproj', when='+python')
     #depends_on('py-pyshp', when='+python')
