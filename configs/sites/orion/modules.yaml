@@ -1,0 +1,21 @@
+modules:
+  default:
+    lmod:
+      core_compilers::
+      - gcc@4.8.5
+
+      # DH* I don't think this is necessary, since we are loading the default modules provided by the sysadmins ... try without next time
+      intel-mpi@2019.8.254:
+        environment:
+          set:
+            'I_MPI_PMI_LIBRARY': '/opt/slurm/lib/libpmi.so'
+            'FI_PROVIDER': 'mlx'
+            'FI_PROVIDER_PATH': '/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/libfabric/lib/prov'
+            #prepend_path("PATH","/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/bin")
+            #prepend_path("PATH","/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/libfabric/bin")
+            #prepend_path("LD_LIBRARY_PATH","/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/lib")
+            #prepend_path("LD_LIBRARY_PATH","/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/lib/release")
+            #prepend_path("LD_LIBRARY_PATH","/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/libfabric/lib")
+            #prepend_path("LIBRARY_PATH","/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/libfabric/lib")
+            #prepend_path("CLASSPATH","/apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/mpi/intel64/lib/mpi.jar")
+      # *DH
