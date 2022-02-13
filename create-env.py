@@ -9,8 +9,54 @@ from argparse import RawTextHelpFormatter
 # Get directory of this script
 stack_dir = os.path.dirname(os.path.realpath(__file__))
 
+# Get a path
 def stack_path(*paths):
     return os.path.join(stack_dir, *paths)
+
+# Append individual system configs into 'site.yaml'
+def create_site_config(site):
+    site_dir = stack_path('configs', 'sites', site)
+    site_configs = os.listdir(site_dir)
+    new_site_config = stack_path('envs', env_name, 'site.yaml')
+    with open(new_site_config, 'w') as f:
+        for config in site_configs:
+            if config in valid_configs:
+                with open(os.path.join(site_dir, config)) as tmp:
+                    f.write(tmp.read())
+                    f.write(os.linesep)
+
+def create_env_dir(name):
+    # Create spack-stack/envs to hold envrionments, if it doesn't exist
+    if not os.path.exists(stack_path('envs')):
+        os.makedirs(stack_path('envs'))
+
+    # Create env_dir
+    env_dir = stack_path('envs', env_name)
+    if not os.path.exists(env_dir):
+        os.makedirs(env_dir)
+        print("Created environment {} in {}".format(env_name, env_dir))
+    else:
+        sys.exit('Error: env {} already exists'.format(env_dir))
+
+    return env_dir
+
+def copy_configs(env_dir):
+    app_config = stack_path('configs', 'apps', app, 'spack.yaml')
+    shutil.copy2(app_config, env_dir)
+
+    common_dir = stack_path('configs', 'common')
+    common_configs = os.listdir(common_dir)
+    for config in common_configs:
+        shutil.copy2(os.path.join(common_dir, config), env_dir)
+
+def check_inputs(app, site):
+    app_path = stack_path('configs', 'apps', app, 'spack.yaml')
+    if not os.path.exists(app_path):
+        sys.exit('Error: invalid app {}, "{}" does not exist'.format(app, app_path))
+
+    site_path = stack_path('configs', 'sites', site)
+    if not os.path.exists(site_path):
+        sys.exit('Error: invalid site {}, "{}" does not exist'.format(site, site_path))
 
 def site_help():
     _, site_dirs, _ = next(os.walk(stack_path('configs', 'sites')))
@@ -41,6 +87,9 @@ Example usage:
     spack install
 """
 
+valid_configs = ['compilers.yaml', 'config.yaml', 'mirrors.yaml', 
+    'modules.yaml', 'packages.yaml', 'repos.yaml']
+
 parser = argparse.ArgumentParser(description=description_text,
     epilog=epilog_text,
     formatter_class=RawTextHelpFormatter)
@@ -55,32 +104,7 @@ site = args.site
 app = args.app
 env_name = args.name if args.name else "{}.{}".format(app, site)
 
-# Create spack-stack/envs to hold envrionments, if it doesn't exist
-if not os.path.exists(stack_path('envs')):
-    os.makedirs(stack_path('envs'))
-
-site_config = stack_path('configs', 'sites', site, 'site.yaml')
-app_config = stack_path('configs', 'apps', app, 'spack.yaml')
-
-common_configs = []
-for common_config in ['config.yaml', 'modules.yaml', 'packages.yaml']:
-    common_configs.append(stack_path('configs', 'common', common_config))
-
-configs_to_copy = [site_config] + [app_config] + common_configs
-
-# Check if files exist before copying them
-for config in configs_to_copy:
-    if not os.path.exists(config):
-        sys.exit('Error: file "{}" does not exist'.format(config))
-
-# Create env_dir after checking if source files exist
-env_dir = stack_path('envs', env_name)
-if not os.path.exists(env_dir):
-    os.makedirs(env_dir)
-else:
-    sys.exit('Error: env {0} already exists'.format(env_dir))
-
-for config in configs_to_copy:
-    shutil.copy2(config, env_dir)
-
-print("Created environment {} in {}".format(env_name, env_dir))
+check_inputs(app, site)
+env_dir = create_env_dir(env_name)
+copy_configs(env_dir)
+create_site_config(site)
