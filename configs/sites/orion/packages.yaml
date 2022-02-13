@@ -1,64 +1,212 @@
 packages:
+  all:
+    compiler:: [intel@2021.2]
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.2]
   mpi:
     buildable: False
-
+  intel-oneapi-mpi:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mpi@2021.2.0
+      prefix: /apps/intel-2021.2/intel-2021.2
+      modules:
+      - impi/2021.2    
   intel-mpi:
     buildable: False
     externals:
-    - spec: intel-mpi@2019.8.254
+    - spec: intel-mpi@2020.2
       modules:
       - impi/2020.2
-
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.2
+    - spec: intel-mpi@2018.4
       modules:
-      - python/3.9.2
-
-  openssl:
+      - intel-mpi@2018.4
+  autoconf:
     externals:
-    - spec: openssl@1.0.2k-fips
+    - spec: autoconf@2.69
       prefix: /usr
-
-  perl:
+  automake:
     externals:
-    - spec: perl@5.16.3+cpanm+shared+threads
+    - spec: automake@1.13.4
       prefix: /usr
-
-  m4:
+  bash:
     externals:
-    - spec: m4@1.4.16
+    - spec: bash@4.2.46
       prefix: /usr
-
-  cmake:
-    buildable: False
+  berkeley-db:
     externals:
-    - spec: cmake@3.22.1
-      modules:
-      - cmake/3.22.1
-    - spec: cmake@3.18.1
-      modules:
-      - cmake/3.18.1
-
+    - spec: berkeley-db@5.3.21
+      prefix: /usr
   bison:
     externals:
     - spec: bison@3.0.4
       prefix: /usr
-
+  bzip2:
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.22.1
+      prefix: /apps/cmake-3.22.1
+      modules: 
+      - cmake/3.22.1
+    - spec: cmake@3.18.1
+      prefix: /apps/cmake-3.18.1
+      modules:
+      - cmake/3.18.1
+  cpio:
+    externals:
+    - spec: cpio@2.11
+      prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.29.0+ldap
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.3
+      prefix: /usr
+  doxygen:
+    externals:
+    - spec: doxygen@1.8.5+graphviz~mscgen
+      prefix: /usr
+  file:
+    externals:
+    - spec: file@5.11
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.5.11
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.5.37+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.0.2
+      prefix: /usr
+  gcc:
+    externals:
+    - spec: gcc@4.8.5 languages=c,c++,fortran
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  ghostscript:
+    externals:
+    - spec: ghostscript@9.07
+      prefix: /usr
   git:
     externals:
-    - spec: git@2.28.0
-      modules:
-      - git/2.28.0
-
+    - spec: git@2.28.0+tcltk
+      prefix: /apps/git-2.28.0
+    - spec: git@1.8.3.1~tcltk
+      prefix: /usr
   git-lfs:
     externals:
     - spec: git-lfs@2.12.0
+      prefix: /apps/git-2.28.0
+  gmake:
+    externals:
+    - spec: gmake@3.82
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.2
+      prefix: /usr
+  openjdk:
+    externals:
+    - spec: openjdk@1.8.0_222-b10
+      prefix: /usr
+  krb5:
+    externals:
+    - spec: krb5@1.15.1
+      prefix: /usr
+  libfuse:
+    externals:
+    - spec: libfuse@2.9.2
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.2
+      prefix: /usr
+  lustre:
+    externals:
+    - spec: lustre@2.12.6_ddn51
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.16
+      prefix: /usr
+  ncurses:
+    externals:
+    - spec: ncurses@5.9.20130511+termlib abi=5
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@7.4p1
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.0.2k-fips
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.16.3+cpanm+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.27.1
+      prefix: /usr
+  python:
+    externals:
+    - spec: python@3.7.5+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /apps/python-3.7.5
       modules:
-      - git/2.28.0
-
-  all:
-    compiler:: [intel@19.1.2]
-    providers:
-      mpi:: [intel-mpi@2019.8.254]
+      - python/3.7.5
+    - spec: python@2.7.5+bz2+ctypes+dbm+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+      prefix: /usr
+  rsync:
+    externals:
+    - spec: rsync@3.1.2
+      prefix: /usr
+  ruby:
+    externals:
+    - spec: ruby@2.0.0
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.2.2
+      prefix: /usr
+  sqlite:
+    externals:
+    - spec: sqlite@3.7.17~fts~functions+rtree
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.26
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@5.1
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
+      prefix: /usr
+  xz:
+    externals:
+    - spec: xz@5.2.2
+      prefix: /usr
+  zip:
+    externals:
+    - spec: zip@3.0
+      prefix: /usr
