@@ -14,6 +14,8 @@ spack-stack is mainly a collection of Spack configuration files, but a simple Py
 git clone https://github.com/NOAA-EMC/spack-stack.git
 cd spack-stack
 
+# Ensure Python 3.7+ is available and the default before sourcing spack
+
 # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
 source setup.sh
 
@@ -24,13 +26,16 @@ source setup.sh
 # Copies site-specific, application-specific, and common config files into the environment directory
 ./create-env.py --site hera --app jedi-fv3 --name jedi-fv3.hera
 
-# Activate spack environment; optional: decorate the command line prompt
+# Activate the newly created environment
+# optional: decorate the command line prompt using -p
 spack env activate [-p] envs/jedi-fv3.hera
 
 # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
-emacs envs/jedi-fv3.hera/spack.yaml
+cd envs/jedi-fv3.hera
+emacs spack.yaml
 
 # Process the specs and install
+# note: both steps will take some time!
 spack concretize
 spack install
 

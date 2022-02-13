@@ -36,9 +36,8 @@ epilog_text = """
 Example usage:
     source setup.sh
     ./create-env.py --site default --app ufs --name ufs-env
-    cd envs/ufs-env
-    spack end create -d .
-    spack env activate .
+    spack env activate [-p] envs/ufs-env
+    spack concretize
     spack install
 """
 
@@ -83,3 +82,5 @@ else:
 
 for config in configs_to_copy:
     shutil.copy2(config, env_dir)
+
+print("Created environment {} in {}".format(env_name, env_dir))

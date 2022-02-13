@@ -20,17 +20,8 @@ class JediUfsBundleEnv(BundlePackage):
 
     depends_on('base-env', type=('build', 'run'))
 
-    depends_on('cmake', type=('build', 'run'))
     depends_on('ecbuild', type=('build', 'run'))
     depends_on('jedi-cmake', type=('build', 'run'))
-
-    depends_on('zlib', type=('build', 'run'))
-    depends_on('szip', type=('build', 'run'))
-    depends_on('hdf5', type=('build', 'run'))
-    depends_on('netcdf-c', type=('build', 'run'))
-    depends_on('netcdf-fortran', type=('build', 'run'))
-    depends_on('parallelio', type=('build', 'run'))
-    depends_on('nccmp', type=('build', 'run'))
 
     depends_on('eigen', type=('build', 'run'))
     depends_on('gsl-lite', type=('build', 'run'))
@@ -45,10 +36,7 @@ class JediUfsBundleEnv(BundlePackage):
     depends_on('fckit', type=('build', 'run'))
     depends_on('atlas', type=('build', 'run'))
 
-    depends_on('git', type='run')
     depends_on('git-lfs', type='run')
-
-    depends_on('python@3.7:')
 
     depends_on('fms', type=('build', 'run'))
     depends_on('esmf', type=('build', 'run'))
@@ -68,6 +56,16 @@ class JediUfsBundleEnv(BundlePackage):
     depends_on('yafyaml',     type=('build', 'run'))
     depends_on('mapl',        type=('build', 'run'))
 
+    depends_on('py-pandas', type=('build', 'run'))
+    depends_on('py-scipy', type=('build', 'run'))
     depends_on('py-pybind11', type=('build', 'run'))
+    depends_on('py-h5py', type=('build', 'run'))
     depends_on('py-netcdf4',  type=('build', 'run'))
     depends_on('py-pycodestyle', type=('build', 'run'))
+    depends_on('py-pyyaml', type=('build', 'run'))
+    depends_on('py-python-dateutil', type=('build', 'run'))
+
+    depends_on('eccodes', type=('build', 'run'))
+    depends_on('py-eccodes', type=('build', 'run'))
+
+    depends_on('py-bufr', type=('build', 'run'))

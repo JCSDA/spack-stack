@@ -1,5 +1,5 @@
 config:
-  build_jobs: 4
+  build_jobs: 8
 
 compilers::
 - compiler:
@@ -20,19 +20,19 @@ compilers::
           PATH: '/usr/local/opt/llvm/bin'
           LD_LIBRARY_PATH: '/usr/local/opt/llvm/lib'
     extra_rpaths: []
-#- compiler:
-#    spec: gcc@11.2.0
-#    paths:
-#      cc: /usr/local/bin/gcc-11
-#      cxx: /usr/local/bin/g++-11
-#      f77: /usr/local/bin/gfortran-11
-#      fc: /usr/local/bin/gfortran-11
-#    flags: {}
-#    operating_system: monterey
-#    target: x86_64
-#    modules: []
-#    environment: {}
-#    extra_rpaths: []
+- compiler:
+    spec: gcc@11.2.0
+    paths:
+      cc: /usr/local/bin/gcc-11
+      cxx: /usr/local/bin/g++-11
+      f77: /usr/local/bin/gfortran-11
+      fc: /usr/local/bin/gfortran-11
+    flags: {}
+    operating_system: monterey
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
 - compiler:
     spec: apple-clang@13.0.0
     paths:
@@ -54,18 +54,6 @@ modules:
       - apple-clang@13.0.0
 
 packages:
-
-  #apple-clang:
-  #  buildable: False
-  #  externals:
-  #  - spec: apple-clang@13.0.0
-  #    prefix: /usr
-
-  #gcc:
-  #  buildable: False
-  #  externals:
-  #  - spec: gcc@11.2.0
-  #    prefix: /usr/local
 
   mpich:
     buildable: False
@@ -107,12 +95,6 @@ packages:
     - spec: git-lfs@3.0.2
       prefix: /usr/local
 
-  #eccodes:
-  #  buildable: false
-  #  externals:
-  #  - spec: eccodes@2.24.2
-  #    prefix: /usr/local
-  #
   #libtiff:
   #  buildable: false
   #  externals:
@@ -127,8 +109,8 @@ packages:
     version: [release-stable]
     variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
 
-  libbacktrace:
-    version: [2020-02-19]
+  #libbacktrace:
+  #  version: [2020-02-19]
 
   all:
     compiler:: [clang@13.0.0] # [apple-clang@13.0.0, gcc@11.2.0]

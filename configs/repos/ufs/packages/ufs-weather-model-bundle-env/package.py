@@ -18,15 +18,8 @@ class UfsWeatherModelBundleEnv(BundlePackage):
 
     version('main', branch='main')
 
-    depends_on('cmake', type=('build', 'run'))
+    depends_on('base-env', type=('build', 'run'))
 
-    depends_on('zlib', type=('build', 'run'))
-    depends_on('hdf5', type=('build', 'run'))
-    depends_on('netcdf-c', type=('build', 'run'))
-    depends_on('netcdf-fortran', type=('build', 'run'))
-    depends_on('parallelio', type=('build', 'run'))
-    depends_on('nccmp', type=('build', 'run'))
-    
     depends_on('esmf', type=('build', 'run'))
     depends_on('fms', type=('build', 'run'))
     
@@ -39,7 +32,4 @@ class UfsWeatherModelBundleEnv(BundlePackage):
     depends_on('w3nco', type=('build', 'run'))
     
     depends_on('mapl', type=('build', 'run'))
-    depends_on('git', type='run')
 
-    depends_on('python@3.7:')
-    
