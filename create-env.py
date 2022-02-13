@@ -14,10 +14,10 @@ def stack_path(*paths):
     return os.path.join(stack_dir, *paths)
 
 # Append individual system configs into 'site.yaml'
-def create_site_config(site):
+def create_site_config(site, env_dir):
     site_dir = stack_path('configs', 'sites', site)
     site_configs = os.listdir(site_dir)
-    new_site_config = stack_path('envs', env_name, 'site.yaml')
+    new_site_config = stack_path(env_dir, 'site.yaml')
     with open(new_site_config, 'w') as f:
         for config in site_configs:
             if config in valid_configs:
@@ -107,4 +107,4 @@ env_name = args.name if args.name else "{}.{}".format(app, site)
 check_inputs(app, site)
 env_dir = create_env_dir(env_name)
 copy_configs(env_dir)
-create_site_config(site)
+create_site_config(site, env_dir)
