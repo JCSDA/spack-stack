@@ -1,0 +1,70 @@
+compilers:
+- compiler:
+    spec: gcc@4.8.5
+    paths:
+      cc: /bin/gcc
+      cxx: /bin/g++
+      f77: /bin/gfortran
+      fc: /bin/gfortran
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2020.2
+    paths:
+      cc: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/icc
+      cxx: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/icpc
+      f77: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/ifort
+      fc: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules:
+    - intel/2020.2
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2021.2.0
+    paths:
+      cc: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/intel64/icc
+      cxx: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/intel64/icpc
+      f77: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/intel64/ifort
+      fc: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules:
+    - intel/2021.2
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: oneapi@2021.2.0
+    paths:
+      cc: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/icx
+      cxx: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/icpx
+      f77: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/ifx
+      fc: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/ifx
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules:
+    - intel/2021.2
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2018.4
+    paths:
+      cc: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/icc
+      cxx: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/icpc
+      f77: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/ifort
+      fc: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules:
+    - intel/2018.4
+    environment: {}
+    extra_rpaths: []

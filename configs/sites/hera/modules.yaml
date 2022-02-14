@@ -1,0 +1,24 @@
+modules:
+  default:
+    lmod:
+      core_compilers::
+      - gcc@4.8.5
+
+      #intel-oneapi-mpi@2021.3.0:
+      #  environment:
+      #    set:
+      #      'I_MPI_PMI_LIBRARY': '/apps/slurm/default/lib/libpmi2.so'
+      #      'I_MPI_PIN_RESPECT_CPUSET': 'off'
+      #      'FI_PROVIDER': 'mlx'
+      #      'FI_PROVIDER_PATH': '/apps/oneapi/mpi/2021.3.0//libfabric/lib/prov:/usr/lib64/libfabric'
+      #      #setenv("CLASSPATH","/apps/oneapi/mpi/2021.3.0//lib/mpi.jar")
+      #      #setenv("CPATH","/apps/oneapi/mpi/2021.3.0//include")
+      #      #setenv("I_MPI_ROOT","/apps/oneapi/mpi/2021.3.0")
+      #      #prepend_path("LD_LIBRARY_PATH","/apps/oneapi/mpi/2021.3.0/lib")
+      #      #prepend_path("LD_LIBRARY_PATH","/apps/oneapi/mpi/2021.3.0/lib/release")
+      #      #prepend_path("LD_LIBRARY_PATH","/apps/oneapi/mpi/2021.3.0/libfabric/lib")
+      #      #setenv("LIBRARY_PATH","/apps/oneapi/mpi/2021.3.0//libfabric/lib:/apps/oneapi/mpi/2021.3.0//lib/release:/apps/oneapi/mpi/2021.3.0//lib")
+      #      #prepend_path("MANPATH","/apps/oneapi/mpi/2021.3.0/man")
+      #      #append_path("MANPATH","")
+      #      #prepend_path("PATH","/apps/oneapi/mpi/2021.3.0/bin")
+      #      #prepend_path("PATH","/apps/oneapi/mpi/2021.3.0/libfabric/bin")
