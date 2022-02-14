@@ -1,5 +1,5 @@
-name: ubuntu-gcc-build
-on: workflow_dispatch
+name: ubuntu-intel-build
+on: push
 
 # Use custom shell with -l so .bash_profile is sourced
 defaults:
@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-ufs, jedi-fv3, ufs-weather-model, nceplibs]
+        app: [nceplibs]
     runs-on: ubuntu-latest
     steps:
 
@@ -23,7 +23,6 @@ jobs:
         uses: ./.github/actions/setup-spack-stack
         with:
           app: ${{ matrix.app }}
-          compiler: gcc@9
-          mpi: mpich
+          compiler: intel
+          mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}
-          

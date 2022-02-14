@@ -1,4 +1,4 @@
-name: ubuntu-gcc-build
+name: macos-clang-build
 on: workflow_dispatch
 
 # Use custom shell with -l so .bash_profile is sourced
@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         app: [jedi-ufs, jedi-fv3, ufs-weather-model, nceplibs]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
 
       - name: checkout
@@ -23,7 +23,6 @@ jobs:
         uses: ./.github/actions/setup-spack-stack
         with:
           app: ${{ matrix.app }}
-          compiler: gcc@9
+          compiler: apple-clang
           mpi: mpich
           path: ${{ github.workspace }}
-          
