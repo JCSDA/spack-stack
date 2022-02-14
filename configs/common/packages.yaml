@@ -143,9 +143,9 @@
     py-scipy:
       # Does this version work with all the other packages listed here? 1.5.3 worked ...
       version: [1.7.3]
-    py-bufr:
+    bufr:
       version: [11.5.0]
-      variants: +enable_python
+      variants: +python
     diffutils:
       version: [3.7]
     findutils:

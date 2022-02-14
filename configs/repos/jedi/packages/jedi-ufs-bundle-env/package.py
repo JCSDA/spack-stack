@@ -68,4 +68,4 @@ class JediUfsBundleEnv(BundlePackage):
     depends_on('eccodes', type=('build', 'run'))
     depends_on('py-eccodes', type=('build', 'run'))
 
-    depends_on('py-bufr', type=('build', 'run'))
+    depends_on('bufr', type=('build', 'run'))
