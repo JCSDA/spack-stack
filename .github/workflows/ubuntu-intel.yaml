@@ -1,5 +1,5 @@
 name: ubuntu-intel-build
-on: workflow_dispatch
+on: push
 
 # Use custom shell with -l so .bash_profile is sourced
 defaults:
@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-ufs, jedi-fv3, ufs-weather-model, nceplibs]
+        app: [nceplibs]
     runs-on: ubuntu-latest
     steps:
 

@@ -118,7 +118,7 @@ runs:
       if [[ "${{ inputs.compiler }}" == "intel" ]]; then
         source /opt/intel/oneapi/setvars.sh
         # Pass --dirty to fix Intel compiler environment
-        spack install --dirty
+        spack install
       else
         spack install
       fi
