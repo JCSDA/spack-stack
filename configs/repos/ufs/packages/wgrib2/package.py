@@ -74,10 +74,11 @@ class Wgrib2(MakefilePackage):
         'wmo_validation': 'USE_WMO_VALIDATION',
         'ipolates': 'USE_IPOLATES',
         'disable_timezone': 'DISABLE_TIMEZONE',
-        'disable_alarm': 'DISABLE_ALARM'
+        'disable_alarm': 'DISABLE_ALARM',
+        'fortran_api': 'MAKE_FTN_API'
     }
            
-
+    # Disable parallel build
     parallel = False
 
     def url_for_version(self, version):
