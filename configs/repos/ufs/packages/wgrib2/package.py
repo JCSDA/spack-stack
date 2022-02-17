@@ -92,29 +92,35 @@ class Wgrib2(MakefilePackage):
     def build(self, spec, prefix):
         make()
 
+        # Install now to prevent overwriting files during make-clean
+        # if lib is being built
+        mkdir(prefix.bin)
+        install('wgrib2/wgrib2', prefix.bin)
+
         # Build wgrib2 library by disabling all options
         # and enabling only MAKE_FTN_API=1
         if '+fortran_api' in spec:
             make('clean')
             make('deep-clean')
             makefile = FileFilter('makefile')
+
+            # Disable all options
             for variant_name, makefile_option in self.variant_map.items():
                 value = 0
                 makefile.filter(r'^%s=.*' % makefile_option, '{}={}'.format(makefile_option, value))
             
+            # Enable MAKE_FTN_API to build library and USE_REGEX (there is a bug when off)
             makefile.filter(r'^MAKE_FTN_API=.*', 'MAKE_FTN_API=1')
             makefile.filter(r'^USE_REGEX=.*', 'USE_REGEX=1')
             make('lib')
 
-
-    def install(self, spec, prefix):
-        mkdir(prefix.bin)
-        install('wgrib2/wgrib2', prefix.bin)
-
-        if '+fortran_api' in spec:
             mkdir(prefix.lib)
             mkdir(prefix.include)
             install('lib/libwgrib2.a', prefix.lib)
             install('lib/wgrib2api.mod', prefix.include)
             install('lib/wgrib2lowapi.mod', prefix.include)
 
+
+    def install(self, spec, prefix):
+        # Do nothing because package is installed during build
+        pass
