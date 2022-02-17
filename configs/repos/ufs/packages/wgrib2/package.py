@@ -118,4 +118,3 @@ class Wgrib2(MakefilePackage):
             install('lib/wgrib2api.mod', prefix.include)
             install('lib/wgrib2lowapi.mod', prefix.include)
 
-        
