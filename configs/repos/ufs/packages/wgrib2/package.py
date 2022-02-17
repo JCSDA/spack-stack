@@ -72,7 +72,9 @@ class Wgrib2(MakefilePackage):
         'jasper': 'USE_JASPER',
         'openmp': 'USE_OPENMP',
         'wmo_validation': 'USE_WMO_VALIDATION',
-        'ipolates': 'USE_IPOLATES'
+        'ipolates': 'USE_IPOLATES',
+        'disable_timezone': 'DISABLE_TIMEZONE',
+        'disable_alarm': 'DISABLE_ALARM'
     }
            
 
