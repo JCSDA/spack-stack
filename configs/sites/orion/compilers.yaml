@@ -13,20 +13,6 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: intel@2020.2
-    paths:
-      cc: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/icc
-      cxx: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/icpc
-      f77: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/ifort
-      fc: /apps/intel-2020.2/intel-2020.2/compilers_and_libraries_2020.2.254/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: centos7
-    target: x86_64
-    modules:
-    - intel/2020.2
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: intel@2021.2.0
     paths:
       cc: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/intel64/icc
