@@ -18,18 +18,18 @@ class UfsWeatherModelBundleEnv(BundlePackage):
 
     version('main', branch='main')
 
-    depends_on('base-env', type=('build', 'run'))
+    depends_on('base-env', type='run')
 
-    depends_on('esmf', type=('build', 'run'))
-    depends_on('fms', type=('build', 'run'))
+    depends_on('esmf', type='run')
+    depends_on('fms', type='run')
     
-    depends_on('bacio', type=('build', 'run'))
-    depends_on('crtm', type=('build', 'run'))
-    depends_on('g2', type=('build', 'run'))
-    depends_on('g2tmpl', type=('build', 'run'))
-    depends_on('ip', type=('build', 'run'))
-    depends_on('sp', type=('build', 'run'))
-    depends_on('w3nco', type=('build', 'run'))
+    depends_on('bacio', type='run')
+    depends_on('crtm', type='run')
+    depends_on('g2', type='run')
+    depends_on('g2tmpl', type='run')
+    depends_on('ip', type='run')
+    depends_on('sp', type='run')
+    depends_on('w3nco', type='run')
     
-    depends_on('mapl', type=('build', 'run'))
+    depends_on('mapl', type='run')
 
