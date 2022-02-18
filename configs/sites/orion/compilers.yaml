@@ -27,6 +27,20 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
+    spec: oneapi@2021.2.0
+    paths:
+       cc: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/icx
+       cxx: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/icpx
+       f77: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/ifx
+       fc: /apps/intel-2021.2/intel-2021.2/compiler/2021.2.0/linux/bin/ifx
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules:
+    - intel/2021.2
+    environment: {}
+    extra_rpaths: []
+- compiler:
     spec: intel@2018.4
     paths:
       cc: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/icc
