@@ -24,11 +24,12 @@ import os
 
 from spack import *
 
+
 class Wgrib2(MakefilePackage):
     """Utility for interacting with grib2 files"""
 
     homepage = "https://www.cpc.ncep.noaa.gov/products/wesley/wgrib2"
-    url      = "https://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v2.0.8"
+    url = "https://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v2.0.8"
 
     maintainers = ['kgerheiser', 'Hang-Lei-NOAA']
 
@@ -36,22 +37,35 @@ class Wgrib2(MakefilePackage):
     version('2.0.8', sha256='5e6a0d6807591aa2a190d35401606f7e903d5485719655aea1c4866cc2828160', extension='tar.gz')
     version('3.1.0', sha256='5757ef9016b19ae87491918e0853dce2d3616b14f8c42efe3b2f41219c16b78f', extension='tar.gz')
 
-    variant('netcdf3', default=True, description='Link in netcdf3 library to write netcdf3 files')
-    variant('netcdf4', default=False, description='Link in netcdf4 library to write netcdf3/4 files')
-    variant('ipolates', default='3', 
-        description='Link in IPOLATES library to interpolate to new grids (0=OFF, 1=ip, 3=ip2)', 
-        values=('0', '1', '3'))
-    variant('spectral', default=False, description='Spectral interpolation in -new_grid')
-    variant('fortran_api', default=True, description='Make wgrib2api which allows fortran code to read/write grib2')
-    variant('mysql', default=False, description='Link in interface to MySQL to write to mysql database')
-    variant('udf', default=False, description='Add commands for user-defined functions and shell commands')
-    variant('regex', default=True, description='Use regular expression library (POSIX-2')
-    variant('tigge', default=True, description='Ability for TIGGE-like variable names')
-    variant('proj4', default=False, description='The proj4 library is used to confirm that the gctpc code is working correctly')
-    variant('aec', default=True, description='Enable use of the libaec library for packing with GRIB2 template')
-    variant('g2c', default=False, description='include NCEP g2clib (mainly for testing purposes)')
-    variant('disable_timezone', default=False, description='Some machines do not support timezones')
-    variant('disable_alarm', default=False, description='Some machines do not support alarm(..) (not POSIX-1, IEEE Std 1003.1) use the alarm to terminate wgrib2 after N seconds')
+    variant('netcdf3', default=True,
+            description='Link in netcdf3 library to write netcdf3 files')
+    variant('netcdf4', default=False,
+            description='Link in netcdf4 library to write netcdf3/4 files')
+    variant('ipolates', default='3',
+            description='Link in IPOLATES library to interpolate to new grids (0=OFF, 1=ip, 3=ip2)',
+            values=('0', '1', '3'))
+    variant('spectral', default=False,
+            description='Spectral interpolation in -new_grid')
+    variant('fortran_api', default=True,
+            description='Make wgrib2api which allows fortran code to read/write grib2')
+    variant('mysql', default=False,
+            description='Link in interface to MySQL to write to mysql database')
+    variant('udf', default=False,
+            description='Add commands for user-defined functions and shell commands')
+    variant('regex', default=True,
+            description='Use regular expression library (POSIX-2')
+    variant('tigge', default=True,
+            description='Ability for TIGGE-like variable names')
+    variant('proj4', default=False,
+            description='The proj4 library is used to confirm that the gctpc code is working correctly')
+    variant('aec', default=True,
+            description='Enable use of the libaec library for packing with GRIB2 template')
+    variant('g2c', default=False,
+            description='include NCEP g2clib (mainly for testing purposes)')
+    variant('disable_timezone', default=False,
+            description='Some machines do not support timezones')
+    variant('disable_alarm', default=False,
+            description='Some machines do not support alarm(..) (not POSIX-1, IEEE Std 1003.1) use the alarm to terminate wgrib2 after N seconds')
     variant('png', default=True, description='PNG encoding')
     variant('jasper', default=True, description='JPEG compression using Jasper')
     variant('openmp', default=True, description='OpenMP parallelization')
@@ -77,7 +91,7 @@ class Wgrib2(MakefilePackage):
         'disable_alarm': 'DISABLE_ALARM',
         'fortran_api': 'MAKE_FTN_API'
     }
-           
+
     # Disable parallel build
     parallel = False
 
@@ -90,15 +104,16 @@ class Wgrib2(MakefilePackage):
 
         for variant_name, makefile_option in self.variant_map.items():
             value = int(spec.variants[variant_name].value)
-            makefile.filter(r'^%s=.*' % makefile_option, '{}={}'.format(makefile_option, value))
+            makefile.filter(r'^%s=.*' % makefile_option,
+                            '{}={}'.format(makefile_option, value))
 
     def build(self, spec, prefix):
         make()
 
-        # Install now to prevent overwriting files during make-clean
-        # if lib is being built
-        mkdir(prefix.bin)
-        install('wgrib2/wgrib2', prefix.bin)
+        # Move wgrib2 executable to a tempoary directory
+        mkdir('install')
+        mkdir(join_path('install', 'bin'))
+        move(join_path('wgrib2', 'wgrib2'), join_path('install', 'bin'))
 
         # Build wgrib2 library by disabling all options
         # and enabling only MAKE_FTN_API=1
@@ -110,20 +125,22 @@ class Wgrib2(MakefilePackage):
             # Disable all options
             for variant_name, makefile_option in self.variant_map.items():
                 value = 0
-                makefile.filter(r'^%s=.*' % makefile_option, '{}={}'.format(makefile_option, value))
-            
+                makefile.filter(r'^%s=.*' % makefile_option,
+                                '{}={}'.format(makefile_option, value))
+
             # Enable MAKE_FTN_API to build library and USE_REGEX (there is a bug when off)
             makefile.filter(r'^MAKE_FTN_API=.*', 'MAKE_FTN_API=1')
             makefile.filter(r'^USE_REGEX=.*', 'USE_REGEX=1')
             make('lib')
+            mkdir(join_path('install', 'lib'))
+            mkdir(join_path('install', 'include'))
 
-            mkdir(prefix.lib)
-            mkdir(prefix.include)
-            install('lib/libwgrib2.a', prefix.lib)
-            install('lib/wgrib2api.mod', prefix.include)
-            install('lib/wgrib2lowapi.mod', prefix.include)
-
+            move(join_path('lib', 'libwgrib2.a'),
+                 join_path('install', 'lib'))
+            move(join_path('lib', 'wgrib2api.mod'),
+                 join_path('install', 'include'))
+            move(join_path('lib', 'wgrib2lowapi.mod'),
+                 join_path('install', 'include'))
 
     def install(self, spec, prefix):
-        # Do nothing because package is installed during build
-        pass
+        install_tree('install/', prefix)
