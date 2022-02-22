@@ -10,7 +10,7 @@ packages:
     - spec: intel-oneapi-mpi@2021.2.0
       prefix: /apps/intel-2021.2/intel-2021.2
       modules:
-      - impi/2021.2    
+      - impi/2021.2
   intel-mpi:
     externals:
     - spec: intel-mpi@2018.5.274%intel@2018.4
