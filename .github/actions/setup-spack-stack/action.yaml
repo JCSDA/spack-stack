@@ -31,7 +31,7 @@ runs:
       submodules: true
 
   - name: os-setup
-    shell: bash  
+    shell: bash
     run: |
       if [ "$RUNNER_OS" == "Linux" ]; then
         # Install Curl headers. Executable exists by default in spack external find.
@@ -48,6 +48,8 @@ runs:
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [ "$RUNNER_OS" == "macOS" ]; then
+        if [[ "${{ inputs.compiler }}" == "clang" ]]; then
+            brew install llvm@13
         echo ""
       fi
 
@@ -123,4 +125,10 @@ runs:
         spack install
       fi
 
-    
+  - name: create-meta-modules
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      meta_modules/setup_meta_modules.py

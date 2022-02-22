@@ -30,6 +30,11 @@ packages:
     - spec: apple-libuuid@1353.100.2
       prefix: /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 
+  wget:
+    externals:
+    - spec: wget@1.21.2
+      prefix: /usr/local
+
   git:
     externals:
     - spec: git@2.34.1
@@ -40,11 +45,16 @@ packages:
     - spec: git-lfs@3.0.2
       prefix: /usr/local
 
-  #libtiff:
-  #  buildable: false
+  # Uncomment if Intel oneAPI TBB/MKL are installed
+  #intel-oneapi-tbb:
   #  externals:
-  #  - spec: libtiff@4.3.0
-  #    prefix: /usr/local
+  #  - spec: intel-oneapi-tbb@2021.5.0
+  #    prefix: /opt/intel/oneapi
+  #
+  #intel-oneapi-mkl:
+  #  externals:
+  #  - spec: intel-oneapi-mkl@2022.0.0
+  #    prefix: /opt/intel/oneapi
 
   fms::
     version: [2021.03.01]
@@ -54,6 +64,10 @@ packages:
     version: [release-stable]
     variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
 
+  trans::
+    version: [develop]
+    variants: ~enable_mkl
+
   #libbacktrace:
   #  version: [2020-02-19]
 
@@ -61,3 +75,7 @@ packages:
     compiler:: [clang@13.0.0] # [apple-clang@13.0.0, gcc@11.2.0]
     providers:
       mpi:: [mpich@3.4.3] # [openmpi]
+      # Avoid problems building Python packages with Intel MKL, use openblas and fftw
+      blas:: [openblas]
+      lapack:: [openblas]
+      fftw-api:: [fftw]

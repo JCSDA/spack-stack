@@ -19,7 +19,7 @@ class Trans(CMakePackage):
     maintainers = ['climbfuji']
 
     version('develop', branch='develop', no_cache=True, preferred=True)
-    version('bugfix-compile-failures', branch='bugfix/fix_compile_failures', no_cache=True)
+    #version('bugfix-compile-failures', branch='bugfix/fix_compile_failures', no_cache=True)
 
     variant('enable_mpi', default=True, description='Use MPI?')
     variant('enable_omp', default=True, description='Use OpenMP?')
@@ -28,13 +28,16 @@ class Trans(CMakePackage):
     #variant('enable_single_precision', default=True, description='Enable single precision?')
 
     variant('enable_mkl',  default=True, description='Use MKL?')
-    variant('enable_fftw', default=True, description='Use FFTW?')
+    #variant('enable_fftw', default=True, description='Use FFTW?')
     #variant('enable_transi', default=True, description='Use TransI?')
 
     depends_on('ecbuild', type=('build'))
     depends_on('mpi',  when='+enable_mpi')
+    depends_on('blas')
+    depends_on('lapack')
+    depends_on('fftw-api')
+    #depends_on('fftw-api', when='+enable_fftw')
     depends_on('mkl',  when='+enable_mkl')
-    depends_on('fftw', when='+enable_fftw')
 
     depends_on('faux~enable_mpi',  when='~enable_mpi')
     depends_on('faux+enable_mpi',  when='+enable_mpi')
@@ -43,8 +46,8 @@ class Trans(CMakePackage):
         args = [
             self.define_from_variant('ENABLE_MPI'),
             self.define_from_variant('ENABLE_OMP'),
-            self.define_from_variant('ENABLE_MKL'),
-            self.define_from_variant('ENABLE_FFTW')
+            #self.define_from_variant('ENABLE_FFTW'),
+            self.define_from_variant('ENABLE_MKL')
         ]
 
         #args.append(self.define('CMAKE_C_COMPILER', self.spec['mpi'].mpicc))

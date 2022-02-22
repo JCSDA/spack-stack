@@ -33,16 +33,10 @@ brew install lmod@8.6.6
 brew install wget@1.21.2
 brew install bash@5.1.16
 ```
-- DH This should not be required, check!
-```
-#brew install libtiff
-```
-- DH Todo: fix stack build problems of eccodes on macOS!
-```
-# this also install jasper, zlib/szip, hdf5, netcdf which we
-# don't use but which we also don't want to have on the system
-# brew install eccodes@2.24.2
-```
+- DH* TODO UPDATE - DON'T NEED MKL CAN USE OPENBLAS AND FFTW
+- For environments that require Intel MKL (e.g. um-bundle-env), install the Intel oneAPI Base Toolkit available at https://www.intel.com/content/www/us/en/developer/tools/oneapi/base-toolkit.html
+    - It is sufficient to do a custom installaion and only select the Thread Building Blocks (TBB) and the Math Kernel Library (MKL)
+    - Edit sites/macos/config.yaml and uncomment the external package configs for the components you installed
 - Activate the `lua` module environment:
 ```
 source /usr/local/opt/lmod/init/profile
