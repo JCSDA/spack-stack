@@ -1,9 +1,27 @@
-  # Set package and module installation directories
-  config:
-    install_hash_length: 7
-    install_tree:
-      root: install
-      projections:
-        all:  "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
-    module_roots:
-      lmod: install/modulefiles
+# Set package and module installation directories
+config:
+  install_hash_length: 7
+  install_tree:
+    root: install
+    projections:
+      all: "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
+  module_roots:
+    lmod: install/modulefiles
+
+  # The build stage can be purged with `spack clean --stage` and
+  # `spack clean -a`, so it is important that the specified directory uniquely
+  # identifies Spack staging to avoid accidentally wiping out non-Spack work.
+  build_stage: ${SPACK_STACK_DIR}/cache/build_stage
+
+  # Directory in which to run tests and store test results.
+  # Tests will be stored in directories named by date/time and package
+  # name/hash.
+  test_stage: ${SPACK_STACK_DIR}/cache/test_stage
+
+  # Cache directory for already downloaded source tarballs and archived
+  # repositories. This can be purged with `spack clean --downloads`.
+  source_cache: ${SPACK_STACK_DIR}/cache/source_cache
+
+  # Cache directory for miscellaneous files, like the package index.
+  # This can be purged with `spack clean --misc-cache`
+  misc_cache: ${SPACK_STACK_DIR}/cache/misc_cache
