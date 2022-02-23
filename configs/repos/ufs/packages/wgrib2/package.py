@@ -94,6 +94,16 @@ class Wgrib2(MakefilePackage):
 
     # Disable parallel build
     parallel = False
+    # Use Spack compiler wrapper flags
+
+    def inject_flags(self, name, flags):
+        if name == 'cflags':
+            if self.spec.compiler.name == 'apple-clang':
+                flags.append('-Wno-error=implicit-function-declaration')
+                return (flags, None, None)
+        return (flags, None, None)
+
+    flag_handler = inject_flags
 
     def url_for_version(self, version):
         url = "https://www.ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/wgrib2.tgz.v{}"
@@ -106,6 +116,15 @@ class Wgrib2(MakefilePackage):
             value = int(spec.variants[variant_name].value)
             makefile.filter(r'^%s=.*' % makefile_option,
                             '{}={}'.format(makefile_option, value))
+
+    def setup_build_environment(self, env):
+        comp_sys = ''
+        if self.spec.compiler.name == 'intel':
+            comp_sys = 'intel_linux'
+        elif self.spec.compiler.name == 'gcc':
+            comp_sys = 'gnu_linux'
+
+        env.set('COMP_SYS', comp_sys)
 
     def build(self, spec, prefix):
         make()
