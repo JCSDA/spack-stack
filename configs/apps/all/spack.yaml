@@ -8,14 +8,7 @@ spack:
     - modules.yaml
     - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
-  packages:
-    all:
-      compiler:: [gcc@9.4.0]
-    mpi:
-      buildable: False
-
   specs:
-    - re2c
     - jedi-fv3-bundle-env
     - jedi-ufs-bundle-env
     - ufs-weather-model-bundle-env

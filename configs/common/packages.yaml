@@ -1,5 +1,10 @@
 # Pin versions and specs when building packages
   packages:
+    all:
+      providers:
+        blas: [openblas]
+        lapack: [openblas]
+        fftw-api: [fftw]
     cmake:
       version: [3.22.1]
     zlib:
