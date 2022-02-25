@@ -1,5 +1,8 @@
 modules:
   default:
-    lmod:
-      core_compilers::
-      - gcc@7.5.0
+    enable::
+    - tcl
+    #tcl:
+    #  projections:
+    #    git: 'Core/{name}/{version}'
+    #    git-lfs: 'Core//{name}/{version}'

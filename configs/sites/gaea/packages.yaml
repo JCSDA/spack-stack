@@ -29,6 +29,9 @@ packages:
     externals:
     - spec: python@3.7.3+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /opt/python/3.7.3.2
+      modules:
+      - cray-python/3.7.3.2
+### Other packages sorted alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -53,6 +56,9 @@ packages:
     externals:
     - spec: cmake@3.10.2
       prefix: /usr
+    #- spec: cmake@3.20.1
+    #  modules:
+    #  - cmake/3.20.1
   cpio:
     externals:
     - spec: cpio@2.12
@@ -68,6 +74,11 @@ packages:
   doxygen:
     externals:
     - spec: doxygen@1.8.14~graphviz~mscgen
+      prefix: /usr
+  # Added manually to avoid problems building udunits
+  expat:
+    externals:
+    - spec: expat@1.6.7
       prefix: /usr
   file:
     externals:
@@ -95,8 +106,16 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.26.2+tcltk
+    - spec: git@2.26.0+tcltk
       prefix: /usr
+      modules:
+      - git/2.26.0
+  git-lfs:
+    externals:
+    - spec: git-lfs@2.11.0
+      prefix: /lustre/f2/pdata/esrl/gsd/contrib/git-lfs-2.11.0
+      modules:
+      - git-lfs/2.11.0
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -117,6 +136,11 @@ packages:
     externals:
     - spec: krb5@1.16.3
       prefix: /usr/lib/mit
+  # Added manually to avoid problems building expat and udunits
+  libbsd:
+    externals:
+    - spec: libbsd@0.8.7
+      prefix: /usr
   libfuse:
     externals:
     - spec: libfuse@2.9.7
@@ -189,20 +213,3 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
-
-
-
-
-
-
-  git:
-    externals:
-    - spec: git@2.33.1
-      modules:
-      - git/2.33.1
-
-  git-lfs:
-    externals:
-    - spec: git-lfs@3.0.2
-      modules:
-      - git/2.33.1
