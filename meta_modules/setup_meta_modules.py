@@ -344,8 +344,10 @@ for mpi in mpi_list:
                         substitutes['MODULEPATH'] = os.path.join(module_dir, mpi_name, mpi_version,
                                                                    compiler_name, compiler_version)
                         logging.debug("  ... ... MODULEPATH  : {}".format(substitutes['MODULEPATH']))
+                        # If the environment doesn't have mpi dependent modules
+                        # then simply create the placeholder directory
                         if not os.path.isdir(substitutes['MODULEPATH']):
-                            raise Exception("Compiler module path {} does not exist".format(substitutes['MODULEPATH']))
+                            os.makedirs(substitutes['MODULEPATH'])
 
                         # For tcl modules remove the compiler/mpi prefices from the module contents
                         if module_choice == 'tcl':
