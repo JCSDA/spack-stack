@@ -1,5 +1,4 @@
 modules:
   default:
-    lmod:
-      core_compilers:
-      - apple-clang@13.0.0
+    enable::
+    - lmod
