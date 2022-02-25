@@ -168,8 +168,6 @@ packages:
       prefix: /apps/python-3.7.5
       modules:
       - python/3.7.5
-    - spec: python@2.7.5+bz2+ctypes+dbm+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /usr
   rsync:
     externals:
     - spec: rsync@3.1.2
