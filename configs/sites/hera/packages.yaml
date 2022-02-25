@@ -1,30 +1,31 @@
 packages:
   all:
-    compiler:: [intel@2021.3.0]
+    compiler:: [intel@2021.5.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.3.0]
+      mpi:: [intel-oneapi-mpi@2021.5.1]
   mpi:
     buildable: False
   intel-mpi:
-    buildable: False
     externals:
     - spec: intel-mpi@2018.0.4
       modules:
       - impi/2018.0.4
-    - spec: impi@2019.0.5
+    - spec: intel-oneapi-mpi@2021.5.1
       modules:
-      - impi/2019.0.5
-    - spec: impi@2020
-      modules:
-      - impi/2020
-    - spec: intel-oneapi-mpi@2021.3.0
-      modules:
-      - impi/2021.3.0
+      - impi/2022.1.2
   openmpi:
     externals:
     - spec: openmpi@3.1.4%gcc@9.2.0~cuda+cxx+cxx_exceptions~java~memchecker+pmi+pmix~sqlite3+static~thread_multiple~wrapper-rpath fabrics=mxm schedulers=slurm
       modules:
       - openmpi/3.1.4
+  python:
+    buildable: False
+    externals:
+    - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd~readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      modules:
+      - intelpython/2022.1.2
+      prefix: /apps/oneapi/intelpython/python3.9
+#
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -87,20 +88,6 @@ packages:
     externals:
     - spec: gawk@4.0.2
       prefix: /usr
-  gcc:
-    externals:
-    - spec: gcc@4.4.7 languages=c
-      prefix: /usr
-      extra_attributes:
-        compilers:
-          c: /usr/bin/gcc44
-    - spec: gcc@4.8.5 languages=c,c++,fortran
-      prefix: /usr
-      extra_attributes:
-        compilers:
-          c: /usr/bin/x86_64-redhat-linux-gcc
-          cxx: /usr/bin/g++
-          fortran: /usr/bin/gfortran
   gettext:
     externals:
     - spec: gettext@0.19.8.1
@@ -172,12 +159,6 @@ packages:
   pkg-config:
     externals:
     - spec: pkg-config@0.27.1
-      prefix: /usr
-  python:
-    externals:
-    - spec: python@2.7.5+bz2+ctypes+dbm+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /usr
-    - spec: python@3.6.8+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr
   rsync:
     externals:

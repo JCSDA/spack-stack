@@ -14,59 +14,17 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: intel@19.0.5.281
+    spec: intel@2021.5.0
     paths:
-      cc: /apps/intel/parallel_studio_xe_2019.5.075/compilers_and_libraries_2019/linux/bin/intel64/icc
-      cxx: /apps/intel/parallel_studio_xe_2019.5.075/compilers_and_libraries_2019/linux/bin/intel64/icpc
-      f77: /apps/intel/parallel_studio_xe_2019.5.075/compilers_and_libraries_2019/linux/bin/intel64/ifort
-      fc: /apps/intel/parallel_studio_xe_2019.5.075/compilers_and_libraries_2019/linux/bin/intel64/ifort
+      cc: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/icc
+      cxx: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/icpc
+      f77: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
+      fc: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
     flags: {}
     operating_system: centos7
     target: any
     modules:
-    - intel/19.0.5.281
-    environment: {}
-    extra_rpaths: []
-- compiler:
-    spec: intel@2020
-    paths:
-      cc: /apps/intel/parallel_studio_xe_2020.0.088/compilers_and_libraries_2020/linux/bin/intel64/icc
-      cxx: /apps/intel/parallel_studio_xe_2020.0.088/compilers_and_libraries_2020/linux/bin/intel64/icpc
-      f77: /apps/intel/parallel_studio_xe_2020.0.088/compilers_and_libraries_2020/linux/bin/intel64/ifort
-      fc: /apps/intel/parallel_studio_xe_2020.0.088/compilers_and_libraries_2020/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: centos7
-    target: any
-    modules:
-    - intel/2020
-    environment: {}
-    extra_rpaths: []
-- compiler:
-    spec: intel@2020.2
-    paths:
-      cc: /apps/intel/parallel_studio_xe_2020.2.108/compilers_and_libraries_2020/linux/bin/intel64/icc
-      cxx: /apps/intel/parallel_studio_xe_2020.2.108/compilers_and_libraries_2020/linux/bin/intel64/icpc
-      f77: /apps/intel/parallel_studio_xe_2020.2.108/compilers_and_libraries_2020/linux/bin/intel64/ifort
-      fc: /apps/intel/parallel_studio_xe_2020.2.108/compilers_and_libraries_2020/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: centos7
-    target: any
-    modules:
-    - intel/2020.2
-    environment: {}
-    extra_rpaths: []
-- compiler:
-    spec: intel@2021.3.0
-    paths:
-      cc: /apps/oneapi/compiler/2021.3.0/linux/bin/intel64/icc
-      cxx: /apps/oneapi/compiler/2021.3.0/linux/bin/intel64/icpc
-      f77: /apps/oneapi/compiler/2021.3.0/linux/bin/intel64/ifort
-      fc: /apps/oneapi/compiler/2021.3.0/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: centos7
-    target: any
-    modules:
-    - intel/2021.3.0
+    - intel/2022.1.2
     environment: {}
     extra_rpaths: []
 - compiler:

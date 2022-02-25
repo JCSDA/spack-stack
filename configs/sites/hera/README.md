@@ -3,6 +3,7 @@
 # WORK IN PROGRESS ... DO NOT USE YET
 
 ## General instructions for getting the module environment right/fixed
+OLD - ORION
 ```
 module purge
 module unuse /apps/modulefiles/core
@@ -15,12 +16,14 @@ module use /home/dheinzel/test_modulefiles/core
 git clone -b jcsda_emc_spack_stack --recursive https://github.com/climbfuji/spack-stack
 cd spack-stack
 export SPACK_BASE_DIR=$PWD
-module load python/3.9.2
+module load cmake/3.20.1
+module load gnu/9.2.0
+module load intelpython/2022.1.2
 source spack/share/spack/setup-env.sh
-rsync -av envs/ envs_orion/
-vi envs_orion/spack.yaml
+rsync -av envs/ envs_hera/
+vi envs_hera/spack.yaml
 # comment out the "please_configure_your_site" site config and activate the hera site config
-spack env activate -p -d envs_orion
+spack env activate -p -d envs_hera
 spack install -v fv3-bundle-env 2>&1 | tee spack.install.fv3-bundle-env.log
 ```
 ... work in progress ... ufs-bundle-env and then metamodules
