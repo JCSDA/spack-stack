@@ -7,3 +7,4 @@
         all:  "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
     module_roots:
       lmod: install/modulefiles
+      tcl: install/modulefiles
