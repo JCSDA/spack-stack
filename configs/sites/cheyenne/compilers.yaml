@@ -12,12 +12,21 @@ compilers::
       target: x86_64
       modules:
       - intel/2021.2
-      #- ncarcompilers/0.5.0
+      # DH*
+      #environment:
+      #  prepend_path:
+      #    LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2021.2/compiler/2021.2.0/linux/compiler/lib/intel64_lin'
+      #    CXXFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64 -lstdc++'
+      #    LDFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64 -lstdc++'
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2021.2/compiler/2021.2.0/linux/compiler/lib/intel64_lin'
-          CXXFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
-          LDFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
+          LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2021.2/compiler/2021.2.0/linux/compiler/lib/intel64_lin:/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
+          #CXXFLAGS: '-std=c++14'
+          CXXFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
+          #LDFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
+        set:
+          I_MPI_ROOT: '/glade/u/apps/opt/intel/2021.2/mpi/latest'
+      # *DH
       extra_rpaths: []
 
   - compiler:
@@ -32,12 +41,11 @@ compilers::
       target: x86_64
       modules:
       - intel/19.1.1
-      #- ncarcompilers/0.5.0
       environment:
         prepend_path:
           LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin'
-          CXXFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
-          LDFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/9.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
+          CXXFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64 -lstdc++'
+          LDFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64 -lstdc++'
       extra_rpaths: []
 
   - compiler:
@@ -52,7 +60,6 @@ compilers::
       target: x86_64
       modules:
       - gnu/11.1.0
-      #- ncarcompilers/0.5.0
       extra_rpaths: []
 
   - compiler:

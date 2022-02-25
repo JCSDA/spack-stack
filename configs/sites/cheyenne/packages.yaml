@@ -133,7 +133,7 @@ packages:
       prefix: /usr
   m4:
     externals:
-    - spec: m4@1.4.1
+    - spec: m4@1.4.16
       prefix: /usr
   ncurses:
     externals:
