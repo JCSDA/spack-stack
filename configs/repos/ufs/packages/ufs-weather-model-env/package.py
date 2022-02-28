@@ -8,11 +8,11 @@ import sys
 
 from spack import *
 
-class UfsWeatherModelBundleEnv(BundlePackage):
+class UfsWeatherModelEnv(BundlePackage):
     """Development environment for ufs-weathermodel-bundle"""
 
-    homepage = "https://github.com/JCSDA-internal/fv3-bundle"
-    git      = "https://github.com/JCSDA-internal/fv3-bundle.git"
+    homepage = "https://github.com/ufs-community/ufs-weather-model"
+    git      = "https://github.com/ufs-community/ufs-weather-model.git"
 
     maintainers = ['kgerheiser', 'climbfuji']
 
@@ -21,8 +21,9 @@ class UfsWeatherModelBundleEnv(BundlePackage):
     depends_on('base-env', type='run')
 
     depends_on('esmf', type='run')
+    depends_on('esmf+debug', type='run')
     depends_on('fms', type='run')
-    
+
     depends_on('bacio', type='run')
     depends_on('crtm', type='run')
     depends_on('g2', type='run')

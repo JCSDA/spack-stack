@@ -56,6 +56,8 @@ modules:
         environment:
           set:
             '{name}_ROOT': '{prefix}'
+        suffixes:
+          +debug: 'debug'
       esmf:
         environment:
           set:
@@ -64,6 +66,12 @@ modules:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
+      mapl:
+        suffixes:
+          ^esmf@8.2.0~debug: 'esmf-8.2.0'
+          ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+          +debug^esmf~debug: 'debug-esmf-8.2.0'
+          +debug^esmf+debug: 'debug-esmf-8.2.0-debug'
 
     lmod:
       # Core compiler is a dummy that is not used to build the stack.
@@ -118,6 +126,8 @@ modules:
         environment:
           set:
             '{name}_ROOT': '{prefix}'
+        suffixes:
+          +debug: 'debug'
       esmf:
         environment:
           set:
@@ -126,6 +136,12 @@ modules:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
+      mapl:
+        suffixes:
+          ^esmf@8.2.0~debug: 'esmf-8.2.0'
+          ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+          +debug^esmf~debug: 'debug-esmf-8.2.0'
+          +debug^esmf+debug: 'debug-esmf-8.2.0-debug'
       hierarchy:
       - mpi
 

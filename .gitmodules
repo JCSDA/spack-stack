@@ -4,5 +4,5 @@
   #branch = develop
   #url = https://github.com/NOAA-EMC/spack.git
   #branch = jcsda_emc_spack_stack
-  url = https://github.com/climbfuju/spack
+  url = https://github.com/climbfuji/spack
   branch = bugfix/esmf_cray
