@@ -7,10 +7,10 @@ packages:
     buildable: False
   intel-mpi:
     externals:
-    - spec: intel-mpi@2018.0.4
+    - spec: intel-mpi@2018.0.4%intel@18.0.5.274
       modules:
       - impi/2018.0.4
-    - spec: intel-oneapi-mpi@2021.5.1
+    - spec: intel-oneapi-mpi@2021.5.1%intel@2021.5.0
       modules:
       - impi/2022.1.2
   openmpi:
@@ -21,10 +21,10 @@ packages:
   python:
     buildable: False
     externals:
-    - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd~readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+    - spec: python@3.9.7
       modules:
-      - intelpython/2022.1.2
-      prefix: /apps/oneapi/intelpython/python3.9
+      - miniconda/3.9.7
+      prefix: /scratch1/BMC/gsd-hpcs/Dom.Heinzeller/spack-stack/miniconda-3.9.7
 #
   autoconf:
     externals:
@@ -50,12 +50,13 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.20.1
-      modules:
-      - cmake/3.20.1
-      prefix: /apps/cmake/3.20.1
+  # Don't use 3.20.x - issues with eckit
+  #cmake:
+  #  externals:
+  #  - spec: cmake@3.20.1
+  #    modules:
+  #    - cmake/3.20.1
+  #    prefix: /apps/cmake/3.20.1
   cpio:
     externals:
     - spec: cpio@2.11
