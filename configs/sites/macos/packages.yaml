@@ -148,17 +148,6 @@ packages:
     - spec: zip@3.0
       prefix: /usr
 
-  # Uncomment if Intel oneAPI TBB/MKL are installed
-  #intel-oneapi-tbb:
-  #  externals:
-  #  - spec: intel-oneapi-tbb@2021.5.0
-  #    prefix: /opt/intel/oneapi
-  #
-  #intel-oneapi-mkl:
-  #  externals:
-  #  - spec: intel-oneapi-mkl@2022.0.0
-  #    prefix: /opt/intel/oneapi
-
   fms::
     version: [2021.03.01]
     variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
@@ -170,7 +159,3 @@ packages:
   trans::
     version: [develop]
     variants: ~enable_mkl
-
-  #libbacktrace:
-  #  version: [2020-02-19]
-
