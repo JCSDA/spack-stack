@@ -54,10 +54,11 @@ packages:
     externals:
     - spec: cmake@3.22.1
       prefix: /usr/local
-  curl:
-    externals:
-    - spec: curl@7.77.0+gssapi+ldap+nghttp2
-      prefix: /usr
+  # Don't use OS curl, this leads to all sorts of problems with netcdf-c
+  #curl:
+  #  externals:
+  #  - spec: curl@7.77.0+gssapi+ldap+nghttp2
+  #    prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@2.8.1
