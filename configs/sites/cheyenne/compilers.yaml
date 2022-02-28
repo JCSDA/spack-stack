@@ -12,21 +12,14 @@ compilers::
       target: x86_64
       modules:
       - intel/2021.2
-      # DH*
-      #environment:
-      #  prepend_path:
-      #    LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2021.2/compiler/2021.2.0/linux/compiler/lib/intel64_lin'
-      #    CXXFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64 -lstdc++'
-      #    LDFLAGS: '-gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64 -lstdc++'
+      # DH* TODO: CHECK IF -std=c++14 can be removed (should be able to), and check if I_MPI_ROOT can be removed
+      # then, also update the intel@2020.1.217 section
       environment:
         prepend_path:
           LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2021.2/compiler/2021.2.0/linux/compiler/lib/intel64_lin:/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
-          #CXXFLAGS: '-std=c++14'
           CXXFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
-          #LDFLAGS: '-std=c++14 -gxx-name=/glade/u/apps/ch/opt/gnu/10.1.0/bin/g++ -Wl,-rpath,/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
         set:
           I_MPI_ROOT: '/glade/u/apps/opt/intel/2021.2/mpi/latest'
-      # *DH
       extra_rpaths: []
 
   - compiler:
@@ -41,6 +34,7 @@ compilers::
       target: x86_64
       modules:
       - intel/19.1.1
+      # DH* TODO UPDATE
       environment:
         prepend_path:
           LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin'
@@ -49,6 +43,7 @@ compilers::
       extra_rpaths: []
 
   - compiler:
+      # DH* NOT YET TESTED
       spec: gcc@11.1.0
       paths:
         cc: /glade/u/apps/ch/opt/gnu/11.1.0/bin/gcc
