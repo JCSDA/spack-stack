@@ -10,4 +10,4 @@ spack:
     - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
   specs:
-    - ufs-weather-model-bundle-env
+    - ufs-weather-model-env
