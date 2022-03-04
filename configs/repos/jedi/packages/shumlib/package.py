@@ -29,8 +29,12 @@ class Shumlib(MakefilePackage):
         #env['LIBDIR_ROOT'] = self.build_directory
 
     def build(self, spec, prefix):
-        # TODO: SWITCH FOR DIFFERENT ARCHITECTURES
-        os.system('make -f make/vm-x86-gfortran-clang.mk')
+        # DH* TODO: SWITCH FOR DIFFERENT ARCHITECTURES
+        if spec.satisfies('%clang'):
+            os.system('make -f make/vm-x86-gfortran-clang.mk')
+        #elif spec.satisfies('%gcc'):
+        else:
+            os.system('make -f make/vm-x86-gfortran-gcc.mk')
 
     def install(self, spec, prefix):
         install_tree(os.path.join(os.getenv('LIBDIR_OUT'), 'include'), prefix.include)
