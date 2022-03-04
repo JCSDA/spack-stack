@@ -2,9 +2,9 @@
   packages:
     all:
       providers:
-        blas: [openblas]
-        lapack: [openblas]
-        fftw-api: [fftw]
+        blas:: [openblas]
+        lapack:: [openblas]
+        fftw-api:: [fftw]
     wget:
       version: [1.21.2]
     cmake:
@@ -14,15 +14,20 @@
     hdf5:
       version: [1.12.1]
       variants: +hl +fortran +mpi +threadsafe
+    # Attention - when updating also check cheyenne site config
     parallel-netcdf:
       version: [1.12.2]
+    # Attention - when updating also check cheyenne site config
     netcdf-c:
       version: [4.7.4]
       variants: +dap +mpi +parallel-netcdf
+    # Attention - when updating also check cheyenne site config
     netcdf-fortran:
       version: [4.5.3]
+    # Attention - when updating also check cheyenne site config
     netcdf-cxx4:
       version: [4.3.1]
+    # Attention - when updating also check cheyenne site config
     parallelio:
       version: [2.5.2]
       variants: +pnetcdf
@@ -32,8 +37,10 @@
       version: [9.1.0]
     libpng:
       version: [1.6.37]
+    # Attention - when updating also check gaea site config
     libjpeg-turbo:
       version: [2.1.0]
+    # Attention - when updating also check gaea site config
     jasper:
       version: [2.0.32]
     eccodes:
@@ -54,9 +61,11 @@
     esmf:
       version: [8.2.0]
       variants: ~xerces ~pnetcdf
+    # Attention - when updating also check macos site config
     fms:
       version: [2021.03.01]
       variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
+    # Attention - when updating also check macos site config
     fms-jcsda:
       version: [release-stable]
       variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
@@ -133,6 +142,7 @@
       version: [macos_clang_port]
     faux:
       version: [develop]
+    # Attention - when updating also check macos site config
     trans:
       version: [develop]
     git-lfs:

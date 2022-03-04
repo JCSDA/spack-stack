@@ -2,12 +2,14 @@
 
 ## General instructions/prerequisites
 
-### Set up the user environment for working with spack/building new software environments
-
-Note. Is this still needed? If so, move it to a different location.
-```
 module purge
-module unuse /apps/modulefiles/core
-export MODULEPATH_ROOT=$HOME/test_modulefiles
-module use /home/dheinzel/test_modulefiles/core
+
+### One-off: prepare miniconda python3 environment
+See instructions in miniconda/README.md. Don't forget to log off and back on to forget about the conda environment.
+
+### Set up the user environment for working with spack/building new software environments
+This needs to be done every time before installing packages with spack or before using spack-provided modules!
+```
+module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
+module load miniconda/3.9.7
 ```
