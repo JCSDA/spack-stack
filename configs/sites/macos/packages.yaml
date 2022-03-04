@@ -3,10 +3,8 @@ packages:
     compiler:: [clang@13.0.0] # [apple-clang@13.0.0, gcc@11.2.0]
     providers:
       mpi:: [mpich@3.4.3] # [openmpi]
-      # Avoid problems building Python packages with Intel MKL, use openblas and fftw
-      blas:: [openblas]
-      lapack:: [openblas]
-      fftw-api:: [fftw]
+
+### MPI, Python, MKL
   mpi:
     buildable: False
   mpich:
@@ -20,6 +18,16 @@ packages:
     # not suitable for development (missing python3-config, ...)
     - spec: python@3.9.10+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr/local
+
+### Modifications of common packages
+  fms:
+    variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+  fms-jcsda:
+    variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+  trans:
+    variants:: ~enable_mkl
+
+### All other external packages listed alphabetically
   apple-libunwind:
     buildable: false
     externals:
@@ -147,15 +155,3 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
-
-  fms::
-    version: [2021.03.01]
-    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
-
-  fms-jcsda::
-    version: [release-stable]
-    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
-
-  trans::
-    version: [develop]
-    variants: ~enable_mkl

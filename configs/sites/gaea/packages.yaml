@@ -31,6 +31,15 @@ packages:
       prefix: /opt/python/3.7.3.2
       modules:
       - cray-python/3.7.3.2
+
+### Modifications of common packages
+  # Turn off shared library build for libjpeg-turbo
+  libjpeg-turbo:
+    variants:: ~shared
+  # Turn off shared library build for jasper
+  jasper:
+    variants:: ~shared
+
 ### Other packages sorted alphabetically
   autoconf:
     externals:
