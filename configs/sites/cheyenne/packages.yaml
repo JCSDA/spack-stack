@@ -9,19 +9,19 @@ packages:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.2.0
+    - spec: intel-oneapi-mpi@2021.2.0%intel@2021.2.0
       prefix: /glade/u/apps/opt/intel/2021.2
       modules:
       - impi/2021.2
   intel-oneapi-tbb:
     externals:
-    - spec: intel-oneapi-tbb@2021.2.0
+    - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
       prefix: /glade/u/apps/opt/intel/2021.2
       modules:
       - intel/2021.2
   intel-oneapi-mkl:
     externals:
-    - spec: intel-oneapi-mkl@2021.2.0
+    - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
       prefix: /glade/u/apps/opt/intel/2021.2
       modules:
       - intel/2021.2
@@ -81,6 +81,10 @@ packages:
     externals:
     - spec: doxygen@1.8.6+graphviz~mscgen
       prefix: /usr
+  expat:
+    externals:
+    - spec: expat@1.6.0
+      prefix: /usr
   file:
     externals:
     - spec: file@5.22
@@ -139,8 +143,6 @@ packages:
     externals:
     - spec: ncurses@5.9.20140201+termlib abi=5
       prefix: /usr
-    - spec: ncurses@5.9.20140201+termlib abi=6
-      prefix: /usr
   openssh:
     externals:
     - spec: openssh@7.2p2
@@ -185,6 +187,3 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
-#  # findutils-4.8.0 doesn't build on Cheyenne with intel-2021.2.0
-#  findutils::
-#    version: [4.7.0]
