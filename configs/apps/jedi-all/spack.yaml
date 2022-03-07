@@ -10,5 +10,3 @@ spack:
 
   specs:
     - jedi-env
-    - ufs-weather-model-env
-    - nceplibs-bundle
