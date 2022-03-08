@@ -19,56 +19,36 @@ class Trans(CMakePackage):
     maintainers = ['climbfuji']
 
     version('develop', branch='develop', no_cache=True, preferred=True)
-    #version('bugfix-compile-failures', branch='bugfix/fix_compile_failures', no_cache=True)
 
-    variant('enable_mpi', default=True, description='Use MPI?')
-    variant('enable_omp', default=True, description='Use OpenMP?')
+    variant('mpi', default=True, description='Use MPI?')
+    variant('openmp', default=True, description='Use OpenMP?')
 
-    #variant('enable_double_precision', default=True, description='Enable double precision?')
-    #variant('enable_single_precision', default=True, description='Enable single precision?')
+    #variant('mkl',  default=True, description='Use MKL?')
+    #variant('fftw', default=True, description='Use FFTW?')
 
-    variant('enable_mkl',  default=True, description='Use MKL?')
-    #variant('enable_fftw', default=True, description='Use FFTW?')
-    #variant('enable_transi', default=True, description='Use TransI?')
+    #variant('double_precision', default=True, description='Enable double precision?')
+    #variant('single_precision', default=True, description='Enable single precision?')
+    #variant('transi', default=True, description='Use TransI?')
 
     depends_on('ecbuild', type=('build'))
-    depends_on('mpi',  when='+enable_mpi')
+    depends_on('mpi',  when='+mpi')
     depends_on('blas')
     depends_on('lapack')
     depends_on('fftw-api')
-    #depends_on('fftw-api', when='+enable_fftw')
-    depends_on('mkl',  when='+enable_mkl')
+    #depends_on('fftw-api', when='+fftw')
+    #depends_on('mkl', when='+mkl')
 
-    depends_on('faux~enable_mpi',  when='~enable_mpi')
-    depends_on('faux+enable_mpi',  when='+enable_mpi')
+    depends_on('faux~mpi',  when='~mpi')
+    depends_on('faux+mpi',  when='+mpi')
 
     def cmake_args(self):
         args = [
-            self.define_from_variant('ENABLE_MPI'),
-            self.define_from_variant('ENABLE_OMP'),
-            #self.define_from_variant('ENABLE_FFTW'),
-            self.define_from_variant('ENABLE_MKL')
+            self.define_from_variant('ENABLE_MPI', 'mpi'),
+            self.define_from_variant('ENABLE_OMP', 'openmp'),
+            '-DENABLE_FFTW=ON',
+            '-DENABLE_MKL=OFF',
+            #self.define_from_variant('ENABLE_FFTW', 'fftw'),
+            #self.define_from_variant('ENABLE_MKL', 'mkl')
         ]
-
-        #args.append(self.define('CMAKE_C_COMPILER', self.spec['mpi'].mpicc))
-        #args.append(self.define('CMAKE_CXX_COMPILER', self.spec['mpi'].mpicxx))
-        #args.append(self.define('CMAKE_Fortran_COMPILER', self.spec['mpi'].mpifc))
-        #
-        #cflags = []
-        #fflags = []
-        #
-        #if self.compiler.name in ['gcc', 'clang', 'apple-clang']:
-        #    gfortran_major_version = int(spack.compiler.get_compiler_version_output(self.compiler.fc, '-dumpversion').split('.')[0])
-        #    if gfortran_major_version>=10:
-        #        fflags.append('-fallow-argument-mismatch')
-        #
-        #if '+pic' in self.spec:
-        #    cflags.append(self.compiler.cc_pic_flag)
-        #    fflags.append(self.compiler.fc_pic_flag)
-        #
-        #if cflags:
-        #    args.append(self.define('CMAKE_C_FLAGS', ' '.join(cflags)))
-        #if fflags:
-        #    args.append(self.define('CMAKE_Fortran_FLAGS', ' '.join(fflags)))
 
         return args
