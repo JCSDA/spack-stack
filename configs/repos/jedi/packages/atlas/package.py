@@ -41,10 +41,10 @@ class Atlas(CMakePackage):
     depends_on('trans', when='+trans')
     #variant('cgal', default=False)
     #depends_on('cgal', when='+cgal')
-    variant('eigen', default=False)
+    variant('eigen', default=True)
     depends_on('eigen', when='+eigen')
-    variant('fftw', default=False)
-    depends_on('fftw', when='+fftw')
+    variant('fftw', default=True)
+    depends_on('fftw-api', when='+fftw')
 
     def cmake_args(self):
         res = [

@@ -13,18 +13,18 @@ packages:
       prefix: /apps/intel-2021.2/intel-2021.2
       modules:
       - impi/2021.2
-  intel-oneapi-tbb:
-    externals:
-    - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
-      prefix: /apps/intel-2021.2/intel-2021.2
-      modules:
-      - intel/2021.2
-  intel-oneapi-mkl:
-    externals:
-    - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
-      prefix: /apps/intel-2021.2/intel-2021.2
-      modules:
-      - intel/2021.2
+  #intel-oneapi-tbb:
+  #  externals:
+  #  - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
+  #    prefix: /apps/intel-2021.2/intel-2021.2
+  #    modules:
+  #    - intel/2021.2
+  #intel-oneapi-mkl:
+  #  externals:
+  #  - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
+  #    prefix: /apps/intel-2021.2/intel-2021.2
+  #    modules:
+  #    - intel/2021.2
   #intel-mpi:
   #  externals:
   #  - spec: intel-mpi@2018.5.274%intel@2018.4

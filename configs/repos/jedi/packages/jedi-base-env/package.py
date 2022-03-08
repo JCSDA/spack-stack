@@ -29,6 +29,7 @@ class JediBaseEnv(BundlePackage):
     depends_on('git-lfs', type='run')
 
     depends_on('eigen', type='run')
+    depends_on('fftw-api', type='run')
     depends_on('gsl-lite', type='run')
     depends_on('udunits', type='run')
 

@@ -13,18 +13,18 @@ packages:
       prefix: /glade/u/apps/opt/intel/2021.2
       modules:
       - impi/2021.2
-  intel-oneapi-tbb:
-    externals:
-    - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
-      prefix: /glade/u/apps/opt/intel/2021.2
-      modules:
-      - intel/2021.2
-  intel-oneapi-mkl:
-    externals:
-    - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
-      prefix: /glade/u/apps/opt/intel/2021.2
-      modules:
-      - intel/2021.2
+  #intel-oneapi-tbb:
+  #  externals:
+  #  - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
+  #    prefix: /glade/u/apps/opt/intel/2021.2
+  #    modules:
+  #    - intel/2021.2
+  #intel-oneapi-mkl:
+  #  externals:
+  #  - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
+  #    prefix: /glade/u/apps/opt/intel/2021.2
+  #    modules:
+  #    - intel/2021.2
   #intel-mpi:
   #  externals:
   #  - spec: intel-mpi@2019.7.217

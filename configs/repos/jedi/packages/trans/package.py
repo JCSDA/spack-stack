@@ -23,8 +23,8 @@ class Trans(CMakePackage):
     variant('mpi', default=True, description='Use MPI?')
     variant('openmp', default=True, description='Use OpenMP?')
 
-    #variant('mkl',  default=True, description='Use MKL?')
-    #variant('fftw', default=True, description='Use FFTW?')
+    variant('mkl',  default=False, description='Use MKL?')
+    variant('fftw', default=True, description='Use FFTW?')
 
     #variant('double_precision', default=True, description='Enable double precision?')
     #variant('single_precision', default=True, description='Enable single precision?')
@@ -34,9 +34,8 @@ class Trans(CMakePackage):
     depends_on('mpi',  when='+mpi')
     depends_on('blas')
     depends_on('lapack')
-    depends_on('fftw-api')
-    #depends_on('fftw-api', when='+fftw')
-    #depends_on('mkl', when='+mkl')
+    depends_on('fftw-api', when='+fftw')
+    depends_on('mkl', when='+mkl')
 
     depends_on('faux~mpi',  when='~mpi')
     depends_on('faux+mpi',  when='+mpi')
@@ -45,10 +44,8 @@ class Trans(CMakePackage):
         args = [
             self.define_from_variant('ENABLE_MPI', 'mpi'),
             self.define_from_variant('ENABLE_OMP', 'openmp'),
-            '-DENABLE_FFTW=ON',
-            '-DENABLE_MKL=OFF',
-            #self.define_from_variant('ENABLE_FFTW', 'fftw'),
-            #self.define_from_variant('ENABLE_MKL', 'mkl')
+            self.define_from_variant('ENABLE_FFTW', 'fftw'),
+            self.define_from_variant('ENABLE_MKL', 'mkl')
         ]
 
         return args
