@@ -6,19 +6,15 @@ packages:
   mpi:
     buildable: False
   intel-oneapi-mpi:
-    buildable: False
     externals:
     - spec: intel-oneapi-mpi@2021.2.0
       prefix: /apps/intel-2021.2/intel-2021.2
       modules:
       - impi/2021.2    
   intel-mpi:
-    buildable: False
     externals:
-    - spec: intel-mpi@2020.2
-      modules:
-      - impi/2020.2
-    - spec: intel-mpi@2018.4
+    - spec: intel-mpi@2018.5.274%intel@2018.4
+      prefix: /apps/intel-2018/intel-2018.u4
       modules:
       - intel-mpi@2018.4
   autoconf:
@@ -172,8 +168,6 @@ packages:
       prefix: /apps/python-3.7.5
       modules:
       - python/3.7.5
-    - spec: python@2.7.5+bz2+ctypes+dbm+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /usr
   rsync:
     externals:
     - spec: rsync@3.1.2

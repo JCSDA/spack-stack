@@ -1,5 +1,5 @@
 name: ubuntu-intel-build
-on: push
+on: workflow_dispatch
 
 # Use custom shell with -l so .bash_profile is sourced
 defaults:
@@ -13,7 +13,6 @@ jobs:
         app: [nceplibs]
     runs-on: ubuntu-latest
     steps:
-
       - name: checkout
         uses: actions/checkout@v2
         with:
