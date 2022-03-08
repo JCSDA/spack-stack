@@ -21,6 +21,8 @@
 # ----------------------------------------------------------------------------
 
 import os
+import sys
+import re
 
 from spack import *
 
@@ -71,6 +73,8 @@ class Wgrib2(MakefilePackage):
     variant('openmp', default=True, description='OpenMP parallelization')
     variant('wmo_validation', default=False, description='WMO validation')
 
+    conflicts('+openmp', when='%apple-clang')
+
     variant_map = {
         'netcdf3': 'USE_NETCDF3',
         'netcdf4': 'USE_NETCDF4',
@@ -94,13 +98,21 @@ class Wgrib2(MakefilePackage):
 
     # Disable parallel build
     parallel = False
-    # Use Spack compiler wrapper flags
 
+    # Use Spack compiler wrapper flags
     def inject_flags(self, name, flags):
         if name == 'cflags':
             if self.spec.compiler.name == 'apple-clang':
                 flags.append('-Wno-error=implicit-function-declaration')
-                return (flags, None, None)
+
+            # When mixing Clang/gfortran need to link to -lgfortran
+            # Find this by searching for gfortran/../lib
+            if self.spec.compiler.name in ['apple-clang', 'clang']:
+                if 'gfortran' in self.compiler.fc:
+                    output = Executable(self.compiler.fc)('-###', output=str, error=str)
+                    libdir = re.search('--libdir=(.+?) ', output).group(1)
+                    flags.append('-L{}'.format(libdir))
+    
         return (flags, None, None)
 
     flag_handler = inject_flags
@@ -112,16 +124,20 @@ class Wgrib2(MakefilePackage):
     def edit(self, spec, prefix):
         makefile = FileFilter('makefile')
 
+        # ifort no longer accepts -openmp
+        makefile.filter(r'-openmp', '-qopenmp')
+        makefile.filter(r'-Wall', ' ')
+
         for variant_name, makefile_option in self.variant_map.items():
             value = int(spec.variants[variant_name].value)
             makefile.filter(r'^%s=.*' % makefile_option,
                             '{}={}'.format(makefile_option, value))
 
     def setup_build_environment(self, env):
-        comp_sys = ''
-        if self.spec.compiler.name == 'intel':
+
+        if self.spec.compiler.name in 'intel':
             comp_sys = 'intel_linux'
-        elif self.spec.compiler.name == 'gcc':
+        elif self.spec.compiler.name in ['gcc', 'clang', 'apple-clang']:
             comp_sys = 'gnu_linux'
 
         env.set('COMP_SYS', comp_sys)
