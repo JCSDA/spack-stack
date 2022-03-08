@@ -37,7 +37,7 @@ brew install bash@5.1.16
 source /usr/local/opt/lmod/init/profile
 ```
 
-This environment enables working with spack and building new software environents, as well as loading modules that are created by spack for building JEDI and UFS software.
+This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
 ### Temporary workaround for pip installs in spack
 See https://github.com/spack/spack/issues/29308
