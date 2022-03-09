@@ -9,7 +9,6 @@ spack:
     - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
   specs:
-    - jedi-fv3-bundle-env
-    - jedi-ufs-bundle-env
-    - ufs-weather-model-bundle-env
+    - jedi-env
+    - ufs-weather-model-env
     - nceplibs-bundle

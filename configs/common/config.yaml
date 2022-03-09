@@ -7,6 +7,7 @@ config:
       all: "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
   module_roots:
     lmod: install/modulefiles
+    tcl: install/modulefiles
 
   # The build stage can be purged with `spack clean --stage` and
   # `spack clean -a`, so it is important that the specified directory uniquely

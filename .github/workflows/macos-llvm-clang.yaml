@@ -1,0 +1,28 @@
+name: macos-llvm-clang-build
+on: workflow_dispatch
+
+# Use custom shell with -l so .bash_profile is sourced
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        app: [jedi-ufs, jedi-um, jedi-fv3, jedi-tools, ufs-weather-model, nceplibs]
+    runs-on: macos-latest
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          app: ${{ matrix.app }}
+          compiler: clang
+          mpi: mpich
+          path: ${{ github.workspace }}

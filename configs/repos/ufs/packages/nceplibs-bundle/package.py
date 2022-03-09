@@ -53,6 +53,6 @@ class NceplibsBundle(BundlePackage):
     depends_on('w3emc')
     depends_on('w3nco')
     depends_on('wrf-io')
-    depends_on('wgrib2')
+    #depends_on('wgrib2')
 
     # There is no need for install() since there is no code.

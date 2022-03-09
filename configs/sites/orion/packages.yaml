@@ -1,22 +1,45 @@
 packages:
   all:
-    compiler:: [intel@2021.2]
+    compiler:: [intel@2021.2.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.2]
+      mpi:: [intel-oneapi-mpi@2021.2.0]
+
+### MPI, Python, MKL
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.2.0
+    - spec: intel-oneapi-mpi@2021.2.0%intel@2021.2.0
       prefix: /apps/intel-2021.2/intel-2021.2
       modules:
-      - impi/2021.2    
-  intel-mpi:
+      - impi/2021.2
+  #intel-oneapi-tbb:
+  #  externals:
+  #  - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
+  #    prefix: /apps/intel-2021.2/intel-2021.2
+  #    modules:
+  #    - intel/2021.2
+  #intel-oneapi-mkl:
+  #  externals:
+  #  - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
+  #    prefix: /apps/intel-2021.2/intel-2021.2
+  #    modules:
+  #    - intel/2021.2
+  #intel-mpi:
+  #  externals:
+  #  - spec: intel-mpi@2018.5.274%intel@2018.4
+  #    prefix: /apps/intel-2018/intel-2018.u4
+  #    modules:
+  #    - intel-mpi@2018.4
+  python:
+    buildable: False
     externals:
-    - spec: intel-mpi@2018.5.274%intel@2018.4
-      prefix: /apps/intel-2018/intel-2018.u4
+    - spec: python@3.9.7
+      prefix: /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7
       modules:
-      - intel-mpi@2018.4
+      - miniconda/3.9.7
+
+### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -83,15 +106,6 @@ packages:
     externals:
     - spec: gawk@4.0.2
       prefix: /usr
-  gcc:
-    externals:
-    - spec: gcc@4.8.5 languages=c,c++,fortran
-      prefix: /usr
-      extra_attributes:
-        compilers:
-          c: /usr/bin/gcc
-          cxx: /usr/bin/g++
-          fortran: /usr/bin/gfortran
   gettext:
     externals:
     - spec: gettext@0.19.8.1
@@ -162,12 +176,6 @@ packages:
     externals:
     - spec: pkg-config@0.27.1
       prefix: /usr
-  python:
-    externals:
-    - spec: python@3.7.5+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /apps/python-3.7.5
-      modules:
-      - python/3.7.5
   rsync:
     externals:
     - spec: rsync@3.1.2

@@ -1,0 +1,31 @@
+compilers::
+
+  - compiler:
+      spec: intel@2021.3.0
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      flags: {}
+      operating_system: cnl7
+      target: any
+      modules:
+      - PrgEnv-intel
+      - intel/2021.3.0
+      environment: {}
+      extra_rpaths: []
+
+  - compiler:
+      spec: gcc@7.5.0
+      paths:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        f77: /usr/bin/gfortran
+        fc: /usr/bin/gfortran
+      flags: {}
+      operating_system: cnl7
+      target: any
+      modules: []
+      environment: {}
+      extra_rpaths: []

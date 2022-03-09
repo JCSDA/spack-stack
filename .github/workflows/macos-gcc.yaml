@@ -1,4 +1,4 @@
-name: macOS-gcc-build
+name: macos-gcc-build
 on: workflow_dispatch
 
 # Use custom shell with -l so .bash_profile is sourced
@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-ufs, jedi-fv3, ufs-weather-model, nceplibs]
+        app: [jedi-ufs, jedi-um, jedi-fv3, jedi-tools, ufs-weather-model, nceplibs]
     runs-on: macos-latest
     steps:
 

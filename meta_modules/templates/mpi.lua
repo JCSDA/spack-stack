@@ -10,6 +10,7 @@ family("MetaMPI")
 -- conflicts
 conflict("stack-intel-mpi")
 conflict("stack-intel-oneapi-mpi")
+conflict("stack-cray-mpich")
 conflict("stack-mpich")
 conflict("stack-mpt")
 

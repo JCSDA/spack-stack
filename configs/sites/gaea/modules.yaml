@@ -1,0 +1,8 @@
+modules:
+  default:
+    enable::
+    - tcl
+    #tcl:
+    #  projections:
+    #    git: 'Core/{name}/{version}'
+    #    git-lfs: 'Core//{name}/{version}'

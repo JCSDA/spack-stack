@@ -11,6 +11,7 @@ from spack import *
 class JediUfsBundleEnv(BundlePackage):
     """Development environment for fv3-bundle"""
 
+    # DH* TODO UPDATE
     homepage = "https://github.com/JCSDA-internal/ufs-bundle"
     git      = "https://github.com/JCSDA-internal/ufs-bundle.git"
 
@@ -18,54 +19,23 @@ class JediUfsBundleEnv(BundlePackage):
 
     version('main', branch='main')
 
-    depends_on('base-env', type=('build', 'run'))
+    depends_on('base-env', type='run')
+    depends_on('jedi-base-env', type='run')
 
-    depends_on('ecbuild', type=('build', 'run'))
-    depends_on('jedi-cmake', type=('build', 'run'))
+    depends_on('jasper', type='run')
+    depends_on('libpng', type='run')
 
-    depends_on('eigen', type=('build', 'run'))
-    depends_on('gsl-lite', type=('build', 'run'))
-    depends_on('udunits', type=('build', 'run'))
+    depends_on('fms', type='run')
+    depends_on('esmf', type='run')
 
-    depends_on('boost cxxstd=14 visibility=hidden', type=('build', 'run'))
-    #depends_on('libbacktrace', type=('build', 'run'))
-    #depends_on('cgal+header_only', type=('build', 'run'))
+    depends_on('bacio',  type='run')
+    depends_on('crtm',   type='run')
+    depends_on('g2',     type='run')
+    depends_on('g2tmpl', type='run')
+    depends_on('ip',     type='run')
+    depends_on('sp',     type='run')
+    depends_on('w3nco',  type='run')
 
-    depends_on('blas',  type=('build', 'run'))
-    depends_on('eckit', type=('build', 'run'))
-    depends_on('fckit', type=('build', 'run'))
-    depends_on('atlas', type=('build', 'run'))
-
-    depends_on('git-lfs', type='run')
-
-    depends_on('fms', type=('build', 'run'))
-    depends_on('esmf', type=('build', 'run'))
-
-    depends_on('jasper', type=('build', 'run'))
-    depends_on('libpng', type=('build', 'run'))
-
-    depends_on('bacio',  type=('build', 'run'))
-    depends_on('crtm',   type=('build', 'run'))
-    depends_on('g2',     type=('build', 'run'))
-    depends_on('g2tmpl', type=('build', 'run'))
-    depends_on('ip',     type=('build', 'run'))
-    depends_on('sp',     type=('build', 'run'))
-    depends_on('w3nco',  type=('build', 'run'))
-
-    depends_on('gftl-shared', type=('build', 'run'))
-    depends_on('yafyaml',     type=('build', 'run'))
-    depends_on('mapl',        type=('build', 'run'))
-
-    depends_on('py-pandas', type=('build', 'run'))
-    depends_on('py-scipy', type=('build', 'run'))
-    depends_on('py-pybind11', type=('build', 'run'))
-    depends_on('py-h5py', type=('build', 'run'))
-    depends_on('py-netcdf4',  type=('build', 'run'))
-    depends_on('py-pycodestyle', type=('build', 'run'))
-    depends_on('py-pyyaml', type=('build', 'run'))
-    depends_on('py-python-dateutil', type=('build', 'run'))
-
-    depends_on('eccodes', type=('build', 'run'))
-    depends_on('py-eccodes', type=('build', 'run'))
-
-    depends_on('bufr', type=('build', 'run'))
+    depends_on('gftl-shared', type='run')
+    depends_on('yafyaml',     type='run')
+    depends_on('mapl',        type='run')

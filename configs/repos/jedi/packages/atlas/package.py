@@ -37,18 +37,21 @@ class Atlas(CMakePackage):
     patch('clang_include_array.patch', when='%apple-clang')
     patch('clang_include_array.patch', when='%clang')
 
-    #variant('transi', default=False)
-    #depends_on('transi', when='+transi')
+    variant('trans', default=False)
+    depends_on('trans', when='+trans')
     #variant('cgal', default=False)
     #depends_on('cgal', when='+cgal')
-    #variant('eigen3', default=False)
-    #depends_on('eigen3', when='+eigen3')
-    #variant('fftw', default=False)
-    #depends_on('fftw', when='+fftw')
+    variant('eigen', default=True)
+    depends_on('eigen', when='+eigen')
+    variant('fftw', default=True)
+    depends_on('fftw-api', when='+fftw')
 
     def cmake_args(self):
         res = [
                 self.define_from_variant('ENABLE_FCKIT', 'fckit'),
+                self.define_from_variant('ENABLE_TRANS', 'trans'),
+                self.define_from_variant('ENABLE_EIGEN', 'eigen'),
+                self.define_from_variant('ENABLE_FFTW',  'fftw'),
                 "-DPYTHON_EXECUTABLE:FILEPATH=" + self.spec['python'].command.path,
                 ] 
         return res

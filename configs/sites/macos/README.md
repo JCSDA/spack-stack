@@ -32,35 +32,17 @@ brew install git-lfs@3.0.2
 brew install lmod@8.6.6
 brew install wget@1.21.2
 brew install bash@5.1.16
-```
-- DH This should not be required, check!
-```
-#brew install libtiff
-```
-- DH Todo: fix stack build problems of eccodes on macOS!
-```
-# this also install jasper, zlib/szip, hdf5, netcdf which we
-# don't use but which we also don't want to have on the system
-# brew install eccodes@2.24.2
-```
 - Activate the `lua` module environment:
 ```
 source /usr/local/opt/lmod/init/profile
 ```
 
-## Building your own spack stack
-```
-git clone -b jcsda_emc_spack_stack --recursive https://github.com/climbfuji/spack-stack
-cd spack-stack
-export SPACK_BASE_DIR=$PWD
-source spack/share/spack/setup-env.sh
-rsync -av envs/ envs_macos/
-vi envs_macos/spack.yaml
-# comment out the "please_configure_your_site" site config and activate the macos site config
-spack env activate -p -d envs_macos
-spack install -v fv3-bundle-env 2>&1 | tee spack.install.fv3-bundle-env.log
-spack install -v ufs-bundle-env 2>&1 | tee spack.install.ufs-bundle-env.log
-spack module lmod refresh
-./meta_modules/setup_meta_modules.py
-```
+This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
+### Temporary workaround for pip installs in spack
+See https://github.com/spack/spack/issues/29308
+```
+which pip3
+# make sure this points to homebrew's pip3
+pip3 install poetry
+```

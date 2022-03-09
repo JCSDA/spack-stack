@@ -1,9 +1,83 @@
 modules:
   default:
     arch_folder: false
-    enable:
-    - lmod
+    tcl:
+      # Core compiler is a dummy that is not used to build the stack.
+      # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
+      core_compilers::
+      - gcc@4.6
+      projections:
+        all: '{compiler.name}/{compiler.version}/{name}/{version}'
+        ^mpi: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
+        nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
+      blacklist:
+      # List of packages for which we don't need modules
+      - berkeley-db
+      - bison
+      - bzip2
+      - curl
+      - diffutils
+      - expat
+      - findutils
+      - flex
+      - gdbm
+      - hwloc
+      - libaec
+      - libedit
+      - libevent
+      - libfabric
+      - libiconv
+      - libjpeg-turbo
+      - libpciaccess
+      - libsigsegv
+      - libxml
+      - libxml2
+      - lz4
+      - m4
+      - nasm
+      - ncurses
+      - openssh
+      - openssl
+      - perl
+      - pkgconf
+      - readline
+      - xz
+      # Do not create MPI modules - we create our own meta modules
+      - cray-mpich
+      - mpich
+      - openmpi
+      - intel-mpi
+      - intel-oneapi-mpi
+      # Do not create python modules - we create our own meta modules
+      - python
+      hash_length: 0
+      all:
+        autoload: direct
+        environment:
+          set:
+            '{name}_ROOT': '{prefix}'
+        suffixes:
+          +debug: 'debug'
+      esmf:
+        environment:
+          set:
+            'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+      libpng:
+        environment:
+          set:
+            'PNG_ROOT': '{prefix}'
+      mapl:
+        suffixes:
+          ^esmf@8.2.0~debug: 'esmf-8.2.0'
+          ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+          +debug^esmf~debug: 'debug-esmf-8.2.0'
+          +debug^esmf+debug: 'debug-esmf-8.2.0-debug'
+
     lmod:
+      # Core compiler is a dummy that is not used to build the stack.
+      # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
+      core_compilers::
+      - gcc@4.6
       projections:
         nlohmann-json: 'json/{version}'
       blacklist:
@@ -39,34 +113,37 @@ modules:
       - readline
       - xz
       # Do not create MPI modules - we create our own meta modules
+      - cray-mpich
       - mpich
       - openmpi
       - intel-mpi
       - intel-oneapi-mpi
       # Do not create python modules - we create our own meta modules
       - python
-
       hash_length: 0
-
       all:
+        autoload: direct
         environment:
           set:
             '{name}_ROOT': '{prefix}'
-            
+        suffixes:
+          +debug: 'debug'
       esmf:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
-
       libpng:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
-
+      mapl:
+        suffixes:
+          ^esmf@8.2.0~debug: 'esmf-8.2.0'
+          ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+          +debug^esmf~debug: 'debug-esmf-8.2.0'
+          +debug^esmf+debug: 'debug-esmf-8.2.0-debug'
       hierarchy:
       - mpi
-      #core_specs:
-      #- python
 
     prefix_inspections:
       bin:

@@ -1,50 +1,15 @@
 # Orion
-## General instructions for getting the module environment right/fixed
-```
+
+## General instructions/prerequisites
+
 module purge
-module unuse /apps/modulefiles/core
-export MODULEPATH_ROOT=$HOME/test_modulefiles
-module use /home/dheinzel/test_modulefiles/core
-```
 
-## Building your own spack stack
-```
-git clone -b jcsda_emc_spack_stack --recursive https://github.com/climbfuji/spack-stack
-cd spack-stack
-export SPACK_BASE_DIR=$PWD
-module load python/3.9.2
-source spack/share/spack/setup-env.sh
-rsync -av envs/ envs_orion/
-vi envs_orion/spack.yaml
-# comment out the "please_configure_your_site" site config and activate the orion site config
-spack env activate -p -d envs_orion
-spack install -v fv3-bundle-env 2>&1 | tee spack.install.fv3-bundle-env.log
-spack install -v ufs-bundle-env 2>&1 | tee spack.install.ufs-bundle-env.log
-spack module lmod refresh
-./meta_modules/setup_meta_modules.py
-```
+### One-off: prepare miniconda python3 environment
+See instructions in miniconda/README.md. Don't forget to log off and back on to forget about the conda environment.
 
-## Using spack stack
-### In general
+### Set up the user environment for working with spack/building new software environments
+This needs to be done every time before installing packages with spack or before using spack-provided modules!
 ```
-module use SPACK_BASE_DIR/envs_orion/install/modulefiles/Core
-module load stack-intel/19.1.2
-module load stack-intel-mpi/2019.8.254
-module load stack-python/3.9.2
-module li
-module av
-```
-
-### Build fv3-bundle
-```
-git clone -b fv3_bundle_jedi_spack_stack --recursive https://github.com/climbfuji/fv3-bundle
-cd fv3-bundle/buildscripts
-./build_cheyenne.sh 2>&1 | tee build_cheyenne.log
-```
-
-### Build ufs-weather-model
-```
-git clone -b ufs-weather-model-spack-stack --recursive https://github.com/climbfuji/ufs-weather-model
-cd ufs-weather-model/tests
-./compile.sh orion.intel '-DAPP=ATM -DCCPP_SUITES=FV3_GFS_v16,FV3_RAP' '' NO NO 2>&1 | tee compile.log
+module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
+module load miniconda/3.9.7
 ```
