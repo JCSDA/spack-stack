@@ -1,5 +1,86 @@
 spack:
+  mirrors:
+    local_filesystem: file:///home/username/spack-mirror-2014-06-24
+
   concretization: separately
   view: false
+
+  config:
+    install_hash_length: 7
+    install_tree:
+      root: install
+      projections:
+        all: "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
+    module_roots:
+      lmod: install/modulefiles
+      tcl: install/modulefiles
+
+    build_stage: ${SPACK_STACK_DIR}/cache/build_stage
+    test_stage: ${SPACK_STACK_DIR}/cache/test_stage
+    source_cache: ${SPACK_STACK_DIR}/cache/source_cache
+    misc_cache: ${SPACK_STACK_DIR}/cache/misc_cache
+
+  compilers:
+  - compiler:
+      spec: intel@19.1.3.304
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      flags: {}
+      operating_system: sles15
+      target: any
+      modules:
+      - envvar/1.0
+      - PrgEnv-intel/8.1.0
+      - craype/2.7.10
+      - intel/19.1.3.304
+      environment: {}
+      extra_rpaths: []
+
+  modules:
+    default:
+      arch_folder: false
+      lmod:
+        # Core compiler is a dummy that is not used to build the stack.
+        # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
+        core_compilers::
+        - gcc@4.6
+        hash_length: 0
+        all:
+          autoload: direct
+          environment:
+            set:
+              '{name}_ROOT': '{prefix}'
+        hierarchy:
+        - mpi
+      prefix_inspections:
+        bin:
+        - PATH
+        man:
+        - MANPATH
+        share/man:
+        - MANPATH
+        share/aclocal:
+        - ACLOCAL_PATH
+        lib:
+        - LIBRARY_PATH
+        - LD_LIBRARY_PATH
+        lib64:
+        - LIBRARY_PATH
+        - LD_LIBRARY_PATH
+        include:
+        - CPATH
+        lib/pkgconfig:
+        - PKG_CONFIG_PATH
+        lib64/pkgconfig:
+        - PKG_CONFIG_PATH
+        '':
+        - CMAKE_PREFIX_PATH
+  
+  include:
+    - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
+    
   specs:
-    - gsl-lite@0.40.0
+    - gsl-lite@0.40.0^cmake@3.20.1
