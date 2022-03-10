@@ -9,6 +9,10 @@ from argparse import RawTextHelpFormatter
 # Get directory of this script
 stack_dir = os.path.dirname(os.path.realpath(__file__))
 
+
+valid_configs = ['compilers.yaml', 'config.yaml', 'mirrors.yaml',
+                 'modules.yaml', 'packages.yaml', 'repos.yaml']
+
 # Get a path
 def stack_path(*paths):
     return os.path.join(stack_dir, *paths)
@@ -24,6 +28,8 @@ def create_site_config(site, env_dir):
                 with open(os.path.join(site_dir, config)) as tmp:
                     f.write(tmp.read())
                     f.write(os.linesep)
+            else:
+                shutil.copy2(os.path.join(site_dir, config), env_dir)
 
 def create_env_dir(name):
     # Create spack-stack/envs to hold envrionments, if it doesn't exist
@@ -87,10 +93,6 @@ Example usage:
     spack concretize
     spack install
 """
-
-valid_configs = ['compilers.yaml', 'config.yaml', 'mirrors.yaml', 
-    'modules.yaml', 'packages.yaml', 'repos.yaml']
-
 parser = argparse.ArgumentParser(description=description_text,
     epilog=epilog_text,
     formatter_class=RawTextHelpFormatter)
