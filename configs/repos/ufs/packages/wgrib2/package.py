@@ -128,6 +128,10 @@ class Wgrib2(MakefilePackage):
         makefile.filter(r'-openmp', '-qopenmp')
         makefile.filter(r'-Wall', ' ')
 
+        # clang doesn't understand --fast-math
+        if spec.satisfies('%clang') or spec.satisfies('%apple-clang'):
+            makefile.filter(r'--fast-math', '-ffast-math')
+
         for variant_name, makefile_option in self.variant_map.items():
             value = int(spec.variants[variant_name].value)
             makefile.filter(r'^%s=.*' % makefile_option,
