@@ -22,7 +22,7 @@ spack:
   
   include:
     - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
-    - external_packages.yaml
+    - site.yaml
     
   specs:
     - gsl-lite@0.40.0

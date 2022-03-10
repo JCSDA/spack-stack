@@ -98,7 +98,8 @@ parser = argparse.ArgumentParser(description=description_text,
 parser.add_argument('--site', type=str, required=True, help = site_help())
 parser.add_argument('--app', type=str, required=True, help = app_help())
 parser.add_argument('--name', type=str, required=False, help = 'Optional name for env dir. Defaults to app.site name.')
-parser.add_argument('--exlude-common-configs', type=bool, required=False, default = False, help='Ignore configs configs/common when creating environment')
+parser.add_argument('--exclude-common-configs', required=False, 
+    default = False, action='store_true', help='Ignore configs configs/common when creating environment')
 
 args = parser.parse_args()
 
