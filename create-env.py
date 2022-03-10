@@ -40,14 +40,15 @@ def create_env_dir(name):
 
     return env_dir
 
-def copy_configs(env_dir):
-    app_config = stack_path('configs', 'apps', app, 'spack.yaml')
-    shutil.copy2(app_config, env_dir)
-
+def copy_common_configs(env_dir):
     common_dir = stack_path('configs', 'common')
     common_configs = os.listdir(common_dir)
     for config in common_configs:
         shutil.copy2(os.path.join(common_dir, config), env_dir)
+
+def copy_app_config(env_dir):
+    app_config = stack_path('configs', 'apps', app, 'spack.yaml')
+    shutil.copy2(app_config, env_dir)
 
 def check_inputs(app, site):
     app_path = stack_path('configs', 'apps', app, 'spack.yaml')
@@ -97,14 +98,18 @@ parser = argparse.ArgumentParser(description=description_text,
 parser.add_argument('--site', type=str, required=True, help = site_help())
 parser.add_argument('--app', type=str, required=True, help = app_help())
 parser.add_argument('--name', type=str, required=False, help = 'Optional name for env dir. Defaults to app.site name.')
+parser.add_argument('--exlude-common-configs', type=bool, required=False, default = False, help='Ignore configs configs/common when creating environment')
 
 args = parser.parse_args()
 
 site = args.site
 app = args.app
+exclude_common_configs = args.exclude_common_configs
 env_name = args.name if args.name else "{}.{}".format(app, site)
 
 check_inputs(app, site)
 env_dir = create_env_dir(env_name)
-copy_configs(env_dir)
+if not exclude_common_configs:
+    copy_common_configs(env_dir)
+copy_app_config(env_dir)
 create_site_config(site, env_dir)
