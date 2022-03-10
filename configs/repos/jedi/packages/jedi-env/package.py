@@ -22,4 +22,5 @@ class JediEnv(BundlePackage):
     depends_on('jedi-fv3-bundle-env', type='run')
     depends_on('jedi-um-bundle-env',  type='run')
     depends_on('jedi-ufs-bundle-env', type='run')
-    depends_on('jedi-tools-env',      type='run')
+    # This is not needed on the HPCs
+    #depends_on('jedi-tools-env',      type='run')
