@@ -6,6 +6,7 @@ spack:
   view: false
 
   config:
+    build_jobs: 4
     install_hash_length: 7
     install_tree:
       root: install
