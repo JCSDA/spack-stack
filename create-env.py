@@ -9,6 +9,10 @@ from argparse import RawTextHelpFormatter
 # Get directory of this script
 stack_dir = os.path.dirname(os.path.realpath(__file__))
 
+
+valid_configs = ['compilers.yaml', 'config.yaml', 'mirrors.yaml',
+                 'modules.yaml', 'packages.yaml', 'repos.yaml']
+
 # Get a path
 def stack_path(*paths):
     return os.path.join(stack_dir, *paths)
@@ -24,6 +28,8 @@ def create_site_config(site, env_dir):
                 with open(os.path.join(site_dir, config)) as tmp:
                     f.write(tmp.read())
                     f.write(os.linesep)
+            else:
+                shutil.copy2(os.path.join(site_dir, config), env_dir)
 
 def create_env_dir(name):
     # Create spack-stack/envs to hold envrionments, if it doesn't exist
@@ -40,14 +46,15 @@ def create_env_dir(name):
 
     return env_dir
 
-def copy_configs(env_dir):
-    app_config = stack_path('configs', 'apps', app, 'spack.yaml')
-    shutil.copy2(app_config, env_dir)
-
+def copy_common_configs(env_dir):
     common_dir = stack_path('configs', 'common')
     common_configs = os.listdir(common_dir)
     for config in common_configs:
         shutil.copy2(os.path.join(common_dir, config), env_dir)
+
+def copy_app_config(env_dir):
+    app_config = stack_path('configs', 'apps', app, 'spack.yaml')
+    shutil.copy2(app_config, env_dir)
 
 def check_inputs(app, site):
     app_path = stack_path('configs', 'apps', app, 'spack.yaml')
@@ -86,10 +93,6 @@ Example usage:
     spack concretize
     spack install
 """
-
-valid_configs = ['compilers.yaml', 'config.yaml', 'mirrors.yaml', 
-    'modules.yaml', 'packages.yaml', 'repos.yaml']
-
 parser = argparse.ArgumentParser(description=description_text,
     epilog=epilog_text,
     formatter_class=RawTextHelpFormatter)
@@ -97,14 +100,19 @@ parser = argparse.ArgumentParser(description=description_text,
 parser.add_argument('--site', type=str, required=True, help = site_help())
 parser.add_argument('--app', type=str, required=True, help = app_help())
 parser.add_argument('--name', type=str, required=False, help = 'Optional name for env dir. Defaults to app.site name.')
+parser.add_argument('--exclude-common-configs', required=False, 
+    default = False, action='store_true', help='Ignore configs configs/common when creating environment')
 
 args = parser.parse_args()
 
 site = args.site
 app = args.app
+exclude_common_configs = args.exclude_common_configs
 env_name = args.name if args.name else "{}.{}".format(app, site)
 
 check_inputs(app, site)
 env_dir = create_env_dir(env_name)
-copy_configs(env_dir)
+if not exclude_common_configs:
+    copy_common_configs(env_dir)
+copy_app_config(env_dir)
 create_site_config(site, env_dir)

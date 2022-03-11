@@ -1,0 +1,83 @@
+modules::
+  enable:
+  - lmod
+  default:
+    arch_folder: false
+    lmod:
+      # Core compiler is a dummy that is not used to build the stack.
+      # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
+      core_compilers::
+      - gcc@4.6
+      blacklist:
+      # List of packages for which we don't need modules
+      - berkeley-db
+      - bison
+      - bzip2
+      - curl
+      - diffutils
+      - expat
+      - findutils
+      - flex
+      - gdbm
+      - hwloc
+      - libaec
+      - libedit
+      - libevent
+      - libfabric
+      - libiconv
+      - libjpeg-turbo
+      - libpciaccess
+      - libsigsegv
+      - libxml
+      - libxml2
+      - lz4
+      - m4
+      - nasm
+      - ncurses
+      - openssh
+      - openssl
+      - perl
+      - pkgconf
+      - readline
+      - xz
+      - cray-mpich
+      - mpich
+      - openmpi
+      - intel-mpi
+      - intel-oneapi-mpi
+      - python
+      - cmake
+
+      hash_length: 0
+      all:
+        environment:
+          set:
+            '{name}_ROOT': '{prefix}'
+        suffixes:
+          +debug: 'debug'
+      hierarchy:
+      - mpi
+
+    prefix_inspections:
+      bin:
+      - PATH
+      man:
+      - MANPATH
+      share/man:
+      - MANPATH
+      share/aclocal:
+      - ACLOCAL_PATH
+      lib:
+      - LIBRARY_PATH
+      - LD_LIBRARY_PATH
+      lib64:
+      - LIBRARY_PATH
+      - LD_LIBRARY_PATH
+      include:
+      - CPATH
+      lib/pkgconfig:
+      - PKG_CONFIG_PATH
+      lib64/pkgconfig:
+      - PKG_CONFIG_PATH
+      '':
+      - CMAKE_PREFIX_PATH
