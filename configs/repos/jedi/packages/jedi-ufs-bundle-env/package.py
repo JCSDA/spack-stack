@@ -22,20 +22,21 @@ class JediUfsBundleEnv(BundlePackage):
     depends_on('base-env', type='run')
     depends_on('jedi-base-env', type='run')
 
-    depends_on('jasper', type='run')
-    depends_on('libpng', type='run')
-
-    depends_on('fms', type='run')
-    depends_on('esmf', type='run')
-
-    depends_on('bacio',  type='run')
-    depends_on('crtm',   type='run')
-    depends_on('g2',     type='run')
-    depends_on('g2tmpl', type='run')
-    depends_on('ip',     type='run')
-    depends_on('sp',     type='run')
-    depends_on('w3nco',  type='run')
-
-    depends_on('gftl-shared', type='run')
-    depends_on('yafyaml',     type='run')
-    depends_on('mapl',        type='run')
+    depends_on('ufs-weather-model-env', type='run')
+    #depends_on('jasper', type='run')
+    #depends_on('libpng', type='run')
+    #
+    #depends_on('fms', type='run')
+    #depends_on('esmf', type='run')
+    #
+    #depends_on('bacio',  type='run')
+    #depends_on('crtm',   type='run')
+    #depends_on('g2',     type='run')
+    #depends_on('g2tmpl', type='run')
+    #depends_on('ip',     type='run')
+    #depends_on('sp',     type='run')
+    #depends_on('w3nco',  type='run')
+    #
+    #depends_on('gftl-shared', type='run')
+    #depends_on('yafyaml',     type='run')
+    #depends_on('mapl',        type='run')
