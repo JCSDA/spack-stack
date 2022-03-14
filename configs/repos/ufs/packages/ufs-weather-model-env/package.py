@@ -31,6 +31,6 @@ class UfsWeatherModelEnv(BundlePackage):
     depends_on('ip', type='run')
     depends_on('sp', type='run')
     depends_on('w3nco', type='run')
-    
-    depends_on('mapl', type='run')
 
+    depends_on('mapl', type='run')
+    depends_on('mapl+debug', type='run')
