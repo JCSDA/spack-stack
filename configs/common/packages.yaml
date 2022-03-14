@@ -149,6 +149,7 @@
       version: [2.11.0]
     openblas:
       version: [0.3.19]
+      variants: +noavx512
     fftw:
       version: [3.3.10]
     py-numpy:

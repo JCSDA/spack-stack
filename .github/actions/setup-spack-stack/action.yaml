@@ -86,13 +86,6 @@ runs:
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      if [[ "${{ inputs.compiler }}" == "intel" ]]; then
-        # Problem with ifort "internal error: 04010003_1159"
-        # Disable AVX-512 for openblas by setting haswell arch
-        spack config add "packages:openblas:target:[haswell]"
-        spack config add "packages:all:target:[haswell]"
-      fi
-
       cd ${{ inputs.path }}/envs/${{ inputs.app }}
 
       if [ "$RUNNER_OS" == "Linux" ]; then
