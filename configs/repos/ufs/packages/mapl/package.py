@@ -47,6 +47,7 @@ class Mapl(CMakePackage):
     variant('pflogger', default=False)
     variant('esma_gfe_namespace', default=True)
     variant('shared', default=True)
+    variant('debug', default=False, description='Make a debuggable version of the library')
 
     depends_on('mpi')
     depends_on('hdf5')
