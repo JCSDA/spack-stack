@@ -33,17 +33,12 @@ class Fckit(CMakePackage):
     variant('eckit', default=True)
     depends_on('eckit+mpi', when='+eckit')
 
-    # DH* Note. Switch to use static not yet implemented
     variant('shared', default=True)
 
     # Patch
     patch('libstdc++.patch')
 
     def cmake_args(self):
-        # DH*
-        if not '+shared' in self.spec:
-            raise InstallError("Static build not yet configured")
-        # *DH
         res = [
                 self.define_from_variant('ENABLE_ECKIT', 'eckit'),
                 '-DCMAKE_C_COMPILER=%s' % self.spec['mpi'].mpicc,
@@ -52,6 +47,9 @@ class Fckit(CMakePackage):
                 "-DPYTHON_EXECUTABLE:FILEPATH=" + self.spec['python'].command.path,
                 '-DFYPP_NO_LINE_NUMBERING=ON'
                 ]
+        if '~shared' in self.spec:
+            res.append('-DBUILD_SHARED_LIBS=OFF')
+
         # Add Fortran runtime libraries to cxxflags to fix a weird bug on Cheyenne
         cxxflags = []
         if self.spec.satisfies('%intel') and any('-gxx-name' in string for string in self.spec.compiler_flags['cxxflags']):
