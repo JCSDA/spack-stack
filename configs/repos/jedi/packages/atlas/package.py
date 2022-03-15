@@ -37,6 +37,8 @@ class Atlas(CMakePackage):
     patch('clang_include_array.patch', when='%apple-clang')
     patch('clang_include_array.patch', when='%clang')
 
+    variant('shared', default=True)
+
     variant('trans', default=False)
     depends_on('trans', when='+trans')
     #variant('cgal', default=False)
@@ -54,5 +56,7 @@ class Atlas(CMakePackage):
                 self.define_from_variant('ENABLE_FFTW',  'fftw'),
                 "-DPYTHON_EXECUTABLE:FILEPATH=" + self.spec['python'].command.path,
                 ] 
+        if '~shared' in self.spec:
+            res.append('-DBUILD_SHARED_LIBS=OFF')
         return res
 

@@ -15,7 +15,6 @@ modules:
       - berkeley-db
       - bison
       - bzip2
-      - curl
       - diffutils
       - expat
       - findutils
@@ -85,7 +84,6 @@ modules:
       - berkeley-db
       - bison
       - bzip2
-      - curl
       - diffutils
       - expat
       - findutils
