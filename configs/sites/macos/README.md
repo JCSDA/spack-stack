@@ -46,3 +46,8 @@ which pip3
 # make sure this points to homebrew's pip3
 pip3 install poetry
 ```
+
+### Known issues
+1. Error `invalid argument '-fgnu89-inline' not allowed with 'C++'`
+This error came up on macOS Monterey with mpich-3.4.3 installed via homebrew when trying to build the jedi bundles that use `ecbuild`. The reason was that the C compiler flag `-fgnu89-inline` from `/usr/local/Cellar/mpich/3.4.3/lib/pkgconfig/mpich.pc` was added to the C++ compiler flags by ecbuild. The solution was to set
+`CC=mpicc FC=mpif90 CXX=mpicxx` when calling `ecbuild` for those bundles.

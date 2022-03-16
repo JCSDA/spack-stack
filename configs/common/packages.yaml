@@ -14,20 +14,15 @@
     hdf5:
       version: [1.12.1]
       variants: +hl +fortran +mpi +threadsafe
-    # Attention - when updating also check cheyenne site config
     parallel-netcdf:
       version: [1.12.2]
-    # Attention - when updating also check cheyenne site config
     netcdf-c:
       version: [4.7.4]
       variants: +dap +mpi +parallel-netcdf
-    # Attention - when updating also check cheyenne site config
     netcdf-fortran:
       version: [4.5.3]
-    # Attention - when updating also check cheyenne site config
     netcdf-cxx4:
       version: [4.3.1]
-    # Attention - when updating also check cheyenne site config
     parallelio:
       version: [2.5.2]
       variants: +pnetcdf
@@ -37,10 +32,8 @@
       version: [9.1.0]
     libpng:
       version: [1.6.37]
-    # Attention - when updating also check gaea site config
     libjpeg-turbo:
       version: [2.1.0]
-    # Attention - when updating also check gaea site config
     jasper:
       version: [2.0.32]
     eccodes:
