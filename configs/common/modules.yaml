@@ -69,8 +69,6 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
-          +debug^esmf~debug: 'debug-esmf-8.2.0'
-          +debug^esmf+debug: 'debug-esmf-8.2.0-debug'
 
     lmod:
       # Core compiler is a dummy that is not used to build the stack.
@@ -138,8 +136,6 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
-          +debug^esmf~debug: 'debug-esmf-8.2.0'
-          +debug^esmf+debug: 'debug-esmf-8.2.0-debug'
       hierarchy:
       - mpi
 

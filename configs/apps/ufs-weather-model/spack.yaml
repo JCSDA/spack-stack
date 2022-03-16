@@ -11,3 +11,4 @@ spack:
 
   specs:
     - ufs-weather-model-env
+    - ufs-weather-model-debug-env

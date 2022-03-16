@@ -9,4 +9,8 @@ spack:
     - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
 
   specs:
-    - jedi-env
+    - jedi-fv3-bundle-env
+    - jedi-ufs-bundle-env
+    - jedi-um-bundle-env
+    # Do not add, this leads to duplicate packages being installed
+    #- jedi-tools-env
