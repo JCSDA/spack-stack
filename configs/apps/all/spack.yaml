@@ -12,4 +12,5 @@ spack:
     - jedi-fv3-bundle-env
     - jedi-ufs-bundle-env
     - ufs-weather-model-env
+    - ufs-weather-model-debug-env
     - nceplibs-bundle
