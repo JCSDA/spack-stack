@@ -30,7 +30,7 @@ class Shumlib(MakefilePackage):
 
     def build(self, spec, prefix):
         # DH* TODO: SWITCH FOR DIFFERENT ARCHITECTURES
-        if spec.satisfies('%clang'):
+        if spec.satisfies('%clang') or spec.satisfies('%apple-clang'):
             os.system('make -f make/vm-x86-gfortran-clang.mk')
         #elif spec.satisfies('%gcc'):
         else:
