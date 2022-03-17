@@ -10,6 +10,7 @@ modules:
         all: '{compiler.name}/{compiler.version}/{name}/{version}'
         ^mpi: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
+        nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
       blacklist:
       # List of packages for which we don't need modules
       - berkeley-db
@@ -77,6 +78,7 @@ modules:
       - gcc@4.6
       projections:
         nlohmann-json: 'json/{version}'
+        nlohmann-json-schema-validator: 'json-schema-validator/{version}'
       blacklist:
       # List of packages for which we don't need modules
       - berkeley-db

@@ -38,6 +38,8 @@ class JediBaseEnv(BundlePackage):
     depends_on('eckit', type='run')
     depends_on('fckit', type='run')
     depends_on('atlas', type='run')
+    depends_on('nlohmann-json', type='run')
+    depends_on('nlohmann-json-schema-validator', type='run')
 
     # Todo: check where all of this needs to be - jedi-base-env or one of the bundles?
     #depends_on('cgal+header_only', type='run')
