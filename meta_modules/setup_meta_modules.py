@@ -220,10 +220,6 @@ for compiler in compiler_config:
             substitutes['ENVVARS'] = substitutes['ENVVARS'].rstrip('\n')
             logging.debug("  ... ... ENVVARS  : {}".format(substitutes['ENVVARS']))
 
-        # Extra rpaths - not supported
-        if compiler['compiler']['extra_rpaths']:
-            raise Exception("Support for extra_rpaths not yet implemented")
-
         # Spack compiler module hierarchy
         substitutes['MODULEPATH'] = os.path.join(module_dir, compiler_name, compiler_version)
         logging.debug("  ... ... MODULEPATH  : {}".format(substitutes['MODULEPATH']))
