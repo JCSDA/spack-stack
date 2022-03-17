@@ -2,12 +2,8 @@
 spack:
   concretization: separately
   view: false
-  include:
-    - site.yaml
-    - config.yaml
-    - packages.yaml
-    - modules.yaml
-    - ${SPACK_STACK_DIR}/configs/repos/repos.yaml
+
+  @CONFIG_INCLUDES@
 
   specs:
     - nceplibs-bundle
