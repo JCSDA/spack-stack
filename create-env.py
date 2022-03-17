@@ -61,7 +61,8 @@ def copy_app_config(app, env_dir):
             configs = list(filter(lambda f: f in valid_configs, listdir(config_dir)))
             configs = map(lambda conf: '  - {}/{}'.format(config_type, conf), configs)
             includes += configs
-        
+    # Always include the repos (could be an option to point somewhere else) or not at all
+    includes += ['  - ${SPACK_STACK_DIR}/configs/repos/repos.yaml']
     includes.insert(0, 'include:') if includes else includes.insert(0, '')
     new_contents = contents.replace('@CONFIG_INCLUDES@', linesep.join(includes))
 
@@ -118,7 +119,7 @@ parser = argparse.ArgumentParser(description=description_text,
                                  epilog=epilog_text,
                                  formatter_class=RawTextHelpFormatter)
 
-parser.add_argument('--site', type=str, required=False, nargs='?', const='default', help=site_help())
+parser.add_argument('--site', type=str, required=False, nargs='?', default='default', help=site_help())
 parser.add_argument('--app', type=str, required=True, help=app_help())
 parser.add_argument('--name', type=str, required=False,
                     help='Optional name for env dir. Defaults to app.site name.')
