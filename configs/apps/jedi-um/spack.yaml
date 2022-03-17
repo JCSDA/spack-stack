@@ -1,7 +1,8 @@
 spack:
   concretization: separately
   view: false
-  include:
+
+  @CONFIG_INCLUDES@
   
   specs:
   - jedi-um-bundle-env

@@ -2,7 +2,8 @@
 spack:
   concretization: separately
   view: false
-  include:
+  
+  @CONFIG_INCLUDES@
 
 # File in specs
   specs:  
