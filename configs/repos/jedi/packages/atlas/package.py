@@ -40,7 +40,7 @@ class Atlas(CMakePackage):
     variant('shared', default=True)
 
     variant('trans', default=False)
-    depends_on('trans', when='+trans')
+    depends_on('ectrans', when='+trans')
     #variant('cgal', default=False)
     #depends_on('cgal', when='+cgal')
     variant('eigen', default=True)

@@ -23,5 +23,5 @@ class JediUmBundleEnv(BundlePackage):
     depends_on('jedi-base-env', type='run')
 
     depends_on('shumlib', type='run')
-    depends_on('faux', type='run')
-    depends_on('trans', type='run')
+    depends_on('fiat', type='run')
+    depends_on('ectrans', type='run')
