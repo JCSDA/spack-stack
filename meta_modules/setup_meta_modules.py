@@ -100,7 +100,10 @@ def substitute_config_vars(config_str):
                   'USER': os.getenv('HOME'),
                   'USER_CACHE_PATH': os.path.join(os.getenv('HOME'), '.spack')
                   }
-
+    
+    if config_str.startswith('~'):
+        config_str = config_str.replace('~', os.getenv('HOME'))
+        
     # Get var as it appears in the string (e.g. ${env}), and its name (e.g. env)
     matches = re.findall(r'(\$(\w+))|(\${(\w+)})', config_str)
     for match in matches:
