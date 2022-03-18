@@ -183,6 +183,8 @@
       version: [1.55]
     py-openpyxl:
       version: [3.0.3]
+    py-setuptools:
+      version: [57.4.0]
     diffutils:
       version: [3.7]
     findutils:
