@@ -153,9 +153,11 @@ modules:
       lib:
       - LIBRARY_PATH
       - LD_LIBRARY_PATH
+      - DYLD_LIBRARY_PATH
       lib64:
       - LIBRARY_PATH
       - LD_LIBRARY_PATH
+      - DYLD_LIBRARY_PATH
       include:
       - CPATH
       lib/pkgconfig:
