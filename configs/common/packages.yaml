@@ -133,11 +133,11 @@
       variants: +fckit
     shumlib:
       version: [macos_clang_port]
-    faux:
+    fiat:
       version: [develop]
-    # Attention - when updating also check macos site config
-    trans:
+    ectrans:
       version: [develop]
+      variants: ~enable_mkl
     git-lfs:
       version: [2.11.0]
     openblas:
