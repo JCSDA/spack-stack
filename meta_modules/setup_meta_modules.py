@@ -6,6 +6,7 @@ logging.basicConfig(level=logging.DEBUG)
 import os
 import shutil
 import sys
+import re
 
 # Get basic directory information
 logging.info("Configuring basic directory information ...")
@@ -87,6 +88,35 @@ def module_prereq_command(module_choice, module):
     else:
         return ''
 
+def substitute_config_vars(config_str):
+    """ 
+    Substitute spack-specific and environment variables that may be present
+    in configuration files
+    See https://spack.readthedocs.io/en/latest/configuration.html#config-file-variables
+    """
+    spack_vars = {'ENV': os.getenv('SPACK_ENV'),
+                  'SPACK': os.getenv('SPACK_ROOT'),
+                  'TEMPDIR': None,
+                  'USER': os.getenv('HOME'),
+                  'USER_CACHE_PATH': os.path.join(os.getenv('HOME'), '.spack')
+                  }
+
+    # Get var as it appears in the string (e.g. ${env}), and its name (e.g. env)
+    matches = re.findall(r'(\$(\w+))|(\${(\w+)})', config_str)
+    for match in matches:
+        if match[0]:
+            pair = (match[0], match[1])
+        else:
+            pair = (match[2], match[3])
+
+        var_string = pair[0]
+        var_name = pair[1].upper()
+
+        sub_value = spack_vars[var_name] if spack_vars[var_name] else os.getenv(var_name)
+        config_str = config_str.replace(var_string, sub_value)
+
+    return config_str
+
 # Find currently active spack environment, activate here
 logging.info("Configuring active spack environment ...")
 env_dir=os.getenv('SPACK_ENV')
@@ -99,7 +129,8 @@ logging.info("  ... environment directory: {}".format(env_dir))
 # Parse spack main config from environment
 logging.info("Parsing spack environment main config ...")
 main_config = spack.config.get('config')
-install_dir = main_config['install_tree']['root']
+install_dir = substitute_config_vars(main_config['install_tree']['root'])
+
 if not os.path.isabs(install_dir):
     install_dir = os.path.realpath(os.path.join(env_dir, install_dir))
 else:
@@ -143,7 +174,7 @@ if len(module_config['default']['enable'])>1:
 module_choice = module_config['default']['enable'][0]
 logging.info("  ... configured to use {} modules".format(module_choice))
 
-module_dir = main_config['module_roots'][module_choice]
+module_dir = substitute_config_vars(main_config['module_roots'][module_choice])
 if not os.path.isabs(module_dir):
     module_dir = os.path.realpath(os.path.join(env_dir, module_dir))
 else:
@@ -486,4 +517,3 @@ for package_name in package_config.keys():
                 with open(python_module_file, 'w') as f:
                     f.write(module_content)
                 logging.info("  ... writing {}".format(python_module_file))
-
