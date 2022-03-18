@@ -32,6 +32,7 @@ brew install git-lfs@3.0.2
 brew install lmod@8.6.6
 brew install wget@1.21.2
 brew install bash@5.1.16
+```
 - Activate the `lua` module environment:
 ```
 source /usr/local/opt/lmod/init/profile
@@ -45,9 +46,13 @@ See https://github.com/spack/spack/issues/29308
 which pip3
 # make sure this points to homebrew's pip3
 pip3 install poetry
+# test - successful if no output
+python3 -c "import poetry"
 ```
 
 ### Known issues
 1. Error `invalid argument '-fgnu89-inline' not allowed with 'C++'`
 This error came up on macOS Monterey with mpich-3.4.3 installed via homebrew when trying to build the jedi bundles that use `ecbuild`. The reason was that the C compiler flag `-fgnu89-inline` from `/usr/local/Cellar/mpich/3.4.3/lib/pkgconfig/mpich.pc` was added to the C++ compiler flags by ecbuild. The solution was to set
 `CC=mpicc FC=mpif90 CXX=mpicxx` when calling `ecbuild` for those bundles.
+2. Installation of `poetry` using `pip3` or test with `python3` fails
+This can happen when multiple versions of Python were installed with `brew` and `pip3`/`python3` point to different versions. Run `brew doctor` and check if there are issues with Python not being properly linked. Follow the instructions given by `brew`, if applicable.

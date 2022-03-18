@@ -20,18 +20,14 @@ module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
 module load miniconda/3.9.7
 which python3
 # make sure this points to the new miniconda install
-which pip3
-# make sure this points to the new miniconda install
-pip3 install poetry
-# ignore warnings/errors about pip's dependency resolver
-# test:
-python3 -c "import poetry"
-# successful if silent
 ```
-DOM: TEST IF THE PIP INSTALL CAN BE COMBINED WITH THIS
+Install two packages required for building Python modules with spack using conda
 ```
 eval "$(/scratch1/BMC/gsd-hpcs/Dom.Heinzeller/spack-stack/miniconda-3.9.7/bin/conda shell.bash hook)"
-conda install -c conda-forge libpython-static`
+conda install -c conda-forge libpython-static
+conda install poetry
+# Test, successful if silent
+python3 -c "import poetry"
 # log out to forget about the conda environment
 ```
 
