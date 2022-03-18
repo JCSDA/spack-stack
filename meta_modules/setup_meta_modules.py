@@ -89,6 +89,11 @@ def module_prereq_command(module_choice, module):
         return ''
 
 def substitute_config_vars(config_str):
+    """ 
+    Substitute spack-specific and environment variables that may be present
+    in configuration files
+    See https://spack.readthedocs.io/en/latest/configuration.html#config-file-variables
+    """
     spack_vars = {'ENV': os.getenv('SPACK_ENV'),
                   'SPACK': os.getenv('SPACK_ROOT'),
                   'TEMPDIR': None,
@@ -169,7 +174,7 @@ if len(module_config['default']['enable'])>1:
 module_choice = module_config['default']['enable'][0]
 logging.info("  ... configured to use {} modules".format(module_choice))
 
-module_dir = main_config['module_roots'][module_choice]
+module_dir = substitute_config_vars(main_config['module_roots'][module_choice])
 if not os.path.isabs(module_dir):
     module_dir = os.path.realpath(os.path.join(env_dir, module_dir))
 else:
