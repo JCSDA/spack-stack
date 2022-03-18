@@ -14,7 +14,6 @@ This needs to be done every time before installing packages with spack or before
 
 Note. Temporary location, this needs to be moved elsewhere.
 ```
-module purge
 module use /scratch1/BMC/gsd-hpcs/Dom.Heinzeller/spack-stack/modulefiles
 module load miniconda/3.9.7
 ````
