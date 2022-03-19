@@ -55,7 +55,7 @@ def copy_app_config(app, env_dir):
         contents = f.read()
 
     includes = []
-    for config_type in ['common', 'site']:
+    for config_type in ['site', 'common']:
         config_dir = stack_path(env_dir, config_type)
         if path.isdir(config_dir):
             configs = list(filter(lambda f: f in valid_configs, listdir(config_dir)))
