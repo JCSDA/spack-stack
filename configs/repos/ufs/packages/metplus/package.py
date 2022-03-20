@@ -31,7 +31,7 @@ class Metplus(Package):
             conf = 'metplus_system.conf'
 
         metplus_config = FileFilter(
-            join_path('parm', 'metplus_config', 'defaults.conf'))
+            join_path('parm', 'metplus_config', conf))
 
         met_prefix = spec['met'].prefix
         metplus_config.filter(r'MET_INSTALL_DIR = /path/to',
