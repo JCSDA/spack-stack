@@ -102,7 +102,7 @@ class Met(AutotoolsPackage):
             g2c = spec['g2c']
             g2c_libdir = find_libraries('libg2c', root=g2c.prefix,
                                         shared=False, recursive=True).directories[0]
-            env.set('MET_GRIB2CLIB', g2c.prefix.lib)
+            env.set('MET_GRIB2CLIB', g2c_libdir)
             env.set('GRIB2CLIB_NAME', '-lg2c')
 
         if '+python' in spec:
