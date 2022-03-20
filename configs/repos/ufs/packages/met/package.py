@@ -132,19 +132,19 @@ class Met(AutotoolsPackage):
         args = []
         spec = self.spec
 
-        if spec.satisfies('+grib2'):
+        if '+grib2' in spec:
             args.append('--enable-grib2')
 
-        if spec.satisfies('+python'):
+        if '+python' in spec:
             args.append('--enable-python')
 
-        if spec.satisfies('-openmp'):
+        if '~openmp' in spec:
             args.append('--disable-openmp')
 
-        if spec.satisfies('+lidar2nc'):
+        if '+lidar2nc' in spec:
             args.append('--enable-lidar2nc')
 
-        if spec.satisfies('+modis'):
+        if '+modis' in spec:
             args.append('--enable-modis')
         
         if '+graphics' in spec:
