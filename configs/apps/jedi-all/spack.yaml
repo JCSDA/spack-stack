@@ -10,3 +10,4 @@ spack:
     - jedi-um-bundle-env
     # Do not add, this leads to duplicate packages being installed
     #- jedi-tools-env
+    - soca-bundle-env
