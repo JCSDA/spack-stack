@@ -1,0 +1,33 @@
+compilers:
+- compiler:
+    spec: intel@2021.5.0
+    paths:
+      cc: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/icc
+      cxx: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/icpc
+      f77: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
+      fc: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: centos7
+    target: any
+    modules:
+    - intel/2022.1.2
+    environment:
+      prepend_path:
+        PATH: '/apps/gnu/gcc-9.2.0/bin'
+        LD_LIBRARY_PATH: '/apps/gnu/gcc-9.2.0/lib64'
+        CPATH: '/apps/gnu/gcc-9.2.0/include'
+    extra_rpaths: []
+- compiler:
+    spec: gcc@9.2.0
+    paths:
+      cc: /apps/gnu/gcc-9.2.0/bin/gcc
+      cxx: /apps/gnu/gcc-9.2.0/bin/g++
+      f77: /apps/gnu/gcc-9.2.0/bin/gfortran
+      fc:  /apps/gnu/gcc-9.2.0/bin/gfortran
+    flags: {}
+    operating_system: centos7
+    target: any
+    modules:
+    - gnu/9.2.0
+    environment: {}
+    extra_rpaths: []
