@@ -1,61 +1,28 @@
 packages:
   all:
-    compiler:: [intel@2021.2.0]
+    compiler:: [intel@2021.5.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.2.0]
-
-### MPI, Python, MKL
+      mpi:: [intel-oneapi-mpi@2021.5.1]
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.5.1%intel@2021.5.0
-      prefix: /apps/intel-2022.1.2/intel-2022.1.2
       modules:
       - impi/2022.1.2
-    - spec: intel-oneapi-mpi@2021.2.0%intel@2021.2.0
-      prefix: /apps/intel-2021.2/intel-2021.2
-      modules:
-      - impi/2021.2
-  mpich:
-    externals:
-    - spec: mpich@3.3.2%gcc@10.2.0~hydra device=ch3
-      prefix: /apps/gcc-10.2.0/mpich-3.3.2/mpich-3.3.2
-      modules:
-      - mpich/3.3.2
+      prefix: /apps/oneapi
   openmpi:
     externals:
-    - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+pmix~sqlite3~static~thread_multiple~wrapper-rpath fabrics=ucx schedulers=slurm
-      prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
+    - spec: openmpi@3.1.4%gcc@9.2.0~cuda+cxx+cxx_exceptions~java~memchecker+pmi+pmix~sqlite3+static~thread_multiple~wrapper-rpath fabrics=mxm schedulers=slurm
       modules:
-      - openmpi/4.0.4
-  #intel-oneapi-tbb:
-  #  externals:
-  #  - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
-  #    prefix: /apps/intel-2021.2/intel-2021.2
-  #    modules:
-  #    - intel/2021.2
-  #intel-oneapi-mkl:
-  #  externals:
-  #  - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
-  #    prefix: /apps/intel-2021.2/intel-2021.2
-  #    modules:
-  #    - intel/2021.2
-  #intel-mpi:
-  #  externals:
-  #  - spec: intel-mpi@2018.5.274%intel@2018.4
-  #    prefix: /apps/intel-2018/intel-2018.u4
-  #    modules:
-  #    - intel-mpi@2018.4
+      - openmpi/3.1.4
   python:
     buildable: False
     externals:
-    - spec: python@3.9.7
-      prefix: /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7
+    - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
       modules:
       - miniconda/3.9.7
-
-### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -80,16 +47,6 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.22.1
-      prefix: /apps/cmake-3.22.1
-      modules: 
-      - cmake/3.22.1
-    - spec: cmake@3.18.1
-      prefix: /apps/cmake-3.18.1
-      modules:
-      - cmake/3.18.1
   cpio:
     externals:
     - spec: cpio@2.11
@@ -128,29 +85,35 @@ packages:
       prefix: /usr
   ghostscript:
     externals:
-    - spec: ghostscript@9.07
+    - spec: ghostscript@9.25
       prefix: /usr
   git:
     externals:
-    - spec: git@2.28.0+tcltk
-      prefix: /apps/git-2.28.0
-    - spec: git@1.8.3.1~tcltk
+    - spec: git@2.18.0+tcltk
       prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@2.12.0
-      prefix: /apps/git-2.28.0
+    - spec: git-lfs@2.10.0
+      prefix: /usr
   gmake:
     externals:
     - spec: gmake@3.82
+      prefix: /usr
+  go:
+    externals:
+    - spec: go@1.16.13
       prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.2
       prefix: /usr
+  hwloc:
+    externals:
+    - spec: hwloc@1.11.8
+      prefix: /usr
   openjdk:
     externals:
-    - spec: openjdk@1.8.0_222-b10
+    - spec: openjdk@1.8.0_322-b06
       prefix: /usr
   krb5:
     externals:
@@ -166,7 +129,7 @@ packages:
       prefix: /usr
   lustre:
     externals:
-    - spec: lustre@2.12.6_ddn51
+    - spec: lustre@2.12.6_ddn62
       prefix: /usr
   m4:
     externals:
@@ -174,6 +137,8 @@ packages:
       prefix: /usr
   ncurses:
     externals:
+    - spec: ncurses@6.3.20211021+termlib abi=6
+      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
     - spec: ncurses@5.9.20130511+termlib abi=5
       prefix: /usr
   openssh:
@@ -182,11 +147,13 @@ packages:
       prefix: /usr
   openssl:
     externals:
+    - spec: openssl@1.1.1m
+      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
     - spec: openssl@1.0.2k-fips
       prefix: /usr
   perl:
     externals:
-    - spec: perl@5.16.3+cpanm+shared+threads
+    - spec: perl@5.16.3~cpanm+shared+threads
       prefix: /usr
   pkg-config:
     externals:
@@ -206,8 +173,8 @@ packages:
       prefix: /usr
   sqlite:
     externals:
-    - spec: sqlite@3.7.17~fts~functions+rtree
-      prefix: /usr
+    - spec: sqlite@3.37.0+fts~functions+rtree
+      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
   tar:
     externals:
     - spec: tar@1.26
@@ -216,14 +183,10 @@ packages:
     externals:
     - spec: texinfo@5.1
       prefix: /usr
-  texlive:
-    externals:
-    - spec: texlive@20130530
-      prefix: /usr
   xz:
     externals:
-    - spec: xz@5.2.2
-      prefix: /usr
+    - spec: xz@5.2.5
+      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
   zip:
     externals:
     - spec: zip@3.0
