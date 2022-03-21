@@ -144,7 +144,9 @@ logging.info("  ... install directory: {}".format(install_dir))
 logging.info("Parsing spack environment package config ...")
 package_config = spack.config.get('packages')
 compiler_list = package_config['all']['compiler']
+logging.debug("  ... list of compilers: '{}'".format(compiler_list))
 mpi_list = package_config['all']['providers']['mpi']
+logging.debug("  ... list of mpi libraries: '{}'".format(mpi_list))
 #
 #if len(compiler_list)>1 or len(mpi_list)>1:
 #    raise Exception("Currently not supported: More than one compiler or mpi provider per environment")
