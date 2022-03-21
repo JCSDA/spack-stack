@@ -195,3 +195,8 @@
       variants: +internal-hwloc
     mpich:
       variants: ~hwloc
+    met:
+      version: [10.1.0]
+      variants: +python +grib2
+    metplus:
+      version: [4.1.0]
