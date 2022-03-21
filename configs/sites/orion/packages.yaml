@@ -9,10 +9,26 @@ packages:
     buildable: False
   intel-oneapi-mpi:
     externals:
+    - spec: intel-oneapi-mpi@2021.5.1%intel@2021.5.0
+      prefix: /apps/intel-2022.1.2/intel-2022.1.2
+      modules:
+      - impi/2022.1.2
     - spec: intel-oneapi-mpi@2021.2.0%intel@2021.2.0
       prefix: /apps/intel-2021.2/intel-2021.2
       modules:
       - impi/2021.2
+  mpich:
+    externals:
+    - spec: mpich@3.3.2%gcc@10.2.0~hydra device=ch3
+      prefix: /apps/gcc-10.2.0/mpich-3.3.2/mpich-3.3.2
+      modules:
+      - mpich/3.3.2
+  openmpi:
+    externals:
+    - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+pmix~sqlite3~static~thread_multiple~wrapper-rpath fabrics=ucx schedulers=slurm
+      prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
+      modules:
+      - openmpi/4.0.4
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
