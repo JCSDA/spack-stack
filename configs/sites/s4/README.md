@@ -1,4 +1,16 @@
 # S4
+
+
+## General instructions/prerequisites
+
+module purge
+
+
+
+
+
+
+
 ## General instructions for getting the module environment right/fixed
 ```
 module purge

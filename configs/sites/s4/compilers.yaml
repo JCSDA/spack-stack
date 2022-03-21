@@ -1,0 +1,34 @@
+compilers:
+- compiler:
+    spec: intel@2021.5.0
+    paths:
+      cc: /opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/bin/intel64/icc
+      cxx: /opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/bin/intel64/icpc
+      f77: /opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/bin/intel64/ifort
+      fc: /opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules:
+    - license_intel/S4
+    - intel/2022.1
+    environment:
+      prepend_path:
+        PATH: '/opt/gcc/8.3/bin'
+        LD_LIBRARY_PATH: '/opt/gcc/8.3/lib64'
+        CPATH: '/opt/gcc/8.3/include'
+    extra_rpaths: []
+- compiler:
+    spec: gcc@8.3.0
+    paths:
+      cc: /opt/gcc/8.3/bin/gcc
+      cxx: /opt/gcc/8.3/bin/g++
+      f77: /opt/gcc/8.3/bin/gfortran
+      fc: /opt/gcc/8.3/bin/gfortran
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    prefix: /opt/gcc/8.3
+    modules: []
+    environment: {}
+    extra_rpaths: []
