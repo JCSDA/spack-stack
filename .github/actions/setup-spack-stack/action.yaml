@@ -50,6 +50,7 @@ runs:
       elif [ "$RUNNER_OS" == "macOS" ]; then
         if [[ "${{ inputs.compiler }}" == "clang" ]]; then
             brew install llvm
+        fi
         echo ""
       fi
 
