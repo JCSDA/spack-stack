@@ -151,23 +151,22 @@ logging.debug("  ... list of mpi libraries: '{}'".format(mpi_list))
 #if len(compiler_list)>1 or len(mpi_list)>1:
 #    raise Exception("Currently not supported: More than one compiler or mpi provider per environment")
 #
-compiler_names = []
+
+# Sanity check - each compiler must have a version
 for compiler in compiler_list:
     try:
         (compiler_name, compiler_version) = compiler.split('@')
     except ValueError:
         raise Exception("No version provided for compiler '{}'".format(compiler))
     logging.info("  ... stack compiler: {}@{}".format(compiler_name, compiler_version))
-    compiler_names.append(compiler_name)
-#
-mpi_names = []
+
+# Sanity check - each mpi provider must have a version
 for mpi in mpi_list:
     try:
         (mpi_name, mpi_version) = mpi.split('@')
     except ValueError:
         raise Exception("No version provided for mpi library '{}'".format(mpi))
     logging.info("  ... stack mpi library: {}@{}".format(mpi_name, mpi_version))
-    mpi_names.append(mpi_name)
 
 # Parse spack module config from environment
 logging.info("Parsing spack environment modules config ...")
