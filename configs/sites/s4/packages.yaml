@@ -24,10 +24,10 @@ packages:
   python:
     buildable: False
     externals:
-    - spec: python@3.8.5+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/miniconda/3.8-s4
+    - spec: python@3.9.7
+      prefix: /data/prod/jedi/spack-stack/miniconda-3.9.7
       modules:
-      - miniconda/3.8-s4
+      - miniconda/3.9.7
 
 ### All other external packages listed alphabetically
   autoconf:
