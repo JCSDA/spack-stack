@@ -89,6 +89,10 @@ runs:
 
       cd ${{ inputs.path }}/envs/${{ inputs.app }}
 
+      # Whitelist the mpi providers so that spack creates the modules for them
+      spack config add "modules:default:tcl:whitelist::[${{ inputs.mpi }}]"
+      spack config add "modules:default:lmod:whitelist::[${{ inputs.mpi }}]"
+
       if [ "$RUNNER_OS" == "Linux" ]; then
         echo ""
       elif [ "$RUNNER_OS" == "macOS" ]; then
@@ -119,6 +123,7 @@ runs:
       #   spack install
       # fi
       spack install
+
   - name: create-meta-modules
     shell: bash
     run: |
@@ -126,3 +131,8 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       meta_modules/setup_meta_modules.py
+      # Test loading the meta modules
+      module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
+      module load stack-${{ inputs.compiler }}
+      module load stack-python
+      module load stack-${{ inputs.mpi }}
