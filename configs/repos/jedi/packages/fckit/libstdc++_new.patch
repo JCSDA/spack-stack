@@ -1,5 +1,5 @@
---- ./src/tests/CMakeLists.txt.original	2022-03-22 16:56:28.000000000 -0600
-+++ src/tests/CMakeLists.txt	2022-03-22 16:58:03.000000000 -0600
+--- a/src/tests/CMakeLists.txt	2022-03-22 16:56:28.000000000 -0600
++++ b/src/tests/CMakeLists.txt	2022-03-22 16:58:03.000000000 -0600
 @@ -11,46 +11,46 @@
  add_fctest( TARGET  fckit_test_array
              LINKER_LANGUAGE Fortran
