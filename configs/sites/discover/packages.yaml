@@ -24,10 +24,10 @@ packages:
   python:
     buildable: False
     externals:
-    - spec: python@3.9.9+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /usr/local/other/python/GEOSpyD/4.10.3_py3.9/2022-01-14
+    - spec: python@3.9.7
+      prefix: /discover/swdev/jcsda/spack-stack/miniconda-3.9.7/
       modules:
-      - python/GEOSpyD/Min4.10.3_py3.9
+      - miniconda/3.9.7
 
 ### All other external packages listed alphabetically
   autoconf:

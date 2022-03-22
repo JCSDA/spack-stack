@@ -15,7 +15,9 @@ compilers:
       prepend_path:
         PATH: '/usr/local/other/gcc/11.2.0/bin'
         LD_LIBRARY_PATH: '/usr/local/other/gcc/11.2.0/lib64'
-        CPATH: '/usr/local/other/gcc/11.2.0/include'
+        CPATH: '/usr/local/other/gcc/11.2.0/include:/usr/local/intel/oneapi/2021/mpi/2021.5.0/include'
+      set:
+        I_MPI_ROOT: '/usr/local/intel/oneapi/2021/mpi/2021.5.0'
     extra_rpaths: []
 - compiler:
     spec: gcc@11.2.0
