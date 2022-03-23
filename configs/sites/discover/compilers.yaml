@@ -31,7 +31,7 @@ compilers:
     flags: {}
     operating_system: sles12
     target: x86_64
-    modules: {}
+    modules: []
     environment:
       prepend_path:
         PATH: '/usr/local/other/gcc/10.1.0/bin'
