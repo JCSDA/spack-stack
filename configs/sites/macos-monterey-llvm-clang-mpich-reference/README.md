@@ -2,6 +2,8 @@
 
 ## General instructions/prerequisites
 
+This instructions are meant to be a reference that users can follow to set up their own system. Depending on the user's setup and needs, some steps will differ, some may not be needed and others may be missing. Also, the package versions may change over time. This setup is valid as of 2022/03/01.
+
 ### Install Apple's command line utilities
 - Launch the Terminal, found in `/Applications/Utilities`
 - Type the following command string:
@@ -32,6 +34,7 @@ brew install git-lfs@3.0.2
 brew install lmod@8.6.6
 brew install wget@1.21.2
 brew install bash@5.1.16
+brew install cmake@3.22.1
 ```
 - Activate the `lua` module environment:
 ```

@@ -1,0 +1,141 @@
+packages:
+  all:
+    compiler:: [clang@13.0.0]
+    providers:
+      mpi:: [mpich@3.4.3]
+
+### MPI, Python, MKL
+  mpi:
+    buildable: False
+  mpich:
+    externals:
+    - spec: mpich@3.4.3+hydra+romio device=ch4
+      prefix: /usr/local
+  python:
+    buildable: False
+    externals:
+    # Use the homebrew version, since the native macOS version is
+    # not suitable for development (missing python3-config, ...)
+    - spec: python@3.9.10+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+      prefix: /usr/local
+
+### Modifications of common packages
+  fms:
+    variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+  fms-jcsda:
+    variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+
+### All other external packages listed alphabetically
+  bash:
+    externals:
+    - spec: bash@5.1.16
+      prefix: /usr/local
+  berkeley-db:
+    externals:
+    - spec: berkeley-db@4.7.25
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@2.3
+      prefix: /usr
+  bzip2:
+    externals:
+    - spec: bzip2@1.0.8
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.22.1
+      prefix: /usr/local
+  # Don't use OS curl, this leads to all sorts of problems with netcdf-c
+  #curl:
+  #  externals:
+  #  - spec: curl@7.77.0+gssapi+ldap+nghttp2
+  #    prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@2.8.1
+      prefix: /usr
+  file:
+    externals:
+    - spec: file@5.40
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.21
+      prefix: /usr/local
+  git:
+    externals:
+    - spec: git@2.32.0~tcltk
+      prefix: /usr
+    - spec: git@2.34.1~tcltk
+      prefix: /usr/local
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.0.2
+      prefix: /usr/local
+  gmake:
+    externals:
+    - spec: gmake@3.81
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.19.2
+      prefix: /usr
+  hwloc:
+    externals:
+    - spec: hwloc@2.7.0
+      prefix: /usr/local
+  krb5:
+    externals:
+    - spec: krb5@1.7-prerelease
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.6
+      prefix: /usr
+  ncurses:
+    externals:
+    - spec: ncurses@5.7.20081102 abi=5
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.6p1
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.18.4~cpanm+shared+threads
+      prefix: /usr
+    - spec: perl@5.30.3~cpanm+shared+threads
+      prefix: /usr
+  rsync:
+    externals:
+    - spec: rsync@2.6.9
+      prefix: /usr
+  ruby:
+    externals:
+    - spec: ruby@2.6.8
+      prefix: /usr
+  sqlite:
+    externals:
+    - spec: sqlite@3.36.0+fts~functions+rtree
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@4.8
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.21.2
+      prefix: /usr/local
+  xz:
+    externals:
+    - spec: xz@5.2.5
+      prefix: /usr/local
+  zip:
+    externals:
+    - spec: zip@3.0
+      prefix: /usr
