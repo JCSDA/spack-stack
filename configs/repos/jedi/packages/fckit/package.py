@@ -36,8 +36,8 @@ class Fckit(CMakePackage):
     variant('shared', default=True)
 
     # Patch
-    #patch('libstdc++.patch')
-    patch('libstdc++_new.patch')
+    patch('libstdc++.patch')
+    #patch('libstdc++_new.patch')
 
     def cmake_args(self):
         res = [
