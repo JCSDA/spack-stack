@@ -364,6 +364,7 @@ for compiler in compiler_config:
 for mpi_name in mpi_dict.keys():
     for mpi_version in mpi_dict[mpi_name].keys():
         package_found = False
+        external_mpi_package_config = None
         for package_name in package_config.keys():
             if package_name == mpi_name:
                 # mpi provider was supplied as an external package
@@ -373,11 +374,17 @@ for mpi_name in mpi_dict.keys():
                             package_config[package_name]['externals'][i]['spec'])
                         if package_version == mpi_version:
                             package_found = True
+                            external_mpi_package_config = package_config[package_name]['externals'][i]
                             break
                 # mpi provider was built by spack
                 elif 'version' in package_config[package_name].keys() and \
                     len(package_config[package_name]['version']) == 1 and \
                     package_config[package_name]['version'][0] == mpi_version:
+                    package_found = True
+                    break
+                # mpi provider was built by spack, we don't have enough
+                # information, just hope we will be lucky
+                elif not 'version' in package_config[package_name].keys():
                     package_found = True
                     break
                 else:
@@ -398,10 +405,9 @@ for mpi_name in mpi_dict.keys():
                 mpi_module_file = os.path.join(mpi_module_dir, mpi_version + MODULE_FILE_EXTENSION[module_choice])
                 substitutes = SUBSTITUTES_TEMPLATE.copy()
                 #
-                if 'externals' in package_config[mpi_name].keys() and \
-                        'modules' in package_config[mpi_name]['externals'][i].keys():
+                if external_mpi_package_config and 'modules' in external_mpi_package_config.keys():
                     # Existing non-spack modules to load
-                    for module in package_config[mpi_name]['externals'][i]['modules']:
+                    for module in external_mpi_package_config['modules']:
                         substitutes['MODULELOADS'] += module_load_command(module_choice, module)
                         substitutes['MODULEPREREQS'] += module_prereq_command(module_choice, module)
                     substitutes['MODULELOADS'] = substitutes['MODULELOADS'].rstrip('\n')
@@ -409,13 +415,12 @@ for mpi_name in mpi_dict.keys():
                     logging.debug("  ... ... MODULELOADS: {}".format(substitutes['MODULELOADS']))
                     logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes['MODULEPREREQS']))
                     # mpi_name_ROOT - replace "-" in mpi_name with "_" for environment variables
-                    if 'prefix' in package_config[mpi_name]['externals'][i].keys():
-                        prefix = package_config[mpi_name]['externals'][i]['prefix']
+                    if 'prefix' in external_mpi_package_config.keys():
+                        prefix = external_mpi_package_config['prefix']
                         substitutes['MPIROOT'] = setenv_command(module_choice, mpi_name.replace('-','_')+'_ROOT', prefix)
                         logging.debug("  ... ... MPIROOT: {}".format(substitutes['MPIROOT']).rstrip('\n'))
-                elif 'externals' in package_config[mpi_name].keys() and \
-                        'prefix' in package_config[mpi_name]['externals'][i].keys():
-                    prefix = package_config[mpi_name]['externals'][i]['prefix']
+                elif external_mpi_package_config and 'prefix' in external_mpi_package_config.keys():
+                    prefix = external_mpi_package_config['prefix']
                     # PATH and compiler wrapper environment variables
                     bindir = os.path.join(prefix, 'bin')
                     if os.path.isdir(bindir):
