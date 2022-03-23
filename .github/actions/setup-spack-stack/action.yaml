@@ -131,8 +131,9 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       meta_modules/setup_meta_modules.py
-      # Test loading the meta modules
-      module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
-      module load stack-${{ inputs.compiler }}
-      module load stack-python
-      module load stack-${{ inputs.mpi }}
+      # Not yet: need lmod installed, loaded and module use command
+      ## Test loading the meta modules
+      #module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
+      #module load stack-${{ inputs.compiler }}
+      #module load stack-python
+      #module load stack-${{ inputs.mpi }}
