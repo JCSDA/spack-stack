@@ -1,20 +1,20 @@
 packages:
   all:
-    #compiler:: [intel@2021.5.0]
-    compiler:: [intel@2022.0.2]
+    compiler:: [intel@2022.0.1]
+    #compiler:: [intel@2022.0.2]
     providers:
-      #mpi:: [intel-oneapi-mpi@2021.5.0]
-      mpi:: [intel-oneapi-mpi@2021.5.1]
+      mpi:: [intel-oneapi-mpi@2021.5.0]
+      #mpi:: [intel-oneapi-mpi@2021.5.1]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  ### intel-oneapi-mpi:
-  ###   externals:
-  ###   - spec: intel-oneapi-mpi@2021.5.0%intel@2021.5.0
-  ###     #prefix: /usr/local/intel/oneapi/2021/
-  ###     modules:
-  ###     - mpi/impi/2021.5.0
+  intel-oneapi-mpi:
+    externals:
+    - spec: intel-oneapi-mpi@2021.5.0%intel@2022.0.1
+      prefix: /usr/local/intel/oneapi/2021/
+      modules:
+      - mpi/impi/2021.5.0
   ### #intel-oneapi-tbb:
   ### #  externals:
   ### #  - spec: intel-oneapi-tbb@2022.0.1%intel@2021.5.0
@@ -23,10 +23,10 @@ packages:
   ### #  externals:
   ### #  - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
   ### #    prefix: /usr/local/intel/oneapi/2021
-  intel-oneapi-mpi:
-    externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-      prefix: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1
+  ### intel-oneapi-mpi:
+  ###   externals:
+  ###   - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
+  ###     prefix: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2021.5.1%intel@2022.0.2
