@@ -87,7 +87,7 @@ def get_matched_dict(root_dir, candidate_list, sub_candidate_list = None):
         matched_version = None
         for xdir in dirs:
             # Partial matches
-            if xdir in candidate:
+            if ('@' in candidate and xdir==candidate.split('@')[0]) or (xdir==candidate):
                 candidate_dir = os.path.join(root_dir, xdir)
                 # Now that we have the top-level compiler dir, check which versions are installed
                 versions = [ ydir for ydir in os.listdir(candidate_dir) \
