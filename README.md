@@ -48,6 +48,8 @@ spack env activate [-p] envs/jedi-fv3.hera
 # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
 cd envs/jedi-fv3.hera
 emacs spack.yaml
+emacs common/*.yaml
+emacs site/*.yaml
 
 # Process the specs and install
 # note: both steps will take some time!
