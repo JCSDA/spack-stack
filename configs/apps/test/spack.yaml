@@ -1,9 +1,0 @@
-# Template spack.yaml for apps
-spack:
-  concretization: separately
-  view: false
-
-  @CONFIG_INCLUDES@
-
-  specs:
-    - base-env
