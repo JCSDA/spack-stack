@@ -10,7 +10,8 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-ufs, jedi-um, jedi-fv3, jedi-tools, ufs-weather-model, nceplibs]
+        #app: [jedi-ufs, jedi-um, jedi-fv3, jedi-tools, ufs-weather-model, nceplibs]
+        app: [jedi-fv3]
     runs-on: macos-latest
     steps:
 
