@@ -90,8 +90,6 @@ runs:
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      cd ${{ inputs.path }}/envs/${{ inputs.app }}
-
       # Currently, this is the case for all workflows - wrap in if statement
       # when this changes in the future
       # Whitelist the mpi providers so that spack creates the modules for them
@@ -120,14 +118,13 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-      # if [[ "${{ inputs.compiler }}" == "intel" ]]; then
-      #   source /opt/intel/oneapi/setvars.sh
-      #   # Pass --dirty to fix Intel compiler environment - Dom ??? I don't see --dirty ...
-      #   spack install
-      # else
-      #   spack install
-      # fi
-      spack install
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        source /opt/intel/oneapi/setvars.sh
+        # Pass --dirty to fix Intel compiler environment to fix missing LD_LIBRARY_PATH
+        spack install --dirty
+      else
+        spack install
+      fi
 
   - name: create-meta-modules
     shell: bash
