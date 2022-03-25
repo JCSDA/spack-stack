@@ -123,8 +123,6 @@ packages:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
       prefix: /contrib/spack-stack/apps/miniconda/3.9.7
-    - spec: ncurses@6.0.20170212+termlib abi=6
-      prefix: /usr
   openssh:
     externals:
     - spec: openssh@7.4p1
