@@ -54,6 +54,9 @@ runs:
         echo ""
       fi
 
+      # Install Python poetry to avoid install errors in spack
+      python3 -m pip install poetry
+
   - name: setup-spack-env
     shell: bash
     run: |
