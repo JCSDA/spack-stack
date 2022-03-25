@@ -1,0 +1,15 @@
+compilers:
+- compiler:
+    spec: intel@2021.5.0
+    paths:
+      cc: /contrib/spack-stack/apps/intel-oneapi/compiler/2022.0.2/linux/bin/intel64/icc
+      cxx: /contrib/spack-stack/apps/intel-oneapi/compiler/2022.0.2/linux/bin/intel64/icpc
+      f77: /contrib/spack-stack/apps/intel-oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
+      fc: /contrib/spack-stack/apps/intel-oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: amzn2
+    target: any
+    modules:
+    - intel/2022.1.2
+    environment: {}
+    extra_rpaths: []
