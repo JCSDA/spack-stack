@@ -129,8 +129,6 @@ packages:
       prefix: /usr
   openssl:
     externals:
-    - spec: openssl@1.1.1n
-      prefix: /contrib/spack-stack/apps/miniconda/3.9.7
     - spec: openssl@1.0.2k-fips
       prefix: /usr
   perl:
