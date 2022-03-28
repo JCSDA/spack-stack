@@ -5,4 +5,4 @@
   #url = https://github.com/NOAA-EMC/spack.git
   #branch = jcsda_emc_spack_stack
   url = https://github.com/climbfuji/spack.git
-  branch = bugfix/nco5_intel
+  branch = bugfix/netcdf_fortran_include_lib_flags_configure
