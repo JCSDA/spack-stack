@@ -87,8 +87,8 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
 
-      spack config add "packages:all:compiler::[${{ inputs.compiler }}]"
-      spack config add "packages:all:providers:mpi::[${{ inputs.mpi }}]"
+      spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
+      spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
       # Currently, this is the case for all workflows - wrap in if statement
       # when this changes in the future
@@ -105,9 +105,9 @@ runs:
       if [ "$RUNNER_OS" == "Linux" ]; then
         echo ""
       elif [ "$RUNNER_OS" == "macOS" ]; then
-        spack config add "packages:boost:version::[1.78.0]"
-        spack config add "packages:fms:variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
-        spack config add "packages:fms-jcsda:variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
+        spack config add "packages:boost:version:[1.78.0]"
+        spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
+        spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
       fi
 
   - name: concretize
