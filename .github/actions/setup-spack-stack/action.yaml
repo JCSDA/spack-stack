@@ -11,7 +11,7 @@ inputs:
   mpi:
     description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
     required: false
-    default: 'mpich'
+    default: 'mpich@3'
   path:
     description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
     required: false
@@ -37,7 +37,7 @@ runs:
         # Install Curl headers. Executable exists by default in spack external find.
         sudo apt-get install libcurl4-openssl-dev
 
-        if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+        if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
             cd /tmp
             wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
             sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
@@ -48,17 +48,20 @@ runs:
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [ "$RUNNER_OS" == "macOS" ]; then
-        if [[ "${{ inputs.compiler }}" == "clang" ]]; then
+        if [[ "${{ inputs.compiler }}" == "clang"* ]]; then
             brew install llvm
         fi
         echo ""
       fi
 
+      # Install Python poetry to avoid install errors in spack
+      python3 -m pip install poetry
+
   - name: setup-spack-env
     shell: bash
     run: |
       cd ${{ inputs.path }}
-      if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         source /opt/intel/oneapi/setvars.sh
       fi
       source setup.sh
@@ -87,7 +90,11 @@ runs:
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      cd ${{ inputs.path }}/envs/${{ inputs.app }}
+      # Currently, this is the case for all workflows - wrap in if statement
+      # when this changes in the future
+      # Whitelist the mpi providers so that spack creates the modules for them
+      spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
+      spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
       if [ "$RUNNER_OS" == "Linux" ]; then
         echo ""
@@ -111,10 +118,10 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-      if [[ "${{ inputs.compiler }}" == "intel" ]]; then
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         source /opt/intel/oneapi/setvars.sh
-        # Pass --dirty to fix Intel compiler environment
-        spack install
+        # Pass --dirty to fix Intel compiler environment to fix missing LD_LIBRARY_PATH
+        spack install --dirty
       else
         spack install
       fi
@@ -126,3 +133,9 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       meta_modules/setup_meta_modules.py
+      # Not yet: need lmod installed, loaded and module use command
+      ## Test loading the meta modules
+      #module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
+      #module load stack-${{ inputs.compiler }}
+      #module load stack-python
+      #module load stack-${{ inputs.mpi }}

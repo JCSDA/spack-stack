@@ -2,7 +2,7 @@ modules:
   default:
     arch_folder: false
     tcl:
-      # Core compiler is a dummy that is not used to build the stack.
+      # Core compiler is a dummy that is not used to build the stack, do not change.
       # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
       core_compilers::
       - gcc@4.6
@@ -72,7 +72,7 @@ modules:
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
 
     lmod:
-      # Core compiler is a dummy that is not used to build the stack.
+      # Core compiler is a dummy that is not used to build the stack, do not change.
       # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
       core_compilers::
       - gcc@4.6

@@ -137,6 +137,5 @@ check_inputs(app, site)
 env_dir = create_env_dir(env_name)
 if not exclude_common_configs:
     copy_common_configs(env_dir)
-if site != empty_site:
-    copy_site_configs(site, env_dir)
+copy_site_configs(site, env_dir)
 copy_app_config(app, env_dir)
