@@ -1,24 +1,16 @@
 # Discover
 
 ## General instructions/prerequisites
-
+```
 module purge
+```
+
+### One-off: prepare miniconda python3 environment
+See instructions in miniconda/README.md. Don't forget to log off and back on to forget about the conda environment.
 
 ### Set up the user environment for working with spack/building new software environments
 This needs to be done every time before installing packages with spack or before using spack-provided modules!
-NO ONLY FOR BUILDING?
-
-NO - module load python/GEOSpyD/Min4.10.3_py3.9
-
-
-
--std=c++14 -gxx-name=/usr/local/other/gcc/11.2.0/bin/g++ -Wl,-rpath,/usr/local/other/gcc/11.2.0/lib64
-
-
-
-
- module use /discover/swdev/jcsda/spack-stack/modulefiles
- 1004  module load miniconda/3.9.7
- 
- 
- 
+```
+module use /discover/swdev/jcsda/spack-stack/modulefiles
+module load miniconda/3.9.7
+```

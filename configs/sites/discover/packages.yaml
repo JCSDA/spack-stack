@@ -15,18 +15,18 @@ packages:
       prefix: /usr/local/intel/oneapi/2021/
       modules:
       - mpi/impi/2021.5.0
-  ### #intel-oneapi-tbb:
-  ### #  externals:
-  ### #  - spec: intel-oneapi-tbb@2022.0.1%intel@2021.5.0
-  ### #    prefix: /usr/local/intel/oneapi/2021
-  ### #intel-oneapi-mkl:
-  ### #  externals:
-  ### #  - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
-  ### #    prefix: /usr/local/intel/oneapi/2021
-  ### intel-oneapi-mpi:
-  ###   externals:
-  ###   - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-  ###     prefix: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1
+  #intel-oneapi-tbb:
+  #  externals:
+  #  - spec: intel-oneapi-tbb@2022.0.1%intel@2021.5.0
+  #    prefix: /usr/local/intel/oneapi/2021
+  #intel-oneapi-mkl:
+  #  externals:
+  #  - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
+  #    prefix: /usr/local/intel/oneapi/2021
+  # intel-oneapi-mpi:
+  #   externals:
+  #   - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
+  #     prefix: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2021.5.1%intel@2022.0.2

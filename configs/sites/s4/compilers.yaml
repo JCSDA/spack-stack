@@ -18,6 +18,7 @@ compilers:
         LD_LIBRARY_PATH: '/opt/gcc/8.3/lib64'
         CPATH: '/opt/gcc/8.3/include'
     extra_rpaths: []
+# Not yet tested:
 - compiler:
     spec: gcc@8.3.0
     paths:

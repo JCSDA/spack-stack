@@ -19,25 +19,27 @@ compilers:
       set:
         I_MPI_ROOT: '/usr/local/intel/oneapi/2021/mpi/2021.5.0'
     extra_rpaths: []
-- compiler:
-    spec: intel@2022.0.2
-    paths:
-      cc: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/icc
-      cxx: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/icpc
-      f77: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/ifort
-      fc: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: sles12
-    target: x86_64
-    modules: []
-    environment:
-      prepend_path:
-        PATH: '/usr/local/other/gcc/10.1.0/bin'
-        CPATH: '/usr/local/other/gcc/10.1.0/include'
-        LD_LIBRARY_PATH: '/discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/usr/local/other/gcc/10.1.0/lib64'
-      set:
-        I_MPI_ROOT: '/discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/mpi/2021.5.1'
-    extra_rpaths: []
+# Used for testing only
+#- compiler:
+#    spec: intel@2022.0.2
+#    paths:
+#      cc: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/icc
+#      cxx: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/icpc
+#      f77: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/ifort
+#      fc: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/bin/intel64/ifort
+#    flags: {}
+#    operating_system: sles12
+#    target: x86_64
+#    modules: []
+#    environment:
+#      prepend_path:
+#        PATH: '/usr/local/other/gcc/10.1.0/bin'
+#        CPATH: '/usr/local/other/gcc/10.1.0/include'
+#        LD_LIBRARY_PATH: '/discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/usr/local/other/gcc/10.1.0/lib64'
+#      set:
+#        I_MPI_ROOT: '/discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1/mpi/2021.5.1'
+#    extra_rpaths: []
+# Not yet tested:
 - compiler:
     spec: gcc@11.2.0
     paths:
