@@ -1,4 +1,10 @@
 packages:
+  all:
+    compiler:: [intel@2021.3.0]
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.3.0]
+  mpi:
+    buildable: False
   intel-oneapi-mpi:
     externals:
     - spec: impi@2021.3.0%intel@2021.3.0
