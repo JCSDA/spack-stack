@@ -127,10 +127,6 @@ packages:
       prefix: /usr
   openssl:
     externals:
-    - spec: openssl@1.1.1n
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
-    - spec: openssl@1.0.2k-fips
-      prefix: /usr
     - spec: openssl@1.1.1g
       prefix: /usr
   perl:
@@ -142,6 +138,7 @@ packages:
     - spec: pkg-config@0.27.1
       prefix: /usr
   python:
+    buildable: False
     externals:
     - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
