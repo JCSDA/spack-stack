@@ -12,19 +12,19 @@ packages:
     - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
       prefix: /glade/u/apps/opt/intel/2022.1
       modules:
-      - impi/2021.2
+      - impi/2022.1
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2021.5.1%intel@2022.0.2
   #    prefix: /glade/u/apps/opt/intel/2022.1
   #    modules:
-  #    - intel/2021.2
+  #    - impi/2022.1
   #intel-oneapi-mkl:
   #  externals:
   #  - spec: intel-oneapi-mkl@2022.0.2%intel@2022.0.2
   #    prefix: /glade/u/apps/opt/intel/2022.1
   #    modules:
-  #    - intel/2021.2
+  #    - impi/2022.1
   python:
     buildable: False
     externals:
