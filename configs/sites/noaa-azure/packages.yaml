@@ -45,8 +45,6 @@ packages:
       prefix: /usr
   bzip2:
     externals:
-    - spec: bzip2@1.0.8
-      prefix: /opt/cycle/jetpack/system/embedded
     - spec: bzip2@1.0.6
       prefix: /usr
   cpio:
@@ -83,24 +81,12 @@ packages:
       prefix: /usr
   gcc:
     externals:
-    - spec: gcc@9.2.0 languages=c,c++,fortran
-      prefix: /apps/gnu/gcc-9.2.0
-      extra_attributes:
-        compilers:
-          c: /apps/gnu/gcc-9.2.0/bin/gcc
-          cxx: /apps/gnu/gcc-9.2.0/bin/g++
-          fortran: /apps/gnu/gcc-9.2.0/bin/gfortran
-    - spec: gcc@4.8.5 languages=c
-      prefix: /opt/cycle/jetpack/system/embedded
-      extra_attributes:
-        compilers:
-          c: /opt/cycle/jetpack/system/embedded/bin/musl-gcc
     - spec: gcc@4.8.5 languages=c,c++,fortran
       prefix: /usr
       extra_attributes:
         compilers:
-          c: /usr/bin/x86_64-redhat-linux-gcc
-          cxx: /usr/bin/x86_64-redhat-linux-g++
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran
   gettext:
     externals:
@@ -126,6 +112,10 @@ packages:
     externals:
     - spec: hwloc@1.11.8
       prefix: /usr
+  openjdk:
+    externals:
+    - spec: openjdk@1.8.0_322-b06
+      prefix: /usr
   krb5:
     externals:
     - spec: krb5@1.15.1
@@ -136,7 +126,7 @@ packages:
       prefix: /usr
   lustre:
     externals:
-    - spec: lustre@2.12.5
+    - spec: lustre@2.12.7
       prefix: /usr
   m4:
     externals:
@@ -154,11 +144,9 @@ packages:
     externals:
     - spec: openssl@1.1.1n
       prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
-    - spec: openssl@1.0.2u
-      prefix: /opt/cycle/jetpack/system/embedded
     - spec: openssl@1.0.2k-fips
       prefix: /usr
-    - spec: openssl@1.1.1g
+    - spec: openssl@1.1.1k
       prefix: /usr
   perl:
     externals:
@@ -166,28 +154,20 @@ packages:
       prefix: /usr
   pkg-config:
     externals:
-    - spec: pkg-config@0.28
-      prefix: /opt/cycle/jetpack/system/embedded
     - spec: pkg-config@0.27.1
       prefix: /usr
   python:
     externals:
     - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
-    - spec: python@3.8.4+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd~readline~sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /opt/cycle/jetpack/system/embedded
-    - spec: python@2.7.5+bz2+ctypes+dbm+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /usr
-    - spec: python@3.6.8+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /usr
+      modules:
+      - miniconda/py39_4.11.0
   rsync:
     externals:
     - spec: rsync@3.1.2
       prefix: /usr
   ruby:
     externals:
-    - spec: ruby@2.5.7
-      prefix: /opt/cycle/jetpack/system/embedded
     - spec: ruby@2.0.0
       prefix: /usr
   sed:
@@ -210,8 +190,6 @@ packages:
     externals:
     - spec: xz@5.2.5
       prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
-    - spec: xz@5.2.4
-      prefix: /opt/cycle/jetpack/system/embedded
   zip:
     externals:
     - spec: zip@3.0
