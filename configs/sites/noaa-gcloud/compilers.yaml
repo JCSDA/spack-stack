@@ -13,7 +13,7 @@ compilers:
     - intel/2021.3.0
     environment:
       prepend_path:
-        PATH: '/apps/gnu/gcc-9.2.0/bin/gcc'
+        PATH: '/apps/gnu/gcc-9.2.0/bin'
         LD_LIBRARY_PATH: '/apps/gnu/gcc-9.2.0/lib64'
     extra_rpaths: []
 - compiler:
