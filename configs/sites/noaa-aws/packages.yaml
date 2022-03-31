@@ -55,10 +55,6 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.61.1+gssapi+ldap+nghttp2
-      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.3
