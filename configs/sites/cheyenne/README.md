@@ -6,7 +6,9 @@
 ```
 module purge
 module unuse /glade/u/apps/ch/modulefiles/default/compilers
-export MODULEPATH_ROOT=/glade/p/ral/jntp/GMTB/tools/compiler_mpi_modules
-module use /glade/p/ral/jntp/GMTB/tools/compiler_mpi_modules/compilers
+export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
+module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
 module load python/3.7.9
+module load git/2.33.1
+git lfs install
 ```
