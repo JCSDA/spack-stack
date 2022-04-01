@@ -1,35 +1,33 @@
 packages:
   all:
-    compiler:: [intel@2022.0.2]
+    compiler:: [intel@2021.5.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1]
+      mpi:: [intel-oneapi-mpi@2021.5.0]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-      prefix: /glade/u/apps/opt/intel/2022.1
+    - spec: intel-oneapi-mpi@2021.5.0%intel@2021.5.0
+      prefix: /opt/intel/oneapi/2022.1
       modules:
-      - impi/2022.1
+      - intel/2022.1
   #intel-oneapi-tbb:
   #  externals:
-  #  - spec: intel-oneapi-tbb@2021.5.1%intel@2022.0.2
-  #    prefix: /glade/u/apps/opt/intel/2022.1
-  #    modules:
-  #    - impi/2022.1
+  #  - spec: intel-oneapi-tbb@2021.5.0%intel@2021.5.0
+  #    prefix: /opt/intel/oneapi/2022.1
   #intel-oneapi-mkl:
   #  externals:
-  #  - spec: intel-oneapi-mkl@2022.0.2%intel@2022.0.2
-  #    prefix: /glade/u/apps/opt/intel/2022.1
-  #    modules:
-  #    - impi/2022.1
+  #  - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
+  #    prefix: /opt/intel/oneapi/2022.1
   python:
     buildable: False
     externals:
-    - spec: python@3.7.9+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /glade/u/apps/ch/opt/python/3.7.9/gnu/9.1.0
+    - spec: python@3.9.7
+      prefix: /data/prod/jedi/spack-stack/miniconda-3.9.7
+      modules:
+      - miniconda/3.9.7
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -38,15 +36,19 @@ packages:
       prefix: /usr
   automake:
     externals:
-    - spec: automake@1.13.4
+    - spec: automake@1.15
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@4.2.46
       prefix: /usr
   berkeley-db:
     externals:
-    - spec: berkeley-db@4.8.30
+    - spec: berkeley-db@5.3.21
       prefix: /usr
   bison:
     externals:
-    - spec: bison@2.7
+    - spec: bison@3.0.4
       prefix: /usr
   bzip2:
     externals:
@@ -54,18 +56,15 @@ packages:
       prefix: /usr
   cmake:
     externals:
-    - spec: cmake@3.5.2
+    - spec: cmake@3.20.5
       prefix: /usr
-    - spec: cmake@3.22.0
-      modules:
-      - cmake/3.22.0
   cpio:
     externals:
     - spec: cpio@2.11
       prefix: /usr
   curl:
     externals:
-    - spec: curl@7.60.0+gssapi+ldap+nghttp2
+    - spec: curl@7.29.0+ldap
       prefix: /usr
   diffutils:
     externals:
@@ -73,19 +72,15 @@ packages:
       prefix: /usr
   doxygen:
     externals:
-    - spec: doxygen@1.8.6+graphviz~mscgen
-      prefix: /usr
-  expat:
-    externals:
-    - spec: expat@1.6.0
+    - spec: doxygen@1.8.5+graphviz~mscgen
       prefix: /usr
   file:
     externals:
-    - spec: file@5.22
+    - spec: file@5.11
       prefix: /usr
   findutils:
     externals:
-    - spec: findutils@4.5.12
+    - spec: findutils@4.5.11
       prefix: /usr
   flex:
     externals:
@@ -93,11 +88,11 @@ packages:
       prefix: /usr
   gawk:
     externals:
-    - spec: gawk@4.1.0
+    - spec: gawk@4.0.2
       prefix: /usr
   gettext:
     externals:
-    - spec: gettext@0.19.2
+    - spec: gettext@0.19.8.1
       prefix: /usr
   ghostscript:
     externals:
@@ -105,61 +100,73 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.33.1
+    - spec: git@2.30.0+tcltk
+      prefix: /opt/git/2.30.0
       modules:
-      - git/2.33.1
+      - git/2.30.0
   git-lfs:
     externals:
-    - spec: git-lfs@3.0.2
-      modules:
-      - git/2.33.1
+    - spec: git-lfs@2.10.0
+      prefix: /usr
   gmake:
     externals:
-    - spec: gmake@4.0
+    - spec: gmake@3.82
+      prefix: /usr
+  go:
+    externals:
+    - spec: go@1.11.5
       prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.2
       prefix: /usr
+  openjdk:
+    externals:
+    - spec: openjdk@1.8.0_262-b10
+      prefix: /usr
+  krb5:
+    externals:
+    - spec: krb5@1.15.1
+      prefix: /usr
   libfuse:
     externals:
-    - spec: libfuse@2.9.3
+    - spec: libfuse@2.9.2
       prefix: /usr
   libtool:
     externals:
     - spec: libtool@2.4.2
       prefix: /usr
+  lustre:
+    externals:
+    - spec: lustre@2.10.5
+      prefix: /usr
   m4:
     externals:
     - spec: m4@1.4.16
       prefix: /usr
-  ncurses:
-    externals:
-    - spec: ncurses@5.9.20140201+termlib abi=5
-      prefix: /usr
   openssh:
     externals:
-    - spec: openssh@7.2p2
+    - spec: openssh@7.4p1
       prefix: /usr
   openssl:
     externals:
-    - spec: openssl@1.0.2p-fips
+    - spec: openssl@1.0.2k-fips
       prefix: /usr
   perl:
     externals:
-    - spec: perl@5.18.2~cpanm+shared+threads
+    - spec: perl@5.16.3~cpanm+shared+threads
       prefix: /usr
   pkg-config:
     externals:
-    - spec: pkg-config@0.28
+    - spec: pkg-config@0.27.1
       prefix: /usr
   rsync:
     externals:
-    - spec: rsync@3.1.0
+    - spec: rsync@3.1.2
       prefix: /usr
   ruby:
     externals:
-    - spec: ruby@2.1.9
+    - spec: ruby@2.0.0
       prefix: /usr
   sed:
     externals:
@@ -167,15 +174,23 @@ packages:
       prefix: /usr
   sqlite:
     externals:
-    - spec: sqlite@3.8.10.2~fts~functions+rtree
+    - spec: sqlite@3.7.17~fts~functions+rtree
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.26
       prefix: /usr
   texinfo:
     externals:
-    - spec: texinfo@4.13
+    - spec: texinfo@5.1
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
       prefix: /usr
   xz:
     externals:
-    - spec: xz@5.0.5
+    - spec: xz@5.2.2
       prefix: /usr
   zip:
     externals:
