@@ -31,17 +31,9 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  bzip2:
-    externals:
-    - spec: bzip2@1.0.6
-      prefix: /usr
   cpio:
     externals:
     - spec: cpio@2.11
-      prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.29.0+ldap
       prefix: /usr
   diffutils:
     externals:
