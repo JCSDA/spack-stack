@@ -18,7 +18,7 @@ class Shumlib(MakefilePackage):
 
     maintainers = [ 'matthewrmshin', 'climbfuji' ]
 
-    version('macos_clang_port', commit='749559cd1e47b488ee169de947b31c9585da82b4')
+    version('macos_clang_port', commit='e5e5c9f23ce2656aacd75a884c26b01a5380752e')
     #version('2021.10.1', commit='545874fba961deadf4b2758926be7c26f4c8dcb9')
     #version('2021.07.1', commit='a4ea525ad3bf04684ef39b0241991a350e2b7241')
     #version('2021.03.1', commit='58f599ce9cfb4bd47197125548a44039695fa7f1')
