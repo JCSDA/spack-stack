@@ -24,7 +24,7 @@ class GftlShared(CMakePackage):
         url='https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared/releases/download/v1.4.1/gFTL-shared-1.4.1.tar')
 
     version('1.3.6', 
-        sha256='',
+        sha256='6a6d618581b0d15213b2700b15102921f557340b73c7710405525641824e8703',
         url='https://github.com/Goddard-Fortran-Ecosystem/gFTL-shared/releases/download/v1.3.6/gFTL-shared-v1.3.6.tar')
     
     version('1.3.0', 
