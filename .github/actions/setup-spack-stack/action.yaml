@@ -87,15 +87,15 @@ runs:
           ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx
           make -j2
           make install
-          echo 'export PATH=$HOME/mpi/bin:${PATH}' >> ~/.bash_profile
-        elif [[ "${{ inputs.mpi }}" == "mpich"* ]]
+          echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
+        elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
           wget http://www.mpich.org/static/downloads/3.3.2/mpich-3.3.2.tar.gz &> /dev/null
           tar -xzf mpich-3.3.2.tar.gz
           cd mpich-3.3.2
           ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx
           make -j2
           make install
-          echo 'export PATH=$HOME/mpi/bin:${PATH}' >> ~/.bash_profile
+          echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
         fi
 
   - name: setup-spack-env
