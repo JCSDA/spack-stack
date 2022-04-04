@@ -15,9 +15,12 @@ spack-stack is maintained by:
 
 Ready-to-use spack-stack installations are available on the following platforms:
 
-| System         | Location          | Maintained by      |
-| -------------- | ----------------- | ------------------ |
-| unknown system | unknown location  | unknown maintainer |
+**Note: this versions are for early testers - use at your own risk**
+
+| System                | Location                                                                                            | Maintained by      |
+| --------------------- | --------------------------------------------------------------------------------------------------- | ------------------ |
+| NASA Discover         | `/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install`         | Dom Heinzeller     |
+| NCAR-Wyoming Cheyenne | `/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install` | Dom Heinzeller     |
 
 For questions or problems, please consult the currently open [issues](https://github.com/noaa-emc/spack-stack/issues) and the [current and past discussions](https://github.com/noaa-emc/spack-stack/discussions) first.
 
@@ -48,6 +51,8 @@ spack env activate [-p] envs/jedi-fv3.hera
 # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
 cd envs/jedi-fv3.hera
 emacs spack.yaml
+emacs common/*.yaml
+emacs site/*.yaml
 
 # Process the specs and install
 # note: both steps will take some time!

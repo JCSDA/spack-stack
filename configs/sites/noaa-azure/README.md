@@ -1,4 +1,4 @@
-# NOAA Parallel Works - AWS
+# NOAA Parallel Works - Azure
 ## General instructions/prerequisites
 
 ### Set up the user environment for working with spack/building new software environments
@@ -14,4 +14,6 @@ module load miniconda/3.9.7
 ```
 
 ### Known issues
-1. With default modulepath, Spack will detect the system as Cray because of modulepath
+1. With default modulepath, Spack will detect the system as Cray because of modulepath.
+2. libxml2 won't untar because of an issue with the filesystem, so use libxml2 as external
+3. /contrib filesystem can be very very slow

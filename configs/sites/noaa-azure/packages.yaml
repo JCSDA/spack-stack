@@ -23,6 +23,21 @@ packages:
       prefix: /apps/openmpi/3.1.4/gnu/gcc-9.2.0
       modules:
       - openmpi/3.1.4
+  # Problem untarring libxml2 on the Azure filesystem
+  # so mark it as external
+  libxml2:
+    buildable: False
+    externals:
+    - spec: libxml2@2.9.1
+      prefix: /usr
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.13.4
+      prefix: /usr
   bash:
     externals:
     - spec: bash@4.2.46
@@ -30,6 +45,10 @@ packages:
   berkeley-db:
     externals:
     - spec: berkeley-db@5.3.21
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
       prefix: /usr
   cpio:
     externals:
@@ -39,6 +58,10 @@ packages:
     externals:
     - spec: diffutils@3.3
       prefix: /usr
+  doxygen:
+    externals:
+    - spec: doxygen@1.8.5~graphviz~mscgen
+      prefix: /usr
   file:
     externals:
     - spec: file@5.11
@@ -47,10 +70,23 @@ packages:
     externals:
     - spec: findutils@4.5.11
       prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.5.37+lex
+      prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.0.2
       prefix: /usr
+  gcc:
+    externals:
+    - spec: gcc@4.8.5 languages=c,c++,fortran
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
   gettext:
     externals:
     - spec: gettext@0.19.8.1
@@ -83,9 +119,17 @@ packages:
     externals:
     - spec: krb5@1.15.1
       prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.2
+      prefix: /usr
   lustre:
     externals:
     - spec: lustre@2.12.7
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.16
       prefix: /usr
   ncurses:
     externals:
@@ -97,6 +141,8 @@ packages:
       prefix: /usr
   openssl:
     externals:
+    - spec: openssl@1.1.1n
+      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
     - spec: openssl@1.0.2k-fips
       prefix: /usr
     - spec: openssl@1.1.1k

@@ -87,6 +87,10 @@ packages:
     externals:
     - spec: lustre@2.12.7
       prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.16
+      prefix: /usr
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
@@ -97,6 +101,8 @@ packages:
       prefix: /usr
   openssl:
     externals:
+    - spec: openssl@1.1.1n
+      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
     - spec: openssl@1.0.2k-fips
       prefix: /usr
     - spec: openssl@1.1.1k
