@@ -106,8 +106,8 @@ runs:
       source setup.sh
       ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
-      
-      echo "$HOME/mpi/bin" >> $GITHUB_PATH
+
+      export "PATH=$HOME/mpi/bin:${PATH}"
 
       spack external find
       spack compiler find
