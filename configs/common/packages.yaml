@@ -59,11 +59,11 @@
     esmf:
       version: [8.2.0]
       variants: ~xerces ~pnetcdf
-    # Attention - when updating also check macos-monterey-llvm-clang-mpich-reference site config
+    # Attention - when updating also check macos-monterey-llvm-clang-openmpi-reference site config
     fms:
       version: [2022.01]
       variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
-    # Attention - when updating also check macos-monterey-llvm-clang-mpich-reference site config
+    # Attention - when updating also check macos-monterey-llvm-clang-openmpi-reference site config
     fms-jcsda:
       version: [release-stable]
       variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
