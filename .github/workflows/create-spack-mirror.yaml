@@ -7,7 +7,7 @@ on:
         type: string
         description: "App to generate mirror for"
         required: true
-        default: "all"
+        default: "jedi-ufs-all"
       site:
         type: string
         description: "Site to create environment for"
@@ -34,9 +34,9 @@ jobs:
           spack concretize
           spack mirror create -a
           # upload-artifact does not allow filenames that begin with '?'
-          rm cache/source_cache/autoconf/\?id=05972f49ee632cd98057a3caf82ebfb9574846da-eaa3f69
-          rm cache/source_cache/boost/attachment.cgi?id=356970-b6f6ce6
-          rm cache/source_cache/py-scipy/extern_decls.patch?id=711fe05025795e44b84233e065d240859ccae5bd-5433f60
+          rm -f cache/source_cache/autoconf/\?id=05972f49ee632cd98057a3caf82ebfb9574846da-eaa3f69
+          rm -f cache/source_cache/boost/attachment.cgi?id=356970-b6f6ce6
+          rm -f cache/source_cache/py-scipy/extern_decls.patch?id=711fe05025795e44b84233e065d240859ccae5bd-5433f60
 
       - name: upload-mirror
         uses: actions/upload-artifact@v2
