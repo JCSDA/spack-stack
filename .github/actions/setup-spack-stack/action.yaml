@@ -57,6 +57,47 @@ runs:
       # Install Python poetry to avoid install errors in spack
       python3 -m pip install poetry
 
+  - name: cache-mpi
+    id: cache-mpi
+    uses: actions/cache@v2
+    with:
+      path: ~/mpi
+      key: mpi-${{ inputs.mpi }}-${{ runner.os }}
+
+  # MPI takes a long time to build. Built it externally and cache it.
+  - name: install-mpi
+    shell: bash
+    if: steps.cache-mpi.outputs.cache-hit != 'true'
+    run: |
+        echo "" >> ~/.bash_profile
+        if [[ "${inputs.compiler}" == "gcc@9" ]]; then
+          export CC=gcc-9
+          export FC=gfortran-9
+          export CXX=g++-9
+        elif [[ "${inputs.compiler}" == "gcc@10" ]]; then
+          export CC=gcc-10
+          export FC=gfortran-10
+          export CXX=g++-10
+        fi
+
+        if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
+          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.1.tar.gz &> /dev/null
+          tar -xzf openmpi-4.1.1.tar.gz
+          cd openmpi-4.1.1
+          ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx
+          make -j2
+          make install
+          echo 'export PATH=$HOME/mpi/bin:${PATH}' >> ~/.bash_profile
+        elif [[ "${{ inputs.mpi }}" == "mpich"* ]]
+          wget http://www.mpich.org/static/downloads/3.3.2/mpich-3.3.2.tar.gz &> /dev/null
+          tar -xzf mpich-3.3.2.tar.gz
+          cd mpich-3.3.2
+          ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx
+          make -j2
+          make install
+          echo 'export PATH=$HOME/mpi/bin:${PATH}' >> ~/.bash_profile
+        fi
+
   - name: setup-spack-env
     shell: bash
     run: |
@@ -87,8 +128,10 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
 
+      # Use external MPI to save compilation time
+      spack config add "packages:mpi:buildable:False"
+
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
-      spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
       # Currently, this is the case for all workflows - wrap in if statement
       # when this changes in the future
