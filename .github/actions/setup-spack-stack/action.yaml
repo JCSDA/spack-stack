@@ -70,7 +70,7 @@ runs:
     if: steps.cache-mpi.outputs.cache-hit != 'true'
     run: |
         echo "" >> ~/.bash_profile
-        if [[ "${ {inputs.compiler }}" == "gcc@9" ]]; then
+        if [[ "${{ inputs.compiler }}" == "gcc@9" ]]; then
           export CC=gcc-9
           export FC=gfortran-9
           export CXX=g++-9
