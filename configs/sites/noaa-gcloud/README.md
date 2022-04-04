@@ -1,10 +1,11 @@
-# NOAA Parallel Works - AWS
+# NOAA Parallel Works - Google Cloud
 ## General instructions/prerequisites
 
 ### Set up the user environment for working with spack/building new software environments
 ```
 # Remove default module locations.
-unset MODULEPATH
+module unuse /opt/cray/craype/default/modulefiles
+module unuse opt/cray/modulefiles
 # Add git-lfs and some other utilities to your PATH
 export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
 

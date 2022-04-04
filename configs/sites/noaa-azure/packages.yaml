@@ -23,6 +23,13 @@ packages:
       prefix: /apps/openmpi/3.1.4/gnu/gcc-9.2.0
       modules:
       - openmpi/3.1.4
+  # Problem untarring libxml2 on the Azure filesystem
+  # so mark it as external
+  libxml2:
+    buildable: False
+    externals:
+    - spec: libxml2@2.9.1
+      prefix: /usr
   autoconf:
     externals:
     - spec: autoconf@2.69
