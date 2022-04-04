@@ -130,6 +130,7 @@ runs:
 
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
+      spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
