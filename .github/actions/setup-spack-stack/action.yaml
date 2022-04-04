@@ -87,7 +87,6 @@ runs:
           ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx
           make -j2
           make install
-          echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
         elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
           wget http://www.mpich.org/static/downloads/3.3.2/mpich-3.3.2.tar.gz &> /dev/null
           tar -xzf mpich-3.3.2.tar.gz
@@ -95,7 +94,6 @@ runs:
           ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx
           make -j2
           make install
-          echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
         fi
 
   - name: setup-spack-env
@@ -108,6 +106,8 @@ runs:
       source setup.sh
       ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
+      
+      echo "$HOME/mpi/bin" >> $GITHUB_PATH
 
       spack external find
       spack compiler find
@@ -120,6 +120,7 @@ runs:
       echo "" >> ~/.bash_profile
       echo "source ${{ inputs.path }}/setup.sh" >> ~/.bash_profile
       echo "spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}" >> ~/.bash_profile
+      echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
 
   - name: configure-options
     shell: bash
