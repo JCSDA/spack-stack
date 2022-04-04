@@ -21,6 +21,9 @@ class JediBaseEnv(BundlePackage):
 
     depends_on('base-env', type='run')
 
+    depends_on('bison', type='run')
+    depends_on('flex', type='run')
+
     depends_on('netcdf-cxx4', type='run')
 
     depends_on('ecbuild', type='run')

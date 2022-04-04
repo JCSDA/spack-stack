@@ -23,6 +23,8 @@ class BaseEnv(BundlePackage):
         depends_on('libbacktrace', type='run')
     depends_on('cmake', type='run')
     depends_on('git', type='run')
+    depends_on('wget', type='run')
+    depends_on('curl', type='run')
 
     # I/O
     depends_on('zlib', type='run')
