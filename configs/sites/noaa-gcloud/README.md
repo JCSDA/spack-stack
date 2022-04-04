@@ -1,4 +1,4 @@
-# NOAA Parallel Works - AWS
+# NOAA Parallel Works - Google Cloud
 ## General instructions/prerequisites
 
 ### Set up the user environment for working with spack/building new software environments
