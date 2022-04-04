@@ -14,4 +14,4 @@ module load miniconda/3.9.7
 ```
 
 ### Known issues
-1. With default modulepath, Spack will detect the system as Cray because of `opt/cray/modulefiles:/opt/cray/craype/default/modulefiles)`.
+1. With default modulepath, Spack will detect the system as Cray because of modulepath
