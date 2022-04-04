@@ -1,0 +1,10 @@
+spack:
+  concretization: separately
+  view: false
+  
+  @CONFIG_INCLUDES@
+
+  specs:
+    - jedi-ufs-all-env
+    # Needs to be added separately
+    - ufs-weather-model-debug-env
