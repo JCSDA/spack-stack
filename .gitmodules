@@ -2,5 +2,7 @@
   path = spack
   #url = https://github.com/spack/spack
   #branch = develop
-  url = https://github.com/NOAA-EMC/spack.git
-  branch = jcsda_emc_spack_stack
+  #url = https://github.com/NOAA-EMC/spack.git
+  #branch = jcsda_emc_spack_stack
+  url = https://github.com/climbfuji/spack.git
+  branch = feature/update_jcsda_emc_spack_stack_from_authoritative_20220404
