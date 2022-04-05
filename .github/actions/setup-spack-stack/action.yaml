@@ -154,13 +154,12 @@ runs:
       # Add this first so "spack config add packages:" will append to this entry
       if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
         impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
-        intel_ver=$(find /opt/intel/oneapi/compiler -maxdepth 1 -mindepth 1 -type d | xargs basename)
         echo "" >> ${SPACK_ENV}/spack.yaml
         echo "  packages:" >> ${SPACK_ENV}/spack.yaml
         echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
         echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: intel-oneapi-mpi@${impi_ver}%intel@${intel_ver}" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
       fi
 
