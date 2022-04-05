@@ -126,6 +126,8 @@ runs:
         spack compiler add $(brew --prefix llvm)
       fi
 
+      if 
+
       spack external find
       spack compiler find
 
@@ -170,6 +172,7 @@ runs:
 
       if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
         impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
+        echo "" >> ${SPACK_ENV}/spack.yaml
         echo "  packages:" >> ${SPACK_ENV}/spack.yaml
         echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
         echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
