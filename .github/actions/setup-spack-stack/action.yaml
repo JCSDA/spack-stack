@@ -95,7 +95,7 @@ runs:
           wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
           tar -xzf mpich-${MPICH_VERSION}.tar.gz
           cd mpich-${MPICH_VERSION}
-          ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx
+          ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx  --with-device=ch4:ofi
           make -j2
           make install
         elif [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
