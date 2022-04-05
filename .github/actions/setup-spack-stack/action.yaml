@@ -167,7 +167,7 @@ runs:
         echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
         echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: /opt/intel" >> ${SPACK_ENV}/spack.yaml
+        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
       fi
 
       if [ "$RUNNER_OS" == "Linux" ]; then
