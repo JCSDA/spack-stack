@@ -160,7 +160,7 @@ runs:
         echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
         echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: intel-oneapi-mpi@${impi_ver}%intel@{intel_ver}" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: intel-oneapi-mpi@${impi_ver}%intel@${intel_ver}" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
       fi
 
