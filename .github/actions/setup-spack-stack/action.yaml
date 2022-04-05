@@ -44,7 +44,7 @@ runs:
             rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
             echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
             sudo apt-get update
-            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
+            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [ "$RUNNER_OS" == "macOS" ]; then
@@ -104,8 +104,6 @@ runs:
           ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx  --with-device=ch4:ofi
           make -j2
           make install
-        elif [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-          sudo apt-get install intel-oneapi-mpi-devel
         fi
 
   - name: setup-spack-env
@@ -126,10 +124,13 @@ runs:
         spack compiler add $(brew --prefix llvm)
       fi
 
-      if 
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
+      else
+        spack compiler find
+      fi
 
       spack external find
-      spack compiler find
 
   - name: update-bash-profile
     shell: bash
