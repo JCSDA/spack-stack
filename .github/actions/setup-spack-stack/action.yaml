@@ -71,8 +71,8 @@ runs:
         export CXX=g++-10
       fi
 
-      export MPICH_VERSION = "3.4.3"
-      export OPENMPI_VERSION = "4.1.3"
+      export MPICH_VERSION="3.4.3"
+      export OPENMPI_VERSION="4.1.3"
 
   - name: cache-mpi
     id: cache-mpi
