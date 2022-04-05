@@ -169,7 +169,7 @@ runs:
 
       # Remove external OpenSSL entry
       # Error when wget attempts to build using external on macOS
-      spack config rm packages:openssl
+      spack config rm "packages:openssl"
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
