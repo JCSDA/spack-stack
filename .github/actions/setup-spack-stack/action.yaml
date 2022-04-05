@@ -120,11 +120,14 @@ runs:
 
       export "PATH=$HOME/mpi/bin:${PATH}"
 
-      if [ "$RUNNER_OS" == "macOS" ]; then
+      # LLVM Clang not in PATH, search for it specifically
+      # Then, Fortran compilers are null, so set to gfortran
+      # Add minimal compilers just to prevent other compilers from being used by accident
+      if [[ "$RUNNER_OS" == "macOS" && ${{ inputs.compiler }} == "clang"* ]]; then
         spack compiler add $(brew --prefix llvm)
-      fi
-
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+        sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
       else
         spack compiler find
@@ -185,9 +188,9 @@ runs:
       spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
-      if [ "$RUNNER_OS" == "Linux" ]; then
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
-      elif [ "$RUNNER_OS" == "macOS" ]; then
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
         spack config add "packages:boost:version:[1.78.0]"
         spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
