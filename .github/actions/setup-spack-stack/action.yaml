@@ -57,23 +57,6 @@ runs:
       # Install Python poetry to avoid install errors in spack
       python3 -m pip install poetry
 
-  - name: set-env
-    shell: bash
-    id: set-env
-    run: |
-      if [[ "${{ inputs.compiler }}" == "gcc@9" ]]; then
-        export CC=gcc-9
-        export FC=gfortran-9
-        export CXX=g++-9
-      elif [[ "${{ inputs.compiler }}" == "gcc@10" ]]; then
-        export CC=gcc-10
-        export FC=gfortran-10
-        export CXX=g++-10
-      fi
-
-      export MPICH_VERSION="3.4.3"
-      export OPENMPI_VERSION="4.1.3"
-
   - name: cache-mpi
     id: cache-mpi
     uses: actions/cache@v2
@@ -87,8 +70,19 @@ runs:
     if: steps.cache-mpi.outputs.cache-hit != 'true'
     run: |
         echo "" >> ~/.bash_profile
-        echo ${OPENMPI_VERSION}
-        echo ${MPICH_VERSION}
+
+        if [[ "${{ inputs.compiler }}" == "gcc@9" ]]; then
+          export CC=gcc-9
+          export FC=gfortran-9
+          export CXX=g++-9
+        elif [[ "${{ inputs.compiler }}" == "gcc@10" ]]; then
+          export CC=gcc-10
+          export FC=gfortran-10
+          export CXX=g++-10
+        fi
+
+        export MPICH_VERSION="3.4.3"
+        export OPENMPI_VERSION="4.1.3"
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
