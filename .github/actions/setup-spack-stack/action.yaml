@@ -122,6 +122,10 @@ runs:
 
       export "PATH=$HOME/mpi/bin:${PATH}"
 
+      if [ "$RUNNER_OS" == "macOS" ]; then
+        spack compiler add $(brew --prefix llvm)
+      fi
+
       spack external find
       spack compiler find
 
@@ -145,6 +149,10 @@ runs:
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
+
+      # Remove external OpenSSL entry
+      # Error when wget attempts to build using external on macOS
+      spack config rm packages:openssl
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
@@ -184,6 +192,7 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      cat ${SPACK_ENV}/spack.yaml
       spack concretize
 
   - name: build-env
@@ -195,9 +204,9 @@ runs:
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         source /opt/intel/oneapi/setvars.sh
         # Pass --dirty to fix Intel compiler environment to fix missing LD_LIBRARY_PATH
-        spack install --dirty
+        spack install --dirty --fail-fast
       else
-        spack install
+        spack install --fail-fast
       fi
 
   - name: create-meta-modules
