@@ -83,7 +83,8 @@ runs:
         elif [[ "${{ inputs.compiler }}" == *"clang"* ]]; then
           export CC=clang
           export CXX=clang++
-          export FC=gfortran-9
+          export FC=gfortran-10
+          export FFLAGS="-fallow-argument-mismatch"
         fi
 
         export MPICH_VERSION="3.4.3"
