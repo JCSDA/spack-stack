@@ -130,6 +130,20 @@ runs:
         spack compiler find
       fi
 
+      # No external find for intel-oneapi-mpi
+      # And no way to add object entry to list using "spack config add"
+      # Add this first so "spack config add packages:" will append to this entry
+      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
+        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
+        echo "" >> ${SPACK_ENV}/spack.yaml
+        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
+        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
+        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+      fi
+
       spack external find
 
   - name: update-bash-profile
@@ -148,20 +162,6 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-
-      # No external find for intel-oneapi-mpi
-      # And no way to add object entry to list using "spack config add"
-      # Add this first so "spack config add packages:" will append to this entry
-      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
-      fi
 
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
