@@ -80,7 +80,7 @@ runs:
           export FC=gfortran-10
           export CXX=g++-10
           export FFLAGS="-fallow-argument-mismatch"
-        elfif [[ "${{ inputs.compiler }}" == "clang"* ]]; then
+        elfif [[ "${{ inputs.compiler }}" == *"clang"* ]]; then
           export CC=clang
           export CXX=clang++
           export FC=gfortran
