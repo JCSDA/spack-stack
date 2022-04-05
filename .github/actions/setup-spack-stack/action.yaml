@@ -89,14 +89,14 @@ runs:
         echo "" >> ~/.bash_profile
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz &> /dev/null
+          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
           tar -xzf openmpi-${OPENMP_VERSION}.tar.gz
           cd openmpi-${OPENMP_VERSION}
           ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx
           make -j2
           make install
         elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
-          wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz &> /dev/null
+          wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
           tar -xzf mpich-${MPICH_VERSION}.tar.gz
           cd mpich-${MPICH_VERSION}
           ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx
