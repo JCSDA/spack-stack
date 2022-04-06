@@ -5,7 +5,7 @@ inputs:
     description: 'Which application env to build'
     required: true
   compiler:
-    description: 'Compiler (available options gcc@9, gcc@10, intel)'
+    description: 'Compiler (available options gcc@9, gcc@10, clang, apple-clang, intel)'
     required: true
     default: 'gcc@9'
   mpi:
@@ -44,7 +44,7 @@ runs:
             rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
             echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
             sudo apt-get update
-            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
+            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [ "$RUNNER_OS" == "macOS" ]; then
@@ -59,7 +59,7 @@ runs:
     uses: actions/cache@v2
     with:
       path: ~/mpi
-      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}1
+      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}2
 
   # MPI takes a long time to build. Built it externally and cache it.
   - name: install-mpi
@@ -106,6 +106,8 @@ runs:
           ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx  --with-device=ch4:ofi
           make -j2
           make install
+        elif [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi"* ]]; then
+           sudo apt install intel-oneapi-mpi-devel
         fi
 
   - name: setup-spack-env
