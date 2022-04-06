@@ -124,6 +124,8 @@ runs:
 
       # So Spack can find external MPI
       export "PATH=$HOME/mpi/bin:${PATH}"
+      mpichversion
+      usr/local/opt/llvm/bin/clang --version
 
       # LLVM Clang not in PATH, search for it specifically
       # Then, Fortran compilers are null, so set to gfortran
