@@ -118,6 +118,7 @@ runs:
       ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
 
+      # So Spack can find external MPI
       export "PATH=$HOME/mpi/bin:${PATH}"
 
       # LLVM Clang not in PATH, search for it specifically
