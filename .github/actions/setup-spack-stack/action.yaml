@@ -48,9 +48,6 @@ runs:
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [ "$RUNNER_OS" == "macOS" ]; then
-        if [[ "${{ inputs.compiler }}" == "clang"* ]]; then
-            brew install llvm
-        fi
         echo ""
       fi
 
