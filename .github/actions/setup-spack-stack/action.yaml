@@ -77,9 +77,14 @@ runs:
           export FC=gfortran-10
           export CXX=g++-10
           export FFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == *"clang"* ]]; then
+        elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
           export CC=clang
           export CXX=clang++
+          export FC=gfortran-10
+          export FFLAGS="-fallow-argument-mismatch"
+        elif [[ "${{ inputs.compiler }}" == "clang"* ]]; then
+          export CC=$(brew --prefix llvm)/bin/clang
+          export CXX=$(brew --prefix llvm)/bin/clang++
           export FC=gfortran-10
           export FFLAGS="-fallow-argument-mismatch"
         fi
@@ -211,7 +216,7 @@ runs:
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         source /opt/intel/oneapi/setvars.sh
-        # Pass --dirty to fix Intel compiler environment to fix missing LD_LIBRARY_PATH
+        # Pass --dirty for Intel compiler environment to fix missing LD_LIBRARY_PATH
         spack install --dirty --fail-fast
       else
         spack install --fail-fast
