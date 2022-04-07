@@ -94,8 +94,8 @@ runs:
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
-          tar -xzf openmpi-${OPENMP_VERSION}.tar.gz
-          cd openmpi-${OPENMP_VERSION}
+          tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
+          cd openmpi-${OPENMPI_VERSION}
           ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx
           make -j2
           make install
