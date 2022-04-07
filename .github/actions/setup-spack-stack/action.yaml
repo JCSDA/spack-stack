@@ -5,7 +5,7 @@ inputs:
     description: 'Which application env to build'
     required: true
   compiler:
-    description: 'Compiler (available options gcc@9, gcc@10, intel)'
+    description: 'Compiler (available options gcc@9, gcc@10, clang, apple-clang, intel)'
     required: true
     default: 'gcc@9'
   mpi:
@@ -21,7 +21,7 @@ runs:
   using: "composite"
 
   steps:
-  
+
   - name: checkout-spack-stack
     if: ${{ inputs.use-local-checkout == 'false' }}
     uses: actions/checkout@v2
@@ -44,18 +44,71 @@ runs:
             rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
             echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
             sudo apt-get update
-            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-mpi-devel intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
+            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [ "$RUNNER_OS" == "macOS" ]; then
-        if [[ "${{ inputs.compiler }}" == "clang"* ]]; then
-            brew install llvm
-        fi
         echo ""
       fi
 
       # Install Python poetry to avoid install errors in spack
       python3 -m pip install poetry
+
+  - name: cache-mpi
+    id: cache-mpi
+    uses: actions/cache@v2
+    with:
+      path: ~/mpi
+      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}2
+
+  # MPI takes a long time to build. Built it externally and cache it.
+  - name: install-mpi
+    shell: bash
+    if: steps.cache-mpi.outputs.cache-hit != 'true'
+    run: |
+        echo "" >> ~/.bash_profile
+
+        if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
+          export CC=gcc-9
+          export FC=gfortran-9
+          export CXX=g++-9
+        elif [[ "${{ inputs.compiler }}" == "gcc@10"* ]]; then
+          export CC=gcc-10
+          export FC=gfortran-10
+          export CXX=g++-10
+          export FFLAGS="-fallow-argument-mismatch"
+        elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
+          export CC=clang
+          export CXX=clang++
+          export FC=gfortran-10
+          export FFLAGS="-fallow-argument-mismatch"
+        elif [[ "${{ inputs.compiler }}" == "clang"* ]]; then
+          export CC=$(brew --prefix llvm)/bin/clang
+          export CXX=$(brew --prefix llvm)/bin/clang++
+          export FC=gfortran-10
+          export FFLAGS="-fallow-argument-mismatch"
+        fi
+
+        export MPICH_VERSION="3.4.3"
+        export OPENMPI_VERSION="4.1.3"
+
+        if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
+          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
+          tar -xzf openmpi-${OPENMP_VERSION}.tar.gz
+          cd openmpi-${OPENMP_VERSION}
+          ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx
+          make -j2
+          make install
+        elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
+          wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
+          tar -xzf mpich-${MPICH_VERSION}.tar.gz
+          cd mpich-${MPICH_VERSION}
+          ./configure --prefix=$HOME/mpi --enable-fortran --enable-cxx  --with-device=ch4:ofi
+          make -j2
+          make install
+        elif [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi"* ]]; then
+           sudo apt install intel-oneapi-mpi-devel
+        fi
 
   - name: setup-spack-env
     shell: bash
@@ -64,12 +117,42 @@ runs:
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         source /opt/intel/oneapi/setvars.sh
       fi
+
       source setup.sh
       ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
 
+      # So Spack can find external MPI
+      export "PATH=$HOME/mpi/bin:${PATH}"
+
+      # LLVM Clang not in PATH, search for it specifically
+      # Then, Fortran compilers are null, so set to gfortran
+      # Add minimal compilers just to prevent other compilers from being used by accident
+      if [[ "$RUNNER_OS" == "macOS" && ${{ inputs.compiler }} == "clang"* ]]; then
+        spack compiler add $(brew --prefix llvm)
+        sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+        sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
+      else
+        spack compiler find
+      fi
+
+      # No external find for intel-oneapi-mpi
+      # And no way to add object entry to list using "spack config add"
+      # Add this first so "spack config add packages:" will append to this entry
+      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
+        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
+        echo "" >> ${SPACK_ENV}/spack.yaml
+        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
+        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
+        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+      fi
+
       spack external find
-      spack compiler find
 
   - name: update-bash-profile
     shell: bash
@@ -79,6 +162,7 @@ runs:
       echo "" >> ~/.bash_profile
       echo "source ${{ inputs.path }}/setup.sh" >> ~/.bash_profile
       echo "spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}" >> ~/.bash_profile
+      echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
 
   - name: configure-options
     shell: bash
@@ -87,14 +171,15 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
 
-      spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
+      # Use external MPI to save compilation time
+      spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      # Currently, this is the case for all workflows - wrap in if statement
-      # when this changes in the future
-      # Whitelist the mpi providers so that spack creates the modules for them
-      spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
-      spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
+      # Remove external OpenSSL entry
+      # Error when wget attempts to build using external on macOS
+      spack config rm "packages:openssl"
+
+      spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
       # Currently, this is the case for all workflows - wrap in if statement
       # when this changes in the future
@@ -102,9 +187,15 @@ runs:
       spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
-      if [ "$RUNNER_OS" == "Linux" ]; then
+      # Currently, this is the case for all workflows - wrap in if statement
+      # when this changes in the future
+      # Whitelist the mpi providers so that spack creates the modules for them
+      spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
+      spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
+
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
-      elif [ "$RUNNER_OS" == "macOS" ]; then
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
         spack config add "packages:boost:version:[1.78.0]"
         spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
@@ -116,6 +207,7 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      cat ${SPACK_ENV}/spack.yaml
       spack concretize
 
   - name: build-env
@@ -126,10 +218,10 @@ runs:
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         source /opt/intel/oneapi/setvars.sh
-        # Pass --dirty to fix Intel compiler environment to fix missing LD_LIBRARY_PATH
-        spack install --dirty
+        # Pass --dirty for Intel compiler environment to fix missing LD_LIBRARY_PATH
+        spack install --dirty --fail-fast
       else
-        spack install
+        spack install --fail-fast
       fi
 
   - name: create-meta-modules
