@@ -23,6 +23,6 @@ jobs:
         uses: ./.github/actions/setup-spack-stack
         with:
           app: ${{ matrix.app }}
-          compiler: apple-clang@13
+          compiler: apple-clang
           mpi: openmpi
           path: ${{ github.workspace }}
