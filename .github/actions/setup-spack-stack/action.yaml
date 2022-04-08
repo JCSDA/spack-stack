@@ -56,7 +56,7 @@ runs:
 
   - name: cache-mpi
     id: cache-mpi
-    uses: actions/cache@v2.1
+    uses: actions/cache@v2
     with:
       path: ~/mpi
       key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}2
@@ -89,8 +89,8 @@ runs:
           export FFLAGS="-fallow-argument-mismatch"
         fi
 
-        export MPICH_VERSION="3.4.3"
-        export OPENMPI_VERSION="4.1.3"
+        export MPICH_VERSION="3.4.2"
+        export OPENMPI_VERSION="4.1.2"
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
