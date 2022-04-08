@@ -56,7 +56,7 @@ runs:
 
   - name: cache-mpi
     id: cache-mpi
-    uses: actions/cache@v2
+    uses: actions/cache@v2.1
     with:
       path: ~/mpi
       key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}2
