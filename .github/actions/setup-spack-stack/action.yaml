@@ -174,8 +174,12 @@ runs:
         echo "        prefix: $HOME/mpi" >> ${SPACK_ENV}/spack.yaml
       fi
 
-      spack external find -t git-lfs
-      spack external find
+      # Spack external find is by default only looking for build-tools. Either
+      # search for additional packages explicitly, or fall back to the old
+      # behavior to find all external packages.
+      #spack external find 
+      #spack external find git-lfs openmpi mpich
+      spack external find --all
 
   - name: update-bash-profile
     shell: bash
