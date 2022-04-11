@@ -139,10 +139,7 @@ runs:
       elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
         # Workaround for error "libimf.so cannot be found":
-        cat envs/${{ inputs.app }}/spack.yaml
-        ls -l /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin
         sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.app }}/spack.yaml
-        cat envs/${{ inputs.app }}/spack.yaml
       else
         spack compiler find
       fi
@@ -222,6 +219,10 @@ runs:
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        # py-scipy 1.8.0 doesn't build correctly on macOS with gcc
+        if [[ "${{ inputs.compiler }}" == "gcc"* ]]; then
+          spack config add "packages:py-scipy:version:[1.7.3]"
+        fi
         spack config add "packages:boost:version:[1.78.0]"
         spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
@@ -242,13 +243,6 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-      #if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-      #  source /opt/intel/oneapi/setvars.sh
-      #  # Pass --dirty for Intel compiler environment to fix missing LD_LIBRARY_PATH
-      #  spack install --dirty --fail-fast
-      #else
-      #  spack install --fail-fast
-      #fi
       spack install --fail-fast
 
   - name: create-meta-modules
