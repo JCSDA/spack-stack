@@ -24,5 +24,5 @@ jobs:
         with:
           app: ${{ matrix.app }}
           compiler: clang
-          mpi: mpich
+          mpi: openmpi
           path: ${{ github.workspace }}
