@@ -219,10 +219,6 @@ runs:
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # py-scipy 1.8.0 doesn't build correctly on macOS with gcc
-        if [[ "${{ inputs.compiler }}" == "gcc"* ]]; then
-          spack config add "packages:py-scipy:version:[1.7.3]"
-        fi
         spack config add "packages:boost:version:[1.78.0]"
         spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
