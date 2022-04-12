@@ -33,9 +33,12 @@ runs:
   - name: os-setup
     shell: bash
     run: |
-      if [ "$RUNNER_OS" == "Linux" ]; then
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
         # Install Curl headers. Executable exists by default in spack external find.
         sudo apt-get install libcurl4-openssl-dev
+
+        # Install git-lfs to avoid compilation errors of "go" with Intel
+        sudo apt-get install git-lfs
 
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
             cd /tmp
@@ -47,8 +50,8 @@ runs:
             sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
-      elif [ "$RUNNER_OS" == "macOS" ]; then
-        echo ""
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        echo " "
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -94,9 +97,10 @@ runs:
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
-          tar -xzf openmpi-${OPENMP_VERSION}.tar.gz
-          cd openmpi-${OPENMP_VERSION}
-          ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx
+          tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
+          cd openmpi-${OPENMPI_VERSION}
+          # --with-hwloc=internal --with-libevent=internal : https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
+          ./configure --prefix=$HOME/mpi --enable-mpi-fortran --enable-mpi-cxx --with-hwloc=internal --with-libevent=internal
           make -j2
           make install
         elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
@@ -122,6 +126,8 @@ runs:
 
       # So Spack can find external MPI
       export "PATH=$HOME/mpi/bin:${PATH}"
+      export MPICH_VERSION="3.4.3"
+      export OPENMPI_VERSION="4.1.3"
 
       # LLVM Clang not in PATH, search for it specifically
       # Then, Fortran compilers are null, so set to gfortran
@@ -132,11 +138,13 @@ runs:
         sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
       elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
+        # Workaround for error "libimf.so cannot be found":
+        sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.app }}/spack.yaml
       else
         spack compiler find
       fi
 
-      # No external find for intel-oneapi-mpi
+      # No external find for intel-oneapi-mpi, and problems finding other MPI libraries as well
       # And no way to add object entry to list using "spack config add"
       # Add this first so "spack config add packages:" will append to this entry
       if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
@@ -148,9 +156,32 @@ runs:
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
         echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+      elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
+        mpich_ver=${MPICH_VERSION}
+        echo "" >> ${SPACK_ENV}/spack.yaml
+        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+        echo "    mpich:" >> ${SPACK_ENV}/spack.yaml
+        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: mpich@${mpich_ver}" >> ${SPACK_ENV}/spack.yaml
+        echo "        prefix: $HOME/mpi" >> ${SPACK_ENV}/spack.yaml
+      elif [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
+        openmpi_ver=${OPENMPI_VERSION}
+        echo "" >> ${SPACK_ENV}/spack.yaml
+        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+        echo "    openmpi:" >> ${SPACK_ENV}/spack.yaml
+        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: openmpi@${openmpi_ver}" >> ${SPACK_ENV}/spack.yaml
+        echo "        prefix: $HOME/mpi" >> ${SPACK_ENV}/spack.yaml
       fi
 
-      spack external find
+      # Spack external find is by default only looking for build-tools. Either
+      # search for additional packages explicitly, or fall back to the old
+      # behavior to find all external packages.
+      #spack external find 
+      #spack external find git-lfs openmpi mpich
+      spack external find --all
 
   - name: update-bash-profile
     shell: bash
@@ -185,12 +216,6 @@ runs:
       spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
-      # Currently, this is the case for all workflows - wrap in if statement
-      # when this changes in the future
-      # Whitelist the mpi providers so that spack creates the modules for them
-      spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
-      spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
-
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
@@ -214,13 +239,7 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        source /opt/intel/oneapi/setvars.sh
-        # Pass --dirty for Intel compiler environment to fix missing LD_LIBRARY_PATH
-        spack install --dirty --fail-fast
-      else
-        spack install --fail-fast
-      fi
+      spack install --fail-fast
 
   - name: create-meta-modules
     shell: bash

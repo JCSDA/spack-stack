@@ -9,8 +9,8 @@ from spack import *
 class JediCmake(CMakePackage):
     """CMake/ecbuild toolchains to facilitate portability on different systems."""
 
-    homepage = "https://github.com/JCSDA-internal/jedi-cmake"
-    git = "https://github.com/JCSDA-internal/jedi-cmake.git"
+    homepage = "https://github.com/JCSDA/jedi-cmake"
+    git = "https://github.com/JCSDA/jedi-cmake.git"
     url = "https://github.com/JCSDA/jedi-cmake/archive/refs/tags/1.3.0.tar.gz"
 
     maintainers = ['climbfuji', 'rhoneyager']
