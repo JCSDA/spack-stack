@@ -7,9 +7,10 @@ packages:
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  mpich:
+  openmpi:
     externals:
-    - spec: mpich@3.4.3+hydra+romio device=ch4
+    - spec: openmpi@4.1.2~cuda~cxx~cxx_exceptions~java~memchecker+pmi+pmix~sqlite3~static~thread_multiple~wrapper-rpath
+        schedulers=slurm
       prefix: /usr/local
   python:
     buildable: False
@@ -46,11 +47,10 @@ packages:
     externals:
     - spec: cmake@3.22.1
       prefix: /usr/local
-  # Don't use OS curl, this leads to all sorts of problems with netcdf-c
-  #curl:
-  #  externals:
-  #  - spec: curl@7.77.0+gssapi+ldap+nghttp2
-  #    prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.82.0
+      prefix: /usr/local/opt/curl
   diffutils:
     externals:
     - spec: diffutils@2.8.1
@@ -105,12 +105,20 @@ packages:
     externals:
     - spec: openssh@8.6p1
       prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.1
+      prefix: /usr/local/opt/openssl@1.1
   perl:
     externals:
     - spec: perl@5.18.4~cpanm+shared+threads
       prefix: /usr
     - spec: perl@5.30.3~cpanm+shared+threads
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr/local/Cellar/qt@5/5.15.3
   rsync:
     externals:
     - spec: rsync@2.6.9
@@ -119,10 +127,11 @@ packages:
     externals:
     - spec: ruby@2.6.8
       prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.36.0+fts~functions+rtree
-      prefix: /usr
+  # Don't use OS sqlite, this version doesn't have the development files
+  #sqlite:
+  #  externals:
+  #  - spec: sqlite@3.36.0+fts~functions+rtree
+  #    prefix: /usr
   texinfo:
     externals:
     - spec: texinfo@4.8

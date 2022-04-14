@@ -35,6 +35,9 @@ brew install wget@1.21.3
 brew install bash@5.1.16
 brew install curl@7.82.0
 brew install cmake@3.22.3
+brew install openssl@1.1
+# Note - need to pin to version 5, not 6
+brew install qt@5.15.3
 ```
 - Activate the `lua` module environment:
 ```
