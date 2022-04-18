@@ -18,10 +18,15 @@ class JediUfsAllEnv(BundlePackage):
 
     version('main', branch='main')
 
+    depends_on('jedi-ewok-env')
     depends_on('jedi-fv3-bundle-env')
     depends_on('jedi-ufs-bundle-env')
     depends_on('jedi-um-bundle-env')
-    depends_on('jedi-tools-env')
     depends_on('nceplibs-bundle')
     depends_on('soca-bundle-env')
     depends_on('ufs-weather-model-env')
+
+    # jedi-tools-env doesn't build with Intel, and is not needed on HPCs
+    depends_on('jedi-tools-env', when='%gcc')
+    depends_on('jedi-tools-env', when='%clang')
+    depends_on('jedi-tools-env', when='%apple-clang')
