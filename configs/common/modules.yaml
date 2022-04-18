@@ -13,25 +13,52 @@ modules:
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
       blacklist:
       # List of packages for which we don't need modules
+      - apple-libunwind
+      - apple-libuuid
+      - autoconf
+      - automake
       - berkeley-db
       - bison
       - bzip2
       - diffutils
       - expat
       - findutils
+      - fixesproto
       - flex
+      - freetype
       - gdbm
+      - googletest
       - hwloc
+      - inputproto
+      - kbproto
       - libaec
       - libedit
       - libevent
       - libfabric
+      - libffi
+      - libgeotiff
+      - libice
       - libiconv
       - libjpeg-turbo
       - libpciaccess
+      - libpthread-stubs
       - libsigsegv
+      - libsm
+      - libtiff
+      - libtool
+      - libx11
+      - libxau
+      - libxcb
+      - libxdmcp
+      - libxext
+      - libxfixes
+      - libxi
       - libxml
       - libxml2
+      - libxrandr
+      - libxrender
+      - libxxf86vm
+      - libyaml
       - lz4
       - m4
       - nasm
@@ -40,7 +67,17 @@ modules:
       - openssl
       - perl
       - pkgconf
+      - qhull
+      - qt
+      - randrproto
       - readline
+      - renderproto
+      - xcb-proto
+      - xextproto
+      - xf86vidmodeproto
+      - xproto
+      - xrandr
+      - xtrans
       - xz
       # Do not create MPI modules - we create our own meta modules
       - cray-mpich
@@ -81,25 +118,52 @@ modules:
         nlohmann-json-schema-validator: 'json-schema-validator/{version}'
       blacklist:
       # List of packages for which we don't need modules
+      - apple-libunwind
+      - apple-libuuid
+      - autoconf
+      - automake
       - berkeley-db
       - bison
       - bzip2
       - diffutils
       - expat
       - findutils
+      - fixesproto
       - flex
+      - freetype
       - gdbm
+      - googletest
       - hwloc
+      - inputproto
+      - kbproto
       - libaec
       - libedit
       - libevent
       - libfabric
+      - libffi
+      - libgeotiff
+      - libice
       - libiconv
       - libjpeg-turbo
       - libpciaccess
+      - libpthread-stubs
       - libsigsegv
+      - libsm
+      - libtiff
+      - libtool
+      - libx11
+      - libxau
+      - libxcb
+      - libxdmcp
+      - libxext
+      - libxfixes
+      - libxi
       - libxml
       - libxml2
+      - libxrandr
+      - libxrender
+      - libxxf86vm
+      - libyaml
       - lz4
       - m4
       - nasm
@@ -108,7 +172,17 @@ modules:
       - openssl
       - perl
       - pkgconf
+      - qhull
+      - qt
+      - randrproto
       - readline
+      - renderproto
+      - xcb-proto
+      - xextproto
+      - xf86vidmodeproto
+      - xproto
+      - xrandr
+      - xtrans
       - xz
       # Do not create MPI modules - we create our own meta modules
       - cray-mpich
