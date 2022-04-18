@@ -10,9 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        # Skip jedi-tools, someof the Python packages for Github
-        # communication fail (these aren't needed on the HPCs anyway)
-        app: [jedi-ufs, jedi-um, jedi-fv3, ufs-weather-model, nceplibs]
+        app: [jedi-ufs-all]
     runs-on: ubuntu-latest
     steps:
       - name: checkout

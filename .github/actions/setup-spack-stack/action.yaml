@@ -124,11 +124,6 @@ runs:
       ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
 
-      # So Spack can find external MPI
-      export "PATH=$HOME/mpi/bin:${PATH}"
-      export MPICH_VERSION="3.4.3"
-      export OPENMPI_VERSION="4.1.3"
-
       # LLVM Clang not in PATH, search for it specifically
       # Then, Fortran compilers are null, so set to gfortran
       # Add minimal compilers just to prevent other compilers from being used by accident
@@ -144,6 +139,9 @@ runs:
         spack compiler find
       fi
 
+      # So Spack can find external MPI
+      export "PATH=$HOME/mpi/bin:${PATH}"
+
       # No external find for intel-oneapi-mpi, and problems finding other MPI libraries as well
       # And no way to add object entry to list using "spack config add"
       # Add this first so "spack config add packages:" will append to this entry
@@ -156,24 +154,6 @@ runs:
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
         echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
-      elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
-        mpich_ver=${MPICH_VERSION}
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    mpich:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: mpich@${mpich_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: $HOME/mpi" >> ${SPACK_ENV}/spack.yaml
-      elif [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-        openmpi_ver=${OPENMPI_VERSION}
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    openmpi:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: openmpi@${openmpi_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: $HOME/mpi" >> ${SPACK_ENV}/spack.yaml
       fi
 
       # Spack external find is by default only looking for build-tools. Either
@@ -183,15 +163,17 @@ runs:
       #spack external find git-lfs openmpi mpich
       spack external find --all
 
-  - name: update-bash-profile
-    shell: bash
-    run: |
-      # Add newline that was missing at end of built-in bash_profile
-      # and messing up appended text in next section.
-      echo "" >> ~/.bash_profile
-      echo "source ${{ inputs.path }}/setup.sh" >> ~/.bash_profile
-      echo "spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}" >> ~/.bash_profile
-      echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
+  #- name: update-bash-profile
+  #  shell: bash
+  #  run: |
+  #    # Add newline that was missing at end of built-in bash_profile
+  #    # and messing up appended text in next section.
+  #    echo "" >> ~/.bash_profile
+  #    echo "source ${{ inputs.path }}/setup.sh" >> ~/.bash_profile
+  #    echo "spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}" >> ~/.bash_profile
+  #    if [[ ! "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
+  #      echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
+  #    fi
 
   - name: configure-options
     shell: bash
