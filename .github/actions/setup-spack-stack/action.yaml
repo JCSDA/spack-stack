@@ -52,7 +52,7 @@ runs:
         fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         brew install qt@5
-        echo " "
+        brew install lmod
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -231,13 +231,26 @@ runs:
   - name: create-meta-modules
     shell: bash
     run: |
-      cd ${{ inputs.path }}
-      source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-      meta_modules/setup_meta_modules.py
-      # Not yet: need lmod installed, loaded and module use command
-      ## Test loading the meta modules
-      #module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
-      #module load stack-${{ inputs.compiler }}
-      #module load stack-python
-      #module load stack-${{ inputs.mpi }}
+      if [[ ! "${{ inputs.app }}" == "empty" ]]; then
+        cd ${{ inputs.path }}
+        source setup.sh
+        spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+        meta_modules/setup_meta_modules.py
+      fi
+
+  - name: test-meta-modules
+    shell: bash
+    run: |
+      if [[ ! "${{ inputs.app }}" == "empty" ]]; then
+        cd ${{ inputs.path }}
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          # Not yet: need lmod installed, loaded and module use command
+          echo ""
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
+          source /usr/local/opt/lmod/init/profile
+          module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
+          module load stack-${{ inputs.compiler }}
+          module load stack-python
+          module load stack-${{ inputs.mpi }}
+        fi
+      fi
