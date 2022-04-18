@@ -94,7 +94,10 @@ def get_matched_dict(root_dir, candidate_list, sub_candidate_list = None):
                     if os.path.isdir(os.path.join(candidate_dir, ydir)) ]
                 # There must be a unique match with the compiler in the candidate list
                 version_matches = [ x for x in versions if candidate in '{}@{}'.format(xdir, x) ]
-                if len(version_matches)>1:
+                if not version_matches:
+                    raise Exception("No version match for {} in {}".format(
+                        candidate, candidate_dir))
+                elif len(version_matches)>1:
                     raise Exception("Multiple version matches for {} in {}: {}".format(
                         candidate, candidate_dir, version_matches))
                 # Each candidate must match exactly one entry
