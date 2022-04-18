@@ -153,6 +153,10 @@ packages:
     externals:
     - spec: pkg-config@0.28
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.6.2
+      prefix: /usr
   rsync:
     externals:
     - spec: rsync@3.1.0
@@ -172,6 +176,10 @@ packages:
   texinfo:
     externals:
     - spec: texinfo@4.13
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.14
       prefix: /usr
   xz:
     externals:
