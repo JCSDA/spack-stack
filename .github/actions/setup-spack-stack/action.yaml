@@ -251,6 +251,9 @@ runs:
           module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
           module load stack-${{ inputs.compiler }}
           module load stack-python
-          module load stack-${{ inputs.mpi }}
+          # jedi-tools doesn't have any mpi dependencies
+          if [[ ! "${{ inputs.app }}" == "jedi-tools" ]]; then
+            module load stack-${{ inputs.mpi }}
+          fi
         fi
       fi
