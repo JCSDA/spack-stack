@@ -45,7 +45,10 @@ source setup.sh
 ./create-env.py --site hera --app jedi-fv3 --name jedi-fv3.hera
 
 # Activate the newly created environment
-# optional: decorate the command line prompt using -p
+# Optional: decorate the command line prompt using -p
+#     Note: in some cases, this can mess up long lines in bash
+#     because color codes are not escaped correctly. In this
+#     case, use export SPACK_COLOR='never' first.
 spack env activate [-p] envs/jedi-fv3.hera
 
 # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
@@ -55,7 +58,7 @@ emacs common/*.yaml
 emacs site/*.yaml
 
 # Process the specs and install
-# note: both steps will take some time!
+# Note: both steps will take some time!
 spack concretize
 spack install
 
