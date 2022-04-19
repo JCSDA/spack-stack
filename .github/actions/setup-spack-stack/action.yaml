@@ -51,8 +51,13 @@ runs:
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        brew install qt@5
+        brew install curl
+        brew install git
+        brew install git-lfs
         brew install lmod
+        brew install qt@5
+        brew install readline
+        brew install wget
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -206,7 +211,9 @@ runs:
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        # DH* This should no longer be necessary
         spack config add "packages:boost:version:[1.78.0]"
+        # *DH
         spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
       fi
