@@ -10,8 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        #app: [empty, jedi-ewok, jedi-fv3, jedi-tools, jedi-ufs, jedi-um, nceplibs, soca]
-        app: [nceplibs]
+        app: [empty, jedi-ewok, jedi-fv3, jedi-tools, jedi-ufs, jedi-um, nceplibs, soca]
     runs-on: macos-latest
     steps:
 
