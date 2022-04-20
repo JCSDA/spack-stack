@@ -86,6 +86,10 @@ def get_matched_dict(root_dir, candidate_list, sub_candidate_list = None):
         matched_name = None
         matched_version = None
         for xdir in dirs:
+            loggig.warning("DH DEBUG: candidate_list = '{}'".format(candidate_list))
+            loggig.warning("DH DEBUG: candidate      = '{}'".format(candidate))
+            loggig.warning("DH DEBUG: dirs           = '{}'".format(dirs))
+            loggig.warning("DH DEBUG: xdir           = '{}'".format(xdir))
             # Partial matches
             if ('@' in candidate and xdir==candidate.split('@')[0]) or (xdir==candidate):
                 candidate_dir = os.path.join(root_dir, xdir)
