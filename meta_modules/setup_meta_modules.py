@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import copy
 import logging
 #logging.basicConfig(level=logging.INFO)
 logging.basicConfig(level=logging.DEBUG)
@@ -133,6 +134,15 @@ def get_matched_dict(root_dir, candidate_list, sub_candidate_list = None):
             matched_dict[matched_name][matched_version].update(sub_matched_dict)
     return matched_dict
 
+def merge_dicts(dictA, dictB):
+    """Merge two dictionaries and remove duplicates"""
+    for key in dictB.keys():
+        if not key in dictA.keys():
+            dictA[key] = copy.deepcopy(dictB[key])
+        else:
+            dictA[key] = list(set(dictA[key] + dictB[key]))
+    return dictA
+
 def setenv_command(module_choice, key, value):
     if module_choice == 'lmod':
         return 'setenv("{}", "{}")\n'.format(key, value)
@@ -260,6 +270,13 @@ logging.info(" ... stack compilers: '{}'".format(compiler_dict))
 # Then, check for mpi providers - recursively for compilers
 mpi_dict = get_matched_dict(module_dir, mpi_candidate_list, compiler_candidate_list)
 logging.info(" ... stack mpi providers: '{}'".format(mpi_dict))
+
+# For some environments, there are only compiler+mpi-dependent modules,
+# and therefore the compiler itself is not recorded in compiler_dict.
+for mpi_provider_name in mpi_dict.keys():
+    for mpi_provider_version in mpi_dict[mpi_provider_name].keys():
+        compiler_dict_tmp = get_matched_dict(os.path.join(module_dir, mpi_provider_name, mpi_provider_version), compiler_candidate_list)
+        compiler_dict= merge_dicts(compiler_dict, compiler_dict_tmp)
 
 # For future use, we need a flattened list of all compilers
 flattened_compiler_list = [ '{}@{}'.format(name, version) for name in compiler_dict.keys() for version in compiler_dict[name] ]
