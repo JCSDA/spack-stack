@@ -350,8 +350,10 @@ for compiler in compiler_config:
         # Spack compiler module hierarchy
         substitutes['MODULEPATH'] = os.path.join(module_dir, compiler_name, compiler_version)
         logging.debug("  ... ... MODULEPATH  : {}".format(substitutes['MODULEPATH']))
+        # If the environment doesn't have compiler-only dependent modules
+        # then simply create the placeholder directory
         if not os.path.isdir(substitutes['MODULEPATH']):
-            raise Exception("Compiler module path {} does not exist".format(substitutes['MODULEPATH']))
+            os.makedirs(substitutes['MODULEPATH'])
 
         # For tcl modules remove the compiler prefices from the module contents
         if module_choice == 'tcl':
