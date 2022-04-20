@@ -13,7 +13,7 @@ class Atlas(CMakePackage):
     git = "https://github.com/ecmwf/atlas.git"
     url = "https://github.com/ecmwf/atlas/archive/0.22.1.tar.gz"
 
-    maintainers = ['rhoneyager', 'mmiesch']
+    maintainers = ['climbfuji', 'rhoneyager']
 
     version('master', branch='master')
     version('develop', branch='develop')
