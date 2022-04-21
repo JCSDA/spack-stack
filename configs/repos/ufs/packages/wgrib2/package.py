@@ -128,6 +128,7 @@ class Wgrib2(MakefilePackage):
         # ifort no longer accepts -openmp
         makefile.filter(r'-openmp', '-qopenmp')
         makefile.filter(r'-Wall', ' ')
+        makefile.filter(r'-Werror=format-security', ' ')
 
         # clang doesn't understand --fast-math
         if spec.satisfies('%clang') or spec.satisfies('%apple-clang'):
