@@ -154,6 +154,11 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       spack install --fail-fast
+
+  - name: test
+    if: always()
+    shell: bash
+    run: |
       cat /Users/runner/work/spack-stack/spack-stack/cache/build_stage/spack-stage-wgrib2-2.0.8-7ipi6wagv6kzmg2sehhmfmeertwvo75y/spack-src/libaec-1.0.2/config.log
 
   - name: create-meta-modules
