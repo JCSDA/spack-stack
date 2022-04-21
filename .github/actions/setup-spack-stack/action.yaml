@@ -82,8 +82,6 @@ runs:
         spack compiler add $(brew --prefix llvm)
         sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
         sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
-        # Linker can't find -lomp in non-default path. Add to /usr/local/lib
-        sudo ln -s $(brew --prefix llvm)/lib/libomp.dylib /usr/local/lib/libomp.dylib
       elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
         # Workaround for error "libimf.so cannot be found":
@@ -135,6 +133,9 @@ runs:
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        # Clang has trouble finding -lomp for OpenMP because of non-standard location
+        # Could be fixed by setting compiler environment LDFLAGS to -L$(brew --prefix llvm)/lib or wherever libomp is
+        spack config add "packages:wgrib2:variants: ~openmp"
         spack config add "packages:boost:version:[1.78.0]"
         spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
