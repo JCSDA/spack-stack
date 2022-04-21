@@ -200,6 +200,10 @@ runs:
       # Error when proj attempts to build using external on macOS
       spack config rm "packages:sqlite"
 
+      # Remove external ncurses entry
+      # Error when proj attempts to build using external on macOS
+      spack config rm "packages:ncurses"
+
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
       # Currently, this is the case for all workflows - wrap in if statement
