@@ -82,6 +82,8 @@ runs:
         spack compiler add $(brew --prefix llvm)
         sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
         sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+        # Linker can't find -lomp in non-default path. Add to /usr/local/lib
+        sudo ln -s $(brew --prefix llvm)/lib/libomp.dylib /usr/local/lib/libomp.dylib
       elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
         # Workaround for error "libimf.so cannot be found":
