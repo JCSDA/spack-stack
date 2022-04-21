@@ -5,5 +5,6 @@ spack:
   @CONFIG_INCLUDES@
 
   specs:
-  - wgrib2@2.0.8
-  - wgrib2@3.1.1
+    - jedi-ufs-all-env
+    # Needs to be added separately
+    - ufs-weather-model-debug-env
