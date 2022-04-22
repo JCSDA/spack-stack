@@ -51,9 +51,10 @@ runs:
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        brew install curl
-        brew install git
-        brew install git-lfs
+        # These are already installed
+        #brew install curl
+        #brew install git
+        #brew install git-lfs
         brew install lmod
         brew install qt@5
         brew install readline
