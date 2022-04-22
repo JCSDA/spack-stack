@@ -26,11 +26,12 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          ./create-env.py --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name all
-          spack env activate -d envs/all
+          ./create-env.py --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name mirror
+          spack env activate -d envs/mirror
           spack compiler find
           spack add re2c
           spack add clingo
+          spack --show-cores=full concretize
           spack concretize
           spack mirror create -a
           # upload-artifact does not allow filenames that contain '?'
