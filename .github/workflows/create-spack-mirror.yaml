@@ -7,7 +7,7 @@ on:
         type: string
         description: "App to generate mirror for"
         required: true
-        default: "jedi-ufs-all"
+        default: "jedi-ufs"
       site:
         type: string
         description: "Site to create environment for"
