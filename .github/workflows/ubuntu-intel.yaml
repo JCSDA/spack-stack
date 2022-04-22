@@ -10,7 +10,8 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-ufs-all]
+        # jedi-tools-env does not build with intel
+        app: [empty, jedi-ewok, jedi-fv3, jedi-ufs, jedi-um, nceplibs, soca]
     runs-on: ubuntu-latest
     steps:
       - name: checkout

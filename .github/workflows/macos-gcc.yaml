@@ -10,7 +10,8 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-ufs-all]
+        # Can't build jedi-ewok on macOS (12) with gcc (11)
+        app: [empty, jedi-fv3, jedi-tools, jedi-ufs, jedi-um, nceplibs, soca]
     runs-on: macos-latest
     steps:
 
