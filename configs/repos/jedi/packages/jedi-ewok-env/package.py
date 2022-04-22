@@ -29,3 +29,6 @@ class JediEwokEnv(BundlePackage):
     depends_on('py-ruamel-yaml-clib', type='run')
 
     depends_on('ecflow', type='run')
+
+    conflicts('%gcc platform=darwin', msg='jedi-ewok-env does ' + \
+        'not build with gcc (11?) on macOS (12), use apple-clang')
