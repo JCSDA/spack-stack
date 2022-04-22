@@ -9,6 +9,7 @@ module load cray-python/3.7.3.2
 cd /lustre/f2/pdata/esrl/gsd/spack-stack
 mkdir -p qt-5.15.3/src
 cd qt-5.15.3/src
+git clone git://code.qt.io/qt/qt5.git
 cd qt5/
 git fetch --tags
 git checkout v5.15.3-lts-lgpl
