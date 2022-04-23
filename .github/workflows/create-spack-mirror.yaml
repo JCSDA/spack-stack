@@ -29,6 +29,9 @@ jobs:
           ./create-env.py --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name mirror
           spack env activate -d envs/mirror
           spack compiler find
+          # Need to 'find' git-lfs to avoid unsatisfiable specs
+          #spack external find git-lfsd
+          spack compiler find
           spack add re2c
           spack add clingo
           spack --show-cores=full concretize

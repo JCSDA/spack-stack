@@ -45,12 +45,6 @@ class JediBaseEnv(BundlePackage):
     depends_on('nlohmann-json-schema-validator', type='run')
 
     # Todo: check where all of this needs to be - jedi-base-env or one of the bundles?
-    #depends_on('cgal+header_only', type='run')
-    ##depends_on('py-cartopy', when='+python')
-    #depends_on('py-click', when='+python')
-    #depends_on('py-matplotlib', when='+python')
-    #depends_on('py-numpy', when='+python')
-    #depends_on('py-pip', when='+python')
     depends_on('py-pandas', type='run')
     depends_on('py-scipy', type='run')
     depends_on('py-pybind11', type='run')

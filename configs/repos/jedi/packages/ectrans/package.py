@@ -31,7 +31,6 @@ class Ectrans(CMakePackage):
 
     #variant('transi', default=True, description='Compile TransI C-interface to trans?')
 
-    depends_on('git-lfs', type=('build'))
     depends_on('ecbuild', type=('build'))
     depends_on('mpi',  when='+mpi')
     depends_on('blas')
