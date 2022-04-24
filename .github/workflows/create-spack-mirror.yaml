@@ -29,10 +29,11 @@ jobs:
           ./create-env.py --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name mirror
           spack env activate -d envs/mirror
           spack compiler find
-          spack add re2c%gcc@9
-          spack add clingo%gcc@9
-          spack --show-cores=full concretize
-          spack concretize
+          spack add re2c
+          spack add clingo
+          spack config list
+          #spack --show-cores=full concretize
+          spack concretize --reuse
           spack mirror create -a
           # upload-artifact does not allow filenames that contain '?'
           rm -vf `find cache/source_cache -name '*\?*'`
