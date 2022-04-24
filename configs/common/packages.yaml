@@ -160,7 +160,7 @@
     nlohmann-json-schema-validator:
       version: [2.1.0]
     python:
-      buildable: False
+      version: [3.9.12]
     py-cartopy:
       variants: +plotting
     py-numpy:
@@ -200,8 +200,7 @@
     py-setuptools:
       version: [57.4.0]
     qt:
-      buildable: False
-      #version: [5.15.3]
+      version: [5.15.3]
     diffutils:
       version: [3.7]
     findutils:
