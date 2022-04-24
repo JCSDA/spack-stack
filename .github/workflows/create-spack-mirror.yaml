@@ -30,7 +30,7 @@ jobs:
           spack env activate -d envs/mirror
           spack compiler find
           # Need to 'find' git-lfs to avoid unsatisfiable specs
-          #spack external find git-lfsd
+          spack external find git-lfs
           spack compiler find
           spack add re2c
           spack add clingo
