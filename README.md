@@ -17,15 +17,15 @@ Ready-to-use spack-stack installations are available on the following platforms:
 
 **Note: this versions are for early testers - use at your own risk**
 
-| System                | Location                                                                                            | Maintained by (temporary) |
-| --------------------- | --------------------------------------------------------------------------------------------------- | ------------------------- |
-| MSU Orion             | `/work/noaa/gsd-hpcs/dheinzel/spack-stack-20220411-ewok-tmp`                                        | Dom Heinzeller            |
-| NASA Discover         | `/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install`         | Dom Heinzeller            |
-| NCAR-Wyoming Cheyenne | `/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install` | Dom Heinzeller            |
-| NOAA NCO WCOSS2       |                                                                                                     |                           |
-| NOAA RDHPCS Gaea      | `/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v0.0.1`                                          | Dom Heinzeller            |
-| NOAA RDHPCS Hera      |                                                                                                     |                           |
-| NOAA RDHPCS Jet       |                                                                                                     |                           |
+| System                | Location                                                                                            | Maintained by (temporary) | jedi-ewok tested |
+| --------------------- | --------------------------------------------------------------------------------------------------- | ------------------------- |-------------------
+| MSU Orion             | `/work/noaa/gsd-hpcs/dheinzel/spack-stack-20220411-ewok-tmp`                                        | Dom Heinzeller            |                  |
+| NASA Discover         | `/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install`         | Dom Heinzeller            | qt5 only so far  |
+| NCAR-Wyoming Cheyenne | `/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install` | Dom Heinzeller            | yes?             |
+| NOAA NCO WCOSS2       |                                                                                                     |                           |                  |
+| NOAA RDHPCS Gaea      | `/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v0.0.1`                                          | Dom Heinzeller            | yes              |
+| NOAA RDHPCS Hera      |                                                                                                     |                           |                  |
+| NOAA RDHPCS Jet       |                                                                                                     |                           |                  |
 
 For questions or problems, please consult the currently open [issues](https://github.com/noaa-emc/spack-stack/issues) and the [current and past discussions](https://github.com/noaa-emc/spack-stack/discussions) first.
 
