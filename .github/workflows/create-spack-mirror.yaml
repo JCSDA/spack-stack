@@ -31,16 +31,6 @@ jobs:
           spack compiler find
           spack add re2c
           spack add clingo
-          spack config get compilers
-          spack config get concretizer
-          spack config get mirrors
-          spack config get repos
-          spack config get packages
-          spack config get modules
-          spack config get config
-          spack config get upstreams
-          spack config get bootstrap
-          #spack --show-cores=full concretize
           spack concretize
           spack mirror create -a
           # upload-artifact does not allow filenames that contain '?'
