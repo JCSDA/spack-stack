@@ -170,18 +170,6 @@ runs:
       #spack external find git-lfs openmpi mpich
       spack external find --all
 
-  #- name: update-bash-profile
-  #  shell: bash
-  #  run: |
-  #    # Add newline that was missing at end of built-in bash_profile
-  #    # and messing up appended text in next section.
-  #    echo "" >> ~/.bash_profile
-  #    echo "source ${{ inputs.path }}/setup.sh" >> ~/.bash_profile
-  #    echo "spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}" >> ~/.bash_profile
-  #    if [[ ! "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-  #      echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
-  #    fi
-
   - name: configure-options
     shell: bash
     run: |
