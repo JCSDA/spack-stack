@@ -261,11 +261,13 @@ runs:
         elif [[ "$RUNNER_OS" == "macOS" ]]; then
           source /usr/local/opt/lmod/init/profile
           module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
-          module load stack-${{ inputs.compiler }}
-          module load stack-python
-          # jedi-tools doesn't have any mpi dependencies
-          if [[ ! "${{ inputs.app }}" == "jedi-tools" ]]; then
-            module load stack-${{ inputs.mpi }}
-          fi
+          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
+          # with "gcc/9", otherwise the module load command will fail.
+          # module load stack-${{ inputs.compiler }}
+          # module load stack-python
+          # # jedi-tools doesn't have any mpi dependencies
+          # if [[ ! "${{ inputs.app }}" == "jedi-tools" ]]; then
+          #   module load stack-${{ inputs.mpi }}
+          # fi
         fi
       fi
