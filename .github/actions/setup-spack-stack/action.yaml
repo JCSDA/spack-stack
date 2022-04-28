@@ -204,6 +204,9 @@ runs:
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        # Clang has trouble finding -lomp for OpenMP because of non-standard location
+        # Could be fixed by setting compiler environment LDFLAGS to -L$(brew --prefix llvm)/lib or wherever libomp is
+        spack config add "packages:wgrib2:variants: ~openmp"
         # DH* This should no longer be necessary
         spack config add "packages:boost:version:[1.78.0]"
         # *DH
