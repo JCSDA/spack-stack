@@ -177,6 +177,10 @@ packages:
     externals:
     - spec: pkg-config@0.28
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.3
+      prefix: /discover/swdev/jcsda/spack-stack/qt-5.15.3
   rsync:
     externals:
     - spec: rsync@3.1.0

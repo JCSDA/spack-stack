@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [jedi-ufs-all]
+        app: [empty, jedi-ewok, jedi-fv3, jedi-tools, jedi-ufs, jedi-um, nceplibs, soca]
     runs-on: ubuntu-latest
     steps:
 
@@ -26,4 +26,3 @@ jobs:
           compiler: gcc@9
           mpi: mpich
           path: ${{ github.workspace }}
-          

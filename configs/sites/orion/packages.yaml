@@ -1,15 +1,15 @@
 packages:
   all:
-    compiler:: [intel@2021.2.0]
+    compiler:: [intel@2022.0.2]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.2.0]
+      mpi:: [intel-oneapi-mpi@2021.5.1]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2021.5.0
+    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
       prefix: /apps/intel-2022.1.2/intel-2022.1.2
       modules:
       - impi/2022.1.2
@@ -54,6 +54,9 @@ packages:
       prefix: /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7
       modules:
       - miniconda/3.9.7
+  # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
+  boost:
+    version:: [1.72.0]
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -191,6 +194,10 @@ packages:
   pkg-config:
     externals:
     - spec: pkg-config@0.27.1
+      prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.9.2
       prefix: /usr
   rsync:
     externals:

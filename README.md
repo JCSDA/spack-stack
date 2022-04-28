@@ -17,10 +17,15 @@ Ready-to-use spack-stack installations are available on the following platforms:
 
 **Note: this versions are for early testers - use at your own risk**
 
-| System                | Location                                                                                            | Maintained by      |
-| --------------------- | --------------------------------------------------------------------------------------------------- | ------------------ |
-| NASA Discover         | `/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install`         | Dom Heinzeller     |
-| NCAR-Wyoming Cheyenne | `/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install` | Dom Heinzeller     |
+| System                | Location                                                                                            | Maintained by (temporary) | jedi-ewok tested |
+| --------------------- | --------------------------------------------------------------------------------------------------- | ------------------------- |-------------------
+| MSU Orion             | `/work/noaa/gsd-hpcs/dheinzel/spack-stack-20220411-ewok-tmp`                                        | Dom Heinzeller            | yes              |
+| NASA Discover         | `/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install`         | Dom Heinzeller            | yes              |
+| NCAR-Wyoming Cheyenne | `/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install` | Dom Heinzeller            | yes              |
+| NOAA NCO WCOSS2       |                                                                                                     |                           |                  |
+| NOAA RDHPCS Gaea      | `/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v0.0.1`                                          | Dom Heinzeller            | yes              |
+| NOAA RDHPCS Hera      |                                                                                                     |                           |                  |
+| NOAA RDHPCS Jet       |                                                                                                     |                           |                  |
 
 For questions or problems, please consult the currently open [issues](https://github.com/noaa-emc/spack-stack/issues) and the [current and past discussions](https://github.com/noaa-emc/spack-stack/discussions) first.
 
@@ -45,7 +50,10 @@ source setup.sh
 ./create-env.py --site hera --app jedi-fv3 --name jedi-fv3.hera
 
 # Activate the newly created environment
-# optional: decorate the command line prompt using -p
+# Optional: decorate the command line prompt using -p
+#     Note: in some cases, this can mess up long lines in bash
+#     because color codes are not escaped correctly. In this
+#     case, use export SPACK_COLOR='never' first.
 spack env activate [-p] envs/jedi-fv3.hera
 
 # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
@@ -55,7 +63,7 @@ emacs common/*.yaml
 emacs site/*.yaml
 
 # Process the specs and install
-# note: both steps will take some time!
+# Note: both steps will take some time!
 spack concretize
 spack install
 

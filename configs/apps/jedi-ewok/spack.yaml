@@ -1,0 +1,8 @@
+spack:
+  concretization: separately
+  view: false
+
+  @CONFIG_INCLUDES@
+
+  specs:
+    - jedi-ewok-env

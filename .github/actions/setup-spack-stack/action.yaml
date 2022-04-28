@@ -51,7 +51,14 @@ runs:
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
         fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        echo " "
+        # These are already installed
+        #brew install curl
+        #brew install git
+        #brew install git-lfs
+        brew install lmod
+        brew install qt@5
+        brew install readline
+        brew install wget
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -124,11 +131,6 @@ runs:
       ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
 
-      # So Spack can find external MPI
-      export "PATH=$HOME/mpi/bin:${PATH}"
-      export MPICH_VERSION="3.4.3"
-      export OPENMPI_VERSION="4.1.3"
-
       # LLVM Clang not in PATH, search for it specifically
       # Then, Fortran compilers are null, so set to gfortran
       # Add minimal compilers just to prevent other compilers from being used by accident
@@ -144,6 +146,9 @@ runs:
         spack compiler find
       fi
 
+      # So Spack can find external MPI
+      export "PATH=$HOME/mpi/bin:${PATH}"
+
       # No external find for intel-oneapi-mpi, and problems finding other MPI libraries as well
       # And no way to add object entry to list using "spack config add"
       # Add this first so "spack config add packages:" will append to this entry
@@ -156,24 +161,6 @@ runs:
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
         echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
-      elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
-        mpich_ver=${MPICH_VERSION}
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    mpich:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: mpich@${mpich_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: $HOME/mpi" >> ${SPACK_ENV}/spack.yaml
-      elif [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-        openmpi_ver=${OPENMPI_VERSION}
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    openmpi:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: openmpi@${openmpi_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: $HOME/mpi" >> ${SPACK_ENV}/spack.yaml
       fi
 
       # Spack external find is by default only looking for build-tools. Either
@@ -182,16 +169,6 @@ runs:
       #spack external find 
       #spack external find git-lfs openmpi mpich
       spack external find --all
-
-  - name: update-bash-profile
-    shell: bash
-    run: |
-      # Add newline that was missing at end of built-in bash_profile
-      # and messing up appended text in next section.
-      echo "" >> ~/.bash_profile
-      echo "source ${{ inputs.path }}/setup.sh" >> ~/.bash_profile
-      echo "spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}" >> ~/.bash_profile
-      echo "export PATH=$HOME/mpi/bin:${PATH}" >> ~/.bash_profile
 
   - name: configure-options
     shell: bash
@@ -208,6 +185,14 @@ runs:
       # Error when wget attempts to build using external on macOS
       spack config rm "packages:openssl"
 
+      # Remove external SQLite entry
+      # Error when proj attempts to build using external on macOS
+      spack config rm "packages:sqlite"
+
+      # Remove external ncurses entry
+      # Error when proj attempts to build using external on macOS
+      spack config rm "packages:ncurses"
+
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
       # Currently, this is the case for all workflows - wrap in if statement
@@ -222,7 +207,9 @@ runs:
         # Clang has trouble finding -lomp for OpenMP because of non-standard location
         # Could be fixed by setting compiler environment LDFLAGS to -L$(brew --prefix llvm)/lib or wherever libomp is
         spack config add "packages:wgrib2:variants: ~openmp"
+        # DH* This should no longer be necessary
         spack config add "packages:boost:version:[1.78.0]"
+        # *DH
         spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
       fi
@@ -247,13 +234,31 @@ runs:
   - name: create-meta-modules
     shell: bash
     run: |
-      cd ${{ inputs.path }}
-      source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-      meta_modules/setup_meta_modules.py
-      # Not yet: need lmod installed, loaded and module use command
-      ## Test loading the meta modules
-      #module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
-      #module load stack-${{ inputs.compiler }}
-      #module load stack-python
-      #module load stack-${{ inputs.mpi }}
+      if [[ ! "${{ inputs.app }}" == "empty" ]]; then
+        cd ${{ inputs.path }}
+        source setup.sh
+        spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+        meta_modules/setup_meta_modules.py
+      fi
+
+  - name: test-meta-modules
+    shell: bash
+    run: |
+      if [[ ! "${{ inputs.app }}" == "empty" ]]; then
+        cd ${{ inputs.path }}
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          # Not yet: need lmod installed, loaded and module use command
+          echo ""
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
+          source /usr/local/opt/lmod/init/profile
+          module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
+          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
+          # with "gcc/9", otherwise the module load command will fail.
+          # module load stack-${{ inputs.compiler }}
+          # module load stack-python
+          # # jedi-tools doesn't have any mpi dependencies
+          # if [[ ! "${{ inputs.app }}" == "jedi-tools" ]]; then
+          #   module load stack-${{ inputs.mpi }}
+          # fi
+        fi
+      fi

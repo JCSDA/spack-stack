@@ -32,7 +32,6 @@ packages:
       modules:
       - cray-python/3.7.3.2
 
-
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -109,14 +108,12 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.26.0+tcltk
-      prefix: /usr
+    - spec: git@2.31.1
       modules:
-      - git/2.26.0
+      - git/2.31.1
   git-lfs:
     externals:
     - spec: git-lfs@2.11.0
-      prefix: /lustre/f2/pdata/esrl/gsd/contrib/git-lfs-2.11.0
       modules:
       - git-lfs/2.11.0
   gmake:
@@ -180,6 +177,10 @@ packages:
     externals:
     - spec: pkg-config@0.29.2
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.3
+      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3
   rsync:
     externals:
     - spec: rsync@3.1.3

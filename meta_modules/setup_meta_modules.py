@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import copy
 import logging
 #logging.basicConfig(level=logging.INFO)
 logging.basicConfig(level=logging.DEBUG)
@@ -94,7 +95,10 @@ def get_matched_dict(root_dir, candidate_list, sub_candidate_list = None):
                     if os.path.isdir(os.path.join(candidate_dir, ydir)) ]
                 # There must be a unique match with the compiler in the candidate list
                 version_matches = [ x for x in versions if candidate in '{}@{}'.format(xdir, x) ]
-                if len(version_matches)>1:
+                if not version_matches:
+                    raise Exception("No version match for {} in {}".format(
+                        candidate, candidate_dir))
+                elif len(version_matches)>1:
                     raise Exception("Multiple version matches for {} in {}: {}".format(
                         candidate, candidate_dir, version_matches))
                 # Each candidate must match exactly one entry
@@ -125,6 +129,15 @@ def get_matched_dict(root_dir, candidate_list, sub_candidate_list = None):
                 matched_dict[matched_name][matched_version] = {}
             matched_dict[matched_name][matched_version].update(sub_matched_dict)
     return matched_dict
+
+def merge_dicts(dictA, dictB):
+    """Merge two dictionaries and remove duplicates"""
+    for key in dictB.keys():
+        if not key in dictA.keys():
+            dictA[key] = copy.deepcopy(dictB[key])
+        else:
+            dictA[key] = list(set(dictA[key] + dictB[key]))
+    return dictA
 
 def setenv_command(module_choice, key, value):
     if module_choice == 'lmod':
@@ -254,6 +267,13 @@ logging.info(" ... stack compilers: '{}'".format(compiler_dict))
 mpi_dict = get_matched_dict(module_dir, mpi_candidate_list, compiler_candidate_list)
 logging.info(" ... stack mpi providers: '{}'".format(mpi_dict))
 
+# For some environments, there are only compiler+mpi-dependent modules,
+# and therefore the compiler itself is not recorded in compiler_dict.
+for mpi_provider_name in mpi_dict.keys():
+    for mpi_provider_version in mpi_dict[mpi_provider_name].keys():
+        compiler_dict_tmp = get_matched_dict(os.path.join(module_dir, mpi_provider_name, mpi_provider_version), compiler_candidate_list)
+        compiler_dict= merge_dicts(compiler_dict, compiler_dict_tmp)
+
 # For future use, we need a flattened list of all compilers
 flattened_compiler_list = [ '{}@{}'.format(name, version) for name in compiler_dict.keys() for version in compiler_dict[name] ]
 
@@ -326,8 +346,10 @@ for compiler in compiler_config:
         # Spack compiler module hierarchy
         substitutes['MODULEPATH'] = os.path.join(module_dir, compiler_name, compiler_version)
         logging.debug("  ... ... MODULEPATH  : {}".format(substitutes['MODULEPATH']))
+        # If the environment doesn't have compiler-only dependent modules
+        # then simply create the placeholder directory
         if not os.path.isdir(substitutes['MODULEPATH']):
-            raise Exception("Compiler module path {} does not exist".format(substitutes['MODULEPATH']))
+            os.makedirs(substitutes['MODULEPATH'])
 
         # For tcl modules remove the compiler prefices from the module contents
         if module_choice == 'tcl':

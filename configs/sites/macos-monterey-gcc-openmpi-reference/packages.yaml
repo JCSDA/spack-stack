@@ -101,12 +101,20 @@ packages:
     externals:
     - spec: openssh@8.6p1
       prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.1
+      prefix: /usr/local/opt/openssl@1.1
   perl:
     externals:
     - spec: perl@5.18.4~cpanm+shared+threads
       prefix: /usr
     - spec: perl@5.30.3~cpanm+shared+threads
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr/local/Cellar/qt@5/5.15.3
   rsync:
     externals:
     - spec: rsync@2.6.9
@@ -115,10 +123,11 @@ packages:
     externals:
     - spec: ruby@2.6.8
       prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.37.0+fts~functions+rtree
-      prefix: /usr
+  # Don't use OS sqlite, this version doesn't have the development files
+  #sqlite:
+  #  externals:
+  #  - spec: sqlite@3.37.0+fts~functions+rtree
+  #    prefix: /usr
   texinfo:
     externals:
     - spec: texinfo@4.8

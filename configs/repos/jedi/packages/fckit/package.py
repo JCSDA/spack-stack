@@ -35,9 +35,6 @@ class Fckit(CMakePackage):
 
     variant('shared', default=True)
 
-    # Patch
-    patch('libstdc++.patch')
-
     def cmake_args(self):
         res = [
                 self.define_from_variant('ENABLE_ECKIT', 'eckit'),
@@ -50,13 +47,13 @@ class Fckit(CMakePackage):
         if '~shared' in self.spec:
             res.append('-DBUILD_SHARED_LIBS=OFF')
 
-        # Add Fortran runtime libraries to cxxflags to fix a weird bug on Cheyenne
-        cxxflags = []
-        if self.spec.satisfies('%intel') and any('-gxx-name' in string for string in self.spec.compiler_flags['cxxflags']):
-            cxxflags.append('-lifcoremt')
-            cxxflags.append('-lifport')
-        if cxxflags:
-            res.append(self.define('CMAKE_CXX_FLAGS', ' '.join(self.spec.compiler_flags['cxxflags']+ cxxflags)))
+        if self.spec.satisfies('%intel') or self.spec.satisfies('%gcc'):
+            cxxlib = 'stdc++'
+        elif self.spec.satisfies('%clang') or self.spec.satisfies('%apple-clang'):
+            cxxlib = 'c++'
+        else:
+            raise InstallError("C++ library not configured for compiler")
+        res.append('-DECBUILD_CXX_IMPLICIT_LINK_LIBRARIES={}'.format(cxxlib))
 
         return res
 

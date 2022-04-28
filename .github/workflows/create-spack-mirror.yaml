@@ -7,7 +7,7 @@ on:
         type: string
         description: "App to generate mirror for"
         required: true
-        default: "jedi-ufs-all"
+        default: "jedi-ufs"
       site:
         type: string
         description: "Site to create environment for"
@@ -26,8 +26,8 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          ./create-env.py --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name all
-          spack env activate -d envs/all
+          ./create-env.py --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name mirror
+          spack env activate -d envs/mirror
           spack compiler find
           spack add re2c
           spack add clingo

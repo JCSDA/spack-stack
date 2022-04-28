@@ -22,3 +22,5 @@ class JediToolsEnv(BundlePackage):
     depends_on('py-pandas', type='run')
     depends_on('py-pygithub', type='run')
     depends_on('py-openpyxl', type='run')
+
+    conflicts('%intel', msg='jedi-tools-env does not build with Intel')
