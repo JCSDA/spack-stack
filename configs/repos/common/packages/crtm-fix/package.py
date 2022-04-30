@@ -15,7 +15,8 @@ class CrtmFix(Package):
 
     maintainers = ['kgerheiser']
 
-    version('2.4.0_emc', sha256='60e41f97e4b46bb84f252c9fc2e88cf765835aa94f9caa8e1d4dc3f57e3fbdf2')
+    version('2.4.0', sha256='7924285b8aa25b0b864643f03e7f281ca1816958e24c76aa9531b3ca902bf6e9')
+    version('2.4.0_emc', sha256='84b176ee16cce0897377696cc4f621ef5a55cae7ea8280a0acd5ff70d4435995')
     version('2.3.0_emc', sha256='fde73bb41c3c00666ab0eb8c40895e02d36fa8d7b0896c276375214a1ddaab8f')
 
     variant('big_endian', default=True, description='Install big_endian fix files')
@@ -46,18 +47,6 @@ class CrtmFix(Package):
 
         mkdir(self.prefix.fix)
         cwd = pwd()
-
-        # Big_Endian amsua_metop-c.SpcCoeff.bin is incorrect
-        # Little_Endian amsua_metop-c_v2.SpcCoeff.bin is what it's supposed to be
-        # Remove the incorrect file, and install it as noACC, and install the correct file
-        if '+big_endian' in spec and spec.version == Version('2.4.0_emc'):
-            fix_files.remove(join_path(cwd, 'SpcCoeff','Big_Endian', 'amsua_metop-c.SpcCoeff.bin'))
-
-            install(join_path('SpcCoeff', 'Big_Endian', 'amsua_metop-c.SpcCoeff.bin'),
-                join_path(self.prefix.fix, 'amsua_metop-c.SpcCoeff.noACC.bin'))
-
-            install(join_path('SpcCoeff', 'Little_Endian', 'amsua_metop-c_v2.SpcCoeff.bin'), 
-                join_path(self.prefix.fix, 'amsua_metop-c.SpcCoeff.bin'))
 
         for f in fix_files:
             install(f, self.prefix.fix)
