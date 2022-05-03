@@ -135,7 +135,7 @@
     fckit:
       version: [0.9.5]
       variants: +eckit
-    atlas:
+    ecmwf-atlas:
       version: [0.27.0]
       variants: +fckit
     shumlib:
@@ -208,9 +208,9 @@
     udunits:
       version: [2.2.28]
     openmpi:
-      variants: +internal-hwloc
+      variants: +internal-hwloc +two_level_namespace
     mpich:
-      variants: ~hwloc
+      variants: ~hwloc +two_level_namespace
     met:
       version: [10.1.0]
       variants: +python +grib2

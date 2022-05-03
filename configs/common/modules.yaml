@@ -9,6 +9,7 @@ modules:
       projections:
         all: '{compiler.name}/{compiler.version}/{name}/{version}'
         ^mpi: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
+        ecmwf-atlas: '{compiler.name}/{compiler.version}/atlas/{version}'
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
       blacklist:
@@ -114,6 +115,7 @@ modules:
       core_compilers::
       - gcc@4.6
       projections:
+        ecmwf-atlas: 'atlas/{version}'
         nlohmann-json: 'json/{version}'
         nlohmann-json-schema-validator: 'json-schema-validator/{version}'
       blacklist:
