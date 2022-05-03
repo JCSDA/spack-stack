@@ -86,11 +86,6 @@ runs:
           export FC=gfortran-9
           export CXX=g++-9
         elif [[ "${{ inputs.compiler }}" == "gcc@10"* ]]; then
-          which gcc
-          which gcc-9
-          which gcc-10
-          which gcc-11
-          gcc --version
           export CC=gcc-10
           export FC=gfortran-10
           export CXX=g++-10
