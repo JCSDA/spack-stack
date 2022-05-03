@@ -189,7 +189,6 @@ runs:
       #spack external find git-lfs openmpi mpich
       spack external find --all
       spack external find qt
-      exit 1
 
   - name: configure-options
     shell: bash
