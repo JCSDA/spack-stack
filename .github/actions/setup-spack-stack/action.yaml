@@ -154,10 +154,10 @@ runs:
         spack compiler find
       fi
 
-      # So Spack can find external MPI and Qt
-      export "PATH=$HOME/mpi/bin:/usr/local/opt/qt@5/bin:${PATH}"
+      # So Spack can find external MPI
+      export "PATH=$HOME/mpi/bin:${PATH}"
 
-      # No external find for intel-oneapi-mpi, and problems finding other MPI libraries as well
+      # No external find for intel-oneapi-mpi, 
       # And no way to add object entry to list using "spack config add"
       # Add this first so "spack config add packages:" will append to this entry
       if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
@@ -169,6 +169,17 @@ runs:
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
         echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+      fi
+
+      # Same for qt@5 on macOS
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
+        echo "" >> ${SPACK_ENV}/spack.yaml
+        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+        echo "    qt:" >> ${SPACK_ENV}/spack.yaml
+        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: qt@5" >> ${SPACK_ENV}/spack.yaml
+        echo "        prefix: /usr/local/opt/qt@5" >> ${SPACK_ENV}/spack.yaml
       fi
 
       # Spack external find is by default only looking for build-tools. Either
