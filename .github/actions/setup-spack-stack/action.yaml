@@ -154,8 +154,8 @@ runs:
         spack compiler find
       fi
 
-      # So Spack can find external MPI
-      export "PATH=$HOME/mpi/bin:${PATH}"
+      # So Spack can find external MPI and Qt
+      export "PATH=$HOME/mpi/bin:/usr/local/opt/qt@5/bin:${PATH}"
 
       # No external find for intel-oneapi-mpi, and problems finding other MPI libraries as well
       # And no way to add object entry to list using "spack config add"
@@ -177,6 +177,7 @@ runs:
       #spack external find 
       #spack external find git-lfs openmpi mpich
       spack external find --all
+      exit 1
 
   - name: configure-options
     shell: bash
