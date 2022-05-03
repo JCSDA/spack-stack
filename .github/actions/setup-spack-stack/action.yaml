@@ -35,10 +35,11 @@ runs:
     run: |
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         # Needed for the following apt-get install calls to work
-        sudo apt-get update
+        #sudo apt-get update
 
         # Install Curl headers. Executable exists by default in spack external find.
-        sudo apt-get install libcurl4-openssl-dev
+        #sudo apt-get install libcurl4-openssl-dev
+        sudo apt-get install libcurl-openssl-dev
 
         # Install git-lfs to avoid compilation errors of "go" with Intel
         sudo apt-get install git-lfs
@@ -126,7 +127,6 @@ runs:
               --with-device=ch4:ofi \
               --enable-two-level-namespace \
               LIBS="-Wl,-commons,use_dylibs" 2>/dev/null
-          cat /home/runner/work/spack-stack/spack-stack/mpich-3.4.3/config.log
           make -j2
           make install
         fi
