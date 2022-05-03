@@ -101,30 +101,65 @@ def app_help():
     return help_string
 
 
+def config_help():
+    _, _, configs = next(os.walk(stack_path('configs', 'containers')))
+    help_string = 'Pre-configured container.' + linesep
+    help_string += 'Available options are: ' + linesep
+    for config in configs:
+        help_string += '\t' + config + linesep
+    return help_string
+
+
 description_text = '''
-    Create a pre-configured Spack environment. Envrionments are created in spack-stack/envs/<env>.
+    Create a pre-configured Spack environment or container in spack-stack/envs/<env>.
 '''
 
 epilog_text = """
 Example usage:
     source setup.sh
-    ./create-env.py --site default --app ufs --name ufs-env
+    # Option 1: To create a local environment
+    ./create.py env --site default --app ufs [--name ufs-env] [--exclude-common-configs]
     spack env activate [-p] envs/ufs-env
     spack concretize
     spack install
+    # Option 2: create a container
+    ./create.py container --site docker-ubuntu-gcc --app jedi-ufs
+    cd envs/jedi-ufs.docker-ubuntu-gcc
+    spack containerize > Dockerfile
+    docker build -t myimage .
+    docker run -it myimage
 """
 parser = argparse.ArgumentParser(description=description_text,
                                  epilog=epilog_text,
                                  formatter_class=RawTextHelpFormatter)
+subparsers = parser.add_subparsers(help='help for subcommand', dest='subcommand')
 
-parser.add_argument('--site', type=str, required=False, nargs='?', default='default', help=site_help())
-parser.add_argument('--app', type=str, required=True, help=app_help())
-parser.add_argument('--name', type=str, required=False,
+env_parser = subparsers.add_parser('environment', help='Create local environment')
+env_parser.add_argument('--site', type=str, required=False, nargs='?', default='default', help=site_help())
+env_parser.add_argument('--app', type=str, required=True, help=app_help())
+env_parser.add_argument('--name', type=str, required=False,
                     help='Optional name for env dir. Defaults to app.site name.')
-parser.add_argument('--exclude-common-configs', required=False,
+env_parser.add_argument('--exclude-common-configs', required=False,
                     default=False, action='store_true', help='Ignore configs configs/common when creating environment')
 
+con_parser = subparsers.add_parser('container', help='Create container')
+con_parser.add_argument('--config', type=str, required=True, help=config_help())
+con_parser.add_argument('--app', type=str, required=True, help=app_help())
+
 args = parser.parse_args()
+
+create_env = False
+create_con = False
+if args.subcommand == 'environment':
+    create_env = True
+elif args.subcommand == 'container':
+    create_con = True
+else:
+    parser.print_help()
+    sys.exit(-1)
+#raise Exception("XXX")
+if not create_env:
+    raise Exception("Container build not yet configured")
 
 site = args.site
 app = args.app

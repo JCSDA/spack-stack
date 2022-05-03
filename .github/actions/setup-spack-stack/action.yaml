@@ -136,7 +136,7 @@ runs:
       fi
 
       source setup.sh
-      ./create-env.py --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
+      ./create.py environment --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
 
       # LLVM Clang not in PATH, search for it specifically
@@ -200,6 +200,10 @@ runs:
       # Remove external ncurses entry
       # Error when proj attempts to build using external on macOS
       spack config rm "packages:ncurses"
+
+      # Remove external m4 entry
+      # Error when cairo attempts to build using external on macOS
+      spack config rm "packages:m4"
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
