@@ -125,7 +125,8 @@ runs:
               --enable-fortran --enable-cxx \
               --with-device=ch4:ofi \
               --enable-two-level-namespace \
-              LIBS="-Wl,-commons,use_dylibs"
+              LIBS="-Wl,-commons,use_dylibs" 2>/dev/null
+          cat /home/runner/work/spack-stack/spack-stack/mpich-3.4.3/config.log
           make -j2
           make install
         fi
