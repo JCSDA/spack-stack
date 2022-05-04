@@ -96,6 +96,10 @@ modules:
             '{name}_ROOT': '{prefix}'
         suffixes:
           +debug: 'debug'
+      ecmwf-atlas:
+        environment:
+          set:
+            'atlas_ROOT': '{prefix}'
       esmf:
         environment:
           set:
@@ -202,6 +206,10 @@ modules:
             '{name}_ROOT': '{prefix}'
         suffixes:
           +debug: 'debug'
+      ecmwf-atlas:
+        environment:
+          set:
+            'atlas_ROOT': '{prefix}'
       esmf:
         environment:
           set:
