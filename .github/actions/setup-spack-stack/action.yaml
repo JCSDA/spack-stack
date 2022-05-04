@@ -110,22 +110,34 @@ runs:
           tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
           cd openmpi-${OPENMPI_VERSION}
           # --with-hwloc=internal --with-libevent=internal : https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
-          ./configure --prefix=$HOME/mpi \
-              --enable-mpi-fortran --enable-mpi-cxx \
-              --with-hwloc=internal --with-libevent=internal \
-              --with-wrapper-ldflags="-Wl,-commons,use_dylibs" \
-              LIBS="-Wl,-commons,use_dylibs"
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            ./configure --prefix=$HOME/mpi \
+                --enable-mpi-fortran --enable-mpi-cxx \
+                --with-hwloc=internal --with-libevent=internal \
+                --with-wrapper-ldflags="-Wl,-commons,use_dylibs" \
+                LIBS="-Wl,-commons,use_dylibs"
+          else
+            ./configure --prefix=$HOME/mpi \
+                --enable-mpi-fortran --enable-mpi-cxx \
+                --with-hwloc=internal --with-libevent=internal
+          fi
           make -j2
           make install
         elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
           wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
           tar -xzf mpich-${MPICH_VERSION}.tar.gz
           cd mpich-${MPICH_VERSION}
-          ./configure --prefix=$HOME/mpi \
-              --enable-fortran --enable-cxx \
-              --with-device=ch4:ofi \
-              --enable-two-level-namespace \
-              LIBS="-Wl,-commons,use_dylibs" 2>/dev/null
+          if [[ "$RUNNER_OS" == "macOS" ]]; then
+            ./configure --prefix=$HOME/mpi \
+                --enable-fortran --enable-cxx \
+                --with-device=ch4:ofi \
+                --enable-two-level-namespace \
+                LIBS="-Wl,-commons,use_dylibs"
+          else
+            ./configure --prefix=$HOME/mpi \
+                --enable-fortran --enable-cxx \
+                --with-device=ch4:ofi
+          fi
           make -j2
           make install
         fi
