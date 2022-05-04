@@ -118,7 +118,7 @@ epilog_text = """
 Example usage:
     source setup.sh
     # Option 1: To create a local environment
-    ./create.py env --site default --app ufs [--name ufs-env] [--exclude-common-configs]
+    ./create.py environment --site default --app ufs [--name ufs-env] [--exclude-common-configs]
     spack env activate [-p] envs/ufs-env
     spack concretize
     spack install
