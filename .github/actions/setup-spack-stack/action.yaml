@@ -43,6 +43,9 @@ runs:
         # Install git-lfs to avoid compilation errors of "go" with Intel
         sudo apt-get install git-lfs
 
+        # Install krb5 to avoid compilation errors of "hdf" on Ubuntu
+        sudo apt-get install krb5-user
+
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
             cd /tmp
             wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
