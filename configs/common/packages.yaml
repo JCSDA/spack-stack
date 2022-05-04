@@ -8,6 +8,7 @@
         yacc:: [bison]
         gl:: [opengl]
         glu:: [openglu]
+        jpeg:: [libjpeg-turbo]
     bison:
       version: [3.8.2]
     wget:
@@ -18,6 +19,9 @@
       version: [2.6.3]
     zlib:
       version: [1.2.11]
+    hdf:
+      version: [4.2.15]
+      variants: ~fortran +netcdf
     hdf5:
       version: [1.12.1]
       variants: +hl +fortran +mpi +threadsafe
@@ -168,6 +172,8 @@
       variants: +blas +lapack
     py-pybind11:
       version: [2.8.1]
+    py-pyhdf:
+      version: [0.10.4]
     py-h5py:
       version: [3.6.0]
     py-netcdf4:
