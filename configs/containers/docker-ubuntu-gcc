@@ -4,6 +4,7 @@ spack:
 
   config:
     build_jobs: 2
+    connect_timeout: 60
 
   compilers:
   - compiler:
@@ -38,7 +39,7 @@ spack:
     #- jedi-um-bundle-env
     #- jedi-tools-env
     #- ufs-weather-model-env
-    #- nceplibs-bundle
+    #- nceplibs-bundle-env
     #- esmf
     #- wget
     - base-env
