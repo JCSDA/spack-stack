@@ -44,7 +44,7 @@ runs:
         sudo apt-get install git-lfs
 
         # Install krb5 to avoid compilation errors of "hdf" on Ubuntu
-        sudo apt-get install krb5-user
+        sudo apt-get install krb5-user libkrb5-dev
 
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
             cd /tmp
