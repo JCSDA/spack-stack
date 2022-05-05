@@ -21,28 +21,35 @@ spack:
       environment: {}
       extra_rpaths: []
 
-  # Pin versions and specs when building packages
+  # Basic package config for container
   packages:
     all:
       providers:
-        mpi:: [openmpi@4.1.2]
+        mpi: [openmpi@4.1.2]
     gcc:
       buildable: False
       externals:
       - spec: gcc@10
         prefix: /usr/local
+
+  # Additional package config from configs/common/packages.yaml
   @PACKAGE_CONFIG@
 
   specs:
-    #- jedi-fv3-bundle-env
-    #- jedi-ufs-bundle-env
+    ### Not yet tested
+    #- jedi-ewok-env
     #- jedi-um-bundle-env
     #- jedi-tools-env
     #- ufs-weather-model-env
     #- nceplibs-bundle-env
-    #- esmf
+    ### Tested to work - increasing level of complexity
     #- wget
-    - base-env
+    #- esmf
+    #- base-env
+    #- jedi-base-env
+    #- jedi-fv3-bundle-env
+    #- jedi-ufs-bundle-env
+    - @SPEC@
 
   container:
 
@@ -66,7 +73,7 @@ spack:
       spack:
         url: https://github.com/noaa-emc/spack
         ref: jcsda_emc_spack_stack
-        resolve_sha: true
+        resolve_sha: false
       
     # Whether or not to strip binaries
     strip: true
@@ -78,12 +85,17 @@ spack:
       - g++-10
       - gfortran-10
       - cpp-10
+      #- libgomp
+      - git
+      - git-lfs
       final:
       - gcc-10
       - g++-10
       - gfortran-10
       - cpp-10
-    #  - libgomp
+      #- libgomp
+      - git
+      - git-lfs
 
     ## Extra instructions
     #extra_instructions:
@@ -96,5 +108,5 @@ spack:
 
     # Labels for the image
     labels:
-      app: "jedi-ufs-all"
+      app: "@SPEC@"
       mpi: "openmpi"
