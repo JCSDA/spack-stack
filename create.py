@@ -122,18 +122,19 @@ def app_help():
     return help_string
 
 
-def config_help():
-    _, _, configs = next(os.walk(stack_path('configs', 'containers')))
+def container_config_help():
+    _, _, container_configs = next(os.walk(stack_path('configs', 'containers')))
     help_string = 'Pre-configured container.' + linesep
     help_string += 'Available options are: ' + linesep
-    for config in configs:
-        help_string += '\t' + config + linesep
+    for config in container_configs:
+        help_string += '\t' + config.rstrip('.yaml') + linesep
     return help_string
 
 
 def spec_help():
     help_string = 'Any valid spack spec, e.g. "wget" or "jedi-ufs-bundle-env".' + linesep
     return help_string
+
 
 description_text = '''
     Create a pre-configured Spack environment or container in spack-stack/envs/<env>.
@@ -168,7 +169,7 @@ env_parser.add_argument('--exclude-common-configs', required=False,
                     default=False, action='store_true', help='Ignore configs configs/common when creating environment')
 
 con_parser = subparsers.add_parser('container', help='Create container')
-con_parser.add_argument('--config', type=str, required=True, help=config_help())
+con_parser.add_argument('--config', type=str, required=True, help=container_config_help())
 con_parser.add_argument('--spec', type=str, required=True, help=spec_help())
 
 args = parser.parse_args()
