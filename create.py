@@ -22,7 +22,7 @@ def stack_path(*paths):
     return path.join(stack_dir, *paths)
 
 
-def create_env_dir(name):
+def create_env_dir(env_name):
     # Create spack-stack/envs to hold envrionments, if it doesn't exist
     if not path.exists(stack_path('envs')):
         makedirs(stack_path('envs'))
@@ -31,9 +31,9 @@ def create_env_dir(name):
     env_dir = stack_path('envs', env_name)
     if not path.exists(env_dir):
         makedirs(env_dir)
-        print("Created environment {} in {}".format(env_name, env_dir))
+        print("Created {} in {}".format(env_name, env_dir))
     else:
-        sys.exit('Error: env {} already exists'.format(env_dir))
+        sys.exit('Error: {} already exists'.format(env_dir))
 
     return env_dir
 
@@ -68,19 +68,40 @@ def copy_app_config(app, env_dir):
         f.write(new_contents)
 
 
-def check_inputs(app, site):
-    app_path = stack_path('configs', 'apps', app, 'spack.yaml')
-    if not path.exists(app_path):
-        sys.exit('Error: invalid app {}, "{}" does not exist'.format(app, app_path))
+def copy_container_config(container, spec, env_dir):
+    container_config = stack_path('configs', 'containers', container + '.yaml')
+    with open(container_config, "r") as f:
+        contents = f.read()
 
-    if site == empty_site:
-        return
+    common_package_config = stack_path('configs', 'common', 'packages.yaml')
+    with open(common_package_config, "r") as f:
+        common_package_contents = f.read()
+    # Replace double colons in common_package_contents with single colons
+    # due to a bug in spack that replaces '::' with ':":"' during concretization
+    common_package_contents = common_package_contents.replace('::', ':')
 
-    site_path = stack_path('configs', 'sites', site)
-    if not path.exists(site_path):
-        sys.exit('Error: invalid site {}, "{}" does not exist'.format(
-            site, site_path))
+    new_contents = contents.replace('@PACKAGE_CONFIG@', common_package_contents)
+    new_contents = new_contents.replace('@SPEC@', spec)
+    with open(path.join(env_dir, 'spack.yaml'), "w") as f:
+        f.write(new_contents)
 
+
+def check_inputs(app=None, site=None, container=None):
+    if app:
+        app_path = stack_path('configs', 'apps', app, 'spack.yaml')
+        if not path.exists(app_path):
+            sys.exit('Error: invalid app {}, "{}" does not exist'.format(app, app_path))
+    if site:
+        if not site == empty_site:
+            site_path = stack_path('configs', 'sites', site)
+            if not path.exists(site_path):
+                sys.exit('Error: invalid site {}, "{}" does not exist'.format(
+                    site, site_path))
+    if container:
+        container_path = stack_path('configs', 'containers', container + '.yaml')
+        if not path.exists(container_path):
+            sys.exit('Error: invalid container config {}, "{}" does not exist'.format(
+                container, container_path))
 
 def site_help():
     _, site_dirs, _ = next(os.walk(stack_path('configs', 'sites')))
@@ -109,6 +130,10 @@ def config_help():
         help_string += '\t' + config + linesep
     return help_string
 
+
+def spec_help():
+    help_string = 'Any valid spack spec, e.g. "wget" or "jedi-ufs-bundle-env".' + linesep
+    return help_string
 
 description_text = '''
     Create a pre-configured Spack environment or container in spack-stack/envs/<env>.
@@ -144,7 +169,7 @@ env_parser.add_argument('--exclude-common-configs', required=False,
 
 con_parser = subparsers.add_parser('container', help='Create container')
 con_parser.add_argument('--config', type=str, required=True, help=config_help())
-con_parser.add_argument('--app', type=str, required=True, help=app_help())
+con_parser.add_argument('--spec', type=str, required=True, help=spec_help())
 
 args = parser.parse_args()
 
@@ -157,18 +182,24 @@ elif args.subcommand == 'container':
 else:
     parser.print_help()
     sys.exit(-1)
-#raise Exception("XXX")
-if not create_env:
-    raise Exception("Container build not yet configured")
 
-site = args.site
-app = args.app
-exclude_common_configs = args.exclude_common_configs
-env_name = args.name if args.name else "{}.{}".format(app, site)
+if create_env:
+    site = args.site
+    app = args.app
+    exclude_common_configs = args.exclude_common_configs
+    env_name = args.name if args.name else "{}.{}".format(app, site)
 
-check_inputs(app, site)
-env_dir = create_env_dir(env_name)
-if not exclude_common_configs:
-    copy_common_configs(env_dir)
-copy_site_configs(site, env_dir)
-copy_app_config(app, env_dir)
+    check_inputs(app=app, site=site)
+    env_dir = create_env_dir(env_name)
+    if not exclude_common_configs:
+        copy_common_configs(env_dir)
+    copy_site_configs(site, env_dir)
+    copy_app_config(app, env_dir)
+else:
+    container = args.config
+    spec = args.spec
+
+    check_inputs(container=container)
+    env_name = "{}.{}".format(spec, container) 
+    env_dir = create_env_dir(env_name)
+    copy_container_config(container, spec, env_dir)
