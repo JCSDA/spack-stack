@@ -4,6 +4,6 @@ modules:
     - lmod
     lmod:
       whitelist:
-      # List of packages for which we don't need modules
+      # List of packages for which we need modules that are blacklisted by default
       - openmpi
       - mpich
