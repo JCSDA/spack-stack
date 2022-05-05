@@ -149,10 +149,12 @@
     ectrans:
       version: [develop]
       variants: ~enable_mkl
-    git-lfs:
-      # Require git-lfs to be provided, hard to install
-      # because of dependencies go/go-bootstrap
-      buildable: False
+    #git-lfs:
+      # Assume git-lfs is provided, hard to install
+      # because of dependencies on go/go-bootstrap.
+      # No need to uncomment here as long as the
+      # site config provides an external package.
+      #buildable: False
       #version: [2.11.0]
     openblas:
       version: [0.3.19]
