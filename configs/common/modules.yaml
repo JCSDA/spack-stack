@@ -112,6 +112,10 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+      openmpi:
+        environment:
+          set:
+            'OMPI_MCA_rmaps_base_oversubscribe': '1'
 
     lmod:
       # Core compiler is a dummy that is not used to build the stack, do not change.
@@ -222,6 +226,10 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+      openmpi:
+        environment:
+          set:
+            'OMPI_MCA_rmaps_base_oversubscribe': '1'
       hierarchy:
       - mpi
 
