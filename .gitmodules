@@ -8,3 +8,6 @@
   #branch = spack-stack-packages
   url = https://github.com/climbfuji/spack.git
   branch = feature/openmpi_two_level_namespace
+[submodule "doc/CMakeModules"]
+	path = doc/CMakeModules
+	url = https://github.com/noaa-emc/cmakemodules
