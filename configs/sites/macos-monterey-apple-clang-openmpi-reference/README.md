@@ -26,8 +26,6 @@ This step is only required on the new arch64 systems that are equipped with a Ap
 ```
 brew install coreutils@9.0
 brew install gcc@11.2.0
-brew install llvm13.0.0
-brew install openmpi@4.1.2
 brew install python@3.9.10
 brew install git@2.34.1
 brew install git-lfs@3.0.2
@@ -63,3 +61,5 @@ This error came up on macOS Monterey with mpich-3.4.3 installed via homebrew whe
 `CC=mpicc FC=mpif90 CXX=mpicxx` when calling `ecbuild` for those bundles.
 2. Installation of `poetry` using `pip3` or test with `python3` fails
 This can happen when multiple versions of Python were installed with `brew` and `pip3`/`python3` point to different versions. Run `brew doctor` and check if there are issues with Python not being properly linked. Follow the instructions given by `brew`, if applicable.
+3. Errors handling exceptions on macOS. A large number of errors handling exceptions thrown by applications was found when using default builds of mpich or openmpi, which use flat
+namespaces. This is the case for both mpich and openmpi when installed via homebrew. With our spack version, mpich and openmpi can be installed with a `+two_level_namespace` option that fixes the problem (tested with mpich-3.4.2 and openmpi-4.1.3).

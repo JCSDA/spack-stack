@@ -1,0 +1,9 @@
+modules:
+  default:
+    enable::
+    - lmod
+    lmod:
+      whitelist:
+      # List of packages for which we don't need modules
+      - openmpi
+      - mpich
