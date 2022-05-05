@@ -78,7 +78,7 @@ def copy_container_config(container, spec, env_dir):
         common_package_contents = f.read()
     # Replace double colons in common_package_contents with single colons
     # due to a bug in spack that replaces '::' with ':":"' during concretization
-    common_package_contents = common_package_contents.replace('::', ':')
+    common_package_contents = common_package_contents.replace('::', ':').rstrip('\n')
 
     new_contents = contents.replace('@PACKAGE_CONFIG@', common_package_contents)
     new_contents = new_contents.replace('@SPEC@', spec)

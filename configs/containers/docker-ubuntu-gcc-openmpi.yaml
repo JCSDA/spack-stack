@@ -21,19 +21,19 @@ spack:
       environment: {}
       extra_rpaths: []
 
-  # Basic package config for container
-  packages:
-    all:
-      providers:
-        mpi: [openmpi@4.1.2]
+  # Basic package config from configs/common/packages.yaml
+  @PACKAGE_CONFIG@
+  # Additional package config for container
     gcc:
       buildable: False
       externals:
       - spec: gcc@10
         prefix: /usr/local
-
-  # Additional package config from configs/common/packages.yaml
-  @PACKAGE_CONFIG@
+    git-lfs:
+      buildable: False
+      externals:
+      - spec: git-lfs@2
+        prefix: /usr
 
   specs:
     ### Not yet tested
