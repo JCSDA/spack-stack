@@ -1,10 +1,6 @@
 [submodule "spack"]
   path = spack
-  ##url = https://github.com/spack/spack
-  ##branch = develop
-  #url = https://github.com/NOAA-EMC/spack.git
-  #branch = jcsda_emc_spack_stack
-  #url = https://github.com/kgerheiser/spack.git
-  #branch = spack-stack-packages
-  url = https://github.com/climbfuji/spack.git
-  branch = feature/openmpi_two_level_namespace
+  #url = https://github.com/spack/spack
+  #branch = develop
+  url = https://github.com/NOAA-EMC/spack.git
+  branch = jcsda_emc_spack_stack
