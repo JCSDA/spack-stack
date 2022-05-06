@@ -55,6 +55,15 @@ runs:
             sudo apt-get update
             sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
+            #
+            # DH*
+            # For now, install qt5 only for Intel to shorten the build time
+            # without having to rerun all other CI tests. Later, should consider
+            # using https://github.com/jurplel/install-qt-action for all runners
+            # and get rid of the macOS homebrew installation/package config
+            #sudo apt-get install qt5-default qttools5-dev-tools
+            sudo apt-get install qt5-default
+            # *DH
         fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         # These are already installed
@@ -189,7 +198,7 @@ runs:
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
       fi
 
-      # Same for qt@5 on macOS
+      # Same for qt@5 on macOS or on Linux w/ Intel
       if [[ "$RUNNER_OS" == "macOS" ]]; then
         echo "" >> ${SPACK_ENV}/spack.yaml
         echo "  packages:" >> ${SPACK_ENV}/spack.yaml
@@ -198,6 +207,14 @@ runs:
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
         echo "      - spec: qt@5" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /usr/local/opt/qt@5" >> ${SPACK_ENV}/spack.yaml
+      #elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+      #  echo "" >> ${SPACK_ENV}/spack.yaml
+      #  echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+      #  echo "    qt:" >> ${SPACK_ENV}/spack.yaml
+      #  echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+      #  echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+      #  echo "      - spec: qt@5" >> ${SPACK_ENV}/spack.yaml
+      #  echo "        prefix: /usr" >> ${SPACK_ENV}/spack.yaml
       fi
 
       # Spack external find is by default only looking for build-tools. Either
@@ -209,15 +226,14 @@ runs:
 
   - name: configure-options
     shell: bash
-    env:
-      OMP_NUM_THREADS: 8
     run: |
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
 
-      # Speed up builds using more build jobs
-      spack config add "config:build_jobs:8"
+      # Speed up builds using two build jobs per package and four
+      # jobs in parallel further down (spack install)
+      spack config add "config:build_jobs:2"
 
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
@@ -274,7 +290,15 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-      spack install --fail-fast
+      # DH* For now only with Intel to avoid having to rerun all CI tests
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        for i in {1..4}; do
+          nohup spack install --fail-fast >> spack_install.log 2>&1 &
+        done
+        tail -f spack_install.log
+      else
+        spack install --fail-fast
+      fi
 
   - name: create-meta-modules
     shell: bash
