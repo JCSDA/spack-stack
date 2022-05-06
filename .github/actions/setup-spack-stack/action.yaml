@@ -285,17 +285,22 @@ runs:
   - name: build-env
     shell: bash
     env:
-      OMP_NUM_THREADS: 8
+      OMP_NUM_THREADS: 16
     run: |
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       # DH* For now only with Intel to avoid having to rerun all CI tests
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        for i in {1..4}; do
+        for i in {1..8}; do
           nohup spack install --fail-fast >> spack_install.log 2>&1 &
         done
-        tail -f spack_install.log
+        #
+        while ps -ef | grep -ve 'grep' | grep 'spack install'; do
+          echo "Still running"
+          tail -n 10 spack_install.log
+          sleep 60
+        done
       else
         spack install --fail-fast
       fi
