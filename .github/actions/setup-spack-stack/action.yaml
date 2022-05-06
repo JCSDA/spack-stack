@@ -209,10 +209,15 @@ runs:
 
   - name: configure-options
     shell: bash
+    env:
+      OMP_NUM_THREADS: 8
     run: |
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+
+      # Speed up builds using more build jobs
+      spack config add "config:build_jobs:8"
 
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
@@ -263,6 +268,8 @@ runs:
 
   - name: build-env
     shell: bash
+    env:
+      OMP_NUM_THREADS: 8
     run: |
       cd ${{ inputs.path }}
       source setup.sh
