@@ -28,7 +28,12 @@ spack:
       buildable: False
       externals:
       - spec: gcc@10
-        prefix: /usr/local
+        prefix: /usr
+    git:
+      buildable: False
+      externals:
+      - spec: git@2
+        prefix: /usr
     git-lfs:
       buildable: False
       externals:
@@ -49,6 +54,7 @@ spack:
     #- jedi-base-env
     #- jedi-fv3-bundle-env
     #- jedi-ufs-bundle-env
+    #- jedi-um-bundle-env
     - @SPEC@
 
   container:
