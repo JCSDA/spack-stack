@@ -1,0 +1,118 @@
+spack:
+  concretization: together
+  view: false
+
+  config:
+    build_jobs: 2
+    connect_timeout: 60
+
+  compilers:
+  - compiler:
+      spec: gcc@10
+      paths:
+        cc: /usr/bin/gcc-10
+        cxx: /usr/bin/g++-10
+        f77: /usr/bin/gfortran-10
+        fc: /usr/bin/gfortran-10
+      flags: {}
+      operating_system: any
+      target: x86_64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+
+  # Basic package config from configs/common/packages.yaml
+  @PACKAGE_CONFIG@
+  # Additional package config for container
+    gcc:
+      buildable: False
+      externals:
+      - spec: gcc@10
+        prefix: /usr
+    git:
+      buildable: False
+      externals:
+      - spec: git@2
+        prefix: /usr
+    git-lfs:
+      buildable: False
+      externals:
+      - spec: git-lfs@2
+        prefix: /usr
+
+  specs:
+    ### Not yet tested
+    #- jedi-ewok-env
+    #- jedi-um-bundle-env
+    #- jedi-tools-env
+    #- ufs-weather-model-env
+    #- nceplibs-bundle-env
+    ### Tested to work - increasing level of complexity
+    #- wget
+    #- esmf
+    #- base-env
+    #- jedi-base-env
+    #- jedi-fv3-bundle-env
+    #- jedi-ufs-bundle-env
+    #- jedi-um-bundle-env
+    - @SPEC@
+
+  container:
+
+    # Select the format of the recipe e.g. docker,
+    # singularity or anything else that is currently supported
+    format: docker
+    # How to use:
+    #$ spack containerize > Dockerfile
+    #$ docker build -t myimage .
+    #$ docker run -it myimage
+
+    #format: singularity
+    # How to use:
+    #$ spack containerize > hdf5.def
+    #$ sudo singularity build hdf5.sif hdf5.def
+
+    # Sets the base images for the stages where Spack builds the
+    # software or where the software gets installed after being built..
+    images:
+      os: ubuntu:20.04
+      spack:
+        url: https://github.com/noaa-emc/spack
+        ref: jcsda_emc_spack_stack
+        resolve_sha: false
+      
+    # Whether or not to strip binaries
+    strip: true
+
+    ## Additional system packages that are needed at runtime
+    os_packages:
+      build:
+      - gcc-10
+      - g++-10
+      - gfortran-10
+      - cpp-10
+      #- libgomp
+      - git
+      - git-lfs
+      final:
+      - gcc-10
+      - g++-10
+      - gfortran-10
+      - cpp-10
+      #- libgomp
+      - git
+      - git-lfs
+
+    ## Extra instructions
+    #extra_instructions:
+    #  build:
+    #    # Needed for gfortran-11
+    #    RUN add-apt-repository ppa:ubuntu-toolchain-r/test
+    #    RUN apt-get install gfortran-11
+    #  final: |
+    #    RUN echo 'export PS1="\[$(tput bold)\]\[$(tput setaf 1)\][gromacs]\[$(tput setaf 2)\]\u\[$(tput sgr0)\]:\w $ "' >> ~/.bashrc
+
+    # Labels for the image
+    labels:
+      app: "@SPEC@"
+      mpi: "openmpi"

@@ -9,6 +9,7 @@ modules:
       projections:
         all: '{compiler.name}/{compiler.version}/{name}/{version}'
         ^mpi: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
+        ecmwf-atlas: '{compiler.name}/{compiler.version}/atlas/{version}'
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
       blacklist:
@@ -95,6 +96,10 @@ modules:
             '{name}_ROOT': '{prefix}'
         suffixes:
           +debug: 'debug'
+      ecmwf-atlas:
+        environment:
+          set:
+            'atlas_ROOT': '{prefix}'
       esmf:
         environment:
           set:
@@ -107,6 +112,10 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+      openmpi:
+        environment:
+          set:
+            'OMPI_MCA_rmaps_base_oversubscribe': '1'
 
     lmod:
       # Core compiler is a dummy that is not used to build the stack, do not change.
@@ -114,6 +123,7 @@ modules:
       core_compilers::
       - gcc@4.6
       projections:
+        ecmwf-atlas: 'atlas/{version}'
         nlohmann-json: 'json/{version}'
         nlohmann-json-schema-validator: 'json-schema-validator/{version}'
       blacklist:
@@ -200,6 +210,10 @@ modules:
             '{name}_ROOT': '{prefix}'
         suffixes:
           +debug: 'debug'
+      ecmwf-atlas:
+        environment:
+          set:
+            'atlas_ROOT': '{prefix}'
       esmf:
         environment:
           set:
@@ -212,6 +226,10 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+      openmpi:
+        environment:
+          set:
+            'OMPI_MCA_rmaps_base_oversubscribe': '1'
       hierarchy:
       - mpi
 

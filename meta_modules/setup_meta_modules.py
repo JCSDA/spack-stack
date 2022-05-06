@@ -3,7 +3,7 @@
 import copy
 import logging
 #logging.basicConfig(level=logging.INFO)
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(format='%(message)s', level=logging.DEBUG)
 import os
 import shutil
 import sys
@@ -650,3 +650,5 @@ for package_name in package_config.keys():
                 with open(python_module_file, 'w') as f:
                     f.write(module_content)
                 logging.info("  ... writing {}".format(python_module_file))
+
+logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))

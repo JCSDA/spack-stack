@@ -6,4 +6,4 @@ spack:
   @CONFIG_INCLUDES@
 
   specs:
-    - nceplibs-bundle
+    - nceplibs-bundle-env

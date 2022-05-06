@@ -26,3 +26,6 @@ config:
   # Cache directory for miscellaneous files, like the package index.
   # This can be purged with `spack clean --misc-cache`
   misc_cache: ${SPACK_STACK_DIR}/cache/misc_cache
+
+  # Timeout in seconds for web requests (curl/urllib)
+  connect_timeout: 60
