@@ -1,6 +1,8 @@
 [submodule "spack"]
   path = spack
-  #url = https://github.com/spack/spack
-  #branch = develop
-  url = https://github.com/NOAA-EMC/spack.git
-  branch = jcsda_emc_spack_stack
+  ##url = https://github.com/spack/spack
+  ##branch = develop
+  #url = https://github.com/NOAA-EMC/spack.git
+  #branch = jcsda_emc_spack_stack
+  url = https://github.com/climbfuji/spack.git
+  branch = feature/atlas_0_29_0_ectrans_options
