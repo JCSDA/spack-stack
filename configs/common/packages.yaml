@@ -140,8 +140,8 @@
       version: [0.9.5]
       variants: +eckit
     ecmwf-atlas:
-      version: [0.27.0]
-      variants: +fckit
+      version: [0.29.0]
+      variants: +fckit +trans
     shumlib:
       version: [macos_clang_port]
     fiat:
@@ -152,9 +152,8 @@
     #git-lfs:
       # Assume git-lfs is provided, hard to install
       # because of dependencies on go/go-bootstrap.
-      # No need to uncomment here as long as the
-      # site config provides an external package.
-      #buildable: False
+      # Note: Uncommenting this entry will break
+      # the container builds.
       #version: [2.11.0]
     openblas:
       version: [0.3.19]
