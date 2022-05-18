@@ -4,8 +4,8 @@ spack-stack is a collaborative effort between the NOAA Environmental Modeling Ce
 
 [spack](https://github.com/spack/spack) is a community-supported, multi-platform, Python-based package manager originally developed by the Lawrence Livermore National Laboratory (LLNL; https://computing.llnl.gov/projects/spack-hpc-package-manager). It is provided as a submodule so that a stable version can be referenced. [See the Spack Documentation for more information](https://spack.readthedocs.io/en/latest/)
 
-spack-stack is mainly a collection of Spack configuration files, but provides a few Python scripts to simplify the installation process:
-- `create.py` is provided to copy common, site-specific, and application-specific configuration files into a coherent Spack environment and to create container recipes
+spack-stack is mainly a collection of Spack configuration files, but provides a Spack extension to simplify the installation process:
+- `spack stack create` is provided to copy common, site-specific, and application-specific configuration files into a coherent Spack environment and to create container recipes
 - `meta_modules/setup_meta_modules.py` creates compiler, MPI and Python meta-modules for a convenient setup of a user environment using modules (lua and tcl)
 
 spack-stack is maintained by:
@@ -42,17 +42,17 @@ cd spack-stack
 source setup.sh
 
 # Basic usage of create.py
-./create.py -h
+spack stack create -h
 ```
 
 ### Create local environment
 ```
 # See a list of sites and apps
-./create.py environment -h
+spack stack create env -h
 
 # Create a pre-configured Spack environment in envs/<app>.<site>
 # (copies site-specific, application-specific, and common config files into the environment directory)
-./create.py environment --site hera --app jedi-fv3 --name jedi-fv3.hera
+spack stack create env --site hera --app jedi-fv3 --name jedi-fv3.hera
 
 # Activate the newly created environment
 # Optional: decorate the command line prompt using -p
@@ -81,13 +81,13 @@ spack module lmod refresh
 ### Create container
 ```
 # See a list of preconfigured containers
-./create.py container -h
+spack stack create container -h
 
 # Create container spack definition (spack.yaml) in directory envs/<spec>.<config>
-./create.py container --config docker-ubuntu-gcc-openmpi --spec esmf
+spack stack create container docker-ubuntu-gcc-openmpi --app ufs-weather-model
 
 # Descend into container environment directory
-cd envs/esmf.docker-ubuntu-gcc-openmpi
+cd envs/docker-ubuntu-gcc-openmpi.ufs-weather-model
 
 # Optionally edit config file
 emacs spack.yaml
@@ -102,7 +102,7 @@ docker run -it myimage
 ## Generating new site config
 Recommended: Start with an empty (default) site config. Then run `spack external find` to locate common external packages such as git, Perl, CMake, etc., and run `spack compiler find` to locate compilers in your path. Compilers or external packages with modules need to be added manually.
 ```
-./create.py environment --site default --app jedi-ufs --name jedi-ufs.mysite
+spack stack create env --site default --app jedi-ufs --name jedi-ufs.mysite
 
 # Descend into site config directory
 cd envs/jedi-ufs.mysite/site
