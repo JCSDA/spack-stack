@@ -3,7 +3,7 @@ spack:
   concretization: separately
   view: false
 
-  @CONFIG_INCLUDES@
+  
 
   specs:
     - nceplibs-bundle-env

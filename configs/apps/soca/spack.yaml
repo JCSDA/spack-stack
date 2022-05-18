@@ -2,7 +2,7 @@ spack:
   concretization: separately
   view: false
 
-  @CONFIG_INCLUDES@
+  
 
   specs:
   - soca-bundle-env
