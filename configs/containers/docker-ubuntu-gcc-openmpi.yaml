@@ -23,6 +23,7 @@ spack:
 
   # Basic package config from configs/common/packages.yaml
   # Additional package config for container
+  packages:
     gcc:
       buildable: False
       externals:
@@ -75,7 +76,6 @@ spack:
       - g++-10
       - gfortran-10
       - cpp-10
-      #- libgomp
       - git
       - git-lfs
       final:
@@ -83,7 +83,6 @@ spack:
       - g++-10
       - gfortran-10
       - cpp-10
-      #- libgomp
       - git
       - git-lfs
 
