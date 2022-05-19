@@ -45,6 +45,12 @@ source /usr/local/opt/lmod/init/profile
 
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
+### Install MacTeX
+If the `jedi-tools`` application is built with variant `+latex` to enable building LaTeX/PDF documentation, install MacTeX (https://www.tug.org/mactex) and configure your shell to have it in the search path, for example:
+```
+export PATH="/usr/local/texlive/2022/bin/universal-darwin:$PATH"
+```
+
 ### Temporary workaround for pip installs in spack
 See https://github.com/spack/spack/issues/29308
 ```
