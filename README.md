@@ -26,6 +26,7 @@ Ready-to-use spack-stack installations are available on the following platforms:
 | NOAA RDHPCS Gaea      | `/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v0.0.1`                                          | Dom Heinzeller            | yes              |
 | NOAA RDHPCS Hera      |                                                                                                     |                           |                  |
 | NOAA RDHPCS Jet       |                                                                                                     |                           |                  |
+| TACC Stampede2        | `/work2/06146/tg854455/stampede2/spack-stack/spack-stack-0.0.1`                                     | Dom Heinzeller            | yes              |
 
 For questions or problems, please consult the currently open [issues](https://github.com/noaa-emc/spack-stack/issues) and the [current and past discussions](https://github.com/noaa-emc/spack-stack/discussions) first.
 
