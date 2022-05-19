@@ -1,0 +1,54 @@
+compilers:
+- compiler:
+    spec: intel@2022.1.0
+    paths:
+      cc: /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/compiler/2022.1.0/linux/bin/intel64/icc
+      cxx: /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/compiler/2022.1.0/linux/bin/intel64/icpc
+      f77: /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/compiler/2022.1.0/linux/bin/intel64/ifort
+      fc: /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/compiler/2022.1.0/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: centos7
+    target: any
+    modules: []
+    environment:
+      prepend_path:
+        PATH: '/opt/apps/gcc/9.1.0/bin'
+        LD_LIBRARY_PATH: '/work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.1.0/lib64:/opt/apps/gcc/9.1.0/lib'
+        CPATH: '/opt/apps/gcc/9.1.0/include'
+      set:
+        I_MPI_ROOT: '/work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/mpi/2021.6.0'
+    extra_rpaths: []
+## This compiler is broken due to the way how the gcc-9.1.0 dependencies are
+## configured in the intel/19.1.1 module (default module created by sysadmins)
+#- compiler:
+#    spec: intel@2020.1.217
+#    paths:
+#      cc: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/icc
+#      cxx: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/icpc
+#      f77: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
+#      fc: /opt/intel/compilers_and_libraries_2020.1.217/linux/bin/intel64/ifort
+#    flags: {}
+#    operating_system: centos7
+#    target: x86_64
+#    modules:
+#    - intel/19.1.1
+#    environment:
+#      prepend_path:
+#        PATH: '/opt/apps/gcc/9.1.0/bin'
+#        LD_LIBRARY_PATH: '/opt/apps/gcc/9.1.0/lib64:/opt/apps/gcc/9.1.0/lib'
+#        CPATH: '/opt/apps/gcc/9.1.0/include'
+#    extra_rpaths: []
+- compiler:
+    spec: gcc@9.1.0
+    paths:
+      cc: /opt/apps/gcc/9.1.0/bin/gcc
+      cxx: /opt/apps/gcc/9.1.0/bin/g++
+      f77: /opt/apps/gcc/9.1.0/bin/gfortran
+      fc: /opt/apps/gcc/9.1.0/bin/gfortran
+    flags: {}
+    operating_system: centos7
+    target: x86_64
+    modules:
+    - gcc/9.1.0
+    environment: {}
+    extra_rpaths: []

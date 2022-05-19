@@ -1,0 +1,3 @@
+config:
+  # User fewer build jobs, seems to help with Intel's mptcom EMT instruction errors
+  build_jobs: 2
