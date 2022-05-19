@@ -1,0 +1,21 @@
+name: create-spack-mirror
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: run-unit-tests
+        run: |
+          source ./setup.sh
+          spack unit-test --extension=stack
