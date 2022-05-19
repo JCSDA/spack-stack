@@ -1,4 +1,4 @@
-name: create-spack-mirror
+name: unit-tests
 
 on:
   pull_request:
