@@ -54,6 +54,8 @@ packages:
       prefix: /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7
       modules:
       - miniconda/3.9.7
+
+### Modifications of common packages
   # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
   boost:
     version:: [1.72.0]
