@@ -2,7 +2,7 @@ spack:
   concretization: separately
   view: false
 
-  @CONFIG_INCLUDES@
+  include: []
 
   specs:
   - jedi-ufs-bundle-env

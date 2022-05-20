@@ -3,7 +3,9 @@ spack:
   concretization: separately
   view: false
   
-  @CONFIG_INCLUDES@
+  # Custom includes which can be a directory containg
+  # Spack config files or a file itself.
+  include: [] 
 
 # File in specs
   specs:  
