@@ -6,7 +6,5 @@
   branch = jcsda_emc_spack_stack
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
-  #url = https://github.com/noaa-emc/cmakemodules
-  #branch = develop
-  url = https://github.com/climbfuji/cmakemodules
-  branch = feature/find_sphinx
+  url = https://github.com/noaa-emc/cmakemodules
+  branch = develop
