@@ -312,7 +312,7 @@ runs:
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-        meta_modules/setup_meta_modules.py
+        spack stack setup-meta-modeuls
       fi
 
   - name: test-meta-modules
