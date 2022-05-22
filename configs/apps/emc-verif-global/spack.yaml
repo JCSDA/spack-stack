@@ -5,4 +5,4 @@ spack:
   include: [] 
 
   specs:  
-  - emv-verif-global-env
+  - emc-verif-global-env
