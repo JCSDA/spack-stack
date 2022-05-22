@@ -86,8 +86,13 @@ spack:
       version: [0.5.1]
     mapl:
       version: [2.7.3]
+    met:
+      version: [10.1.0]
+    metplus:
+      version: [10.1.0]
 
-  specs: []
+  specs:
+  - global-workflow-env
 
 
     

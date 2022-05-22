@@ -5,4 +5,4 @@ spack:
   include: [] 
 
   specs:  
-  - emv-gfs-wafs-env
+  - gsi-env
