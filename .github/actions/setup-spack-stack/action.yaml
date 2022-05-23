@@ -204,7 +204,7 @@ runs:
       # behavior to find all external packages.
       export PATH="/usr/local/opt/qt@5/bin:${PATH}"
       spack external find
-      spack external find git git-lfs openmpi mpich perl python curl qt
+      spack external find openmpi mpich perl python curl qt
   
   - name: configure-options
     shell: bash
