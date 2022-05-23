@@ -54,8 +54,8 @@ prepend-path MANPATH "${GITLFS_PATH}/share/man"
 ### Set up the user environment for working with spack/building new software environments
 This needs to be done every time before installing packages with spack or before using spack-provided modules!
 ```
+module purge
 source /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/setvars.sh
 module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
 module load miniconda/3.9.7
-module load git-lfs/1.2.1
 ```
