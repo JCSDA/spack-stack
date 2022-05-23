@@ -162,6 +162,12 @@ runs:
         source /opt/intel/oneapi/setvars.sh
       fi
 
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
+        site="default"
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
+       site="default.macos"
+      fi
+
       source setup.sh
       spack stack create env --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
@@ -198,32 +204,12 @@ runs:
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
       fi
 
-      # Same for qt@5 on macOS or on Linux w/ Intel
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    qt:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: qt@5" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: /usr/local/opt/qt@5" >> ${SPACK_ENV}/spack.yaml
-      #elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-      #  echo "" >> ${SPACK_ENV}/spack.yaml
-      #  echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-      #  echo "    qt:" >> ${SPACK_ENV}/spack.yaml
-      #  echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-      #  echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-      #  echo "      - spec: qt@5" >> ${SPACK_ENV}/spack.yaml
-      #  echo "        prefix: /usr" >> ${SPACK_ENV}/spack.yaml
-      fi
-
       # Spack external find is by default only looking for build-tools. Either
       # search for additional packages explicitly, or fall back to the old
       # behavior to find all external packages.
-      #spack external find 
-      #spack external find git-lfs openmpi mpich
-      spack external find --all
-
+      spack external find 
+      spack external find git-lfs openmpi mpich perl openssl python qt
+  
   - name: configure-options
     shell: bash
     run: |
@@ -239,22 +225,6 @@ runs:
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      # Remove external OpenSSL entry
-      # Error when wget attempts to build using external on macOS
-      spack config rm "packages:openssl"
-
-      # Remove external SQLite entry
-      # Error when proj attempts to build using external on macOS
-      spack config rm "packages:sqlite"
-
-      # Remove external ncurses entry
-      # Error when proj attempts to build using external on macOS
-      spack config rm "packages:ncurses"
-
-      # Remove external m4 entry
-      # Error when cairo attempts to build using external on macOS
-      spack config rm "packages:m4"
-
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
       # Currently, this is the case for all workflows - wrap in if statement
@@ -266,11 +236,7 @@ runs:
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         echo ""
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Clang has trouble finding -lomp for OpenMP because of non-standard location
-        # Could be fixed by setting compiler environment LDFLAGS to -L$(brew --prefix llvm)/lib or wherever libomp is
-        spack config add "packages:wgrib2:variants: ~openmp"
-        spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
-        spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
+       echo ""
       fi
 
   - name: concretize
