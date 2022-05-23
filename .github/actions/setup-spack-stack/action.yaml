@@ -74,6 +74,7 @@ runs:
         brew install qt@5
         brew install readline
         brew install wget
+        brew install openssl
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -160,12 +161,6 @@ runs:
       cd ${{ inputs.path }}
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         source /opt/intel/oneapi/setvars.sh
-      fi
-
-      if [[ "$RUNNER_OS" == "Linux" ]]; then
-        site="default"
-      elif [[ "$RUNNER_OS" == "macOS" ]]; then
-       site="default.macos"
       fi
 
       source setup.sh
