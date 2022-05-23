@@ -207,8 +207,9 @@ runs:
       # Spack external find is by default only looking for build-tools. Either
       # search for additional packages explicitly, or fall back to the old
       # behavior to find all external packages.
-      spack external find 
-      spack external find git git-lfs openmpi mpich perl python qt curl
+      spack external find
+      spack external find -p /usr/local/opt/qt@5/bin qt
+      spack external find git git-lfs openmpi mpich perl python curl
   
   - name: configure-options
     shell: bash
