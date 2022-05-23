@@ -2,6 +2,6 @@ packages:
   wgrib2:
     variants: ~openmp
   fms:
-    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+    variants: ~openmp
   fms-jcsda:
-    variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+    variants: ~openmp
