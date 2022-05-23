@@ -226,3 +226,9 @@
       variants: +python +grib2
     metplus:
       version: [4.1.0]
+    mapl:
+      version: [2.11.0]
+    yafyaml:
+      version: [0.5.1]
+    gftl-shared:
+      version: [1.3.3]
