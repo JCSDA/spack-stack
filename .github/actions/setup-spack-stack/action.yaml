@@ -272,7 +272,7 @@ runs:
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-        spack module lmod refresh
+        spack module lmod refresh -y
         meta_modules/setup_meta_modules.py
       fi
 
