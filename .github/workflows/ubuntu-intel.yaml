@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         # jedi-tools-env does not build with intel
-        app: [empty, jedi-ewok, jedi-fv3, jedi-ufs, jedi-um, nceplibs, soca, gsi, global-workflow, emc-verif-global, ufs-utils, gsi, emc-gfs-wafs]
+        app: [empty, jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, gsi-env, global-workflow-env, emc-verif-global-env, ufs-utils, gsi, emc-gfs-wafs-env]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
