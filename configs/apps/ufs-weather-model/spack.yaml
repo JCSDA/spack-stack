@@ -1,9 +1,0 @@
-spack:
-  concretization: separately
-  view: false
-
-  include: []
-
-  specs:
-    - ufs-weather-model-env
-    - ufs-weather-model-debug-env

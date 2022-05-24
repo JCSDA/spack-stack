@@ -1,8 +1,0 @@
-spack:
-  concretization: separately
-  view: false
-  
-  include: [] 
-
-  specs:  
-  - emc-verif-global-env
