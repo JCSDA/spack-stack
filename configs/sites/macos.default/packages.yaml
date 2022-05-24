@@ -5,3 +5,5 @@ packages:
     variants: ~openmp
   fms-jcsda:
     variants: ~openmp
+  cairo:
+    variants: ~png ~svg
