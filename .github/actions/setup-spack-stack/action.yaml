@@ -34,7 +34,6 @@ runs:
     shell: bash
     run: |
       if [[ "$RUNNER_OS" == "Linux" ]]; then
-        # Needed for the following apt-get install calls to work
         sudo apt-get update
 
         # Install Curl headers. Executable exists by default in spack external find.
