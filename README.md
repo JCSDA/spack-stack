@@ -6,7 +6,7 @@ spack-stack is a collaborative effort between the NOAA Environmental Modeling Ce
 
 spack-stack is mainly a collection of Spack configuration files, but provides a Spack extension to simplify the installation process:
 - `spack stack create` is provided to copy common, site-specific, and application-specific configuration files into a coherent Spack environment and to create container recipes
-- `meta_modules/setup_meta_modules.py` creates compiler, MPI and Python meta-modules for a convenient setup of a user environment using modules (lua and tcl)
+- `spack stack setup-meta-modules` creates compiler, MPI and Python meta-modules for a convenient setup of a user environment using modules (lua and tcl)
 
 spack-stack is maintained by:
 - Kyle Gerheiser (@kgerheiser), NOAA-EMC
@@ -75,7 +75,7 @@ spack install
 spack module lmod refresh
 
 # Create meta-modules for compiler, mpi, python
-./meta_modules/setup_meta_modules.py
+spack stack setup-meta-modules
 ```
 
 ### Create container
