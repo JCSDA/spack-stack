@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        specs: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
+        app: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, gsi-env, global-workflow-env, emc-verif-global-env, ufs-utils, gsi-env, emc-gfs-wafs-env]
     runs-on: macos-latest
     steps:
 
