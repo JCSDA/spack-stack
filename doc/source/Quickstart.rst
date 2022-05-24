@@ -14,8 +14,8 @@ Quickstart
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
    source setup.sh
 
-   # Basic usage of create.py
-   ./create.py -h
+   # Basic usage of spack stack create
+   spack stack create -h
 
 ==============================
 Create local environment
@@ -24,11 +24,11 @@ Create local environment
 .. code-block:: console
 
    # See a list of sites and apps
-   ./create.py environment -h
+   spack stack create env -h
 
    # Create a pre-configured Spack environment in envs/<app>.<site>
    # (copies site-specific, application-specific, and common config files into the environment directory)
-   ./create.py environment --site hera --app jedi-fv3 --name jedi-fv3.hera
+   spack stack create env --site hera --app jedi-fv3 --name jedi-fv3.hera
 
    # Activate the newly created environment
    # Optional: decorate the command line prompt using -p
@@ -51,7 +51,7 @@ Create local environment
    spack module lmod refresh
 
    # Create meta-modules for compiler, mpi, python
-   ./meta_modules/setup_meta_modules.py
+   spack stack setup-meta-modules
 
 ==============================
 Create container
@@ -60,13 +60,13 @@ Create container
 .. code-block:: console
 
    # See a list of preconfigured containers
-   ./create.py container -h
+   spack stack create container -h
 
    # Create container spack definition (spack.yaml) in directory envs/<spec>.<config>
-   ./create.py container --config docker-ubuntu-gcc-openmpi --spec esmf
+   spack stack create container docker-ubuntu-gcc-openmpi --app ufs-weather-model
 
    # Descend into container environment directory
-   cd envs/esmf.docker-ubuntu-gcc-openmpi
+   cd envs/ufs-weather-model.docker-ubuntu-gcc-openmpi
 
    # Optionally edit config file
    emacs spack.yaml

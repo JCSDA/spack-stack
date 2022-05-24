@@ -12,25 +12,25 @@ Ready-to-use spack-stack installations are available on the following platforms:
 
 **Note: this versions are for early testers - use at your own risk**
 
-+-----------------------+---------------------------+------------------+
-| System                | Maintained by (temporary) | jedi-ewok tested |
-+=======================+===========================+==================+
-| MSU Orion             | Dom Heinzeller            | yes              |
-+-----------------------+---------------------------+------------------+
-| NASA Discover         | Dom Heinzeller            | yes              |
-+-----------------------+---------------------------+------------------+
-| NCAR-Wyoming Cheyenne | Dom Heinzeller            | yes              |
-+-----------------------+---------------------------+------------------+
-| NOAA NCO WCOSS2       |                           |                  |
-+-----------------------+---------------------------+------------------+
-| NOAA RDHPCS Gaea      | Dom Heinzeller            | yes              |
-+-----------------------+---------------------------+------------------+
-| NOAA RDHPCS Hera      |                           |                  |
-+-----------------------+---------------------------+------------------+
-| NOAA RDHPCS Jet       |                           |                  |
-+-----------------------+---------------------------+------------------+
++-----------------------+---------------------------+---------------------------+
+| System                | Maintained by (temporary) | jedi-ewok tested          |
++=======================+===========================+===========================+
+| MSU Orion             | Dom Heinzeller            | yes                       |
++-----------------------+---------------------------+---------------------------+
+| NASA Discover         | Dom Heinzeller            | yes                       |
++-----------------------+---------------------------+---------------------------+
+| NCAR-Wyoming Cheyenne | Dom Heinzeller            | yes                       |
++-----------------------+---------------------------+---------------------------+
+| NOAA NCO WCOSS2       |                           |                           |
++-----------------------+---------------------------+---------------------------+
+| NOAA RDHPCS Gaea      | Dom Heinzeller            | yes                       |
++-----------------------+---------------------------+---------------------------+
+| NOAA RDHPCS Hera      |                           |                           |
++-----------------------+---------------------------+---------------------------+
+| NOAA RDHPCS Jet       |                           |                           |
++-----------------------+---------------------------+---------------------------+
 | TACC Stampede2        | Dom Heinzeller            | install yes / not yet run |
-+-----------------------+---------------------------+------------------+
++-----------------------+---------------------------+---------------------------+
 
 +-----------------------+-------------------------------------------------------------------------------------------------------+
 | System                | Location                                                                                              |
@@ -56,6 +56,37 @@ Ready-to-use spack-stack installations are available on the following platforms:
 
 
 For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
+
+
+
+**MISSING**
+
+------------------------------
+NOAA RDHPCS Gaea
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module unload intel
+   module unload cray-mpich
+   module unload cray-python
+   module unload darshan
+   module load cray-python/3.7.3.2
+
+------------------------------
+TACC Stampede2
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   source /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/setvars.sh
+   module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
+   module load miniconda/3.9.7
 
 ==============================
 Reference site configs

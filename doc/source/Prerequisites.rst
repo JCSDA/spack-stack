@@ -63,7 +63,11 @@ git-lfs
 Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see Section **MISSING** for examples). Section **MISSING** describes a manual installation of ``git-lfs`` on TACC Stampede, a Centos7 system.
 
 ------------------------------
-Qt5
+qt (qt@5)
 ------------------------------
 
-**MISSING**
+Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see Section **MISSING** for examples). Section **MISSING** describes a manual installation of ``qt`` on XXX Gaea, a Cray system.
+
+**Note 1.** The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
+
+**Note 2.** When using an existing version provided by the operating system or as a module, one needs to check if all required components are installed. The ``ecflow`` installation will abort with an error message that a particular component of ``qt`` cannot be found.
