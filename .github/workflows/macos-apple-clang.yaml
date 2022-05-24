@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        specs: [empty, jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
+        specs: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
     runs-on: macos-latest
     steps:
 
