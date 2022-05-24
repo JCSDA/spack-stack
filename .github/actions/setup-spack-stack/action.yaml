@@ -202,7 +202,7 @@ runs:
       # Spack external find is by default only looking for build-tools.
       export PATH="/usr/local/opt/qt@5/bin:${PATH}"
       spack external find
-      spack external find openmpi mpich perl python curl qt
+      spack external find openmpi mpich perl python curl qt wget
   
   - name: configure-options
     shell: bash
