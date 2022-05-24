@@ -21,6 +21,8 @@ Quickstart
 Create local environment
 ==============================
 
+The following instructions assume using a preconfigured site (see **MISSING** for a list of preconfigured sites). Instructions for creating a new site config can be found in **MISSING**.
+
 .. code-block:: console
 
    # See a list of sites and apps
@@ -39,13 +41,13 @@ Create local environment
 
    # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
    emacs envs/jedi-fv3.hera/spack.yaml
-   emacs envs/jedi-fv3.hera/common/*.yaml
+   emacs envs/jedi-fv3.hera/packages.yaml
    emacs envs/jedi-fv3.hera/site/*.yaml
 
    # Process the specs and install
    # Note: both steps will take some time!
    spack concretize
-   spack install
+   spack install [--verbose] [--fail-fast]
 
    # Create lua module files
    spack module lmod refresh
@@ -76,3 +78,38 @@ Create container
    spack containerize > Dockerfile
    docker build -t myimage .
    docker run -it myimage
+
+==============================
+Extending environments
+==============================
+
+Additional packages (and their dependencies) or new versions of packages can be added to existing environments. It is recommended to take a backup of the existing environment directory (e.g. using ``rsync``) or test this first as described in section **MISSING**, especially if new versions of packages are added that are themselves dependencies for other packages. In some cases, adding new versions of packages will require rebuilding large portions of the stack, for example if a new version of ``hdf5`` is needed. In this case, it is recommended to start over with an entirely new environment.
+
+In the simplest case, a new package (and its basic dependencies) or a new version of an existing package that is not a dependency itself can be added as described in the following for a new version of ``ecmwf-atlas``.
+
+1. Check if the package has any variants defined in the common (``env_dir/packages.yaml``) or site (``env_dir/site/packages.yaml``) package config and make sure that these are reflected
+   correctly in the ``spec`` command:
+
+.. code-block:: console
+
+   spack spec ecmwf-atlas@0.29.0
+
+2. Add package to environment specs:
+
+.. code-block:: console
+
+   spack add ecmwf-atlas@0.29.0
+
+3. Run ``concretize`` step with ``--reuse`` to enforce using existing libraries as dependencies, if possible
+
+.. code-block:: console
+
+   spack concretize --reuse
+
+4. Install with ``--reuse``
+
+.. code-block:: console
+
+   spack install --reuse [--verbose] [--fail-fast]
+
+Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_.
