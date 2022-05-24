@@ -1,0 +1,61 @@
+spack:
+  packages:
+    zlib:
+      version: [1.2.11]
+    libpng:
+      version: [1.6.35]
+    jasper:
+      version: [2.0.25]
+    hdf5:
+      version: [1.10.6]
+    netcdf-c:
+      version: [4.7.4]
+    netcdf-fortran:
+      version: [4.5.3]
+    fms:
+      version: [2021.03]
+    bacio:
+      version: [2.4.1]
+    crtm:
+      version: [2.3.0]
+    g2:
+      version: [3.4.3]
+    g2tmpl:
+      version: [1.10.0]
+    ip:
+      version: [3.3.3]
+    sp:
+      version: [2.3.3]
+    w3nco:
+      version: [2.4.1]
+    upp:
+      version: [10.0.10]
+    gftl-shared:
+      version: [1.3.3]
+    yafyaml:
+      version: [0.5.1]
+    gfsio:
+      version: [1.4.1]
+    landsfcutil:
+      version: [2.4.1]
+    nemsio:
+      version: [2.5.2]
+    nemsiogfs:
+      version: [2.5.3]
+    sfcio:
+      version: [1.4.1]
+    sigio:
+      version: [2.3.2]
+    w3emc:
+      version: [2.7.3]
+    wgrib2:
+      version: [2.0.8]
+    parallelio:
+      version: [2.5.2]
+    esmf:
+      version: [8.2.0]
+
+  include: []
+
+  specs:
+  - ufs-srw-env
