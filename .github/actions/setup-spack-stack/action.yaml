@@ -199,9 +199,7 @@ runs:
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
       fi
 
-      # Spack external find is by default only looking for build-tools. Either
-      # search for additional packages explicitly, or fall back to the old
-      # behavior to find all external packages.
+      # Spack external find is by default only looking for build-tools.
       export PATH="/usr/local/opt/qt@5/bin:${PATH}"
       spack external find
       spack external find openmpi mpich perl python curl qt
