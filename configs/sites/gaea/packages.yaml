@@ -32,6 +32,10 @@ packages:
       modules:
       - cray-python/3.7.3.2
 
+### Modifications of common packages - no large file support in gdal
+  gdal:
+    variants: ~unix_stdio_64
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
