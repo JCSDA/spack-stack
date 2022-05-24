@@ -22,8 +22,8 @@ spack:
       extra_rpaths: []
 
   # Basic package config from configs/common/packages.yaml
-  @PACKAGE_CONFIG@
   # Additional package config for container
+  packages:
     gcc:
       buildable: False
       externals:
@@ -40,22 +40,7 @@ spack:
       - spec: git-lfs@2
         prefix: /usr
 
-  specs:
-    ### Not yet tested
-    #- jedi-ewok-env
-    #- jedi-um-bundle-env
-    #- jedi-tools-env
-    #- ufs-weather-model-env
-    #- nceplibs-bundle-env
-    ### Tested to work - increasing level of complexity
-    #- wget
-    #- esmf
-    #- base-env
-    #- jedi-base-env
-    #- jedi-fv3-bundle-env
-    #- jedi-ufs-bundle-env
-    #- jedi-um-bundle-env
-    - @SPEC@
+  specs: []
 
   container:
 
@@ -91,7 +76,6 @@ spack:
       - g++-10
       - gfortran-10
       - cpp-10
-      #- libgomp
       - git
       - git-lfs
       final:
@@ -99,7 +83,6 @@ spack:
       - g++-10
       - gfortran-10
       - cpp-10
-      #- libgomp
       - git
       - git-lfs
 
@@ -114,5 +97,5 @@ spack:
 
     # Labels for the image
     labels:
-      app: "@SPEC@"
+      app: ""
       mpi: "openmpi"

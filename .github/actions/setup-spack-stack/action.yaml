@@ -163,7 +163,7 @@ runs:
       fi
 
       source setup.sh
-      ./create.py environment --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
+      spack stack create env --site default --app ${{ inputs.app }} --name ${{ inputs.app }}
       spack env activate envs/${{ inputs.app }}
 
       # LLVM Clang not in PATH, search for it specifically
@@ -312,7 +312,7 @@ runs:
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
-        meta_modules/setup_meta_modules.py
+        spack stack setup-meta-modules
       fi
 
   - name: test-meta-modules
