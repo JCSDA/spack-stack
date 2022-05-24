@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         # Can't build jedi-ewok on macOS (12) with gcc (11)
-        app: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, gsi-env, global-workflow-env, emc-verif-global-env, ufs-utils, gsi-env, emc-gfs-wafs-env]
+        app: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, gsi-env, global-workflow-env, emc-verif-global-env, ufs-utils-env, gsi-env, emc-gfs-wafs-env]
     runs-on: macos-latest
     steps:
 
