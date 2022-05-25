@@ -257,7 +257,7 @@ runs:
     if: ${{ always() }}
     uses: actions/upload-artifact@v2
     with:
-      name: ${{ github.compiler }}-${{ inputs.mpi }}-${{ runner.os }}-logs
+      name: ${{ inputs.compiler }}-${{ inputs.mpi }}-${{ runner.os }}-logs
       path: |
         ${{ github.workspace }}/logs/
         ${{ github.workspace }}/envs/${{ inputs.name }}/spack.yaml
