@@ -1,6 +1,8 @@
 spack:
   concretization: separately
 
+  include: []
+
   specs:
   - base-env
   - global-workflow-env
