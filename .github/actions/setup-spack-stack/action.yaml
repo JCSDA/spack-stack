@@ -99,6 +99,7 @@ runs:
       key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}
 
   - name: install-mpi
+    if: steps.cache-mpi.outputs.cache-hit != 'true'
     uses: ./.github/actions/install-mpi
     with:
       mpi: ${{ inputs.mpi }}
