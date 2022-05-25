@@ -14,22 +14,22 @@ compilers:
     - intel/2022.1
     environment:
       prepend_path:
-        PATH: '/opt/gcc/8.3/bin'
-        LD_LIBRARY_PATH: '/opt/gcc/8.3/lib64'
-        CPATH: '/opt/gcc/8.3/include'
+        PATH: '/data/prod/hpc-stack/gnu/9.3.0/bin'
+        LD_LIBRARY_PATH: '/data/prod/hpc-stack/gnu/9.3.0/lib64'
+        CPATH: '/data/prod/hpc-stack/gnu/9.3.0/include'
     extra_rpaths: []
 # Not yet tested:
 - compiler:
-    spec: gcc@8.3.0
+    spec: gcc@9.3.0
     paths:
-      cc: /opt/gcc/8.3/bin/gcc
-      cxx: /opt/gcc/8.3/bin/g++
-      f77: /opt/gcc/8.3/bin/gfortran
-      fc: /opt/gcc/8.3/bin/gfortran
+      cc: /data/prod/hpc-stack/gnu/9.3.0/bin/gcc
+      cxx: /data/prod/hpc-stack/gnu/9.3.0/bin/g++
+      f77: /data/prod/hpc-stack/gnu/9.3.0/bin/gfortran
+      fc: /data/prod/hpc-stack/gnu/9.3.0/bin/gfortran
     flags: {}
     operating_system: centos7
     target: x86_64
-    prefix: /opt/gcc/8.3
+    prefix: /data/prod/hpc-stack/gnu/9.3.0
     modules: []
     environment: {}
     extra_rpaths: []
