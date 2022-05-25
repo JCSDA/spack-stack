@@ -183,6 +183,8 @@ runs:
        echo ""
       fi
 
+      mkdir ${GITHUB_WORKSPACE}/logs
+
   - name: concretize
     shell: bash
     run: |
@@ -190,7 +192,7 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
       cat ${SPACK_ENV}/spack.yaml
-      spack concretize
+      spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
 
   - name: build-env
     if: ${{ inputs.concretize_only == 'false' }}
@@ -213,7 +215,7 @@ runs:
           sleep 60
         done
       else
-        spack install --fail-fast
+        spack install --fail-fast --show-log-on-error
       fi
 
   - name: create-meta-modules
@@ -250,3 +252,12 @@ runs:
           # fi
         fi
       fi
+
+  - name: Upload logs
+    if: ${{ always() }}
+    uses: actions/upload-artifact@v2
+    with:
+      name: ${{ github.compiler }}-${{ inputs.mpi }}-${{ runner.os }}-logs
+      path: |
+        ${{ github.workspace }}/logs/
+        ${{ github.workspace }}/envs/${{ inputs.name }}/spack.yaml
