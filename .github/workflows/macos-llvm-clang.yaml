@@ -22,7 +22,8 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          app: ${{ matrix.app }}
+          name: jedi-ufs-all-macos-llvm-clang
+          template: jedi-ufs-all-dev
           compiler: clang
           mpi: openmpi
           path: ${{ github.workspace }}

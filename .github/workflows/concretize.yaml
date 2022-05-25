@@ -29,8 +29,7 @@ jobs:
         uses: ./.github/actions/setup-spack-stack
         with:
           name: macos-${{ matrix.compiler }}
-          app: ${{ matrix.app }}
-          env_template: 'jedi-ufs-all-dev'
+          template: 'jedi-ufs-all-dev'
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
@@ -50,8 +49,8 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          env_template: jedi-ufs-all-dev
-          spec: 'none'
+          name: jedi-ufs-all-dev
+          template: jedi-ufs-all-dev
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
@@ -68,7 +67,8 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          env_template: jedi-ufs-all-dev
+          name: jedi-ufs-all-dev
+          template: jedi-ufs-all-dev
           compiler: intel
           mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}
