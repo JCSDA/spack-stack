@@ -1,0 +1,16 @@
+spack:
+  concretization: separately
+  view: false
+
+  include: []
+
+  specs:
+  - jedi-ewok-env
+  - jedi-fv3-bundle-env
+  - jedi-tools-env
+  - jedi-ufs-bundle-env
+  - jedi-um-bundle-env
+  - nceplibs-bundle-env
+  - soca-bundle-env
+  - ufs-weather-model-env
+  - ufs-weather-model-debug-env

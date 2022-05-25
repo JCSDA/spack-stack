@@ -16,6 +16,10 @@ inputs:
     description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
     required: false
     default: '${{ github.workspace }}/spack-stack'
+  concretize_only:
+    description: "Concretize environment without building."
+    required: false
+    default: 'false'
 
 runs:
   using: "composite"
@@ -273,6 +277,8 @@ runs:
         spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
       fi
 
+      mkdir ${GITHUB_WORKSPACE}/logs
+
   - name: concretize
     shell: bash
     run: |
@@ -280,9 +286,10 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
       cat ${SPACK_ENV}/spack.yaml
-      spack concretize
+      spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
 
   - name: build-env
+    if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     env:
       OMP_NUM_THREADS: 16
@@ -306,6 +313,7 @@ runs:
       fi
 
   - name: create-meta-modules
+    if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
       if [[ ! "${{ inputs.app }}" == "empty" ]]; then
@@ -316,6 +324,7 @@ runs:
       fi
 
   - name: test-meta-modules
+    if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
       if [[ ! "${{ inputs.app }}" == "empty" ]]; then
@@ -336,3 +345,12 @@ runs:
           # fi
         fi
       fi
+
+  - name: Upload logs
+    if: ${{ always() }}
+    uses: actions/upload-artifact@v2
+    with:
+      name: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.mpi }}-logs
+      path: |
+        ${{ github.workspace }}/logs/
+        ${{ github.workspace }}/envs/${{ inputs.app }}/spack.yaml
