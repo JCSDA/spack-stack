@@ -3,11 +3,11 @@ name: create-spack-mirror
 on:
   workflow_dispatch:
     inputs:
-      app:
+      template:
         type: string
-        description: "App to generate mirror for"
+        description: "Template to generate mirror for"
         required: true
-        default: "jedi-ufs"
+        default: "jedi-ufs-all-dev"
       site:
         type: string
         description: "Site to create environment for"
@@ -26,7 +26,7 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack stack create environment --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name mirror
+          spack stack create environment --template ${{ github.event.inputs.template }} --site ${{ github.event.inputs.site }} --name mirror
           spack env activate -d envs/mirror
           spack compiler find
           spack add re2c
