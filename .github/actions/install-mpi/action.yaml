@@ -34,7 +34,6 @@ runs:
   # MPI takes a long time to build. Built it externally and cache it.
   - name: install-mpi
     shell: bash
-    if: steps.cache-mpi.outputs.cache-hit != 'true'
     run: |
 
         prefix=${{ inputs.prefix }}

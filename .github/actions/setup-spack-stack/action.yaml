@@ -134,7 +134,7 @@ runs:
       fi
 
       # So Spack can find external MPI
-      export "PATH=$HOME/mpi/bin:${PATH}"
+      export "PATH=${GITHUB_WORKSPACE}/mpi/bin:${PATH}"
 
       # No external find for intel-oneapi-mpi, 
       # And no way to add object entry to list using "spack config add"
