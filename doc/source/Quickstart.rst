@@ -113,3 +113,13 @@ In the simplest case, a new package (and its basic dependencies) or a new versio
    spack install --reuse [--verbose] [--fail-fast]
 
 Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_.
+
+=================================================
+Using a spack environment to compile and run code
+=================================================
+
+**MISSING**
+
+refer to site specific configs/setup instructions and install prefices, then
+
+module load etc

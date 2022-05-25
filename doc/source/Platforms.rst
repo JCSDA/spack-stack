@@ -14,60 +14,57 @@ Ready-to-use spack-stack installations are available on the following platforms:
 
 **Note: this versions are for early testers - use at your own risk**
 
-+-----------------------+---------------------------+---------------------------+
-| System                | Maintained by (temporary) | jedi-ewok tested          |
-+=======================+===========================+===========================+
-| MSU Orion             | Dom Heinzeller            | yes                       |
-+-----------------------+---------------------------+---------------------------+
-| NASA Discover         | Dom Heinzeller            | yes                       |
-+-----------------------+---------------------------+---------------------------+
-| NCAR-Wyoming Cheyenne | Dom Heinzeller            | yes                       |
-+-----------------------+---------------------------+---------------------------+
-| NOAA NCO WCOSS2       |                           |                           |
-+-----------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Gaea      | Dom Heinzeller            | yes                       |
-+-----------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Hera      |                           |                           |
-+-----------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Jet       |                           |                           |
-+-----------------------+---------------------------+---------------------------+
-| TACC Stampede2        | Dom Heinzeller            | install yes / not yet run |
-+-----------------------+---------------------------+---------------------------+
++------------------------+---------------------------+---------------------------+
+| System                 | Maintained by (temporary) | jedi-ewok tested          |
++========================+===========================+===========================+
+| MSU Orion              | Dom Heinzeller            | yes                       |
++------------------------+---------------------------+---------------------------+
+| NASA Discover          | Dom Heinzeller            | yes                       |
++------------------------+---------------------------+---------------------------+
+| NCAR-Wyoming Cheyenne  | Dom Heinzeller            | yes                       |
++------------------------+---------------------------+---------------------------+
+| NOAA NCO WCOSS2        |                           |                           |
++------------------------+---------------------------+---------------------------+
+| NOAA RDHPCS Gaea       | Dom Heinzeller            | yes                       |
++------------------------+---------------------------+---------------------------+
+| NOAA RDHPCS Hera       |                           |                           |
++------------------------+---------------------------+---------------------------+
+| NOAA RDHPCS Jet        |                           |                           |
++------------------------+---------------------------+---------------------------+
+| TACC Stampede2         | Dom Heinzeller            | install yes / not yet run |
++------------------------+---------------------------+---------------------------+
+| UW (Univ. of Wisc.) S4 | Dom Heinzeller            |                           |
++------------------------+---------------------------+---------------------------+
 
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| System                | Location                                                                                              |
-+=======================+=======================================================================================================+
-| MSU Orion             | ``/work/noaa/gsd-hpcs/dheinzel/spack-stack-20220411-ewok-tmp``                                        |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover         | ``/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install``         |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install`` |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA NCO WCOSS2       |                                                                                                       |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea      | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v0.0.1``                                          |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera      |                                                                                                       |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet       |                                                                                                       |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-| TACC Stampede2        | ``/work2/06146/tg854455/stampede2/spack-stack/spack-stack-0.0.1``                                     |
-+-----------------------+-------------------------------------------------------------------------------------------------------+
-
-
-
++------------------------+-------------------------------------------------------------------------------------------------------+
+| System                 | Location                                                                                              |
++========================+=======================================================================================================+
+| MSU Orion              | ``/work/noaa/gsd-hpcs/dheinzel/spack-stack-20220411-ewok-tmp/envs/ENV_DIR_MISSING/install``           |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| NASA Discover          | ``/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install``         |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne  | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install`` |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA NCO WCOSS2        |                                                                                                       |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea       | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v0.0.1/envs/ENV_DIR_MISSING/install``             |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Hera       |                                                                                                       |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Jet        |                                                                                                       |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| TACC Stampede2         | ``/work2/06146/tg854455/stampede2/spack-stack/spack-stack-0.0.1envs/ENV_DIR_MISSING/install``         |
++------------------------+-------------------------------------------------------------------------------------------------------+
+| UW (Univ. of Wisc.) S4 |                                                                                                       |
++------------------------+-------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
-
-
-
-**MISSING**
 
 ------------------------------
 NOAA RDHPCS Gaea
 ------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software.
+The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
 
 .. code-block:: console
 
@@ -90,6 +87,18 @@ The following is required for building new spack environments and for using spac
    module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
    module load miniconda/3.9.7
 
+------------------------------
+UW (Univ. of Wisconsin) S4
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   module use /data/prod/jedi/spack-stack/modulefiles
+   module load miniconda/3.9.7
+
 ==============================
 Generating new site configs
 ==============================
@@ -102,6 +111,10 @@ macOS
 ------------------------------
 
 On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``python``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
+
+The instructions below also assume a clean Homebrew installation with a clean Python installation inside. This means that the Homebrew Python only contains nothing but what gets installed with ``pip install poetry`` (which is a temporary workaround). If this is not the case, users can try to install a separate Python using Miniconda as described in **MISSING REF TO MAINTAINERSSECTION**.
+
+Further, it is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
 Prerequisites (one-off)
 -----------------------
@@ -160,7 +173,9 @@ This instructions are meant to be a reference that users can follow to set up th
 
    source /usr/local/opt/lmod/init/profile
 
-5. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308)
+5. **MISSING** Install xquartz
+
+6. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308)
 
 .. code-block:: console
 
@@ -170,7 +185,7 @@ This instructions are meant to be a reference that users can follow to set up th
    # test - successful if no output
    python3 -c "import poetry"
 
-6. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
+7. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
 
    If the ``jedi-tools`` application is built with variant ``+latex`` to enable building LaTeX/PDF documentation, install MacTeX 
    `MacTeX  <https://www.tug.org/mactex>`_ and configure your shell to have it in the search path, for example:
@@ -217,9 +232,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
        spack external find --scope system qt
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
-   # If the texlive bin directory hasn't been added to PATH, need to prefix command
-   PATH="/usr/local/texlive/2022/bin/universal-darwin:$PATH" \
-       spack external find --scope system texlive
+   # The texlive bin directory must have been added to PATH (see above)
+   spack external find --scope system texlive
 
 4. Find compilers, add to site config's ``compilers.yaml``
 
@@ -233,7 +247,30 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    export -n SPACK_SYSTEM_CONFIG_PATH
 
-6. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
+6. Set default compiler and MPI library and flag Python as non-buildable
+
+.. code-block:: console
+
+   spack config add "packages:python:buildable:False"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
+   spack config add "packages:all:compiler:[apple-clang@13.1.6]"
+
+7. If ``mpich`` or ``openmpi`` are installed with spack-stack, whitelist the mpi provider so that spack creates the module
+
+.. code-block:: console
+
+   spack config add "modules:default:tcl:whitelist:[openmpi]"
+   spack config add "modules:default:lmod:whitelist:[openmpi]"
+
+8. Turn off OpenMP for a number of packages when using ``apple-clang`` or ``clang``
+
+.. code-block:: console
+
+   spack config add "packages:wgrib2:variants: ~openmp"
+   spack config add "packages:fms:variants: ~openmp"
+   spack config add "packages:fms-jcsda:variants: ~openmp"
+
+9. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
 
 .. code-block:: console
 
@@ -241,20 +278,20 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/packages.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-7. Process the specs and install
+10. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-8. Create lua module files
+11. Create lua module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-9. Create meta-modules for compiler, mpi, python
+12. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
