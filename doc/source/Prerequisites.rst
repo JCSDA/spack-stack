@@ -8,7 +8,7 @@ Prerequisites
 Manual software installations
 ==============================
 
-The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult Sect ...., for preconfigured systems please consult Section ... . Note that for the latter, this is only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
+The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult Sect ...., for preconfigured systems please consult Section ... . Note that for preconfigured systems, the following one-off installations are only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
 
 ------------------------------
 Miniconda

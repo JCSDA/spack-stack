@@ -103,22 +103,112 @@ macOS
 
 On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``python``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
 
+Prerequisites (one-off)
+-----------------------
+
+This instructions are meant to be a reference that users can follow to set up their own system. Depending on the user's setup and needs, some steps will differ, some may not be needed and others may be missing. Also, the package versions may change over time.
+
+1. Install Apple's command line utilities
+
+   - Launch the Terminal, found in ``/Applications/Utilities``
+
+   - Type the following command string:
+
 .. code-block:: console
 
-   # Create a preconfigured environment with a default (nearly empty) site config
+   xcode-select --install
+
+2. This step is only required on the new ``aarch64`` systems that are equipped with a Apple M1 silicon chip: Setup of ``x86_64`` environment on ``aarch64`` systems
+
+   - Open Applications in Finder
+
+   - Duplicate your preferred terminal application (e.g. Terminal or iTerm)
+
+   - Rename the duplicate to, for example, "Terminal x86_64"
+
+   - Right-click / control+click on "Terminal x86_64", choose "Get Info"
+
+   - Select the box "Open using Rosetta" and close the window
+
+3. Install Homebrew for ``x86_64`` environment
+
+   - If your system is an ``aarch64`` system, make sure to open the newly created "Terminal x86_64" application. Type ``arch`` in the terminal to confirm, if correct the output is ``i386`` (and not ``arm64``)
+
+   - Install Homebrew from the command line. On ``x86_64`` systems and on ``aarch64`` systems using the ``x86_64`` emulator, Homebrew` is installed in ``/usr/local``
+
+   - It is recommended to install the following prerequisites via Homebrew, as installing them with Spack and Apple's native clang compiler can be tricky.
+
+.. code-block:: console
+
+   brew install coreutils
+   brew install gcc
+   brew install python
+   brew install git
+   brew install git-lfs
+   brew install lmod
+   brew install wget
+   brew install bash
+   brew install curl
+   brew install cmake
+   brew install openssl
+   # Note - need to pin to version 5
+   brew install qt@5.15.3
+
+4. Activate the ``lua`` module environment
+
+.. code-block:: console
+
+   source /usr/local/opt/lmod/init/profile
+
+5. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308)
+
+.. code-block:: console
+
+   which pip3
+   # make sure this points to homebrew's pip3
+   pip3 install poetry
+   # test - successful if no output
+   python3 -c "import poetry"
+
+6. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
+
+   If the ``jedi-tools`` application is built with variant ``+latex`` to enable building LaTeX/PDF documentation, install MacTeX 
+   `MacTeX  <https://www.tug.org/mactex>`_ and configure your shell to have it in the search path, for example:
+
+.. code-block:: console
+
+   export PATH="/usr/local/texlive/2022/bin/universal-darwin:$PATH"
+
+This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
+
+Creating a new environment
+--------------------------
+
+Remember to activate the ``lua`` module environment and have MacTeX in your search path, if applicable. It is also recommended to increase the stacksize limit to 65Kb using ``ulimit -S -s unlimited``.
+
+1. Create a pre-configured environment with a default (nearly empty) site config
+
+.. code-block:: console
+
    spack stack create env --site default --app jedi-ufs --name jedi-ufs.mymacos
 
-   # Temporarily set environment variable SPACK_SYSTEM_CONFIG_PATH to
-   # modify site config files in envs/jedi-ufs.mymacos/site
+2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
+
+.. code-block:: console
+
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mymacos/site"
 
-   # Find external packages, add to packages.yaml
+
+3. Find external packages, add to site config's ``packages.yaml``
+
+.. code-block:: console
+
    spack external find --scope system
    spack external find --scope system perl
    spack external find --scope system python
    spack external find --scope system wget
 
-   # If the curl bin directory hasn't been added to PATH, need to prefix command
+   #If the curl bin directory hasn't been added to PATH, need to prefix command
    PATH="/usr/local/Cellar/curl/7.83.0/bin:$PATH" \
         spack external find --scope system curl
 
@@ -131,26 +221,43 @@ On macOS, it is important to use certain Homebrew packages as external packages,
    PATH="/usr/local/texlive/2022/bin/universal-darwin:$PATH" \
        spack external find --scope system texlive
 
-   # Find compilers, add to compilers.yaml
+4. Find compilers, add to site config's ``compilers.yaml``
+
+.. code-block:: console
+
    spack compiler find --scope system
 
-   # Do NOT forget to unset the SPACK_SYSTEM_CONFIG_PATH environment variable!
+5. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
+
+.. code-block:: console
+
    export -n SPACK_SYSTEM_CONFIG_PATH
 
-   # Optionally edit site config files and common config files, for example to
-   # remove duplicate versions of external packages that are unwanted
+6. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
+
+.. code-block:: console
+
    vi envs/jedi-ufs.mymacos/spack.yaml
    vi envs/jedi-ufs.mymacos/packages.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-   # Process the specs and install
+7. Process the specs and install
+
+.. code-block:: console
+
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-   # Create lua module files
+8. Create lua module files
+
+.. code-block:: console
+
    spack module lmod refresh
 
-   # Create meta-modules for compiler, mpi, python
+9. Create meta-modules for compiler, mpi, python
+
+.. code-block:: console
+
    spack stack setup-meta-modules
 
 ------------------------------
@@ -159,43 +266,73 @@ Linux
 
 Note. Some older Linux systems do not support ``lua/lmod`` environment modules, which are default in the spack-stack site configs. This can be changed to ``tcl/tk`` environment modules (see below).
 
+Prerequisites (one-off)
+-----------------------
+
+**MISSING**
+
+Creating a new environment
+--------------------------
+
+1. Create a pre-configured environment with a default (nearly empty) site config
+
 .. code-block:: console
 
-   # Create a preconfigured environment with a default (nearly empty) site config
    spack stack create env --site default --app jedi-ufs --name jedi-ufs.mylinux
 
-   # Temporarily set environment variable SPACK_SYSTEM_CONFIG_PATH to
-   # modify site config files in envs/jedi-ufs.mylinux/site
+2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
+
+.. code-block:: console
+
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mylinux/site"
 
-   # Find external packages, add to packages.yaml
+3. Find external packages, add to site config's ``packages.yaml``
+
+.. code-block:: console
+
    spack external find --scope system
 
    # MISSING - ADDITIONAL PACKAGES ADDED AS EXTERNALS, AND MODIFICATIONS OF PACKAGE VARIANTS ETC
    ...
 
-   # Find compilers, add to compilers.yaml
+**MISSING**
+
+4. Find compilers, add to site config's ``compilers.yaml``
+
+.. code-block:: console
+
    spack compiler find --scope system
 
-   # Do NOT forget to unset the SPACK_SYSTEM_CONFIG_PATH environment variable!
+5. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
+
+.. code-block:: console
+
    export -n SPACK_SYSTEM_CONFIG_PATH
 
-   # Optionally edit site config files and common config files, for example to
-   # remove duplicate versions of external packages that are unwanted
+
+6. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
+
+.. code-block:: console
+
    vi envs/jedi-ufs.mylinux/spack.yaml
    vi envs/jedi-ufs.mylinux/packages.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-   # Modules can be switched from ``lua/lmod`` to ``tcl/tk``
-   # in envs/jedi-ufs.mylinux/site/modules.yaml
+7. Process the specs and install
 
-   # Process the specs and install
+.. code-block:: console
+
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-   # Create lua module files replace lmod with tcl, if necessary
+8. Create lua module files
+
+.. code-block:: console
+
    spack module lmod refresh
 
-   # Create meta-modules for compiler, mpi, python
-   spack stack setup-meta-modules
+9. Create meta-modules for compiler, mpi, python
 
+.. code-block:: console
+
+   spack stack setup-meta-modules
