@@ -36,7 +36,7 @@ runs:
     shell: bash
     run: |
 
-        prefix=${{ inputs.prefix }}
+        prefix="${{ inputs.prefix }}"
         if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
           export CC=gcc-9
           export FC=gfortran-9
@@ -73,7 +73,7 @@ runs:
                 --with-wrapper-ldflags="-Wl,-commons,use_dylibs" \
                 LIBS="-Wl,-commons,use_dylibs"
           else
-            ./configure --prefix=$HOME/mpi \
+            ./configure --prefix=${prefix} \
                 --enable-mpi-fortran --enable-mpi-cxx \
                 --with-hwloc=internal --with-libevent=internal
           fi
