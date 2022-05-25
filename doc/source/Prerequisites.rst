@@ -66,7 +66,7 @@ Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootst
 qt (qt@5)
 ------------------------------
 
-Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see Section **MISSING** for examples). Section **MISSING** describes a manual installation of ``qt`` on XXX Gaea, a Cray system.
+Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see Section **MISSING** for examples). Section **MISSING** describes a manual installation of ``qt`` on NOAA RDHPCS Gaea, a Cray system, and section **MISSING** on NASA Discover.
 
 **Note 1.** The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
 

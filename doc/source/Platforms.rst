@@ -61,6 +61,18 @@ Ready-to-use spack-stack installations are available on the following platforms:
 For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
 ------------------------------
+NASA Discover
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   module use /discover/swdev/jcsda/spack-stack/modulefiles
+   module load miniconda/3.9.7
+
+------------------------------
 NOAA RDHPCS Gaea
 ------------------------------
 
