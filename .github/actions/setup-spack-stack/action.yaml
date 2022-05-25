@@ -150,11 +150,7 @@ runs:
       # Spack external find is by default only looking for build-tools.
       export PATH="${GITHUB_WORKSPACE}/mpi/bin:${PATH}"
       export PATH="/usr/local/opt/qt@5/bin:${PATH}"
-      which gcc-10
-      gcc-10 --version
-      if [[ "${{ inputs.mpi }}" == "openmpi" ]]; then
-        ompi_info
-      fi
+
       spack -d external find
       spack -d external find openmpi mpich perl python curl qt wget
   
