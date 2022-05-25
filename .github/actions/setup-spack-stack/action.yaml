@@ -7,7 +7,7 @@ inputs:
   spec:
     description: 'Spec to build.'
     required: false
-    default: 'none'
+    default: ''
   template:
     description: 'A spack.yaml template to be used as base environment.'
     required: false
