@@ -96,7 +96,7 @@ runs:
     uses: actions/cache@v2
     with:
       path: ${{ github.workspace }}/mpi
-      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}
+      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
   - name: install-mpi
     if: steps.cache-mpi.outputs.cache-hit != 'true'
@@ -135,6 +135,7 @@ runs:
 
       # So Spack can find external MPI
       export "PATH=${GITHUB_WORKSPACE}/mpi/bin:${PATH}"
+      which mpicc
 
       # No external find for intel-oneapi-mpi, 
       # And no way to add object entry to list using "spack config add"
@@ -192,7 +193,6 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      cat ${SPACK_ENV}/spack.yaml
       spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
 
   - name: build-env
