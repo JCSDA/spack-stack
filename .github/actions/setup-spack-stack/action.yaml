@@ -155,8 +155,8 @@ runs:
       if [[ "${{ inputs.mpi }}" == "openmpi" ]]; then
         ompi_info
       fi
-      spack external find
-      spack external find openmpi mpich perl python curl qt wget
+      spack -d external find
+      spack -d external find openmpi mpich perl python curl qt wget
   
   - name: configure-options
     shell: bash
