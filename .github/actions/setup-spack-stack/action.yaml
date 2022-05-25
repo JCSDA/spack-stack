@@ -83,76 +83,16 @@ runs:
     id: cache-mpi
     uses: actions/cache@v2
     with:
-      path: ~/mpi
-      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}2
+      path: ${{ github.workspace }}/mpi
+      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
-  # MPI takes a long time to build. Built it externally and cache it.
   - name: install-mpi
-    shell: bash
     if: steps.cache-mpi.outputs.cache-hit != 'true'
-    run: |
-        echo "" >> ~/.bash_profile
-
-        if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
-          export CC=gcc-9
-          export FC=gfortran-9
-          export CXX=g++-9
-        elif [[ "${{ inputs.compiler }}" == "gcc@10"* ]]; then
-          export CC=gcc-10
-          export FC=gfortran-10
-          export CXX=g++-10
-          export FFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
-          export CC=clang
-          export CXX=clang++
-          export FC=gfortran-10
-          export FFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == "clang"* ]]; then
-          export CC=$(brew --prefix llvm)/bin/clang
-          export CXX=$(brew --prefix llvm)/bin/clang++
-          export FC=gfortran-10
-          export FFLAGS="-fallow-argument-mismatch"
-        fi
-
-        export MPICH_VERSION="3.4.3"
-        export OPENMPI_VERSION="4.1.3"
-
-        if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
-          tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
-          cd openmpi-${OPENMPI_VERSION}
-          # --with-hwloc=internal --with-libevent=internal : https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            ./configure --prefix=$HOME/mpi \
-                --enable-mpi-fortran --enable-mpi-cxx \
-                --with-hwloc=internal --with-libevent=internal \
-                --with-wrapper-ldflags="-Wl,-commons,use_dylibs" \
-                LIBS="-Wl,-commons,use_dylibs"
-          else
-            ./configure --prefix=$HOME/mpi \
-                --enable-mpi-fortran --enable-mpi-cxx \
-                --with-hwloc=internal --with-libevent=internal
-          fi
-          make -j2
-          make install
-        elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
-          wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
-          tar -xzf mpich-${MPICH_VERSION}.tar.gz
-          cd mpich-${MPICH_VERSION}
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            ./configure --prefix=$HOME/mpi \
-                --enable-fortran --enable-cxx \
-                --with-device=ch4:ofi \
-                --enable-two-level-namespace \
-                LIBS="-Wl,-commons,use_dylibs"
-          else
-            ./configure --prefix=$HOME/mpi \
-                --enable-fortran --enable-cxx \
-                --with-device=ch4:ofi
-          fi
-          make -j2
-          make install
-        fi
+    uses: ./.github/actions/install-mpi
+    with:
+      mpi: ${{ inputs.mpi }}
+      compiler: ${{ inputs.compiler }}
+      prefix: ${{ github.workspace }}/mpi
 
   - name: setup-spack-env
     shell: bash
@@ -182,7 +122,7 @@ runs:
       fi
 
       # So Spack can find external MPI
-      export "PATH=$HOME/mpi/bin:${PATH}"
+      export "PATH=${GITHUB_WORKSPACE}/mpi/bin:${PATH}"
 
       # No external find for intel-oneapi-mpi, 
       # And no way to add object entry to list using "spack config add"
