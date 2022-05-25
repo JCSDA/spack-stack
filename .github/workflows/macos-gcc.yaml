@@ -20,6 +20,6 @@ jobs:
         with:
           name: jedi-ufs-all-macos-gcc
           template: jedi-ufs-all-dev
-          compiler: gcc@9
+          compiler: gcc@10.3.0
           mpi: mpich
           path: ${{ github.workspace }}

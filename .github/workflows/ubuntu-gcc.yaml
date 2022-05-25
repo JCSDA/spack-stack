@@ -21,6 +21,6 @@ jobs:
         with:
           name: jedi-ufs-all-ubuntu-gcc
           template: jedi-ufs-all-dev
-          compiler: gcc@9
+          compiler: gcc@9.4.0
           mpi: mpich
           path: ${{ github.workspace }}
