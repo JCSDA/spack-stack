@@ -15,7 +15,6 @@ env:
 
 jobs:
   macos_concretize:
-    needs: macos_setup
     strategy:
       matrix:
         compiler: [clang, apple-clang, gcc@10]
