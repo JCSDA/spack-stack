@@ -21,7 +21,7 @@
       version: [1.2.11]
     hdf:
       version: [4.2.15]
-      variants: ~fortran +netcdf
+      variants: ~fortran +netcdf +szip
     hdf5:
       version: [1.12.1]
       variants: +hl +fortran +mpi +threadsafe

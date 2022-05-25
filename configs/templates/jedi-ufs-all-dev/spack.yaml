@@ -1,0 +1,20 @@
+spack:
+  concretization: separately
+
+  specs:
+  - base-env
+  - global-workflow-env
+  - gsi-env
+  - jedi-ewok-env
+  - jedi-fv3-env
+  - jedi-tools-env
+  - jedi-ufs-env
+  - jedi-um-env
+  - nceplibs-env
+  - soca-env
+  - ufs-srw-env
+  - ufs-utils-env
+  - ufs-weather-model-env
+  - ufs-weather-model-debug-env
+  - upp-env
+  - ww3-env

@@ -26,7 +26,7 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          ./create.py environment --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name mirror
+          spack stack create environment --app ${{ github.event.inputs.app }}  --site ${{ github.event.inputs.site }}  --name mirror
           spack env activate -d envs/mirror
           spack compiler find
           spack add re2c

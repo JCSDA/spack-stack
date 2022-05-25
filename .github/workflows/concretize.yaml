@@ -1,0 +1,78 @@
+name: concretize
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+# Use custom shell with -l so .bash_profile is sourced
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+  
+env:
+  template: 'jedi-ufs-all-dev'
+
+jobs:
+  macos_concretize:
+    needs: macos_setup
+    strategy:
+      matrix:
+        compiler: [clang, apple-clang, gcc@10]
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          name: macos-${{ matrix.compiler }}
+          app: ${{ matrix.app }}
+          env_template: 'jedi-ufs-all-dev'
+          compiler: ${{ matrix.compiler }}
+          mpi: openmpi
+          path: ${{ github.workspace }}
+          concretize_only: 'true'
+
+  linux_concretize:
+    strategy:
+      matrix:
+        compiler: [gcc@9, gcc@10]
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          env_template: jedi-ufs-all-dev
+          spec: 'none'
+          compiler: ${{ matrix.compiler }}
+          mpi: openmpi
+          path: ${{ github.workspace }}
+          concretize_only: 'true'
+
+  intel_concretize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          env_template: jedi-ufs-all-dev
+          compiler: intel
+          mpi: intel-oneapi-mpi
+          path: ${{ github.workspace }}
+          concretize_only: 'true'
+  
+  
