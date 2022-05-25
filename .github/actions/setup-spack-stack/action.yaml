@@ -85,7 +85,6 @@ runs:
         brew install qt@5
         brew install readline
         brew install wget
-        brew install openssl
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -164,6 +163,8 @@ runs:
       # Speed up builds using two build jobs per package and four
       # jobs in parallel further down (spack install)
       spack config add "config:build_jobs:2"
+  
+      spack config rm "packages:openssl"
 
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
