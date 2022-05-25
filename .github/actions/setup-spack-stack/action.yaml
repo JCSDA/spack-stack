@@ -135,6 +135,8 @@ runs:
 
       # So Spack can find external MPI
       export "PATH=${GITHUB_WORKSPACE}/mpi/bin:${PATH}"
+      echo "blarn"
+      ls ${GITHUB_WORKSPACE}/mpi/bin
       which mpicc
 
       # No external find for intel-oneapi-mpi, 
