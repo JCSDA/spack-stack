@@ -221,13 +221,14 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.name }}" == "empty" ]]; then
-          cd ${{ inputs.path }}
-          source setup.sh
-          spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-          spack module lmod refresh -y
-          meta_modules/setup_meta_modules.py
-        fi
+      if [[ ! "${{ inputs.app }}" == "empty" ]]; then
+        cd ${{ inputs.path }}
+        source setup.sh
+        spack env activate ${{ inputs.name }}/envs/${{ inputs.name }}
+	spack module lmod refresh -y
+        spack stack setup-meta-modules
+      fi
+
 
   - name: test-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
