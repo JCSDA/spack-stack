@@ -197,26 +197,11 @@ runs:
   - name: build-env
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
-    env:
-      OMP_NUM_THREADS: 16
     run: |
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      # DH* For now only with Intel to avoid having to rerun all CI tests
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        for i in {1..8}; do
-          nohup spack install --fail-fast >> spack_install.log 2>&1 &
-        done
-        #
-        while ps -ef | grep -ve 'grep' | grep 'spack install'; do
-          echo "Still running"
-          tail -n 10 spack_install.log
-          sleep 60
-        done
-      else
-        spack install --fail-fast --show-log-on-error
-      fi
+      spack install --fail-fast --show-log-on-error
 
   - name: create-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
