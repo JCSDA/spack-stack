@@ -133,12 +133,6 @@ runs:
         spack compiler find
       fi
 
-      # So Spack can find external MPI
-      export "PATH=${GITHUB_WORKSPACE}/mpi/bin:${PATH}"
-      echo "blarn"
-      ls ${GITHUB_WORKSPACE}/mpi/bin
-      which mpicc
-
       # No external find for intel-oneapi-mpi, 
       # And no way to add object entry to list using "spack config add"
       # Add this first so "spack config add packages:" will append to this entry
@@ -154,6 +148,7 @@ runs:
       fi
 
       # Spack external find is by default only looking for build-tools.
+      export PATH="${GITHUB_WORKSPACE}/mpi/bin:${PATH}"
       export PATH="/usr/local/opt/qt@5/bin:${PATH}"
       spack external find
       spack external find openmpi mpich perl python curl qt wget
