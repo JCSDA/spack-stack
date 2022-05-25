@@ -163,7 +163,7 @@ runs:
       # Speed up builds using two build jobs per package and four
       # jobs in parallel further down (spack install)
       spack config add "config:build_jobs:2"
-  
+
       spack config rm "packages:openssl"
 
       # Use external MPI to save compilation time
@@ -226,7 +226,7 @@ runs:
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.name }}/envs/${{ inputs.name }}
-	spack module lmod refresh -y
+        spack module lmod refresh -y
         spack stack setup-meta-modules
       fi
 
