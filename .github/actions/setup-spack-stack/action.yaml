@@ -115,7 +115,7 @@ runs:
 
       source setup.sh
       spack stack create environment --template ${{ inputs.template }} --specs ${{ inputs.spec }} --name ${{ inputs.name }}
-      spack env activate envs/${{ inputs.app }}
+      spack env activate envs/${{ inputs.name }}
 
       # LLVM Clang not in PATH, search for it specifically
       # Then, Fortran compilers are null, so set to gfortran
@@ -127,7 +127,7 @@ runs:
       elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
         # Workaround for error "libimf.so cannot be found":
-        sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.app }}/spack.yaml
+        sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.name }}/spack.yaml
       else
         spack compiler find
       fi
@@ -159,7 +159,7 @@ runs:
     run: |
       cd ${{ inputs.path }}
       source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
 
       # Speed up builds using two build jobs per package and four
       # jobs in parallel further down (spack install)
@@ -188,7 +188,7 @@ runs:
     run: |
       cd ${{ inputs.path }}
       source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
       cat ${SPACK_ENV}/spack.yaml
       spack concretize
 
@@ -200,7 +200,7 @@ runs:
     run: |
       cd ${{ inputs.path }}
       source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
       # DH* For now only with Intel to avoid having to rerun all CI tests
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         for i in {1..8}; do
@@ -220,10 +220,10 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.app }}" == "empty" ]]; then
+      if [[ ! "${{ inputs.name }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         source setup.sh
-        spack env activate ${{ inputs.path }}/envs/${{ inputs.app }}
+        spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
         spack module lmod refresh -y
         meta_modules/setup_meta_modules.py
       fi
@@ -232,20 +232,20 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.app }}" == "empty" ]]; then
+      if [[ ! "${{ inputs.name }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         if [[ "$RUNNER_OS" == "Linux" ]]; then
           # Not yet: need lmod installed, loaded and module use command
           echo ""
         elif [[ "$RUNNER_OS" == "macOS" ]]; then
           source /usr/local/opt/lmod/init/profile
-          module use $PWD/envs/${{ inputs.app }}/install/modulefiles/Core
+          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
           # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
           # with "gcc/9", otherwise the module load command will fail.
           # module load stack-${{ inputs.compiler }}
           # module load stack-python
           # # jedi-tools doesn't have any mpi dependencies
-          # if [[ ! "${{ inputs.app }}" == "jedi-tools" ]]; then
+          # if [[ ! "${{ inputs.name }}" == "jedi-tools" ]]; then
           #   module load stack-${{ inputs.mpi }}
           # fi
         fi
