@@ -17,7 +17,7 @@ jobs:
   macos_concretize:
     strategy:
       matrix:
-        compiler: [clang, apple-clang, gcc@10]
+        compiler: [clang, apple-clang, gcc@10.3.0]
     runs-on: macos-latest
     steps:
       - name: checkout
@@ -38,7 +38,7 @@ jobs:
   linux_concretize:
     strategy:
       matrix:
-        compiler: [gcc@9, gcc@10]
+        compiler: [gcc@9.4.0, gcc@10.3.0]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
