@@ -11,9 +11,10 @@ jobs:
     strategy:
       matrix:
         # jedi-tools-env does not build with intel
-        app: [empty, jedi-ewok, jedi-fv3, jedi-ufs, jedi-um, nceplibs, soca]
+        app: [' ', jedi-ewok, jedi-fv3, jedi-ufs, jedi-um, nceplibs, soca]
     runs-on: ubuntu-latest
     steps:
+
       - name: checkout
         uses: actions/checkout@v2
         with:
@@ -22,7 +23,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          specs: ${{ matrix.app }}
+          specs: ${{ matrix.spec }}
           compiler: intel
           mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}
