@@ -2,5 +2,7 @@
   path = spack
   #url = https://github.com/spack/spack
   #branch = develop
-  url = https://github.com/NOAA-EMC/spack
-  branch = jcsda_emc_spack_stack
+  #url = https://github.com/NOAA-EMC/spack
+  #branch = jcsda_emc_spack_stack
+  url = https://github.com/climbfuji/spack
+  branch = feature/stampede2_spack_package_bugfixes
