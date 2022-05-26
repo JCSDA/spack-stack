@@ -12,7 +12,12 @@ defaults:
     shell: bash -leo pipefail {0}
 
 env:
-  app: jedi-ufs-all-dev
+  all_specs: "empty jedi-ewok jedi-fv3 jedi-tools jedi-ufs jedi-um nceplibs soca"
+  # macos does not work with {}
+  mac_os_specs: "empty jedi-ewok jedi-fv3 jedi-tools jedi-ufs jedi-um nceplibs soca"
+  # Intel does not build jedi-tools
+  intel_specs: "empty jedi-ewok jedi-fv3 jedi-ufs jedi-um nceplibs soca"
+
 
 jobs:
   macos_concretize:
@@ -29,7 +34,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          app: ${{ env.app }}
+          specs: ${{ env.mac_os_specs }}
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
@@ -49,7 +54,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          app: ${{ env.app }}
+          specs: ${{ env.app }}
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
@@ -66,7 +71,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          app: ${{ env.app }}
+          specs: ${{ env.intel_specs }}
           compiler: intel
           mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}

@@ -22,7 +22,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          app: ${{ matrix.app }}
+          specs: ${{ matrix.app }}
           compiler: apple-clang
           mpi: openmpi
           path: ${{ github.workspace }}
