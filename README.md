@@ -52,7 +52,7 @@ spack stack create env -h
 
 # Create a pre-configured Spack environment in envs/<app>.<site>
 # (copies site-specific, application-specific, and common config files into the environment directory)
-spack stack create env --site hera --app jedi-fv3 --name jedi-fv3.hera
+spack stack create env --site hera --specs jedi-fv3-env --name jedi-fv3.hera
 
 # Activate the newly created environment
 # Optional: decorate the command line prompt using -p
@@ -102,7 +102,7 @@ docker run -it myimage
 ## Generating new site config
 Recommended: Start with an empty (default) site config. Then run `spack external find` to locate common external packages such as git, Perl, CMake, etc., and run `spack compiler find` to locate compilers in your path. Compilers or external packages with modules need to be added manually.
 ```
-spack stack create env --site default --app jedi-ufs --name jedi-ufs.mysite
+spack stack create env --site default --specs jedi-ufs-env --name jedi-ufs.mysite
 
 # Descend into site config directory
 cd envs/jedi-ufs.mysite/site
