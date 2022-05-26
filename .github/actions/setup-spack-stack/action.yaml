@@ -2,7 +2,7 @@ name: 'setup-spack-stack'
 description: 'Creates a Spack environment. Requires -l in shell so bash_profile is sourced.'
 inputs:
   name:
-    description: 'Give a name'
+    description: 'Give the environment a name'
     required: false
     default: 'default'
   template:

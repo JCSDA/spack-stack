@@ -12,11 +12,12 @@ defaults:
     shell: bash -leo pipefail {0}
 
 env:
-  all_specs: "jedi-ewok jedi-fv3 jedi-tools jedi-ufs jedi-um nceplibs soca"
-  # macos does not work with {}
-  mac_os_specs: "jedi-ewok jedi-fv3 jedi-tools jedi-ufs jedi-um nceplibs soca"
+  all_specs: "jedi-ewok-env jedi-fv3-env jedi-tools-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
+  mac_os_specs: "jedi-ewok-env jedi-fv3-env jedi-tools-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
+   # macos gcc does not work with Clang
+  mac_os_gcc_specs: "jedi-fv3-env jedi-tools-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
   # Intel does not build jedi-tools
-  intel_specs: "jedi-ewok jedi-fv3 jedi-ufs jedi-um nceplibs soca"
+  intel_specs: "jedi-ewok-env jedi-fv3-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
 
 
 jobs:
@@ -54,7 +55,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          specs: ${{ env.app }}
+          specs: ${{ env.all_specs }}
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
