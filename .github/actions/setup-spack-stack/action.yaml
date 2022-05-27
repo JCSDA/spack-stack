@@ -328,7 +328,7 @@ runs:
       if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         source setup.sh
-        spack env activate ${{ inputs.path }}/envs/${{ inputs.specs }}
+        spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
         spack stack setup-meta-modules
       fi
 
@@ -343,7 +343,7 @@ runs:
           echo ""
         elif [[ "$RUNNER_OS" == "macOS" ]]; then
           source /usr/local/opt/lmod/init/profile
-          module use $PWD/envs/${{ inputs.specs }}/install/modulefiles/Core
+          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
           # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
           # with "gcc/9", otherwise the module load command will fail.
           # module load stack-${{ inputs.compiler }}
