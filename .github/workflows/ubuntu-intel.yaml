@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         # jedi-tools-env does not build with intel
-        spec: [' ', jedi-ewok-env, jedi-fv3-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
+        spec: [jedi-ewok-env, jedi-fv3-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
     runs-on: ubuntu-latest
     steps:
 
