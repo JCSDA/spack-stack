@@ -12,7 +12,7 @@ Pre-configuring sites
 NASA Discover
 ------------------------------
 
-On Gaea, ``miniconda`` and ``qt`` need to be installed as a one-off before spack can be used.
+On Discover, ``miniconda`` and ``qt`` need to be installed as a one-off before spack can be used.
 
 miniconda
    Follow the instructions in section **MISSING** to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.

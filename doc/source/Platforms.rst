@@ -114,7 +114,7 @@ The following is required for building new spack environments and for using spac
 ==============================
 Generating new site configs
 ==============================
-Recommended: Start with an empty (default) site config. Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in **MISSING**.
+In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty (default) site config. Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in **MISSING**.
 
 It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``, in particular the reference site configs for macOS (**NEEDS UPDATE**) and Linux (**MISSING**).
 
@@ -271,7 +271,6 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack config add "modules:default:tcl:whitelist:[openmpi]"
    spack config add "modules:default:lmod:whitelist:[openmpi]"
 
 8. Turn off OpenMP for a number of packages when using ``apple-clang`` or ``clang``
