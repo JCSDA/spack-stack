@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        app: [empty, jedi-ewok, jedi-fv3, jedi-tools, jedi-ufs, jedi-um, nceplibs, soca]
+        spec: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
     runs-on: ubuntu-latest
     steps:
 
@@ -22,7 +22,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          app: ${{ matrix.app }}
+          specs: ${{ matrix.spec }}
           compiler: gcc@9
           mpi: mpich
           path: ${{ github.workspace }}
