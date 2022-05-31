@@ -1,0 +1,9 @@
+packages:
+  wgrib2:
+    variants: ~openmp
+  fms:
+    variants: ~openmp
+  fms-jcsda:
+    variants: ~openmp
+  cairo:
+    variants: ~png ~svg
