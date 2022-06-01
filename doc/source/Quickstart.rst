@@ -25,7 +25,7 @@ Using spack to create environments and containers
 Create local environment
 ------------------------
 
-The following instructions install a new spack environment on a pre-configured site (see **MISSING** for a list of pre-configured sites and site-specific notes). Instructions for creating a new site config on an configurable system (i.e. a generic Linux or macOS system) can be found in **MISSING**.
+The following instructions install a new spack environment on a pre-configured site (see :numref:`Section %s <Platforms_Preconfigured_Sites>` for a list of pre-configured sites and site-specific notes). Instructions for creating a new site config on an configurable system (i.e. a generic Linux or macOS system) can be found in :numref:`Section %s <Platform_New_Site_Configs>`.
 
 .. code-block:: console
 
@@ -87,7 +87,7 @@ Create container
 Extending environments
 ------------------------
 
-Additional packages (and their dependencies) or new versions of packages can be added to existing environments. It is recommended to take a backup of the existing environment directory (e.g. using ``rsync``) or test this first as described in section **MISSING**, especially if new versions of packages are added that are themselves dependencies for other packages. In some cases, adding new versions of packages will require rebuilding large portions of the stack, for example if a new version of ``hdf5`` is needed. In this case, it is recommended to start over with an entirely new environment.
+Additional packages (and their dependencies) or new versions of packages can be added to existing environments. It is recommended to take a backup of the existing environment directory (e.g. using ``rsync``) or test this first as described in :numref:`Section %s <MaintainersSection_Testing_New_Packages>`, especially if new versions of packages are added that are themselves dependencies for other packages. In some cases, adding new versions of packages will require rebuilding large portions of the stack, for example if a new version of ``hdf5`` is needed. In this case, it is recommended to start over with an entirely new environment.
 
 In the simplest case, a new package (and its basic dependencies) or a new version of an existing package that is not a dependency itself can be added as described in the following for a new version of ``ecmwf-atlas``.
 
@@ -104,17 +104,17 @@ In the simplest case, a new package (and its basic dependencies) or a new versio
 
    spack add ecmwf-atlas@0.29.0
 
-3. Run ``concretize`` step with ``--reuse`` to enforce using existing libraries as dependencies, if possible
+3. Run ``concretize`` step
 
 .. code-block:: console
 
-   spack concretize --reuse
+   spack concretize
 
-4. Install with ``--reuse``
+4. Install
 
 .. code-block:: console
 
-   spack install --reuse [--verbose] [--fail-fast]
+   spack install [--verbose] [--fail-fast]
 
 Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_.
 

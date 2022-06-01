@@ -92,6 +92,8 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
    gmake -j4 2>&1 | tee log.gmake
    gmake install 2>&1 | tee log.install
 
-**Note 1.** The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
+.. note::
+   The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
 
-**Note 2.** When using an existing version provided by the operating system or as a module, one needs to check if all required components are installed. The ``ecflow`` installation will abort with an error message that a particular component of ``qt`` cannot be found.
+.. note::
+   When using an existing version provided by the operating system or as a module, one needs to check if all required components are installed. The ``ecflow`` installation will abort with an error message that a particular component of ``qt`` cannot be found.

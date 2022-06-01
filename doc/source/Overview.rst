@@ -8,13 +8,11 @@ spack-stack is a collaborative effort between the NOAA Environmental Modeling Ce
 
  `Spack <https://github.com/spack/spack>`_ is a community-supported, multi-platform, Python-based package manager originally developed by the Lawrence Livermore National Laboratory (LLNL; https://computing.llnl.gov/projects/spack-hpc-package-manager). It is provided as a submodule so that a stable version can be referenced. See the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_ for more information.
 
-spack-stack is mainly a collection of Spack configuration files, but provides a few Python scripts to simplify the installation process:
+spack-stack is mainly a collection of Spack configuration files, but provides a Spack extension to simplify the installation process:
 
-**UPDATE!!!**
+- ``spack stack create`` is provided to copy common, site-specific, and application-specific configuration files into a coherent Spack environment and to create container recipes
 
-- ``create.py`` is provided to copy common, site-specific, and application-specific configuration files into a coherent Spack environment and to create container recipes
-
-- ``meta_modules/setup_meta_modules.py`` creates compiler, MPI and Python meta-modules for a convenient setup of a user environment using modules (``lua`` and ``tcl``)
+- ``spack stack setup-meta-modules`` creates compiler, MPI and Python meta-modules for a convenient setup of a user environment using modules (``lua`` and ``tcl``)
 
 spack-stack is maintained by:
 
@@ -24,4 +22,5 @@ spack-stack is maintained by:
 
 - not yet appointed, EPIC
 
-**Note. spack-stack is in early development and not yet ready for use. Instructions may be incomplete or invalid.**
+.. note::
+   spack-stack is in early development and not yet ready for use. Instructions may be incomplete or invalid.

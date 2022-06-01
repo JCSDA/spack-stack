@@ -137,12 +137,15 @@ qt (qt@5)
    export LD_LIBRARY_PATH=/data/prod/hpc-stack/gnu/9.3.0/lib64:$LD_LIBRARY_PATH
    export CPATH=/data/prod/hpc-stack/gnu/9.3.0/include:$CPATH
 
+.. _MaintainersSection_Testing_New_Packages:
+
 ==============================
 Testing new packages
 ==============================
 
- (chaining spack installations)
- 
- https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations
- 
- 
+**MISSING**]
+
+(chaining spack installations)
+
+https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations
+

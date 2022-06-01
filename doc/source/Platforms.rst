@@ -4,6 +4,8 @@
 Platforms
 *************************
 
+.. _Platforms_Preconfigured_Sites:
+
 ==============================
 Pre-configured sites
 ==============================
@@ -31,9 +33,9 @@ Ready-to-use spack-stack installations are available on the following platforms:
 +------------------------+---------------------------+---------------------------+
 | NOAA RDHPCS Jet        |                           |                           |
 +------------------------+---------------------------+---------------------------+
-| TACC Stampede2         | Dom Heinzeller            | install yes / not yet run |
+| TACC Stampede2         | Dom Heinzeller            | yes                       |
 +------------------------+---------------------------+---------------------------+
-| UW (Univ. of Wisc.) S4 | Dom Heinzeller            |                           |
+| UW (Univ. of Wisc.) S4 | Dom Heinzeller            | yes                       |
 +------------------------+---------------------------+---------------------------+
 
 +------------------------+-------------------------------------------------------------------------------------------------------+
@@ -55,7 +57,7 @@ Ready-to-use spack-stack installations are available on the following platforms:
 +------------------------+-------------------------------------------------------------------------------------------------------+
 | TACC Stampede2         | ``/work2/06146/tg854455/stampede2/spack-stack/spack-stack-0.0.1/envs/ENV_DIR_MISSING/install``        |
 +------------------------+-------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4 |                                                                                                       |
+| UW (Univ. of Wisc.) S4 | ``/data/prod/jedi/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install``               |
 +------------------------+-------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
@@ -68,13 +70,10 @@ MSU Orion
 
 The following is required for building new spack environments and for using spack to build and run software.
 
-.. note::
-   Temporary location, this needs to be moved elsewhere.
-
 .. code-block:: console
 
    module purge
-   module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
+   module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.7
 
 .. _Platforms_Discover:
@@ -165,11 +164,12 @@ The following is required for building new spack environments and for using spac
    module use /data/prod/jedi/spack-stack/modulefiles
    module load miniconda/3.9.7
 
-..  _Platform_new_site_configs:
+..  _Platform_New_Site_Configs:
 
 ==============================
 Generating new site configs
 ==============================
+
 In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty (default) site config. Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>`.
 
 It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``, in particular the reference site configs for macOS (**NEEDS UPDATE**) and Linux (**MISSING**).
