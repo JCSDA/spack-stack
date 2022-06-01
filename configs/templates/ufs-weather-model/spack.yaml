@@ -1,5 +1,5 @@
 spack:
-  concretization: separately
+  concretization: when_possible
   view: false
 
   include: []
