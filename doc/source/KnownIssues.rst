@@ -13,6 +13,16 @@ General
    This can happen when ``spack concretize`` is called the very first time in a new spack-stack clone, during which the boostrapping (installation of ``clingo``) is done first. Simply rerunning the command should solve the problem.
 
 ==============================
+NOAA Parallel Works
+==============================
+
+1. With the default module path, spack will detect the system as Cray, therefore one needs to remove it when building or using spack environments
+
+2. ``libxml2`` won't untar during the ``spack install`` step, because of an issue with the filesystem. This can be avoided by making ``libxml2`` an external package
+
+3. The ``/contrib`` filesystem can be very, very slow
+
+==============================
 NOAA RDHPCS Gaea
 ==============================
 
