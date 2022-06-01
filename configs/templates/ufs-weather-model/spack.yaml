@@ -1,5 +1,7 @@
 spack:
-  concretization: when_possible
+  concretizer:
+    unify: when_possible
+
   view: false
 
   include: []
