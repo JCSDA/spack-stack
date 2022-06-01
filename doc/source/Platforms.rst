@@ -60,6 +60,25 @@ Ready-to-use spack-stack installations are available on the following platforms:
 
 For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
+.. _Platforms_Orion:
+
+------------------------------
+MSU Orion
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. note::
+   Temporary location, this needs to be moved elsewhere.
+
+.. code-block:: console
+
+   module purge
+   module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
+   module load miniconda/3.9.7
+
+.. _Platforms_Discover:
+
 ------------------------------
 NASA Discover
 ------------------------------
@@ -71,6 +90,24 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
+
+.. _Platforms_Cheyenne:
+
+------------------------------
+NCAR-Wyoming Cheyenne
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   module unuse /glade/u/apps/ch/modulefiles/default/compilers
+   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   module load python/3.7.9
+
+.. _Platforms_Gaea:
 
 ------------------------------
 NOAA RDHPCS Gaea
@@ -85,6 +122,23 @@ The following is required for building new spack environments and for using spac
    module unload cray-python
    module unload darshan
    module load cray-python/3.7.3.2
+
+.. _Platforms_Hera:
+
+------------------------------
+NOAA RDHPCS Hera
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. note::
+   Temporary location, this needs to be moved elsewhere.
+
+.. code-block:: console
+
+   module purge
+   module use /scratch1/BMC/gsd-hpcs/Dom.Heinzeller/spack-stack/modulefiles
+   module load miniconda/3.9.7
 
 ------------------------------
 TACC Stampede2
@@ -111,12 +165,16 @@ The following is required for building new spack environments and for using spac
    module use /data/prod/jedi/spack-stack/modulefiles
    module load miniconda/3.9.7
 
+..  _Platform_new_site_configs:
+
 ==============================
 Generating new site configs
 ==============================
-In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty (default) site config. Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in **MISSING**.
+In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty (default) site config. Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>`.
 
 It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``, in particular the reference site configs for macOS (**NEEDS UPDATE**) and Linux (**MISSING**).
+
+..  _Platform_macOS:
 
 ------------------------------
 macOS
@@ -124,7 +182,7 @@ macOS
 
 On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``python``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
 
-The instructions below also assume a clean Homebrew installation with a clean Python installation inside. This means that the Homebrew Python only contains nothing but what gets installed with ``pip install poetry`` (which is a temporary workaround). If this is not the case, users can try to install a separate Python using Miniconda as described in **MISSING REF TO MAINTAINERSSECTION**.
+The instructions below also assume a clean Homebrew installation with a clean Python installation inside. This means that the Homebrew Python only contains nothing but what gets installed with ``pip install poetry`` (which is a temporary workaround). If this is not the case, users can try to install a separate Python using Miniconda as described in :numref:`Sections %s <Prerequisites_Miniconda>`.
 
 Further, it is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
@@ -185,15 +243,13 @@ This instructions are meant to be a reference that users can follow to set up th
 
    source /usr/local/opt/lmod/init/profile
 
-5. **MISSING** Install xquartz
+5. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
 
-6. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308)
+6. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308). Make sure that ``python3`` points to the Homebrew version.
 
 .. code-block:: console
 
-   which pip3
-   # make sure this points to homebrew's pip3
-   pip3 install poetry
+   python3 -m pip install poetry
    # test - successful if no output
    python3 -c "import poetry"
 
@@ -226,7 +282,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mymacos/site"
 
 
-3. Find external packages, add to site config's ``packages.yaml``
+3. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
 .. code-block:: console
 
@@ -235,11 +291,9 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack external find --scope system python
    spack external find --scope system wget
 
-   #If the curl bin directory hasn't been added to PATH, need to prefix command
    PATH="/usr/local/Cellar/curl/7.83.0/bin:$PATH" \
         spack external find --scope system curl
 
-   # If the qt5 bin directory hasn't been added to PATH, need to prefix command
    PATH="/usr/local/opt/qt5/bin:$PATH" \
        spack external find --scope system qt
 
@@ -308,6 +362,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack stack setup-meta-modules
 
+..  _Platform_Linux:
+
 ------------------------------
 Linux
 ------------------------------
@@ -334,7 +390,7 @@ Creating a new environment
 
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mylinux/site"
 
-3. Find external packages, add to site config's ``packages.yaml``
+3. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
 .. code-block:: console
 

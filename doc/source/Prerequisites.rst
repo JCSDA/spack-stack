@@ -10,6 +10,8 @@ Manual software installations
 
 The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult Sect ...., for preconfigured systems please consult Section ... . Note that for preconfigured systems, the following one-off installations are only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
 
+..  _Prerequisites_Miniconda:
+
 ------------------------------
 Miniconda
 ------------------------------
@@ -60,13 +62,35 @@ To use this installation of miniconda, the following needs to be done every time
 git-lfs
 ------------------------------
 
-Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see Section **MISSING** for examples). Section **MISSING** describes a manual installation of ``git-lfs`` on TACC Stampede, a Centos7 system.
+Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Stampede2>` describes a manual installation of ``git-lfs`` on TACC Stampede, a Centos7 system.
+
+..  _Prerequisites_Qt5:
 
 ------------------------------
 qt (qt@5)
 ------------------------------
 
-Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see Section **MISSING** for examples). Section **MISSING** describes a manual installation of ``qt`` on NOAA RDHPCS Gaea, a Cray system, and section **MISSING** on NASA Discover.
+Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). 
+
+On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.3`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3``.
+
+.. code-block:: console
+
+   cd /lustre/f2/pdata/esrl/gsd/spack-stack
+   mkdir -p qt-5.15.3/src
+   cd qt-5.15.3/src
+   git clone git://code.qt.io/qt/qt5.git
+   cd qt5
+   git fetch --tags
+   git checkout v5.15.3-lts-lgpl
+   perl init-repository
+   git submodule update --init --recursive
+   cd ..
+   mkdir qt5-build
+   cd qt5-build
+   ../qt5/configure -opensource -nomake examples -nomake tests -prefix /lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3 -skip qtdocgallery -skip qtwebengine 2>&1 | tee log.configure
+   gmake -j4 2>&1 | tee log.gmake
+   gmake install 2>&1 | tee log.install
 
 **Note 1.** The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
 
