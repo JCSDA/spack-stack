@@ -65,6 +65,7 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
+  # Don't use OS curl on S4, incomplete
   #curl:
   #  externals:
   #  - spec: curl@7.29.0+ldap
