@@ -3,3 +3,4 @@ envs
 __pycache__
 cache
 .vscode
+doc/build
