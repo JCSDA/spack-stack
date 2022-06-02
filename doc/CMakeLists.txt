@@ -4,7 +4,11 @@ project(spack-stack VERSION 0.0.1)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/Modules")
 
-### DH*( MISSING - DEFINE OPTIONS)
+option(SPHINX_OUTPUT_HTML "Build HTML documentation" ON)
+option(SPHINX_OUTPUT_LATEX "Build LaTeX (PDF) documentation" OFF)
+
+message(STATUS "SPHINX_OUTPUT_HTML: ${SPHINX_OUTPUT_HTML}")
+message(STATUS "SPHINX_OUTPUT_LATEX: ${SPHINX_OUTPUT_LATEX}")
 
 find_package(Sphinx REQUIRED)
 
@@ -63,8 +67,4 @@ if(SPHINX_OUTPUT_LATEX)
       SOURCES "${PDF_OUTPUT_FILE}"
       VERBATIM
       )
-endif()
-
-if(SPHINX_OUTPUT_MAN)
-  message(FATAL_ERROR "Building LaTeX/PDF documentation with Sphinx not implemented")
 endif()
