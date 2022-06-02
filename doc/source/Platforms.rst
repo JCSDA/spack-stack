@@ -110,6 +110,14 @@ The following is required for building new spack environments and for using spac
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
    module load python/3.7.9
 
+.. _Platforms_WCOSS2:
+
+------------------------------
+NOAA NCO WCOSS2
+------------------------------
+
+**WORK IN PROGRESS**
+
 .. _Platforms_Parallel_Works:
 
 ----------------------------------------
@@ -142,6 +150,9 @@ The following is required for building new spack environments and for using spac
    module unload darshan
    module load cray-python/3.7.3.2
 
+.. note::
+   On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. Work is in progress to augment ``ecbuild`` with the ability to prefix serial runs with a launcher, e.g. ``srun -n1`` on Gaea.
+
 .. _Platforms_Hera:
 
 ------------------------------
@@ -158,6 +169,14 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /scratch1/BMC/gsd-hpcs/Dom.Heinzeller/spack-stack/modulefiles
    module load miniconda/3.9.7
+
+.. _Platforms_Jet:
+
+------------------------------
+NOAA RDHPCS Jet
+------------------------------
+
+**WORK IN PROGRESS**
 
 ------------------------------
 TACC Stampede2
@@ -192,7 +211,7 @@ Generating new site configs
 
 In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty (default) site config. Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>`.
 
-It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``, in particular the reference site configs for macOS (**NEEDS UPDATE**) and Linux (**MISSING**).
+It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``, in particular the reference site configs for macOS (**NEEDS UPDATE AFTER spack v0p18p0 merge**) and Linux (**MISSING - create after spack v0p18p0 merge**).
 
 ..  _Platform_macOS:
 

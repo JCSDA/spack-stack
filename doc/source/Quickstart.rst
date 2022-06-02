@@ -128,14 +128,32 @@ Spack environments are used by loading the modulefiles that generated at the end
 Pre-configured sites
 --------------------
 
-**MISSING**
+For pre-configured sites, follow the instructions in :numref:`Section %s <Platforms_Preconfigured_Sites>` to set the basic environment.
 
-refer to site specific configs/setup instructions and install prefices, then
+.. note::
+   Customizations of the user environment in `.bashrc`, `.bash_profile`, ..., that load certain modules automatically may interfere with the setup. It is highly advised to avoid "polluting" the standard environment, i.e. to keep the default environment as clean as possible, and create shell scripts that can be sourced to conveniently configure a user environment for a specific task instead.
 
-module load etc
+Next, load the spack meta-modules directory into the module path using
+
+.. code-block:: console
+
+   module use $LOCATION/modulefiles/Core
+
+where ``$LOCATION`` refers to the install location listed in the table in :numref:`Section %s <Platforms_Preconfigured_Sites>`. Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path. Use ``module available`` to look for the exact names of the meta-modules.
+
+.. code-block:: console
+
+   module load stack-compiler-name/compiler-version
+   module load stack-python-name/python-version
+   module load stack-mpi-name/mpi-version
+
+After that, list all available modules via ``module available``. For the environment packages described in Section :numref:`Section %s <Environments>`, convenience modules are created that can be loaded and that automatically load the required dependency modules.
+
+.. note::
+   When using ``lua`` modules, loading a different module will automatically switch the dependency modules. This is not the case for ``tcl`` modules. For the latter, it is recommended to start over with a clean shell and repeat the above steps.
 
 -----------------------------------------
 Configurable sites (generic macOS, Linux)
 -----------------------------------------
 
-**MISSING**
+The process for configurable sites is identical to that for pre-configured sites described above. ``$LOCATION`` in this case needs to be replaced with the install directory for the spack packages, which by default is subdirectory ``install`` in the environment directory.

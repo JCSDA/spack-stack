@@ -8,7 +8,7 @@ spack-stack is mainly a collection of Spack configuration files, but provides a 
 - `spack stack create` is provided to copy common, site-specific, and application-specific configuration files into a coherent Spack environment and to create container recipes
 - `spack stack setup-meta-modules` creates compiler, MPI and Python meta-modules for a convenient setup of a user environment using modules (lua and tcl)
 
-Documentation for installing and using spack-stack can be found here:  https://spack-stack.readthedocs.io/en/latest
+Documentation for installing and using spack-stack can be found here: https://spack-stack.readthedocs.io/en/latest/
 
 spack-stack is maintained by:
 - Kyle Gerheiser (@kgerheiser), NOAA-EMC

@@ -10,8 +10,10 @@ Table of Contents
    Overview
    Quickstart
    Platforms
+   Environments
    Prerequisites
    KnownIssues
    MaintainersSection
+   Documentation
    Acronyms
    Glossary

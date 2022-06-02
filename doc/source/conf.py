@@ -142,7 +142,7 @@ latex_elements = {
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
-    'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Heinzeller, D., K. Gerheiser, 2022. spack-stack documentation release v0.0.1. Available at https://ccpp-techdoc.readthedocs.io/\textunderscore/downloads/en/v5.0.0/pdf/.}\sphinxmaketitle'
+    'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Heinzeller, D., K. Gerheiser, 2022. spack-stack documentation release v0.0.1. Available at https://spack-stack.readthedocs.io/\textunderscore/downloads/en/v0.0.1/pdf/.}\sphinxmaketitle'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples

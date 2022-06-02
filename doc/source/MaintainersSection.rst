@@ -51,6 +51,22 @@ NCAR-Wyoming Cheyenne
 On Cheyenne, a workaround is needed to avoid the modules provided by CISL take precedence over the spack modules. The default module path for compilers is removed, the module path is set to a different location and that location is then loaded into the module environment. If new compilers or MPI libraries are
 added to ``/glade/u/apps/ch/modulefiles/default/compilers`` by CISL, the spack-stack maintainers need to make the corresponding changes in ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers``. See :numref:`Section %s <Platforms_Cheyenne>` for details.
 
+.. _MaintainersSection_WCOSS2:
+
+------------------------------
+NOAA NCO WCOSS2
+------------------------------
+
+**WORK IN PROGRESS**
+
+.. _MaintainersSection_Parallel_Works:
+
+----------------------------------------
+NOAA Parallel Works (AWS, Azure, Gcloud)
+----------------------------------------
+
+**WORK IN PROGRESS**
+
 .. _MaintainersSection_Gaea:
 
 ------------------------------
@@ -76,6 +92,14 @@ NOAA RDHPCS Hera
 
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+
+.. _MaintainersSection_Jet:
+
+------------------------------
+NOAA RDHPCS Jet
+------------------------------
+
+**WORK IN PROGRESS**
 
 .. _MaintainersSection_Stampede2:
 
@@ -143,9 +167,8 @@ qt (qt@5)
 Testing new packages
 ==============================
 
-**MISSING**]
+**WORK IN PROGRESS**
 
 (chaining spack installations)
 
 https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations
-
