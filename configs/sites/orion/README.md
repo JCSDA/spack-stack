@@ -12,6 +12,6 @@ This needs to be done every time before installing packages with spack or before
 
 Note. Temporary location, this needs to be moved elsewhere.
 ```
-module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
+module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
 module load miniconda/3.9.7
 ```
