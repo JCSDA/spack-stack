@@ -1,0 +1,18 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  include: []
+
+  packages:
+    all:
+      compiler: [intel]
+
+  # jedi-tools-env does not build with Intel
+  specs:
+  - jedi-ewok-env
+  - jedi-fv3-env
+  - jedi-ufs-env
+  - jedi-um-env
+  - nceplibs-env
+  - soca-env

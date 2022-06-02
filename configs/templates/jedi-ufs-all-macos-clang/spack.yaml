@@ -1,0 +1,18 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  include: []
+
+  packages:
+    all:
+      compiler: [clang, apple-clang]
+
+  specs:
+  - jedi-ewok-env
+  - jedi-fv3-env
+  - jedi-tools-env
+  - jedi-ufs-env
+  - jedi-um-env
+  - nceplibs-env
+  - soca-env

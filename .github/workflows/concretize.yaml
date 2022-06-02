@@ -11,20 +11,11 @@ defaults:
   run:
     shell: bash -leo pipefail {0}
 
-env:
-  all_specs: "jedi-ewok-env jedi-fv3-env jedi-tools-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
-  mac_os_specs: "jedi-ewok-env jedi-fv3-env jedi-tools-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
-   # macos gcc does not work with Clang
-  mac_os_gcc_specs: "jedi-fv3-env jedi-tools-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
-  # Intel does not build jedi-tools
-  intel_specs: "jedi-ewok-env jedi-fv3-env jedi-ufs-env jedi-um-env nceplibs-env soca-env"
-
-
 jobs:
-  macos_concretize:
+  macos_clang_concretize:
     strategy:
       matrix:
-        compiler: [clang, apple-clang, gcc@10.3.0]
+        compiler: [clang, apple-clang]
     runs-on: macos-latest
     steps:
       - name: checkout
@@ -35,13 +26,33 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          specs: ${{ env.mac_os_specs }}
+          template: jedi-ufs-all-macos-clang
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
           concretize_only: 'true'
 
-  linux_concretize:
+  macos_gcc_concretize:
+    strategy:
+      matrix:
+        compiler: [gcc@9.4.0, gcc@10.3.0]
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          template: jedi-ufs-all-macos-gcc
+          compiler: ${{ matrix.compiler }}
+          mpi: openmpi
+          path: ${{ github.workspace }}
+          concretize_only: 'true'
+
+  linux_gcc_concretize:
     strategy:
       matrix:
         compiler: [gcc@9.4.0, gcc@10.3.0]
@@ -55,13 +66,13 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          specs: ${{ env.all_specs }}
+          template: jedi-ufs-all-linux-gcc
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
           concretize_only: 'true'
 
-  intel_concretize:
+  linux_intel_concretize:
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -72,7 +83,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          specs: ${{ env.intel_specs }}
+          template: jedi-ufs-all-linux-intel
           compiler: intel
           mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}
