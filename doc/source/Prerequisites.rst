@@ -10,6 +10,14 @@ Manual software installations
 
 The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult Sect ...., for preconfigured systems please consult Section ... . Note that for preconfigured systems, the following one-off installations are only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
 
+..  _Prerequisites_Git_LFS:
+
+------------------------------
+git-lfs
+------------------------------
+
+Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Stampede2>` describes a manual installation of ``git-lfs`` on TACC Stampede, a Centos7 system.
+
 ..  _Prerequisites_Miniconda:
 
 ------------------------------
@@ -58,12 +66,6 @@ To use this installation of miniconda, the following needs to be done every time
    module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
    module load miniconda/3.9.7
 
-------------------------------
-git-lfs
-------------------------------
-
-Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Stampede2>` describes a manual installation of ``git-lfs`` on TACC Stampede, a Centos7 system.
-
 ..  _Prerequisites_Qt5:
 
 ------------------------------
@@ -97,3 +99,13 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
 
 .. note::
    When using an existing version provided by the operating system or as a module, one needs to check if all required components are installed. The ``ecflow`` installation will abort with an error message that a particular component of ``qt`` cannot be found.
+
+..  _Prerequisites_Texlive:
+
+------------------------------
+Texlive (TeX/LaTeX)
+------------------------------
+
+Building ``texlive`` isn't straightforward as it has many dependencies. Since it is only used to generated documentation for ``spack-stack`` (and other projects), i.e. not to compile any code, it makes no sense to build it with ``spack``. We therefore require ``texlive`` or any other compatible TeX/LaTeX distribution as an external package.
+
+On many of the HPC systems, it is already available as a separate module or as part of the default operating system. On macOS, the MacTeX distribution provides a full and easy-to-install TeX/LaTeX environment (see :numref:`Section %s <Platform_macOS>`). On Linux, ``texlive`` can be installed using the default package manager (see :numref:`Section %s <Platform_Linux>`).
