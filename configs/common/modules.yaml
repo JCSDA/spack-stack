@@ -1,5 +1,8 @@
 modules:
   default:
+    roots:
+      lmod: $env/install/modulefiles
+      tcl: $env/install/modulefiles
     arch_folder: false
     tcl:
       # Core compiler is a dummy that is not used to build the stack, do not change.

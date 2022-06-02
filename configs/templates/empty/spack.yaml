@@ -1,7 +1,8 @@
 spack:
-  concretization: separately
+  concretizer:
+    unify: when_possible
+
   view: false
-  
   include: []
 
   specs: []
