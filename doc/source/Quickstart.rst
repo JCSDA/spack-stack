@@ -34,7 +34,7 @@ The following instructions install a new spack environment on a pre-configured s
 
    # Create a pre-configured Spack environment in envs/<app>.<site>
    # (copies site-specific, application-specific, and common config files into the environment directory)
-   spack stack create env --site hera --app jedi-fv3 --name jedi-fv3.hera
+   spack stack create env --site hera --specs jedi-fv3-env --name jedi-fv3.hera
 
    # Activate the newly created environment
    # Optional: decorate the command line prompt using -p
@@ -69,7 +69,7 @@ Create container
    spack stack create container -h
 
    # Create container spack definition (spack.yaml) in directory envs/<spec>.<config>
-   spack stack create container docker-ubuntu-gcc-openmpi --app ufs-weather-model
+   spack stack create container docker-ubuntu-gcc-openmpi --specs ufs-weather-model-env
 
    # Descend into container environment directory
    cd envs/ufs-weather-model.docker-ubuntu-gcc-openmpi
