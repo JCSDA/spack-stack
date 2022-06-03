@@ -6,3 +6,7 @@
   #branch = jcsda_emc_spack_stack
   url = https://github.com/climbfuji/spack
   branch = feature/stampede2_spack_package_bugfixes
+[submodule "doc/CMakeModules"]
+  path = doc/CMakeModules
+  url = https://github.com/noaa-emc/cmakemodules
+  branch = develop

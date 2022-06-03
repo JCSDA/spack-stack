@@ -25,7 +25,7 @@ packages:
       - mpich/3.3.2
   openmpi:
     externals:
-    - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+pmix~sqlite3~static~thread_multiple~wrapper-rpath fabrics=ucx schedulers=slurm
+    - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~sqlite3~static~thread_multiple~wrapper-rpath fabrics=ucx schedulers=slurm
       prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
       modules:
       - openmpi/4.0.4
@@ -51,9 +51,11 @@ packages:
     buildable: False
     externals:
     - spec: python@3.9.7
-      prefix: /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7
+      prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
       modules:
       - miniconda/3.9.7
+
+### Modifications of common packages
   # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
   boost:
     version:: [1.72.0]

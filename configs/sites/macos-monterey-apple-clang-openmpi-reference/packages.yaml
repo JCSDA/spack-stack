@@ -1,151 +1,92 @@
 packages:
+
+### This section ends up in the environment spack.yaml when creating a new site config
+
   all:
     compiler:: [apple-clang@13.1.6]
     providers:
       mpi:: [openmpi@4.1.3]
 
-### MPI, Python, MKL
-  # Build mpi provider as part of stack
-  #mpi:
-  #  buildable: False
   python:
     buildable: False
-    externals:
-    # Use the homebrew version, since the native macOS version is
-    # not suitable for development (missing python3-config, ...)
-    - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /usr/local
 
 ### Modifications of common packages - need to turn off OpenMP with
 ### apple-clang or (llvm) clang; note: this is not needed with gcc
-  fms:
-    variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+  fms
+    variants: ~openmp
   fms-jcsda:
-    variants:: +64bit +enable_quad_precision +gfs_phys ~openmp +pic
+    variants: ~openmp
+  wgrib2:
+    variants: ~openmp
 
-### All other external packages listed alphabetically
-  bash:
+### End of "This section ends up in the environment spack.yaml ..."
+
+### All other external packages
+  texlive:
     externals:
-    - spec: bash@5.1.16
-      prefix: /usr/local
-  berkeley-db:
+    - spec: texlive@2022
+      prefix: /Library/TeX/texbin
+  qt:
     externals:
-    - spec: berkeley-db@4.7.25
-      prefix: /usr
-  bison:
-    externals:
-    - spec: bison@2.3
-      prefix: /usr
-  bzip2:
-    externals:
-    - spec: bzip2@1.0.8
-      prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.23.1
-      prefix: /usr/local
+    - spec: qt@5.15.3
+      prefix: /usr/local/opt/qt5
   curl:
     externals:
-    - spec: curl@7.82.0
-      prefix: /usr/local/opt/curl
-  diffutils:
+    - spec: curl@7.83.0+gssapi+ldap+nghttp2
+      prefix: /usr/local/Cellar/curl/7.83.0
+  wget:
     externals:
-    - spec: diffutils@2.8.1
-      prefix: /usr
-  file:
-    externals:
-    - spec: file@5.40
-      prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
-      prefix: /usr
-  gettext:
-    externals:
-    - spec: gettext@0.21
+    - spec: wget@1.21.3
       prefix: /usr/local
-  git:
+  python:
     externals:
-    - spec: git@2.32.0~tcltk
-      prefix: /usr
-    - spec: git@2.36.0~tcltk
+    - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr/local
-  git-lfs:
+  perl:
     externals:
-    - spec: git-lfs@3.1.4
-      prefix: /usr/local
-  gmake:
-    externals:
-    - spec: gmake@3.81
+    - spec: perl@5.30.3~cpanm+shared+threads
       prefix: /usr
   groff:
     externals:
     - spec: groff@1.19.2
       prefix: /usr
-  hwloc:
+  bison:
     externals:
-    - spec: hwloc@2.7.0
+    - spec: bison@2.3
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.36.0~tcltk
       prefix: /usr/local
-  krb5:
+  openssh:
     externals:
-    - spec: krb5@1.7-prerelease
+    - spec: openssh@8.6p1
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.1.4
+      prefix: /usr/local
+  texinfo:
+    externals:
+    - spec: texinfo@4.8
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@2.8.1
       prefix: /usr
   m4:
     externals:
     - spec: m4@1.4.6
       prefix: /usr
-  ncurses:
+  cmake:
     externals:
-    - spec: ncurses@5.7.20081102 abi=5
-      prefix: /usr
-  opengl:
-    externals:
-    - spec: opengl@2.1
-      prefix: /opt/X11
-  openssh:
-    externals:
-    - spec: openssh@8.6p1
-      prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1
-      prefix: /usr/local/opt/openssl@1.1
-  perl:
-    externals:
-    - spec: perl@5.18.4~cpanm+shared+threads
-      prefix: /usr
-    - spec: perl@5.30.3~cpanm+shared+threads
-      prefix: /usr
-  qt:
-    externals:
-    - spec: qt@5.15.3
-      prefix: /usr/local/Cellar/qt@5/5.15.3
-  rsync:
-    externals:
-    - spec: rsync@2.6.9
-      prefix: /usr
-  ruby:
-    externals:
-    - spec: ruby@2.6.8
-      prefix: /usr
-  # Don't use OS sqlite, this version doesn't have the development files
-  #sqlite:
-  #  externals:
-  #  - spec: sqlite@3.36.0+fts~functions+rtree
-  #    prefix: /usr
-  texinfo:
-    externals:
-    - spec: texinfo@4.8
-      prefix: /usr
-  wget:
-    externals:
-    - spec: wget@1.21.2
+    - spec: cmake@3.23.1
       prefix: /usr/local
-  xz:
+  gmake:
     externals:
-    - spec: xz@5.2.5
-      prefix: /usr/local
-  zip:
-    externals:
-    - spec: zip@3.0
+    - spec: gmake@3.81
       prefix: /usr
