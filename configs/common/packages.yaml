@@ -211,6 +211,14 @@
       version: [57.4.0]
     qt:
       version: [5.15.3]
+    #texlive:
+      # Assume texlive is provided, hard to install
+      # because of its dependencies. Both Linux and
+      # macOS provide easy-to-install packages that
+      # can be added as external packages.
+      # Note: Uncommenting this entry will break
+      # the container builds.
+      #version: [2.11.0]
     diffutils:
       version: [3.7]
     findutils:
