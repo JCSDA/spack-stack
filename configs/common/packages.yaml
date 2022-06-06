@@ -230,7 +230,7 @@
     mpich:
       variants: ~hwloc +two_level_namespace
     met:
-      version: [10.1.0]
+      version: [10.1.1]
       variants: +python +grib2
     metplus:
-      version: [4.1.0]
+      version: [4.1.1]
