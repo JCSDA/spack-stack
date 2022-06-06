@@ -18,7 +18,7 @@
     flex:
       version: [2.6.3]
     zlib:
-      version: [1.2.11]
+      version: [1.2.12]
     hdf:
       version: [4.2.15]
       variants: ~fortran +netcdf
