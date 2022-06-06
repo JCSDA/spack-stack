@@ -197,7 +197,7 @@
     py-shapely:
       version: [1.8.0]
     bufr:
-      version: [11.6.0]
+      version: [11.7.0]
       variants: +python
     py-click:
       version: [8.0.3]
