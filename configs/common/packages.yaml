@@ -116,7 +116,7 @@
     grib-util:
       version: [1.2.3]
     gftl-shared:
-      version: [1.3.0]
+      version: [1.3.3]
     jedi-cmake:
       version: [1.3.0]
     # Attention - when updating also check orion site config
@@ -234,3 +234,7 @@
       variants: +python +grib2
     metplus:
       version: [4.1.0]
+    mapl:
+      version: [2.11.0]
+    yafyaml:
+      version: [0.5.1]
