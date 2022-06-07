@@ -59,6 +59,14 @@ runs:
         # Install krb5 to avoid compilation errors of "hdf" on Ubuntu
         sudo apt-get install krb5-user libkrb5-dev
 
+        # DH*
+        # For now, install qt5 using apt on Linux. Later, should consider
+        # using https://github.com/jurplel/install-qt-action for all runners
+        # and also get rid of the macOS homebrew installation/package config
+        sudo apt-get install qt5-default qttools5-dev-tools
+        #sudo apt-get install qt5-default
+        # *DH
+
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
             cd /tmp
             wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
@@ -68,15 +76,6 @@ runs:
             sudo apt-get update
             sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-            #
-            # DH*
-            # For now, install qt5 only for Intel to shorten the build time
-            # without having to rerun all other CI tests. Later, should consider
-            # using https://github.com/jurplel/install-qt-action for all runners
-            # and get rid of the macOS homebrew installation/package config
-            #sudo apt-get install qt5-default qttools5-dev-tools
-            sudo apt-get install qt5-default
-            # *DH
         fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         # These are already installed
@@ -233,9 +232,9 @@ runs:
       # Spack external find is by default only looking for build-tools. Either
       # search for additional packages explicitly, or fall back to the old
       # behavior to find all external packages.
-      #spack external find 
-      #spack external find git-lfs openmpi mpich
-      spack external find --all
+      spack external find 
+      spack external find git-lfs openmpi mpich qt5 wget
+      #spack external find --all
 
   - name: configure-options
     shell: bash
@@ -252,21 +251,21 @@ runs:
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      # Remove external OpenSSL entry
-      # Error when wget attempts to build using external on macOS
-      spack config rm "packages:openssl"
-
-      # Remove external SQLite entry
-      # Error when proj attempts to build using external on macOS
-      spack config rm "packages:sqlite"
-
-      # Remove external ncurses entry
-      # Error when proj attempts to build using external on macOS
-      spack config rm "packages:ncurses"
-
-      # Remove external m4 entry
-      # Error when cairo attempts to build using external on macOS
-      spack config rm "packages:m4"
+      ### # Remove external OpenSSL entry
+      ### # Error when wget attempts to build using external on macOS
+      ### spack config rm "packages:openssl"
+      ### 
+      ### # Remove external SQLite entry
+      ### # Error when proj attempts to build using external on macOS
+      ### spack config rm "packages:sqlite"
+      ### 
+      ### # Remove external ncurses entry
+      ### # Error when proj attempts to build using external on macOS
+      ### spack config rm "packages:ncurses"
+      ### 
+      ### # Remove external m4 entry
+      ### # Error when cairo attempts to build using external on macOS
+      ### spack config rm "packages:m4"
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
@@ -306,8 +305,8 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      # DH* For now only with Intel to avoid having to rerun all CI tests
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+      # DH* Speed up installation by building in parallel
+      #if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         for i in {1..8}; do
           nohup spack install --fail-fast >> spack_install.log 2>&1 &
         done
@@ -317,9 +316,9 @@ runs:
           tail -n 10 spack_install.log
           sleep 60
         done
-      else
-        spack install --fail-fast
-      fi
+      #else
+      #  spack install --fail-fast
+      #fi
 
   - name: create-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
