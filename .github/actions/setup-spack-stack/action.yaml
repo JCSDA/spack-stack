@@ -63,7 +63,7 @@ runs:
         # For now, install qt5 using apt on Linux. Later, should consider
         # using https://github.com/jurplel/install-qt-action for all runners
         # and also get rid of the macOS homebrew installation/package config
-        sudo apt-get install qt5-default qttools5-dev-tools
+        sudo apt-get install qt5-default qttools5-dev-tools libqt5svg5-dev
         #sudo apt-get install qt5-default
         # *DH
 
@@ -330,7 +330,9 @@ runs:
       ###     sleep 60
       ###   done
       ### #else
-        spack install --fail-fast
+        #spack install --fail-fast
+        # DH*
+        spack install --fail-fast ecflow
       #fi
 
   - name: create-meta-modules
