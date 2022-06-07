@@ -192,6 +192,10 @@ packages:
     externals:
     - spec: texlive@20130530
       prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.14
+      prefix: /usr
   xz:
     externals:
     - spec: xz@5.2.2

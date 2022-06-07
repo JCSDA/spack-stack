@@ -18,7 +18,7 @@
     flex:
       version: [2.6.3]
     zlib:
-      version: [1.2.11]
+      version: [1.2.12]
     hdf:
       version: [4.2.15]
       variants: ~fortran +netcdf
@@ -230,10 +230,10 @@
     mpich:
       variants: ~hwloc +two_level_namespace
     met:
-      version: [10.1.0]
+      version: [10.1.1]
       variants: +python +grib2
     metplus:
-      version: [4.1.0]
+      version: [4.1.1]
     mapl:
       version: [2.11.0]
     yafyaml:
