@@ -209,7 +209,7 @@ The following is required for building new spack environments and for using spac
 Generating new site configs
 ==============================
 
-In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty (default) site config. Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>`.
+In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty/default site config (`linux.default` or `macos.default`). Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>`.
 
 It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``, in particular the reference site configs for macOS (**NEEDS UPDATE AFTER spack v0p18p0 merge**) and Linux (**MISSING - create after spack v0p18p0 merge**).
 
@@ -312,7 +312,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack stack create env --site default --app jedi-ufs --name jedi-ufs.mymacos
+   spack stack create env --site macos.default --app jedi-ufs --name jedi-ufs.mymacos
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
 
@@ -360,21 +360,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. If ``mpich`` or ``openmpi`` are installed with spack-stack, whitelist the mpi provider so that spack creates the module
-
-.. code-block:: console
-
-   spack config add "modules:default:lmod:whitelist:[openmpi]"
-
-8. Turn off OpenMP for a number of packages when using ``apple-clang`` or ``clang``
-
-.. code-block:: console
-
-   spack config add "packages:wgrib2:variants: ~openmp"
-   spack config add "packages:fms:variants: ~openmp"
-   spack config add "packages:fms-jcsda:variants: ~openmp"
-
-9. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
+7. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
 
 .. code-block:: console
 
@@ -382,20 +368,20 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/packages.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-10. Process the specs and install
+8. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-11. Create lua module files
+9. Create lua module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-12. Create meta-modules for compiler, mpi, python
+10. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
@@ -421,7 +407,7 @@ Creating a new environment
 
 .. code-block:: console
 
-   spack stack create env --site default --app jedi-ufs --name jedi-ufs.mylinux
+   spack stack create env --site linux.default --app jedi-ufs --name jedi-ufs.mylinux
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
 

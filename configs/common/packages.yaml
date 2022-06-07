@@ -65,14 +65,14 @@
     esmf:
       version: [8.2.0]
       variants: ~xerces ~pnetcdf
-    # Attention - when updating also check macos-monterey-llvm-clang-openmpi-reference site config
+    # Attention - when updating also check macos.default and macos--monterey-llvm-clang-openmpi-reference site configs
     fms:
       version: [2022.01]
-      variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
-    # Attention - when updating also check macos-monterey-llvm-clang-openmpi-reference site config
+      variants: +64bit +quad_precision +gfs_phys +openmp +pic
+    # Attention - when updating also check macos.default and macos--monterey-llvm-clang-openmpi-reference site configs
     fms-jcsda:
       version: [release-stable]
-      variants: +64bit +enable_quad_precision +gfs_phys +openmp +pic
+      variants: +64bit +quad_precision +gfs_phys +openmp +pic
     bacio:
       version: [2.4.1]
     sigio:
@@ -197,7 +197,7 @@
     py-shapely:
       version: [1.8.0]
     bufr:
-      version: [11.6.0]
+      version: [11.7.0]
       variants: +python
     py-click:
       version: [8.0.3]
