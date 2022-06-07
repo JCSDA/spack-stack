@@ -175,7 +175,7 @@ runs:
       fi
 
       source setup.sh
-      spack stack create env --template ${{ inputs.template }} --specs ${{ inputs.specs }} --name ${{ inputs.name }}
+      spack stack create env --template ${{ inputs.template }} --specs ${{ inputs.specs }} --name ${{ inputs.name }} --site ${{ inputs.site }}
       spack env activate envs/${{ inputs.name }}
 
       # LLVM Clang not in PATH, search for it specifically
@@ -233,7 +233,7 @@ runs:
       # search for additional packages explicitly, or fall back to the old
       # behavior to find all external packages.
       spack external find 
-      spack external find git-lfs openmpi mpich qt5 wget
+      spack external find git-lfs openmpi mpich wget qt@5
       #spack external find --all
 
   - name: configure-options
@@ -275,15 +275,15 @@ runs:
       spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
-      if [[ "$RUNNER_OS" == "Linux" ]]; then
-        echo ""
-      elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Clang has trouble finding -lomp for OpenMP because of non-standard location
-        # Could be fixed by setting compiler environment LDFLAGS to -L$(brew --prefix llvm)/lib or wherever libomp is
-        spack config add "packages:wgrib2:variants: ~openmp"
-        spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
-        spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
-      fi
+      ### if [[ "$RUNNER_OS" == "Linux" ]]; then
+      ###   echo ""
+      ### elif [[ "$RUNNER_OS" == "macOS" ]]; then
+      ###   # Clang has trouble finding -lomp for OpenMP because of non-standard location
+      ###   # Could be fixed by setting compiler environment LDFLAGS to -L$(brew --prefix llvm)/lib or wherever libomp is
+      ###   spack config add "packages:wgrib2:variants: ~openmp"
+      ###   spack config add "packages:fms:variants: ~openmp"
+      ###   spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
+      ### fi
 
       mkdir ${GITHUB_WORKSPACE}/logs
 

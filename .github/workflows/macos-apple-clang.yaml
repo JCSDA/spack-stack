@@ -26,3 +26,4 @@ jobs:
           compiler: apple-clang
           mpi: openmpi
           path: ${{ github.workspace }}
+          site: macos.default
