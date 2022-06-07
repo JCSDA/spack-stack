@@ -320,20 +320,18 @@ runs:
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
       ### # DH* Speed up installation by building in parallel
       ### #if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-      ###   for i in {1..2}; do
-      ###     nohup spack install --fail-fast >> spack_install.log 2>&1 &
-      ###   done
-      ###   #
-      ###   while ps -ef | grep -ve 'grep' | grep 'spack install'; do
-      ###     echo "Still running"
-      ###     tail -n 10 spack_install.log
-      ###     sleep 60
-      ###   done
+         for i in {1..2}; do
+           nohup spack install --fail-fast >> spack_install.log 2>&1 &
+         done
+         #
+         while ps -ef | grep -ve 'grep' | grep 'spack install'; do
+           echo "Still running"
+           tail -n 10 spack_install.log
+           sleep 60
+         done
       ### #else
-        #spack install --fail-fast
-        # DH*
-        spack install --fail-fast ecflow
-      #fi
+      ###  spack install --fail-fast
+      ### #fi
 
   - name: create-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
@@ -343,6 +341,7 @@ runs:
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+        spack module lmod refresh
         spack stack setup-meta-modules
       fi
 
