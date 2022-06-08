@@ -29,6 +29,10 @@ inputs:
     description: "Concretize environment without building."
     required: false
     default: 'false'
+  site:
+    description: "The suite for which to build."
+    required: false
+    default: 'linux.default'
 
 runs:
   using: "composite"
@@ -59,6 +63,11 @@ runs:
         # Install krb5 to avoid compilation errors of "hdf" on Ubuntu
         sudo apt-get install krb5-user libkrb5-dev
 
+        # For now, install qt5 using apt on Linux. Later, should consider
+        # using https://github.com/jurplel/install-qt-action for all runners
+        # and also get rid of the macOS homebrew installation/package config
+        sudo apt-get install qt5-default qttools5-dev-tools libqt5svg5-dev
+
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
             cd /tmp
             wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
@@ -68,15 +77,6 @@ runs:
             sudo apt-get update
             sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
             echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-            #
-            # DH*
-            # For now, install qt5 only for Intel to shorten the build time
-            # without having to rerun all other CI tests. Later, should consider
-            # using https://github.com/jurplel/install-qt-action for all runners
-            # and get rid of the macOS homebrew installation/package config
-            #sudo apt-get install qt5-default qttools5-dev-tools
-            sudo apt-get install qt5-default
-            # *DH
         fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         # These are already installed
@@ -102,6 +102,8 @@ runs:
   # MPI takes a long time to build. Built it externally and cache it.
   - name: install-mpi
     shell: bash
+    env:
+      OMP_NUM_THREADS: 4
     if: steps.cache-mpi.outputs.cache-hit != 'true'
     run: |
         echo "" >> ~/.bash_profile
@@ -146,7 +148,7 @@ runs:
                 --enable-mpi-fortran --enable-mpi-cxx \
                 --with-hwloc=internal --with-libevent=internal
           fi
-          make -j2
+          make -j4
           make install
         elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
           wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
@@ -163,7 +165,7 @@ runs:
                 --enable-fortran --enable-cxx \
                 --with-device=ch4:ofi
           fi
-          make -j2
+          make -j4
           make install
         fi
 
@@ -176,7 +178,7 @@ runs:
       fi
 
       source setup.sh
-      spack stack create env --template ${{ inputs.template }} --specs ${{ inputs.specs }} --name ${{ inputs.name }}
+      spack stack create env --template ${{ inputs.template }} --specs ${{ inputs.specs }} --name ${{ inputs.name }} --site ${{ inputs.site }}
       spack env activate envs/${{ inputs.name }}
 
       # LLVM Clang not in PATH, search for it specifically
@@ -194,9 +196,6 @@ runs:
         spack compiler find
       fi
 
-      # So Spack can find external MPI
-      export "PATH=$HOME/mpi/bin:${PATH}"
-
       # No external find for intel-oneapi-mpi, 
       # And no way to add object entry to list using "spack config add"
       # Add this first so "spack config add packages:" will append to this entry
@@ -209,33 +208,25 @@ runs:
         echo "      externals:" >> ${SPACK_ENV}/spack.yaml
         echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
         echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+      else
+        # So Spack can find external MPI
+        export "PATH=$HOME/mpi/bin:${PATH}"
       fi
 
-      # Same for qt@5 on macOS or on Linux w/ Intel
+      # Make homebrew qt@5 detectable on macOS
       if [[ "$RUNNER_OS" == "macOS" ]]; then
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    qt:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: qt@5" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: /usr/local/opt/qt@5" >> ${SPACK_ENV}/spack.yaml
-      #elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-      #  echo "" >> ${SPACK_ENV}/spack.yaml
-      #  echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-      #  echo "    qt:" >> ${SPACK_ENV}/spack.yaml
-      #  echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-      #  echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-      #  echo "      - spec: qt@5" >> ${SPACK_ENV}/spack.yaml
-      #  echo "        prefix: /usr" >> ${SPACK_ENV}/spack.yaml
+        export "PATH=/usr/local/opt/qt@5/bin:${PATH}"
       fi
 
-      # Spack external find is by default only looking for build-tools. Either
-      # search for additional packages explicitly, or fall back to the old
-      # behavior to find all external packages.
-      #spack external find 
-      #spack external find git-lfs openmpi mpich
-      spack external find --all
+      # Spack external find is by default only looking for build-tools, Either
+      # need to search for additional packages explicitly.
+      spack external find
+      spack external find mpich
+      spack external find openmpi
+      spack external find perl
+      spack external find python@3
+      spack external find qt@5
+      spack external find wget
 
   - name: configure-options
     shell: bash
@@ -252,21 +243,8 @@ runs:
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      # Remove external OpenSSL entry
-      # Error when wget attempts to build using external on macOS
-      spack config rm "packages:openssl"
-
-      # Remove external SQLite entry
-      # Error when proj attempts to build using external on macOS
-      spack config rm "packages:sqlite"
-
-      # Remove external ncurses entry
-      # Error when proj attempts to build using external on macOS
-      spack config rm "packages:ncurses"
-
-      # Remove external m4 entry
-      # Error when cairo attempts to build using external on macOS
-      spack config rm "packages:m4"
+      # Use external Python to save compilation time
+      spack config add "packages:python:buildable:False"
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
@@ -275,16 +253,6 @@ runs:
       # Whitelist the mpi providers so that spack creates the modules for them
       spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
-
-      if [[ "$RUNNER_OS" == "Linux" ]]; then
-        echo ""
-      elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Clang has trouble finding -lomp for OpenMP because of non-standard location
-        # Could be fixed by setting compiler environment LDFLAGS to -L$(brew --prefix llvm)/lib or wherever libomp is
-        spack config add "packages:wgrib2:variants: ~openmp"
-        spack config add "packages:fms:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
-        spack config add "packages:fms-jcsda:variants: +64bit +enable_quad_precision +gfs_phys ~openmp +pic"
-      fi
 
       mkdir ${GITHUB_WORKSPACE}/logs
 
@@ -301,25 +269,21 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     env:
-      OMP_NUM_THREADS: 16
+      OMP_NUM_THREADS: 4
     run: |
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      # DH* For now only with Intel to avoid having to rerun all CI tests
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        for i in {1..8}; do
-          nohup spack install --fail-fast >> spack_install.log 2>&1 &
-        done
-        #
-        while ps -ef | grep -ve 'grep' | grep 'spack install'; do
-          echo "Still running"
-          tail -n 10 spack_install.log
-          sleep 60
-        done
-      else
-        spack install --fail-fast
-      fi
+      # Speed up installation by building in parallel
+      for i in {1..2}; do
+        nohup spack install --fail-fast >> spack_install.log 2>&1 &
+      done
+      #
+      while ps -ef | grep -ve 'grep' | grep 'spack install'; do
+        echo "Still running"
+        tail -n 10 spack_install.log
+        sleep 60
+      done
 
   - name: create-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
@@ -329,6 +293,7 @@ runs:
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+        spack module lmod refresh --yes-to-all
         spack stack setup-meta-modules
       fi
 

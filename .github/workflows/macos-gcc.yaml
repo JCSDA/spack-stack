@@ -27,3 +27,4 @@ jobs:
           compiler: gcc@9
           mpi: mpich
           path: ${{ github.workspace }}
+          site: macos.default

@@ -27,3 +27,4 @@ jobs:
           compiler: intel
           mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}
+          site: linux.default
