@@ -1,0 +1,13 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+    - jedi-ewok-env@1.0.0 +solo +r2d2 +ewok
+    - jedi-fv3-env@1.0.0
+    - jedi-mpas-env@1.0.0
+    - jedi-ufs-env@1.0.0
+    - jedi-um-env@1.0.0
