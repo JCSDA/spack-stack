@@ -368,20 +368,26 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/packages.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-8. Process the specs and install
+8. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
+
+.. code-block:: console
+
+   spack env activate [-p] envs/jedi-ufs.mymacos
+
+9. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-9. Create lua module files
+10. Create lua module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-10. Create meta-modules for compiler, mpi, python
+11. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
@@ -447,20 +453,26 @@ Creating a new environment
    vi envs/jedi-ufs.mylinux/packages.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-7. Process the specs and install
+7. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
+
+.. code-block:: console
+
+   spack env activate [-p] envs/jedi-ufs.mymacos
+
+8. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-8. Create lua module files
+9. Create lua module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-9. Create meta-modules for compiler, mpi, python
+10. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 

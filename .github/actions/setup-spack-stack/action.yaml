@@ -29,6 +29,10 @@ inputs:
     description: "Concretize environment without building."
     required: false
     default: 'false'
+  site:
+    description: "The suite for which to build."
+    required: false
+    default: 'linux.default'
 
 runs:
   using: "composite"
@@ -341,7 +345,7 @@ runs:
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-        spack module lmod refresh
+        spack module lmod refresh --yes-to-all
         spack stack setup-meta-modules
       fi
 
