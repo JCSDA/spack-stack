@@ -1,0 +1,25 @@
+spack:
+  concretizer:
+    unify: when_possible
+  
+  config:
+    install_tree:
+       root: $env/install
+  modules:
+    default:
+      roots:
+        lmod: $env/install/modulefiles
+        tcl: $env/install/modulefiles
+
+  include: []
+
+  # jedi-ewok-env does not build on macOS with GCC
+  # jedi-tools-env does not build with Intel
+  specs:
+   - jedi-ewok-env 
+   - jedi-fv3-env
+   - jedi-tools-env
+   - jedi-ufs-env
+   - jedi-um-env
+   - nceplibs-env
+   - soca-env  
