@@ -183,6 +183,10 @@ packages:
     externals:
     - spec: texinfo@5.1
       prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.14
+      prefix: /usr
   xz:
     externals:
     - spec: xz@5.2.5

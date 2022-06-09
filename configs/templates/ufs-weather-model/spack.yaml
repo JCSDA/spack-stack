@@ -12,9 +12,8 @@ spack:
         tcl: $env/install/modulefiles
 
   view: false
-
   include: []
 
   specs:
-    - ufs-weather-model-env
-    - ufs-weather-model-debug-env
+    - ufs-weather-model-env~debug
+    - ufs-weather-model-env+debug

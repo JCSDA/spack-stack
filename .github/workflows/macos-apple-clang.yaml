@@ -10,7 +10,7 @@ jobs:
   build:
     strategy:
       matrix:
-        spec: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
+        spec: [jedi-ewok-env, jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, global-workflow-env]
     runs-on: macos-latest
     steps:
 
@@ -26,3 +26,4 @@ jobs:
           compiler: apple-clang
           mpi: openmpi
           path: ${{ github.workspace }}
+          site: macos.default

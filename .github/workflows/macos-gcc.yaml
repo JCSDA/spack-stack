@@ -11,7 +11,7 @@ jobs:
     strategy:
       matrix:
         # Can't build jedi-ewok on macOS (12) with gcc (11)
-        spec: [jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env]
+        spec: [jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, global-workflow-env]
     runs-on: macos-latest
     steps:
 
@@ -27,3 +27,4 @@ jobs:
           compiler: gcc@9
           mpi: mpich
           path: ${{ github.workspace }}
+          site: macos.default

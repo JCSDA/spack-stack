@@ -31,6 +31,7 @@ jobs:
           mpi: openmpi
           path: ${{ github.workspace }}
           concretize_only: 'true'
+          site: macos.default
 
   macos_gcc_concretize:
     strategy:
@@ -71,6 +72,7 @@ jobs:
           mpi: openmpi
           path: ${{ github.workspace }}
           concretize_only: 'true'
+          site: linux.default
 
   linux_intel_concretize:
     runs-on: ubuntu-latest
@@ -88,5 +90,4 @@ jobs:
           mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}
           concretize_only: 'true'
-
-  
+          site: linux.default

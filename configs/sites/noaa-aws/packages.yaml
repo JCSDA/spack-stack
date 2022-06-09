@@ -111,10 +111,10 @@ packages:
       prefix: /usr
   python:
     externals:
-    - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+    - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /contrib/spack/apps/miniconda/3.9.12
       modules:
-      - miniconda/py39_4.11.0
+      - miniconda/3.9.12
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -138,6 +138,10 @@ packages:
   texinfo:
     externals:
     - spec: texinfo@5.1
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.14
       prefix: /usr
   xz:
     externals:
