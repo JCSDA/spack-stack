@@ -254,6 +254,15 @@ runs:
       spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
+      # Remove specs that don't build under certain configurations.
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        spack rm jedi-tools-env || true
+      fi
+
+      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
+        spack rm jedi-ewok-env || true
+      fi
+
       mkdir ${GITHUB_WORKSPACE}/logs
 
   - name: concretize
