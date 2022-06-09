@@ -259,7 +259,7 @@ runs:
         spack rm jedi-tools-env || true
       fi
 
-      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "intel"* ]]; then
+      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
         spack rm jedi-ewok-env || true
       fi
 
