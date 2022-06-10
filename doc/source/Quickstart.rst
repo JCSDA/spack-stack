@@ -17,6 +17,10 @@ Quickstart
    # Basic usage of spack stack create
    spack stack create -h
 
+.. note::
+
+   We strongly recommend using external Python versions 3.8 or 3.9 with spack-stack due to numerous problems with Python 3.10 (see also :numref:`Section %s <KnownIssues>`).
+
 =================================================
 Using spack to create environments and containers
 =================================================

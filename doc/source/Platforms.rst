@@ -14,7 +14,8 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 
 Ready-to-use spack-stack installations are available on the following platforms:
 
-**Note: this versions are for early testers - use at your own risk**
+.. note::
+   These versions are for early testers - use at your own risk
 
 +------------------------------------------+---------------------------+---------------------------+
 | System                                   | Maintained by (temporary) | jedi-ewok tested          |
@@ -209,7 +210,7 @@ Generating new site configs
 
 In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty/default site config (`linux.default` or `macos.default`). Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>`.
 
-It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``, in particular the reference site configs for macOS (**NEEDS UPDATE AFTER spack v0p18p0 merge**) and Linux (**MISSING - create after spack v0p18p0 merge**).
+It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``.
 
 ..  _Platform_macOS:
 
@@ -358,7 +359,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
+7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted
 
 .. code-block:: console
 
@@ -397,15 +398,130 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 Linux
 ------------------------------
 
-Note. Some older Linux systems do not support ``lua/lmod`` environment modules, which are default in the spack-stack site configs. This can be changed to ``tcl/tk`` environment modules (see below).
+Note. Some Linux systems do not support ``lua/lmod`` environment modules, which are default in the spack-stack site configs. This can be changed to ``tcl/tk`` environment modules (see below).
 
-Prerequisites (one-off)
------------------------
+Prerequisites: Red Hat/CentOS 8 (one-off)
+-----------------------------------------
 
-**MISSING**
+The following instructions were used to prepare a basic Red Hat 8 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Prerequisites_Environments>`).
+
+1. Install basic OS packages as `root`
+
+.. code-block:: console
+
+   sudo su
+   yum -y update
+
+   # Compilers
+   yum -y install gcc-toolset-11-gcc-c++
+   yum -y install gcc-toolset-11-gcc-gfortran
+   yum -y install gcc-toolset-11-gdb
+
+   # Do *not* install MPI with yum, this will be done with spack-stack
+
+   # Misc
+   yum -y install m4
+   yum -y install wget
+   # Do not install cmake (it's 3.20.2, which doesn't work with eckit)
+   yum -y install git
+   yum -y install git-lfs
+   yum -y install bash-completion
+   yum -y install bzip2 bzip2-devel
+   yum -y install unzip
+   yum -y install patch
+   yum -y install automake
+   yum -y install xorg-x11-xauth
+   yum -y install xterm
+   yum -y install texlive
+   # Do not install qt@5 for now
+
+   # Python
+   yum -y install python39-devel
+   alternatives --set python3 /usr/bin/python3.9
+   python3 -m pip install poetry
+   # test - successful if no output
+   python3 -c "import poetry"
+
+   # Exit root session
+   exit
+
+2. Log out and back in to be able to use the `tcl/tk` environment modules
+
+3. As regular user, set up the environment to build spack-stack environments
+
+.. code-block:: console
+
+   scl enable gcc-toolset-11 bash
+
+   # This may not be needed, only use when there are build errors for crtm
+   git lfs install
+
+This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
+
+Prerequisites: Ubuntu 20.04 (one-off)
+-------------------------------------
+
+The following instructions were used to prepare a basic Ubuntu 20.04 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Prerequisites_Environments>`).
+
+1. Install basic OS packages as `root`
+
+.. code-block:: console
+
+   sudo su
+   apt-get update
+   apt-get upgrade
+
+   # Compilers
+   apt install -y gcc-10 g++-10
+   apt install -y gfortran-10
+   apt install -y gdb
+
+   # Do *not* install MPI with yum, this will be done with spack-stack
+
+   # Misc
+   apt install -y build-essential
+   apt install -y libcurl4-openssl-dev
+   ### TRY WITHOUT apt install krb5-user libkrb5-dev
+   apt install -y m4
+   # Skip cmake, default version 3.16 is too old
+   apt install -y git
+   apt install -y git-lfs
+   apt install -y bzip2
+   apt install -y unzip
+   apt install -y automake
+   apt install -y xterm
+   apt install -y texlive
+   ### SKIP qt@5 FOR NOW
+
+   # Python
+   apt install python3-dev python3-pip
+   ## pip3 install poetry
+   python3 -m pip install poetry
+   # Ignore error "ERROR: launchpadlib 1.10.13 requires testresources, which is not installed."
+   # test - successful if no output
+   python3 -c "import poetry"
+
+   # Exit root session
+   exit
+
+2. Log out and back in to be able to use the `lmod/lua` environment modules
+
+3. As regular user, set up the environment to build spack-stack environments
+
+.. code-block:: console
+
+   # This may not be needed, only use when there are build errors for crtm
+   git lfs install
+
+This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
+
+.. note::
+   The newer Ubuntu 22.04 system by default ships with Python 3.10, which we do not support due to numerous issues when building spack-stack.
 
 Creating a new environment
 --------------------------
+
+It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimited``, and to test if the module environment functions correctly (``module available``).
 
 1. Create a pre-configured environment with a default (nearly empty) site config
 
@@ -413,7 +529,7 @@ Creating a new environment
 
    spack stack create env --site linux.default --app jedi-ufs --name jedi-ufs.mylinux
 
-2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
+2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``
 
 .. code-block:: console
 
@@ -424,11 +540,12 @@ Creating a new environment
 .. code-block:: console
 
    spack external find --scope system
-
-   # MISSING - ADDITIONAL PACKAGES ADDED AS EXTERNALS, AND MODIFICATIONS OF PACKAGE VARIANTS ETC
-   ...
-
-**MISSING**
+   spack external find --scope system perl
+   spack external find --scope system python
+   spack external find --scope system wget
+   # Do *not* use system curl, this breaks netcdf-c
+   # Skip qt@5 for now
+   spack external find --scope system texlive
 
 4. Find compilers, add to site config's ``compilers.yaml``
 
@@ -442,8 +559,20 @@ Creating a new environment
 
    export -n SPACK_SYSTEM_CONFIG_PATH
 
+6. Set default compiler and MPI library and flag Python as non-buildable
 
-6. Optionally edit site config files and common config files, for example to emove duplicate versions of external packages that are unwanted
+.. code-block:: console
+
+   spack config add "packages:python:buildable:False"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
+   spack config add "packages:all:compiler:[apple-clang@13.1.6]"
+   spack config add "packages:python:buildable:False"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
+   spack config add "packages:all:compiler:[gcc@11.2.1]"
+
+7. On Red Hat/CentOS 8, only `tcl/tk` environment modules are supported by default. Edit ``envs/jedi-ufs.mylinux/site/modules.yaml`` and replace every occurrence of ``lmod`` with ``tcl``.
+
+8. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted
 
 .. code-block:: console
 
@@ -451,26 +580,26 @@ Creating a new environment
    vi envs/jedi-ufs.mylinux/packages.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-7. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
+9. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
 .. code-block:: console
 
-   spack env activate [-p] envs/jedi-ufs.mymacos
+   spack env activate [-p] envs/jedi-ufs.mylinux
 
-8. Process the specs and install
+10. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-9. Create lua module files
+11. Create lua module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-10. Create meta-modules for compiler, mpi, python
+12. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 

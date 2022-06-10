@@ -1,9 +1,0 @@
-modules:
-  default:
-    enable::
-    - lmod
-    lmod:
-      whitelist:
-      # List of packages for which we need modules that are blacklisted by default
-      - openmpi
-      - mpich

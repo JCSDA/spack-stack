@@ -12,6 +12,10 @@ General
 
    This can happen when ``spack concretize`` is called the very first time in a new spack-stack clone, during which the boostrapping (installation of ``clingo``) is done first. Simply rerunning the command should solve the problem.
 
+2. Build errors with Python 3.10
+
+   There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.8 or 3.9.
+
 ==============================
 NOAA Parallel Works
 ==============================
