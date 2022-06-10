@@ -169,71 +169,71 @@ runs:
           make install
         fi
 
-###  - name: setup-spack-env
-###    shell: bash
-###    run: |
-###      cd ${{ inputs.path }}
-###      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-###        source /opt/intel/oneapi/setvars.sh
-###      fi
-###
-###      source setup.sh
-###      spack stack create env --template ${{ inputs.template }} --name ${{ inputs.name }} --site ${{ inputs.site }}
-###      spack env activate envs/${{ inputs.name }}
-###      # DH*
-###      echo "UNTIL HERE: inputs.specs are:"
-###      echo ${{ inputs.specs }}
-###      exit 0
-###      # *DH
-###      spack add ${{ inputs.specs }}
-###
-###      # LLVM Clang not in PATH, search for it specifically
-###      # Then, Fortran compilers are null, so set to gfortran
-###      # Add minimal compilers just to prevent other compilers from being used by accident
-###      if [[ "$RUNNER_OS" == "macOS" && ${{ inputs.compiler }} == "clang"* ]]; then
-###        spack compiler add $(brew --prefix llvm)
-###        sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
-###        sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
-###      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-###        spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
-###        # Workaround for error "libimf.so cannot be found":
-###        sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.name }}/spack.yaml
-###      else
-###        spack compiler find
-###      fi
-###
-###      # No external find for intel-oneapi-mpi, 
-###      # And no way to add object entry to list using "spack config add"
-###      # Add this first so "spack config add packages:" will append to this entry
-###      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-###        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
-###        echo "" >> ${SPACK_ENV}/spack.yaml
-###        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-###        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
-###        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-###        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-###        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
-###        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
-###      else
-###        # So Spack can find external MPI
-###        export "PATH=$HOME/mpi/bin:${PATH}"
-###      fi
-###
-###      # Make homebrew qt@5 detectable on macOS
-###      if [[ "$RUNNER_OS" == "macOS" ]]; then
-###        export "PATH=/usr/local/opt/qt@5/bin:${PATH}"
-###      fi
-###
-###      # Spack external find is by default only looking for build-tools, Either
-###      # need to search for additional packages explicitly.
-###      spack external find
-###      spack external find mpich
-###      spack external find openmpi
-###      spack external find perl
-###      spack external find python@3
-###      spack external find qt@5
-###      spack external find wget
-###
+  - name: setup-spack-env
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        source /opt/intel/oneapi/setvars.sh
+      fi
+
+      source setup.sh
+      spack stack create env --template ${{ inputs.template }} --name ${{ inputs.name }} --site ${{ inputs.site }}
+      spack env activate envs/${{ inputs.name }}
+      # DH*
+      echo "UNTIL HERE: inputs.specs are:"
+      echo ${{ inputs.specs }}
+      exit 0
+      # *DH
+      spack add ${{ inputs.specs }}
+
+      # LLVM Clang not in PATH, search for it specifically
+      # Then, Fortran compilers are null, so set to gfortran
+      # Add minimal compilers just to prevent other compilers from being used by accident
+      if [[ "$RUNNER_OS" == "macOS" && ${{ inputs.compiler }} == "clang"* ]]; then
+        spack compiler add $(brew --prefix llvm)
+        sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+        sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
+        # Workaround for error "libimf.so cannot be found":
+        sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.name }}/spack.yaml
+      else
+        spack compiler find
+      fi
+
+      # No external find for intel-oneapi-mpi, 
+      # And no way to add object entry to list using "spack config add"
+      # Add this first so "spack config add packages:" will append to this entry
+      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
+        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
+        echo "" >> ${SPACK_ENV}/spack.yaml
+        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
+        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
+        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+      else
+        # So Spack can find external MPI
+        export "PATH=$HOME/mpi/bin:${PATH}"
+      fi
+
+      # Make homebrew qt@5 detectable on macOS
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
+        export "PATH=/usr/local/opt/qt@5/bin:${PATH}"
+      fi
+
+      # Spack external find is by default only looking for build-tools, Either
+      # need to search for additional packages explicitly.
+      spack external find
+      spack external find mpich
+      spack external find openmpi
+      spack external find perl
+      spack external find python@3
+      spack external find qt@5
+      spack external find wget
+
 ###  - name: configure-options
 ###    shell: bash
 ###    run: |
