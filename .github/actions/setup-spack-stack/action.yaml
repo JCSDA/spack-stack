@@ -271,15 +271,16 @@ runs:
 
       mkdir ${GITHUB_WORKSPACE}/logs
 
-###  - name: concretize
-###    shell: bash
-###    run: |
-###      cd ${{ inputs.path }}
-###      source setup.sh
-###      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-###      cat ${SPACK_ENV}/spack.yaml
-###      spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
-###
+  - name: concretize
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+      cat ${SPACK_ENV}/spack.yaml
+      spack concretize
+      ### spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
+
 ###  - name: build-env
 ###    if: ${{ inputs.concretize_only == 'false' }}
 ###    shell: bash
