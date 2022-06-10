@@ -2,13 +2,13 @@
   packages:
     all:
       providers:
-        blas:: [openblas]
-        lapack:: [openblas]
-        fftw-api:: [fftw]
-        yacc:: [bison]
-        gl:: [opengl]
-        glu:: [openglu]
-        jpeg:: [libjpeg-turbo]
+        blas: [openblas]
+        lapack: [openblas]
+        fftw-api: [fftw]
+        yacc: [bison]
+        gl: [opengl]
+        glu: [openglu]
+        jpeg: [libjpeg-turbo]
     bison:
       version: [3.8.2]
     wget:
