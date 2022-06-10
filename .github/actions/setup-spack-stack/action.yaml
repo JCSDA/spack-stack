@@ -30,7 +30,7 @@ inputs:
     required: false
     default: 'false'
   site:
-    description: "The suite for which to build."
+    description: "The site for which to build."
     required: false
     default: 'linux.default'
 
@@ -169,177 +169,177 @@ runs:
           make install
         fi
 
-  - name: setup-spack-env
-    shell: bash
-    run: |
-      cd ${{ inputs.path }}
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        source /opt/intel/oneapi/setvars.sh
-      fi
-
-      source setup.sh
-      spack stack create env --template ${{ inputs.template }} --name ${{ inputs.name }} --site ${{ inputs.site }}
-      spack env activate envs/${{ inputs.name }}
-      # DH*
-      echo "UNTIL HERE: inputs.specs are:"
-      echo ${{ inputs.specs }}
-      exit 0
-      # *DH
-      spack add ${{ inputs.specs }}
-
-      # LLVM Clang not in PATH, search for it specifically
-      # Then, Fortran compilers are null, so set to gfortran
-      # Add minimal compilers just to prevent other compilers from being used by accident
-      if [[ "$RUNNER_OS" == "macOS" && ${{ inputs.compiler }} == "clang"* ]]; then
-        spack compiler add $(brew --prefix llvm)
-        sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
-        sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
-      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
-        # Workaround for error "libimf.so cannot be found":
-        sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.name }}/spack.yaml
-      else
-        spack compiler find
-      fi
-
-      # No external find for intel-oneapi-mpi, 
-      # And no way to add object entry to list using "spack config add"
-      # Add this first so "spack config add packages:" will append to this entry
-      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
-      else
-        # So Spack can find external MPI
-        export "PATH=$HOME/mpi/bin:${PATH}"
-      fi
-
-      # Make homebrew qt@5 detectable on macOS
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
-        export "PATH=/usr/local/opt/qt@5/bin:${PATH}"
-      fi
-
-      # Spack external find is by default only looking for build-tools, Either
-      # need to search for additional packages explicitly.
-      spack external find
-      spack external find mpich
-      spack external find openmpi
-      spack external find perl
-      spack external find python@3
-      spack external find qt@5
-      spack external find wget
-
-  - name: configure-options
-    shell: bash
-    run: |
-      cd ${{ inputs.path }}
-      source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-
-      # Speed up builds using two build jobs per package and four
-      # jobs in parallel further down (spack install)
-      spack config add "config:build_jobs:2"
-
-      # Use external MPI to save compilation time
-      spack config add "packages:mpi:buildable:False"
-      spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
-
-      ## Use external Python to save compilation time
-      #spack config add "packages:python:buildable:False"
-
-      spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
-
-      # Currently, this is the case for all workflows - wrap in if statement
-      # when this changes in the future
-      # Whitelist the mpi providers so that spack creates the modules for them
-      spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
-      spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
-
-      # Remove specs that don't build under certain configurations.
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        spack rm jedi-tools-env || true
-      fi
-
-      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
-        spack rm jedi-ewok-env || true
-      fi
-
-      mkdir ${GITHUB_WORKSPACE}/logs
-
-  - name: concretize
-    shell: bash
-    run: |
-      cd ${{ inputs.path }}
-      source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      cat ${SPACK_ENV}/spack.yaml
-      spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
-
-  - name: build-env
-    if: ${{ inputs.concretize_only == 'false' }}
-    shell: bash
-    env:
-      OMP_NUM_THREADS: 4
-    run: |
-      cd ${{ inputs.path }}
-      source setup.sh
-      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      # Speed up installation by building in parallel
-      for i in {1..2}; do
-        nohup spack install --fail-fast >> spack_install.log 2>&1 &
-      done
-      #
-      while ps -ef | grep -ve 'grep' | grep 'spack install'; do
-        echo "Still running"
-        tail -n 10 spack_install.log
-        sleep 60
-      done
-
-  - name: create-meta-modules
-    if: ${{ inputs.concretize_only == 'false' }}
-    shell: bash
-    run: |
-      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
-        cd ${{ inputs.path }}
-        source setup.sh
-        spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-        spack module lmod refresh --yes-to-all
-        spack stack setup-meta-modules
-      fi
-
-  - name: test-meta-modules
-    if: ${{ inputs.concretize_only == 'false' }}
-    shell: bash
-    run: |
-      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
-        cd ${{ inputs.path }}
-        if [[ "$RUNNER_OS" == "Linux" ]]; then
-          # Not yet: need lmod installed, loaded and module use command
-          echo ""
-        elif [[ "$RUNNER_OS" == "macOS" ]]; then
-          source /usr/local/opt/lmod/init/profile
-          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
-          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
-          # with "gcc/9", otherwise the module load command will fail.
-          # module load stack-${{ inputs.compiler }}
-          # module load stack-python
-          # # jedi-tools doesn't have any mpi dependencies
-          # if [[ ! "${{ inputs.specs }}" == "jedi-tools" ]]; then
-          #   module load stack-${{ inputs.mpi }}
-          # fi
-        fi
-      fi
-
-  - name: Upload logs
-    if: ${{ always() }}
-    uses: actions/upload-artifact@v2
-    with:
-      name: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.mpi }}-logs
-      path: |
-        ${{ github.workspace }}/logs/
-        ${{ github.workspace }}/envs/${{ inputs.name }}/spack.yaml
+###  - name: setup-spack-env
+###    shell: bash
+###    run: |
+###      cd ${{ inputs.path }}
+###      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+###        source /opt/intel/oneapi/setvars.sh
+###      fi
+###
+###      source setup.sh
+###      spack stack create env --template ${{ inputs.template }} --name ${{ inputs.name }} --site ${{ inputs.site }}
+###      spack env activate envs/${{ inputs.name }}
+###      # DH*
+###      echo "UNTIL HERE: inputs.specs are:"
+###      echo ${{ inputs.specs }}
+###      exit 0
+###      # *DH
+###      spack add ${{ inputs.specs }}
+###
+###      # LLVM Clang not in PATH, search for it specifically
+###      # Then, Fortran compilers are null, so set to gfortran
+###      # Add minimal compilers just to prevent other compilers from being used by accident
+###      if [[ "$RUNNER_OS" == "macOS" && ${{ inputs.compiler }} == "clang"* ]]; then
+###        spack compiler add $(brew --prefix llvm)
+###        sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+###        sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
+###      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+###        spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
+###        # Workaround for error "libimf.so cannot be found":
+###        sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.name }}/spack.yaml
+###      else
+###        spack compiler find
+###      fi
+###
+###      # No external find for intel-oneapi-mpi, 
+###      # And no way to add object entry to list using "spack config add"
+###      # Add this first so "spack config add packages:" will append to this entry
+###      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
+###        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
+###        echo "" >> ${SPACK_ENV}/spack.yaml
+###        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+###        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
+###        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+###        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+###        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
+###        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+###      else
+###        # So Spack can find external MPI
+###        export "PATH=$HOME/mpi/bin:${PATH}"
+###      fi
+###
+###      # Make homebrew qt@5 detectable on macOS
+###      if [[ "$RUNNER_OS" == "macOS" ]]; then
+###        export "PATH=/usr/local/opt/qt@5/bin:${PATH}"
+###      fi
+###
+###      # Spack external find is by default only looking for build-tools, Either
+###      # need to search for additional packages explicitly.
+###      spack external find
+###      spack external find mpich
+###      spack external find openmpi
+###      spack external find perl
+###      spack external find python@3
+###      spack external find qt@5
+###      spack external find wget
+###
+###  - name: configure-options
+###    shell: bash
+###    run: |
+###      cd ${{ inputs.path }}
+###      source setup.sh
+###      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+###
+###      # Speed up builds using two build jobs per package and four
+###      # jobs in parallel further down (spack install)
+###      spack config add "config:build_jobs:2"
+###
+###      # Use external MPI to save compilation time
+###      spack config add "packages:mpi:buildable:False"
+###      spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
+###
+###      # Use external Python to save compilation time
+###      spack config add "packages:python:buildable:False"
+###
+###      spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
+###
+###      # Currently, this is the case for all workflows - wrap in if statement
+###      # when this changes in the future
+###      # Whitelist the mpi providers so that spack creates the modules for them
+###      spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
+###      spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
+###
+###      # Remove specs that don't build under certain configurations.
+###      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+###        spack rm jedi-tools-env || true
+###      fi
+###
+###      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
+###        spack rm jedi-ewok-env || true
+###      fi
+###
+###      mkdir ${GITHUB_WORKSPACE}/logs
+###
+###  - name: concretize
+###    shell: bash
+###    run: |
+###      cd ${{ inputs.path }}
+###      source setup.sh
+###      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+###      cat ${SPACK_ENV}/spack.yaml
+###      spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
+###
+###  - name: build-env
+###    if: ${{ inputs.concretize_only == 'false' }}
+###    shell: bash
+###    env:
+###      OMP_NUM_THREADS: 4
+###    run: |
+###      cd ${{ inputs.path }}
+###      source setup.sh
+###      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+###      # Speed up installation by building in parallel
+###      for i in {1..2}; do
+###        nohup spack install --fail-fast >> spack_install.log 2>&1 &
+###      done
+###      #
+###      while ps -ef | grep -ve 'grep' | grep 'spack install'; do
+###        echo "Still running"
+###        tail -n 10 spack_install.log
+###        sleep 60
+###      done
+###
+###  - name: create-meta-modules
+###    if: ${{ inputs.concretize_only == 'false' }}
+###    shell: bash
+###    run: |
+###      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
+###        cd ${{ inputs.path }}
+###        source setup.sh
+###        spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+###        spack module lmod refresh --yes-to-all
+###        spack stack setup-meta-modules
+###      fi
+###
+###  - name: test-meta-modules
+###    if: ${{ inputs.concretize_only == 'false' }}
+###    shell: bash
+###    run: |
+###      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
+###        cd ${{ inputs.path }}
+###        if [[ "$RUNNER_OS" == "Linux" ]]; then
+###          # Not yet: need lmod installed, loaded and module use command
+###          echo ""
+###        elif [[ "$RUNNER_OS" == "macOS" ]]; then
+###          source /usr/local/opt/lmod/init/profile
+###          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
+###          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
+###          # with "gcc/9", otherwise the module load command will fail.
+###          # module load stack-${{ inputs.compiler }}
+###          # module load stack-python
+###          # # jedi-tools doesn't have any mpi dependencies
+###          # if [[ ! "${{ inputs.specs }}" == "jedi-tools" ]]; then
+###          #   module load stack-${{ inputs.mpi }}
+###          # fi
+###        fi
+###      fi
+###
+###  - name: Upload logs
+###    if: ${{ always() }}
+###    uses: actions/upload-artifact@v2
+###    with:
+###      name: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.mpi }}-logs
+###      path: |
+###        ${{ github.workspace }}/logs/
+###        ${{ github.workspace }}/envs/${{ inputs.name }}/spack.yaml
