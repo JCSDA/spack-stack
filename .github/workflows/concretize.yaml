@@ -12,46 +12,46 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-###  macos_clang_concretize:
-###    strategy:
-###      matrix:
-###        compiler: [clang, apple-clang]
-###    runs-on: macos-latest
-###    steps:
-###      - name: checkout
-###        uses: actions/checkout@v2
-###        with:
-###          submodules: true
-###
-###      - name: install-env
-###        uses: ./.github/actions/setup-spack-stack
-###        with:
-###          template: jedi-ufs-all
-###          compiler: ${{ matrix.compiler }}
-###          mpi: openmpi
-###          path: ${{ github.workspace }}
-###          concretize_only: 'true'
-###          site: macos.default
-###
-###  macos_gcc_concretize:
-###    strategy:
-###      matrix:
-###        compiler: [gcc@9.4.0, gcc@10.3.0]
-###    runs-on: macos-latest
-###    steps:
-###      - name: checkout
-###        uses: actions/checkout@v2
-###        with:
-###          submodules: true
-###
-###      - name: install-env
-###        uses: ./.github/actions/setup-spack-stack
-###        with:
-###          template: jedi-ufs-all
-###          compiler: ${{ matrix.compiler }}
-###          mpi: openmpi
-###          path: ${{ github.workspace }}
-###          concretize_only: 'true'
+  macos_clang_concretize:
+    strategy:
+      matrix:
+        compiler: [clang, apple-clang]
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          template: jedi-ufs-all
+          compiler: ${{ matrix.compiler }}
+          mpi: openmpi
+          path: ${{ github.workspace }}
+          concretize_only: 'true'
+          site: macos.default
+
+  macos_gcc_concretize:
+    strategy:
+      matrix:
+        compiler: [gcc@9.4.0, gcc@10.3.0]
+    runs-on: macos-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          template: jedi-ufs-all
+          compiler: ${{ matrix.compiler }}
+          mpi: openmpi
+          path: ${{ github.workspace }}
+          concretize_only: 'true'
 
   linux_gcc_concretize:
     strategy:
@@ -75,20 +75,20 @@ jobs:
           concretize_only: 'true'
           site: linux.default
 
-###  linux_intel_concretize:
-###    runs-on: ubuntu-latest
-###    steps:
-###      - name: checkout
-###        uses: actions/checkout@v2
-###        with:
-###          submodules: true
-###
-###      - name: install-env
-###        uses: ./.github/actions/setup-spack-stack
-###        with:
-###          template: jedi-ufs-all
-###          compiler: intel
-###          mpi: intel-oneapi-mpi
-###          path: ${{ github.workspace }}
-###          concretize_only: 'true'
-###          site: linux.default
+  linux_intel_concretize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          template: jedi-ufs-all
+          compiler: intel
+          mpi: intel-oneapi-mpi
+          path: ${{ github.workspace }}
+          concretize_only: 'true'
+          site: linux.default

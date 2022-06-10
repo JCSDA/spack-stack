@@ -273,69 +273,68 @@ runs:
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
       cat ${SPACK_ENV}/spack.yaml
-      spack concretize
-      ### spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
+      spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
 
-###  - name: build-env
-###    if: ${{ inputs.concretize_only == 'false' }}
-###    shell: bash
-###    env:
-###      OMP_NUM_THREADS: 4
-###    run: |
-###      cd ${{ inputs.path }}
-###      source setup.sh
-###      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-###      # Speed up installation by building in parallel
-###      for i in {1..2}; do
-###        nohup spack install --fail-fast >> spack_install.log 2>&1 &
-###      done
-###      #
-###      while ps -ef | grep -ve 'grep' | grep 'spack install'; do
-###        echo "Still running"
-###        tail -n 10 spack_install.log
-###        sleep 60
-###      done
-###
-###  - name: create-meta-modules
-###    if: ${{ inputs.concretize_only == 'false' }}
-###    shell: bash
-###    run: |
-###      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
-###        cd ${{ inputs.path }}
-###        source setup.sh
-###        spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-###        spack module lmod refresh --yes-to-all
-###        spack stack setup-meta-modules
-###      fi
-###
-###  - name: test-meta-modules
-###    if: ${{ inputs.concretize_only == 'false' }}
-###    shell: bash
-###    run: |
-###      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
-###        cd ${{ inputs.path }}
-###        if [[ "$RUNNER_OS" == "Linux" ]]; then
-###          # Not yet: need lmod installed, loaded and module use command
-###          echo ""
-###        elif [[ "$RUNNER_OS" == "macOS" ]]; then
-###          source /usr/local/opt/lmod/init/profile
-###          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
-###          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
-###          # with "gcc/9", otherwise the module load command will fail.
-###          # module load stack-${{ inputs.compiler }}
-###          # module load stack-python
-###          # # jedi-tools doesn't have any mpi dependencies
-###          # if [[ ! "${{ inputs.specs }}" == "jedi-tools" ]]; then
-###          #   module load stack-${{ inputs.mpi }}
-###          # fi
-###        fi
-###      fi
-###
-###  - name: Upload logs
-###    if: ${{ always() }}
-###    uses: actions/upload-artifact@v2
-###    with:
-###      name: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.mpi }}-logs
-###      path: |
-###        ${{ github.workspace }}/logs/
-###        ${{ github.workspace }}/envs/${{ inputs.name }}/spack.yaml
+  - name: build-env
+    if: ${{ inputs.concretize_only == 'false' }}
+    shell: bash
+    env:
+      OMP_NUM_THREADS: 4
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+      # Speed up installation by building in parallel
+      for i in {1..2}; do
+        nohup spack install --fail-fast >> spack_install.log 2>&1 &
+      done
+      #
+      while ps -ef | grep -ve 'grep' | grep 'spack install'; do
+        echo "Still running"
+        tail -n 10 spack_install.log
+        sleep 60
+      done
+
+  - name: create-meta-modules
+    if: ${{ inputs.concretize_only == 'false' }}
+    shell: bash
+    run: |
+      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
+        cd ${{ inputs.path }}
+        source setup.sh
+        spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+        spack module lmod refresh --yes-to-all
+        spack stack setup-meta-modules
+      fi
+
+  - name: test-meta-modules
+    if: ${{ inputs.concretize_only == 'false' }}
+    shell: bash
+    run: |
+      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
+        cd ${{ inputs.path }}
+        if [[ "$RUNNER_OS" == "Linux" ]]; then
+          # Not yet: need lmod installed, loaded and module use command
+          echo ""
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
+          source /usr/local/opt/lmod/init/profile
+          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
+          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
+          # with "gcc/9", otherwise the module load command will fail.
+          # module load stack-${{ inputs.compiler }}
+          # module load stack-python
+          # # jedi-tools doesn't have any mpi dependencies
+          # if [[ ! "${{ inputs.specs }}" == "jedi-tools" ]]; then
+          #   module load stack-${{ inputs.mpi }}
+          # fi
+        fi
+      fi
+
+  - name: Upload logs
+    if: ${{ always() }}
+    uses: actions/upload-artifact@v2
+    with:
+      name: ${{ runner.os }}-${{ inputs.compiler }}-${{ inputs.mpi }}-logs
+      path: |
+        ${{ github.workspace }}/logs/
+        ${{ github.workspace }}/envs/${{ inputs.name }}/spack.yaml
