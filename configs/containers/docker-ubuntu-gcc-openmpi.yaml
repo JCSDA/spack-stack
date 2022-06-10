@@ -1,5 +1,6 @@
 spack:
-  concretization: together
+  concretizer:
+    unify: when_possible
   view: false
 
   config:
