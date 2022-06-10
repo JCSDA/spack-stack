@@ -229,10 +229,116 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+          ^esmf@8.3.0~debug: 'esmf-8.3.0'
+          ^esmf@8.3.0+debug: 'esmf-8.3.0-debug'
       openmpi:
         environment:
           set:
             'OMPI_MCA_rmaps_base_oversubscribe': '1'
+      bacio:
+        environment:
+          set:
+            'BACIO_INC4': '{prefix}/include_4'
+            'BACIO_INC8': '{prefix}/include_8'
+            'BACIO_LIB4': '{prefix}/lib/libbacio_4.a'
+            'BACIO_LIB8': '{prefix}/lib/libbacio_8.a'
+      crtm:
+        environment:
+          set:
+            'CRTM_INC': '{prefix}/include'
+            'CRTM_LIB': '{prefix}/lib/libcrtm.a'
+      g2tmpl:
+        environment:
+          set:
+            'G2TMPL_INC': '{prefix}/include'
+            'G2TMPL_LIB': '{prefix}/lib/libg2tmpl.a'
+      gfsio:
+        environment:
+          set:
+            'GFSIO_INC': '{prefix}/include'
+            'GFSIO_LIB': '{prefix}/lib/libgfsio.a'
+            'GFSIO_INC4': '{prefix}/include'
+            'GFSIO_LIB4': '{prefix}/lib/libgfsio.a'
+      grib-util:
+        environment:
+          set:
+            'CNVGRIB': '{prefix}/bin/cnvgrib'
+            'COPYGB': '{prefix}/bin/copygb'
+            'COPYGB2': '{prefix}/bin/copygb2'
+            'DEGRIB2': '{prefix}/bin/degrib2'
+            'GRB2INDEX': '{prefix}/bin/grb2index'
+            'GRBINDEX': '{prefix}/bin/grbindex'
+            'GRIB2GRIB': '{prefix}/bin/grib2grib2'
+            'TOCGRIB': '{prefix}/bin/tocgrib'
+            'TOCGRIB2': '{prefix}/bin/tocgrib2'
+            'TOCGRIB2SUPER': '{prefix}/bin/tocgrib2super'
+            'WGRIB2': '{prefix}/bin/wgrib2'
+      landsfcutil:
+        environment:
+          set:
+            'LANDSFCUTIL_INC4': '{prefix}/include_4'
+            'LANDSFCUTIL_INCd': '{prefix}/include_d'
+            'LANDSFCUTIL_LIB4': '{prefix}/lib/liblandsfcutil_4.a'
+            'LANDSFCUTIL_LIBd': '{prefix}/lib/liblandsfcutil_d.a'
+      nemsio:
+        environment:
+          set:
+            'NEMSIO_INC': '{prefix}/include'
+            'NEMSIO_LIB': '{prefix}/lib'
+            'MKGFSNEMSIOCTL': '{prefix}/mkgfsnemsioctl'
+            'NEMSIO_CHGDATE': '{prefix}/bin/nemsio_chgdate'
+            'NEMSIO_GET': '{prefix}/bin/nemsio_get'
+            'NEMSIO_READ': '{prefix}/bin/nemsio_read'
+      nemsiogfs:
+        environment:
+          set:
+            'NEMSIOGFS_INC': '{prefix}/include'
+            'NEMSIOGFS_LIB': '{prefix}/lib'
+      prod-util:
+        environment:
+          set:
+            'MDATE': '{prefix}/bin/mdate'
+            'NDATE': '{prefix}/bin/ndate'
+            'NHOUR': '{prefix}/bin/nhour'
+            'FSYNC': '{prefix}/bin/fsync_file'
+      sigio:
+        environment:
+          set:
+            'SIGIO_INC': '{prefix}/include'
+            'SIGIO_LIB': '{prefix}/lib/libsigio.a'
+            'SIGIO_INC4': '{prefix}/include'
+            'SIGIO_LIB4': '{prefix}/lib/libsigio.a'
+      sfcio:
+        environment:
+          set:
+            'SFCIO_INC': '{prefix}/include'
+            'SFCIO_LIB': '{prefix}/lib/libsfcio.a'
+      w3nco:
+        environment:
+          set:
+            'W3NCO_INC4': '{prefix}/include_4'
+            'W3NCO_INC8': '{prefix}/include_8'
+            'W3NCO_INCd': '{prefix}/include_d'
+            'W3NCO_LIB4': '{prefix}/lib/libw3nco_4.a'
+            'W3NCO_LIB8': '{prefix}/lib/libw3nco_8.a'
+            'W3NCO_LIBd': '{prefix}/lib/libw3nco_d.a'
+      wgrib2:
+        environment:
+          set:
+            'WGRIB2_INC': '{prefix}/include'
+            'WGRIB2_LIB': '{prefix}/lib/libwgrib2.a'
+            'WGRIB2': '{prefix}/bin/wgrib2'
+      wrf-io:
+        environment:
+          set:
+            'WRF_IO_INC': '{prefix}/include'
+            'WRF_IO_LIB': '{prefix}/lib/libwrf_io.a'
+      upp:
+        environment:
+          set:
+            'UPP_INC': '{prefix}/include'
+            'UPP_LIB': '{prefix}/lib/libupp.a'
+
       hierarchy:
       - mpi
 
