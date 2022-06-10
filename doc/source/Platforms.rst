@@ -25,8 +25,6 @@ Ready-to-use spack-stack installations are available on the following platforms:
 +------------------------------------------+---------------------------+---------------------------+
 | NCAR-Wyoming Cheyenne                    | Dom Heinzeller            | yes                       |
 +------------------------------------------+---------------------------+---------------------------+
-| NOAA NCO WCOSS2                          |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud) | Kyle Gerheiser            | yes                       |
 +------------------------------------------+---------------------------+---------------------------+
 | NOAA RDHPCS Gaea                         | Dom Heinzeller            | yes                       |
@@ -48,8 +46,6 @@ Ready-to-use spack-stack installations are available on the following platforms:
 | NASA Discover              | ``/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install``         |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne      | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install`` |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA NCO WCOSS2            |                                                                                                       |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works        |                                                                                                       |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
@@ -110,13 +106,15 @@ The following is required for building new spack environments and for using spac
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
    module load python/3.7.9
 
-.. _Platforms_WCOSS2:
+.. _Platforms_Acorn:
 
 ------------------------------
-NOAA NCO WCOSS2
+NOAA Acorn (WCOSS2 test system)
 ------------------------------
 
-**WORK IN PROGRESS**
+On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
+
+CONFIG_SITE should be set to empty in `compilers.yaml`.
 
 .. _Platforms_Parallel_Works:
 
