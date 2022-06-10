@@ -178,8 +178,14 @@ runs:
       fi
 
       source setup.sh
-      spack stack create env --template ${{ inputs.template }} --specs ${{ inputs.specs }} --name ${{ inputs.name }} --site ${{ inputs.site }}
+      spack stack create env --template ${{ inputs.template }} --name ${{ inputs.name }} --site ${{ inputs.site }}
       spack env activate envs/${{ inputs.name }}
+      # DH*
+      echo "UNTIL HERE: inputs.specs are:"
+      echo ${{ inputs.specs }}
+      exit 0
+      # *DH
+      spack add ${{ inputs.specs }}
 
       # LLVM Clang not in PATH, search for it specifically
       # Then, Fortran compilers are null, so set to gfortran
