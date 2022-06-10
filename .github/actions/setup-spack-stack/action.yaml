@@ -249,8 +249,8 @@ runs:
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      # Use external Python to save compilation time
-      spack config add "packages:python:buildable:False"
+      ## Use external Python to save compilation time
+      #spack config add "packages:python:buildable:False"
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
