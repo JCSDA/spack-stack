@@ -56,8 +56,7 @@ jobs:
   linux_gcc_concretize:
     strategy:
       matrix:
-        ### compiler: [gcc@9.4.0, gcc@10.3.0]
-        compiler: [gcc@10.3.0]
+        compiler: [gcc@9.4.0, gcc@10.3.0]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
