@@ -41,15 +41,11 @@ stack_dir=${prefix}
 module_dir=${stack_dir}/modulefiles
 app_dir=${stack_dir}/apps
 src_dir=${stack_dir}/src
-env_dir=${stack_dir}/envs
-mirrors_dir=${stack_dir}/mirrors
 
 mkdir -p ${stack_dir}
 mkdir -p ${app_dir}
 mkdir -p ${module_dir}
 mkdir -p ${src_dir}
-mkdir -p ${env_dir}
-mkdir -p ${mirrors_dir}
 echo "Created spack-stack dir at: ${stack_dir}"
 
 mkdir {src_dir}/spack-stack
