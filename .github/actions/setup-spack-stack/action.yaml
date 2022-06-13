@@ -253,12 +253,16 @@ runs:
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
       # Remove specs that don't build under certain configurations.
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        spack rm jedi-tools-env || true
-      fi
-
-      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
-        spack rm jedi-ewok-env || true
+      # Only need that for the concretize_only steps, because the full
+      # builds only build one spec at a time (and the cases that are
+      # removed below don't exist).
+      if [[ "${{ inputs.concretize_only }}" == "true" }} ]]; then
+        if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+          spack rm jedi-tools-env || true
+        fi
+        if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
+          spack rm jedi-ewok-env || true
+        fi
       fi
 
       mkdir ${GITHUB_WORKSPACE}/logs
