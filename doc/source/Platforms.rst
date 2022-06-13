@@ -387,7 +387,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack stack create env --site macos.default --app jedi-ufs --name jedi-ufs.mymacos
+   spack stack create env --site macos.default [--template jedi-ufs-all] --name jedi-ufs.mymacos
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
 
@@ -435,7 +435,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted
+7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -603,7 +603,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack stack create env --site linux.default --app jedi-ufs --name jedi-ufs.mylinux
+   spack stack create env --site linux.default [--template jedi-ufs-all] --name jedi-ufs.mylinux
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``
 
@@ -645,7 +645,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 7. On Red Hat/CentOS 8, only `tcl/tk` environment modules are supported by default. Edit ``envs/jedi-ufs.mylinux/site/modules.yaml`` and replace every occurrence of ``lmod`` with ``tcl``.
 
-8. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted
+8. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. code-block:: console
 

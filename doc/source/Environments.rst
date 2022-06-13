@@ -4,9 +4,7 @@
 Constructing Environments
 *************************
 
-**WORK IN PROGRESS**
-
-This section will describe the environments (environment specs) defined in ``spack/var/spack/repos/jcsda-emc-bundles/packages`` and how to use them. It would be nice if we could automatically parse the directories in ``spack/var/spack/repos/jcsda-emc-bundles/packages`` to create a list here, using the docstring in the ``package.py`` files as descriptions of the environments.
+This section describes the environments (environment specs) defined in ``spack/var/spack/repos/jcsda-emc-bundles/packages``, additional packages available in the JCSDA/NOAA-EMC spack fork, as well as pre-defined application templates and container recipes.
 
 Environments can be constructed in two ways in spack-stack:
 
@@ -36,6 +34,20 @@ Environments can be constructed in two ways in spack-stack:
        ...
        spack add jedi-tools-env@1.0.0
 
+.. _EnvironmentsAdditionalPackages:
+
+-------------------
+Additional packages
+-------------------
+
+Packages that are available in the JCSDA/NOAA-EMC spack fork, but not (yet) in the authoritative spack repository are defined in ``spack/var/spack/repos/jcsda-emc/packages/``. Users are encouraged to run ``spack info <packagename>`` or open the files in an ASCII editor for more information.
+
+**WORK IN PROGRESS**
+
+**AUTOMATICALLY GENERATE A TABLE WITH NAME AND DESCRIPTION BASED ON THE FILE NAME AND THE DOXSTRING? IF WE DO THAT, ALSO UPDATE THE SECTION ON GENERATING DOCUMENTATION WITH THE NECESSARY DETAILS**
+
+**For now, check the contents of ``spack/var/spack/repos/jcsda-emc/packages/`` yourself, sorry. Also, run ``spack info ecmwf-atlas``, for example, to obtain further information on the package.**
+
 .. _EnvironmentsVirtualPackages:
 
 ----------------
@@ -48,7 +60,7 @@ The purpose of virtual packages is to provide a convenient collection of package
 
 **AUTOMATICALLY GENERATE A TABLE WITH NAME AND DESCRIPTION BASED ON THE FILE NAME AND THE DOXSTRING? IF WE DO THAT, ALSO UPDATE THE SECTION ON GENERATING DOCUMENTATION WITH THE NECESSARY DETAILS**
 
-**For now, check the contents of ``spack/var/spack/repos/jcsda-emc-bundles/packages/`` yourself, sorry.**
+**For now, check the contents of ``spack/var/spack/repos/jcsda-emc-bundles/packages/`` yourself, sorry. Also, run ``spack info jedi-ewok-env``, for example, to obtain further information on the package.**
 
 .. _EnvironmentsTemplates:
 
