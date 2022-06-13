@@ -8,7 +8,7 @@ This section describes the environments (environment specs) defined in ``spack/v
 
 Environments can be constructed in two ways in spack-stack:
 
-1. Start with an empty template, ``spack stack create env --template=empty`` or just ````spack stack create env`` without specifying a template.
+1. Start with an empty template, ``spack stack create env --template=empty`` or just ``spack stack create env`` without specifying a template.
 
     - Configure the environment as shown in :numref:`Sections %s <Quickstart>` and :numref:`%s <Platforms>`.
 
