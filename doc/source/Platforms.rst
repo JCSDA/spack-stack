@@ -364,7 +364,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. code-block:: console
 
    vi envs/jedi-ufs.mymacos/spack.yaml
-   vi envs/jedi-ufs.mymacos/packages.yaml
+   vi envs/jedi-ufs.mymacos/common/*.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
 8. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
@@ -565,9 +565,6 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
-   spack config add "packages:all:compiler:[apple-clang@13.1.6]"
-   spack config add "packages:python:buildable:False"
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
 7. On Red Hat/CentOS 8, only `tcl/tk` environment modules are supported by default. Edit ``envs/jedi-ufs.mylinux/site/modules.yaml`` and replace every occurrence of ``lmod`` with ``tcl``.
@@ -577,7 +574,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 .. code-block:: console
 
    vi envs/jedi-ufs.mylinux/spack.yaml
-   vi envs/jedi-ufs.mylinux/packages.yaml
+   vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
 9. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)

@@ -4,9 +4,7 @@
 Extension of spack command in spack-stack
 *****************************************
 
-**WORK IN PROGRESS**
-
-This section will describe the ``spack stack`` extension of the ``spack`` command, which simplifies the installation process. As for any other ``spack`` command, help is available with ``spack stack -h``. The ``spack stack`` extension has two subcommands, explained in the following.
+This section describes the ``spack stack`` extension of the ``spack`` command, which simplifies the installation process. As for any other ``spack`` command, help is available with ``spack stack -h``. The ``spack stack`` extension has two subcommands, explained in the following.
 
 .. code-block:: console
 
