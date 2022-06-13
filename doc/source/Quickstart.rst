@@ -67,18 +67,20 @@ The following instructions install a new spack environment on a pre-configured s
 Create container
 ------------------------
 
+In this example, a container is created with an empty template, and specs are added manually. It is also possible to start with a different template, but it is important to know that container builds do not allow for multiple versions of the same package (e.g., ``fms@2022.01`` and ``fms@release-jcsda``), therefore not all templates will work (one can remove certain specs from the build, as long as this does not impact the usability of the container).
+
 .. code-block:: console
 
    # See a list of preconfigured containers
-   spack stack create container -h
+   spack stack create ctr -h
 
-   # Create container spack definition (spack.yaml) in directory envs/<spec>.<config>
-   spack stack create container docker-ubuntu-gcc-openmpi --specs ufs-weather-model-env
+   # Create container spack definition (spack.yaml) in directory envs/<container-config>
+   spack stack create ctr docker-ubuntu-gcc-openmpi --template=empty
 
    # Descend into container environment directory
-   cd envs/ufs-weather-model.docker-ubuntu-gcc-openmpi
+   cd envs/docker-ubuntu-gcc-openmpi
 
-   # Optionally edit config file
+   # Edit config file and add the required specs in section "specs:"
    emacs spack.yaml
 
    # Docker: create Dockerfile and build container
@@ -120,7 +122,9 @@ In the simplest case, a new package (and its basic dependencies) or a new versio
 
    spack install [--verbose] [--fail-fast]
 
-Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_.
+Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_. Details on the ``spack stack`` extension of the ``spack`` are provided in :numref:`Section %s <SpackStackExtension`.
+
+.. _QuickstartUseSpackStack:
 
 =================================================
 Using a spack environment to compile and run code

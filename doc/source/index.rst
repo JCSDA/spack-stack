@@ -12,6 +12,7 @@ Table of Contents
    Platforms
    Environments
    Prerequisites
+   SpackStackExtension
    KnownIssues
    MaintainersSection
    Documentation

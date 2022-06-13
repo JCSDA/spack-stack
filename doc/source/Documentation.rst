@@ -21,8 +21,6 @@ Steps to generate the documentation locally:
    cmake [-DSPHINX_OUTPUT_HTML=OFF] [-DSPHINX_OUTPUT_LATEX=ON] ..
    make
 
-   
-
 3. The output can be found in subdirectories ``html`` (``open html/index.html``) and ``pdf`` (open ``pdf/spack-stack.pdf``).
 
 .. note::
