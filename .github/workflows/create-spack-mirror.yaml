@@ -8,7 +8,7 @@ on:
         required: false
         default: 'empty'
       specs:
-        description: 'Which application env to build'
+        description: 'Which specs to add to the template'
         required: false
         default: 'jedi-ufs-env'
 
@@ -25,8 +25,9 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack stack create env --template ${{ github.event.inputs.template }} --specs ${{ github.event.inputs.specs }} --name mirror
+          spack stack create env --template ${{ github.event.inputs.template }} --name mirror
           spack env activate -d envs/mirror
+          spack add ${{ github.event.inputs.specs }}
           spack compiler find
           spack add re2c
           spack add clingo

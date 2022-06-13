@@ -29,16 +29,16 @@ Using spack to create environments and containers
 Create local environment
 ------------------------
 
-The following instructions install a new spack environment on a pre-configured site (see :numref:`Section %s <Platforms_Preconfigured_Sites>` for a list of pre-configured sites and site-specific notes). Instructions for creating a new site config on an configurable system (i.e. a generic Linux or macOS system) can be found in :numref:`Section %s <Platform_New_Site_Configs>`.
+The following instructions install a new spack environment on a pre-configured site (see :numref:`Section %s <Platforms_Preconfigured_Sites>` for a list of pre-configured sites and site-specific notes). Instructions for creating a new site config on an configurable system (i.e. a generic Linux or macOS system) can be found in :numref:`Section %s <Platform_New_Site_Configs>`. The options for the ``spack stack`` extension are explained in :numref:`Section %s <SpackStackExtension>`.
 
 .. code-block:: console
 
-   # See a list of sites and apps
+   # See a list of sites and templates
    spack stack create env -h
 
-   # Create a pre-configured Spack environment in envs/<app>.<site>
+   # Create a pre-configured Spack environment in envs/<template>.<site>
    # (copies site-specific, application-specific, and common config files into the environment directory)
-   spack stack create env --site hera --specs jedi-fv3-env --name jedi-fv3.hera
+   spack stack create env --site hera --template ufs-weather-model --name ufs-weather-model.hera
 
    # Activate the newly created environment
    # Optional: decorate the command line prompt using -p
@@ -49,7 +49,7 @@ The following instructions install a new spack environment on a pre-configured s
 
    # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
    emacs envs/jedi-fv3.hera/spack.yaml
-   emacs envs/jedi-fv3.hera/packages.yaml
+   emacs envs/jedi-fv3.hera/common/*.yaml
    emacs envs/jedi-fv3.hera/site/*.yaml
 
    # Process the specs and install
@@ -63,22 +63,24 @@ The following instructions install a new spack environment on a pre-configured s
    # Create meta-modules for compiler, mpi, python
    spack stack setup-meta-modules
 
-------------------------
+----------------
 Create container
-------------------------
+----------------
+
+In this example, a container is created with an empty template, and specs are added manually. It is also possible to start with a different template, but it is important to know that container builds do not allow for multiple versions of the same package (e.g., ``fms@2022.01`` and ``fms@release-jcsda``), therefore not all templates will work (one can remove certain specs from the build, as long as this does not impact the usability of the container).
 
 .. code-block:: console
 
    # See a list of preconfigured containers
-   spack stack create container -h
+   spack stack create ctr -h
 
-   # Create container spack definition (spack.yaml) in directory envs/<spec>.<config>
-   spack stack create container docker-ubuntu-gcc-openmpi --specs ufs-weather-model-env
+   # Create container spack definition (spack.yaml) in directory envs/<container-config>
+   spack stack create ctr docker-ubuntu-gcc-openmpi --template=empty
 
    # Descend into container environment directory
-   cd envs/ufs-weather-model.docker-ubuntu-gcc-openmpi
+   cd envs/docker-ubuntu-gcc-openmpi
 
-   # Optionally edit config file
+   # Edit config file and add the required specs in section "specs:"
    emacs spack.yaml
 
    # Docker: create Dockerfile and build container
@@ -87,15 +89,17 @@ Create container
    docker build -t myimage .
    docker run -it myimage
 
+.. _QuickstartExtendingEnvironments:
+
 ------------------------
 Extending environments
 ------------------------
 
-Additional packages (and their dependencies) or new versions of packages can be added to existing environments. It is recommended to take a backup of the existing environment directory (e.g. using ``rsync``) or test this first as described in :numref:`Section %s <MaintainersSection_Testing_New_Packages>`, especially if new versions of packages are added that are themselves dependencies for other packages. In some cases, adding new versions of packages will require rebuilding large portions of the stack, for example if a new version of ``hdf5`` is needed. In this case, it is recommended to start over with an entirely new environment.
+Additional packages (and their dependencies) or new versions of packages can be added to existing environments. It is recommended to take a backup of the existing environment directory (e.g. using ``rsync``) or test this first as described in :numref:`Section %s <MaintainersSection_Testing_New_Packages>`, especially if new versions of packages are added that act themselves as dependencies for other packages. In some cases, adding new versions of packages will require rebuilding large portions of the stack, for example if a new version of ``hdf5`` is needed. In this case, it is recommended to start over with an entirely new environment.
 
-In the simplest case, a new package (and its basic dependencies) or a new version of an existing package that is not a dependency itself can be added as described in the following for a new version of ``ecmwf-atlas``.
+In the simplest case, a new package (and its basic dependencies) or a new version of an existing package that is not a dependency for other packages can be added as described in the following example for a new version of ``ecmwf-atlas``.
 
-1. Check if the package has any variants defined in the common (``env_dir/packages.yaml``) or site (``env_dir/site/packages.yaml``) package config and make sure that these are reflected
+1. Check if the package has any variants defined in the common (``env_dir/common/packages.yaml``) or site (``env_dir/site/packages.yaml``) package config and make sure that these are reflected
    correctly in the ``spec`` command:
 
 .. code-block:: console
@@ -120,7 +124,9 @@ In the simplest case, a new package (and its basic dependencies) or a new versio
 
    spack install [--verbose] [--fail-fast]
 
-Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_.
+Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_. Details on the ``spack stack`` extension of the ``spack`` are provided in :numref:`Section %s <SpackStackExtension>`.
+
+.. _QuickstartUseSpackStack:
 
 =================================================
 Using a spack environment to compile and run code

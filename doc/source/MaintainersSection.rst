@@ -1,8 +1,8 @@
 .. _MaintainersSection:
 
-*************************
-Maintainers Section
-*************************
+******************************
+Maintainers/Developers Section
+******************************
 
 ==============================
 Pre-configuring sites
@@ -167,8 +167,35 @@ qt (qt@5)
 Testing new packages
 ==============================
 
+--------------------------------
+Using spack to test/add packages
+--------------------------------
+
+The simplest case of adding new packages that are available in spack-stack is described in :numref:`Section %s <QuickstartExtendingEnvironments>`. As mentioned there, it is advised to take a backup of the spack environment (and install directories if outside the spack environment directory tree). It is also possible to chain spack installations, which means creating a test environment that uses installed packages and modulefiles from another (e.g. authoritative) spack environment and build the packages to be tested in isolation.
+
 **WORK IN PROGRESS**
 
-(chaining spack installations)
+More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_
 
-https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations
+----------------------------------------
+Testing/adding packages outside of spack
+----------------------------------------
+
+Sometimes, users may want to build new versions of packages frequently without using spack, for example as part of an existing build system (e.g. a ``cmake`` submodule or an ``ecbuild`` bundle). Also, users may wish to test developmental code that is not available and/or not ready for release in spack-stack. In this case, users need to unload the modules of the packages that are to be replaced, including their dependencies, and build the new version(s) themselves within the existing build system or manually. The loaded modules from the spack environment in this case provide the necessary dependencies, just like for any other build system.
+
+.. note::
+   Users are strongly advised to not interfere with the spack install tree. The environment install tree and module files should only be modified using spack.
+
+Users can build multiple packages outside of spack and install them in a separate install tree, for example ``MY_INSTALL_TREE``. In order to find these packages, users must extend their environment as required for the system/the packages to be installed:
+
+.. code-block:: console
+   export PATH="$MY_INSTALL_TREE/bin:$PATH"
+   export CPATH="$MY_INSTALL_TREE/include:$PATH"
+   export LD_LIBRARY_PATH="$MY_INSTALL_TREE/lib64:$MY_INSTALL_TREE/lib:$LD_LIBRARY_PATH"
+   # macOS
+   export DYLD_LIBRARY_PATH="$MY_INSTALL_TREE/lib64:$MY_INSTALL_TREE/lib:$DYLD_LIBRARY_PATH"
+   # Python packages, use correct lib/lib64 and correct python version
+   export PYTHONPATH="$MY_INSTALL_TREE/lib/pythonX.Y/site-packages:$PYTHONPATH"
+
+Python packages can be added using ``python setup.py install --prefix=...`` or ``python3 -m pip install --no-deps --prefix=...``. The ``--no-deps`` options is very important, because ``pip`` may otherwise attempt to install dependencies that already exist in spack-stack. These dependencies are not only duplicates, they may also be different versions and/or compiled with different compilers/libraries (because they are wheels).
+

@@ -10,7 +10,7 @@ inputs:
     required: false
     default: 'empty'
   specs:
-    description: 'Which application env to build'
+    description: 'Which specs to add to the environment'
     required: false
     default: ''
   compiler:
@@ -30,7 +30,7 @@ inputs:
     required: false
     default: 'false'
   site:
-    description: "The suite for which to build."
+    description: "The site for which to build."
     required: false
     default: 'linux.default'
 
@@ -178,8 +178,9 @@ runs:
       fi
 
       source setup.sh
-      spack stack create env --template ${{ inputs.template }} --specs ${{ inputs.specs }} --name ${{ inputs.name }} --site ${{ inputs.site }}
+      spack stack create env --template ${{ inputs.template }} --name ${{ inputs.name }} --site ${{ inputs.site }}
       spack env activate envs/${{ inputs.name }}
+      spack add ${{ inputs.specs }}
 
       # LLVM Clang not in PATH, search for it specifically
       # Then, Fortran compilers are null, so set to gfortran
@@ -243,9 +244,6 @@ runs:
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
-      # Use external Python to save compilation time
-      spack config add "packages:python:buildable:False"
-
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
       # Currently, this is the case for all workflows - wrap in if statement
@@ -255,12 +253,16 @@ runs:
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
       # Remove specs that don't build under certain configurations.
-      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-        spack rm jedi-tools-env || true
-      fi
-
-      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
-        spack rm jedi-ewok-env || true
+      # Only need that for the concretize_only steps, because the full
+      # builds only build one spec at a time (and the cases that are
+      # removed below don't exist).
+      if [[ "${{ inputs.concretize_only }}" == "true" ]]; then
+        if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+          spack rm jedi-tools-env || true
+        fi
+        if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
+          spack rm jedi-ewok-env || true
+        fi
       fi
 
       mkdir ${GITHUB_WORKSPACE}/logs
