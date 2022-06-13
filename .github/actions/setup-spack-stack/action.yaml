@@ -256,7 +256,7 @@ runs:
       # Only need that for the concretize_only steps, because the full
       # builds only build one spec at a time (and the cases that are
       # removed below don't exist).
-      if [[ "${{ inputs.concretize_only }}" == "true" }} ]]; then
+      if [[ "${{ inputs.concretize_only }}" == "true" ]]; then
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
           spack rm jedi-tools-env || true
         fi
