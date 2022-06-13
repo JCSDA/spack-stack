@@ -1,6 +1,5 @@
 .. _Environments:
 
-*************************
 Constructing Environments
 *************************
 

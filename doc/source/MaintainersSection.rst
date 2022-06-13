@@ -1,6 +1,5 @@
 .. _MaintainersSection:
 
-******************************
 Maintainers/Developers Section
 ******************************
 
