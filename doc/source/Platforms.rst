@@ -46,13 +46,12 @@ spack-stack-0.0.1-rc1
 | Amazon Web Services AMI Red Hat 8        | Dom Heinzeller            |                           |
 +------------------------------------------+---------------------------+---------------------------+
 
-
 +----------------------------+-------------------------------------------------------------------------------------------------------+
 | System                     | Location                                                                                              |
 +============================+=======================================================================================================+
-| MSU Orion                  | coming soon                                                                                           |
+| MSU Orion                  | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc1/envs/skylab-1.0.0-intel-2022.0.2/install``  |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover              | coming soon                                                                                           |
+| NASA Discover:sup:`*`      | coming soon                                                                                           |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne      |                                                                                                       |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
@@ -72,6 +71,9 @@ spack-stack-0.0.1-rc1
 +----------------------------+-------------------------------------------------------------------------------------------------------+
 | AWS AMI Red Hat 8          | coming soon                                                                                           |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
+
+.. note::
+   ``spack-stack-1.0.0-rc1`` by default builds ESMF with internal parallelio (pio), which has become problematic with the most recent version 8.3.0 of ESMF. See https://github.com/spack/spack/issues/31122 for details. Platforms marked with a :sup:`*` have pio turned off manually in spack-stack-1.0.0-rc1
 
 ---------------------
 Earlier test versions
@@ -140,6 +142,14 @@ The following is required for building new spack environments and for using spac
    module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.7
 
+.. note::
+   If the build of `crtm` or another package fails with errors related to ``git lfs not found``, load the ``git`` module and initialize ``git lfs``:
+
+.. code-block:: console
+
+   module load git/2.28.0
+   git lfs install
+
 .. _Platforms_Discover:
 
 ------------------------------
@@ -153,6 +163,14 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
+
+.. note::
+   If the build of `crtm` or another package fails with errors related to ``git lfs not found``, load the ``git`` module and initialize ``git lfs``:
+
+.. code-block:: console
+
+   module load git-lfs/3.0.2
+   git lfs install
 
 .. _Platforms_Cheyenne:
 
@@ -390,18 +408,18 @@ Creating a new environment
 
 Remember to activate the ``lua`` module environment and have MacTeX in your search path, if applicable. It is also recommended to increase the stacksize limit to 65Kb using ``ulimit -S -s unlimited``.
 
-1. Create a pre-configured environment with a default (nearly empty) site config
+1. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
 .. code-block:: console
 
    spack stack create env --site macos.default [--template jedi-ufs-all] --name jedi-ufs.mymacos
+   spack env activate [-p] envs/jedi-ufs.mymacos
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
 
 .. code-block:: console
 
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mymacos/site"
-
 
 3. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
@@ -450,28 +468,20 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/common/*.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-8. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
-
-.. code-block:: console
-
-   spack env activate [-p] envs/jedi-ufs.mymacos
-   # check that you have activated your environment properly
-   spack env status
-
-9. Process the specs and install
+8. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-10. Create lua module files
+9. Create lmod module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-11. Create meta-modules for compiler, mpi, python
+10. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
@@ -557,9 +567,9 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt-get upgrade
 
    # Compilers
+   apt install -y gcc g++ gfortran gdb
    apt install -y gcc-10 g++-10
    apt install -y gfortran-10
-   apt install -y gdb
 
    # Do *not* install MPI with yum, this will be done with spack-stack
 
@@ -608,11 +618,12 @@ Creating a new environment
 
 It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimited``, and to test if the module environment functions correctly (``module available``).
 
-1. Create a pre-configured environment with a default (nearly empty) site config
+1. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
 .. code-block:: console
 
    spack stack create env --site linux.default [--template jedi-ufs-all] --name jedi-ufs.mylinux
+   spack env activate [-p] envs/jedi-ufs.mylinux
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``
 
@@ -662,26 +673,20 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-9. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
-
-.. code-block:: console
-
-   spack env activate [-p] envs/jedi-ufs.mylinux
-
-10. Process the specs and install
+9. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-11. Create lua module files
+10. Create tcl (Red Hat 8) or lmod (Ubuntu 20.04) module files
 
 .. code-block:: console
 
-   spack module lmod refresh
+   spack module [tcl|lmod] refresh
 
-12. Create meta-modules for compiler, mpi, python
+11. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
