@@ -1,6 +1,5 @@
 .. _SpackStackExtension:
 
-*****************************************
 Extension of spack command in spack-stack
 *****************************************
 
