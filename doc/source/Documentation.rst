@@ -9,7 +9,7 @@ and the environment spec ``jedi-tools-env`` (see :numref:`Section %s <Environmen
 
 Steps to generate the documentation locally:
 
-1. If using a ``spack-stack`` environment, load the required modules (e.g. ``module load jedi-tools-env``), otherwise make sure that ``sphinx``is loaded, ``sphinxcontrib-bibtex`` and your TeX/LaTeX distribution of choice are in loaded into your environment. The latter two are only required if building the TeX/LaTeX documentation.
+1. If using a ``spack-stack`` environment, load the required modules (e.g. ``module load jedi-tools-env``), otherwise make sure that ``sphinx``is loaded, ``sphinxcontrib-bibtex`` and your TeX/LaTeX distribution of choice are optionally loaded into your environment. The latter two are only required if building the TeX/LaTeX documentation.
 
 2. Execute the following commands (note that the default value for option ``SPHINX_OUTPUT_HTML`` is ``ON``, and for option ``SPHINX_OUTPUT_LATEX`` is ``OFF``):
 
