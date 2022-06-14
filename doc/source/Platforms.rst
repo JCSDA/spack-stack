@@ -342,7 +342,6 @@ This instructions are meant to be a reference that users can follow to set up th
    brew install python
    brew install git
    brew install git-lfs
-   brew install git-flow-avh
    brew install lmod
    brew install wget
    brew install bash
