@@ -63,6 +63,15 @@ The following instructions install a new spack environment on a pre-configured s
    # Create meta-modules for compiler, mpi, python
    spack stack setup-meta-modules
 
+.. note::
+  You may want to capture the output from :code:`spack concretize` and :code:`spack install` comands in log files.
+  For example:
+
+  .. code-block:: bash
+    
+    spack concretize 2>&1 | tee log.concretize
+    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
+
 ----------------
 Create container
 ----------------
