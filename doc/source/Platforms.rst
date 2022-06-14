@@ -350,27 +350,25 @@ This instructions are meant to be a reference that users can follow to set up th
    brew install cmake
    brew install openssl
    # Note - need to pin to version 5
-   brew install qt@5.15.3
+   brew install qt@5
 
-.. warning::
-  The :code:`brew install qt@5.15.3` command may not successfully run, in which case you can try :code:`brew install qt@5` instead.
+4. Configure your terminal to use the homebrew installed bash
 
-.. note::
   After installing bash with homebrew, you need to change your terminal application's default command to use :code:`/usr/local/bin/bash`.
   For example with iterm2, you can click on the :code:`preferences` item in the :code:`iTerm2` menu.
   Then click on the :code:`Profiles` tab and enter :code:`/usr/local/bin/bash` in the :code:`Command` box.
   This is done to avoid issues with the MacOS System Integrity Protection (SIP) mechanism when running bash scripts.
   See https://support.apple.com/en-us/HT204899 for more details about SIP.
 
-4. Activate the ``lua`` module environment
+5. Activate the ``lua`` module environment
 
 .. code-block:: console
 
    source /usr/local/opt/lmod/init/profile
 
-5. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
+6. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
 
-6. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308). Make sure that ``python3`` points to the Homebrew version.
+7. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308). Make sure that ``python3`` points to the Homebrew version.
 
 .. code-block:: console
 
@@ -378,7 +376,7 @@ This instructions are meant to be a reference that users can follow to set up th
    # test - successful if no output
    python3 -c "import poetry"
 
-7. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
+8. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
 
    If the ``jedi-tools`` application is built with variant ``+latex`` to enable building LaTeX/PDF documentation, install MacTeX 
    `MacTeX  <https://www.tug.org/mactex>`_ and configure your shell to have it in the search path, for example:
@@ -399,10 +397,6 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. code-block:: console
 
    spack stack create env --site macos.default [--template jedi-ufs-all] --name jedi-ufs.mymacos
-
-.. note::
-  It is advisable to use the :code:`--template jedi-ufs-all` option on the :code:`spack stack create env` command above.
-  This will add a number of specs to your :code:`envs/jedi-ufs.mymacos/spack.yaml` file, of which you can delete the ones you don't need.
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
 
@@ -458,18 +452,6 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/common/*.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-.. note::
-  When editing the :code:`envs/jedi-ufs.mymacos/spack.yaml` make sure that under the :code:`specs:` section you enter :code:`openmpi` and at least one of the jedi specs such as :code:`jedi-ufs-env`.
-  Here is an example:
-  
-  .. code-block:: yaml
-  
-    specs:
-        - jedi-ufs-env
-        - openmpi
-  
-  This will ensure that you build a complete stack for building the corresponding JEDI bundles.
-
 8. Activate the environment (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
 .. code-block:: console
@@ -484,15 +466,6 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack concretize
    spack install [--verbose] [--fail-fast]
-
-.. note::
-  You may want to capture the output from :code:`spack concretize` and :code:`spack install` comands in log files.
-  For example:
-  
-  .. code-block:: bash
-    
-    spack concretize 2>&1 | tee log.concretize
-    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 10. Create lua module files
 
