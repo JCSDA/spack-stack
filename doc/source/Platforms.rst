@@ -173,9 +173,9 @@ The following is required for building new spack environments and for using spac
 
 .. _Platforms_Acorn:
 
-------------------------------
+-------------------------------
 NOAA Acorn (WCOSS2 test system)
-------------------------------
+-------------------------------
 
 On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
 
@@ -349,17 +349,25 @@ This instructions are meant to be a reference that users can follow to set up th
    brew install cmake
    brew install openssl
    # Note - need to pin to version 5
-   brew install qt@5.15.3
+   brew install qt@5
 
-4. Activate the ``lua`` module environment
+4. Configure your terminal to use the homebrew installed bash
+
+  After installing bash with homebrew, you need to change your terminal application's default command to use :code:`/usr/local/bin/bash`.
+  For example with iterm2, you can click on the :code:`preferences` item in the :code:`iTerm2` menu.
+  Then click on the :code:`Profiles` tab and enter :code:`/usr/local/bin/bash` in the :code:`Command` box.
+  This is done to avoid issues with the MacOS System Integrity Protection (SIP) mechanism when running bash scripts.
+  See https://support.apple.com/en-us/HT204899 for more details about SIP.
+
+5. Activate the ``lua`` module environment
 
 .. code-block:: console
 
    source /usr/local/opt/lmod/init/profile
 
-5. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
+6. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
 
-6. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308). Make sure that ``python3`` points to the Homebrew version.
+7. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308). Make sure that ``python3`` points to the Homebrew version.
 
 .. code-block:: console
 
@@ -367,7 +375,7 @@ This instructions are meant to be a reference that users can follow to set up th
    # test - successful if no output
    python3 -c "import poetry"
 
-7. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
+8. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
 
    If the ``jedi-tools`` application is built with variant ``+latex`` to enable building LaTeX/PDF documentation, install MacTeX 
    `MacTeX  <https://www.tug.org/mactex>`_ and configure your shell to have it in the search path, for example:
@@ -448,6 +456,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. code-block:: console
 
    spack env activate [-p] envs/jedi-ufs.mymacos
+   # check that you have activated your environment properly
+   spack env status
 
 9. Process the specs and install
 
