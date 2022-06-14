@@ -1,6 +1,5 @@
 .. _Documentation:
 
-*******************************
 Generating Sphinx Documentation
 *******************************
 
