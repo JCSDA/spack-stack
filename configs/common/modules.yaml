@@ -115,6 +115,8 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+          ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
+          ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
           ^esmf@8.3.0~debug: 'esmf-8.3.0'
           ^esmf@8.3.0+debug: 'esmf-8.3.0-debug'
       openmpi:
@@ -334,6 +336,8 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
+          ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
+          ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
           ^esmf@8.3.0~debug: 'esmf-8.3.0'
           ^esmf@8.3.0+debug: 'esmf-8.3.0-debug'
       openmpi:

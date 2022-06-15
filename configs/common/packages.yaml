@@ -21,7 +21,7 @@
       version: [1.2.12]
     hdf:
       version: [4.2.15]
-      variants: ~fortran +netcdf
+      variants: ~fortran ~netcdf
     hdf5:
       version: [1.12.1]
       variants: +hl +fortran +mpi +threadsafe
@@ -64,7 +64,7 @@
       version: [2.1.4]
     # Attention - when updating the version also check the common modules.yaml config and update the projections for lmod/tcl
     esmf:
-      version: [8.3.0]
+      version: [8.3.0b09]
       variants: ~xerces ~pnetcdf
     # Attention - when updating also check macos.default and macos--monterey-llvm-clang-openmpi-reference site configs
     fms:
