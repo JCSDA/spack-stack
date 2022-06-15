@@ -2,7 +2,7 @@ name: macos-gcc-build
 
 on:
   pull_request:
-  push:
+  #push:
   workflow_dispatch:
 
 # Use custom shell with -l so .bash_profile is sourced
