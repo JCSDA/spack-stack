@@ -68,7 +68,7 @@ spack:
     # DH* fake version number
     - r2d2@1.0.0
     # DH* fake version number
-    - shumlib@macos_clang_port
+    - shumlib@macos_clang_linux_intel_port
     # DH* fake version number
     - solo@1.0.0
     - sp@2.3.3
