@@ -144,7 +144,7 @@
       version: [0.29.0]
       variants: +fckit +trans
     shumlib:
-      version: [macos_clang_port]
+      version: [macos_clang_linux_intel_port]
     fiat:
       version: [develop]
     ectrans:
