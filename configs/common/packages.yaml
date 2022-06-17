@@ -146,7 +146,7 @@
     shumlib:
       version: [macos_clang_linux_intel_port]
     fiat:
-      version: [develop]
+      version: [main]
     ectrans:
       version: [develop]
       variants: ~enable_mkl
