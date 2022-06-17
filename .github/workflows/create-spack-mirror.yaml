@@ -6,11 +6,11 @@ on:
       template:
         description: 'Base spack.yaml template. Default is an empty environment.'
         required: false
-        default: 'empty'
-      specs:
-        description: 'Which specs to add to the template'
-        required: false
-        default: 'jedi-ufs-env'
+        default: 'jedi-ufs-all'
+      #specs:
+      #  description: 'Which specs to add to the template'
+      #  required: false
+      #  default: 'jedi-ufs-env'
 
 jobs:
   create-spack-mirror:
@@ -27,11 +27,14 @@ jobs:
           source ./setup.sh
           spack stack create env --template ${{ github.event.inputs.template }} --name mirror
           spack env activate -d envs/mirror
-          spack add ${{ github.event.inputs.specs }}
+          #spack add ${{ github.event.inputs.specs }}
           spack compiler find
           spack add re2c
           spack add clingo
           spack concretize
+          # spack mirror doesn't like environment variables:
+          # ==> Error: Invalid url format from url: ${SPACK_STACK_DIR}/cache/source_cache
+          sed -i "s#\${SPACK_STACK_DIR}#$SPACK_STACK_DIR#g" envs/mirror/common/config.yaml
           spack mirror create -a
           # upload-artifact does not allow filenames that contain '?'
           rm -vf `find cache/source_cache -name '*\?*'`
