@@ -83,6 +83,7 @@ modules:
       - xrandr
       - xtrans
       - xz
+      - yaksa
       # Do not create MPI modules - we create our own meta modules
       - cray-mpich
       - mpich
@@ -304,6 +305,7 @@ modules:
       - xrandr
       - xtrans
       - xz
+      - yaksa
       # Do not create MPI modules - we create our own meta modules
       - cray-mpich
       - mpich
