@@ -14,7 +14,8 @@ jobs:
   build:
     strategy:
       matrix:
-        spec: [jedi-ufs-all]
+        template: [jedi-ufs-all]
+        spec: []
     runs-on: macos-latest
     steps:
 
@@ -26,6 +27,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
+          templates: ${{ matrix.template }}
           specs: ${{ matrix.spec }}
           compiler: apple-clang
           mpi: openmpi

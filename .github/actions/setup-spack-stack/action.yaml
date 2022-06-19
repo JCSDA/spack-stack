@@ -5,8 +5,8 @@ inputs:
     description: 'Give the environment a name'
     required: false
     default: 'default'
-  template:
-    description: 'Base spack.yaml template. Default is an empty environment.'
+  templates:
+    description: 'Base spack.yaml templates. Default is an empty environment.'
     required: false
     default: 'empty'
   specs:
@@ -178,7 +178,7 @@ runs:
       fi
 
       source setup.sh
-      spack stack create env --template ${{ inputs.template }} --name ${{ inputs.name }} --site ${{ inputs.site }}
+      spack stack create env --template ${{ inputs.templates }} --name ${{ inputs.name }} --site ${{ inputs.site }}
       spack env activate envs/${{ inputs.name }}
       spack add ${{ inputs.specs }}
 
@@ -256,14 +256,14 @@ runs:
       # Only need that for the concretize_only steps, because the full
       # builds only build one spec at a time (and the cases that are
       # removed below don't exist).
-      #if [[ "${{ inputs.concretize_only }}" == "true" ]]; then
+      ### if [[ "${{ inputs.concretize_only }}" == "true" ]]; then
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
           spack rm jedi-tools-env || true
         fi
         if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
           spack rm jedi-ewok-env || true
         fi
-      #fi
+      ### fi
 
       mkdir ${GITHUB_WORKSPACE}/logs
 
@@ -300,19 +300,19 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
+      ### if [[ ! "${{ inputs.specs }}" == "" || ! "${{ inputs.templates }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
         spack module lmod refresh --yes-to-all
         spack stack setup-meta-modules
-      fi
+      ### fi
 
   - name: test-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
+      ### if [[ ! "${{ inputs.specs }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         if [[ "$RUNNER_OS" == "Linux" ]]; then
           # Not yet: need lmod installed, loaded and module use command
@@ -329,7 +329,7 @@ runs:
           #   module load stack-${{ inputs.mpi }}
           # fi
         fi
-      fi
+      ### fi
 
   - name: Upload logs
     if: ${{ always() }}
