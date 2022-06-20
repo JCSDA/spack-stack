@@ -27,6 +27,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
+          templates: ${{ matrix.template }}
           specs: ${{ matrix.spec }}
           compiler: gcc@9
           mpi: mpich
