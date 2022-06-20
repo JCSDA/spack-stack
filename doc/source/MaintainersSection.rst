@@ -32,9 +32,7 @@ qt (qt@5)
    :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
 
 ecflow
-   MISSING
-  
-  after qt5 and after miniconda
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
 
 .. code-block:: console
 
@@ -43,8 +41,6 @@ ecflow
    module load cmake/3.21.0
    module load qt/5.15.2
    module load comp/gcc/10.1.0
-
-Then follow the instructions in :numref:`Section %s <Prerequisites_Qt5>`.
 
 .. _MaintainersSection_Cheyenne:
 

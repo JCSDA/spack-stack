@@ -133,7 +133,7 @@
       version: [3.6.5]
     ecflow:
       version: [5.8.3]
-      variants: +ui +static_boost
+      variants: +ui
     eckit:
       version: [1.19.0]
       variants: linalg=eigen,lapack compression=lz4,bzip2
