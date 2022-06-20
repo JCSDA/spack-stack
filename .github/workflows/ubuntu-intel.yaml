@@ -1,7 +1,7 @@
 name: ubuntu-intel-build
 
 on:
-  #pull_request:
+  pull_request:
   #push:
   workflow_dispatch:
 
@@ -14,7 +14,8 @@ jobs:
   build:
     strategy:
       matrix:
-        spec: [jedi-ufs-all]
+        template: [jedi-ufs-all]
+        spec: ['']
     runs-on: ubuntu-latest
     steps:
 

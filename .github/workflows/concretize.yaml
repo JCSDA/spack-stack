@@ -16,6 +16,8 @@ jobs:
     strategy:
       matrix:
         compiler: [clang, apple-clang]
+        template: [jedi-ufs-all]
+
     runs-on: macos-latest
     steps:
       - name: checkout
@@ -26,7 +28,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          template: jedi-ufs-all
+          templates: ${{ matrix.template }}
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
@@ -37,6 +39,7 @@ jobs:
     strategy:
       matrix:
         compiler: [gcc@9.4.0, gcc@10.3.0]
+        template: [jedi-ufs-all]
     runs-on: macos-latest
     steps:
       - name: checkout
@@ -47,7 +50,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          template: jedi-ufs-all
+          templates: ${{ matrix.template }}
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
@@ -57,6 +60,7 @@ jobs:
     strategy:
       matrix:
         compiler: [gcc@9.4.0, gcc@10.3.0]
+        template: [jedi-ufs-all]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -67,7 +71,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          template: jedi-ufs-all
+          templates: ${{ matrix.template }}
           compiler: ${{ matrix.compiler }}
           mpi: openmpi
           path: ${{ github.workspace }}
@@ -75,6 +79,9 @@ jobs:
           site: linux.default
 
   linux_intel_concretize:
+    strategy:
+      matrix:
+        template: [jedi-ufs-all]
     runs-on: ubuntu-latest
     steps:
       - name: checkout
@@ -85,7 +92,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
-          template: jedi-ufs-all
+          templates: ${{ matrix.template }}
           compiler: intel
           mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}

@@ -15,7 +15,7 @@ jobs:
     strategy:
       matrix:
         template: [jedi-ufs-all]
-        spec: []
+        spec: ['']
     runs-on: macos-latest
     steps:
 
