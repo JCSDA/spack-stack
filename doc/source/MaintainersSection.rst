@@ -28,18 +28,23 @@ miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 qt (qt@5)
-
-qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.3``.
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
+
+ecflow
+   MISSING
+  
+  after qt5 and after miniconda
 
 .. code-block:: console
 
-   module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
-   # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
+   module load cmake/3.21.0
+   module load qt/5.15.2
    module load comp/gcc/10.1.0
+
+Then follow the instructions in :numref:`Section %s <Prerequisites_Qt5>`.
 
 .. _MaintainersSection_Cheyenne:
 
@@ -91,6 +96,18 @@ NOAA RDHPCS Hera
 
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/qt-5.15.3``.
+
+.. code-block:: console
+
+   module purge
+   module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
+   module load gnu/9.2.0
 
 .. _MaintainersSection_Jet:
 
