@@ -1,7 +1,7 @@
 packages:
   all:
     compiler:: [intel@2022.0.1]
-    #compiler:: [gcc@11.2.0]
+    #compiler:: [gcc@10.1.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.0]
       #mpi:: [intel-mpi@2019.10.24]
@@ -25,7 +25,7 @@ packages:
   #    prefix: /usr/local/intel/oneapi/2021
   intel-mpi:
     externals:
-    - spec: intel-mpi@2019.10.24%gcc@11.2.0
+    - spec: intel-mpi@2019.10.24%gcc@10.1.0
       prefix: /usr/local/intel/2020/compilers_and_libraries_2020.0.166/linux/mpi/intel64
       modules:
       - mpi/impi/20.0.0.166
