@@ -1,7 +1,7 @@
 name: macos-llvm-clang-build
 
 on:
-  pull_request:
+  #pull_request:
   #push:
   workflow_dispatch:
 

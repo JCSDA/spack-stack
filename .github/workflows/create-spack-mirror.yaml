@@ -1,6 +1,17 @@
 name: create-spack-mirror
 
 on:
+  pull_request:
+    inputs:
+      template:
+        description: 'Base spack.yaml template. Default is a complete environment (jedi-ufs-all)'
+        required: true
+        default: 'jedi-ufs-all'
+      specs:
+        description: 'Which specs to add to the template'
+        required: false
+        default: ''
+  #push:
   workflow_dispatch:
     inputs:
       template:
