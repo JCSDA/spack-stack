@@ -87,10 +87,7 @@ runs:
         brew install qt@5
         brew install readline
         brew install wget
-        brew list
       fi
-
-      exit 1
 
       # Install Python poetry to avoid install errors in spack
       python3 -m pip install poetry
@@ -217,11 +214,6 @@ runs:
         export "PATH=$HOME/mpi/bin:${PATH}"
       fi
 
-      # Make homebrew qt@5 detectable on macOS
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
-        export "PATH=/usr/local/opt/qt@5/bin:${PATH}"
-      fi
-
       # Spack external find is by default only looking for build-tools, Either
       # need to search for additional packages explicitly.
       spack external find
@@ -229,8 +221,19 @@ runs:
       spack external find openmpi
       spack external find perl
       spack external find python@3
-      spack external find qt@5
       spack external find wget
+
+      # Find qt@5 on macOS
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
+        PATH="/usr/local/opt/qt5/bin:$PATH" \
+             spack external find qt@5
+      fi
+
+      # Find curl on macOS
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
+        PATH="/usr/local/opt/curl/bin:$PATH" \
+             spack external find curl
+      fi
 
   - name: configure-options
     shell: bash
