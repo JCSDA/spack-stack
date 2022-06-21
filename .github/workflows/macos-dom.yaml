@@ -1,0 +1,50 @@
+name: macos-dom-build
+on:
+  workflow_dispatch:
+    inputs:
+      template:
+        description: 'Base spack.yaml template. Default is an empty environment.'
+        required: false
+        default: 'empty'
+      specs:
+        description: 'Which specs to add to the template'
+        required: false
+        default: 'jedi-ufs-env'
+
+# Use custom shell with -l so .bash_profile is sourced
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+jobs:
+  macos-dom-build:
+    runs-on: self-hosted
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: create-env
+        run: |
+          source ./setup.sh
+          spack stack create env --site macos.default --template ${{ github.event.inputs.template }} --name mirror
+          spack env activate -d envs/mirror
+          spack add ${{ github.event.inputs.specs }}
+
+          spack external find
+          spack external find perl
+          spack external find python@3
+          spack external find wget
+          "PATH=/usr/local/opt/qt@5/bin:${PATH}" spack external find qt@5
+          "PATH=/usr/local/opt/curl/bin:${PATH}" spack external find curl
+          spack compiler find
+
+          spack concretize
+
+      - name: upload-mirror
+        uses: actions/upload-artifact@v2
+        with:
+          name: spack_mirror
+          path: cache/source_cache
