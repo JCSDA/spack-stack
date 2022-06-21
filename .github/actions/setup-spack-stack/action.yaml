@@ -83,6 +83,7 @@ runs:
         #brew install curl
         #brew install git
         #brew install git-lfs
+        brew install openssl
         brew install lmod
         brew install qt@5
         brew install readline
