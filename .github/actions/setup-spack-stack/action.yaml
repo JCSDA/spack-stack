@@ -303,7 +303,7 @@ runs:
       #  tail -n 10 spack_install.log
       #  sleep 60
       #done
-      spack install --fail-fast
+      spack install --verbose --fail-fast
 
   - name: create-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
