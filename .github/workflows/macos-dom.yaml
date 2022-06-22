@@ -1,17 +1,17 @@
 name: macos-dom-build
 on:
-  pull_request:
+  #pull_request:
   #push:
   workflow_dispatch:
-  #  inputs:
-  #    template:
-  #      description: 'Base spack.yaml template. Default is an empty environment.'
-  #      required: false
-  #      default: 'empty'
-  #    specs:
-  #      description: 'Which specs to add to the template'
-  #      required: false
-  #      default: 'jedi-ufs-env'
+    inputs:
+      template:
+        description: 'Base spack.yaml template. Default is an empty environment.'
+        required: false
+        default: 'jedi-ufs-all'
+      specs:
+        description: 'Which specs to add to the template. Default is none (empty string).'
+        required: false
+        default: ''
 
 # Use custom shell with -l so .bash_profile is sourced
 defaults:
@@ -31,10 +31,9 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          ### spack stack create env --site macos.default --template ${{ github.event.inputs.template }} --name mirror
-          spack stack create env --site macos.default --template jedi-ufs-all --name jedi-ufs-all.macos-dom
-          spack env activate -d envs/jedi-ufs-all.macos-dom
-          ### spack add ${{ github.event.inputs.specs }}
+          spack stack create env --site macos.default --template ${{ github.event.inputs.template }} --name ${{ github.event.inputs.template }}.macos-dom
+          spack env activate -d envs/${{ github.event.inputs.template }}.macos-dom
+          spack add ${{ github.event.inputs.specs }}
 
           spack external find
           spack external find perl
@@ -45,7 +44,7 @@ jobs:
           spack compiler find
 
           spack concretize
-          spack install --verbose --fail-fast
+          spack install --fail-fast
 
       - name: upload-mirror
         uses: actions/upload-artifact@v2
