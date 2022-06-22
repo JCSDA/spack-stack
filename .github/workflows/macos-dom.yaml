@@ -45,6 +45,7 @@ jobs:
           spack compiler find
 
           spack concretize
+          spack install --verbose --fail-fast
 
       - name: upload-mirror
         uses: actions/upload-artifact@v2
