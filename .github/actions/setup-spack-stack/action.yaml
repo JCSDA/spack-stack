@@ -257,6 +257,8 @@ runs:
         spack config add "packages:ecflow:variants:~ssl"
       fi
 
+      cat ${SPACK_ENV}/spack.yaml
+
       # Remove specs that don't build under certain configurations.
       # Only need that for the concretize_only steps, because the full
       # builds only build one spec at a time (and the cases that are
