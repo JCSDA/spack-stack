@@ -20,7 +20,7 @@ defaults:
 
 jobs:
   macos-dom-build:
-    runs-on: self-hosted
+    runs-on: [self-hosted, macOS, X64, macos-dom]
 
     steps:
       - name: checkout
@@ -31,9 +31,9 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack stack create env --site macos.default --template ${{ github.event.inputs.template }} --name ${{ github.event.inputs.template }}.macos-dom
-          spack env activate -d envs/${{ github.event.inputs.template }}.macos-dom
-          spack add ${{ github.event.inputs.specs }}
+          spack stack create env --site macos.default --template ${{ inputs.template }} --name ${{ inputs.template }}.macos-dom
+          spack env activate -d envs/${{ inputs.template }}.macos-dom
+          spack add ${{ inputs.specs }}
 
           spack external find
           spack external find perl
