@@ -168,10 +168,8 @@
       version: [3.10.5]
     nlohmann-json-schema-validator:
       version: [2.1.0]
-    # Do not build pkgconf/pkg-config - https://github.com/NOAA-EMC/spack-stack/issues/123
+    # Do not build pkgconf - https://github.com/NOAA-EMC/spack-stack/issues/123
     pkgconf:
-      buildable: False
-    pkg-config:
       buildable: False
     python:
       version: [3.9.12]
