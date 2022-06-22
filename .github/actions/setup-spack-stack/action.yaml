@@ -258,6 +258,10 @@ runs:
       spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
       spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
+      # Turn of SSL for ecflow CI builds for now
+      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == *"clang"* ]]; then
+        spack config add "packages:ecflow:variants:~ssl"
+      fi
 
       echo "Contents of ${SPACK_ENV}/spack.yaml:"
       cat ${SPACK_ENV}/spack.yaml
