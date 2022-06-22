@@ -90,7 +90,7 @@ packages:
   ecflow:
     buildable: False
     externals:
-    - spec: ecflow@5.8.4+ui+static_boost+python
+    - spec: ecflow@5.8.4+ui+static_boost
       prefix: /discover/swdev/jcsda/spack-stack/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
