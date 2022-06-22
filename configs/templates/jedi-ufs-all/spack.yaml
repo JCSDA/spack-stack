@@ -17,12 +17,11 @@ spack:
   # jedi-ewok-env does not build on macOS with GCC
   # jedi-tools-env does not build with Intel
   specs:
-#   - global-workflow-env
-#   - jedi-ewok-env 
-#   - jedi-fv3-env
-#   - jedi-tools-env
-#   - jedi-ufs-env
-#   - jedi-um-env
-#   - nceplibs-env
-#   - soca-env
-   - ecflow
+   - jedi-ewok-env 
+   - jedi-fv3-env
+   - jedi-tools-env
+   - jedi-ufs-env
+   - jedi-um-env
+   - nceplibs-env
+   - soca-env
+
