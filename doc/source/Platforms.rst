@@ -373,7 +373,7 @@ This instructions are meant to be a reference that users can follow to set up th
   After installing bash with homebrew, you need to change your terminal application's default command to use :code:`/usr/local/bin/bash`.
   For example with iterm2, you can click on the :code:`preferences` item in the :code:`iTerm2` menu.
   Then click on the :code:`Profiles` tab and enter :code:`/usr/local/bin/bash` in the :code:`Command` box.
-  This is done to avoid issues with the MacOS System Integrity Protection (SIP) mechanism when running bash scripts.
+  This is done to avoid issues with the macOS System Integrity Protection (SIP) mechanism when running bash scripts.
   See https://support.apple.com/en-us/HT204899 for more details about SIP.
 
 5. Activate the ``lua`` module environment
@@ -460,13 +460,35 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
+7. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
    vi envs/jedi-ufs.mymacos/spack.yaml
    vi envs/jedi-ufs.mymacos/common/*.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
+
+.. note::
+  Make sure that the MPI package you selected is added to the ``specs`` section in the ``spack.yaml`` configuration file.
+  For example if you selected openmpi:
+  
+  .. code:: yaml
+    
+    spack:
+      concretizer:
+        unify: when_possible
+    
+      view: false
+      include: []
+    
+      specs:
+    
+        # Virtual environment packages
+        - openmpi@4.1.3                    # add this line
+        - base-env@1.0.0
+        - jedi-base-env@1.0.0
+        ...
+
 
 8. Process the specs and install
 
