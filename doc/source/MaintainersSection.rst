@@ -16,6 +16,17 @@ MSU Orion
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Note that the default/system ``qt@5`` can be used on Orion.
+
+.. code-block:: console
+
+   module purge
+   module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
+   module load miniconda/3.9.7
+   module load cmake/3.22.1
+   module load gcc/10.2.0
+
 .. _MaintainersSection_Discover:
 
 ------------------------------
@@ -36,6 +47,7 @@ ecflow
 
 .. code-block:: console
 
+   module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
    module load cmake/3.21.0
