@@ -214,11 +214,6 @@ runs:
         export "PATH=$HOME/mpi/bin:${PATH}"
       fi
 
-      # Make homebrew qt@5 detectable on macOS
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
-        export "PATH=/usr/local/opt/qt@5/bin:${PATH}"
-      fi
-
       # Spack external find is by default only looking for build-tools, Either
       # need to search for additional packages explicitly.
       spack external find
@@ -226,8 +221,13 @@ runs:
       spack external find openmpi
       spack external find perl
       spack external find python@3
-      spack external find qt@5
       spack external find wget
+
+      # Make homebrew qt@5 detectable on macOS
+      PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt@5
+
+      # Make homebrew curl detectable on macOS
+      PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
 
   - name: configure-options
     shell: bash
@@ -290,18 +290,17 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      ## Note: This is unreliable ...
-      ## Speed up installation by building in parallel
-      #for i in {1..2}; do
-      #  nohup spack install --fail-fast >> spack_install.log 2>&1 &
-      #done
-      ##
-      #while ps -ef | grep -ve 'grep' | grep 'spack install'; do
-      #  echo "Still running"
-      #  tail -n 10 spack_install.log
-      #  sleep 60
-      #done
-      spack install --fail-fast
+      # Speed up installation by building in parallel
+      for i in {1..2}; do
+        nohup spack install --fail-fast >> spack_install.log 2>&1 &
+      done
+      # Sleep, then check if processes are still running
+      sleep 60
+      while ps -ef | grep -ve 'grep' | grep 'spack install'; do
+        echo "Still running"
+        tail -n 10 spack_install.log
+        sleep 60
+      done
 
   - name: create-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
