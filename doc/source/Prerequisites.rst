@@ -73,7 +73,20 @@ qt (qt@5)
 
 Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). 
 
-On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.3`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3``.
+On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64/include``.
+
+**New method** (SO FAR ONLY ON DISCOVER)
+
+.. code-block:: console
+   mkdir -p /discover/swdev/jcsda/spack-stack/qt-5.15.2/src
+   cd /discover/swdev/jcsda/spack-stack/qt-5.15.2/src
+   wget --no-check-certificate http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
+   chmod u+x qt-unified-linux-x64-online.run
+   ./qt-unified-linux-x64-online.run
+
+Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all other boxes) and set install prefix to ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``. After the successful installation, create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/qt/5.15.2`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
+
+**Old method** (DOES NOT WORK ON DISCOVER, CHEYENNE, POSSIBLY HERA)
 
 .. code-block:: console
 
@@ -93,11 +106,60 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
    gmake -j4 2>&1 | tee log.gmake
    gmake install 2>&1 | tee log.install
 
+Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/qt/5.15.3`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
+
+**End of old method**
+
 .. note::
    The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
 
 .. note::
+   On air-gapped systems, it may be required to download the code (all steps up to and including ``git submodule update --init --recursive``) on a different machine and transfer the entire directory ``qt5``.
+
+.. note::
    When using an existing version provided by the operating system or as a module, one needs to check if all required components are installed. The ``ecflow`` installation will abort with an error message that a particular component of ``qt`` cannot be found.
+
+..  _Prerequisites_ecFlow:
+
+------------------------------
+ecFlow (with GUI and Python)
+------------------------------
+
+Building ``ecFlow`` with spack is pretty tricky, because it requires functions from the ``boost`` serialization library that do not build cleanly with the Intel classic compilers (see https://github.com/USCiLab/cereal/issues/606 for a description of the problem of Intel with json cereal). When using the Intel compilers on HPC systems, it is therefore necessary to build ``ecFlow`` with the GNU compilers, preferably the same version that is used as the C++ backend for Intel, outside of spack-stack and make it available as a module. The build of ``ecFlow`` described below links against this ``boost`` library statically, therefore it does not interfere with ``boost`` built by spack-stack for other applications. ``ecFlow`` also uses ``Python3`` and ``qt5``.
+
+.. note::
+   Installing ``ecFlow`` with ``conda``, ``brew``, etc. is not recommended, since these install a number of packages as dependencies (e.g. ``numpy``, dynamically-linked ``boost``) that may interfere with the spack software stack.
+
+After loading the required modules for this system (typically the same ``gcc`` used as backend for Intel or for GNU spack-stack builds, ``cmake``, ``qt5``, ``Python3``), follow these instructions to install ecFlow with the graphical user interface (GUI) and Python3 API. See also https://confluence.ecmwf.int/display/ECFLOW/ecflow5.
+
+The following instructions are for Discover (see :numref:`Section %s <MaintainersSection_Discover>` for the required modules).
+
+.. code-block:: console
+
+   mkdir -p /discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src
+   cd /discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src
+   wget https://confluence.ecmwf.int/download/attachments/8650755/ecFlow-5.8.4-Source.tar.gz?api=v2
+   wget https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.tar.gz
+   mv ecFlow-5.8.4-Source.tar.gz\?api\=v2 ecFlow-5.8.4-Source.tar.gz
+   tar -xvzf boost_1_78_0.tar.gz
+   tar -xvzf ecFlow-5.8.4-Source.tar.gz
+   export WK=/discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src/ecFlow-5.8.4-Source
+   export BOOST_ROOT=/discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src/boost_1_78_0
+
+   # Build static boost (to not interfere with spack-stack boost)
+   cd $BOOST_ROOT
+   ./bootstrap.sh 2>&1 | tee bootstrap.log
+   $WK/build_scripts/boost_build.sh 2>&1 | tee boost_build.log
+
+   # Build ecFlow
+   cd $WK
+   mkdir build
+   cd build
+   cmake .. -DCMAKE_INSTALL_PREFIX=/discover/swdev/jcsda/spack-stack/ecflow-5.8.4 2>&1 | tee log.cmake
+   make -j4 2>&1 | tee log.make
+   make install 2>&1 | tee log.install
+
+Create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
 
 ..  _Prerequisites_Texlive:
 

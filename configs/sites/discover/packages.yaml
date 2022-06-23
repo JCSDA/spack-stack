@@ -1,10 +1,10 @@
 packages:
   all:
     compiler:: [intel@2022.0.1]
-    #compiler:: [intel@2022.0.2]
+    #compiler:: [gcc@10.1.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.0]
-      #mpi:: [intel-oneapi-mpi@2021.5.1]
+      #mpi:: [intel-oneapi-mpi@2021.4.0]
 
 ### MPI, Python, MKL
   mpi:
@@ -15,6 +15,11 @@ packages:
       prefix: /usr/local/intel/oneapi/2021/
       modules:
       - mpi/impi/2021.5.0
+    externals:
+    - spec: intel-oneapi-mpi@2021.4.0%gcc@10.1.0
+      prefix: /usr/local/intel/oneapi/2021/
+      modules:
+      - mpi/impi/2021.4.0
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2022.0.1%intel@2021.5.0
@@ -23,18 +28,6 @@ packages:
   #  externals:
   #  - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
   #    prefix: /usr/local/intel/oneapi/2021
-  # intel-oneapi-mpi:
-  #   externals:
-  #   - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-  #     prefix: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1
-  #intel-oneapi-tbb:
-  #  externals:
-  #  - spec: intel-oneapi-tbb@2021.5.1%intel@2022.0.2
-  #    prefix: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1
-  #intel-oneapi-mkl:
-  #  externals:
-  #  - spec: intel-oneapi-mkl@2022.0.2%intel@2022.0.2
-  #    prefix: /discover/swdev/jcsda/spack-stack/intel-oneapi-2022.1.1
 
   python:
     buildable: False
@@ -43,6 +36,11 @@ packages:
       prefix: /discover/swdev/jcsda/spack-stack/miniconda-3.9.7/
       modules:
       - miniconda/3.9.7
+
+### Modifications of common packages
+  # Version 2.12.3 doesn't compile on discover
+  mapl:
+    version:: [2.11.0]
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -89,6 +87,13 @@ packages:
     externals:
     - spec: diffutils@3.3
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /discover/swdev/jcsda/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   file:
     externals:
     - spec: file@5.22
@@ -109,8 +114,6 @@ packages:
     externals:
     - spec: gettext@0.19.2
       prefix: /usr
-    - spec: gettext@0.19.7
-      prefix: /usr/local
   ghostscript:
     externals:
     - spec: ghostscript@9.26
@@ -179,8 +182,8 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.15.3
-      prefix: /discover/swdev/jcsda/spack-stack/qt-5.15.3
+    - spec: qt@5.15.2
+      prefix: /discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64
   rsync:
     externals:
     - spec: rsync@3.1.0

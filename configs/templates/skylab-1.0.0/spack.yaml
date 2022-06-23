@@ -3,6 +3,13 @@ spack:
     unify: when_possible
 
   view: false
+
+  packages:
+    fiat:
+      version:: [1.0.0]
+    ectrans:
+      version:: [1.0.0]
+
   include: []
 
   specs:
@@ -10,7 +17,7 @@ spack:
     # Virtual environment packages
     - base-env@1.0.0
     - jedi-base-env@1.0.0
-    - jedi-ewok-env@1.0.0 +solo +r2d2 +ewok
+    - jedi-ewok-env@1.0.0
     - jedi-fv3-env@1.0.0
     - jedi-mpas-env@1.0.0
     - jedi-ufs-env@1.0.0
@@ -25,15 +32,13 @@ spack:
     - crtm@2.3.0
     - ecbuild@3.6.5
     - eccodes@2.25.0
-    - ecflow@5.8.3
+    - ecflow@5
     - eckit@1.19.0
     - ecmwf-atlas@0.29.0
-    # DH*
+    # DH* fake version number
     - ectrans@1.0.0
     - eigen@3.4.0
-    - esmf@8.3.0
-    # DH* fake version number
-    - ewok@1.0.0
+    - esmf@8.3.0b09
     - fckit@0.9.5
     # DH* fake version number
     - fiat@1.0.0
@@ -66,11 +71,7 @@ spack:
     - py-scipy@1.8.0
     - py-shapely@1.8.0
     # DH* fake version number
-    - r2d2@1.0.0
-    # DH* fake version number
     - shumlib@macos_clang_linux_intel_port
-    # DH* fake version number
-    - solo@1.0.0
     - sp@2.3.3
     - udunits@2.2.28
     - w3nco@2.4.1

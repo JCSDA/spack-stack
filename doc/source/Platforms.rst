@@ -51,7 +51,7 @@ spack-stack-0.0.1-rc1
 +============================+=======================================================================================================+
 | MSU Orion                  | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc1/envs/skylab-1.0.0-intel-2022.0.2/install``  |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover:sup:`*`      | coming soon                                                                                           |
+| NASA Discover :sup:`*`     | coming soon                                                                                           |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne      |                                                                                                       |
 +----------------------------+-------------------------------------------------------------------------------------------------------+
@@ -241,14 +241,11 @@ NOAA RDHPCS Hera
 
 The following is required for building new spack environments and for using spack to build and run software.
 
-.. note::
-   Temporary location, this needs to be moved elsewhere.
-
 .. code-block:: console
 
    module purge
-   module use /scratch1/BMC/gsd-hpcs/Dom.Heinzeller/spack-stack/modulefiles
-   module load miniconda/3.9.7
+   module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
+   module load miniconda/3.9.12
 
 .. _Platforms_Jet:
 
@@ -452,7 +449,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    export -n SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable
+6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
@@ -493,7 +490,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 Linux
 ------------------------------
 
-Note. Some Linux systems do not support ``lua/lmod`` environment modules, which are default in the spack-stack site configs. This can be changed to ``tcl/tk`` environment modules (see below).
+Note. Some Linux systems do not support recent ``lua/lmod`` environment modules, which are default in the spack-stack site configs. The instructions below therefore use ``tcl/tk`` environment modules.
 
 Prerequisites: Red Hat/CentOS 8 (one-off)
 -----------------------------------------
@@ -507,7 +504,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    sudo su
    yum -y update
 
-   # Compilers
+   # Compilers - this includes environment module support
    yum -y install gcc-toolset-11-gcc-c++
    yum -y install gcc-toolset-11-gcc-gfortran
    yum -y install gcc-toolset-11-gdb
@@ -568,15 +565,17 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
 
    # Compilers
    apt install -y gcc g++ gfortran gdb
-   apt install -y gcc-10 g++-10
-   apt install -y gfortran-10
+
+   # Environment module support
+   apt install -y environment-modules
 
    # Do *not* install MPI with yum, this will be done with spack-stack
 
    # Misc
    apt install -y build-essential
    apt install -y libcurl4-openssl-dev
-   ### TRY WITHOUT apt install krb5-user
+   apt install -y libssl-dev
+   #apt install krb5-user
    apt install -y libkrb5-dev
    apt install -y m4
    # Skip cmake, default version 3.16 is too old
@@ -640,7 +639,9 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system perl
    spack external find --scope system python
    spack external find --scope system wget
-   # Do *not* use system curl, this breaks netcdf-c
+   # Red Hat: Do *not* execute the following line = do *not* use system curl, this breaks netcdf-c
+   # Ubuntu: Execute the following line = use system curl and libssl
+   spack external find curl
    # Skip qt@5 for now
    spack external find --scope system texlive
 
@@ -656,7 +657,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    export -n SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable
+6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
@@ -664,9 +665,10 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
-7. On Red Hat/CentOS 8, only `tcl/tk` environment modules are supported by default. Edit ``envs/jedi-ufs.mylinux/site/modules.yaml`` and replace every occurrence of ``lmod`` with ``tcl``.
+   # Ubuntu only
+   spack config add "packages:openssl:buildable:False"
 
-8. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -674,18 +676,18 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-9. Process the specs and install
+8. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-10. Create tcl (Red Hat 8) or lmod (Ubuntu 20.04) module files
+9. Create tcl module files
 
 .. code-block:: console
 
-   spack module [tcl|lmod] refresh
+   spack module tcl refresh
 
 11. Create meta-modules for compiler, mpi, python
 
