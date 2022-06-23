@@ -1,0 +1,19 @@
+#%Module1.0
+
+module-whatis "Provides a qt-5.15.2 installation for use with spack."
+
+# Only allow one instance of compiler to load
+conflict qt
+
+proc ModulesHelp { } {
+puts stderr "Provides a qt-5.15.2 installation for use with spack."
+}
+
+# Set this value
+set QT_PATH "/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64"
+
+prepend-path PATH "${QT_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${QT_PATH}/lib"
+prepend-path LIBRARY_PATH "${QT_PATH}/lib"
+prepend-path CPATH "${QT_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${QT_PATH}"

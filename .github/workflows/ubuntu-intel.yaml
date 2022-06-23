@@ -14,8 +14,8 @@ jobs:
   build:
     strategy:
       matrix:
-        # jedi-tools-env does not build with intel
-        spec: [jedi-ewok-env, jedi-fv3-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, global-workflow-env]
+        template: [jedi-ufs-all]
+        spec: ['']
     runs-on: ubuntu-latest
     steps:
 
@@ -27,6 +27,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
+          templates: ${{ matrix.template }}
           specs: ${{ matrix.spec }}
           compiler: intel
           mpi: intel-oneapi-mpi

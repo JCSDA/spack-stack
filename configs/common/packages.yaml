@@ -146,7 +146,7 @@
     shumlib:
       version: [macos_clang_linux_intel_port]
     fiat:
-      version: [develop]
+      version: [main]
     ectrans:
       version: [develop]
       variants: ~enable_mkl
@@ -168,6 +168,9 @@
       version: [3.10.5]
     nlohmann-json-schema-validator:
       version: [2.1.0]
+    # Do not build pkgconf - https://github.com/NOAA-EMC/spack-stack/issues/123
+    pkgconf:
+      buildable: False
     python:
       version: [3.9.12]
     py-cartopy:
@@ -208,8 +211,9 @@
       version: [1.55]
     py-openpyxl:
       version: [3.0.3]
-    py-setuptools:
-      version: [57.4.0]
+    # Try without
+    #py-setuptools:
+    #  version: [59.4.0]
     qt:
       version: [5.15.3]
     #texlive:
@@ -235,6 +239,7 @@
       variants: +python +grib2
     metplus:
       version: [4.1.1]
+    # Attention - when updating also check discover site config
     mapl:
       version: [2.12.3]
     yafyaml:

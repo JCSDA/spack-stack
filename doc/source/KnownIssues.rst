@@ -16,6 +16,12 @@ General
    There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.8 or 3.9.
 
 ==============================
+NASA Discover
+==============================
+
+1. ``mapl@2.12.3`` currently does not build on Discover. After creating an environment that uses ``mapl@2.12.3``, run ``spack remove mapl@2.12.3`` followed by ``spack add mapl@2.11.0``. If ``spack concretize`` was run before, remove ``/path/to/env/spack.lock`` and rerun ``spack concretize``.
+
+==============================
 NOAA Parallel Works
 ==============================
 
