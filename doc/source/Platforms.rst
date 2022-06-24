@@ -18,7 +18,7 @@ spack-stack-1.0.0-rc2
 ---------------------
 
 .. note::
-   These versions are for friendly users and developers in preparation for a JEDI release on June 30, 2022.
+   These versions are for friendly users and developers in preparation for a JEDI release on June 30, 2022. Amazon Web Services AMI are available in the US East 1 region.
 
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | System                                   | Maintained by (temporary) | Location                                                                                              |
@@ -31,9 +31,9 @@ spack-stack-1.0.0-rc2
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.1.0/install``      |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | ``/home/ubuntu/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``                              |
+| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | ami-0c878bf50bf2d99af - ``/home/ubuntu/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``      |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | ``/home/ec2-user/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``                            |
+| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | ami-0710429b6c78a0eab - ``/home/ec2-user/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``    |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 
 -------------------------
