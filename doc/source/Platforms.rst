@@ -141,14 +141,8 @@ The following is required for building new spack environments and for using spac
    module purge
    module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.7
-
-.. note::
-   If the build of `crtm` or another package fails with errors related to ``git lfs not found``, load the ``git`` module and initialize ``git lfs``:
-
-.. code-block:: console
-
-   module load git/2.28.0
-   git lfs install
+   # Only required when using spack-stack, not when building spack-stack
+   module load ecflow/5.8.4
 
 .. _Platforms_Discover:
 
@@ -163,14 +157,8 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
-
-.. note::
-   If the build of `crtm` or another package fails with errors related to ``git lfs not found``, load the ``git`` module and initialize ``git lfs``:
-
-.. code-block:: console
-
-   module load git-lfs/3.0.2
-   git lfs install
+   # Only required when using spack-stack, not when building spack-stack
+   module load ecflow/5.8.4
 
 .. _Platforms_Cheyenne:
 
@@ -370,7 +358,7 @@ This instructions are meant to be a reference that users can follow to set up th
   After installing bash with homebrew, you need to change your terminal application's default command to use :code:`/usr/local/bin/bash`.
   For example with iterm2, you can click on the :code:`preferences` item in the :code:`iTerm2` menu.
   Then click on the :code:`Profiles` tab and enter :code:`/usr/local/bin/bash` in the :code:`Command` box.
-  This is done to avoid issues with the MacOS System Integrity Protection (SIP) mechanism when running bash scripts.
+  This is done to avoid issues with the macOS System Integrity Protection (SIP) mechanism when running bash scripts.
   See https://support.apple.com/en-us/HT204899 for more details about SIP.
 
 5. Activate the ``lua`` module environment
@@ -545,9 +533,6 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
 
    scl enable gcc-toolset-11 bash
 
-   # This may not be needed, only use when there are build errors for crtm
-   git lfs install
-
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
 Prerequisites: Ubuntu 20.04 (one-off)
@@ -605,9 +590,6 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
 
 .. code-block:: console
 
-   # This may not be needed, only use when there are build errors for crtm
-   git lfs install
-
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
 .. note::
@@ -639,9 +621,11 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system perl
    spack external find --scope system python
    spack external find --scope system wget
+
    # Red Hat: Do *not* execute the following line = do *not* use system curl, this breaks netcdf-c
    # Ubuntu: Execute the following line = use system curl and libssl
    spack external find curl
+
    # Skip qt@5 for now
    spack external find --scope system texlive
 
@@ -661,12 +645,16 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
+   # Example for Red Hat 8 following the above instructions
    spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
-   # Ubuntu only
+   # Example for Ubuntu 20.04 following the above instructions
+   spack config add "packages:python:buildable:False"
    spack config add "packages:openssl:buildable:False"
+   spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
+   spack config add "packages:all:compiler:[gcc@9.4.0]"
 
 7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
