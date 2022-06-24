@@ -1,221 +1,216 @@
 # Pin versions and specs when building packages
   packages:
+    #
     all:
       providers:
         blas: [openblas]
-        lapack: [openblas]
         fftw-api: [fftw]
-        yacc: [bison]
         gl: [opengl]
         glu: [openglu]
         jpeg: [libjpeg-turbo]
-    bison:
-      version: [3.8.2]
-    wget:
-      version: [1.21.2]
-    cmake:
-      version: [3.22.1]
-    flex:
-      version: [2.6.3]
-    zlib:
-      version: [1.2.12]
-    hdf:
-      version: [4.2.15]
-      variants: ~fortran ~netcdf
-    hdf5:
-      version: [1.12.1]
-      variants: +hl +fortran +mpi +threadsafe
-    parallel-netcdf:
-      version: [1.12.2]
-    netcdf-c:
-      version: [4.8.1]
-      variants: +dap +mpi +parallel-netcdf
-    netcdf-fortran:
-      version: [4.5.4]
-    netcdf-cxx4:
-      version: [4.3.1]
-    parallelio:
-      version: [2.5.4]
-      variants: +pnetcdf
-    nccmp:
-      version: [1.9.0.1]
-    jpeg:
-      version: [9.1.0]
-    libpng:
-      version: [1.6.37]
-    libjpeg-turbo:
-      version: [2.1.0]
-    jasper:
-      version: [2.0.32]
-    eccodes:
-      version: [2.21.0]
-      #variants: +netcdf
-    py-eccodes:
-      version: [1.3.2]
-    #libtiff:
-    #  version: [4.3.0]
-    proj:
-      version: [8.1.0]
-      # don't really need tiff ...
-      variants: ~tiff
-    py-pyproj:
-      version: [3.1.0]
-    py-pygrib:
-      version: [2.1.4]
-    # Attention - when updating the version also check the common modules.yaml config and update the projections for lmod/tcl
-    esmf:
-      version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf
-    # Attention - when updating also check macos.default and macos--monterey-llvm-clang-openmpi-reference site configs
-    fms:
-      version: [2022.01]
-      variants: +64bit +quad_precision +gfs_phys +openmp +pic
-    # Attention - when updating also check macos.default and macos--monterey-llvm-clang-openmpi-reference site configs
-    fms-jcsda:
-      version: [release-stable]
-      variants: +64bit +quad_precision +gfs_phys +openmp +pic
+        lapack: [openblas]
+        yacc: [bison]
+    #
     bacio:
       version: [2.4.1]
-    sigio:
-      version: [2.3.2]
-    sfcio:
-      version: [1.4.1]
-    gfsio:
-      version: [1.4.1]
-    w3nco:
-      version: [2.4.1]
-    sp:
-      version: [2.3.3]
-    ip:
-      version: [3.3.3]
-    ip2:
-      version: [1.1.2]
-    landsfcutil:
-      version: [2.4.1]
-    nemsio:
-      version: [2.5.2]
-    nemsiogfs:
-      version: [2.5.3]
-    w3emc:
-      version: [2.9.1]
-    g2:
-      version: [3.4.5]
-    g2c:
-      version: [1.6.4]
-    g2tmpl:
-      version: [1.10.0]
-    crtm:
-      version: [2.3.0]
-    upp:
-      version: [10.0.10]
-    wrf-io:
-      version: [1.2.0]
-    wgrib2:
-      version: [2.0.8]
-    prod-util:
-      version: [1.2.2]
-    grib-util:
-      version: [1.2.3]
-    gftl-shared:
-      version: [1.5.0]
-    jedi-cmake:
-      version: [1.3.0]
+    bison:
+      version: [3.8.2]
     # Attention - when updating also check orion site config
     boost:
       version: [1.78.0]
       # Install only the minimum needed (JEDI packages need headers only, but ecflow needs several libraries)
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
-    gsl-lite:
-      version: [0.37.0]
-    eigen:
-      version: [3.4.0]
+    bufr:
+      version: [11.7.0]
+      variants: +python
+    cmake:
+      version: [3.22.1]
+    crtm:
+      version: [2.3.0]
+    diffutils:
+      version: [3.7]
     ecbuild:
       version: [3.6.5]
+    eccodes:
+      version: [2.21.0]
+      #variants: +netcdf
     ecflow:
       version: [5.8.3]
       variants: +ui
     eckit:
       version: [1.19.0]
       variants: linalg=eigen,lapack compression=lz4,bzip2
-    fckit:
-      version: [0.9.5]
-      variants: +eckit
     ecmwf-atlas:
       version: [0.29.0]
       variants: +fckit +trans
-    shumlib:
-      version: [macos_clang_linux_intel_port]
-    fiat:
-      version: [main]
     ectrans:
       version: [develop]
       variants: ~enable_mkl
+    eigen:
+      version: [3.4.0]
+    # Attention - when updating the version also check the common modules.yaml config and update the projections for lmod/tcl
+    esmf:
+      version: [8.3.0b09]
+      variants: ~xerces ~pnetcdf
+    fckit:
+      version: [0.9.5]
+      variants: +eckit
+    fftw:
+      version: [3.3.10]
+    fiat:
+      version: [main]
+    findutils:
+      version: [4.8.0]
+    flex:
+      version: [2.6.3]
+    # Attention - when updating also check macos.default and macos--monterey-llvm-clang-openmpi-reference site configs
+    fms:
+      version: [2022.01]
+      variants: +64bit +quad_precision +gfs_phys +openmp +pic
+    g2:
+      version: [3.4.5]
+    g2c:
+      version: [1.6.4]
+    g2tmpl:
+      version: [1.10.0]
+    gfsio:
+      version: [1.4.1]
+    gftl-shared:
+      version: [1.5.0]
     #git-lfs:
       # Assume git-lfs is provided, hard to install
       # because of dependencies on go/go-bootstrap.
       # Note: Uncommenting this entry will break
       # the container builds.
       #version: [2.11.0]
-    openblas:
-      version: [0.3.19]
-      variants: +noavx512
-    fftw:
-      version: [3.3.10]
+    grib-util:
+      version: [1.2.3]
+    gsl-lite:
+      version: [0.37.0]
+    hdf:
+      version: [4.2.15]
+      variants: ~fortran ~netcdf
+    hdf5:
+      version: [1.12.1]
+      variants: +hl +fortran +mpi +threadsafe
+    ip:
+      version: [3.3.3]
+    ip2:
+      version: [1.1.2]
+    jasper:
+      version: [2.0.32]
+    jedi-cmake:
+      version: [1.3.0]
+    jpeg:
+      version: [9.1.0]
+    landsfcutil:
+      version: [2.4.1]
+    libjpeg-turbo:
+      version: [2.1.0]
+    libpng:
+      version: [1.6.37]
+    # Attention - when updating also check discover site config
+    mapl:
+      version: [2.12.3]
+    met:
+      version: [10.1.1]
+      variants: +python +grib2
+    metplus:
+      version: [4.1.1]
+    mpich:
+      variants: ~hwloc +two_level_namespace
     nco:
       version: [5.0.6]
       variants: ~doc
+    nemsio:
+      version: [2.5.2]
+    nemsiogfs:
+      version: [2.5.3]
+    nccmp:
+      version: [1.9.0.1]
+    netcdf-c:
+      version: [4.8.1]
+      variants: +dap +mpi +parallel-netcdf
+    netcdf-cxx4:
+      version: [4.3.1]
+    netcdf-fortran:
+      version: [4.5.4]
     nlohmann-json:
       version: [3.10.5]
     nlohmann-json-schema-validator:
       version: [2.1.0]
+    openblas:
+      version: [0.3.19]
+      variants: +noavx512
+    openmpi:
+      variants: +internal-hwloc +two_level_namespace
+    parallelio:
+      version: [2.5.4]
+      variants: +pnetcdf
+    parallel-netcdf:
+      version: [1.12.2]
     # Do not build pkgconf - https://github.com/NOAA-EMC/spack-stack/issues/123
     pkgconf:
       buildable: False
+    prod-util:
+      version: [1.2.2]
+    proj:
+      version: [8.1.0]
+      # don't really need tiff ...
+      variants: ~tiff
     python:
       version: [3.9.12]
     py-cartopy:
       variants: +plotting
-    py-numpy:
-      version: [1.22.3]
-      variants: +blas +lapack
-    py-pybind11:
-      version: [2.8.1]
-    py-pyhdf:
-      version: [0.10.4]
+    py-click:
+      version: [8.0.3]
+    py-eccodes:
+      version: [1.3.2]
     py-h5py:
       version: [3.6.0]
     py-netcdf4:
       version: [1.5.3]
       variants: +mpi
+    py-numpy:
+      version: [1.22.3]
+      variants: +blas +lapack
+    py-openpyxl:
+      version: [3.0.3]
+    py-pandas:
+      version: [1.4.0]
+    py-pybind11:
+      version: [2.8.1]
     py-pycodestyle:
       version: [2.8.0]
-    py-pyyaml:
-      version: [6.0]
+    py-pygithub:
+      version: [1.55]
+    py-pygrib:
+      version: [2.1.4]
+    py-pyhdf:
+      version: [0.10.4]
+    py-pyproj:
+      version: [3.1.0]
     py-python-dateutil:
       version: [2.8.2]
     py-pythran:
       # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
       version: [0.11.0]
+    py-pyyaml:
+      version: [6.0]
     py-scipy:
       version: [1.8.0]
     py-shapely:
       version: [1.8.0]
-    bufr:
-      version: [11.7.0]
-      variants: +python
-    py-click:
-      version: [8.0.3]
-    py-pandas:
-      version: [1.4.0]
-    py-pygithub:
-      version: [1.55]
-    py-openpyxl:
-      version: [3.0.3]
-    # Try without
-    #py-setuptools:
-    #  version: [59.4.0]
     qt:
       version: [5.15.3]
+    sfcio:
+      version: [1.4.1]
+    shumlib:
+      version: [macos_clang_linux_intel_port]
+    sigio:
+      version: [2.3.2]
+    sp:
+      version: [2.3.3]
     #texlive:
       # Assume texlive is provided, hard to install
       # because of its dependencies. Both Linux and
@@ -224,23 +219,21 @@
       # Note: Uncommenting this entry will break
       # the container builds.
       #version: [2.11.0]
-    diffutils:
-      version: [3.7]
-    findutils:
-      version: [4.8.0]
     udunits:
       version: [2.2.28]
-    openmpi:
-      variants: +internal-hwloc +two_level_namespace
-    mpich:
-      variants: ~hwloc +two_level_namespace
-    met:
-      version: [10.1.1]
-      variants: +python +grib2
-    metplus:
-      version: [4.1.1]
-    # Attention - when updating also check discover site config
-    mapl:
-      version: [2.12.3]
+    upp:
+      version: [10.0.10]
+    w3emc:
+      version: [2.9.1]
+    w3nco:
+      version: [2.4.1]
+    wget:
+      version: [1.21.2]
+    wgrib2:
+      version: [2.0.8]
+    wrf-io:
+      version: [1.2.0]
     yafyaml:
       version: [0.5.1]
+    zlib:
+      version: [1.2.12]
