@@ -19,7 +19,9 @@ General
 NASA Discover
 ==============================
 
-1. ``mapl@2.12.3`` currently does not build on Discover. After creating an environment that uses ``mapl@2.12.3``, run ``spack remove mapl@2.12.3`` followed by ``spack add mapl@2.11.0``. If ``spack concretize`` was run before, remove ``/path/to/env/spack.lock`` and rerun ``spack concretize``.
+1. Timeout when fetching software during spack installs.
+
+   Discover's connection to the outside world can be very slow and spack sometimes aborts with fetch timeouts. Try again until it works, sometimes have to wait for a bit.
 
 ==============================
 NOAA Parallel Works

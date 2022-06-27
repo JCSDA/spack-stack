@@ -14,117 +14,61 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 Ready-to-use spack-stack installations are available on the following platforms:
 
 ---------------------
-spack-stack-0.0.1-rc1
+spack-stack-1.0.0-rc2
 ---------------------
 
 .. note::
-   These versions are for friendly users and developers in preparation for an internal JEDI release on June 30, 2022.
+   These versions are for friendly users and developers in preparation for a JEDI release on June 30, 2022. Amazon Web Services AMI are available in the US East 1 region.
 
-+------------------------------------------+---------------------------+---------------------------+
-| System                                   | Maintained by (temporary) | jedi-ewok tested          |
-+==========================================+===========================+===========================+
-| MSU Orion                                | Dom Heinzeller            |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| NASA Discover                            | Dom Heinzeller            |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| NCAR-Wyoming Cheyenne                    |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud) |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Gaea                         |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Hera                         |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Jet                          |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| TACC Stampede2                           |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| UW (Univ. of Wisc.) S4                   |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| Amazon Web Services AMI Ubuntu 20.04     | Dom Heinzeller            |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| Amazon Web Services AMI Red Hat 8        | Dom Heinzeller            |                           |
-+------------------------------------------+---------------------------+---------------------------+
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| System                                   | Maintained by (temporary) | Location                                                                                              |
++==========================================+===========================+=======================================================================================================+
+| MSU Orion Intel                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.2/install``  |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| MSU Orion GNU                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.2.0/install``      |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.1/install``  |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.1.0/install``      |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | ami-0c878bf50bf2d99af - ``/home/ubuntu/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``      |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | ami-0710429b6c78a0eab - ``/home/ec2-user/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``    |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| System                     | Location                                                                                              |
-+============================+=======================================================================================================+
-| MSU Orion                  | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc1/envs/skylab-1.0.0-intel-2022.0.2/install``  |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover :sup:`*`     | coming soon                                                                                           |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne      |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works        |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea           |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera           |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet            |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| TACC Stampede2             |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4     |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| AWS AMI Ubuntu 20.04       | coming soon                                                                                           |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| AWS AMI Red Hat 8          | coming soon                                                                                           |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
+-------------------------
+spack-stack-1.0.0 release
+-------------------------
 
-.. note::
-   ``spack-stack-1.0.0-rc1`` by default builds ESMF with internal parallelio (pio), which has become problematic with the most recent version 8.3.0 of ESMF. See https://github.com/spack/spack/issues/31122 for details. Platforms marked with a :sup:`*` have pio turned off manually in spack-stack-1.0.0-rc1
-
----------------------
-Earlier test versions
----------------------
-
-.. note::
-   These versions are for early testers - use at your own risk
-
-+------------------------------------------+---------------------------+---------------------------+
-| System                                   | Maintained by (temporary) | jedi-ewok tested          |
-+==========================================+===========================+===========================+
-| MSU Orion                                | Dom Heinzeller            | yes                       |
-+------------------------------------------+---------------------------+---------------------------+
-| NASA Discover                            | Dom Heinzeller            | yes                       |
-+------------------------------------------+---------------------------+---------------------------+
-| NCAR-Wyoming Cheyenne                    | Dom Heinzeller            | yes                       |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud) | Kyle Gerheiser            | yes                       |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Gaea                         | Dom Heinzeller            | yes                       |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Hera                         |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| NOAA RDHPCS Jet                          |                           |                           |
-+------------------------------------------+---------------------------+---------------------------+
-| TACC Stampede2                           | Dom Heinzeller            | yes                       |
-+------------------------------------------+---------------------------+---------------------------+
-| UW (Univ. of Wisc.) S4                   | Dom Heinzeller            | yes                       |
-+------------------------------------------+---------------------------+---------------------------+
-
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| System                     | Location                                                                                              |
-+============================+=======================================================================================================+
-| MSU Orion                  | ``/work/noaa/da/role-da/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.1.2/install``         |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover              | ``/discover/swdev/jcsda/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install``         |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne      | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.2/install`` |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works        |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea           | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v0.0.2/envs/jedi-all-intel-2021.3.0/install``     |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera           |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet            |                                                                                                       |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| TACC Stampede2             | ``/work2/06146/tg854455/stampede2/spack-stack/spack-stack-0.0.1/envs/ENV_DIR_MISSING/install``        |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4     | ``/data/prod/jedi/spack-stack/spack-stack-v0.0.1/envs/jedi-all-intel-2022.0.1/install``               |
-+----------------------------+-------------------------------------------------------------------------------------------------------+
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| System                                   | Maintained by (temporary) | Location                                                                                              |
++==========================================+===========================+=======================================================================================================+
+| MSU Orion Intel                          | Dom Heinzeller            | coming soon                                                                                           |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| MSU Orion GNU                            | Dom Heinzeller            | coming soon                                                                                           |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NASA Discover Intel                      | Dom Heinzeller            | coming soon                                                                                           |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NASA Discover GNU                        | Dom Heinzeller            | coming soon                                                                                           |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne                    |                           | currently not supported                                                                               |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA Parallel Works (AWS, Azure, Gcloud) |                           | currently not supported                                                                               |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea                         |                           | currently not supported                                                                               |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Hera                         |                           | currently not supported                                                                               |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Jet                          |                           | currently not supported                                                                               |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| TACC Stampede2                           |                           | currently not supported                                                                               |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| UW (Univ. of Wisc.) S4                   |                           | currently not supported                                                                               |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | coming soon                                                                                           |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | coming soon                                                                                           |
++------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
@@ -141,14 +85,30 @@ The following is required for building new spack environments and for using spac
    module purge
    module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.7
+   # Only required when using spack-stack, not when building spack-stack
+   module load ecflow/5.8.4
 
-.. note::
-   If the build of `crtm` or another package fails with errors related to ``git lfs not found``, load the ``git`` module and initialize ``git lfs``:
+For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module load git/2.28.0
-   git lfs install
+   ulimit -s unlimited
+   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.2/install/modulefiles/Core
+   module load stack-intel/2022.0.2
+   module load stack-intel-oneapi-mpi/2021.5.1
+   module load stack-python/3.9.7
+   module available
+
+For ``spack-stack-1.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.2.0/install/modulefiles/Core
+   module load stack-gcc/10.2.0
+   module load stack-mpich/3.3.2
+   module load stack-python/3.9.7
+   module available
 
 .. _Platforms_Discover:
 
@@ -163,14 +123,30 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
+   # Only required when using spack-stack, not when building spack-stack
+   module load ecflow/5.8.4
 
-.. note::
-   If the build of `crtm` or another package fails with errors related to ``git lfs not found``, load the ``git`` module and initialize ``git lfs``:
+For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module load git-lfs/3.0.2
-   git lfs install
+   ulimit -s unlimited
+   module use /discover/swdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.1/install/modulefiles/Core
+   module load stack-intel/2022.0.1
+   module load stack-intel-oneapi-mpi/2021.5.0
+   module load stack-python/3.9.7
+   module available
+
+For ``spack-stack-1.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
+   module load stack-gcc/10.1.0
+   module load stack-intel-oneapi-mpi/2021.4.0
+   module load stack-python/3.9.7
+   module available
 
 .. _Platforms_Cheyenne:
 
@@ -188,6 +164,9 @@ The following is required for building new spack environments and for using spac
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
    module load python/3.7.9
 
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+
 .. _Platforms_Acorn:
 
 -------------------------------
@@ -197,6 +176,9 @@ NOAA Acorn (WCOSS2 test system)
 On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
 
 CONFIG_SITE should be set to empty in `compilers.yaml`.
+
+.. note::
+   ``spack`` software installations are maintained by NCO on this platform.
 
 .. _Platforms_Parallel_Works:
 
@@ -213,6 +195,9 @@ The following is required for building new spack environments and for using spac
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
+
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 .. _Platforms_Gaea:
 
@@ -233,6 +218,9 @@ The following is required for building new spack environments and for using spac
 .. note::
    On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. Work is in progress to augment ``ecbuild`` with the ability to prefix serial runs with a launcher, e.g. ``srun -n1`` on Gaea.
 
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+
 .. _Platforms_Hera:
 
 ------------------------------
@@ -246,6 +234,9 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.12
+
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 .. _Platforms_Jet:
 
@@ -268,6 +259,9 @@ The following is required for building new spack environments and for using spac
    module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
    module load miniconda/3.9.7
 
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+
 ------------------------------
 UW (Univ. of Wisconsin) S4
 ------------------------------
@@ -280,17 +274,39 @@ The following is required for building new spack environments and for using spac
    module use /data/prod/jedi/spack-stack/modulefiles
    module load miniconda/3.9.7
 
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+
 --------------------------------
 Amazon Web Services Ubuntu 20.04
 --------------------------------
 
-**COMING SOON**
+For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with `ami-0c878bf50bf2d99af <https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#ImageDetails:imageId=ami-0c878bf50bf2d99af>`_. After logging in, run:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /home/ubuntu/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install/modulefiles/Core
+   module load stack-gcc/10.3.0
+   module load stack-mpich/4.0.2
+   module load stack-python/3.8.10
+   module available
 
 -----------------------------
 Amazon Web Services Red hat 8
 -----------------------------
 
-**COMING SOON**
+For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with `ami-0710429b6c78a0eab <https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#ImageDetails:imageId=ami-0710429b6c78a0eab>`_. After logging in, run:
+
+.. code-block:: console
+
+   scl enable gcc-toolset-11 bash
+   ulimit -s unlimited
+   module use /home/ec2-user/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install/modulefiles/Core
+   module load stack-gcc/11.2.1
+   module load stack-openmpi/4.1.3
+   module load stack-python/3.9.7
+   module available
 
 ..  _Platform_New_Site_Configs:
 
@@ -370,7 +386,7 @@ This instructions are meant to be a reference that users can follow to set up th
   After installing bash with homebrew, you need to change your terminal application's default command to use :code:`/usr/local/bin/bash`.
   For example with iterm2, you can click on the :code:`preferences` item in the :code:`iTerm2` menu.
   Then click on the :code:`Profiles` tab and enter :code:`/usr/local/bin/bash` in the :code:`Command` box.
-  This is done to avoid issues with the MacOS System Integrity Protection (SIP) mechanism when running bash scripts.
+  This is done to avoid issues with the macOS System Integrity Protection (SIP) mechanism when running bash scripts.
   See https://support.apple.com/en-us/HT204899 for more details about SIP.
 
 5. Activate the ``lua`` module environment
@@ -545,9 +561,6 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
 
    scl enable gcc-toolset-11 bash
 
-   # This may not be needed, only use when there are build errors for crtm
-   git lfs install
-
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
 Prerequisites: Ubuntu 20.04 (one-off)
@@ -605,9 +618,6 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
 
 .. code-block:: console
 
-   # This may not be needed, only use when there are build errors for crtm
-   git lfs install
-
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
 .. note::
@@ -639,9 +649,11 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system perl
    spack external find --scope system python
    spack external find --scope system wget
+
    # Red Hat: Do *not* execute the following line = do *not* use system curl, this breaks netcdf-c
    # Ubuntu: Execute the following line = use system curl and libssl
    spack external find curl
+
    # Skip qt@5 for now
    spack external find --scope system texlive
 
@@ -661,12 +673,16 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
+   # Example for Red Hat 8 following the above instructions
    spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
-   # Ubuntu only
+   # Example for Ubuntu 20.04 following the above instructions
+   spack config add "packages:python:buildable:False"
    spack config add "packages:openssl:buildable:False"
+   spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
+   spack config add "packages:all:compiler:[gcc@9.4.0]"
 
 7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 

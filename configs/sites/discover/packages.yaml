@@ -28,7 +28,6 @@ packages:
   #  externals:
   #  - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
   #    prefix: /usr/local/intel/oneapi/2021
-
   python:
     buildable: False
     externals:
@@ -36,11 +35,6 @@ packages:
       prefix: /discover/swdev/jcsda/spack-stack/miniconda-3.9.7/
       modules:
       - miniconda/3.9.7
-
-### Modifications of common packages
-  # Version 2.12.3 doesn't compile on discover
-  mapl:
-    version:: [2.11.0]
 
 ### All other external packages listed alphabetically
   autoconf:
