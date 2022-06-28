@@ -4,11 +4,11 @@ spack:
 
   view: false
 
-  packages:
-    fiat:
-      version: [1.0.0]
-    ectrans:
-      version: [1.0.0]
+  #packages:
+  #  fiat:
+  #    version: [1.0.0]
+  #  ectrans:
+  #    version: [1.0.0]
 
   include: []
 
