@@ -33,7 +33,7 @@ ecflow
 NASA Discover
 ------------------------------
 
-On Discover, ``miniconda`` and ``qt`` need to be installed as a one-off before spack can be used.
+On Discover, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
 
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
@@ -53,6 +53,26 @@ ecflow
    module load cmake/3.21.0
    module load qt/5.15.2
    module load comp/gcc/10.1.0
+
+openmpi
+   Installing ``openmpi`` requires adapting the installation to the network hardware and ``slurm`` scheduler. It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.3`` MPI library with ``gcc@10.1.0`` as referenced in the Discover site config. After the installation, create modulefile `openmpi/4.1.3-gcc-10.1.0` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs.
+
+.. code-block:: console
+
+   module purge
+   module use /discover/swdev/jcsda/spack-stack/modulefiles
+   module load miniconda/3.9.7
+   module load comp/gcc/10.1.0
+   CPATH="/usr/include/slurm:$CPATH" ./configure \
+       --prefix=/discover/swdev/jcsda/spack-stack/openmpi-4.1.3/gcc-10.1.0/ \
+       --with-pmi=/usr/slurm \
+       --with-ucx \
+       --without-ofi \
+       --without-verbs \
+       --with-gpfs
+   CPATH="/usr/include/slurm:$CPATH" make VERBOSE=1 -j4
+   CPATH="/usr/include/slurm:$CPATH" make check
+   CPATH="/usr/include/slurm:$CPATH" make install
 
 .. _MaintainersSection_Cheyenne:
 
