@@ -109,7 +109,7 @@ On Gaea, ``qt`` needs to be installed as a one-off before spack can be used.
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3``.
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -127,7 +127,7 @@ miniconda
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/qt-5.15.3``.
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -153,17 +153,6 @@ TACC Stampede2
 
 Several packages need to be installed as a one-off before spack can be used.
 
-Intel oneAPI compilers
-   The latest version of the Intel compiler on Stampede2 is 19.1.1, and the default modulefile created by the system administrators ties it to `gcc-9.1.0`. The way the module file has been written is incompatible with spack. We therefore recommend installing the latest Intel oneAPI compiler suite (Intel oneAPI Base and HPC Toolkits). The following instructions install Intel oneAPI 2022.2 in ``/work2/06146/tg854455/stampede2/spack-stack``.
-
-.. code-block:: console
-
-   wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.2.0.191.sh
-   wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/l_BaseKit_p_2022.2.0.262.sh
-   # Customize the installations to install in /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2
-   sh l_BaseKit_p_2022.2.0.262.sh
-   sh l_HPCKit_p_2022.2.0.191.sh
-
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
@@ -180,7 +169,7 @@ git-lfs
    rpm2cpio git-lfs-1.2.1-1.el7.x86_64.rpm | cpio -idmv
    mv usr/* ../
 
-   Create modulefile ``/work2/06146/tg854455/stampede2/spack-stack/modulefiles/git-lfs/1.2.1`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
+Create modulefile ``/work2/06146/tg854455/stampede2/spack-stack/modulefiles/git-lfs/1.2.1`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
 
 .. _MaintainersSection_S4:
 
@@ -193,7 +182,7 @@ miniconda
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/data/prod/jedi/spack-stack/qt-5.15.3``.
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/data/prod/jedi/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -256,7 +245,7 @@ Chaining spack-stack installations is a powerful way to test adding new packages
 
     spack module [lmod|tcl] refresh
 
-6. When using `tcl` module files, run the `spack stack setup-meta-modules` script. This is not needed when using `lmod` modulefiles, because the meta modules in ``/path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/Core`` will be ignored entirely.
+6. When using ``tcl`` module files, run the ``spack stack setup-meta-modules`` script. This is not needed when using ``lmod`` modulefiles, because the meta modules in ``/path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/Core`` will be ignored entirely.
 
 To use the chained spack environment, first load the usual modules from the upstream spack environment. Then add the full path to the newly created modules manually, ignoring the meta modules (``.../Core``), for example:
 

@@ -9,27 +9,27 @@ Platforms
 Pre-configured sites
 ==============================
 
-Directory ``configs/sites`` contains site configurations for several HPC systems, as well as reference configurations for macOS and Linux. The reference configurations are **not** meant to be used as is, as user setups and package versions vary considerably. They are merely for comparing new site configurations that are created following the instructions below to working setups.
+Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found further down in :numref:`Section %s <Platform_New_Site_Configs>`.
 
 Ready-to-use spack-stack installations are available on the following platforms. This table will be expanded as more platforms are added.
 
----------------------
+-----------------
 spack-stack-1.0.0
----------------------
+-----------------
 
 .. note::
-   These versions are for friendly users and developers in preparation for a JEDI release on June 30, 2022. Amazon Web Services AMI are available in the US East 1 region.
+   This version supports the JEDI Skylab release end of June/beginning of July 2022, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model). Amazon Web Services AMI are available in the US East 1 region.
 
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | System                                   | Maintained by (temporary) | Location                                                                                              |
 +==========================================+===========================+=======================================================================================================+
-| MSU Orion Intel                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.2/install``      |
+| MSU Orion Intel                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install``         |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| MSU Orion GNU                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.2.0/install``          |
+| MSU Orion GNU                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.2.0/install``             |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.1/install``      |
+| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.1/install``         |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.1.0/install``          |
+| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``             |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne                    |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
@@ -45,12 +45,12 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | UW (Univ. of Wisc.) S4                   |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | NEED TO UPDATE - ``/home/ubuntu/spack-stack-1.0.0/envs/skylab-1.0.0/install``                         |
+| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | AMI: skylab-1.0.0-ubuntu20 - ``/home/ubuntu/spack-stack-v1/envs/skylab-1.0.0/install``                |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | NEED TO UPDATE - ``/home/ec2-user/spack-stack-1.0.0/envs/skylab-1.0.0/install``                       |
+| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | AMI: skylab-1.0.0-redhat8 - ``/home/ec2-user/spack-stack-v1/envs/skylab-1.0.0/install``               |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 
-For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
+For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
 .. _Platforms_Orion:
 
@@ -72,7 +72,7 @@ For ``spack-stack-1.0.0`` with Intel, load the following modules after loading m
 
 .. code-block:: console
 
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.2/install/modulefiles/Core
+   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.7
@@ -82,7 +82,7 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.2.0/install/modulefiles/Core
+   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.2.0/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-mpich/3.3.2
    module load stack-python/3.9.7
@@ -109,7 +109,7 @@ For ``spack-stack-1.0.0`` with Intel, load the following modules after loading m
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.1/install/modulefiles/Core
+   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.1/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.7
@@ -120,7 +120,7 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-intel-oneapi-mpi/2021.4.0
    module load stack-python/3.9.7
@@ -132,6 +132,9 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 NCAR-Wyoming Cheyenne
 ------------------------------
 
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
@@ -142,14 +145,14 @@ The following is required for building new spack environments and for using spac
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
    module load python/3.7.9
 
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
-
 .. _Platforms_Acorn:
 
 -------------------------------
 NOAA Acorn (WCOSS2 test system)
 -------------------------------
+
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
 
@@ -164,6 +167,9 @@ CONFIG_SITE should be set to empty in `compilers.yaml`.
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+
 The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path.
 
 .. code-block:: console
@@ -174,14 +180,15 @@ The following is required for building new spack environments and for using spac
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
 
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 .. _Platforms_Gaea:
 
 ------------------------------
 NOAA RDHPCS Gaea
 ------------------------------
+
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
 
@@ -196,14 +203,14 @@ The following is required for building new spack environments and for using spac
 .. note::
    On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. Work is in progress to augment ``ecbuild`` with the ability to prefix serial runs with a launcher, e.g. ``srun -n1`` on Gaea.
 
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
-
 .. _Platforms_Hera:
 
 ------------------------------
 NOAA RDHPCS Hera
 ------------------------------
+
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software.
 
@@ -212,9 +219,6 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.12
-
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 .. _Platforms_Jet:
 
@@ -228,6 +232,9 @@ NOAA RDHPCS Jet
 TACC Stampede2
 ------------------------------
 
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
@@ -237,12 +244,12 @@ The following is required for building new spack environments and for using spac
    module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
    module load miniconda/3.9.7
 
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
-
 ------------------------------
 UW (Univ. of Wisconsin) S4
 ------------------------------
+
+.. note::
+   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software.
 
@@ -252,19 +259,16 @@ The following is required for building new spack environments and for using spac
    module use /data/prod/jedi/spack-stack/modulefiles
    module load miniconda/3.9.7
 
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
-
 --------------------------------
 Amazon Web Services Ubuntu 20.04
 --------------------------------
 
-For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with `ami-0c878bf50bf2d99af <https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#ImageDetails:imageId=ami-0c878bf50bf2d99af>`_. After logging in, run:
+For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-1.0.0-ubuntu20". After logging in, run:
 
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /home/ubuntu/spack-stack-1.0.0/envs/skylab-1.0.0/install/modulefiles/Core
+   module use /home/ubuntu/spack-stack-v1/envs/skylab-1.0.0/install/modulefiles/Core
    module load stack-gcc/10.3.0
    module load stack-mpich/4.0.2
    module load stack-python/3.8.10
@@ -274,13 +278,13 @@ For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with `ami-0c878b
 Amazon Web Services Red hat 8
 -----------------------------
 
-For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with `ami-0710429b6c78a0eab <https://us-east-1.console.aws.amazon.com/ec2/v2/home?region=us-east-1#ImageDetails:imageId=ami-0710429b6c78a0eab>`_. After logging in, run:
+For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-1.0.0-redhat8". After logging in, run:
 
 .. code-block:: console
 
    scl enable gcc-toolset-11 bash
    ulimit -s unlimited
-   module use /home/ec2-user/spack-stack-1.0.0/envs/skylab-1.0.0/install/modulefiles/Core
+   module use /home/ec2-user/spack-stack-v1/envs/skylab-1.0.0/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
@@ -489,7 +493,7 @@ Note. Some Linux systems do not support recent ``lua/lmod`` environment modules,
 Prerequisites: Red Hat/CentOS 8 (one-off)
 -----------------------------------------
 
-The following instructions were used to prepare a basic Red Hat 8 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Prerequisites_Environments>`).
+The following instructions were used to prepare a basic Red Hat 8 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Environments>`).
 
 1. Install basic OS packages as `root`
 
@@ -544,7 +548,7 @@ This environment enables working with spack and building new software environmen
 Prerequisites: Ubuntu 20.04 (one-off)
 -------------------------------------
 
-The following instructions were used to prepare a basic Ubuntu 20.04 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Prerequisites_Environments>`).
+The following instructions were used to prepare a basic Ubuntu 20.04 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Environments>`).
 
 1. Install basic OS packages as `root`
 
