@@ -78,6 +78,7 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
 **New method** (SO FAR ONLY ON DISCOVER)
 
 .. code-block:: console
+
    mkdir -p /discover/swdev/jcsda/spack-stack/qt-5.15.2/src
    cd /discover/swdev/jcsda/spack-stack/qt-5.15.2/src
    wget --no-check-certificate http://download.qt.io/official_releases/online_installers/qt-unified-linux-x64-online.run
@@ -86,7 +87,7 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
 
 Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all other boxes) and set install prefix to ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``. After the successful installation, create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/qt/5.15.2`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
 
-**Old method** (DOES NOT WORK ON DISCOVER, CHEYENNE, POSSIBLY HERA)
+**Old method** (DOES NOT WORK ON DISCOVER AND OTHER PLATFORMS, DON'T USE)
 
 .. code-block:: console
 

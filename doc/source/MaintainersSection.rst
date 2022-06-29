@@ -109,7 +109,7 @@ On Gaea, ``qt`` needs to be installed as a one-off before spack can be used.
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3``.
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -127,7 +127,7 @@ miniconda
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/qt-5.15.3``.
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -153,17 +153,6 @@ TACC Stampede2
 
 Several packages need to be installed as a one-off before spack can be used.
 
-Intel oneAPI compilers
-   The latest version of the Intel compiler on Stampede2 is 19.1.1, and the default modulefile created by the system administrators ties it to `gcc-9.1.0`. The way the module file has been written is incompatible with spack. We therefore recommend installing the latest Intel oneAPI compiler suite (Intel oneAPI Base and HPC Toolkits). The following instructions install Intel oneAPI 2022.2 in ``/work2/06146/tg854455/stampede2/spack-stack``.
-
-.. code-block:: console
-
-   wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18679/l_HPCKit_p_2022.2.0.191.sh
-   wget https://registrationcenter-download.intel.com/akdlm/irc_nas/18673/l_BaseKit_p_2022.2.0.262.sh
-   # Customize the installations to install in /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2
-   sh l_BaseKit_p_2022.2.0.262.sh
-   sh l_HPCKit_p_2022.2.0.191.sh
-
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
@@ -180,7 +169,7 @@ git-lfs
    rpm2cpio git-lfs-1.2.1-1.el7.x86_64.rpm | cpio -idmv
    mv usr/* ../
 
-   Create modulefile ``/work2/06146/tg854455/stampede2/spack-stack/modulefiles/git-lfs/1.2.1`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
+Create modulefile ``/work2/06146/tg854455/stampede2/spack-stack/modulefiles/git-lfs/1.2.1`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
 
 .. _MaintainersSection_S4:
 
@@ -193,7 +182,7 @@ miniconda
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.3`` in ``/data/prod/jedi/spack-stack/qt-5.15.3``.
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/data/prod/jedi/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -217,9 +206,60 @@ Using spack to test/add packages
 
 The simplest case of adding new packages that are available in spack-stack is described in :numref:`Section %s <QuickstartExtendingEnvironments>`. As mentioned there, it is advised to take a backup of the spack environment (and install directories if outside the spack environment directory tree). It is also possible to chain spack installations, which means creating a test environment that uses installed packages and modulefiles from another (e.g. authoritative) spack environment and build the packages to be tested in isolation.
 
-**WORK IN PROGRESS**
+Chaining spack-stack installations
+----------------------------------
 
-More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_
+Chaining spack-stack installations is a powerful way to test adding new packages without affecting the existing packages. The idea is to define one or more upstream spack installations that the environment can use as dependencies. One possible way to do this is:
+
+1. Mirror the environment config of the upstream repository, i.e. copy the entire directory without the ``install`` and ``.spack_env`` directories and without `spack.lock`. For example:
+
+.. code-block:: console
+
+   rsync -av --exclude='install' --exclude='.spack-env' --exclude='spack.lock' \
+       envs/jedi-ufs/ \
+       envs/jedi-ufs-chain-test/
+
+2. Edit `envs/jedi-ufs-chain-test/spack.yaml`` and add an upstream configuration entry directly under the ``spack:`` config so that the contents looks like:
+
+.. code-block:: console
+
+   spack:
+     upstreams:
+       spack-instance-1:
+         install_tree: /path/to/spack-stack-1.0.0/envs/jedi-ufs/install
+     concretizer:
+       unify: when_possible
+     ...
+
+3. Activate the environment
+
+4. Install the new packages, for example:
+
+.. code-block:: console
+
+    spack install -v --reuse esmf@8.3.0b09+debug
+
+5. Create modulefiles
+
+.. code-block:: console
+
+    spack module [lmod|tcl] refresh
+
+6. When using ``tcl`` module files, run the ``spack stack setup-meta-modules`` script. This is not needed when using ``lmod`` modulefiles, because the meta modules in ``/path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/Core`` will be ignored entirely.
+
+To use the chained spack environment, first load the usual modules from the upstream spack environment. Then add the full path to the newly created modules manually, ignoring the meta modules (``.../Core``), for example:
+
+.. code-block:: console
+
+    module use /path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/openmpi/4.1.3/apple-clang/13.1.6
+
+7. Load the newly created modules. When using `tcl` module files, make sure that conflicting modules are unloaded (`lmod` takes care of this).
+
+.. note::
+   After activating the chained environment, ``spack find`` doesn't show the packages installed in upstream, unfortunately.
+
+.. note::
+   More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_. Those words of caution need to be taken seriously, especially those referring to not deleting modulefiles and dependencies in the upstream spack environment (if having permissions to do so)!
 
 ----------------------------------------
 Testing/adding packages outside of spack
@@ -233,6 +273,7 @@ Sometimes, users may want to build new versions of packages frequently without u
 Users can build multiple packages outside of spack and install them in a separate install tree, for example ``MY_INSTALL_TREE``. In order to find these packages, users must extend their environment as required for the system/the packages to be installed:
 
 .. code-block:: console
+
    export PATH="$MY_INSTALL_TREE/bin:$PATH"
    export CPATH="$MY_INSTALL_TREE/include:$PATH"
    export LD_LIBRARY_PATH="$MY_INSTALL_TREE/lib64:$MY_INSTALL_TREE/lib:$LD_LIBRARY_PATH"
@@ -241,5 +282,17 @@ Users can build multiple packages outside of spack and install them in a separat
    # Python packages, use correct lib/lib64 and correct python version
    export PYTHONPATH="$MY_INSTALL_TREE/lib/pythonX.Y/site-packages:$PYTHONPATH"
 
-Python packages can be added using ``python setup.py install --prefix=...`` or ``python3 -m pip install --no-deps --prefix=...``. The ``--no-deps`` options is very important, because ``pip`` may otherwise attempt to install dependencies that already exist in spack-stack. These dependencies are not only duplicates, they may also be different versions and/or compiled with different compilers/libraries (because they are wheels).
+Python packages can be added in various ways:
 
+1. Using ``python setup.py install --prefix=$MY_INSTALL_TREE ...`` or ``python3 -m pip install --no-deps --prefix=$MY_INSTALL_TREE ...``. The ``--no-deps`` options is very important, because ``pip`` may otherwise attempt to install dependencies that already exist in spack-stack. These dependencies are not only duplicates, they may also be different versions and/or compiled with different compilers/libraries (because they are wheels). This approach requires adding the appropriate subdirectories of ``$MY_INSTALL_TREE`` to the different search paths, as shown above.
+
+2. Using Python virtual environments. Two important flags need to be passed to the command that creates the environment ``--system-site-packages`` and ``--without-pip``. After activating the environment, packages can be installed using `python3 -m pip` without having to specify ``--no-deps`` or ``--prefix``, and without having to manually modify ``PATH``, ``PYTHONPATH``, etc.
+
+.. code-block:: console
+
+   python3 -m venv --system-site-packages --without-pip $MY_INSTALL_TREE
+   source $MY_INSTALL_TREE/bin/activate
+   python3 -m pip install ...
+
+.. note::
+   Users are equally strongly advised to not use ``conda`` or ``miniconda`` in combination with Python modules provided by spack-stack, as well as not installing packages other than ``poetry`` in the basic ``miniconda`` installation for spack-stack (if using such a setup).
