@@ -250,30 +250,27 @@ Chaining spack-stack installations is a powerful way to test adding new packages
 
     spack install -v --reuse esmf@8.3.0b09+debug
 
-5. Create modulefiles - do not create the meta modules
+5. Create modulefiles
 
 .. code-block:: console
 
     spack module [lmod|tcl] refresh
 
-6. Do *not* run the `spack stack setup-meta-modules` script. *** MAYBE ***
+6. When using `tcl` module files, run the `spack stack setup-meta-modules` script. This is not needed when using `lmod` modulefiles, because the meta modules in ``/path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/Core`` will be ignored entirely.
 
-To use the chained spack environment, first load the usual modules from the upstream spack environment. Then add the full path to the newly created modules manually, for example:
+To use the chained spack environment, first load the usual modules from the upstream spack environment. Then add the full path to the newly created modules manually, ignoring the meta modules (``.../Core``), for example:
 
 .. code-block:: console
 
     module use /path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/openmpi/4.1.3/apple-clang/13.1.6
 
-Load the newly created modules 
-and meta modules as usual. Note that the call to `spack stack setup-meta-modules` is only required to update the automatic ``tcl/tk`` environment modules.
+7. Load the newly created modules. When using `tcl` module files, make sure that conflicting modules are unloaded (`lmod` takes care of this).
 
+.. note::
+   After activating the chained environment, ``spack find`` doesn't show the packages installed in upstream, unfortunately.
 
-
-Note. Spack find doesn't show the packages installed in upstream, unfortunately.
-
-**DOM WORK IN PROGRESS**  Note that it is not necessary to create the meta modules. Simply add the directory to which the new modules a???A? HOW ABOUT TCL????
-
-More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_
+.. note::
+   More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_. Those words of caution need to be taken seriously, especially those referring to not deleting modulefiles and dependencies in the upstream spack environment (if having permissions to do so)!
 
 ----------------------------------------
 Testing/adding packages outside of spack
