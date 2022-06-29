@@ -217,7 +217,61 @@ Using spack to test/add packages
 
 The simplest case of adding new packages that are available in spack-stack is described in :numref:`Section %s <QuickstartExtendingEnvironments>`. As mentioned there, it is advised to take a backup of the spack environment (and install directories if outside the spack environment directory tree). It is also possible to chain spack installations, which means creating a test environment that uses installed packages and modulefiles from another (e.g. authoritative) spack environment and build the packages to be tested in isolation.
 
-**WORK IN PROGRESS**
+Chaining spack-stack installations
+----------------------------------
+
+Chaining spack-stack installations is a powerful way to test adding new packages without affecting the existing packages. The idea is to define one or more upstream spack installations that the environment can use as dependencies. One possible way to do this is:
+
+1. Mirror the environment config of the upstream repository, i.e. copy the entire directory without the ``install`` and ``.spack_env`` directories and without `spack.lock`. For example:
+
+.. code-block:: console
+
+   rsync -av --exclude='install' --exclude='.spack-env' --exclude='spack.lock' \
+       envs/jedi-ufs/ \
+       envs/jedi-ufs-chain-test/
+
+2. Edit `envs/jedi-ufs-chain-test/spack.yaml`` and add an upstream configuration entry directly under the ``spack:`` config so that the contents looks like:
+
+.. code-block:: console
+
+   spack:
+     upstreams:
+       spack-instance-1:
+         install_tree: /path/to/spack-stack-1.0.0/envs/jedi-ufs/install
+     concretizer:
+       unify: when_possible
+     ...
+
+3. Activate the environment
+
+4. Install the new packages, for example:
+
+.. code-block:: console
+
+    spack install -v --reuse esmf@8.3.0b09+debug
+
+5. Create modulefiles - do not create the meta modules
+
+.. code-block:: console
+
+    spack module [lmod|tcl] refresh
+
+6. Do *not* run the `spack stack setup-meta-modules` script. *** MAYBE ***
+
+To use the chained spack environment, first load the usual modules from the upstream spack environment. Then add the full path to the newly created modules manually, for example:
+
+.. code-block:: console
+
+    module use /path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/openmpi/4.1.3/apple-clang/13.1.6
+
+Load the newly created modules 
+and meta modules as usual. Note that the call to `spack stack setup-meta-modules` is only required to update the automatic ``tcl/tk`` environment modules.
+
+
+
+Note. Spack find doesn't show the packages installed in upstream, unfortunately.
+
+**DOM WORK IN PROGRESS**  Note that it is not necessary to create the meta modules. Simply add the directory to which the new modules a???A? HOW ABOUT TCL????
 
 More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_
 
@@ -233,6 +287,7 @@ Sometimes, users may want to build new versions of packages frequently without u
 Users can build multiple packages outside of spack and install them in a separate install tree, for example ``MY_INSTALL_TREE``. In order to find these packages, users must extend their environment as required for the system/the packages to be installed:
 
 .. code-block:: console
+
    export PATH="$MY_INSTALL_TREE/bin:$PATH"
    export CPATH="$MY_INSTALL_TREE/include:$PATH"
    export LD_LIBRARY_PATH="$MY_INSTALL_TREE/lib64:$MY_INSTALL_TREE/lib:$LD_LIBRARY_PATH"
@@ -241,5 +296,17 @@ Users can build multiple packages outside of spack and install them in a separat
    # Python packages, use correct lib/lib64 and correct python version
    export PYTHONPATH="$MY_INSTALL_TREE/lib/pythonX.Y/site-packages:$PYTHONPATH"
 
-Python packages can be added using ``python setup.py install --prefix=...`` or ``python3 -m pip install --no-deps --prefix=...``. The ``--no-deps`` options is very important, because ``pip`` may otherwise attempt to install dependencies that already exist in spack-stack. These dependencies are not only duplicates, they may also be different versions and/or compiled with different compilers/libraries (because they are wheels).
+Python packages can be added in various ways:
 
+1. Using ``python setup.py install --prefix=$MY_INSTALL_TREE ...`` or ``python3 -m pip install --no-deps --prefix=$MY_INSTALL_TREE ...``. The ``--no-deps`` options is very important, because ``pip`` may otherwise attempt to install dependencies that already exist in spack-stack. These dependencies are not only duplicates, they may also be different versions and/or compiled with different compilers/libraries (because they are wheels). This approach requires adding the appropriate subdirectories of ``$MY_INSTALL_TREE`` to the different search paths, as shown above.
+
+2. Using Python virtual environments. Two important flags need to be passed to the command that creates the environment ``--system-site-packages`` and ``--without-pip``. After activating the environment, packages can be installed using `python3 -m pip` without having to specify ``--no-deps`` or ``--prefix``, and without having to manually modify ``PATH``, ``PYTHONPATH``, etc.
+
+.. code-block:: console
+
+   python3 -m venv --system-site-packages --without-pip $MY_INSTALL_TREE
+   source $MY_INSTALL_TREE/bin/activate
+   python3 -m pip install ...
+
+.. note::
+   Users are equally strongly advised to not use ``conda`` or ``miniconda`` in combination with Python modules provided by spack-stack, as well as not installing packages other than ``poetry`` in the basic ``miniconda`` installation for spack-stack (if using such a setup).

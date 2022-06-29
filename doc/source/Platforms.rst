@@ -11,10 +11,10 @@ Pre-configured sites
 
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as reference configurations for macOS and Linux. The reference configurations are **not** meant to be used as is, as user setups and package versions vary considerably. They are merely for comparing new site configurations that are created following the instructions below to working setups.
 
-Ready-to-use spack-stack installations are available on the following platforms:
+Ready-to-use spack-stack installations are available on the following platforms. This table will be expanded as more platforms are added.
 
 ---------------------
-spack-stack-1.0.0-rc2
+spack-stack-1.0.0
 ---------------------
 
 .. note::
@@ -23,51 +23,31 @@ spack-stack-1.0.0-rc2
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | System                                   | Maintained by (temporary) | Location                                                                                              |
 +==========================================+===========================+=======================================================================================================+
-| MSU Orion Intel                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.2/install``  |
+| MSU Orion Intel                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.2/install``      |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| MSU Orion GNU                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.2.0/install``      |
+| MSU Orion GNU                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.2.0/install``          |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.1/install``  |
+| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.1/install``      |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.1.0/install``      |
+| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.1.0/install``          |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | ami-0c878bf50bf2d99af - ``/home/ubuntu/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``      |
+| NCAR-Wyoming Cheyenne                    |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | ami-0710429b6c78a0eab - ``/home/ec2-user/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install``    |
+| NOAA Parallel Works (AWS, Azure, Gcloud) |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-
--------------------------
-spack-stack-1.0.0 release
--------------------------
-
+| NOAA RDHPCS Gaea                         |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| System                                   | Maintained by (temporary) | Location                                                                                              |
-+==========================================+===========================+=======================================================================================================+
-| MSU Orion Intel                          | Dom Heinzeller            | coming soon                                                                                           |
+| NOAA RDHPCS Hera                         |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| MSU Orion GNU                            | Dom Heinzeller            | coming soon                                                                                           |
+| NOAA RDHPCS Jet                          |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                      | Dom Heinzeller            | coming soon                                                                                           |
+| TACC Stampede2                           |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                        | Dom Heinzeller            | coming soon                                                                                           |
+| UW (Univ. of Wisc.) S4                   |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne                    |                           | currently not supported                                                                               |
+| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | NEED TO UPDATE - ``/home/ubuntu/spack-stack-1.0.0/envs/skylab-1.0.0/install``                         |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud) |                           | currently not supported                                                                               |
-+------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea                         |                           | currently not supported                                                                               |
-+------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera                         |                           | currently not supported                                                                               |
-+------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet                          |                           | currently not supported                                                                               |
-+------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| TACC Stampede2                           |                           | currently not supported                                                                               |
-+------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4                   |                           | currently not supported                                                                               |
-+------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | coming soon                                                                                           |
-+------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | coming soon                                                                                           |
+| Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | NEED TO UPDATE - ``/home/ec2-user/spack-stack-1.0.0/envs/skylab-1.0.0/install``                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Chapter %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
@@ -92,8 +72,7 @@ For ``spack-stack-1.0.0`` with Intel, load the following modules after loading m
 
 .. code-block:: console
 
-   ulimit -s unlimited
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.2/install/modulefiles/Core
+   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.2/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.7
@@ -103,8 +82,7 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
-   ulimit -s unlimited
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.2.0/install/modulefiles/Core
+   module use /work/noaa/da/role-da/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.2.0/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-mpich/3.3.2
    module load stack-python/3.9.7
@@ -131,7 +109,7 @@ For ``spack-stack-1.0.0`` with Intel, load the following modules after loading m
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-intel-2022.0.1/install/modulefiles/Core
+   module use /discover/swdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-intel-2022.0.1/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.7
@@ -142,7 +120,7 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.0.0-rc2/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.0.0/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-intel-oneapi-mpi/2021.4.0
    module load stack-python/3.9.7
@@ -286,7 +264,7 @@ For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with `ami-0c878b
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /home/ubuntu/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install/modulefiles/Core
+   module use /home/ubuntu/spack-stack-1.0.0/envs/skylab-1.0.0/install/modulefiles/Core
    module load stack-gcc/10.3.0
    module load stack-mpich/4.0.2
    module load stack-python/3.8.10
@@ -302,7 +280,7 @@ For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with `ami-071042
 
    scl enable gcc-toolset-11 bash
    ulimit -s unlimited
-   module use /home/ec2-user/sandpit/spack-stack-1.0.0-rc2/envs/skylab-1.0.0/install/modulefiles/Core
+   module use /home/ec2-user/spack-stack-1.0.0/envs/skylab-1.0.0/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
