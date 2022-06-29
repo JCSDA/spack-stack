@@ -122,7 +122,7 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
    ulimit -s unlimited
    module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
    module load stack-gcc/10.1.0
-   module load stack-intel-oneapi-mpi/2021.4.0
+   module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
    module available
 
