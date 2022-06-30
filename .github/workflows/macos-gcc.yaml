@@ -1,5 +1,9 @@
 name: macos-gcc-build
-on: workflow_dispatch
+
+on:
+  pull_request:
+  #push:
+  workflow_dispatch:
 
 # Use custom shell with -l so .bash_profile is sourced
 defaults:
@@ -10,8 +14,8 @@ jobs:
   build:
     strategy:
       matrix:
-        # Can't build jedi-ewok on macOS (12) with gcc (11)
-        spec: [jedi-fv3-env, jedi-tools-env, jedi-ufs-env, jedi-um-env, nceplibs-env, soca-env, global-workflow-env]
+        template: [jedi-ufs-all]
+        spec: ['']
     runs-on: macos-latest
     steps:
 
@@ -23,6 +27,7 @@ jobs:
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
         with:
+          templates: ${{ matrix.template }}
           specs: ${{ matrix.spec }}
           compiler: gcc@9
           mpi: mpich

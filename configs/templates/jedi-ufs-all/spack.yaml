@@ -13,6 +13,7 @@ spack:
 
   include: []
 
+  # Notes.
   # jedi-ewok-env does not build on macOS with GCC
   # jedi-tools-env does not build with Intel
   specs:
@@ -22,4 +23,5 @@ spack:
    - jedi-ufs-env
    - jedi-um-env
    - nceplibs-env
-   - soca-env  
+   - soca-env
+

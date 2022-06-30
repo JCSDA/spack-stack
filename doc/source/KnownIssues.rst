@@ -1,6 +1,5 @@
 ..  _KnownIssues:
 
-*******************************
 Known Issues
 *******************************
 
@@ -15,6 +14,14 @@ General
 2. Build errors with Python 3.10
 
    There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.8 or 3.9.
+
+==============================
+NASA Discover
+==============================
+
+1. Timeout when fetching software during spack installs.
+
+   Discover's connection to the outside world can be very slow and spack sometimes aborts with fetch timeouts. Try again until it works, sometimes have to wait for a bit.
 
 ==============================
 NOAA Parallel Works

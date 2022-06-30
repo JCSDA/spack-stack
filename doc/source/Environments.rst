@@ -1,6 +1,5 @@
 .. _Environments:
 
-*************************
 Constructing Environments
 *************************
 
@@ -12,7 +11,7 @@ Environments can be constructed in two ways in spack-stack:
 
     - Configure the environment as shown in :numref:`Sections %s <Quickstart>` and :numref:`%s <Platforms>`.
 
-    - Add spack packages (also referred to as ``specs``) to the environment using ``spack add``. These packages can be virtual environments described in :numref:`Section %s <EnvironmentsVirtualEnvironments>` below, or individual packages, e.g. ``esmf`` or ``atlas``. Examples:
+    - Add spack packages (also referred to as ``specs``) to the environment using ``spack add``. These packages can be virtual environments described in :numref:`Section %s <EnvironmentsVirtualPackages>` below, or individual packages, e.g. ``esmf`` or ``atlas``. Examples:
 
         .. code-block:: console
 

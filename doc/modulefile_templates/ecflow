@@ -1,0 +1,26 @@
+#%Module1.0
+
+module-whatis "Provides an ecflow-5.8.4 server+ui installation for use with spack."
+
+# Only allow one instance of compiler to load
+conflict ecflow
+
+proc ModulesHelp { } {
+puts stderr "Provides an ecflow-5.8.4 server+ui installation for use with spack."
+}
+
+if { [ module-info mode load ] && ![ is-loaded qt/5.15.2 ] } {
+    module load qt/5.15.2
+}
+
+# Set this value
+set ECFLOW_PATH "/discover/swdev/jcsda/spack-stack/ecflow-5.8.4"
+
+prepend-path PATH "${ECFLOW_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${ECFLOW_PATH}/lib"
+prepend-path LD_LIBRARY_PATH "${ECFLOW_PATH}/lib64"
+prepend-path LIBRARY_PATH "${ECFLOW_PATH}/lib"
+prepend-path LIBRARY_PATH "${ECFLOW_PATH}/lib64"
+prepend-path CPATH "${ECFLOW_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${ECFLOW_PATH}"
+prepend-path PYTHONPATH "${ECFLOW_PATH}/lib/python3.9/site-packages"

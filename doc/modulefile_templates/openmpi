@@ -1,0 +1,33 @@
+#%Module1.0
+
+module-whatis "Provides an openmpi-4.1.3 installation for use with spack and gcc-10.1.0."
+
+# Only allow one instance of compiler to load
+conflict openmpi
+conflict mpich
+conflict mpi
+
+proc ModulesHelp { } {
+puts stderr "Provides an openmpi-4.1.3 installation for use with spack and gcc-10.1.0."
+}
+
+if { [ module-info mode load ] && ![ is-loaded comp/gcc/10.1.0 ] } {
+    module load comp/gcc/10.1.0
+}
+
+# Set this value
+set OPENMPI_PATH "/discover/swdev/jcsda/spack-stack/openmpi-4.1.3/gcc-10.1.0"
+
+prepend-path PATH "${OPENMPI_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${OPENMPI_PATH}/lib"
+prepend-path LIBRARY_PATH "${OPENMPI_PATH}/lib"
+prepend-path CPATH "${OPENMPI_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${OPENMPI_PATH}"
+prepend-path MANPATH "${OPENMPI_PATH}/share/man"
+
+# Settings specific for Discover
+setenv MPIHOME ${OPENMPI_PATH}
+setenv MPI_HOME ${OPENMPI_PATH}
+unsetenv SLURM_EXPORT_ENV
+setenv PSM2_PATH_SELECTION "static_base"
+setenv SLURM_CPU_BIND "none"
