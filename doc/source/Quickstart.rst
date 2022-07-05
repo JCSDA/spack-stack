@@ -1,6 +1,5 @@
 .. _Quickstart:
 
-*************************
 Quickstart
 *************************
 
@@ -62,6 +61,18 @@ The following instructions install a new spack environment on a pre-configured s
 
    # Create meta-modules for compiler, mpi, python
    spack stack setup-meta-modules
+
+.. note::
+  You may want to capture the output from :code:`spack concretize` and :code:`spack install` comands in log files.
+  For example:
+
+  .. code-block:: bash
+    
+    spack concretize 2>&1 | tee log.concretize
+    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
+
+.. note::
+  For platforms with multiple compilers in the site config, make sure that the correct compiler and corresponding MPI library are set correctly in ``envs/jedi-fv3.hera/site/packages.yaml`` before running ``spack concretize``. Also, check the output of ``spack concretize`` to make sure that the correct compiler is used (e.g. ``%intel-2022.0.1``). If not, edit ``envs/jedi-fv3.hera/site/compilers.yaml`` and remove the offending compiler. Then, remove ``envs/jedi-fv3.hera/spack.lock`` and rerun ``spack concretize``.
 
 ----------------
 Create container
@@ -125,6 +136,9 @@ In the simplest case, a new package (and its basic dependencies) or a new versio
    spack install [--verbose] [--fail-fast]
 
 Further information on how to define variants for new packages, how to use these non-standard versions correctly as dependencies, ..., can be found in the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_. Details on the ``spack stack`` extension of the ``spack`` are provided in :numref:`Section %s <SpackStackExtension>`.
+
+.. note::
+   Instead of ``spack add ecmwf-atlas@0.29.0``, ``spack concretize`` and ``spack install``, one can also just use ``spack install ecmwf-atlas@0.29.0`` after checking in the first step (``spack spec``) that the package will be installed as desired.
 
 .. _QuickstartUseSpackStack:
 
