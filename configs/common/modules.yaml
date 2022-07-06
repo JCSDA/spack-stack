@@ -43,7 +43,6 @@ modules:
       - libgeotiff
       - libice
       - libiconv
-      - libjpeg-turbo
       - libpciaccess
       - libpthread-stubs
       - libsigsegv
@@ -265,7 +264,6 @@ modules:
       - libgeotiff
       - libice
       - libiconv
-      - libjpeg-turbo
       - libpciaccess
       - libpthread-stubs
       - libsigsegv
