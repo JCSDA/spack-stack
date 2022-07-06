@@ -97,7 +97,7 @@ runs:
     uses: actions/cache@v2
     with:
       path: ~/mpi
-      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}2
+      key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
   # MPI takes a long time to build. Built it externally and cache it.
   - name: install-mpi
