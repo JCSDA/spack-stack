@@ -15,6 +15,7 @@ modules:
         ecmwf-atlas: '{compiler.name}/{compiler.version}/atlas/{version}'
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
+        libjpeg-turbo: '{compiler.name}/{compiler.version}/libjpeg/{version}'
       blacklist:
       # List of packages for which we don't need modules
       - apple-libunwind
