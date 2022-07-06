@@ -14,7 +14,7 @@ inputs:
     required: false
     default: ''
   compiler:
-    description: 'Compiler (available options gcc@9, gcc@10, clang, apple-clang, intel)'
+    description: 'Compiler (available options gcc@9, gcc@10, apple-clang, intel)'
     required: true
     default: 'gcc@9'
   mpi:
@@ -122,11 +122,6 @@ runs:
           export CXX=clang++
           export FC=gfortran-10
           export FFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == "clang"* ]]; then
-          export CC=$(brew --prefix llvm)/bin/clang
-          export CXX=$(brew --prefix llvm)/bin/clang++
-          export FC=gfortran-10
-          export FFLAGS="-fallow-argument-mismatch"
         fi
 
         export MPICH_VERSION="3.4.3"
@@ -182,14 +177,7 @@ runs:
       spack env activate envs/${{ inputs.name }}
       spack add ${{ inputs.specs }}
 
-      # LLVM Clang not in PATH, search for it specifically
-      # Then, Fortran compilers are null, so set to gfortran
-      # Add minimal compilers just to prevent other compilers from being used by accident
-      if [[ "$RUNNER_OS" == "macOS" && ${{ inputs.compiler }} == "clang"* ]]; then
-        spack compiler add $(brew --prefix llvm)
-        sed -i".bak" "s|f77: null|f77: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
-        sed -i".bak" "s|fc: null|fc: /usr/local/bin/gfortran-10|" ${SPACK_ENV}/spack.yaml
-      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+      if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
         # Workaround for error "libimf.so cannot be found":
         sed -i 's#environment: {}#environment: {prepend_path: {LD_LIBRARY_PATH: /opt/intel/oneapi/compiler/latest/linux/compiler/lib/intel64_lin}}#g' envs/${{ inputs.name }}/spack.yaml
