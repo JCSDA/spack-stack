@@ -22,6 +22,11 @@ spack:
    - jedi-tools-env
    - jedi-ufs-env
    - jedi-um-env
+   - global-workflow-env
+   - ufs-weather-model-env
+   - upp-env
+   - ww3-env
+   - gsi-env
+   - ufs-utils-env
    - nceplibs-env
    - soca-env
-
