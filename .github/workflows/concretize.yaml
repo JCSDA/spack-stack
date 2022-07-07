@@ -15,7 +15,7 @@ jobs:
   macos_clang_concretize:
     strategy:
       matrix:
-        compiler: [clang, apple-clang]
+        compiler: [apple-clang]
         template: [jedi-ufs-all]
     runs-on: macos-latest
     steps:

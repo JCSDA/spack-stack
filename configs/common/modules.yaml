@@ -15,6 +15,7 @@ modules:
         ecmwf-atlas: '{compiler.name}/{compiler.version}/atlas/{version}'
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
+        libjpeg-turbo: '{compiler.name}/{compiler.version}/libjpeg/{version}'
       blacklist:
       # List of packages for which we don't need modules
       - apple-libunwind
@@ -43,7 +44,6 @@ modules:
       - libgeotiff
       - libice
       - libiconv
-      - libjpeg-turbo
       - libpciaccess
       - libpthread-stubs
       - libsigsegv
@@ -237,6 +237,7 @@ modules:
         ecmwf-atlas: 'atlas/{version}'
         nlohmann-json: 'json/{version}'
         nlohmann-json-schema-validator: 'json-schema-validator/{version}'
+        libjpeg-turbo: 'libjpeg/{version}'
       blacklist:
       # List of packages for which we don't need modules
       - apple-libunwind
@@ -265,7 +266,6 @@ modules:
       - libgeotiff
       - libice
       - libiconv
-      - libjpeg-turbo
       - libpciaccess
       - libpthread-stubs
       - libsigsegv
