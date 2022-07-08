@@ -296,3 +296,18 @@ Python packages can be added in various ways:
 
 .. note::
    Users are equally strongly advised to not use ``conda`` or ``miniconda`` in combination with Python modules provided by spack-stack, as well as not installing packages other than ``poetry`` in the basic ``miniconda`` installation for spack-stack (if using such a setup).
+
+.. _MaintainersSection_Directory_Layout:
+
+==============================
+Recommended Directory Layout
+==============================
+
+To support multiple environments installs it is recommended to use a standard directory layout.
+
+After running `bootstrap.sh` the prefix will have the following directories:
+
+* apps - Miniconda and other prerequisites installations.
+* modulefiles - Prerquisite modules not built with Spack.
+* src - Prerequisite and spack-stack sources. spack-stack should be checked out here.
+* envs - Spack environment installation location. This should be set in `config.yaml`. Each environment should be clearly named such as `skylab-1.0.0`.
