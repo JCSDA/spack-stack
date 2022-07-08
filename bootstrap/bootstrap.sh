@@ -15,6 +15,9 @@ Help()
 }
 
 prefix=""
+
+# When updating to a new Python release also change the Miniconda module template
+# to reflect (e.g. /lib/python3.9/site-package)
 miniconda_ver="py39_4.12.0"
 
 # Get the options
@@ -41,11 +44,13 @@ stack_dir=${prefix}
 module_dir=${stack_dir}/modulefiles
 app_dir=${stack_dir}/apps
 src_dir=${stack_dir}/src
+envs_dir=${stack_dir}/envs
 
 mkdir -p ${stack_dir}
 mkdir -p ${app_dir}
 mkdir -p ${module_dir}
 mkdir -p ${src_dir}
+mkdir -p ${envs_dir}
 echo "Created spack-stack dir at: ${stack_dir}"
 
 mkdir {src_dir}/spack-stack
