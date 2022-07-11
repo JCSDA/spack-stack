@@ -308,6 +308,6 @@ To support multiple environments installs it is recommended to use a standard di
 After running `bootstrap.sh` the prefix will have the following directories:
 
 * apps - Miniconda and other prerequisites installations.
-* modulefiles - Prerquisite modules not built with Spack.
+* modulefiles - Prerequisite modules not built with Spack.
 * src - Prerequisite and spack-stack sources. spack-stack should be checked out here.
 * envs - Spack environment installation location. This should be set in `config.yaml`. Each environment should be clearly named such as `skylab-1.0.0`.
