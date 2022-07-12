@@ -65,7 +65,7 @@ repo, but all should be moved to the main spack repo as time permits.
 ### Installing on HPC Systems
 
 The spack-stack stack must be installed on various NOAA and NCAR
-systems. Each stakeholder will designiate programmers to install on
+systems. Each stakeholder will designate programmers to install on
 their own systems.
 
 ### Releases
