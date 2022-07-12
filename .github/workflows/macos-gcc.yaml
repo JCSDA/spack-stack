@@ -2,7 +2,11 @@ name: macos-gcc-build
 
 on:
   pull_request:
-  #push:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
   workflow_dispatch:
 
 # Use custom shell with -l so .bash_profile is sourced
