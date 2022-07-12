@@ -20,7 +20,7 @@ in installing the large number of packages managed by spack-stack.
 
 ## Stakeholders
 
-- NOAA Environmental Modeling Center (EMC)
+- The NOAA Environmental Modeling Center (EMC)
 - The UCAR Joint Center for Satellite Data Assimilation (JCSDA)
 - The Earth Prediction Innovation Center (EPIC)
 
@@ -59,14 +59,15 @@ netcdf-c), the work of maintaining the spack package file is shared.
 
 Spack package files should be pushed to the spack main repository, not
 held within the spack-stack project. For quick development and
-execution, package files can be temporarily housed in the spack-stack
-repo, but all should be moved to the main spack repo as time permits.
+execution, package files can be temporarily housed in the the spack
+fork used by spack-stack, but all should be moved to the main spack
+repo as time permits.
 
 ### Installing on HPC Systems
 
-The spack-stack stack must be installed on various NOAA and NCAR
-systems. Each stakeholder will designate programmers to install on
-their own systems.
+The spack-stack stack must be installed on various NOAA, NCAR, NASA,
+and other HPC systems. Each stakeholder will designate programmers to
+install on their own systems.
 
 ### Releases
 
