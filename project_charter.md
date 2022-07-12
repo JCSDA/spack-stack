@@ -89,7 +89,7 @@ Sometimes tags are preferrable to releases. Tags can be added at any time. Tag p
 ### Documentation
 
 spack-stack is documented with its README.md and [Spack Documentation
-on readthedocs](https://spack.readthedocs.io/en/latest/).
+on readthedocs](https://spack-stack.readthedocs.io/en/latest/#).
 
 ### Reporting Problems
 
