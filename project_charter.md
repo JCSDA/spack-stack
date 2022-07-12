@@ -37,7 +37,7 @@ JCSDA | Dom Heinzeller
 
 ## Project Process
 
-The spack-stack project will follow the proeesses outlined in this
+The spack-stack project will follow the processes outlined in this
 document to allow all stakeholders to get the benefits they need from
 spack-stack.
 
