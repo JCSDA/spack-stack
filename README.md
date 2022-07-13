@@ -1,26 +1,30 @@
 # spack-stack
 
-spack-stack is a collaborative effort between the NOAA Environmental
-Modeling Center (EMC), the UCAR Joint Center for Satellite Data
-Assimilation (JCSDA), and the Earth Prediction Innovation Center
-(EPIC). spack-stack is designed to support the various applications of
-the supporting agencies such as the Unified Forecast System (UFS) or
-the Joint Effort for Data assimilation Integration (JEDI). The stack
-can be installed on a range of platforms, from Linux and macOS laptops
-to HPC systems, and comes pre-configured for many systems. Users can
-install the necessary packages for a particular application and later
-add the missing packages for another application without having to
-rebuild the entire stack.
+Spack-stack enables the installation of a stack of software required
+for HPC system deployments of NOAA's Unified Forecast System (UFS) and
+other weather and climate models, including components of the Joint
+Effort for Data assimilation Integration (JEDI).
 
-[Spack](https://github.com/spack/spack) is a community-supported,
-multi-platform, Python-based package manager originally developed by
-the Lawrence Livermore National Laboratory (LLNL). Spack is provided
-as a submodule to spack-stack so that a stable version can be
-referenced. For more information about spack see the [LLNL project
-page for
+Spack-stack is a collaborative effort between:
+* the NOAA Environmental Modeling Center (EMC)
+* the UCAR Joint Center for Satellite Data Assimilation (JCSDA)
+* the Earth Prediction Innovation Center (EPIC).
+
+Spack-stack is a fork of the [spack](https://github.com/spack/spack)
+repository. Spack is a community-supported, multi-platform,
+Python-based package manager originally developed by the Lawrence
+Livermore National Laboratory (LLNL). Spack is provided as a submodule
+to spack-stack so that a stable version can be referenced. For more
+information about spack see the [LLNL project page for
 spack](https://computing.llnl.gov/projects/spack-hpc-package-manager)
 and the [spack
 documentation](https://spack.readthedocs.io/en/latest/).
+
+The stack can be installed on a range of platforms, from Linux and
+macOS laptops to HPC systems, and comes pre-configured for many
+systems. Users can install the necessary packages for a particular
+application and later add the missing packages for another application
+without having to rebuild the entire stack.
 
 spack-stack is mainly a collection of Spack configuration files, but
 provides a Spack extension to simplify the installation process:
