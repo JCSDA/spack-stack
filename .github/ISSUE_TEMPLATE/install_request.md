@@ -3,7 +3,7 @@ name: Install request
 about: Request an installation of package in the stack on HPC's
 title: '[INSTALL] <title>'
 labels: 'install'
-assignees: 'Hang-Lei-NOAA, kgerheiser, jkbk2004'
+assignees: 'Hang-Lei-NOAA, kgerheiser, jkbk2004, climbfuji'
 
 ---
 
