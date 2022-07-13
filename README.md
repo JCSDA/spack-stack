@@ -10,12 +10,13 @@ Spack-stack is a collaborative effort between:
 * [UCAR Joint Center for Satellite Data Assimilation (JCSDA)](https://www.jcsda.org/)
 * [Earth Prediction Innovation Center (EPIC)](https://epic.noaa.gov/).
 
-Spack-stack is a fork of the [spack](https://github.com/spack/spack)
-repository. Spack is a community-supported, multi-platform,
-Python-based package manager originally developed by the Lawrence
-Livermore National Laboratory (LLNL). Spack is provided as a submodule
-to spack-stack so that a stable version can be referenced. For more
-information about spack see the [LLNL project page for
+Spack-stack is a thin layer around a fork of the
+[spack](https://github.com/spack/spack) repository. Spack is a
+community-supported, multi-platform, Python-based package manager
+originally developed by the Lawrence Livermore National Laboratory
+(LLNL). Spack is provided as a submodule to spack-stack so that a
+stable version can be referenced. For more information about spack see
+the [LLNL project page for
 spack](https://computing.llnl.gov/projects/spack-hpc-package-manager)
 and the [spack
 documentation](https://spack.readthedocs.io/en/latest/).
