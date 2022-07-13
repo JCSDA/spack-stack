@@ -1,14 +1,14 @@
 # spack-stack
 
-Spack-stack enables the installation of a stack of software required
+Spack-stack enables the installation of software required
 for HPC system deployments of NOAA's Unified Forecast System (UFS) and
 other weather and climate models, including components of the Joint
 Effort for Data assimilation Integration (JEDI).
 
 Spack-stack is a collaborative effort between:
-* the NOAA Environmental Modeling Center (EMC)
-* the UCAR Joint Center for Satellite Data Assimilation (JCSDA)
-* the Earth Prediction Innovation Center (EPIC).
+* [NOAA Environmental Modeling Center (EMC)](https://www.emc.ncep.noaa.gov/emc_new.php)
+* [UCAR Joint Center for Satellite Data Assimilation (JCSDA)](https://www.jcsda.org/)
+* [Earth Prediction Innovation Center (EPIC)](https://epic.noaa.gov/).
 
 Spack-stack is a fork of the [spack](https://github.com/spack/spack)
 repository. Spack is a community-supported, multi-platform,
