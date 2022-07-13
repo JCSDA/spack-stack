@@ -42,12 +42,11 @@ https://spack-stack.readthedocs.io/en/latest/
 
 spack-stack is maintained by:
 
-- Kyle Gerheiser (@kgerheiser), Hang Lei (@Hang-Lei-NOAA), Ed Hartnett
-  (@edwardhartnett) NOAA-EMC
+- [Kyle Gerheiser](https://www.github.com/kgerheiser), [Hang
+  Lei](https://www.github.com/Hang-Lei-NOAA), [Ed
+  Hartnett](https://www.github.com/edwardhartnett) NOAA-EMC
 
-- Dom Heinzeller (@climbfuji), JCSDA
-
-- not yet appointed, EPIC
+- [Dom Heinzeller](https://www.github.com/climbfuji), JCSDA
 
 For more information about the organization of the spack-stack
 project, see the [Project Charter](project_charter.md).
