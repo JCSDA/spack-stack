@@ -15,6 +15,8 @@ spack-stack is maintained by:
 - Dom Heinzeller (@climbfuji), JCSDA
 - not yet appointed, EPIC
 
+For more information about the organization of the spack-stack project, see the [Project Charter](project_charter.md).
+
 ## Disclaimer
 
 The United States Department of Commerce (DOC) GitHub project code is
