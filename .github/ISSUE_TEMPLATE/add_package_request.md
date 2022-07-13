@@ -10,7 +10,7 @@ assignees: 'Hang-Lei-NOAA'
 **Please describe the package or library you would like to add to spack-stack.**
 A description of package including GitHub repo.
 
-**What applications at NOAA will be using this package or library?**
+**What applications will be using this package or library?**
 A list of groups or applications which will use this pacakge or library.
 
 **Is there already a package or library in spack-stack that provides this, or related, functionality?**
@@ -19,7 +19,7 @@ List any other related pacakges already in spack-stack, as far as you know.
 **Additional context**
 Add any other context or screenshots about the package or library here.
 
-**Will This Package be Needed in an Operational Application?**
+**Will This Package be Needed in a NOAA Operational Application?**
 If yes, the WCOSS System Software Checklist must also be completed.
 
 **WCOSS System Software Request Checklist**
