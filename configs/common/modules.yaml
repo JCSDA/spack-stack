@@ -100,6 +100,7 @@ modules:
             '{name}_ROOT': '{prefix}'
         suffixes:
           +debug: 'debug'
+          build_type=Debug:  'debug'
       ecmwf-atlas:
         environment:
           set:
@@ -322,6 +323,7 @@ modules:
             '{name}_ROOT': '{prefix}'
         suffixes:
           +debug: 'debug'
+          build_type=Debug:  'debug'
       ecmwf-atlas:
         environment:
           set:
