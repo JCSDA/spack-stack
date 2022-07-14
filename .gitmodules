@@ -2,10 +2,8 @@
   path = spack
   #url = https://github.com/spack/spack
   #branch = develop
-  #url = https://github.com/NOAA-EMC/spack
-  #branch = jcsda_emc_spack_stack
-  url = https://github.com/climbfuji/spack
-  branch = feature/release_v1p0p2_ecmwf_packages_build_type_prevent_overlinking
+  url = https://github.com/NOAA-EMC/spack
+  branch = jcsda_emc_spack_stack
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
