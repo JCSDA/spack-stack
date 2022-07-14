@@ -4,7 +4,7 @@ packages:
     #compiler:: [gcc@10.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.1]
-      #mpi:: [mpich@3.3.2]
+      #mpi:: [openmpi@4.0.4]
 
 ### MPI, Python, MKL
   mpi:
@@ -31,18 +31,13 @@ packages:
   #    prefix: /apps/intel-2021.2/intel-2021.2
   #    modules:
   #    - intel/2021.2
-  mpich:
+  openmpi:
     externals:
-    - spec: mpich@3.3.2%gcc@10.2.0~hydra device=ch3
-      prefix: /apps/gcc-10.2.0/mpich-3.3.2/mpich-3.3.2
+    - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+        fabrics=ucx schedulers=slurm +internal-hwloc +two_level_namespace
+      prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
       modules:
-      - mpich/3.3.2
-  #openmpi:
-  #  externals:
-  #  - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~sqlite3~static~thread_multiple~wrapper-rpath fabrics=ucx schedulers=slurm
-  #    prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
-  #    modules:
-  #    - openmpi/4.0.4
+      - openmpi/4.0.4
   python:
     buildable: False
     externals:
@@ -85,7 +80,7 @@ packages:
     externals:
     - spec: cmake@3.22.1
       prefix: /apps/cmake-3.22.1
-      modules: 
+      modules:
       - cmake/3.22.1
     - spec: cmake@3.18.1
       prefix: /apps/cmake-3.18.1
