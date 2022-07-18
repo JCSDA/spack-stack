@@ -9,7 +9,10 @@ spack:
         tcl: $env/install/modulefiles
       lmod:
         projections:
-          parallelio: 'parallelio/2.5.3'
+          parallelio: pio/{version}
+      tcl: 
+        projections:
+          parallelio: pio/{version}
 
   include: []
 
