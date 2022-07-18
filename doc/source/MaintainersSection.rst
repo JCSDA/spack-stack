@@ -303,11 +303,46 @@ Python packages can be added in various ways:
 Recommended Directory Layout
 ==============================
 
-To support multiple environments installs it is recommended to use a standard directory layout.
+To support multiple installs it is recommended to use `bootstrap.sh` to setup Miniconda and create a standard directory layout.
 
-After running `bootstrap.sh` the prefix will have the following directories:
+After running `bootstrap.sh -p <prefix>` the directory will have the following directories:
 
-* apps - Miniconda and other prerequisites installations.
-* modulefiles - Prerequisite modules not built with Spack.
-* src - Prerequisite and spack-stack sources. spack-stack should be checked out here.
-* envs - Spack environment installation location. This should be set in `config.yaml`. Each environment should be clearly named such as `skylab-1.0.0`.
+* apps - Externally installed pre-requisites such as Miniconda and git-lfs.
+* modulefiles - External modules such as Miniconda that are not tied to Spack.
+* src - Prerequisite and spack-stack sources.
+* envs - Spack environment installation location.
+
+A single checkout of Spack can support multiple environments. To differentiate them spack-stack sources in `src` and corresponding environments in `envs` should be grouped by major version.
+
+For example, spack-stack should be checked out in the `src/spack-stack` directory as `v1` and each corresponding environment should be installed in `envs/v1`.
+
+.. code-block:: console
+
+   spack-stack
+   ├── apps
+   │   └── miniconda
+   │       └── py39_4.12.0
+   ├── envs
+   │   └── v1
+   │       ├── jedi-ufs-all
+   │       └── skylab-1.0.0
+   ├── modulefiles
+   │   └── miniconda
+   │       └── py39_4.12.0
+   └── src
+      ├── miniconda
+      │   └── py39_4.12.0
+      │       └── Miniconda3-py39_4.12.0-MacOSX-x86_64.sh
+      └── spack-stack
+         └── v1
+               ├── envs
+               │   ├── jedi-ufs-all
+               │   └── skylab-1.0.0
+
+
+The install location can be set from the command line with:
+
+.. code-block:: console
+
+   spack config add "config:install_tree:root:<prefix>/envs/v1/jedi-ufs-all"
+   spack config add "modules:default:roots:lmod:<prefix>/envs/v1/jedi-ufs-all/modulefiles"
