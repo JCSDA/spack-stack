@@ -32,6 +32,16 @@ A Bash script is provided to bootstrap the Miniconda installation and create a d
    cd spack-stack/bootstrap
    ./bootstrap.sh -p ${prefix}
 
+Which runs the following commands
+
+.. code-block:: console
+
+   eval "$(/work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7/bin/conda shell.bash hook)"
+   conda install -c conda-forge libpython-static
+   conda install poetry
+   # Test, successful if silent
+   python3 -c "import poetry"
+   # log out to forget about the conda environment
 
 ..  _Prerequisites_Qt5:
 

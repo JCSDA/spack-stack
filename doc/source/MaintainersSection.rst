@@ -314,7 +314,7 @@ After running `bootstrap.sh -p <prefix>` the directory will have the following d
 
 A single checkout of Spack can support multiple environments. To differentiate them spack-stack sources in `src` and corresponding environments in `envs` should be grouped by major version.
 
-For example, spack-stack should be checked out in the `src/spack-stack` directory as `v1` and each corresponding environment should be installed in `envs/v1`.
+For example, major versions of spack-stack v1.x.y should be checked out in the `src/spack-stack` directory as `v1` and each corresponding environment should be installed in `envs/v1`.
 
 .. code-block:: console
 
