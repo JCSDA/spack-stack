@@ -1,0 +1,46 @@
+spack:
+  config:
+    install_tree:
+      root: $env/install
+  modules:
+    default:
+      roots:
+        lmod: $env/install/modulefiles
+        tcl: $env/install/modulefiles
+      lmod:
+        projections:
+          parallelio: 'parallelio/2.5.3'
+
+  include: []
+
+  concretizer:
+    unify: true
+
+  specs:
+  - jasper@2.0.25
+  - zlib@1.2.11
+  - libpng@1.6.37
+  - hdf5@1.10.6
+  - netcdf-c@4.7.4
+  - netcdf-fortran@4.5.4
+  - parallelio@2.5.3
+  - esmf@8.3.0b09
+  - fms@2022.01
+  - bufr@11.7.0
+  - bacio@2.4.1
+  - crtm@2.3.0
+  - g2@3.4.5
+  - g2tmpl@1.10.0
+  - ip@3.3.3
+  - w3nco@2.4.1
+  - gftl-shared@1.5.0
+  - yafyaml@0.5.1
+  - mapl@2.22.0
+  - nemsio@2.5.4
+  - sfcio@1.4.1
+  - sigio@2.3.2
+  - w3emc@2.9.2
+  - wgrib2@2.0.8
+  - wrf-io@1.2.0
+  - ncio@1.1.2
+  
