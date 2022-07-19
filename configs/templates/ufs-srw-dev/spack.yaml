@@ -2,6 +2,7 @@ spack:
   config:
     install_tree:
       root: $env/install
+    deprecated: true
   modules:
     default:
       roots:
@@ -12,7 +13,7 @@ spack:
           parallelio: pio/{version}
       tcl: 
         projections:
-          parallelio: pio/{version}
+          parallelio: {^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/pio/{version}
 
   include: []
 
