@@ -10,10 +10,10 @@ spack:
         tcl: $env/install/modulefiles
       lmod:
         projections:
-          parallelio: pio/{version}
+          parallelio: 'pio/{version}'
       tcl: 
         projections:
-          parallelio: {^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/pio/{version}
+          parallelio: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/pio/{version}'
 
   include: []
 
