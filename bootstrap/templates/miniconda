@@ -1,0 +1,22 @@
+#%Module1.0
+
+module-whatis "Provides a basic python installation based on miniconda for use with spack."
+
+# Only allow one instance of compiler to load
+conflict python,anaconda,conda,miniconda,intelpython
+#family python
+
+proc ModulesHelp { } {
+puts stderr "Provides a basic python installation based on miniconda for use with spack."
+}
+
+# Set this value
+set MINICONDA_PATH "@MINICONDA_PREFIX@"
+
+prepend-path PATH "${MINICONDA_PATH}/bin"
+prepend-path MANPATH "${MINICONDA_PATH}/share/man"
+prepend-path LD_LIBRARY_PATH "${MINICONDA_PATH}/lib"
+prepend-path LIBRARY_PATH "${MINICONDA_PATH}/lib"
+prepend-path CPATH "${MINICONDA_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${MINICONDA_PATH}"
+prepend-path PYTHONPATH "${MINICONDA_PATH}/lib/python3.9/site-packages"
