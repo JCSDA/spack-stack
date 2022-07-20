@@ -13,8 +13,10 @@ packages:
       prefix: /apps/oneapi
   openmpi:
     externals:
-    - spec: openmpi@3.1.4%gcc@9.2.0~cuda+cxx+cxx_exceptions~java~memchecker+pmi~sqlite3+static~thread_multiple~wrapper-rpath fabrics=mxm schedulers=slurm
+    - spec: openmpi@3.1.4%gcc@9.2.0~cuda+cxx+cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath schedulers=slurm
+      prefix: /apps/openmpi/3.1.4/gnu/gcc-9.2.0
       modules:
+      - gnu/9.2.0
       - openmpi/3.1.4
   python:
     buildable: False
