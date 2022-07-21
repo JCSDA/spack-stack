@@ -85,6 +85,13 @@ packages:
     externals:
     - spec: doxygen@1.8.6+graphviz~mscgen
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   expat:
     externals:
     - spec: expat@1.6.0
@@ -131,10 +138,16 @@ packages:
     externals:
     - spec: groff@1.22.2
       prefix: /usr
+  krb5:
+    externals:
+    - spec: krb5@1.12.5
+      prefix: /usr
   libfuse:
     externals:
     - spec: libfuse@2.9.3
       prefix: /usr
+  libtirpc:
+    variants: ~gssapi
   libtool:
     externals:
     - spec: libtool@2.4.2
@@ -165,8 +178,8 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.6.2
-      prefix: /usr
+    - spec: qt@5.15.2
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2/5.15.2/gcc_64
   rsync:
     externals:
     - spec: rsync@3.1.0

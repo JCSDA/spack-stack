@@ -31,4 +31,5 @@ compilers::
       target: x86_64
       modules:
       - gnu/10.1.0
+      environment: {}
       extra_rpaths: []
