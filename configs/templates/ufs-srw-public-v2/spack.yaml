@@ -18,7 +18,7 @@ spack:
 
   specs:
   - jasper@2.0.25
-  - zlib@1.2.11
+  - zlib@1.2.12
   - libpng@1.6.35
   - hdf5@1.10.6
   - netcdf-c@4.7.4
@@ -44,4 +44,3 @@ spack:
   - sigio@2.3.2
   - w3emc@2.7.3
   - wgrib2@2.0.8
-  
