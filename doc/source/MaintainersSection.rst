@@ -87,8 +87,9 @@ miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
 
 qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` - NO, 3 ???i n ``/glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2``. NO, 3????
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2``. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``.
+
+.. code-block:: console
 
    module purge
    module unuse /glade/u/apps/ch/modulefiles/default/compilers
@@ -97,7 +98,7 @@ qt (qt@5)
    module load gnu/10.1.0
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Also, because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).
 
 .. code-block:: console
 
@@ -108,7 +109,7 @@ ecflow
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
    module load gnu/10.1.0
    module load miniconda/3.9.12
-   module load qt/5.15.3
+   module load qt/5.15.2
    module load cmake/3.18.2
 
 .. _MaintainersSection_WCOSS2:
@@ -176,13 +177,25 @@ NOAA RDHPCS Jet
 .. _MaintainersSection_Stampede2:
 
 ------------------------------
-TACC Stampede2
+TACC Frontera
 ------------------------------
 
 Several packages need to be installed as a one-off before spack can be used.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation in ``/work2/06146/USERNAME/frontera/spack-stack/miniconda-3.9.12`` and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+
+.. code-block:: console
+
+   module purge
+   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   module load qt5/5.14.2
+   module load gcc/9.1.0
+   module load cmake/3.20.3
 
 git-lfs
    The following instructions install ``git-lfs`` in ``/work2/06146/tg854455/stampede2/spack-stack/git-lfs-1.2.1``. Version 1.2.1 is the Centos7 default version.
