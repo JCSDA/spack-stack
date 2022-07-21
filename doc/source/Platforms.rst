@@ -44,7 +44,7 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Jet                          |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| TACC Stampede2                           |                           | not yet supported - coming soon                                                                         |
+| TACC Frontera                            |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | UW (Univ. of Wisc.) S4                   |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -67,7 +67,6 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
-   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
@@ -102,7 +101,6 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
-   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
@@ -142,8 +140,15 @@ The following is required for building new spack environments and for using spac
    export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-   # Only required when building spack-stack, not when using it
+   module load ecflow/5.8.4
    module load miniconda/3.9.12
+
+When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``mapl@2.22.0`` after creating the environment/before running ``spack concretize``:
+
+.. code-block:: console
+
+   spack remove mapl@2.12.3
+   spack add mapl@2.22.0
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda ... and ecflow ????:
 
@@ -186,7 +191,6 @@ The following is required for building new spack environments and for using spac
    module unuse opt/cray/modulefiles
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
-   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
 
 .. _Platforms_Gaea:
@@ -206,7 +210,6 @@ The following is required for building new spack environments and for using spac
    module unload cray-mpich
    module unload cray-python
    module unload darshan
-   # Only required when building spack-stack, not when using it
    module load cray-python/3.7.3.2
 
 .. note::
@@ -227,7 +230,6 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
-   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.12
 
 .. _Platforms_Jet:
@@ -239,21 +241,17 @@ NOAA RDHPCS Jet
 **WORK IN PROGRESS**
 
 ------------------------------
-TACC Stampede2
+TACC Frontera
 ------------------------------
-
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
 
    module purge
-   source /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/setvars.sh
-   module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
-   # Only required when building spack-stack, not when using it
-   module load miniconda/3.9.7
+   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
+   module load miniconda/3.9.123
+   module load ecflow/5.8.4
 
 ------------------------------
 UW (Univ. of Wisconsin) S4
@@ -268,7 +266,6 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /data/prod/jedi/spack-stack/modulefiles
-   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
 
 --------------------------------
