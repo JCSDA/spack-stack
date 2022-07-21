@@ -31,7 +31,10 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``               |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne                    |                           | not yet supported - coming soon                                                                         |
+| NCAR-Wyoming Cheyenne Intel              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install``   |
++------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne GNU                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``       |
++------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud) |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -64,9 +67,8 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
+   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
-   # Only required when using spack-stack, not when building spack-stack
-   module load ecflow/5.8.4
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -100,9 +102,8 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
+   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
-   # Only required when using spack-stack, not when building spack-stack
-   module load ecflow/5.8.4
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -128,12 +129,9 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 
 .. _Platforms_Cheyenne:
 
-------------------------------
+---------------------
 NCAR-Wyoming Cheyenne
-------------------------------
-
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+---------------------
 
 The following is required for building new spack environments and for using spack to build and run software.
 
@@ -143,7 +141,17 @@ The following is required for building new spack environments and for using spac
    module unuse /glade/u/apps/ch/modulefiles/default/compilers
    export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
-   module load python/3.7.9
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+   # Only required when building spack-stack, not when using it
+   module load miniconda/3.9.12
+
+For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda ... and ecflow ????:
+
+MISSING
+
+For ``spack-stack-1.0.0`` with GNU, load the following modules after loading miniconda ... and ecflow ????:
+
+MISSING
 
 .. _Platforms_Acorn:
 
@@ -178,8 +186,8 @@ The following is required for building new spack environments and for using spac
    module unuse opt/cray/modulefiles
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
+   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
-
 
 .. _Platforms_Gaea:
 
@@ -198,6 +206,7 @@ The following is required for building new spack environments and for using spac
    module unload cray-mpich
    module unload cray-python
    module unload darshan
+   # Only required when building spack-stack, not when using it
    module load cray-python/3.7.3.2
 
 .. note::
@@ -218,6 +227,7 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
+   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.12
 
 .. _Platforms_Jet:
@@ -242,6 +252,7 @@ The following is required for building new spack environments and for using spac
    module purge
    source /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/setvars.sh
    module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
+   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
 
 ------------------------------
@@ -257,6 +268,7 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /data/prod/jedi/spack-stack/modulefiles
+   # Only required when building spack-stack, not when using it
    module load miniconda/3.9.7
 
 --------------------------------

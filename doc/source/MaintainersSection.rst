@@ -83,6 +83,34 @@ NCAR-Wyoming Cheyenne
 On Cheyenne, a workaround is needed to avoid the modules provided by CISL take precedence over the spack modules. The default module path for compilers is removed, the module path is set to a different location and that location is then loaded into the module environment. If new compilers or MPI libraries are
 added to ``/glade/u/apps/ch/modulefiles/default/compilers`` by CISL, the spack-stack maintainers need to make the corresponding changes in ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers``. See :numref:`Section %s <Platforms_Cheyenne>` for details.
 
+miniconda
+   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` - NO, 3 ???i n ``/glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2``. NO, 3????
+
+   module purge
+   module unuse /glade/u/apps/ch/modulefiles/default/compilers
+   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   module load gnu/10.1.0
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+
+.. code-block:: console
+
+   module purge
+   module unuse /glade/u/apps/ch/modulefiles/default/compilers
+   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+   module load gnu/10.1.0
+   module load miniconda/3.9.12
+   module load qt/5.15.3
+   module load cmake/3.18.2
+
 .. _MaintainersSection_WCOSS2:
 
 ------------------------------

@@ -25,25 +25,25 @@ Miniconda
 
 If required, miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages.
 
-In the following instructions, replace ``/work/noaa/gsd-hpcs/dheinzel/jcsda`` with the directory where your ``miniconda-3.9.7`` directory will be installed.
+In the following instructions, replace ``/work/noaa/gsd-hpcs/dheinzel/jcsda`` with the directory where your ``miniconda-3.9.12`` directory will be installed.
 
 .. code-block:: console
 
    cd /work/noaa/gsd-hpcs/dheinzel/jcsda
-   mkdir -p miniconda-3.9.7/src
-   cd miniconda-3.9.7/src
-   wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-   sh Miniconda3-latest-Linux-x86_64.sh -u
+   mkdir -p miniconda-3.9.12/src
+   cd miniconda-3.9.12/src
+   wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh
+   sh Miniconda3-py39_4.12.0-Linux-x86_64.sh
    # Accept license agreement
-   # Install in /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7
+   # Install in /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.12
    # Do not have the installer initialize Miniconda3 by running conda init
 
-Create modulefile ``/work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles/miniconda/3.9.7`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` in this file. Then:
+Create modulefile ``/work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles/miniconda/3.9.12`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` in this file. Then:
 
 .. code-block:: console
 
    module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
-   module load miniconda/3.9.7
+   module load miniconda/3.9.12
    which python3
    # make sure this points to the new miniconda install
 
@@ -51,7 +51,7 @@ Install two packages required for building Python modules with spack using ``con
 
 .. code-block:: console
 
-   eval "$(/work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7/bin/conda shell.bash hook)"
+   eval "$(/work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.12/bin/conda shell.bash hook)"
    conda install -c conda-forge libpython-static
    conda install poetry
    # Test, successful if silent
@@ -63,7 +63,7 @@ To use this installation of miniconda, the following needs to be done every time
 .. code-block:: console
 
    module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
-   module load miniconda/3.9.7
+   module load miniconda/3.9.12
 
 ..  _Prerequisites_Qt5:
 
@@ -87,11 +87,11 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
 
 Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all other boxes) and set install prefix to ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``. After the successful installation, create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/qt/5.15.2`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
 
-**Old method** (DOES NOT WORK ON DISCOVER AND OTHER PLATFORMS, DON'T USE)
+**Old method** (SO FAR ON CHEYENNE - DIDN'T WORK ON GAEA)
 
 .. code-block:: console
 
-   cd /lustre/f2/pdata/esrl/gsd/spack-stack
+   cd /glade/work/jedipara/cheyenne/spack-stack
    mkdir -p qt-5.15.3/src
    cd qt-5.15.3/src
    git clone git://code.qt.io/qt/qt5.git
@@ -103,11 +103,11 @@ Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all
    cd ..
    mkdir qt5-build
    cd qt5-build
-   ../qt5/configure -opensource -nomake examples -nomake tests -prefix /lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3 -skip qtdocgallery -skip qtwebengine 2>&1 | tee log.configure
+   ../qt5/configure -opensource -nomake examples -nomake tests -prefix /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.3 -skip qtdocgallery 2>&1 | tee log.configure
    gmake -j4 2>&1 | tee log.gmake
    gmake install 2>&1 | tee log.install
 
-Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/qt/5.15.3`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
+Create modulefile ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc/qt/5.15.3`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
 
 **End of old method**
 
