@@ -73,9 +73,9 @@ qt (qt@5)
 
 Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). 
 
-On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64/include``.
+On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64``.
 
-**New method** (SO FAR ONLY ON DISCOVER)
+**New method**
 
 .. code-block:: console
 
@@ -86,30 +86,6 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
    ./qt-unified-linux-x64-online.run
 
 Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all other boxes) and set install prefix to ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``. After the successful installation, create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/qt/5.15.2`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
-
-**Old method** (SO FAR ON CHEYENNE - DIDN'T WORK ON GAEA)
-
-.. code-block:: console
-
-   cd /glade/work/jedipara/cheyenne/spack-stack
-   mkdir -p qt-5.15.3/src
-   cd qt-5.15.3/src
-   git clone git://code.qt.io/qt/qt5.git
-   cd qt5
-   git fetch --tags
-   git checkout v5.15.3-lts-lgpl
-   perl init-repository
-   git submodule update --init --recursive
-   cd ..
-   mkdir qt5-build
-   cd qt5-build
-   ../qt5/configure -opensource -nomake examples -nomake tests -prefix /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.3 -skip qtdocgallery 2>&1 | tee log.configure
-   gmake -j4 2>&1 | tee log.gmake
-   gmake install 2>&1 | tee log.install
-
-Create modulefile ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc/qt/5.15.3`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
-
-**End of old method**
 
 .. note::
    The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
