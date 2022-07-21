@@ -337,3 +337,53 @@ Python packages can be added in various ways:
 
 .. note::
    Users are equally strongly advised to not use ``conda`` or ``miniconda`` in combination with Python modules provided by spack-stack, as well as not installing packages other than ``poetry`` in the basic ``miniconda`` installation for spack-stack (if using such a setup).
+
+.. _MaintainersSection_Directory_Layout:
+
+==============================
+Recommended Directory Layout
+==============================
+
+To support multiple installs it is recommended to use `bootstrap.sh` to setup Miniconda and create a standard directory layout.
+
+After running `bootstrap.sh -p <prefix>` the directory will have the following directories:
+
+* apps - Externally installed pre-requisites such as Miniconda and git-lfs.
+* modulefiles - External modules such as Miniconda that are not tied to Spack.
+* src - Prerequisite and spack-stack sources.
+* envs - Spack environment installation location.
+
+A single checkout of Spack can support multiple environments. To differentiate them spack-stack sources in `src` and corresponding environments in `envs` should be grouped by major version.
+
+For example, major versions of spack-stack v1.x.y should be checked out in the `src/spack-stack` directory as `v1` and each corresponding environment should be installed in `envs/v1`.
+
+.. code-block:: console
+
+   spack-stack
+   ├── apps
+   │   └── miniconda
+   │       └── py39_4.12.0
+   ├── envs
+   │   └── v1
+   │       ├── jedi-ufs-all
+   │       └── skylab-1.0.0
+   ├── modulefiles
+   │   └── miniconda
+   │       └── py39_4.12.0
+   └── src
+      ├── miniconda
+      │   └── py39_4.12.0
+      │       └── Miniconda3-py39_4.12.0-MacOSX-x86_64.sh
+      └── spack-stack
+         └── v1
+               ├── envs
+               │   ├── jedi-ufs-all
+               │   └── skylab-1.0.0
+
+
+The install location can be set from the command line with:
+
+.. code-block:: console
+
+   spack config add "config:install_tree:root:<prefix>/envs/v1/jedi-ufs-all"
+   spack config add "modules:default:roots:lmod:<prefix>/envs/v1/jedi-ufs-all/modulefiles"

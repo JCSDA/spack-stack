@@ -23,31 +23,14 @@ Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootst
 Miniconda
 ------------------------------
 
-If required, miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages.
-
-In the following instructions, replace ``/work/noaa/gsd-hpcs/dheinzel/jcsda`` with the directory where your ``miniconda-3.9.12`` directory will be installed.
+If required, miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. A Bash script is provided to bootstrap the Miniconda installation and create a default directory layout.
 
 .. code-block:: console
 
-   cd /work/noaa/gsd-hpcs/dheinzel/jcsda
-   mkdir -p miniconda-3.9.12/src
-   cd miniconda-3.9.12/src
-   wget https://repo.anaconda.com/miniconda/Miniconda3-py39_4.12.0-Linux-x86_64.sh
-   sh Miniconda3-py39_4.12.0-Linux-x86_64.sh
-   # Accept license agreement
-   # Install in /work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.12
-   # Do not have the installer initialize Miniconda3 by running conda init
+   cd spack-stack/bootstrap
+   ./bootstrap.sh -p ${prefix}
 
-Create modulefile ``/work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles/miniconda/3.9.12`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` in this file. Then:
-
-.. code-block:: console
-
-   module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
-   module load miniconda/3.9.12
-   which python3
-   # make sure this points to the new miniconda install
-
-Install two packages required for building Python modules with spack using ``conda``
+Which runs the following commands
 
 .. code-block:: console
 
@@ -57,13 +40,6 @@ Install two packages required for building Python modules with spack using ``con
    # Test, successful if silent
    python3 -c "import poetry"
    # log out to forget about the conda environment
-
-To use this installation of miniconda, the following needs to be done every time before installing packages with spack or before using the modules created by spack.
-
-.. code-block:: console
-
-   module use /work/noaa/gsd-hpcs/dheinzel/jcsda/modulefiles
-   module load miniconda/3.9.12
 
 ..  _Prerequisites_Qt5:
 
