@@ -83,6 +83,35 @@ NCAR-Wyoming Cheyenne
 On Cheyenne, a workaround is needed to avoid the modules provided by CISL take precedence over the spack modules. The default module path for compilers is removed, the module path is set to a different location and that location is then loaded into the module environment. If new compilers or MPI libraries are
 added to ``/glade/u/apps/ch/modulefiles/default/compilers`` by CISL, the spack-stack maintainers need to make the corresponding changes in ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers``. See :numref:`Section %s <Platforms_Cheyenne>` for details.
 
+miniconda
+   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2``. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``.
+
+.. code-block:: console
+
+   module purge
+   module unuse /glade/u/apps/ch/modulefiles/default/compilers
+   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   module load gnu/10.1.0
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Also, because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).
+
+.. code-block:: console
+
+   module purge
+   module unuse /glade/u/apps/ch/modulefiles/default/compilers
+   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+   module load gnu/10.1.0
+   module load miniconda/3.9.12
+   module load qt/5.15.2
+   module load cmake/3.18.2
+
 .. _MaintainersSection_WCOSS2:
 
 ------------------------------
@@ -148,28 +177,40 @@ NOAA RDHPCS Jet
 .. _MaintainersSection_Stampede2:
 
 ------------------------------
-TACC Stampede2
+TACC Frontera
 ------------------------------
 
 Several packages need to be installed as a one-off before spack can be used.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation in ``/work2/06146/USERNAME/frontera/spack-stack/miniconda-3.9.12`` and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
-git-lfs
-   The following instructions install ``git-lfs`` in ``/work2/06146/tg854455/stampede2/spack-stack/git-lfs-1.2.1``. Version 1.2.1 is the Centos7 default version.
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
 
 .. code-block:: console
 
    module purge
-   cd /work2/06146/tg854455/stampede2/spack-stack/
-   mkdir -p git-lfs-1.2.1/src
-   cd git-lfs-1.2.1/src
-   wget --content-disposition https://packagecloud.io/github/git-lfs/packages/el/7/git-lfs-1.2.1-1.el7.x86_64.rpm/download.rpm
-   rpm2cpio git-lfs-1.2.1-1.el7.x86_64.rpm | cpio -idmv
+   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   module load qt5/5.14.2
+   module load gcc/9.1.0
+   module load cmake/3.20.3
+
+git-lfs
+   The following instructions install ``git-lfs`` in ``/work2/06146/tg854455/frontera/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the Centos7 default version.
+
+.. code-block:: console
+
+   module purge
+   cd /work2/06146/tg854455/frontera/spack-stack/
+   mkdir -p git-lfs-2.10.0/src
+   cd git-lfs-2.10.0/src
+   wget --content-disposition https://packagecloud.io/github/git-lfs/packages/el/7/git-lfs-2.10.0-1.el7.x86_64.rpm/download.rpm
+   rpm2cpio git-lfs-2.10.0-1.el7.x86_64.rpm | cpio -idmv
    mv usr/* ../
 
-Create modulefile ``/work2/06146/tg854455/stampede2/spack-stack/modulefiles/git-lfs/1.2.1`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
+Create modulefile ``/work2/06146/tg854455/frontera/spack-stack/modulefiles/git-lfs/2.10.0`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
 
 .. _MaintainersSection_S4:
 

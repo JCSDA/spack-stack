@@ -31,7 +31,10 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``               |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne                    |                           | not yet supported - coming soon                                                                         |
+| NCAR-Wyoming Cheyenne Intel              |                           | not yet supported - coming soon                                                                         |
++------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne GNU                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``       |
++------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud) |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -41,7 +44,9 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Jet                          |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| TACC Stampede2                           |                           | not yet supported - coming soon                                                                         |
+| TACC Frontera Intel                      |                           | not yet supported - coming soon                                                                         |
++------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
+| TACC Frontera GNU                        | Dom Heinzeller            | ``/work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-9.1.0/install``       |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | UW (Univ. of Wisc.) S4                   |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -65,8 +70,6 @@ The following is required for building new spack environments and for using spac
    module purge
    module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.7
-   # Only required when using spack-stack, not when building spack-stack
-   module load ecflow/5.8.4
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -101,8 +104,6 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
-   # Only required when using spack-stack, not when building spack-stack
-   module load ecflow/5.8.4
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -128,12 +129,9 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 
 .. _Platforms_Cheyenne:
 
-------------------------------
+---------------------
 NCAR-Wyoming Cheyenne
-------------------------------
-
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
+---------------------
 
 The following is required for building new spack environments and for using spack to build and run software.
 
@@ -143,7 +141,31 @@ The following is required for building new spack environments and for using spac
    module unuse /glade/u/apps/ch/modulefiles/default/compilers
    export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
-   module load python/3.7.9
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+   module load ecflow/5.8.4
+   module load miniconda/3.9.12
+
+When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``mapl@2.22.0`` after creating the environment/before running ``spack concretize``:
+
+.. code-block:: console
+
+   spack remove mapl@2.12.3
+   spack add mapl@2.22.0
+
+For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda ... and ecflow ????:
+
+**MISSING**
+
+For ``spack-stack-1.0.1`` with GNU, load the following modules after loading miniconda ... and ecflow ????:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
+   module load stack-gcc/10.1.0
+   module load stack-openmpi/4.1.1
+   module load stack-python/3.9.12
+   module available
 
 .. _Platforms_Acorn:
 
@@ -179,7 +201,6 @@ The following is required for building new spack environments and for using spac
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
-
 
 .. _Platforms_Gaea:
 
@@ -229,20 +250,39 @@ NOAA RDHPCS Jet
 **WORK IN PROGRESS**
 
 ------------------------------
-TACC Stampede2
+TACC Frontera
 ------------------------------
-
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
 
    module purge
-   source /work2/06146/tg854455/stampede2/spack-stack/intel-oneapi-2022.2/setvars.sh
-   module use /work2/06146/tg854455/stampede2/spack-stack/modulefiles
-   module load miniconda/3.9.7
+   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
+
+When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``mapl@2.22.0`` after creating the environment/before running ``spack concretize``:
+
+.. code-block:: console
+
+   spack remove mapl@2.12.3
+   spack add mapl@2.22.0
+
+For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+**MISSING**
+
+For ``spack-stack-1.0.1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-9.1.0/install/modulefiles/Core
+   module load stack-gcc/9.1.0
+   module load stack-mvapich2/2.3
+   module load stack-python/3.9.12
+   module available
 
 ------------------------------
 UW (Univ. of Wisconsin) S4

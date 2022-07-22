@@ -1,17 +1,17 @@
 #%Module1.0
 
-module-whatis "Provides a basic python-3.9.7 installation based on miniconda for use with spack."
+module-whatis "Provides a basic python-3.9.12 installation based on miniconda for use with spack."
 
 # Only allow one instance of compiler to load
 conflict python,anaconda,conda,miniconda,intelpython
 #family python
 
 proc ModulesHelp { } {
-puts stderr "Provides a basic python-3.9.7 installation based on miniconda for use with spack."
+puts stderr "Provides a basic python-3.9.12 installation based on miniconda for use with spack."
 }
 
 # Set this value
-set MINICONDA_PATH "/work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7"
+set MINICONDA_PATH "/glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12"
 
 prepend-path PATH "${MINICONDA_PATH}/bin"
 prepend-path MANPATH "${MINICONDA_PATH}/share/man"
