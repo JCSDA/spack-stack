@@ -198,19 +198,19 @@ ecflow
    module load cmake/3.20.3
 
 git-lfs
-   The following instructions install ``git-lfs`` in ``/work2/06146/tg854455/stampede2/spack-stack/git-lfs-1.2.1``. Version 1.2.1 is the Centos7 default version.
+   The following instructions install ``git-lfs`` in ``/work2/06146/tg854455/frontera/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the Centos7 default version.
 
 .. code-block:: console
 
    module purge
-   cd /work2/06146/tg854455/stampede2/spack-stack/
-   mkdir -p git-lfs-1.2.1/src
-   cd git-lfs-1.2.1/src
-   wget --content-disposition https://packagecloud.io/github/git-lfs/packages/el/7/git-lfs-1.2.1-1.el7.x86_64.rpm/download.rpm
-   rpm2cpio git-lfs-1.2.1-1.el7.x86_64.rpm | cpio -idmv
+   cd /work2/06146/tg854455/frontera/spack-stack/
+   mkdir -p git-lfs-2.10.0/src
+   cd git-lfs-2.10.0/src
+   wget --content-disposition https://packagecloud.io/github/git-lfs/packages/el/7/git-lfs-2.10.0-1.el7.x86_64.rpm/download.rpm
+   rpm2cpio git-lfs-2.10.0-1.el7.x86_64.rpm | cpio -idmv
    mv usr/* ../
 
-Create modulefile ``/work2/06146/tg854455/stampede2/spack-stack/modulefiles/git-lfs/1.2.1`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
+Create modulefile ``/work2/06146/tg854455/frontera/spack-stack/modulefiles/git-lfs/2.10.0`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
 
 .. _MaintainersSection_S4:
 

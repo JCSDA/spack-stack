@@ -31,7 +31,7 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``               |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne Intel              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install``   |
+| NCAR-Wyoming Cheyenne Intel              |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne GNU                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``       |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -44,7 +44,9 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Jet                          |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| TACC Frontera                            |                           | not yet supported - coming soon                                                                         |
+| TACC Frontera Intel                      |                           | not yet supported - coming soon                                                                         |
++------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
+| TACC Frontera GNU                        | Dom Heinzeller            | ``/work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-9.1.0/install``       |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | UW (Univ. of Wisc.) S4                   |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -250,8 +252,15 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
-   module load miniconda/3.9.123
+   module load miniconda/3.9.12
    module load ecflow/5.8.4
+
+When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``mapl@2.22.0`` after creating the environment/before running ``spack concretize``:
+
+.. code-block:: console
+
+   spack remove mapl@2.12.3
+   spack add mapl@2.22.0
 
 ------------------------------
 UW (Univ. of Wisconsin) S4
