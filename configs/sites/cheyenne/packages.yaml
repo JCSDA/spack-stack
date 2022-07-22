@@ -86,7 +86,6 @@ packages:
     - spec: doxygen@1.8.6+graphviz~mscgen
       prefix: /usr
   ecflow:
-    buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
       prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4

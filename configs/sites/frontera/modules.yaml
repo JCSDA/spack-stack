@@ -2,3 +2,6 @@ modules:
   default:
     enable::
     - lmod
+    lmod:
+      blacklist:
+      - ecflow

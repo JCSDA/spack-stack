@@ -152,13 +152,20 @@ When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``
    spack remove mapl@2.12.3
    spack add mapl@2.22.0
 
-For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda ... and ecflow ????:
+For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda ... and ecflow ????:
 
-MISSING
+**MISSING**
 
-For ``spack-stack-1.0.0`` with GNU, load the following modules after loading miniconda ... and ecflow ????:
+For ``spack-stack-1.0.1`` with GNU, load the following modules after loading miniconda ... and ecflow ????:
 
-MISSING
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
+   module load stack-gcc/10.1.0
+   module load stack-openmpi/4.1.1
+   module load stack-python/3.9.12
+   module available
 
 .. _Platforms_Acorn:
 
@@ -261,6 +268,21 @@ When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``
 
    spack remove mapl@2.12.3
    spack add mapl@2.22.0
+
+For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+**MISSING**
+
+For ``spack-stack-1.0.1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-9.1.0/install/modulefiles/Core
+   module load stack-gcc/9.1.0
+   module load stack-mvapich2/2.3
+   module load stack-python/3.9.12
+   module available
 
 ------------------------------
 UW (Univ. of Wisconsin) S4
