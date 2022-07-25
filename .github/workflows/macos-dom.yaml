@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
     inputs:
       template:
-        description: 'Base spack.yaml template. Default is an empty environment.'
+        description: 'Base spack.yaml template. Default is a complete JEDI-UFS environment.'
         required: true
         default: 'jedi-ufs-all'
       specs:
@@ -26,7 +26,7 @@ defaults:
 
 jobs:
   macos-dom-build:
-    if: ${{ github.event.label.name == 'run-macos-dom' }}
+    if: ${{ github.event.label.name == 'run-macos-dom' }} || ${{ inputs.template }}
     runs-on: [self-hosted, macOS, X64, macos-dom]
 
     steps:
