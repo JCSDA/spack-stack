@@ -1,7 +1,16 @@
 name: macos-dom-build
 on:
-  #pull_request:
+  # uncomment if we decide to run tests when merging to develop branch
   #push:
+  #  # merges to develop branch
+  #  branches: [develop]
+  pull_request:
+    # pull request to develop with a label
+    types: [labeled]
+    branches: [develop]
+    defaults:
+      template: 'jedi-ufs-all'
+      specs: ''
   workflow_dispatch:
     inputs:
       template:
@@ -20,6 +29,7 @@ defaults:
 
 jobs:
   macos-dom-build:
+    if: ${{ github.event.label.name == 'macos-dom' }}
     runs-on: [self-hosted, macOS, X64, macos-dom]
 
     steps:
@@ -46,8 +56,9 @@ jobs:
           spack concretize
           spack install --fail-fast
 
-      - name: upload-mirror
-        uses: actions/upload-artifact@v2
-        with:
-          name: spack_mirror
-          path: cache/source_cache
+      # Skip this - takes forever and isn't necessary
+      #- name: upload-mirror
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: spack_mirror
+      #    path: cache/source_cache
