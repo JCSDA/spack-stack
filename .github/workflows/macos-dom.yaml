@@ -8,14 +8,11 @@ on:
     # pull request to develop with a label
     types: [labeled]
     branches: [develop]
-    defaults:
-      template: 'jedi-ufs-all'
-      specs: ''
   workflow_dispatch:
     inputs:
       template:
         description: 'Base spack.yaml template. Default is an empty environment.'
-        required: false
+        required: true
         default: 'jedi-ufs-all'
       specs:
         description: 'Which specs to add to the template. Default is none (empty string).'
@@ -41,9 +38,9 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack stack create env --site macos.default --template ${{ inputs.template }} --name ${{ inputs.template }}.macos-dom
-          spack env activate -d envs/${{ inputs.template }}.macos-dom
-          spack add ${{ inputs.specs }}
+          spack stack create env --site macos.default --template ${{ inputs.template || 'jedi-ufs-all' }} --name ${{ inputs.template || 'jedi-ufs-all' }}.macos-dom
+          spack env activate -d envs/${{ inputs.template || 'jedi-ufs-all' }}.macos-dom
+          spack add ${{ inputs.specs || '' }}
 
           spack external find
           spack external find perl
