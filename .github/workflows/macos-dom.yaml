@@ -53,6 +53,12 @@ jobs:
           spack concretize
           spack install --fail-fast
 
+      - name: Clean working directory
+        run: |
+          cd $RUNNER_WORKSPACE
+          cd ..
+          rm -r *
+
       # Skip this - takes forever and isn't necessary
       #- name: upload-mirror
       #  uses: actions/upload-artifact@v2
