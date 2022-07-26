@@ -1,8 +1,10 @@
 packages:
   all:
     compiler:: [intel@2022.0.2]
+    #compiler:: [gcc@10.1.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.1]
+      #mpi:: [openmpi@4.1.1]
 
 ### MPI, Python, MKL
   mpi:
@@ -25,11 +27,19 @@ packages:
   #    prefix: /glade/u/apps/opt/intel/2022.1
   #    modules:
   #    - impi/2022.1
+  openmpi:
+    externals: 
+    - spec: openmpi@4.1.1%gcc@10.1.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm,tm
+      prefix: /glade/u/apps/ch/opt/openmpi/4.1.1/gnu/10.1.0
+      modules:
+      - openmpi/4.1.1
   python:
     buildable: False
     externals:
-    - spec: python@3.7.9+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /glade/u/apps/ch/opt/python/3.7.9/gnu/9.1.0
+    - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
+      modules:
+      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -75,6 +85,12 @@ packages:
     externals:
     - spec: doxygen@1.8.6+graphviz~mscgen
       prefix: /usr
+  ecflow:
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   expat:
     externals:
     - spec: expat@1.6.0
@@ -121,10 +137,16 @@ packages:
     externals:
     - spec: groff@1.22.2
       prefix: /usr
+  krb5:
+    externals:
+    - spec: krb5@1.12.5
+      prefix: /usr
   libfuse:
     externals:
     - spec: libfuse@2.9.3
       prefix: /usr
+  libtirpc:
+    variants: ~gssapi
   libtool:
     externals:
     - spec: libtool@2.4.2
@@ -155,8 +177,8 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.6.2
-      prefix: /usr
+    - spec: qt@5.15.2
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2/5.15.2/gcc_64
   rsync:
     externals:
     - spec: rsync@3.1.0

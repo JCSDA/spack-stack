@@ -23,9 +23,7 @@ Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootst
 Miniconda
 ------------------------------
 
-If required, miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages.
-
-A Bash script is provided to bootstrap the Miniconda installation and create a default directory layout.
+If required, miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. A Bash script is provided to bootstrap the Miniconda installation and create a default directory layout.
 
 .. code-block:: console
 
@@ -36,7 +34,7 @@ Which runs the following commands
 
 .. code-block:: console
 
-   eval "$(/work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.7/bin/conda shell.bash hook)"
+   eval "$(/work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.12/bin/conda shell.bash hook)"
    conda install -c conda-forge libpython-static
    conda install poetry
    # Test, successful if silent
@@ -51,9 +49,9 @@ qt (qt@5)
 
 Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). 
 
-On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64/include``.
+On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64``.
 
-**New method** (SO FAR ONLY ON DISCOVER)
+**New method**
 
 .. code-block:: console
 
@@ -64,30 +62,6 @@ On HPC systems without a sufficient Qt5 installation, we install it outside of s
    ./qt-unified-linux-x64-online.run
 
 Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all other boxes) and set install prefix to ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``. After the successful installation, create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/qt/5.15.2`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
-
-**Old method** (DOES NOT WORK ON DISCOVER AND OTHER PLATFORMS, DON'T USE)
-
-.. code-block:: console
-
-   cd /lustre/f2/pdata/esrl/gsd/spack-stack
-   mkdir -p qt-5.15.3/src
-   cd qt-5.15.3/src
-   git clone git://code.qt.io/qt/qt5.git
-   cd qt5
-   git fetch --tags
-   git checkout v5.15.3-lts-lgpl
-   perl init-repository
-   git submodule update --init --recursive
-   cd ..
-   mkdir qt5-build
-   cd qt5-build
-   ../qt5/configure -opensource -nomake examples -nomake tests -prefix /lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3 -skip qtdocgallery -skip qtwebengine 2>&1 | tee log.configure
-   gmake -j4 2>&1 | tee log.gmake
-   gmake install 2>&1 | tee log.install
-
-Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/qt/5.15.3`` from template ``doc/modulefile_templates/qt`` and update ``QT_PATH`` in this file.
-
-**End of old method**
 
 .. note::
    The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
