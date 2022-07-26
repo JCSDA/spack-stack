@@ -65,6 +65,13 @@ packages:
     externals:
     - spec: doxygen@1.8.5+graphviz~mscgen
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.5.3+ui+static_boost
+      prefix: /apps/ecflow/5.5.3
+      modules:
+      - ecflow/5.5.3
   file:
     externals:
     - spec: file@5.11
