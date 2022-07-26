@@ -141,6 +141,9 @@
       version: [3.10.5]
     nlohmann-json-schema-validator:
       version: [2.1.0]
+    odc:
+      version: [1.4.5]
+      variants: ~fortran
     openblas:
       version: [0.3.19]
       variants: +noavx512
