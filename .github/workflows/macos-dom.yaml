@@ -51,20 +51,7 @@ jobs:
           spack compiler find
 
           spack concretize
-          # DH*
-          #spack install --fail-fast
-          spack install --fail-fast zlib
-          # *DH
-
-      - name: Clean working directory
-        run: |
-          cd $RUNNER_WORKSPACE
-          pwd
-          ls
-          cd ..
-          pwd
-          ls
-          #rm -r *
+          spack install --fail-fast
 
       # Skip this - takes forever and isn't necessary
       #- name: upload-mirror
