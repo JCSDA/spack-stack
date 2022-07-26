@@ -465,7 +465,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack external find --scope system python
    spack external find --scope system wget
 
-   PATH="/usr/local/Cellar/curl/7.83.0/bin:$PATH" \
+   PATH="/usr/local/opt/curl/bin:$PATH" \
         spack external find --scope system curl
 
    PATH="/usr/local/opt/qt5/bin:$PATH" \
