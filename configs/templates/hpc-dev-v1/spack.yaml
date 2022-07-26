@@ -32,6 +32,7 @@ spack:
       version: [3.22.1]
     crtm:
       version: [2.3.0]
+      variants: +fix
     ecbuild:
       version: [3.6.5]
     eccodes:
