@@ -10,4 +10,4 @@ packages:
     - spec: intel-oneapi-mpi@2021.6.0
       modules:
       - impi/2021.6.0
-      prefix: /opt/spack-stack/spack/opt/spack/linux-ubuntu20.04-skylake/gcc-9.4.0/intel-oneapi-mpi-2021.6.0-oeymd7y2mkbdxex2tzf7354yhwpnvhoq/mpi/2021.6.0
+      prefix: /opt/spack-stack/spack/opt/spack/linux-ubuntu20.04-skylake/gcc-9.4.0/intel-oneapi-mpi-2021.6.0-oeymd7y2mkbdxex2tzf7354yhwpnvhoq
