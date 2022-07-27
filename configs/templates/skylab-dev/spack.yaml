@@ -59,7 +59,7 @@ spack:
     - jasper@2.0.32
     - jedi-cmake@1.3.0
     - libpng@1.6.37
-    - mapl@2.12.3
+    - mapl@2.22.0
     - nccmp@1.9.0.1
     - netcdf-c@4.8.1
     - netcdf-cxx4@4.3.1
