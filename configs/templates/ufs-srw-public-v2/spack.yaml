@@ -35,7 +35,7 @@ spack:
   - upp@10.0.10
   - gftl-shared@1.3.3
   - yafyaml@0.5.1
-  - mapl@2.12.0
+# - mapl@2.12.0
   - gfsio@1.4.1
   - landsfcutil@2.4.1
   - nemsio@2.5.2
