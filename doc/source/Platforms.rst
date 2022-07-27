@@ -31,10 +31,9 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``               |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne Intel              |                           | not yet supported - coming soon                                                                         |
+| NCAR-Wyoming Cheyenne Intel              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install``   |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne GNU                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``       |
-+------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud) |                           | not yet supported - coming soon                                                                         |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -154,7 +153,10 @@ When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``
 
 For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda ... and ecflow ????:
 
-**MISSING**
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install/modulefiles/Core
 
 For ``spack-stack-1.0.1`` with GNU, load the following modules after loading miniconda ... and ecflow ????:
 
@@ -162,8 +164,8 @@ For ``spack-stack-1.0.1`` with GNU, load the following modules after loading min
 
    ulimit -s unlimited
    module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
-   module load stack-gcc/10.1.0
-   module load stack-openmpi/4.1.1
+   module load stack-intel/2022.0.2
+   module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.12
    module available
 
