@@ -41,10 +41,6 @@ packages:
       modules:
       - miniconda/3.9.12
 
-### Modification of common packages
-  mapl:
-    version:: [2.22.0]
-
 ### All other external packages listed alphabetically
   autoconf:
     externals:
