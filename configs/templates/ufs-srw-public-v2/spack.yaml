@@ -24,7 +24,7 @@ spack:
   - netcdf-c@4.7.4
   - netcdf-fortran@4.5.4
   - parallelio@2.5.2
-  - esmf@8.3.0bs09
+  - esmf@8.3.0b09
   - fms@2021.03
   - bacio@2.4.1
   - crtm@2.3.0
