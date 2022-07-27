@@ -109,7 +109,7 @@
       version: [2.1.0]
     libpng:
       version: [1.6.37]
-    # Attention - when updating also check discover site config
+    # Attention - when updating also check cheyenne and discover site config
     mapl:
       version: [2.22.0]
     met:

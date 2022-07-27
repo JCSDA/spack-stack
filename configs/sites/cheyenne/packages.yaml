@@ -41,6 +41,10 @@ packages:
       modules:
       - miniconda/3.9.12
 
+### Modification of common packages
+  mapl:
+    version:: [2.22.0]
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -86,6 +90,7 @@ packages:
     - spec: doxygen@1.8.6+graphviz~mscgen
       prefix: /usr
   ecflow:
+    buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
       prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
@@ -138,6 +143,7 @@ packages:
     - spec: groff@1.22.2
       prefix: /usr
   krb5:
+    buildable: False
     externals:
     - spec: krb5@1.12.5
       prefix: /usr
