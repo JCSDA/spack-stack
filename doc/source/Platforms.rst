@@ -27,9 +27,9 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | MSU Orion GNU                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.2.0/install``             |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.1/install``         |
+| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-intel-2022.0.1/install``         |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``             |
+| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-gnu-10.1.0/install``             |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne                    |                           | not yet supported - coming soon                                                                       |
 +------------------------------------------+---------------------------+-------------------------------------------------------------------------------------------------------+
@@ -104,23 +104,23 @@ The following is required for building new spack environments and for using spac
    # Only required when using spack-stack, not when building spack-stack
    module load ecflow/5.8.4
 
-For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.0.2`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.1/install/modulefiles/Core
+   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-intel-2022.0.1/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.0.2`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-gnu-10.1.0/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
