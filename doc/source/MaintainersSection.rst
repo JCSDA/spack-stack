@@ -154,14 +154,10 @@ NOAA RDHPCS Hera
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
-qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/qt-5.15.2``.
-
 .. code-block:: console
 
    module purge
-   module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
+   module use /scratch1/NCEPDEV/global/spack-stack/modulefiles
    module load miniconda/3.9.12
    # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
    module load gnu/9.2.0
@@ -172,9 +168,15 @@ qt (qt@5)
 NOAA RDHPCS Jet
 ------------------------------
 
-**WORK IN PROGRESS**
+miniconda
+   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
-.. _MaintainersSection_Stampede2:
+.. code-block:: console
+
+   module use /lfs4/HFIP/hfv3gfs/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
+   module load gnu/9.2.0
 
 ------------------------------
 TACC Frontera
