@@ -91,7 +91,7 @@ spack:
 
     # Extra instructions
     extra_instructions:
-      build:
+      final: |
         #Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> ~nonroot/.bashrc && \
