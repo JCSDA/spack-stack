@@ -13,9 +13,9 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 
 Ready-to-use spack-stack installations are available on the following platforms. This table will be expanded as more platforms are added.
 
------------------
-spack-stack-1.0.0
------------------
+--------------
+spack-stack-v1
+--------------
 
 .. note::
    This version supports the JEDI Skylab release end of June/beginning of July 2022, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model). Amazon Web Services AMI are available in the US East 1 region.
@@ -27,9 +27,9 @@ spack-stack-1.0.0
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | MSU Orion GNU                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.2.0-openmpi-4.0.4/install`` |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.1/install``           |
+| NASA Discover Intel                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-intel-2022.0.1/install``           |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``               |
+| NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-gnu-10.1.0/install``               |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install``   |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -104,23 +104,23 @@ The following is required for building new spack environments and for using spac
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
 
-For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.0.2`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.1/install/modulefiles/Core
+   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-intel-2022.0.1/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.0.2`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-gnu-10.1.0/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
@@ -144,7 +144,7 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load miniconda/3.9.12
 
-When buildig ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``mapl@2.22.0`` after creating the environment/before running ``spack concretize``:
+Also, when building ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` with ``mapl@2.22.0`` after creating the environment/before running ``spack concretize``:
 
 .. code-block:: console
 
@@ -214,6 +214,8 @@ The following is required for building new spack environments and for using spac
 NOAA RDHPCS Gaea
 ------------------------------
 
+! DH* UPDATE!!!
+
 .. note::
    ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
 
@@ -225,10 +227,16 @@ The following is required for building new spack environments and for using spac
    module unload cray-mpich
    module unload cray-python
    module unload darshan
-   module load cray-python/3.7.3.2
+   module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
 
 .. note::
-   On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. Work is in progress to augment ``ecbuild`` with the ability to prefix serial runs with a launcher, e.g. ``srun -n1`` on Gaea.
+   On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. A workaround is to use the `cmake` cross-compiling emulator for this:
+
+.. code-block:: console
+
+   cmake -DCMAKE_CROSSCOMPILING_EMULATOR=/usr/bin/srun;-n;1 -DMPIEXEC_EXECUTABLE="/usr/bin/srun" -DMPIEXEC_NUMPROC_FLAG="-n" PATH_TO_SOURCE
 
 .. _Platforms_Hera:
 
