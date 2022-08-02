@@ -18,13 +18,16 @@
     # Attention - when updating also check orion site config
     boost:
       version: [1.78.0]
-      # Install only the minimum needed (JEDI packages need headers only, but ecflow needs several libraries)
+      # Install only the minimum needed (JEDI packages need headers only,
+      # but ecflow needs several libraries)
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
       version: [11.7.0]
       variants: +python
     cmake:
       version: [3.22.1]
+    # Attention - when updating also check the ufs-weather-model-env, 
+    # jedi-fv3-env, jedi-ufs-env packages
     crtm:
       version: [2.3.0]
     diffutils:
@@ -48,7 +51,8 @@
       variants: ~enable_mkl
     eigen:
       version: [3.4.0]
-    # Attention - when updating the version also check the common modules.yaml config and update the projections for lmod/tcl
+    # Attention - when updating the version also check the common modules.yaml
+    # config and update the projections for lmod/tcl
     esmf:
       version: [8.3.0b09]
       variants: ~xerces ~pnetcdf
@@ -63,7 +67,8 @@
       version: [4.8.0]
     flex:
       version: [2.6.3]
-    # Attention - when updating also check macos.default and macos--monterey-llvm-clang-openmpi-reference site configs
+    # Attention - when updating also check the macos.default site config and
+    # the ufs-weather-model-env, jedi-fv3-env, jedi-ufs-env packages.
     fms:
       version: [2022.01]
       variants: +64bit +quad_precision +gfs_phys +openmp +pic
