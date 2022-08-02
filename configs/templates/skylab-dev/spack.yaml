@@ -30,6 +30,7 @@ spack:
     - bison@3.8.2
     - bufr@11.7.0
     - crtm@2.3.0
+    - crtm@v2.3-jedi.4
     - ecbuild@3.6.5
     - eccodes@2.25.0
     - ecflow@5
