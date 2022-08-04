@@ -134,7 +134,16 @@ NOAA Parallel Works (AWS, Azure, Gcloud)
 NOAA RDHPCS Gaea
 ------------------------------
 
-On Gaea, ``qt`` needs to be installed as a one-off before spack can be used.
+On Gaea, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+
+miniconda
+   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment. Use the following workaround to avoid the terminal being spammed by error messages about missing version information (``/bin/bash: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/libtinfo.so.6: no version information available (required by /lib64/libreadline.so.7)``):
+
+.. code-block:: console
+
+   cd /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib
+   mv libtinfow.so.6.3 libtinfow.so.6.3.conda.original
+   ln -sf /lib64/libtinfo.so.6 libtinfow.so.6.3
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
@@ -142,8 +151,20 @@ qt (qt@5)
 
 .. code-block:: console
 
-   module unload intel cray-mpich cray-python darshan
-   module load cray-python/3.7.3.2
+   module unload intel cray-mpich cray-python darshan PrgEnv-intel
+   module load gcc/10.3.0
+   module load PrgEnv-gnu/6.0.5
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).
+
+   module unload intel cray-mpich cray-python darshan PrgEnv-intel
+   module load gcc/10.3.0
+   module load PrgEnv-gnu/6.0.5
+   module load cmake/3.20.1
+   module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   module load qt/5.15.2
 
 .. _MaintainersSection_Hera:
 

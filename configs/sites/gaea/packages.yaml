@@ -27,10 +27,10 @@ packages:
   python:
     buildable: False
     externals:
-    - spec: python@3.7.3+bz2+ctypes+dbm+ensurepip+lzma~nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/python/3.7.3.2
+    - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12
       modules:
-      - cray-python/3.7.3.2
+      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -77,6 +77,13 @@ packages:
     externals:
     - spec: doxygen@1.8.14~graphviz~mscgen
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   # Added manually to avoid problems building udunits
   expat:
     externals:
@@ -179,8 +186,8 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.15.3
-      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.3
+    - spec: qt@5.15.2
+      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.2/5.15.2/gcc_64
   rsync:
     externals:
     - spec: rsync@3.1.3

@@ -31,7 +31,7 @@ spack-stack-v1
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-gnu-10.1.0/install``               |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne Intel              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install``   |
+| NCAR-Wyoming Cheyenne Intel              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-19.1.1.217/install`` |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne GNU                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.1.0/install``       |
 +------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
@@ -151,14 +151,14 @@ Also, when building ``spack-stack-1.0.1``, one needs to replace ``mapl@2.12.3`` 
    spack remove mapl@2.12.3
    spack add mapl@2.22.0
 
-For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda and ecflow. Note that there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops.
 
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2022.0.2/install/modulefiles/Core
-   module load stack-intel/2022.0.2
-   module load stack-intel-oneapi-mpi/2021.5.1
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-19.1.1.217/install/modulefiles/Core
+   module load stack-intel/19.1.1.217
+   module load stack-intel-mpi/2019.7.217
    module load stack-python/3.9.12
    module available
 
@@ -214,11 +214,6 @@ The following is required for building new spack environments and for using spac
 NOAA RDHPCS Gaea
 ------------------------------
 
-! DH* UPDATE!!!
-
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
-
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
 
 .. code-block:: console
@@ -231,12 +226,22 @@ The following is required for building new spack environments and for using spac
    module load miniconda/3.9.12
    module load ecflow/5.8.4
 
+For ``spack-stack-1.0.2`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v1/envs/skylab-1.0.2-intel-2021.3.0/install/modulefiles/Core
+   module load stack-intel/2021.3.0
+   module load stack-cray-mpich/7.7.11
+   module load stack-python/3.9.12
+   module available
+
 .. note::
    On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. A workaround is to use the `cmake` cross-compiling emulator for this:
 
 .. code-block:: console
 
-   cmake -DCMAKE_CROSSCOMPILING_EMULATOR=/usr/bin/srun;-n;1 -DMPIEXEC_EXECUTABLE="/usr/bin/srun" -DMPIEXEC_NUMPROC_FLAG="-n" PATH_TO_SOURCE
+   cmake -DCMAKE_CROSSCOMPILING_EMULATOR="/usr/bin/srun;-n;1" -DMPIEXEC_EXECUTABLE="/usr/bin/srun" -DMPIEXEC_NUMPROC_FLAG="-n" PATH_TO_SOURCE
 
 .. _Platforms_Hera:
 
