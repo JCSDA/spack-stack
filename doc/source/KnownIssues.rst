@@ -59,5 +59,5 @@ macOS
 
 3. Errors handling exceptions on macOS. A large number of errors related to handling exceptions thrown by applications was found when using default builds or Homebrew installations of ``mpich`` or ``openmpi``, which use flat namespaces. With our spack version, ``mpich`` and ``openmpi`` are installed with a ``+two_level_namespace`` option that fixes the problem.
 
-4. Errors such as `Symbol not found: __cg_png_create_info_struct`
-   Can happen when trying to use the raster plotting scripts in `fv3-jedi-tools`. In that case, exporting `DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH` can help. If ``git`` commands fail after this, you might need to verify where `which git` points to (Homebrew vs module) and unload the ``git`` module.
+4. Errors such as ``Symbol not found: __cg_png_create_info_struct``
+   Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
