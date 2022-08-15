@@ -103,6 +103,7 @@ spack:
         chown -R nonroot:nonroot ~nonroot/.gitconfig ~nonroot/.openmpi
 
         RUN cd /usr/bin/ && \
+        ln -sf cpp-10 cpp && \
         ln -sf gcc-10 gcc && \
         ln -sf g++-10 g++ && \
         ln -sf gfortran-10 gfortran
