@@ -72,7 +72,7 @@ The following is required for building new spack environments and for using spac
    module use /work/noaa/da/role-da/spack-stack/modulefiles
    module load miniconda/3.9.7
 
-For ``spack-stack-1.0.2`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
@@ -82,7 +82,7 @@ For ``spack-stack-1.0.2`` with Intel, load the following modules after loading m
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.0.2`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
@@ -311,7 +311,7 @@ The following is required for building new spack environments and for using spac
 Amazon Web Services Ubuntu 20.04
 --------------------------------
 
-For ``spack-stack-1.0.2``, use a t2.2xlarge instance or similar with AMI "skylab-1.0.0-ubuntu20". After logging in, run:
+For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-1.0.0-ubuntu20". After logging in, run:
 
 .. code-block:: console
 
@@ -326,7 +326,7 @@ For ``spack-stack-1.0.2``, use a t2.2xlarge instance or similar with AMI "skylab
 Amazon Web Services Red hat 8
 -----------------------------
 
-For ``spack-stack-1.0.2``, use a t2.2xlarge instance or similar with AMI "skylab-1.0.0-redhat8". After logging in, run:
+For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-1.0.0-redhat8". After logging in, run:
 
 .. code-block:: console
 
