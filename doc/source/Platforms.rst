@@ -697,7 +697,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   export -n SPACK_SYSTEM_CONFIG_PATH
+   unset SPACK_SYSTEM_CONFIG_PATH
 
 6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
