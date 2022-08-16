@@ -69,7 +69,7 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
-   module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
+   module use /work/noaa/da/role-da/spack-stack/modulefiles
    module load miniconda/3.9.7
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
@@ -86,7 +86,7 @@ For ``spack-stack-1.0.0`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.2.0/install/modulefiles/Core
+   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-10.2.0-openmpi-4.0.4/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.9.7
@@ -122,7 +122,7 @@ For ``spack-stack-1.0.2`` with GNU, load the following modules after loading min
 .. code-block:: console
 
    ulimit -s unlimited
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-gnu-10.1.0/install/modulefiles/Core
+   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-1.0.2-gnu-10.1.0/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
@@ -330,7 +330,7 @@ For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with AMI "skylab
 
    ulimit -s unlimited
    module use /home/ubuntu/spack-stack-v1/envs/skylab-1.0.0/install/modulefiles/Core
-   module load stack-gcc/10.3.0
+   module load stack-gcc/9.4.0
    module load stack-mpich/4.0.2
    module load stack-python/3.8.10
    module available
@@ -506,7 +506,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   export -n SPACK_SYSTEM_CONFIG_PATH
+   unset SPACK_SYSTEM_CONFIG_PATH
 
 6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
@@ -710,7 +710,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   export -n SPACK_SYSTEM_CONFIG_PATH
+   unset SPACK_SYSTEM_CONFIG_PATH
 
 6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 

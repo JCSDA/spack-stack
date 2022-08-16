@@ -22,7 +22,7 @@ ecflow
 .. code-block:: console
 
    module purge
-   module use module use /work/noaa/da/jedipara/spack-stack/modulefiles
+   module use /work/noaa/da/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.7
    module load cmake/3.22.1
    module load gcc/10.2.0
