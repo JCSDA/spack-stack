@@ -208,7 +208,7 @@ runs:
       spack external find mpich
       spack external find openmpi
       spack external find perl
-      spack external find python@3
+      spack external find python
       spack external find wget
 
       # Make homebrew qt@5 detectable on macOS
