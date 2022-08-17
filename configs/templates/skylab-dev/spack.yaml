@@ -10,10 +10,10 @@ spack:
     ectrans:
       version: [1.0.0]
 
+  view: false
   include: []
 
   specs:
-
     # Virtual environment packages
     - base-env@1.0.0
     - jedi-base-env@1.0.0
@@ -23,7 +23,6 @@ spack:
     - jedi-ufs-env@1.0.0
     - jedi-um-env@1.0.0
     - soca-env@1.0.0
-    - ufs-weather-model-env@1.0.0
 
     # Individual packages
     - bacio@2.4.1
@@ -39,7 +38,7 @@ spack:
     # DH* fake version number
     - ectrans@1.0.0
     - eigen@3.4.0
-    - esmf@8.3.0b09
+    - esmf@8.3.0b09+pio
     # DH* fake version number
     - ewok@0.0.1
     - fckit@0.9.5
