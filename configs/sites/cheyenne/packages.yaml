@@ -170,6 +170,9 @@ packages:
     externals:
     - spec: ncurses@5.9.20140201+termlib abi=5
       prefix: /usr
+  # Old re2c on Cheyenne unable to build newer versions of ninja
+  ninja:
+    version:: [1.10.2]
   openssh:
     externals:
     - spec: openssh@7.2p2
