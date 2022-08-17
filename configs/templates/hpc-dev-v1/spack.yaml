@@ -18,7 +18,9 @@ spack:
       lmod:
         core_specs:
         - jedi-tools-env
-  
+
+  view: false
+
   packages:
     bacio:
       version: [2.4.1]

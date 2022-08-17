@@ -15,6 +15,7 @@ spack:
         projections:
           parallelio: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/pio/{version}'
 
+  view: false
   include: []
 
   concretizer:

@@ -11,6 +11,7 @@ spack:
         lmod: $env/install/modulefiles
         tcl: $env/install/modulefiles
 
+  view: false
   include: []
 
   # Notes.
