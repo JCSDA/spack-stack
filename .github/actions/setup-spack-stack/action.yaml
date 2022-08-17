@@ -234,12 +234,6 @@ runs:
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
-      ### # Currently, this is the case for all workflows - wrap in if statement
-      ### # when this changes in the future
-      ### # Whitelist the mpi providers so that spack creates the modules for them
-      ### spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
-      ### spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
-
       # Turn of SSL for ecflow CI builds for now
       if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == *"clang"* ]]; then
         spack config add "packages:ecflow:variants:~ssl"
