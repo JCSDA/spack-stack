@@ -24,7 +24,10 @@ spack:
    - jedi-ufs-env
    - jedi-um-env
    - global-workflow-env
-   - ufs-weather-model-env
+   # Turn off Python variant for now, because this
+   # leads to duplicate packages being built (all
+   # of them are covered in jedi-base-env)
+   - ufs-weather-model-env~python
    - upp-env
    - ww3-env
    - gsi-env
