@@ -9,12 +9,15 @@ compilers::
       flags: {}
       operating_system: centos7
       target: x86_64
-      modules: []
+      modules:
+      - intel/19.1.1
       environment:
         prepend_path:
           PATH: '/opt/apps/gcc/9.1.0/bin'
           CPATH: '/opt/apps/gcc/9.1.0/include'
-          LD_LIBRARY_PATH: '/opt/apps/gcc/9.1.0/lib64'
+          LD_LIBRARY_PATH: '/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.1.0/lib64:/opt/apps/gcc/9.1.0/lib'
+        set:
+          I_MPI_ROOT: '/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64'
       extra_rpaths: []
   - compiler:
       spec: gcc@9.1.0

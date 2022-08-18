@@ -24,6 +24,10 @@
     bufr:
       version: [11.7.0]
       variants: +python
+    # Newer versions of CDO require the C++-17 standard, which doesn't
+    # work with all compilers that are currently in use in spack-stack
+    cdo:
+      version: [2.0.5]
     cmake:
       version: [3.22.1]
     # Attention - when updating also check the ufs-weather-model-env, 
