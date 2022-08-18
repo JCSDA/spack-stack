@@ -86,6 +86,7 @@ packages:
       - ecflow/5.8.4
   # Added manually to avoid problems building udunits
   expat:
+    buildable: False
     externals:
     - spec: expat@1.6.7
       prefix: /usr
