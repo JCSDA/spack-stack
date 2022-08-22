@@ -60,11 +60,12 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.20.3
-      modules:
-      - cmake/3.20.3
+  # Don't use, problems w/ Intel compiler module
+  #cmake:
+  #  externals:
+  #  - spec: cmake@3.20.3
+  #    modules:
+  #    - cmake/3.20.3
   cpio:
     externals:
     - spec: cpio@2.11
@@ -90,6 +91,7 @@ packages:
     - spec: doxygen@1.8.5+graphviz~mscgen
       prefix: /usr
   ecflow:
+    buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
       prefix: /work2/06146/tg854455/frontera/spack-stack/ecflow-5.8.4

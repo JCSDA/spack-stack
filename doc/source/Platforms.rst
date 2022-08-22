@@ -47,7 +47,7 @@ spack-stack-v1
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Jet GNU                      | Kyle Gerheiser            | ``/lfs4/HFIP/hfv3gfs/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-9.2.0/install``                        |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
-| TACC Frontera Intel                      |                           | not yet supported - coming soon                                                                              |
+| TACC Frontera Intel                      | Dom Heinzeller            | ``/work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-19.1.1.217/install``     |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
 | TACC Frontera GNU                        | Dom Heinzeller            | ``/work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-9.1.0/install``            |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -280,7 +280,12 @@ The following is required for building new spack environments and for using spac
 
 For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda and ecflow:
 
-**MISSING**
+   ulimit -s unlimited
+   module use /work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-19.1.1.217/install/modulefiles/Core
+   module load stack-intel/19.1.1.217
+   module load stack-intel-mpi/2020.4.304
+   module load stack-python/3.9.12
+   module available
 
 For ``spack-stack-1.0.1`` with GNU, load the following modules after loading miniconda and ecflow:
 

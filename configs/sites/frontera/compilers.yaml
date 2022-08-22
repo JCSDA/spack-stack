@@ -16,8 +16,9 @@ compilers::
           PATH: '/opt/apps/gcc/9.1.0/bin'
           CPATH: '/opt/apps/gcc/9.1.0/include'
           LD_LIBRARY_PATH: '/opt/intel/compilers_and_libraries_2020.1.217/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.1.0/lib64:/opt/apps/gcc/9.1.0/lib'
-        set:
-          I_MPI_ROOT: '/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64'
+        # Don't set, the MPI library module does that for us
+        #set:
+        #  I_MPI_ROOT: '/opt/intel/compilers_and_libraries_2020.4.304/linux/mpi/intel64'
       extra_rpaths: []
   - compiler:
       spec: gcc@9.1.0
