@@ -44,9 +44,9 @@ jobs:
 
           spack external find
           spack external find perl
-          spack external find python@3
+          spack external find python
           spack external find wget
-          PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt@5
+          PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
           PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
           spack compiler find
 
