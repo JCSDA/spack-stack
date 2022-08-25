@@ -15,6 +15,9 @@ General
 
    There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.8 or 3.9.
 
+3. Issues starting/finding ``ecflow_server`` due to a mismatch of hostnames
+   On some systems, ``ecflow_server`` gets confused by multiple hostnames, e.g. ``localhost`` and ``MYORG-L-12345``. The ``ecflow_start.sh`` script reports the hostname it wants to use. This name (or both) must be in ``/etc/hosts`` in the correct address line, often the loopback address (``127.0.0.1``).
+
 ==============================
 NASA Discover
 ==============================
@@ -61,3 +64,6 @@ macOS
 
 4. Errors such as ``Symbol not found: __cg_png_create_info_struct``
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
+
+5. Error building MET 10.1.1.20220419 build error on macOS Monterey 12.1
+   See https://github.com/NOAA-EMC/spack-stack/issues/316. Note that this error does not occur in the macOS CI tests.
