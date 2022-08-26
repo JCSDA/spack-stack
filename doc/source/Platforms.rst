@@ -506,7 +506,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. code-block:: console
 
    spack config add "packages:python:buildable:False"
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
 7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
@@ -709,7 +709,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    # Example for Red Hat 8 following the above instructions
    spack config add "packages:python:buildable:False"
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.3]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
    # Example for Ubuntu 20.04 following the above instructions
