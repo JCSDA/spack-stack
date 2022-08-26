@@ -648,11 +648,9 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    # Exit root session
    exit
 
-2. Log out and back in to be able to use the `lmod/lua` environment modules
+2. Log out and back in to be able to use the environment modules
 
 3. As regular user, set up the environment to build spack-stack environments
-
-.. code-block:: console
 
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
