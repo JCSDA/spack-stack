@@ -16,8 +16,8 @@ spack:
         f77: /usr/bin/gfortran
         fc: /usr/bin/gfortran
       flags: {}
-      operating_system: any
-      target: x86_64
+      operating_system: ubuntu20.04
+      target: any
       modules: []
       environment: {}
       extra_rpaths: []
@@ -25,6 +25,10 @@ spack:
   # Basic package config from configs/common/packages.yaml
   # Additional package config for container
   packages:
+    all:
+      providers:
+        mpi: [openmpi@4.1.4]
+      compiler: [gcc@9.4.0]
     gcc:
       buildable: false
       externals:
@@ -52,10 +56,6 @@ spack:
       - spec: wget@1.20.3
         prefix: /usr
       version: [1.21.2]
-    all:
-      providers:
-        mpi: [openmpi@4.1.4]
-      compiler: [gcc@9.4.0]
 
   specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, jedi-ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, jedi-ufs-env@1.0.0, bacio@2.4.1,
@@ -94,7 +94,7 @@ spack:
         resolve_sha: false
 
     # Whether or not to strip binaries
-    strip: true
+    strip: false
 
     ## Additional system packages that are needed at runtime
     os_packages:
@@ -137,6 +137,10 @@ spack:
 
     # Extra instructions
     extra_instructions:
+      pre_final: |
+        #Set environment variables for installing tzdata
+        ENV DEBIAN_FRONTEND=noninteractive &&\
+        TZ=Etc/UTC
       final: |
         #Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
