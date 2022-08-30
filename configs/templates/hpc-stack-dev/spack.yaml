@@ -23,7 +23,7 @@ spack:
       version: [1.78.0]
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
-      version: [11.7.1]
+      version: [11.7.0]
       variants: +python
     cmake:
       version: [3.22.1]
