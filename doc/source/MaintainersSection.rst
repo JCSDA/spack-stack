@@ -241,22 +241,21 @@ Create modulefile ``/work2/06146/tg854455/frontera/spack-stack/modulefiles/git-l
 UW (Univ. of Wisconsin) S4
 ------------------------------
 
+gnu (module only)
+   The ``gnu/9.3.0`` module provided by the system administrators is broken (circular dependencies etc.). To create a usable version, copy ``/data/prod/hpc-stack/modulefiles/core/gnu/9.3.0.lua`` into directory ``/data/prod/jedi/spack-stack/modulefiles/gnu`.`
+
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
-qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/data/prod/jedi/spack-stack/qt-5.15.2``.
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
 
 .. code-block:: console
 
    module purge
    module use /data/prod/jedi/spack-stack/modulefiles
-   module load miniconda/3.9.7
-   # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
-   export PATH=/data/prod/hpc-stack/gnu/9.3.0/bin:$PATH
-   export LD_LIBRARY_PATH=/data/prod/hpc-stack/gnu/9.3.0/lib64:$LD_LIBRARY_PATH
-   export CPATH=/data/prod/hpc-stack/gnu/9.3.0/include:$CPATH
+   module load miniconda/3.9.12
+   module load gcc/9.3.0
 
 .. _MaintainersSection_Testing_New_Packages:
 

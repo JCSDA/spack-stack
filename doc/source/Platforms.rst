@@ -302,16 +302,23 @@ For ``spack-stack-1.0.1`` with GNU, load the following modules after loading min
 UW (Univ. of Wisconsin) S4
 ------------------------------
 
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
-
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
 
    module purge
    module use /data/prod/jedi/spack-stack/modulefiles
-   module load miniconda/3.9.7
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
+
+For ``spack-stack-1.0.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+   ulimit -s unlimited
+   module use /data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2021.5.0/install/modulefiles/Core
+   module load stack-intel/2021.5.0
+   module load stack-intel-oneapi-mpi/2021.5.0
+   module load stack-python/
+   module available
 
 --------------------------------
 Amazon Web Services Ubuntu 20.04
