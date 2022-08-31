@@ -24,10 +24,10 @@ packages:
   python:
     buildable: False
     externals:
-    - spec: python@3.9.7
-      prefix: /data/prod/jedi/spack-stack/miniconda-3.9.7
+    - spec: python@3.9.12
+      prefix: /data/prod/jedi/spack-stack/miniconda-3.9.12
       modules:
-      - miniconda/3.9.7
+      - miniconda/3.9.12
   # Versions 1.73+ don't compile on s4 (bootstrap.sh fails)
   boost:
     version:: [1.72.0]
@@ -78,6 +78,13 @@ packages:
     externals:
     - spec: doxygen@1.8.5+graphviz~mscgen
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4
+      prefix: /data/prod/jedi/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   file:
     externals:
     - spec: file@5.11
@@ -166,8 +173,8 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.15.3
-      prefix: /data/prod/jedi/spack-stack/qt-5.15.3
+    - spec: qt@5.9.7
+      prefix: /usr
   rsync:
     externals:
     - spec: rsync@3.1.2
