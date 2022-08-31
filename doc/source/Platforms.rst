@@ -313,6 +313,8 @@ The following is required for building new spack environments and for using spac
 
 For ``spack-stack-1.0.2`` with Intel, load the following modules after loading miniconda and ecflow:
 
+.. code-block:: console
+
    ulimit -s unlimited
    module use /data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2021.5.0/install/modulefiles/Core
    module load stack-intel/2021.5.0
