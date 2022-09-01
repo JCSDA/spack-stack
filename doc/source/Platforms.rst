@@ -320,7 +320,11 @@ For ``spack-stack-1.0.2`` with Intel, load the following modules after loading m
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.12
+   module unuse /opt/apps/modulefiles/Compiler/intel/non-default/22
+   module unuse /opt/apps/modulefiles/Compiler/intel/22
    module available
+
+Note the two `module unuse` statements, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
 
 --------------------------------
 Amazon Web Services Ubuntu 20.04
