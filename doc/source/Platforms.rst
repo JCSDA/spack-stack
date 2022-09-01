@@ -51,7 +51,7 @@ spack-stack-v1
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
 | TACC Frontera GNU                        | Dom Heinzeller            | ``/work2/06146/tg854455/frontera/spack-stack/spack-stack-v1/envs/skylab-1.0.0-gnu-9.1.0/install``            |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4                   |                           | not yet supported - coming soon                                                                              |
+| UW (Univ. of Wisc.) S4                   | Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2021.5.0/install``                      |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
 | Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | AMI: skylab-1.0.0-ubuntu20 - ``/home/ubuntu/spack-stack-v1/envs/skylab-1.0.0/install``                       |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -302,16 +302,29 @@ For ``spack-stack-1.0.1`` with GNU, load the following modules after loading min
 UW (Univ. of Wisconsin) S4
 ------------------------------
 
-.. note::
-   ``spack-stack-1.0.0`` is currently not supported on this platform and will be added in the near future.
-
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
 
    module purge
    module use /data/prod/jedi/spack-stack/modulefiles
-   module load miniconda/3.9.7
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
+
+For ``spack-stack-1.0.2`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   module use /data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2021.5.0/install/modulefiles/Core
+   module load stack-intel/2021.5.0
+   module load stack-intel-oneapi-mpi/2021.5.0
+   module load stack-python/3.9.12
+   module unuse /opt/apps/modulefiles/Compiler/intel/non-default/22
+   module unuse /opt/apps/modulefiles/Compiler/intel/22
+   module available
+
+Note the two `module unuse` statements, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
 
 --------------------------------
 Amazon Web Services Ubuntu 20.04
@@ -686,7 +699,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    # Red Hat: Do *not* execute the following line = do *not* use system curl, this breaks netcdf-c
    # Ubuntu: Execute the following line = use system curl and libssl
-   spack external find curl
+   spack external find --scope system curl
 
    # Skip qt@5 for now
    spack external find --scope system texlive
