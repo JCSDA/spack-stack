@@ -108,6 +108,7 @@ spack:
       - make
       - qt5-default
       - libqt5svg5-dev
+      - qt5dxcb-plugin
       - wget
 
       final:
@@ -120,6 +121,7 @@ spack:
       - make
       - qt5-default
       - libqt5svg5-dev
+      - qt5dxcb-plugin
       - wget
       # Implicitly included in build step
       - build-essential
