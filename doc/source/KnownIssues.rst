@@ -49,6 +49,20 @@ NOAA RDHPCS Gaea
    If random errors during the spack install phase occur related to "git-lfs not found" when building packages (e.g. crtm), simply load the module and try again (``module load git-lfs``).
 
 ==============================
+UW (Univ. of Wisconsin) S4
+==============================
+
+1. Compiler errors when using too many threads for parallel builds
+
+   Using more than two threads when running ``make`` (e.g. ``make -j4``) can lead to compiler errors like the following:
+
+.. code-block:: console
+
+   [94%] Linking CXX executable test_ufo_parameters
+   icpc: error #10106: Fatal error in /home/opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/bin/intel64/../../bin/intel64/mcpcom, terminated by kill signal
+   ...
+
+==============================
 macOS
 ==============================
 

@@ -53,6 +53,8 @@ spack-stack-v1
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
 | UW (Univ. of Wisc.) S4                   | Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-1.0.0-intel-2021.5.0/install``                      |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Parallecluster Ubuntu 20.04 GNU | Dom Heinzeller | **COMING SOON**                                                                                          |
++------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
 | Amazon Web Services AMI Ubuntu 20.04 GNU | Dom Heinzeller            | AMI: skylab-1.0.0-ubuntu20 - ``/home/ubuntu/spack-stack-v1/envs/skylab-1.0.0/install``                       |
 +------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------+
 | Amazon Web Services AMI Red Hat 8 GNU    | Dom Heinzeller            | AMI: skylab-1.0.0-redhat8 - ``/home/ec2-user/spack-stack-v1/envs/skylab-1.0.0/install``                      |
@@ -325,6 +327,12 @@ For ``spack-stack-1.0.2`` with Intel, load the following modules after loading m
    module available
 
 Note the two `module unuse` statements, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
+
+------------------------------------------------
+Amazon Web Services Parallelcluster Ubuntu 20.04
+------------------------------------------------
+
+**COMING SOON**
 
 --------------------------------
 Amazon Web Services Ubuntu 20.04
