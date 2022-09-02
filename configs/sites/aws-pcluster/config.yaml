@@ -1,2 +1,2 @@
 config:
-  build_jobs: 16
+  build_jobs: 8
