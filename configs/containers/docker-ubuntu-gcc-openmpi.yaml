@@ -150,12 +150,19 @@ spack:
       final: |
         #Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
-        echo "ulimit -s unlimited" >> ~nonroot/.bashrc && \
-        echo "ulimit -v unlimited" >> ~nonroot/.bashrc && \
-        printf "[credential]\n    helper = cache --timeout=7200\n" >> ~nonroot/.gitconfig && \
-        mkdir ~nonroot/.openmpi && \
-        echo "rmaps_base_oversubscribe = 1" >> ~nonroot/.openmpi/mca-params.conf && \
-        chown -R nonroot:nonroot ~nonroot/.gitconfig ~nonroot/.openmpi
+        echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
+        echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
+        echo "export CC=gcc" >> /home/nonroot/.bashrc && \
+        echo "export CXX=g++" >> /home/nonroot/.bashrc && \
+        echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
+        mkdir /home/nonroot/.openmpi && \
+        echo "rmaps_base_oversubscribe = 1" >> /home/nonroot/.openmpi/mca-params.conf && \
+        chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.openmpi && \
+        #Also set the necessary environment variables to run as root && \
+        echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
+        echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
+        echo "export OMPI_MCA_rmaps_base_oversubscribe=1" >> /root/.bashrc
 
     # Labels for the image
     labels:

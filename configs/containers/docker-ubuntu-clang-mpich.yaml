@@ -19,7 +19,9 @@ spack:
       operating_system: ubuntu20.04
       target: any
       modules: []
-      environment: {}
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '/usr/lib/llvm-10/lib'
       extra_rpaths: []
 
   # Basic package config from configs/common/packages.yaml
@@ -110,6 +112,7 @@ spack:
       build:
       - clang-10
       - libclang-10-dev
+      - libc++-10-dev
       - cpp
       - g++
       - gcc
@@ -125,6 +128,7 @@ spack:
       final:
       - clang-10
       - libclang-10-dev
+      - libc++-10-dev
       - cpp
       - g++
       - gcc
@@ -155,20 +159,32 @@ spack:
       pre_build: |
         #Create symbolic links for clang compilers
         RUN cd /usr/bin && \
-        ln -sf clang-10 clang && \
-        ln -sf clang++-10 clang++ && \
-        ln -sf clang-cpp-10 clang-cpp
+        ln -svf clang-10 clang && \
+        ln -svf clang++-10 clang++ && \
+        ln -svf clang-cpp-10 clang-cpp && \
+        cd /usr/lib/llvm-10/lib && \
+        ln -svf libc++abi.so.1.0 libc++abi.so
       pre_final: |
         #Set environment variables for installing tzdata
-        ENV DEBIAN_FRONTEND=noninteractive &&\
-        TZ=Etc/UTC
+        ENV DEBIAN_FRONTEND=noninteractive && \
+        TZ=Etc/UTC && \
+        #Create symbolic links for clang compilers
+        RUN cd /usr/bin && \
+        ln -svf clang-10 clang && \
+        ln -svf clang++-10 clang++ && \
+        ln -svf clang-cpp-10 clang-cpp && \
+        cd /usr/lib/llvm-10/lib && \
+        ln -svf libc++abi.so.1.0 libc++abi.so
       final: |
         #Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
-        echo "ulimit -s unlimited" >> ~nonroot/.bashrc && \
-        echo "ulimit -v unlimited" >> ~nonroot/.bashrc && \
-        printf "[credential]\n    helper = cache --timeout=7200\n" >> ~nonroot/.gitconfig && \
-        chown -R nonroot:nonroot ~nonroot/.gitconfig
+        echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
+        echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
+        echo "export CC=clang" >> /home/nonroot/.bashrc && \
+        echo "export CXX=clang++" >> /home/nonroot/.bashrc && \
+        echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
+        chown -R nonroot:nonroot /home/nonroot/.gitconfig
 
     # Labels for the image
     labels:
