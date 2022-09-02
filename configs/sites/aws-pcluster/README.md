@@ -1,5 +1,7 @@
 ## spack-stack on AWS parallelcluster using Intel+Intel-MPI
 
+**Note.** These instructions were used to create this site config. These steps are **not** necessary when building ``spack-stack`` - simply use the existing site config in this directory.
+
 ### Base instance
 - AMI ID: ami-091017c7508ac95f6
 - Instance c5n.4xlarge
@@ -165,6 +167,8 @@ spack config add "packages:all:compiler:[intel@2021.4.0]"
 #     environment:
 #       prepend_path:
 #         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.4.0/linux/compiler/lib/intel64_lin'
+
+# edit envs/skylab-1.0.0-intel-2021.4.0/site/packages.yaml and remove the older Python versions, keep 3.8.10 only
 ```
 
 7. Temporary workaround to avoid duplicate hdf5 etc. (no idea why)
