@@ -41,8 +41,25 @@ apt install -y qt5-default
 apt install -y libqt5svg5-dev
 apt install -y qt5dxcb-plugin
 
+# Remove AWS openmpi
+apt remove -y openmpi40-aws
+
 # This is because boost doesn't work with the Intel compiler
-apt install -y libboost-all-dev
+apt install -y libboost1.71-dev
+apt install -y libboost-chrono1.71-dev
+apt install -y libboost-date-time1.71-dev
+apt install -y libboost-exception1.71-dev
+apt install -y libboost-filesystem1.71-dev
+apt install -y libboost-program-options1.71-dev
+apt install -y libboost-python1.71-dev
+apt install -y libboost-regex1.71-dev
+apt install -y libboost-serialization1.71-dev
+apt install -y libboost-system1.71-dev
+apt install -y libboost-test1.71-dev
+apt install -y libboost-thread1.71-dev
+apt install -y libboost-timer1.71-dev
+
+
 
 # Python
 apt install python3-dev python3-pip
