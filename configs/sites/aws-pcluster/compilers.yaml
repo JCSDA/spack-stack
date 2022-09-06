@@ -13,6 +13,8 @@ compilers:
     environment:
       prepend_path:
         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.4.0/linux/compiler/lib/intel64_lin'
+      set:
+        I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
     extra_rpaths: []
 - compiler:
     spec: gcc@9.4.0
