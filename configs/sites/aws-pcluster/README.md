@@ -62,7 +62,7 @@ apt install -y libboost-timer1.71-dev
 
 
 # Python
-apt install python3-dev python3-pip
+apt install -y python3-dev python3-pip
 python3 -m pip install poetry
 # Ignore error "ERROR: launchpadlib 1.10.13 requires testresources, which is not installed."
 # test - successful if no output
