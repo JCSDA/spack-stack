@@ -30,10 +30,9 @@
       version: [2.0.5]
     cmake:
       version: [3.22.1]
-    # Attention - when updating also check the ufs-weather-model-env, 
-    # jedi-fv3-env, jedi-ufs-env packages
+    # Attention - when updating also check jedi-base-env
     crtm:
-      version: [2.3.0]
+      version: [2.4.0]
     diffutils:
       version: [3.7]
     ecbuild:
