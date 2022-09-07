@@ -84,6 +84,13 @@ ln -sf /usr/lib/x86_64-linux-gnu/libcrypt.so .
 cd /usr/include
 ln -sf python3.8/pyconfig.h .
 
+# DON'T DO THIS ...
+### # Configure slurm so that interactive session automatically ssh to the first compute node
+### cd /opt/slurm/etc
+### echo "# " >> slurm.conf
+### echo "# Additional settings for JEDI" >> slurm.conf
+### echo "LaunchParameters=use_interactive_step" >> slurm.conf
+
 # Exit root session
 exit
 ```
@@ -114,12 +121,12 @@ export PATH=/opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64:$PATH
 ```
 5. Option 1: Use pre-defined site config in spack-stack (skip step 6 afterwards)
 ```
-mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
+cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
 spack stack create env --site aws-pcluster --template=skylab-dev --name=skylab-1.0.0-intel-2021.4.0
-export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack-dev-20220830/envs/skylab-1.0.0-intel-2021.4.0/site
+spack env activate -p envs/skylab-1.0.0-intel-2021.4.0
 ```
 6. Option 2: Configure site from scratch
 ```
@@ -128,6 +135,8 @@ git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-s
 cd spack-stack/
 . setup.sh
 spack stack create env --site linux.default --template=skylab-dev --name=skylab-1.0.0-intel-2021.4.0
+spack env activate -p envs/skylab-1.0.0-intel-2021.4.0
+
 export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/skylab-1.0.0-intel-2021.4.0/site
 
 spack external find --scope system
@@ -184,6 +193,8 @@ spack config add "packages:all:compiler:[intel@2021.4.0]"
 #     environment:
 #       prepend_path:
 #         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.4.0/linux/compiler/lib/intel64_lin'
+#       set:
+#         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
 
 # edit envs/skylab-1.0.0-intel-2021.4.0/site/packages.yaml and remove the older Python versions, keep 3.8.10 only
 ```
@@ -197,3 +208,4 @@ spack remove fms@2022.01
 spack concretize 2>&1 | tee log.concretize
 spack install -v 2>&1 | tee log.install
 ```
+9. Create the AMI for use in the AWS parallelcluster config.
