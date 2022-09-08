@@ -30,7 +30,7 @@
       version: [2.0.5]
     cmake:
       version: [3.22.1]
-    # Attention - when updating also check jedi-base-env
+    # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       version: [2.4.0]
     diffutils:
@@ -71,7 +71,7 @@
     flex:
       version: [2.6.3]
     # Attention - when updating also check the macos.default site config and
-    # the ufs-weather-model-env, jedi-fv3-env, jedi-ufs-env packages.
+    # the various jcsda-emc-bundles env packages
     fms:
       version: [2022.01]
       variants: +64bit +quad_precision +gfs_phys +openmp +pic
