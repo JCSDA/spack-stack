@@ -145,8 +145,8 @@ spack:
     extra_instructions:
       pre_final: |
         #Set environment variables for installing tzdata
-        ENV DEBIAN_FRONTEND=noninteractive &&\
-        TZ=Etc/UTC
+        ENV DEBIAN_FRONTEND=noninteractive
+        ENV TZ=Etc/UTC
       final: |
         #Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
