@@ -180,6 +180,11 @@ packages:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5
       prefix: /usr
+  ncview:
+    externals:
+    - spec: ncview@2.1.5
+      modules:
+      - ncview/2.1.5
   openssh:
     externals:
     - spec: openssh@7.4p1

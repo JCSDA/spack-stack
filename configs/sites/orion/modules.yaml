@@ -5,3 +5,4 @@ modules:
     lmod:
       blacklist:
       - ecflow
+      - ncview
