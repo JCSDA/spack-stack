@@ -5,6 +5,7 @@
 ### Base instance
 - AMI ID: ami-091017c7508ac95f6
 - Instance c5n.4xlarge
+- Use 250GB of gp3 storage as /
 
 ### Prerequisites
 1. As `root`:
@@ -90,6 +91,14 @@ ln -sf python3.8/pyconfig.h .
 ### echo "# " >> slurm.conf
 ### echo "# Additional settings for JEDI" >> slurm.conf
 ### echo "LaunchParameters=use_interactive_step" >> slurm.conf
+
+# Create swapfile - 100GB
+dd if=/dev/zero of=/swapfile bs=128M count=800
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+swapon -s
+echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
 
 # Exit root session
 exit
