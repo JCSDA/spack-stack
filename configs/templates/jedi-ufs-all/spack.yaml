@@ -23,14 +23,17 @@ spack:
    - jedi-tools-env
    - jedi-ufs-env
    - jedi-um-env
-   - global-workflow-env
    # Turn off Python variant for now, because this
    # leads to duplicate packages being built (all
-   # of them are covered in jedi-base-env)
+   # of them are covered in jedi-base-env,
+   # jedi-ewok-env, jedi-tools-env, ufs-pyenv)
+   - global-workflow-env~python
+   - ufs-srw-app-env~python
    - ufs-weather-model-env~python
    - upp-env
    - ww3-env
    - gsi-env
+   - ufs-pyenv
    - ufs-utils-env
    - nceplibs-env
    - soca-env
