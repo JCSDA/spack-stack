@@ -199,6 +199,8 @@ miniconda
    # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
    module load gnu/9.2.0
 
+.. _MaintainersSection_Frontera:
+
 ------------------------------
 TACC Frontera
 ------------------------------
@@ -256,6 +258,14 @@ ecflow
    module use /data/prod/jedi/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load gcc/9.3.0
+
+.. _MaintainersSection_AWS_Pcluster_Ubuntu:
+
+------------------------------------------------
+Amazon Web Services Parallelcluster Ubuntu 20.04
+------------------------------------------------
+
+See ``configs/sites/aws-pcluster/README.md``.
 
 .. _MaintainersSection_Testing_New_Packages:
 
