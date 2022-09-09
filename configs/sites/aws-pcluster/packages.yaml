@@ -1,0 +1,133 @@
+packages:
+  all:
+    compiler: [intel@2021.4.0]
+    providers:
+      mpi: [intel-oneapi-mpi@2021.4.0]
+
+### MPI, Python, MKL
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.4.0%intel@2021.4.0
+      prefix: /opt/intel
+      modules:
+      - intelmpi
+  python:
+    buildable: false
+    externals:
+    - spec: python@3.8.10+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+      prefix: /usr
+
+### All other external packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.16.1
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.34
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.5.1
+      prefix: /usr
+  boost:
+    buildable: False
+    externals:
+    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer +wave cxxstd=14 visibility=hidden
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.16.3
+      prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.68.0+gssapi+ldap+nghttp2
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.7
+      prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4 +ui
+      prefix: /home/ubuntu/jedi/ecflow-5.8.4
+  findutils:
+    externals:
+    - spec: findutils@4.7.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@5.0.1
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.25.1~tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@2.9.2
+      prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.4
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.2p1
+      prefix: /usr
+  openssl:
+    buildable: false
+    externals:
+    - spec: openssl@1.1.1f
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.30.0~cpanm+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.29.1
+      prefix: /usr
+  qt:
+    buildable: false
+    externals:
+    - spec: qt@5.12.8
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@6.7
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20190410
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.20.3
+      prefix: /usr

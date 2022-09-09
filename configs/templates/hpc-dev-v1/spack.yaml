@@ -1,49 +1,44 @@
-# Pin versions and specs when building packages
+spack:
+  view: false
+
+  include: []
+
+  concretizer:
+    unify: when_possible
+  
+  config:
+    install_tree:
+       root: $env/install
+
+  modules:
+    default:
+      roots:
+        lmod: $env/install/modulefiles
+        tcl: $env/install/modulefiles
+      lmod:
+        core_specs:
+        - jedi-tools-env
+
+  view: false
+
   packages:
-    #
-    all:
-      providers:
-        blas: [openblas]
-        fftw-api: [fftw]
-        gl: [opengl]
-        glu: [openglu]
-        jpeg: [libjpeg-turbo]
-        lapack: [openblas]
-        yacc: [bison]
-    #
     bacio:
       version: [2.4.1]
-    bison:
-      version: [3.8.2]
-    # Attention - when updating also check orion site config
     boost:
       version: [1.78.0]
-      # Install only the minimum needed (JEDI packages need headers only,
-      # but ecflow needs several libraries)
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
-      version: [11.7.1]
+      version: [11.7.0]
       variants: +python
-    # Newer versions of CDO require the C++-17 standard, which doesn't
-    # work with all compilers that are currently in use in spack-stack
-    cdo:
-      version: [2.0.5]
     cmake:
       version: [3.22.1]
-    # Attention - when updating also check the ufs-weather-model-env, 
-    # jedi-fv3-env, jedi-ufs-env packages
     crtm:
       version: [2.3.0]
-    diffutils:
-      version: [3.7]
+      variants: +fix
     ecbuild:
       version: [3.6.5]
     eccodes:
       version: [2.21.0]
-      #variants: +netcdf
-    ecflow:
-      version: [5.8.3]
-      variants: +ui
     eckit:
       version: [1.19.0]
       variants: linalg=eigen,lapack compression=lz4,bzip2
@@ -55,11 +50,9 @@
       variants: ~enable_mkl
     eigen:
       version: [3.4.0]
-    # Attention - when updating the version also check the common modules.yaml
-    # config and update the projections for lmod/tcl
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio
+      variants: ~xerces ~pnetcdf
     fckit:
       version: [0.9.5]
       variants: +eckit
@@ -67,12 +60,6 @@
       version: [3.3.10]
     fiat:
       version: [main]
-    findutils:
-      version: [4.8.0]
-    flex:
-      version: [2.6.3]
-    # Attention - when updating also check the macos.default site config and
-    # the ufs-weather-model-env, jedi-fv3-env, jedi-ufs-env packages.
     fms:
       version: [2022.01]
       variants: +64bit +quad_precision +gfs_phys +openmp +pic
@@ -86,12 +73,6 @@
       version: [1.4.1]
     gftl-shared:
       version: [1.5.0]
-    #git-lfs:
-      # Assume git-lfs is provided, hard to install
-      # because of dependencies on go/go-bootstrap.
-      # Note: Uncommenting this entry will break
-      # the container builds.
-      #version: [2.11.0]
     grib-util:
       version: [1.2.3]
     gsl-lite:
@@ -125,8 +106,6 @@
       variants: +python +grib2
     metplus:
       version: [4.1.1]
-    mpich:
-      variants: ~hwloc +two_level_namespace
     nco:
       version: [5.0.6]
       variants: ~doc
@@ -149,27 +128,20 @@
       version: [3.10.5]
     nlohmann-json-schema-validator:
       version: [2.1.0]
-    odc:
-      version: [1.4.5]
-      variants: ~fortran
     openblas:
       version: [0.3.19]
       variants: +noavx512
-    openmpi:
-      variants: +internal-hwloc +two_level_namespace
     parallelio:
       version: [2.5.4]
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
-    # Do not build pkgconf - https://github.com/NOAA-EMC/spack-stack/issues/123
     pkgconf:
       buildable: False
     prod-util:
       version: [1.2.2]
     proj:
       version: [8.1.0]
-      # don't really need tiff ...
       variants: ~tiff
     python:
       version: [3.9.12]
@@ -206,7 +178,6 @@
     py-python-dateutil:
       version: [2.8.2]
     py-pythran:
-      # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
       version: [0.11.0]
     py-pyyaml:
       version: [6.0]
@@ -214,8 +185,6 @@
       version: [1.8.0]
     py-shapely:
       version: [1.8.0]
-    qt:
-      version: [5.15.3]
     sfcio:
       version: [1.4.1]
     shumlib:
@@ -224,14 +193,6 @@
       version: [2.3.2]
     sp:
       version: [2.3.3]
-    #texlive:
-      # Assume texlive is provided, hard to install
-      # because of its dependencies. Both Linux and
-      # macOS provide easy-to-install packages that
-      # can be added as external packages.
-      # Note: Uncommenting this entry will break
-      # the container builds.
-      #version: [2.11.0]
     udunits:
       version: [2.2.28]
     upp:
@@ -250,3 +211,28 @@
       version: [0.5.1]
     zlib:
       version: [1.2.12]
+
+  definitions:
+  - compilers: ['%gcc', '%intel']
+  - packages:
+      - jedi-ewok-env@hpc-dev-v1
+      - jedi-fv3-env@hpc-dev-v1
+      - jedi-tools-env@hpc-dev-v1
+      - jedi-ufs-env@hpc-dev-v1
+      - jedi-um-env@hpc-dev-v1
+      - global-workflow-env@hpc-dev-v1
+      - ufs-weather-model-env@hpc-dev-v1
+      - ufs-weather-model-env+debug@hpc-dev-v1
+      - upp-env@hpc-dev-v1
+      - ww3-env@hpc-dev-v1
+      - gsi-env@hpc-dev-v1
+      - ufs-utils-env@hpc-dev-v1
+      - nceplibs-env@hpc-dev-v1
+      - soca-env@hpc-dev-v1
+
+  specs:
+    - matrix:
+      - [$packages]
+      - [$compilers]
+      exclude:
+        - jedi-tools-env%intel

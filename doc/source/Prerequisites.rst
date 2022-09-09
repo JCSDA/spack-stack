@@ -51,8 +51,6 @@ Building ``qt`` with spack isn't straightforward as it requires many libraries r
 
 On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64``.
 
-**New method**
-
 .. code-block:: console
 
    mkdir -p /discover/swdev/jcsda/spack-stack/qt-5.15.2/src
@@ -67,10 +65,7 @@ Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all
    The dependency on ``qt`` is introduced by ``ecflow``, which at present requires using ``qt@5`` - earlier or newer versions will not work.
 
 .. note::
-   On air-gapped systems, it may be required to download the code (all steps up to and including ``git submodule update --init --recursive``) on a different machine and transfer the entire directory ``qt5``.
-
-.. note::
-   When using an existing version provided by the operating system or as a module, one needs to check if all required components are installed. The ``ecflow`` installation will abort with an error message that a particular component of ``qt`` cannot be found.
+   On air-gapped systems, the above method may not work (we have not encountered such a system so far).
 
 ..  _Prerequisites_ecFlow:
 
@@ -89,15 +84,15 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
 
 .. code-block:: console
 
-   mkdir -p /discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src
-   cd /discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src
+   mkdir -p /lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src
+   cd /lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src
    wget https://confluence.ecmwf.int/download/attachments/8650755/ecFlow-5.8.4-Source.tar.gz?api=v2
    wget https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.tar.gz
    mv ecFlow-5.8.4-Source.tar.gz\?api\=v2 ecFlow-5.8.4-Source.tar.gz
    tar -xvzf boost_1_78_0.tar.gz
    tar -xvzf ecFlow-5.8.4-Source.tar.gz
-   export WK=/discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src/ecFlow-5.8.4-Source
-   export BOOST_ROOT=/discover/swdev/jcsda/spack-stack/ecflow-5.8.4/src/boost_1_78_0
+   export WK=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src/ecFlow-5.8.4-Source
+   export BOOST_ROOT=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src/boost_1_78_0
 
    # Build static boost (to not interfere with spack-stack boost)
    cd $BOOST_ROOT
@@ -108,7 +103,7 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
    cd $WK
    mkdir build
    cd build
-   cmake .. -DCMAKE_INSTALL_PREFIX=/discover/swdev/jcsda/spack-stack/ecflow-5.8.4 2>&1 | tee log.cmake
+   cmake .. -DCMAKE_INSTALL_PREFIX=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4 2>&1 | tee log.cmake
    make -j4 2>&1 | tee log.make
    make install 2>&1 | tee log.install
 

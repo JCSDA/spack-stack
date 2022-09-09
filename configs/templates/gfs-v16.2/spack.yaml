@@ -11,6 +11,8 @@ spack:
         lmod: $env/install/modulefiles
         tcl: $env/install/modulefiles
 
+  view: false
+
   specs:
   - jpeg@9.1.0
   - zlib@1.2.11

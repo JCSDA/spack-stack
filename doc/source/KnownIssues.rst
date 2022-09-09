@@ -15,6 +15,9 @@ General
 
    There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.8 or 3.9.
 
+3. Issues starting/finding ``ecflow_server`` due to a mismatch of hostnames
+   On some systems, ``ecflow_server`` gets confused by multiple hostnames, e.g. ``localhost`` and ``MYORG-L-12345``. The ``ecflow_start.sh`` script reports the hostname it wants to use. This name (or both) must be in ``/etc/hosts`` in the correct address line, often the loopback address (``127.0.0.1``).
+
 ==============================
 NASA Discover
 ==============================
@@ -46,6 +49,20 @@ NOAA RDHPCS Gaea
    If random errors during the spack install phase occur related to "git-lfs not found" when building packages (e.g. crtm), simply load the module and try again (``module load git-lfs``).
 
 ==============================
+UW (Univ. of Wisconsin) S4
+==============================
+
+1. Compiler errors when using too many threads for parallel builds
+
+   Using more than two threads when running ``make`` (e.g. ``make -j4``) can lead to compiler errors like the following:
+
+.. code-block:: console
+
+   [94%] Linking CXX executable test_ufo_parameters
+   icpc: error #10106: Fatal error in /home/opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/bin/intel64/../../bin/intel64/mcpcom, terminated by kill signal
+   ...
+
+==============================
 macOS
 ==============================
 
@@ -58,3 +75,9 @@ macOS
    This can happen when multiple versions of Python were installed with Homebrew and ``pip3``/``python3`` point to different versions. Run ``brew doctor`` and check if there are issues with Python not being properly linked. Follow the instructions given by ``brew``, if applicable.
 
 3. Errors handling exceptions on macOS. A large number of errors related to handling exceptions thrown by applications was found when using default builds or Homebrew installations of ``mpich`` or ``openmpi``, which use flat namespaces. With our spack version, ``mpich`` and ``openmpi`` are installed with a ``+two_level_namespace`` option that fixes the problem.
+
+4. Errors such as ``Symbol not found: __cg_png_create_info_struct``
+   Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
+
+5. Error building MET 10.1.1.20220419 build error on macOS Monterey 12.1
+   See https://github.com/NOAA-EMC/spack-stack/issues/316. Note that this error does not occur in the macOS CI tests.

@@ -208,11 +208,11 @@ runs:
       spack external find mpich
       spack external find openmpi
       spack external find perl
-      spack external find python@3
+      spack external find python
       spack external find wget
 
       # Make homebrew qt@5 detectable on macOS
-      PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt@5
+      PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
 
       # Make homebrew curl detectable on macOS
       PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
@@ -233,12 +233,6 @@ runs:
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
-
-      # Currently, this is the case for all workflows - wrap in if statement
-      # when this changes in the future
-      # Whitelist the mpi providers so that spack creates the modules for them
-      spack config add "modules:default:tcl:whitelist:[${{ inputs.mpi }}]"
-      spack config add "modules:default:lmod:whitelist:[${{ inputs.mpi }}]"
 
       # Turn of SSL for ecflow CI builds for now
       if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == *"clang"* ]]; then

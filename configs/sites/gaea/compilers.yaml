@@ -1,5 +1,4 @@
 compilers::
-
   - compiler:
       spec: intel@2021.3.0
       paths:
@@ -14,20 +13,10 @@ compilers::
       - PrgEnv-intel
       - intel/2021.3.0
       environment:
+        prepend_path:
+          PATH: '/opt/gcc/10.3.0/snos/bin'
+          CPATH: '/opt/gcc/10.3.0/snos/include'
+          LD_LIBRARY_PATH: '/opt/gcc/10.3.0/snos/lib:/opt/gcc/10.3.0/snos/lib64'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
-      extra_rpaths: []
-
-  - compiler:
-      spec: gcc@7.5.0
-      paths:
-        cc: /usr/bin/gcc
-        cxx: /usr/bin/g++
-        f77: /usr/bin/gfortran
-        fc: /usr/bin/gfortran
-      flags: {}
-      operating_system: cnl7
-      target: any
-      modules: []
-      environment: {}
       extra_rpaths: []
