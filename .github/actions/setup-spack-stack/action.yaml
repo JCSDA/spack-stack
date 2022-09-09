@@ -272,17 +272,19 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
-      # Speed up installation by building in parallel
-      for i in {1..2}; do
-        nohup spack install --fail-fast >> spack_install.log 2>&1 &
-      done
-      # Sleep, then check if processes are still running
-      sleep 60
-      while ps -ef | grep -ve 'grep' | grep 'spack install'; do
-        echo "Still running"
-        tail -n 10 spack_install.log
-        sleep 60
-      done
+      # Parallel builds unfortunately do not catch build errors
+      ## Speed up installation by building in parallel
+      #for i in {1..2}; do
+      #  nohup spack install --fail-fast >> spack_install.log 2>&1 &
+      #done
+      ## Sleep, then check if processes are still running
+      #sleep 60
+      #while ps -ef | grep -ve 'grep' | grep 'spack install'; do
+      #  echo "Still running"
+      #  tail -n 10 spack_install.log
+      #  sleep 60
+      #done
+      spack install --fail-fast
 
   - name: create-meta-modules
     if: ${{ inputs.concretize_only == 'false' }}
