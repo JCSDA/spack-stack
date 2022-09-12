@@ -4,11 +4,9 @@ spack:
   view: false
 
   config:
-    build_jobs: 8
+    build_jobs: 2
     connect_timeout: 60
 
-    install_tree:
-      root: $env/install
   compilers:
   - compiler:
       spec: intel@2022.1.0
@@ -27,22 +25,14 @@ spack:
           LD_LIBRARY_PATH: /usr/lib64:/opt/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin
           CPATH: /usr/include
       extra_rpaths: []
+
   # Basic package config from configs/common/packages.yaml
   # Additional package config for container
   packages:
     all:
-      compiler: [intel@2022.1.0]
       providers:
         mpi: [intel-oneapi-mpi@2021.6.0]
-        blas: [openblas]
-        fftw-api: [fftw]
-        gl: [opengl]
-        glu: [openglu]
-        jpeg: [libjpeg-turbo]
-        lapack: [openblas]
-        yacc: [bison]
-    mpi:
-      buildable: false
+      compiler: [intel@2022.1.0]
     intel:
       buildable: false
       externals:
@@ -61,17 +51,30 @@ spack:
     git:
       buildable: false
       externals:
-      - spec: git@2
+      - spec: git@2.25.1~tcltk
         prefix: /usr
     git-lfs:
       buildable: false
       externals:
-      - spec: git-lfs@2
+      - spec: git-lfs@2.9.2
         prefix: /usr
+    qt:
+      buildable: false
+      externals:
+      - spec: qt@5.12.8
+        prefix: /usr
+      version: [5.15.3]
+    wget:
+      buildable: false
+      externals:
+      - spec: wget@1.20.3
+        prefix: /usr
+      version: [1.21.2]
+
   specs: []
 
-
   container:
+
     # Select the format of the recipe e.g. docker,
     # singularity or anything else that is currently supported
     format: docker
@@ -100,38 +103,76 @@ spack:
     ## Additional system packages that are needed at runtime
     os_packages:
       build:
+      - cpp
+      - g++
+      - gcc
+      - gfortran
       - git
       - git-lfs
-      final:
-      - wget
       - gpg
-      - curl
+      - make
+      - qt5-default
+      - libqt5svg5-dev
+      - qt5dxcb-plugin
+      - wget
+
+      final:
+      - cpp
+      - g++
+      - gcc
+      - gfortran
       - git
       - git-lfs
+      - gpg
+      - make
+      - qt5-default
+      - libqt5svg5-dev
+      - qt5dxcb-plugin
+      - wget
+      # Implicitly included in build step
+      - build-essential
+      - ca-certificates
+      - curl
+      - file
+      - gnupg2
+      - iproute2
+      - locales
+      - python3
+      - python3-pip
+      - python3-setuptools
+      - unzip
+      - vim
 
-    ## Extra instructions
+    # Extra instructions
     extra_instructions:
-      build: RUN apt update && apt install wget && apt install apt-utils && wget -O-
-        https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-        && echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi
-        all main" | tee /etc/apt/sources.list.d/oneAPI.list && apt update && apt install
-        intel-hpckit -y
-      final: RUN export TZ=America/New_York && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
-        && echo $TZ > /etc/timezone && apt update && apt install -y tzdata && apt
-        update  && apt install apt-utils && wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-        | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-        && echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi
-        all main" | tee /etc/apt/sources.list.d/oneAPI.list && apt update && apt install
-        intel-hpckit -y
+      pre_build: |
+        RUN apt update && apt install apt-utils && \
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+        apt update && apt install intel-hpckit -y
+      pre_final: |
+        #Set environment variables for installing tzdata
+        ENV DEBIAN_FRONTEND=noninteractive
+        ENV TZ=Etc/UTC
+      final: |
+        # Mark Potts had this:
+        # RUN export TZ=America/New_York && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+        # && echo $TZ > /etc/timezone && apt update && apt install -y tzdata
+        RUN apt update  && apt install apt-utils && \
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+        apt update && apt install intel-hpckit -y
+        #Make a non-root user:nonroot / group:nonroot for running MPI
+        RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
+        echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
+        echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
+        echo "export CC=icc" >> /home/nonroot/.bashrc && \
+        echo "export CXX=icpc" >> /home/nonroot/.bashrc && \
+        echo "export FC=ifort" >> /home/nonroot/.bashrc && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
+        chown -R nonroot:nonroot /home/nonroot/.gitconfig
 
     # Labels for the image
     labels:
-      app: empty
-      mpi: intel-oneapi-mpi
-  modules:
-    default:
-      roots:
-        lmod: $env/install/modulefiles
-        tcl: $env/install/modulefiles
-  include: []
+      app: ""
+      mpi: "intel-oneapi-mpi"
