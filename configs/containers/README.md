@@ -21,3 +21,54 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     # https://github.com/NOAA-EMC/spack-stack/issues/326
     # esmf@8.3.0b09, mapl@2.12.3
 ```
+
+export DOCKER_BUILDKIT=0                                                                                                                                                    
+export COMPOSE_DOCKER_CLI_BUILD=0
+export DOCKER_DEFAULT_PLATFORM=linux/amd64
+
+nice -n 19 docker build --platform=linux/amd64 -t 469205354006.dkr.ecr.us-east-1.amazonaws.com/jedi-gnu-openmpi-dev . 2>&1 | tee logdocker.txt
+
+
+
+
+### Create an AMI on AWS EC2 to build docker containers
+
+### https://docs.docker.com/desktop/install/ubuntu/
+
+- Start with ami-052efd3df9dad4825
+- c5n.2xlarge
+- 250GB root volume is plenty
+
+sudo su
+apt update
+apt -y upgrade
+reboot
+# ...
+sudo su
+apt install -y gnome-terminal
+apt install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt update
+apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+wget https://desktop.docker.com/linux/main/amd64/docker-desktop-4.11.0-amd64.deb
+apt -y install ./docker-desktop-4.11.0-amd64.deb
+# IGNORE 'N: Download is performed unsandboxed as root as file '/home/ubuntu/docker-desktop-4.11.0-amd64.deb' couldn't be accessed by user '_apt'. - pkgAcquire::Run (13: Permission denied)'
+
+
+apt install -y libpython3-dev
+apt install -y python3-pip
+apt install -y python3-poetry
+python3 -c "import poetry"
+
+exit
+
+# As user ubuntu
+systemctl --user start docker-desktop
