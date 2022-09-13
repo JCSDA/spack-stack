@@ -70,7 +70,7 @@ spack:
     - odc@1.4.5
     - parallel-netcdf@1.12.2
     - parallelio@2.5.7
-    - py-eccodes@1.5.0
+    - py-eccodes@1.4.2
     - py-numpy@1.22.3
     - py-pandas@1.4.0
     - py-scipy@1.8.0
