@@ -22,7 +22,7 @@ jobs:
   build:
     strategy:
       matrix:
-        template: [jedi-ufs-all]
+        template: [skylab-dev]
         spec: ['']
     runs-on: macos-latest
     steps:
