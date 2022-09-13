@@ -68,7 +68,16 @@ apt install -y python3-pip
 apt install -y python3-poetry
 python3 -c "import poetry"
 
+python3 -m pip install awscli
+aws configure
+
+
 exit
 
 # As user ubuntu
 systemctl --user start docker-desktop
+
+
+# As root
+
+aws ecr get-login --no-include-email
