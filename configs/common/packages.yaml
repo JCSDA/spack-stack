@@ -39,7 +39,7 @@
     ecbuild:
       version: [3.6.5]
     eccodes:
-      version: [2.21.0]
+      version: [2.27.0]
       #variants: +netcdf
     ecflow:
       version: [5.8.3]
@@ -158,7 +158,7 @@
     openmpi:
       variants: +internal-hwloc +two_level_namespace
     parallelio:
-      version: [2.5.4]
+      version: [2.5.7]
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
@@ -178,7 +178,7 @@
     py-click:
       version: [8.0.3]
     py-eccodes:
-      version: [1.3.2]
+      version: [1.4.2]
     py-h5py:
       version: [3.6.0]
     py-netcdf4:
