@@ -38,7 +38,7 @@ spack:
     ecbuild:
       version: [3.6.5]
     eccodes:
-      version: [2.21.0]
+      version: [2.27.0]
     eckit:
       version: [1.19.0]
       variants: linalg=eigen,lapack compression=lz4,bzip2
@@ -132,7 +132,7 @@ spack:
       version: [0.3.19]
       variants: +noavx512
     parallelio:
-      version: [2.5.4]
+      version: [2.5.7]
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
@@ -150,7 +150,7 @@ spack:
     py-click:
       version: [8.0.3]
     py-eccodes:
-      version: [1.3.2]
+      version: [1.4.2]
     py-h5py:
       version: [3.6.0]
     py-netcdf4:

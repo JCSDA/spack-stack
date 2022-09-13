@@ -31,7 +31,7 @@ spack:
     - crtm@2.4.0
     - crtm@v2.4_jedi
     - ecbuild@3.6.5
-    - eccodes@2.25.0
+    - eccodes@2.27.0
     - ecflow@5
     - eckit@1.19.0
     - ecmwf-atlas@0.29.0
@@ -69,7 +69,8 @@ spack:
     - nlohmann-json@3.10.5
     - odc@1.4.5
     - parallel-netcdf@1.12.2
-    - parallelio@2.5.4
+    - parallelio@2.5.7
+    - py-eccodes@1.4.2
     - py-f90nml@1.4.2
     - py-numpy@1.22.3
     - py-pandas@1.4.0
