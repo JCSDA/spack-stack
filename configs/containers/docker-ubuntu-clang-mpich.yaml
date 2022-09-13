@@ -51,6 +51,12 @@ spack:
       externals:
       - spec: llvm@10.0.0 +clang
         prefix: /usr
+    mpich:
+      buildable: false
+      externals:
+      - spec: mpich@4.0.2
+        prefix: /opt/mpich-4.0.2
+      version: [4.0.2]
     qt:
       buildable: false
       externals:
@@ -150,10 +156,27 @@ spack:
         ln -svf clang-cpp-10 clang-cpp && \
         cd /usr/lib/llvm-10/lib && \
         ln -svf libc++abi.so.1.0 libc++abi.so
+        # Build mpich outside of spack-stack
+        ENV MPICH_VERSION=4.0.2
+        RUN mkdir -p /opt/mpich-${MPICH_VERSION}/src && \
+        cd /opt/mpich-${MPICH_VERSION}/src && \
+        wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz && \
+        tar -xzf mpich-${MPICH_VERSION}.tar.gz && \
+        cd mpich-${MPICH_VERSION} && \
+        ./configure --prefix=/opt/mpich-${MPICH_VERSION} --enable-fortran --enable-cxx --with-device=ch4:ofi && \
+        make -j2 && \
+        make install && \
+        ls /opt/mpich-${MPICH_VERSION}
+        ENV PATH=/opt/mpich-${MPICH_VERSION}/bin:${PATH}
+        ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
+        ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
       pre_final: |
         #Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
+        ENV PATH=/opt/mpich-${MPICH_VERSION}/bin:${PATH}
+        ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
+        ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
       final: |
         #Create symbolic links for clang compilers
         RUN cd /usr/bin && \
