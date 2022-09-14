@@ -28,7 +28,7 @@ spack:
       version: [1.78.0]
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
-      version: [11.7.0]
+      version: [11.7.1]
       variants: +python
     cmake:
       version: [3.22.1]
@@ -52,7 +52,7 @@ spack:
       version: [3.4.0]
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf
+      variants: ~xerces ~pnetcdf +pio
     fckit:
       version: [0.9.5]
       variants: +eckit
@@ -75,6 +75,8 @@ spack:
       version: [1.5.0]
     grib-util:
       version: [1.2.3]
+    gsibec:
+      version: [1.0.2]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -128,6 +130,9 @@ spack:
       version: [3.10.5]
     nlohmann-json-schema-validator:
       version: [2.1.0]
+    odc:
+      version: [1.4.5]
+      variants: ~fortran
     openblas:
       version: [0.3.19]
       variants: +noavx512
