@@ -11,3 +11,14 @@ Currently Loaded Modulefiles:
 
 module load cray-python/3.9.4.1
 
+
+
+
+mkdir -p /p/work1/heinzell/git-lfs-2.10.0/src
+# On Cheyenne
+wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm
+# Copy over from Cheyenne
+.... follow instructions in read the docs, install in /p/work1/heinzell/git-lfs-2.10.0
+
+module use /p/work1/heinzell/modulefiles
+module load git-lfs/2.10.0

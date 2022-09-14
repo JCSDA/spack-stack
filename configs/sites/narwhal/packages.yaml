@@ -1,75 +1,45 @@
 packages:
+  all:
+    compiler:: [intel@2021.3.0]
+    providers:
+      mpi:: [cray-mpich/8.1.9]
+
+### MPI, Python, MKL
+  mpi:
+    buildable: False
+  cray-mpich:
+    externals:
+    - spec: cray-mpich/8.1.9%intel@2021.3.0
+      modules:
+      - cray-mpich/8.1.9
+  #intel-oneapi-tbb:
+  #  externals:
+  #  - spec: intel-oneapi-tbb@2021.3.0
+  #    prefix: /opt/intel/oneapi_2021.3.0.3219
+  #    modules:
+  #    - intel/2021.3.0
+  #intel-oneapi-mkl:
+  #  externals:
+  #  - spec: intel-oneapi-mkl@2021.3.0
+  #    prefix: /opt/intel/oneapi_2021.3.0.3219
+  #    modules:
+  #    - intel/2021.3.0
   python:
+    buildable: False
     externals:
     - spec: python@3.9.4+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /opt/cray/pe/python/3.9.4.1
-    - spec: python@2.7.18+bz2+ctypes~dbm+ensurepip+nis+pyexpat+pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /usr
-    - spec: python@3.6.15+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.26.1~cpanm+shared+threads
-      prefix: /usr
-  wget:
-    externals:
-    - spec: wget@1.20.3
-      prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.66.0+gssapi+ldap+nghttp2
-      prefix: /usr
+      modules:
+      - cray-python/3.9.4.1
+
+### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
       prefix: /usr
-  subversion:
-    externals:
-    - spec: subversion@1.10.6
-      prefix: /usr
-  pkg-config:
-    externals:
-    - spec: pkg-config@0.29.2
-      prefix: /usr
-  cvs:
-    externals:
-    - spec: cvs@1.12.12
-      prefix: /usr
-  findutils:
-    externals:
-    - spec: findutils@4.6.0
-      prefix: /usr
-  swig:
-    externals:
-    - spec: swig@3.0.12
-      prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
-      prefix: /usr
-  gmake:
-    externals:
-    - spec: gmake@4.2.1
-      prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@8.6p1a
-      prefix: /usr
-  gawk:
-    externals:
-    - spec: gawk@4.2.1
-      prefix: /usr
   automake:
     externals:
     - spec: automake@1.15.1
-      prefix: /usr
-  groff:
-    externals:
-    - spec: groff@1.22.3
-      prefix: /usr
-  texinfo:
-    externals:
-    - spec: texinfo@6.5
       prefix: /usr
   binutils:
     externals:
@@ -83,27 +53,89 @@ packages:
     externals:
     - spec: cmake@3.17.0
       prefix: /usr
-  openssl:
+  curl:
     externals:
-    - spec: openssl@1.1.1d
+    - spec: curl@7.66.0+gssapi+ldap+nghttp2
       prefix: /usr
-  m4:
+  cvs:
     externals:
-    - spec: m4@1.4.18
+    - spec: cvs@1.12.12
       prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.6.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.26.2+tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@2.10.0
+      prefix: /p/work1/heinzell/git-lfs-2.10.0
+      modules:
+      - git-lfs/2.10.0
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
   libtool:
     externals:
     - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.6p1a
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.1.1d
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.26.1~cpanm+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.29.2
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.10.6
+      prefix: /usr
+  swig:
+    externals:
+    - spec: swig@3.0.12
       prefix: /usr
   tar:
     externals:
     - spec: tar@1.30
       prefix: /usr
-  git:
+  texinfo:
     externals:
-    - spec: git@2.26.2+tcltk
+    - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.20.3
       prefix: /usr
