@@ -151,7 +151,8 @@ spack:
         RUN apt update && apt install apt-utils && \
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
-        apt update && apt install intel-hpckit -y
+        apt update && \
+        apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 -y
       pre_final: |
         #Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
@@ -166,15 +167,12 @@ spack:
         RUN apt update  && apt install apt-utils && \
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
-        # Can we simply copy /opt/intel from builder instead of installing intel-hpckit again?
-        apt update && apt install intel-hpckit -y
+        # Copy intel-onapi installation from builder
+        COPY --from=builder /opt/intel /opt/intel
         #Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
-        echo "export CC=icc" >> /home/nonroot/.bashrc && \
-        echo "export CXX=icpc" >> /home/nonroot/.bashrc && \
-        echo "export FC=ifort" >> /home/nonroot/.bashrc && \
         echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
         echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \

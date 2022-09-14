@@ -198,9 +198,6 @@ spack:
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
-        echo "export CC=clang" >> /home/nonroot/.bashrc && \
-        echo "export CXX=clang++" >> /home/nonroot/.bashrc && \
-        echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
 
