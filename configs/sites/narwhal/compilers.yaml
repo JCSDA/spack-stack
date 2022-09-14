@@ -7,7 +7,7 @@ compilers::
         f77: ftn
         fc: ftn
       flags: {}
-      operating_system: cnl7
+      operating_system: sles15
       target: any
       modules:
       - PrgEnv-intel
