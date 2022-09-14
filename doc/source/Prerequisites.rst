@@ -15,7 +15,7 @@ The following manual software installations may or may not be required as prereq
 git-lfs
 ------------------------------
 
-Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Stampede2>` describes a manual installation of ``git-lfs`` on TACC Stampede, a Centos7 system.
+Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Frontera>` describes a manual installation of ``git-lfs`` on TACC Frontera, a Centos7.9 system.
 
 ..  _Prerequisites_Miniconda:
 
