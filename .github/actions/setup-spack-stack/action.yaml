@@ -235,7 +235,7 @@ runs:
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
       # Turn of SSL for ecflow CI builds for now
-      if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == *"clang"* ]]; then
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
         spack config add "packages:ecflow:variants:~ssl"
       fi
 
