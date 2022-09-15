@@ -91,10 +91,6 @@ packages:
     - spec: cpio@2.11
       prefix: /usr
   # Don't use OS curl, doesn't support secure transfers
-  #curl:
-  #  externals:
-  #  - spec: curl@7.29.0+ldap
-  #    prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.3
