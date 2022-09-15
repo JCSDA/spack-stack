@@ -50,8 +50,8 @@ jobs:
           PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
           spack compiler find
 
-          # https://github.com/dtcenter/MET/issues/2239
-          spack remove global-workflow-env
+          ## https://github.com/dtcenter/MET/issues/2239
+          #spack remove global-workflow-env
 
           spack concretize
           spack install --fail-fast
