@@ -241,6 +241,7 @@ runs:
 
       cat ${SPACK_ENV}/spack.yaml
 
+      set +o pipefail
       # Remove specs that don't build under certain configurations.
       # Only need that for the concretize_only steps, because the full
       # builds only build one spec at a time (and the cases that are
@@ -251,6 +252,7 @@ runs:
       if [[ "$RUNNER_OS" == "macOS" && "${{ inputs.compiler }}" == "gcc"* ]]; then
         spack rm jedi-ewok-env || true
       fi
+      set -o pipefail
 
       mkdir ${GITHUB_WORKSPACE}/logs
 
