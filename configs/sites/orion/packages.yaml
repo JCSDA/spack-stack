@@ -90,10 +90,7 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.29.0+ldap
-      prefix: /usr
+  # Don't use OS curl, doesn't support secure transfers
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -179,6 +176,11 @@ packages:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5
       prefix: /usr
+  ncview:
+    externals:
+    - spec: ncview@2.1.5
+      modules:
+      - ncview/2.1.5
   openssh:
     externals:
     - spec: openssh@7.4p1
