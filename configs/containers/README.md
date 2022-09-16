@@ -14,10 +14,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     parallel-netcdf@1.12.2, parallelio@2.5.7, py-eccodes@1.4.2, py-f90nml@1.4.2, py-numpy@1.22.3,
     py-pandas@1.4.0, py-pyyaml@6.0, py-scipy@1.8.0, py-shapely@1.8.0, py-xarray@2022.3.0,
     sp@2.3.3, udunits@2.2.28, w3nco@2.4.1, nco@5.0.6,
-    yafyaml@0.5.1, zlib@1.2.12, odc@1.4.5, crtm@v2.3-jedi.4]
-    #
-    # TODO: UPDATE CRTM TO crtm@v2.4_jedi
-    #
+    yafyaml@0.5.1, zlib@1.2.12, odc@1.4.5, crtm@v2.4_jedi]
     # Don't build ESMF and MAPL for now:
     # https://github.com/JCSDA-internal/MPAS-Model/issues/38
     # https://github.com/NOAA-EMC/spack-stack/issues/326
@@ -26,7 +23,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
 
 ### Create an AMI on AWS EC2 to build docker containers
 
-AMI **MISSING** was created following the instructions below
+AMI ami-06157f1b526930ccc (dom-docker-builder-full-backup-20220914; to be updated) was created following the instructions below
 
 - See https://docs.docker.com/desktop/install/ubuntu/
 - Start with ami-052efd3df9dad4825
