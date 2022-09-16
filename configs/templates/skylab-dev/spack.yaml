@@ -53,6 +53,7 @@ spack:
     #- gdal@3.4.3
     #- geos@3.9.1
     - gftl-shared@1.5.0
+    - gsibec@1.0.2
     - hdf5@1.12.1
     - hdf@4.2.15
     - ip@3.3.3
