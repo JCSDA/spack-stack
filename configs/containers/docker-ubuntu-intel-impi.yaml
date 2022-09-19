@@ -9,19 +9,21 @@ spack:
 
   compilers:
   - compiler:
-      spec: clang@10.0.0
+      spec: intel@2022.1.0
       paths:
-        cc: /usr/bin/clang
-        cxx: /usr/bin/clang++
-        f77: /usr/bin/gfortran
-        fc: /usr/bin/gfortran
+        cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icc
+        cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icpc
+        f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
+        fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
       flags: {}
       operating_system: ubuntu20.04
       target: any
       modules: []
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '/usr/lib/llvm-10/lib'
+          PATH: /usr/bin
+          LD_LIBRARY_PATH: /usr/lib64:/opt/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin
+          CPATH: /usr/include
       extra_rpaths: []
 
   # Basic package config from configs/common/packages.yaml
@@ -29,13 +31,23 @@ spack:
   packages:
     all:
       providers:
-        mpi: [mpich@4.0.2]
-      compiler: [clang@10.0.0]
-    gcc:
+        mpi: [intel-oneapi-mpi@2021.6.0]
+      compiler: [intel@2022.1.0]
+    intel:
       buildable: false
       externals:
-      - spec: gcc@9.4.0
-        prefix: /usr
+      - spec: intel@2022.1.0
+        prefix: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64
+    intel-oneapi-mpi:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mpi@2021.6.0
+        prefix: /opt/intel/oneapi
+    intel-oneapi-mkl:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mkl@2022.1.0
+        prefix: /opt/intel/oneapi
     git:
       buildable: false
       externals:
@@ -46,17 +58,6 @@ spack:
       externals:
       - spec: git-lfs@2.9.2
         prefix: /usr
-    llvm:
-      buildable: false
-      externals:
-      - spec: llvm@10.0.0 +clang
-        prefix: /usr
-    mpich:
-      buildable: false
-      externals:
-      - spec: mpich@4.0.2
-        prefix: /opt/mpich-4.0.2
-      version: [4.0.2]
     qt:
       buildable: false
       externals:
@@ -102,15 +103,13 @@ spack:
     ## Additional system packages that are needed at runtime
     os_packages:
       build:
-      - clang-10
-      - libclang-10-dev
-      - libc++-10-dev
       - cpp
       - g++
       - gcc
       - gfortran
       - git
       - git-lfs
+      - gpg
       - make
       - qt5-default
       - libqt5svg5-dev
@@ -118,15 +117,13 @@ spack:
       - wget
 
       final:
-      - clang-10
-      - libclang-10-dev
-      - libc++-10-dev
       - cpp
       - g++
       - gcc
       - gfortran
       - git
       - git-lfs
+      - gpg
       - make
       - qt5-default
       - libqt5svg5-dev
@@ -149,62 +146,40 @@ spack:
     # Extra instructions
     extra_instructions:
       pre_build: |
-        #Create symbolic links for clang compilers
-        RUN cd /usr/bin && \
-        ln -svf clang-10 clang && \
-        ln -svf clang++-10 clang++ && \
-        ln -svf clang-cpp-10 clang-cpp && \
-        cd /usr/lib/llvm-10/lib && \
-        ln -svf libc++abi.so.1.0 libc++abi.so
-        # Build mpich outside of spack-stack
-        ENV MPICH_VERSION=4.0.2
-        ENV CC=clang
-        ENV CXX=clang++
-        ENV FC=gfortran
-        RUN mkdir -p /opt/mpich-${MPICH_VERSION}/src && \
-        cd /opt/mpich-${MPICH_VERSION}/src && \
-        wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz && \
-        tar -xzf mpich-${MPICH_VERSION}.tar.gz && \
-        cd mpich-${MPICH_VERSION} && \
-        CFLAGS="-fPIC" CXXFLAGS="-fPIC" FCFLAGS="-fPIC" LDFLAGS="-fPIC" \
-        ./configure --prefix=/opt/mpich-${MPICH_VERSION} --enable-fortran --enable-cxx --with-device=ch4:ofi && \
-        make -j2 && \
-        make install && \
-        ls /opt/mpich-${MPICH_VERSION}
-        ENV PATH=/opt/mpich-${MPICH_VERSION}/bin:${PATH}
-        ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
-        ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
+        RUN apt update && apt install apt-utils && \
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+        apt update && \
+        apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 -y
       pre_final: |
         #Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
-        ENV CC=clang
-        ENV CXX=clang++
-        ENV FC=gfortran
-        ENV PATH=/opt/mpich-${MPICH_VERSION}/bin:${PATH}
-        ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
-        ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
+        ENV CC=icc
+        ENV CXX=icpc
+        ENV FC=ifort
       final: |
-        #Create symbolic links for clang compilers
-        RUN cd /usr/bin && \
-        ln -svf clang-10 clang && \
-        ln -svf clang++-10 clang++ && \
-        ln -svf clang-cpp-10 clang-cpp && \
-        cd /usr/lib/llvm-10/lib && \
-        ln -svf libc++abi.so.1.0 libc++abi.so
-        # Copy mpich-4.0.2 installation from builder
-        COPY --from=builder /opt/mpich-4.0.2 /opt/mpich-4.0.2
+        # Mark Potts had this:
+        # RUN export TZ=America/New_York && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
+        # && echo $TZ > /etc/timezone && apt update && apt install -y tzdata
+        RUN apt update  && apt install apt-utils && \
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+        apt update && \
+        apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 -y
         #Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
-        echo "export CC=clang" >> /home/nonroot/.bashrc && \
-        echo "export CXX=clang++" >> /home/nonroot/.bashrc && \
-        echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
+        echo "export CC=icc" >> /home/nonroot/.bashrc && \
+        echo "export CXX=icpc" >> /home/nonroot/.bashrc && \
+        echo "export FC=ifort" >> /home/nonroot/.bashrc && \
+        echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
+        echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
 
     # Labels for the image
     labels:
       app: ""
-      mpi: "mpich"
+      mpi: "intel-oneapi-mpi"
