@@ -148,6 +148,10 @@ spack:
         mkdir /home/nonroot/.openmpi && \
         echo "rmaps_base_oversubscribe = 1" >> /home/nonroot/.openmpi/mca-params.conf && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.openmpi
+        #Also set the necessary environment variables to run as root
+        RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
+        echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
+        echo "export OMPI_MCA_rmaps_base_oversubscribe=1" >> /root/.bashrc
 
     # Labels for the image
     labels:
