@@ -141,6 +141,9 @@ spack:
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
+        echo "export CC=gcc" >> /home/nonroot/.bashrc && \
+        echo "export CXX=g++" >> /home/nonroot/.bashrc && \
+        echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         mkdir /home/nonroot/.openmpi && \
         echo "rmaps_base_oversubscribe = 1" >> /home/nonroot/.openmpi/mca-params.conf && \

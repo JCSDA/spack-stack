@@ -171,6 +171,9 @@ spack:
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
+        echo "export CC=icc" >> /home/nonroot/.bashrc && \
+        echo "export CXX=icpc" >> /home/nonroot/.bashrc && \
+        echo "export FC=ifort" >> /home/nonroot/.bashrc && \
         echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
         echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
