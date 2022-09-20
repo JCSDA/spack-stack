@@ -94,7 +94,7 @@
     grib-util:
       version: [1.2.3]
     gsibec:
-      version: [1.0.4]
+      version: [1.0.5]
     gsl-lite:
       version: [0.37.0]
     hdf:
