@@ -34,7 +34,7 @@ spack:
     - eccodes@2.27.0
     - ecflow@5
     - eckit@1.19.0
-    - ecmwf-atlas@0.29.0
+    - ecmwf-atlas@0.30.0
     # DH* fake version number
     - ectrans@1.0.0
     - eigen@3.4.0
