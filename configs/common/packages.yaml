@@ -131,6 +131,8 @@
     nco:
       version: [5.0.6]
       variants: ~doc
+    # ncview - when adding information here, also check Orion
+    # and Discover site configs
     nemsio:
       version: [2.5.2]
     nemsiogfs:
@@ -146,6 +148,8 @@
       version: [4.3.1]
     netcdf-fortran:
       version: [4.5.4]
+    # ninja - when adding information here, also check Cheyenne
+    # and Discover site configs
     nlohmann-json:
       version: [3.10.5]
     nlohmann-json-schema-validator:
