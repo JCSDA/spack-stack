@@ -1,5 +1,6 @@
 module unload PrgEnv-cray/8.3.2
 module load PrgEnv-intel/8.1.0
+module unload intel/2021.4.0
 module unload cray-python/3.9.4.1
 
 module li
@@ -45,4 +46,17 @@ module use /p/work1/heinzell/modulefiles
 module load miniconda/3.9.12
 
 cd /p/work1/heinzell/spack-stack
+
+
+
+
+
+
+module use /p/work1/heinzell/spack-stack/envs/skylab-dev-intel-2021.3.0/install/modulefiles/Core
+module load stack-intel/2021.3.0
+module load stack-cray-mpich/8.1.14
+module load stack-python/3.9.12
+module available
+
+module load jedi-ewok-env/1.0.0 jedi-fv3-env/1.0.0 soca-env/1.0.0
 
