@@ -131,6 +131,8 @@
     nco:
       version: [5.0.6]
       variants: ~doc
+    # ncview - when adding information here, also check Orion
+    # and Discover site configs
     nemsio:
       version: [2.5.2]
     nemsiogfs:
