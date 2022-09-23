@@ -165,6 +165,14 @@ packages:
     externals:
     - spec: openssh@7.2p2
       prefix: /usr
+  ncview:
+    externals:
+    - spec: ncview@2.1.7
+      modules:
+      - ncview/2.1.7
+  # Old re2c on Discover unable to build newer versions of ninja
+  ninja:
+    version:: [1.10.2]
   openssl:
     externals:
     - spec: openssl@1.0.2j-fips
