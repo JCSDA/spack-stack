@@ -1,0 +1,93 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+
+  packages:
+    fiat:
+      version: [1.0.0]
+    ectrans:
+      version: [1.0.0]
+
+  view: false
+  include: []
+
+  specs:
+    # Virtual environment packages
+    - base-env@1.0.0
+    - jedi-base-env@1.0.0
+    - jedi-ewok-env@1.0.0
+    - jedi-fv3-env@1.0.0
+    - jedi-mpas-env@1.0.0
+    - jedi-ufs-env@1.0.0
+    - jedi-um-env@1.0.0
+    - soca-env@1.0.0
+
+    # Individual packages
+    - bacio@2.4.1
+    - bison@3.8.2
+    - bufr@11.7.1
+    - crtm@2.3.0
+    - crtm@2.4.0
+    - crtm@v2.3-jedi.4
+    - crtm@v2.4_jedi
+    - ecbuild@3.6.5
+    - eccodes@2.27.0
+    - ecflow@5
+    - eckit@1.19.0
+    - ecmwf-atlas@0.30.0
+    # DH* fake version number
+    - ectrans@1.0.0
+    - eigen@3.4.0
+    - esmf@8.3.0b09+pio
+    # DH* fake version number
+    #- ewok@0.0.1
+    - fckit@0.9.5
+    # DH* fake version number
+    - fiat@1.0.0
+    - flex@2.6.4
+    - fms@2022.01
+    # DH* fake version number
+    - fms@release-jcsda
+    - g2@3.4.5
+    - g2tmpl@1.10.0
+    #- gdal@3.4.3
+    #- geos@3.9.1
+    - gftl-shared@1.5.0
+    - gsibec@1.0.5
+    - hdf5@1.12.1
+    - hdf@4.2.15
+    - ip@3.3.3
+    - jasper@2.0.32
+    - jedi-cmake@1.4.0
+    - libpng@1.6.37
+    - mapl@2.22.0
+    - nccmp@1.9.0.1
+    - ncview@2.1.8
+    - netcdf-c@4.8.1
+    - netcdf-cxx4@4.3.1
+    - netcdf-fortran@4.5.4
+    - nlohmann-json-schema-validator@2.1.0
+    - nlohmann-json@3.10.5
+    - odc@1.4.5
+    - parallel-netcdf@1.12.2
+    - parallelio@2.5.7
+    - py-eccodes@1.4.2
+    - py-f90nml@1.4.2
+    - py-numpy@1.22.3
+    - py-pandas@1.4.0
+    - py-pyyaml@6.0
+    - py-scipy@1.8.0
+    - py-shapely@1.8.0
+    - py-xarray@2022.3.0
+    # DH* fake version number
+    #- r2d2@0.0.1
+    # DH* fake version number
+    - shumlib@macos_clang_linux_intel_port
+    #- solo@1.0.0
+    - sp@2.3.3
+    - udunits@2.2.28
+    - w3nco@2.4.1
+    - yafyaml@0.5.1
+    - zlib@1.2.12
