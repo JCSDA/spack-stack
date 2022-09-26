@@ -15,14 +15,12 @@ spack:
 
   specs:
     # Virtual environment packages
-    - base-env@1.0.0
-    - jedi-base-env@1.0.0
-    - jedi-ewok-env@1.0.0
-    - jedi-fv3-env@1.0.0
-    - jedi-mpas-env@1.0.0
-    - jedi-ufs-env@1.0.0
-    - jedi-um-env@1.0.0
-    - soca-env@1.0.0
+    - jedi-ewok-env
+    - jedi-fv3-env
+    - jedi-mpas-env
+    - jedi-ufs-env
+    - jedi-um-env
+    - soca-env
 
     # Individual packages
     - bacio@2.4.1
