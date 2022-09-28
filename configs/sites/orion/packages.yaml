@@ -231,7 +231,8 @@ packages:
   wget:
     externals:
     - spec: wget@1.14
-      prefix: /usr  xz:
+      prefix: /usr
+  xz:
     externals:
     - spec: xz@5.2.2
       prefix: /usr
