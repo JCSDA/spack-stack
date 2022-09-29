@@ -75,7 +75,7 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /work/noaa/da/role-da/spack-stack/modulefiles
    module load miniconda/3.9.7
-   module load ncview/2.1.5
+   module load ecflow/5.8.4
 
 For ``spack-stack-1.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -110,7 +110,7 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
-   module load ncview/2.1.7
+   module load ecflow/5.8.4
 
 For ``spack-stack-1.0.2`` with Intel, load the following modules after loading miniconda and ecflow:
 
