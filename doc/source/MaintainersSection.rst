@@ -27,14 +27,6 @@ ecflow
    module load cmake/3.22.1
    module load gcc/10.2.0
 
-ncview
-  After creating the environment and before concretizing, replace `ncview@2.1.8` (if in your specs) with `ncview@2.1.5`:
-
-.. code-block:: console
-
-   spack remove ncview@2.1.8
-   spack add ncview@2.1.5
-
 .. _MaintainersSection_Discover:
 
 ------------------------------
