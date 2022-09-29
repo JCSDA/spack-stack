@@ -57,10 +57,12 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.20.5
-      prefix: /usr
+  # Don't use external cmake, this confuses the spack concretizer
+  # leading to duplicate packages being installed
+  #cmake:
+  #  externals:
+  #  - spec: cmake@3.20.5
+  #    prefix: /usr
   cpio:
     externals:
     - spec: cpio@2.11

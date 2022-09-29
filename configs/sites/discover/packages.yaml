@@ -64,14 +64,16 @@ packages:
     externals:
     - spec: ccache@3.1.9
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.5.2
-      prefix: /usr
-    - spec: cmake@3.21.0
-      prefix: /usr/local/other/cmake/3.21.0
-      modules:
-      - cmake/3.21.0
+  # Don't use external cmake, this confuses the spack concretizer
+  # leading to duplicate packages being installed.
+  #cmake:
+  #  externals:
+  #  - spec: cmake@3.5.2
+  #    prefix: /usr
+  #  - spec: cmake@3.21.0
+  #    prefix: /usr/local/other/cmake/3.21.0
+  #    modules:
+  #    - cmake/3.21.0
   cpio:
     externals:
     - spec: cpio@2.11

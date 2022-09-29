@@ -13,10 +13,13 @@ General
 
 2. Build errors with Python 3.10
 
-   There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.8 or 3.9.
+   There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.9 until we can confirm that everything works with Python 3.10.
 
 3. Issues starting/finding ``ecflow_server`` due to a mismatch of hostnames
    On some systems, ``ecflow_server`` gets confused by multiple hostnames, e.g. ``localhost`` and ``MYORG-L-12345``. The ``ecflow_start.sh`` script reports the hostname it wants to use. This name (or both) must be in ``/etc/hosts`` in the correct address line, often the loopback address (``127.0.0.1``).
+
+4. Installation of duplicate packages `ecbuild`, `hdf5`
+   One reason for this is an external `cmake@3.20` installation, which confuses the concretizer when building a complex environment such as the `skylab-dev` or `jedi-ufs-all` environment. For certain packages (and thus their dependencies), a newer version than `cmake@3.20` is required, for others `cmake@3.20` works, and spack then thinks that it needs to build two identical versions of the same package with different versions of `cmake`. The solution is to remove any external `cmake@3.20` package in the site config and run the concretization step again.
 
 ==============================
 NASA Discover
