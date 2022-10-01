@@ -11,6 +11,7 @@ packages:
     - spec: intel-oneapi-mpi@2021.4.0%intel@2021.4.0
       prefix: /opt/intel
       modules:
+      - libfabric-aws/1.16.0~amzn3.0
       - intelmpi
   python:
     buildable: false
