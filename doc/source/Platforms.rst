@@ -260,6 +260,7 @@ The following is required for building new spack environments and for using spac
    module purge
    module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.12
+   module load ecflow/5.5.3
 
 .. _Platforms_Jet:
 
@@ -602,6 +603,11 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install texlive
    # Do not install qt@5 for now
 
+   # For screen utility (optional)
+   yum -y remove https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
+   yum -y update --nobest
+   yum -y install screen
+
    # Python
    yum -y install python39-devel
    alternatives --set python3 /usr/bin/python3.9
@@ -645,12 +651,16 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
 
    # Misc
    apt install -y build-essential
-   apt install -y libcurl4-openssl-dev
-   apt install -y libssl-dev
+   # Not needed since not using external curl
+   #apt install -y libcurl4-openssl-dev
+   # DH* TRY WITHOUT
+   #apt install -y libssl-dev
+   # *DH
    #apt install krb5-user
    apt install -y libkrb5-dev
    apt install -y m4
-   # Skip cmake, default version 3.16 is too old
+   # Skip cmake, default version 3.16 is too old (and might already be installed)
+   #apt install -y cmake
    apt install -y git
    apt install -y git-lfs
    apt install -y bzip2
@@ -706,11 +716,6 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system perl
    spack external find --scope system python
    spack external find --scope system wget
-
-   # Red Hat: Do *not* execute the following line = do *not* use system curl, this breaks netcdf-c
-   # Ubuntu: Execute the following line = use system curl and libssl
-   spack external find --scope system curl
-
    # Skip qt@5 for now
    spack external find --scope system texlive
 
@@ -737,11 +742,16 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    # Example for Ubuntu 20.04 following the above instructions
    spack config add "packages:python:buildable:False"
-   spack config add "packages:openssl:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@9.4.0]"
 
-7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+7. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+
+.. warning::
+   **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``.
+
+.. warning::
+   **Important:** On Ubuntu 20, remove any external ``openssl`` package, since its presence will confuse the spack concretizer and lead to duplicate packages being installed.
 
 .. code-block:: console
 
