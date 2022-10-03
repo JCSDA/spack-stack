@@ -1,4 +1,7 @@
 spack:
+  specs:
+    - ufs-weather-model-env ^cmake@3.20.1 ^zlib@1.2.11
+
   view: false
 
   include: []
@@ -9,6 +12,7 @@ spack:
   config:
     install_tree:
        root: $env/install
+    deprecated: true
 
   modules:
     default:
