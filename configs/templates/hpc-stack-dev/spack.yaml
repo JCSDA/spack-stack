@@ -1,7 +1,4 @@
 spack:
-  specs:
-    - ufs-weather-model-env ^cmake@3.20.1 ^zlib@1.2.11
-
   view: false
 
   include: []
@@ -216,17 +213,17 @@ spack:
   # Set compilers here
   - compilers: ['%intel']
   - packages:
-      - global-workflow-env@hpc-stack-dev
-      - ufs-weather-model-env~debug@hpc-stack-dev
-      - ufs-weather-model-env+debug@hpc-stack-dev
-      - upp-env@hpc-stack-dev
-      - ww3-env@hpc-stack-dev
-      - gsi-env@hpc-stack-dev
-      - ufs-utils-env@hpc-stack-dev
-      - nceplibs-env@hpc-stack-dev
-      - soca-env@hpc-stack-dev
-      - base-env@hpc-stack-dev
-      - jedi-base-env@hpc-stack-dev
+      - global-workflow-env@hpc-stack-dev ^zlib@1.2.11
+      - ufs-weather-model-env~debug@hpc-stack-dev ^zlib@1.2.11
+      - ufs-weather-model-env+debug@hpc-stack-dev ^zlib@1.2.11 
+      - upp-env@hpc-stack-dev ^zlib@1.2.11
+      - ww3-env@hpc-stack-dev ^zlib@1.2.11
+      - gsi-env@hpc-stack-dev ^zlib@1.2.11
+      - ufs-utils-env@hpc-stack-dev ^zlib@1.2.11
+      - nceplibs-env@hpc-stack-dev ^zlib@1.2.11
+      - soca-env@hpc-stack-dev ^zlib@1.2.11
+      - base-env@hpc-stack-dev ^zlib@1.2.11
+      - jedi-base-env@hpc-stack-dev ^zlib@1.2.11
 
   specs:
     - matrix:
