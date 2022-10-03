@@ -15,9 +15,9 @@ compilers:
     - craype/2.7.13
     environment:
       prepend_path:
-        PATH: '/opt/cray/pe/gcc/11.2.0/snos/bin'
-        LD_LIBRARY_PATH: '/opt/cray/pe/gcc/11.2.0/snos/lib64'
-        CPATH: '/opt/cray/pe/gcc/11.2.0/snos/include'
+        PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
+        LD_LIBRARY_PATH: '/opt/cray/pe/gcc/10.3.0/snos/lib64'
+        CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
       set:
         # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so 
         # Automake-based builds are installed in lib64 
@@ -25,16 +25,16 @@ compilers:
         CONFIG_SITE: ''
     extra_rpaths: []
 - compiler:
-    spec: gcc@11.2.0
+    spec: gcc@10.3.0
     paths:
-      cc: /opt/cray/pe/gcc/11.2.0/snos/bin/gcc
-      cxx: /opt/cray/pe/gcc/11.2.0/snos/bin/g++
-      f77: /opt/cray/pe/gcc/11.2.0/snos/bin/gfortran
-      fc:  /opt/cray/pe/gcc/11.2.0/snos/bin/gfortran
+      cc: /opt/cray/pe/gcc/10.3.0/snos/bin/gcc
+      cxx: /opt/cray/pe/gcc/10.3.0/snos/bin/g++
+      f77: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
+      fc:  /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
     flags: {}
     operating_system: sles15
     target: any
     modules:
-    - gnu/11.2.0
+    - gnu/10.3.0
     environment: {}
     extra_rpaths: []
