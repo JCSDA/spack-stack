@@ -23,35 +23,35 @@ spack:
       version: [1.78.0]
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
-      version: [11.7.0]
+      version: [11.5.0]
       variants: +python
     cmake:
-      version: [3.22.1]
+      version: [3.20.1]
     crtm:
-      version: [2.3.0]
+      version: [2.4.0]
     ecbuild:
-      version: [3.6.5]
+      version: [3.6.1]
     eccodes:
       version: [2.25.0]
     eckit:
-      version: [1.19.0]
+      version: [1.16.0]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: [0.30.0]
-      variants: +fckit +trans
+      version: [0.24.1]
+      variants: +fckit -trans
     ectrans:
       version: [1.0.0]
       variants: ~enable_mkl
     eigen:
-      version: [3.4.0]
+      version: [3.3.7]
     esmf:
       version: [8.3.0b09]
       variants: ~xerces ~pnetcdf
     fckit:
-      version: [0.9.5]
+      version: [0.9.2]
       variants: +eckit
     fftw:
-      version: [3.3.10]
+      version: [3.3.8]
     fiat:
       version: [main]
     fms:
@@ -68,7 +68,7 @@ spack:
     gftl-shared:
       version: [1.5.0]
     grib-util:
-      version: [1.2.3]
+      version: [1.2.4]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -84,7 +84,7 @@ spack:
     jasper:
       version: [2.0.25]
     jedi-cmake:
-      version: [1.4.0]
+      version: [1.3.0]
     jpeg:
       version: [9.1.0]
     landsfcutil:
@@ -108,9 +108,9 @@ spack:
     nemsiogfs:
       version: [2.5.3]
     nccmp:
-      version: [1.9.0.1]
+      version: [1.9.1.0]
     ncio:
-      version: [1.1.2]
+      version: [1.1.0]
     netcdf-c:
       version: [4.7.4]
       variants: +dap +mpi +parallel-netcdf
@@ -119,7 +119,7 @@ spack:
     netcdf-fortran:
       version: [4.5.3]
     nlohmann-json:
-      version: [3.10.5]
+      version: [3.9.1]
     nlohmann-json-schema-validator:
       version: [2.1.0]
     openblas:
@@ -129,14 +129,14 @@ spack:
       version: [2.5.7]
       variants: +pnetcdf
     parallel-netcdf:
-      version: [1.12.2]
+      version: [1.12.1]
     pkgconf:
       buildable: False
     prod-util:
       version: [1.2.2]
     proj:
-      version: [8.1.0]
-      variants: ~tiff
+      version: [7.1.0]
+      variants: ~tiff -curl
     python:
       version: [3.9.12]
     py-cartopy:
@@ -192,7 +192,7 @@ spack:
     udunits:
       version: [2.2.28]
     upp:
-      version: [10.0.10]
+      version: [10.0.9]
     w3emc:
       version: [2.9.2]
     w3nco:
@@ -200,13 +200,13 @@ spack:
     wget:
       version: [1.21.2]
     wgrib2:
-      version: [3.1.1]
+      version: [2.0.8]
     wrf-io:
       version: [1.2.0]
     yafyaml:
       version: [0.5.1]
     zlib:
-      version: [1.2.12]
+      version: [1.2.11]
 
   definitions:
   # Set compilers here
