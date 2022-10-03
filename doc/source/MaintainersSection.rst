@@ -172,7 +172,7 @@ ecflow
 NOAA RDHPCS Hera
 ------------------------------
 
-On Hera, ``miniconda`` must be installedas a one-off before spack can be used.
+On Hera, ``miniconda`` must be installed as a one-off before spack can be used.
 
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
