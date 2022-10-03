@@ -64,14 +64,16 @@ packages:
     externals:
     - spec: ccache@3.1.9
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.5.2
-      prefix: /usr
-    - spec: cmake@3.21.0
-      prefix: /usr/local/other/cmake/3.21.0
-      modules:
-      - cmake/3.21.0
+  # Don't use external cmake, this confuses the spack concretizer
+  # leading to duplicate packages being installed.
+  #cmake:
+  #  externals:
+  #  - spec: cmake@3.5.2
+  #    prefix: /usr
+  #  - spec: cmake@3.21.0
+  #    prefix: /usr/local/other/cmake/3.21.0
+  #    modules:
+  #    - cmake/3.21.0
   cpio:
     externals:
     - spec: cpio@2.11
@@ -153,6 +155,10 @@ packages:
     externals:
     - spec: libtool@2.4.2
       prefix: /usr
+  libxpm:
+    externals:
+    - spec: libxpm@4.11.0
+      prefix: /usr
   m4:
     externals:
     - spec: m4@1.4.16
@@ -165,11 +171,6 @@ packages:
     externals:
     - spec: openssh@7.2p2
       prefix: /usr
-  ncview:
-    externals:
-    - spec: ncview@2.1.7
-      modules:
-      - ncview/2.1.7
   # Old re2c on Discover unable to build newer versions of ninja
   ninja:
     version:: [1.10.2]
