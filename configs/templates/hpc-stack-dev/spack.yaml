@@ -213,17 +213,15 @@ spack:
   # Set compilers here
   - compilers: ['%intel']
   - packages:
-      - global-workflow-env@hpc-stack-dev ^zlib@1.2.11
-      - ufs-weather-model-env~debug@hpc-stack-dev ^zlib@1.2.11
-      - ufs-weather-model-env+debug@hpc-stack-dev ^zlib@1.2.11 
-      - upp-env@hpc-stack-dev ^zlib@1.2.11
-      - ww3-env@hpc-stack-dev ^zlib@1.2.11
-      - gsi-env@hpc-stack-dev ^zlib@1.2.11
-      - ufs-utils-env@hpc-stack-dev ^zlib@1.2.11
-      - nceplibs-env@hpc-stack-dev ^zlib@1.2.11
-      #- soca-env@hpc-stack-dev ^zlib@1.2.11
-      - base-env@hpc-stack-dev ^zlib@1.2.11
-      #- jedi-base-env@hpc-stack-dev ^zlib@1.2.11
+      - global-workflow-env@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - ufs-weather-model-env~debug@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - ufs-weather-model-env+debug@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - upp-env@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - ww3-env@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - gsi-env@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - ufs-utils-env@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - nceplibs-env@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
+      - soca-env@hpc-stack-dev ^zlib@1.2.11 ^cmake@3.22.1 ^py-setuptools@63.0.0
 
   specs:
     - matrix:
