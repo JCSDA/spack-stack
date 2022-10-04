@@ -27,7 +27,7 @@ spack:
       version: [11.5.0]
       variants: +python
     cmake:
-      version: [3.20.1]
+      version: [3.22.1]
     crtm:
       version: [2.4.0]
     ecbuild:
@@ -221,9 +221,9 @@ spack:
       - gsi-env@hpc-stack-dev ^zlib@1.2.11
       - ufs-utils-env@hpc-stack-dev ^zlib@1.2.11
       - nceplibs-env@hpc-stack-dev ^zlib@1.2.11
-      - soca-env@hpc-stack-dev ^zlib@1.2.11
+      #- soca-env@hpc-stack-dev ^zlib@1.2.11
       - base-env@hpc-stack-dev ^zlib@1.2.11
-      - jedi-base-env@hpc-stack-dev ^zlib@1.2.11
+      #- jedi-base-env@hpc-stack-dev ^zlib@1.2.11
 
   specs:
     - matrix:
