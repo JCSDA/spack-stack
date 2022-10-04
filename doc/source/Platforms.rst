@@ -53,11 +53,11 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | UW (Univ. of Wisc.) S4                                   | Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.5.0/install``                 |
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Parallelcluster Ubuntu 20.04 GNU | Dom Heinzeller            | **COMING SOON**                                                                                         |
+| Amazon Web Services AMI Parallelcluster Ubuntu 20.04 GNU |                           | not yet supported - coming soon                                                                         |
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Ubuntu 20.04 GNU                 | Dom Heinzeller            | **COMING SOON**                                                                                         |
+| Amazon Web Services AMI Ubuntu 20.04 GNU                 | Dom Heinzeller            | ``/home/ubuntu/spack-stack-v1/envs/skylab-2.0.0-gcc-10.3.0/install``                                    |
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU                    | Dom Heinzeller            | **COMING SOON**                                                                                         |
+| Amazon Web Services AMI Red Hat 8 GNU                    | Dom Heinzeller            | ``/home/ec2-user/spack-stack-v1/envs/skylab-2.0.0-gcc-11.2.1/install``                                  |
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
@@ -335,18 +335,21 @@ Note the two `module unuse` statements, that need to be run after the stack meta
 Amazon Web Services Parallelcluster Ubuntu 20.04
 ------------------------------------------------
 
+.. note::
+   ``spack-stack-2.0.0`` is currently not supported on this platform and will be added in the near future.
+
 **COMING SOON**
 
 --------------------------------
 Amazon Web Services Ubuntu 20.04
 --------------------------------
 
-For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-ubuntu20". After logging in, run:
+For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-ubuntu20" (ami-06fce89fba374ea67). After logging in, run:
 
 .. code-block:: console
 
-   module use /home/ubuntu/spack-stack-v1/envs/skylab-1.0.0/install/modulefiles/Core
-   module load stack-gcc/9.4.0
+   module use /home/ubuntu/spack-stack-v1/envs/skylab-2.0.0-gcc-10.3.0/install/modulefiles/Core
+   module load stack-gcc/10.3.0
    module load stack-mpich/4.0.2
    module load stack-python/3.8.10
    module available
@@ -355,12 +358,12 @@ For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab
 Amazon Web Services Red hat 8
 -----------------------------
 
-For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-redhat8". After logging in, run:
+For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-redhat8" (ami-0f6b5f8a07d2f4350). After logging in, run:
 
 .. code-block:: console
 
    scl enable gcc-toolset-11 bash
-   module use /home/ec2-user/spack-stack-v1/envs/skylab-1.0.0/install/modulefiles/Core
+   module use /home/ec2-user/spack-stack-v1/envs/skylab-2.0.0-gcc-11.2.1/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
@@ -730,7 +733,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # Example for Ubuntu 20.04 following the above instructions
    spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
-   spack config add "packages:all:compiler:[gcc@9.4.0]"
+   spack config add "packages:all:compiler:[gcc@10.3.0]"
 
 7. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
