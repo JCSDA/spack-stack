@@ -172,16 +172,41 @@ ecflow
 NOAA RDHPCS Hera
 ------------------------------
 
+On Hera, ``miniconda`` must be installed as a one-off before spack can be used.
+
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
+Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform (e.g. Cheyenne). This can be done as follows.
+
+1. (On Hera) Create an environment as usual and run the concretization step (``spack concretize``), but do not start the installation yet.
+
+2. (On Cheyenne) Load the basic external modules (see :numref:`Section %s <Platforms_Cheyenne>`) and load module ``git/2.33.1`` (for ``git lfs``). Check out a fresh clone of ``spack-stack`` and run ``source setup.sh``.
+
+3. (On Hera) Copy (e.g. using ``scp``) the environment's ``spack.lock`` file to Cheyenne into the ``spack-stack`` directory.
+
+4. (On Cheyenne) Run the following sequence of commands:
+
 .. code-block:: console
 
-   module purge
-   module use /scratch1/NCEPDEV/global/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
-   module load gnu/9.2.0
+   spack env create hera_mirror_env spack.lock
+   spack env activate hera_mirror_env
+   spack mirror create -a
+
+   The mirror will be created in directory ``./spack/var/spack/environments/hera_mirror_env``
+
+5. (On Hera) Copy the directory from Cheyenne to ``/scratch1/NCEPDEV/global/spack-stack/mirror``. It is recommended to use ``rsync`` to avoid deleting existing packages in the mirror directory on Hera.
+
+6. (On Hera) Add the mirror to the spack environment's mirror list. Note that this is already included in the Hera site config in ``spack-stack`` (``configs/sites/hera/mirrors.yaml``).
+
+.. code-block:: console
+
+   spack mirror add local file:///scratch1/NCEPDEV/global/spack-stack/mirror
+   spack mirror list
+
+   The newly created local mirror should be listed at the top, which means that spack will search this directory first.
+
+7. (On Hera) Proceed with the installation as usual.
 
 .. _MaintainersSection_Jet:
 
