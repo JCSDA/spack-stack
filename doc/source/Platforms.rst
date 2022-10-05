@@ -363,7 +363,7 @@ For ``spack-stack-1.0.0``, use a t2.2xlarge instance or similar with AMI "skylab
    ulimit -s unlimited
    module use /home/ec2-user/spack-stack-v1/envs/skylab-1.0.0/install/modulefiles/Core
    module load stack-gcc/11.2.1
-   module load stack-openmpi/4.1.3
+   module load stack-openmpi/4.1.4
    module load stack-python/3.9.7
    module available
 
