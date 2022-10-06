@@ -22,7 +22,7 @@ jobs:
   build:
     strategy:
       matrix:
-        template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
+        template: [skylab-2.0.0, ufs-weather-model, ufs-srw-dev]
         spec: ['']
     runs-on: macos-latest
     steps:
