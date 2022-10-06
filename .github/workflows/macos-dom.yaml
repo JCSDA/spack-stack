@@ -13,7 +13,7 @@ on:
       template:
         description: 'Base spack.yaml template. Default is a complete JEDI-UFS environment.'
         required: true
-        default: 'skylab-2.0.0'
+        default: 'skylab-dev'
       specs:
         description: 'Which specs to add to the template. Default is none (empty string).'
         required: false
@@ -38,8 +38,8 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack stack create env --site macos.default --template ${{ inputs.template || 'skylab-2.0.0' }} --name ${{ inputs.template || 'skylab-2.0.0' }}.macos-dom
-          spack env activate -d envs/${{ inputs.template || 'skylab-2.0.0' }}.macos-dom
+          spack stack create env --site macos.default --template ${{ inputs.template || 'skylab-dev' }} --name ${{ inputs.template || 'skylab-dev' }}.macos-dom
+          spack env activate -d envs/${{ inputs.template || 'skylab-dev' }}.macos-dom
           spack add ${{ inputs.specs || '' }}
 
           spack external find

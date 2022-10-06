@@ -93,7 +93,7 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/noaa-emc/spack
-        ref: spack-stack-1.1.0
+        ref: jcsda_emc_spack_stack
         resolve_sha: false
 
     # Whether or not to strip binaries
