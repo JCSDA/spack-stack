@@ -15,7 +15,7 @@ spack:
       tcl: 
         projections:
           parallelio: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/pio/{version}'
-          wrf-io: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/wrf_io/{version'
+          wrf-io: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/wrf_io/{version}'
 
   view: false
   include: []
