@@ -15,20 +15,20 @@ spack:
 
   specs:
     # Virtual environment packages
-    - base-env@1.0.0
-    - jedi-base-env@1.0.0
-    - jedi-ewok-env@1.0.0
-    - jedi-fv3-env@1.0.0
-    - jedi-mpas-env@1.0.0
-    - jedi-ufs-env@1.0.0
-    - jedi-um-env@1.0.0
-    - soca-env@1.0.0
+    - jedi-ewok-env
+    - jedi-fv3-env
+    - jedi-mpas-env
+    - jedi-ufs-env
+    - jedi-um-env
+    - soca-env
 
     # Individual packages
     - bacio@2.4.1
     - bison@3.8.2
     - bufr@11.7.1
+    - crtm@2.3.0
     - crtm@2.4.0
+    - crtm@v2.3-jedi.4
     - crtm@v2.4_jedi
     - ecbuild@3.6.5
     - eccodes@2.27.0
