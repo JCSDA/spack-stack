@@ -35,6 +35,10 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.85.0
+      prefix: /contrib/EPIC/bin
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -57,12 +61,13 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@1.8.3.1~tcltk
-      prefix: /usr
+    - spec: git@2.28.0
+      prefix: /contrib/EPIC/bin
+    buildable: False
   git-lfs:
     externals:
-    - spec: git-lfs@3.1.2
-      prefix: /contrib/spack-stack/apps/utils
+    - spec: git-lfs@3.2.0
+      prefix: /contrib/EPIC/miniconda3/4.12.0
   gmake:
     externals:
     - spec: gmake@3.82
@@ -94,7 +99,7 @@ packages:
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+      prefix: /contrib/EPIC/miniconda3/4.12.0
   openssh:
     externals:
     - spec: openssh@7.4p1
@@ -102,7 +107,7 @@ packages:
   openssl:
     externals:
     - spec: openssl@1.1.1n
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+      prefix: /contrib/EPIC/miniconda3/4.12.0
     - spec: openssl@1.0.2k-fips
       prefix: /usr
     - spec: openssl@1.1.1k
@@ -118,9 +123,9 @@ packages:
   python:
     externals:
     - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /contrib/spack/apps/miniconda/3.9.12
+      prefix: /contrib/EPIC/miniconda3/4.12.0
       modules:
-      - miniconda/3.9.12
+      - miniconda3/4.12.0
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -135,8 +140,8 @@ packages:
       prefix: /usr
   sqlite:
     externals:
-    - spec: sqlite@3.37.0+fts~functions+rtree
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+    - spec: sqlite@3.38.2+fts~functions+rtree
+      prefix: /contrib/EPIC/miniconda3/4.12.0
   tar:
     externals:
     - spec: tar@1.26
@@ -152,7 +157,7 @@ packages:
   xz:
     externals:
     - spec: xz@5.2.5
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+      prefix: /contrib/EPIC/miniconda3/4.12.0
   zip:
     externals:
     - spec: zip@3.0
