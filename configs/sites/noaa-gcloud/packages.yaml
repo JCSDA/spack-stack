@@ -35,6 +35,7 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
+  # Base curl leads to failed package downloads; added newer version to alleviate need to include curl as an env. spec..
   curl:
     externals:
     - spec: curl@7.85.0
