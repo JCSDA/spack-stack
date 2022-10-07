@@ -164,6 +164,10 @@ packages:
     externals:
     - spec: libtool@2.4.2
       prefix: /usr
+  libxpm:
+    externals:
+    - spec: libxpm@4.11.0
+      prefix: /usr
   lustre:
     externals:
     - spec: lustre@2.12.6_ddn51
@@ -176,11 +180,6 @@ packages:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5
       prefix: /usr
-  ncview:
-    externals:
-    - spec: ncview@2.1.5
-      modules:
-      - ncview/2.1.5
   openssh:
     externals:
     - spec: openssh@7.4p1
