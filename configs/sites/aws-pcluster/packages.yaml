@@ -11,6 +11,7 @@ packages:
     - spec: intel-oneapi-mpi@2021.4.0%intel@2021.4.0
       prefix: /opt/intel
       modules:
+      - libfabric-aws/1.16.0~amzn3.0
       - intelmpi
   python:
     buildable: false
@@ -40,10 +41,12 @@ packages:
     externals:
     - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer +wave cxxstd=14 visibility=hidden
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.16.3
-      prefix: /usr
+  # Don't use external cmake, this confuses the spack concretizer
+  # leading to duplicate packages being installed.
+  #cmake:
+  #  externals:
+  #  - spec: cmake@3.16.3
+  #    prefix: /usr
   curl:
     externals:
     - spec: curl@7.68.0+gssapi+ldap+nghttp2
@@ -97,11 +100,14 @@ packages:
     externals:
     - spec: openssh@8.2p1
       prefix: /usr
-  openssl:
-    buildable: false
-    externals:
-    - spec: openssl@1.1.1f
-      prefix: /usr
+  # Don't use external openssl, this confuses the spack concretizer
+  # leading to duplicate packages (libarchive with different compression
+  # settings, somehow triggered by different cmake versions) being installed.
+  #openssl:
+  #  buildable: false
+  #  externals:
+  #  - spec: openssl@1.1.1f
+  #    prefix: /usr
   perl:
     externals:
     - spec: perl@5.30.0~cpanm+shared+threads

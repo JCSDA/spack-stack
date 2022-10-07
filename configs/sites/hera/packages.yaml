@@ -1,8 +1,10 @@
 packages:
   all:
     compiler:: [intel@2021.5.0]
+    #compiler:: [gcc@9.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.1]
+      #mpi:: [openmpi@3.1.4]
   mpi:
     buildable: False
   intel-mpi:
@@ -143,6 +145,10 @@ packages:
   libtool:
     externals:
     - spec: libtool@2.4.2
+      prefix: /usr
+  libxpm:
+    externals:
+    - spec: libxpm@4.11.0
       prefix: /usr
   lustre:
     externals:

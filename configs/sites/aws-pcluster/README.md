@@ -134,8 +134,8 @@ cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site aws-pcluster --template=skylab-dev --name=skylab-1.0.0-intel-2021.4.0
-spack env activate -p envs/skylab-1.0.0-intel-2021.4.0
+spack stack create env --site aws-pcluster --template=skylab-dev --name=skylab-2.0.0-intel-2021.4.0
+spack env activate -p envs/skylab-2.0.0-intel-2021.4.0
 ```
 6. Option 2: Configure site from scratch
 ```
@@ -143,10 +143,10 @@ mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site linux.default --template=skylab-dev --name=skylab-1.0.0-intel-2021.4.0
-spack env activate -p envs/skylab-1.0.0-intel-2021.4.0
+spack stack create env --site linux.default --template=skylab-dev --name=skylab-2.0.0-intel-2021.4.0
+spack env activate -p envs/skylab-2.0.0-intel-2021.4.0
 
-export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/skylab-1.0.0-intel-2021.4.0/site
+export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/skylab-2.0.0-intel-2021.4.0/site
 
 spack external find --scope system
 spack external find --scope system perl
@@ -196,7 +196,7 @@ spack config add "packages:openssl:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.4.0]"
 spack config add "packages:all:compiler:[intel@2021.4.0]"
 
-# edit envs/skylab-1.0.0-intel-2021.4.0/site/compilers.yaml and replace the following line in the **Intel** compiler section:
+# edit envs/skylab-2.0.0-intel-2021.4.0/site/compilers.yaml and replace the following line in the **Intel** compiler section:
 #     environment: {}
 # -->
 #     environment:
@@ -205,13 +205,11 @@ spack config add "packages:all:compiler:[intel@2021.4.0]"
 #       set:
 #         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
 
-# edit envs/skylab-1.0.0-intel-2021.4.0/site/packages.yaml and remove the older Python versions, keep 3.8.10 only
+# edit envs/skylab-2.0.0-intel-2021.4.0/site/packages.yaml and remove the older Python versions, keep 3.8.10 only
 ```
 
-7. Temporary workaround to avoid duplicate hdf5 etc. (no idea why)
-```
-spack remove fms@2022.01
-```
+7. Temporary workarounds to avoid duplicate hdf5, cmake etc. versions. Edit ``envs/skylab-2.0.0-intel-2021.4.0/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
+
 8. Concretize and install
 ```
 spack concretize 2>&1 | tee log.concretize
