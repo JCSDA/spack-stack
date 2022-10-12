@@ -26,7 +26,9 @@ spack:
     - bacio@2.4.1
     - bison@3.8.2
     - bufr@11.7.1
+    - crtm@2.3.0
     - crtm@2.4.0
+    - crtm@v2.3-jedi.4
     - crtm@v2.4_jedi
     - ecbuild@3.6.5
     - eccodes@2.27.0
