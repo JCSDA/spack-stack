@@ -35,12 +35,6 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  #Point to external curl & set to non-buildable since spack wants to use a new curl and fails to build it.
-  curl:
-    externals:
-    - spec: curl@7.29
-      prefix: /usr
-    buildable: False
   diffutils:
     externals:
     - spec: diffutils@3.3
