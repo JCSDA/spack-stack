@@ -39,7 +39,7 @@ packages:
   curl:
     externals:
     - spec: curl@7.85.0
-      prefix: /contrib/EPIC/bin
+      prefix: /contrib/EPIC
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -65,7 +65,7 @@ packages:
   git:
     externals:
     - spec: git@2.28.0
-      prefix: /contrib/EPIC/bin
+      prefix: /contrib/EPIC
     buildable: False
   git-lfs:
     externals:
