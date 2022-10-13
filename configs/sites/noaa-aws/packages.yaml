@@ -35,6 +35,11 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.29
+      prefix: /usr
+      buildable: False
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -59,6 +64,7 @@ packages:
     externals:
     - spec: git@2.28.0
       prefix: /contrib/EPIC
+      buildable: False
   git-lfs:
     externals:
     - spec: git-lfs@3.2.0
