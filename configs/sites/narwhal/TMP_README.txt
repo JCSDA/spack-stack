@@ -26,6 +26,8 @@ install qt5 with module
 ecflow ...
 module load gcc/10.3.0
 miniconda/3.9.12
+qt/5.15.2
+
 
 remove the following from ecFlow-5.8.4-Source/build_scripts/boost_build.sh
        if [ "$PE_ENV" = INTEL ] ; then
@@ -35,7 +37,7 @@ remove the following from ecFlow-5.8.4-Source/build_scripts/boost_build.sh
           tool=cray
        fi
        
-CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/p/work1/heinzell/ecflow-5.8.4 2>&1 | tee log.cmake
+CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4 2>&1 | tee log.cmake
 
 
 
