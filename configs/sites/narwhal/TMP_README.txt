@@ -41,7 +41,7 @@ CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/p/work1/heinzell/ecf
 
 
 
-module use /p/work1/heinzell/modulefiles
+module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
 module load miniconda/3.9.12
 module load ecflow/5.8.4
 
