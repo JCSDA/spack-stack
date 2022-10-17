@@ -18,8 +18,8 @@ spack:
           wrf-io: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/wrf_io/{version}'
 
   view: false
-  include: []
-
+  include:
+  - sites
   concretizer:
     unify: true
 
