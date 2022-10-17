@@ -19,7 +19,7 @@ spack:
 
   view: false
   include:
-  - sites
+  - site
   concretizer:
     unify: true
 
