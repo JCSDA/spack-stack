@@ -20,7 +20,7 @@ inputs:
   mpi:
     description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
     required: false
-    default: 'mpich@3'
+    default: 'mpich@4'
   path:
     description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
     required: false
@@ -109,6 +109,11 @@ runs:
     run: |
         echo "" >> ~/.bash_profile
 
+        if [[ "$RUNNER_OS" == "macOS" ]]; then
+          ls -l /usr/local/bin
+        fi
+        exit 1
+
         if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
           export CC=gcc-9
           export FC=gfortran-9
@@ -125,8 +130,8 @@ runs:
           export FFLAGS="-fallow-argument-mismatch"
         fi
 
-        export MPICH_VERSION="3.4.3"
-        export OPENMPI_VERSION="4.1.3"
+        export MPICH_VERSION="4.0.2"
+        export OPENMPI_VERSION="4.1.4"
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
