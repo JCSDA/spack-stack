@@ -37,7 +37,7 @@ jobs:
         with:
           templates: ${{ matrix.template }}
           specs: ${{ matrix.spec }}
-          compiler: gcc@9
+          compiler: gcc@11
           mpi: mpich
           path: ${{ github.workspace }}
           site: macos.default

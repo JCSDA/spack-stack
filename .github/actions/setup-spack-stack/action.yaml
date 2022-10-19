@@ -109,10 +109,10 @@ runs:
     run: |
         echo "" >> ~/.bash_profile
 
-        if [[ "$RUNNER_OS" == "macOS" ]]; then
-          ls -l /usr/local/bin
-        fi
-        exit 1
+        #if [[ "$RUNNER_OS" == "macOS" ]]; then
+        #  ls -l /usr/local/bin
+        #fi
+        #exit 1
 
         if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
           export CC=gcc-9
@@ -123,11 +123,19 @@ runs:
           export FC=gfortran-10
           export CXX=g++-10
           export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
+        elif [[ "${{ inputs.compiler }}" == "gcc@11"* ]]; then
+          export CC=gcc-11
+          export FC=gfortran-11
+          export CXX=g++-11
+          export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
         elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
           export CC=clang
+          export FC=gfortran-11
           export CXX=clang++
-          export FC=gfortran-10
           export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
         fi
 
         export MPICH_VERSION="4.0.2"
