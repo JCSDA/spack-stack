@@ -18,22 +18,22 @@ spack:
   # jedi-ewok-env does not build on macOS with GCC
   # jedi-tools-env does not build with Intel
   specs:
-   - jedi-ewok-env 
-   - jedi-fv3-env
-   - jedi-tools-env
-   - jedi-ufs-env
-   - jedi-um-env
+   - jedi-ewok-env ^cmake@3.23.1 +ownlibs
+   - jedi-fv3-env ^cmake@3.23.1 +ownlibs
+   - jedi-tools-env ^cmake@3.23.1 +ownlibs
+   - jedi-ufs-env ^cmake@3.23.1 +ownlibs
+   - jedi-um-env ^cmake@3.23.1 +ownlibs
    # Turn off Python variant for now, because this
    # leads to duplicate packages being built (all
    # of them are covered in jedi-base-env,
    # jedi-ewok-env, jedi-tools-env, ufs-pyenv)
-   - global-workflow-env~python
-   - ufs-srw-app-env~python
-   - ufs-weather-model-env~python
-   - upp-env
-   - ww3-env
-   - gsi-env
-   - ufs-pyenv
-   - ufs-utils-env
-   - nceplibs-env
-   - soca-env
+   - global-workflow-env ^cmake@3.23.1 +ownlibs
+   - ufs-srw-app-env ^cmake@3.23.1 +ownlibs
+   - ufs-weather-model-env ^cmake@3.23.1 +ownlibs
+   - upp-env ^cmake@3.23.1 +ownlibs
+   - ww3-env ^cmake@3.23.1 +ownlibs
+   - gsi-env ^cmake@3.23.1 +ownlibs
+   - ufs-pyenv ^cmake@3.23.1 +ownlibs
+   - ufs-utils-env ^cmake@3.23.1 +ownlibs
+   - nceplibs-env ^cmake@3.23.1 +ownlibs
+   - soca-env ^cmake@3.23.1 +ownlibs
