@@ -26,10 +26,10 @@ spack:
     - bacio@2.4.1
     - bison@3.8.2
     - bufr@11.7.1
-    - crtm@2.3.0 ^cmake@3.23.1 +ownlibs
-    - crtm@2.4.0 ^cmake@3.23.1 +ownlibs
-    - crtm@v2.3-jedi.4 ^cmake@3.23.1 +ownlibs
-    - crtm@v2.4_jedi ^cmake@3.23.1 +ownlibs
+    - crtm@2.3.0 # ^cmake@3.23.1 +ownlibs
+    - crtm@2.4.0 # ^cmake@3.23.1 +ownlibs
+    - crtm@v2.3-jedi.4 # ^cmake@3.23.1 +ownlibs
+    - crtm@v2.4_jedi # ^cmake@3.23.1 +ownlibs
     - ecbuild@3.6.5
     - eccodes@2.27.0
     - ecflow@5
@@ -45,9 +45,9 @@ spack:
     # DH* fake version number
     - fiat@1.0.0
     - flex@2.6.4
-    - fms@2022.01 ^cmake@3.23.1 +ownlibs
+    - fms@2022.01 # ^cmake@3.23.1 +ownlibs
     # DH* fake version number
-    - fms@release-jcsda ^cmake@3.23.1 +ownlibs
+    - fms@release-jcsda # ^cmake@3.23.1 +ownlibs
     - g2@3.4.5
     - g2tmpl@1.10.0
     #- gdal@3.4.3

@@ -29,7 +29,8 @@
     cdo:
       version: [2.0.5]
     cmake:
-      version: [3.22.1]
+      version: [3.23.1]
+      variants: +ownlibs
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       version: [2.4.0]
