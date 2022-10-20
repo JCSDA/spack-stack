@@ -92,7 +92,6 @@ runs:
         brew install wget
 
         pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
-        exit 1
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -130,13 +129,11 @@ runs:
           export FFLAGS="-fallow-argument-mismatch"
           export FCFLAGS="-fallow-argument-mismatch"
         elif [[ "${{ inputs.compiler }}" == "gcc@11"* ]]; then
-          echo "CI tests don't work with gcc@11'"
-          exit 1
-          #export CC=gcc-11
-          #export FC=gfortran-11
-          #export CXX=g++-11
-          #export FFLAGS="-fallow-argument-mismatch"
-          #export FCFLAGS="-fallow-argument-mismatch"
+          export CC=gcc-11
+          export FC=gfortran-11
+          export CXX=g++-11
+          export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
         elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
           export CC=clang
           export FC=gfortran-10
