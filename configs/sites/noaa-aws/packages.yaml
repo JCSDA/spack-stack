@@ -62,7 +62,7 @@ packages:
     buildable: False
   git-lfs:
     externals:
-    - spec: git-lfs@3.2.0
+    - spec: git-lfs@3.1.2
       prefix: /contrib/spack-stack/apps/utils
   gmake:
     externals:
