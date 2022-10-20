@@ -57,9 +57,8 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.28.0
-      prefix: /contrib/EPIC
-    buildable: False
+    - spec: git@1.8.3.1~tcltk
+      prefix: /usr
   git-lfs:
     externals:
     - spec: git-lfs@3.1.2
