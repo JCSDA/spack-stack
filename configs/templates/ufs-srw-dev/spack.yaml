@@ -11,13 +11,15 @@ spack:
       lmod:
         projections:
           parallelio: 'pio/{version}'
+          wrf-io: 'wrf_io/{version}'
       tcl: 
         projections:
           parallelio: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/pio/{version}'
+          wrf-io: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/wrf_io/{version}'
 
   view: false
-  include: []
-
+  include:
+  - site
   concretizer:
     unify: true
 
@@ -31,12 +33,13 @@ spack:
   - parallelio@2.5.3
   - esmf@8.3.0b09
   - fms@2022.01
-  - bufr@11.7.1
+  - bufr@11.7.0
   - bacio@2.4.1
   - crtm@2.3.0
   - g2@3.4.5
   - g2tmpl@1.10.0
   - ip@3.3.3
+  - sp@2.3.3
   - w3nco@2.4.1
   - gftl-shared@1.5.0
   - yafyaml@0.5.1
@@ -48,4 +51,6 @@ spack:
   - wgrib2@2.0.8
   - wrf-io@1.2.0
   - ncio@1.1.2
+  - met@10.1.0
+  - metplus@4.1.0
   
