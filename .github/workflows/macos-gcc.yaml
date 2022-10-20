@@ -26,14 +26,16 @@ jobs:
         spec: ['']
     runs-on: macos-latest
     steps:
-    - uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '13.4.1'
 
       - name: checkout
         uses: actions/checkout@v2
         with:
           submodules: true
+
+      - name: select-xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: '13.4.1'
 
       - name: install-env
         uses: ./.github/actions/setup-spack-stack
