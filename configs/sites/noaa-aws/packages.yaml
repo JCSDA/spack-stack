@@ -63,7 +63,7 @@ packages:
   git-lfs:
     externals:
     - spec: git-lfs@3.2.0
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/utils
   gmake:
     externals:
     - spec: gmake@3.82
@@ -91,7 +91,7 @@ packages:
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   openssh:
     externals:
     - spec: openssh@7.4p1
@@ -99,7 +99,7 @@ packages:
   openssl:
     externals:
     - spec: openssl@1.1.1q
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -127,7 +127,7 @@ packages:
   sqlite:
     externals:
     - spec: sqlite@3.38.2+fts~functions+rtree
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   tar:
     externals:
     - spec: tar@1.26
@@ -143,7 +143,7 @@ packages:
   xz:
     externals:
     - spec: xz@5.2.5
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   zip:
     externals:
     - spec: zip@3.0
