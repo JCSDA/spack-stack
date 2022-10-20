@@ -35,11 +35,6 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  # Base curl leads to failed package downloads; added newer version to alleviate need to include curl as an env. spec..
-  curl:
-    externals:
-    - spec: curl@7.85.0
-      prefix: /contrib/EPIC
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -60,17 +55,14 @@ packages:
     externals:
     - spec: gettext@0.19.8.1
       prefix: /usr
-  # Base git (1.8.3.1) is fairly outdated and causes clone failures for some packages, so point to a newer version. Buildable set to false
-  # because spack still wants to install another git without this flag, which seems unnecessary.
   git:
     externals:
-    - spec: git@2.28.0
-      prefix: /contrib/EPIC
-    buildable: False
+    - spec: git@1.8.3.1~tcltk
+      prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@3.2.0
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+    - spec: git-lfs@3.1.2
+      prefix: /contrib/spack-stack/apps/utils
   gmake:
     externals:
     - spec: gmake@3.82
@@ -102,7 +94,7 @@ packages:
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   openssh:
     externals:
     - spec: openssh@7.4p1
@@ -110,7 +102,7 @@ packages:
   openssl:
     externals:
     - spec: openssl@1.1.1q
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -122,7 +114,7 @@ packages:
   python:
     externals:
     - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -138,7 +130,7 @@ packages:
   sqlite:
     externals:
     - spec: sqlite@3.38.2+fts~functions+rtree
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   tar:
     externals:
     - spec: tar@1.26
@@ -154,7 +146,7 @@ packages:
   xz:
     externals:
     - spec: xz@5.2.5
-      prefix: /contrib/EPIC/miniconda3/4.12.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   zip:
     externals:
     - spec: zip@3.0
