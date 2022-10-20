@@ -90,7 +90,7 @@ runs:
         brew install qt@5
         brew install readline
         brew install wget
-        
+
         pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
         exit 1
       fi
