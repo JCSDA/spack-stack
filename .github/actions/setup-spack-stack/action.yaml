@@ -113,11 +113,6 @@ runs:
     run: |
         echo "" >> ~/.bash_profile
 
-        #if [[ "$RUNNER_OS" == "macOS" ]]; then
-        #  ls -l /usr/local/bin
-        #fi
-        #exit 1
-
         if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
           export CC=gcc-9
           export FC=gfortran-9
