@@ -22,7 +22,7 @@ jobs:
   build:
     strategy:
       matrix:
-        template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
+        template: [skylab-dev] #, ufs-weather-model, ufs-srw-dev]
         spec: ['']
     runs-on: macos-latest
     steps:
@@ -37,7 +37,7 @@ jobs:
         with:
           templates: ${{ matrix.template }}
           specs: ${{ matrix.spec }}
-          compiler: gcc@10
+          compiler: gcc@11c
           mpi: mpich
           path: ${{ github.workspace }}
           site: macos.default
