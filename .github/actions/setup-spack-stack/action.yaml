@@ -20,7 +20,7 @@ inputs:
   mpi:
     description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
     required: false
-    default: 'mpich@3'
+    default: 'mpich@4'
   path:
     description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
     required: false
@@ -84,10 +84,14 @@ runs:
         #brew install curl
         #brew install git
         #brew install git-lfs
+        # For now we need gcc-10/gfortran-10
+        brew install gcc@10
         brew install lmod
         brew install qt@5
         brew install readline
         brew install wget
+
+        pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -118,15 +122,23 @@ runs:
           export FC=gfortran-10
           export CXX=g++-10
           export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
+        elif [[ "${{ inputs.compiler }}" == "gcc@11"* ]]; then
+          export CC=gcc-11
+          export FC=gfortran-11
+          export CXX=g++-11
+          export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
         elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
           export CC=clang
-          export CXX=clang++
           export FC=gfortran-10
+          export CXX=clang++
           export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
         fi
 
-        export MPICH_VERSION="3.4.3"
-        export OPENMPI_VERSION="4.1.3"
+        export MPICH_VERSION="4.0.2"
+        export OPENMPI_VERSION="4.1.4"
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
