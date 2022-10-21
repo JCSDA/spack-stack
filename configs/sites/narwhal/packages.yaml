@@ -28,7 +28,7 @@ packages:
     buildable: False
     externals:
     - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /p/work1/heinzell/miniconda-3.9.12
+      prefix: /p/app/projects/NEPTUNE/spack-stack/miniconda-3.9.12
       modules:
       - miniconda/3.9.12
 
@@ -69,7 +69,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /p/work1/heinzell/ecflow-5.8.4
+      prefix: /p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   findutils:
@@ -91,7 +91,7 @@ packages:
   git-lfs:
     externals:
     - spec: git-lfs@2.10.0
-      prefix: /p/work1/heinzell/git-lfs-2.10.0
+      prefix: /p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0
       modules:
       - git-lfs/2.10.0
   gmake:
@@ -129,7 +129,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.2
-      prefix: /p/work1/heinzell/qt-5.15.2/5.15.2/gcc_64
+      prefix: /p/app/projects/NEPTUNE/spack-stack/qt-5.15.2/5.15.2/gcc_64
       modules:
       - qt/5.15.2
   subversion:
