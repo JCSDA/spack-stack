@@ -3,7 +3,7 @@ name: Add Package Request
 about: Request that a package be added to spack-stack
 title: ''
 labels: 'New Package'
-assignees: 'Hang-Lei-NOAA, kgerheiser, climbfuji'
+assignees: 'Hang-Lei-NOAA, AlexanderRichert-NOAA, climbfuji'
 
 ---
 
