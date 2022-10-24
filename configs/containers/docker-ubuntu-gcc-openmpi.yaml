@@ -149,7 +149,7 @@ spack:
         echo "rmaps_base_oversubscribe = 1" >> /home/nonroot/.openmpi/mca-params.conf && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.openmpi
         # Replicate settings for root user
-        echo "ulimit -s unlimited" >> /root/.bashrc && \
+        RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
         echo "ulimit -v unlimited" >> /root/.bashrc && \
         echo "export CC=gcc" >> /root/.bashrc && \
         echo "export CXX=g++" >> /root/.bashrc && \
