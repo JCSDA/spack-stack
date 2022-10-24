@@ -88,4 +88,4 @@ spack:
     - udunits@2.2.28
     - w3nco@2.4.1
     - yafyaml@0.5.1
-    - zlib@1.2.12
+    - zlib@1.2.13
