@@ -102,6 +102,7 @@ spack:
     ## Additional system packages that are needed at runtime
     os_packages:
       build:
+      - bc
       - clang-10
       - libclang-10-dev
       - libc++-10-dev
@@ -118,6 +119,7 @@ spack:
       - wget
 
       final:
+      - bc
       - clang-10
       - libclang-10-dev
       - libc++-10-dev

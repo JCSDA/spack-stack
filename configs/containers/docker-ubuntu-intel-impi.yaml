@@ -103,6 +103,7 @@ spack:
     ## Additional system packages that are needed at runtime
     os_packages:
       build:
+      - bc
       - cpp
       - g++
       - gcc
@@ -117,6 +118,7 @@ spack:
       - wget
 
       final:
+      - bc
       - cpp
       - g++
       - gcc
