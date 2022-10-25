@@ -15,7 +15,7 @@ spack-stack is mainly a collection of Spack configuration files, but provides a 
 
 spack-stack is maintained by:
 
-- Kyle Gerheiser (@kgerheiser), NOAA-EMC
+- Alex Richert (@AlexanderRichert-NOAA), NOAA-EMC
 
 - Dom Heinzeller (@climbfuji), JCSDA
 

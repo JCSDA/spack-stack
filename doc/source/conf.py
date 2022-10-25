@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('.'))
 
 project = 'spack-stack'
 copyright = '2022 '
-author = 'Dom Heinzeller, Kyle Gerheiser'
+author = 'Dom Heinzeller, Alex Richert'
 
 # The short X.Y version
 version = ''
