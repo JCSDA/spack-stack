@@ -43,7 +43,7 @@ https://spack-stack.readthedocs.io/en/latest/
 
 spack-stack is maintained by:
 
-- [Kyle Gerheiser](https://www.github.com/kgerheiser), [Hang
+- [Alex Richert](https://www.github.com/AlexanderRichert-NOAA), [Hang
   Lei](https://www.github.com/Hang-Lei-NOAA), [Ed
   Hartnett](https://www.github.com/edwardhartnett) NOAA-EMC
 
