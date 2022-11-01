@@ -54,9 +54,9 @@ runs:
         # Needed for the following apt-get install calls to work
         sudo apt-get update
 
-        # Don't do this, breaks several packages
-        ## Install Curl headers. Executable exists by default in spack external find.
-        #sudo apt-get install libcurl4-openssl-dev
+        # Install Curl/ssl headers. Executables exist by default in spack external find.
+        sudo apt-get install libcurl4-openssl-dev
+        sudo apt-get install libssl-dev
 
         # Install git-lfs to avoid compilation errors of "go" with Intel
         sudo apt-get install git-lfs
@@ -227,7 +227,9 @@ runs:
       # Make homebrew qt@5 detectable on macOS
       PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
 
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
+        spack external find curl
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
         # Make homebrew curl detectable on macOS
         PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
       fi

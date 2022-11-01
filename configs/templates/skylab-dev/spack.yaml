@@ -72,7 +72,7 @@ spack:
     - parallel-netcdf@1.12.2
     - parallelio@2.5.7
     - py-eccodes@1.4.2
-    - py-f90nml@1.4.2
+    - py-f90nml@1.4.3
     - py-numpy@1.22.3
     - py-pandas@1.4.0
     - py-pyyaml@6.0
@@ -88,4 +88,4 @@ spack:
     - udunits@2.2.28
     - w3nco@2.4.1
     - yafyaml@0.5.1
-    - zlib@1.2.12
+    - zlib@1.2.13
