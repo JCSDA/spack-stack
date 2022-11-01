@@ -2,6 +2,7 @@ spack:
   config:
     install_tree:
       root: $env/install
+    deprecated: true
   modules:
     default:
       roots:
@@ -19,7 +20,7 @@ spack:
 
   specs:
   - jasper@2.0.25
-  - zlib@1.2.13
+  - zlib@1.2.11
   - libpng@1.6.37
   - hdf5@1.10.6
   - netcdf-c@4.7.4
