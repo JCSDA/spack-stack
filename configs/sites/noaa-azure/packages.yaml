@@ -26,10 +26,10 @@ packages:
   # Problem untarring libxml2 on the Azure filesystem
   # so mark it as external
   libxml2:
-    buildable: False
     externals:
     - spec: libxml2@2.9.1
       prefix: /usr
+      buildable: False
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -134,19 +134,15 @@ packages:
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   openssh:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
   openssl:
     externals:
-    - spec: openssl@1.1.1n
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
-    - spec: openssl@1.0.2k-fips
-      prefix: /usr
-    - spec: openssl@1.1.1k
-      prefix: /usr
+    - spec: openssl@1.1.1q
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -158,9 +154,7 @@ packages:
   python:
     externals:
     - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /contrib/spack/apps/miniconda/3.9.12
-      modules:
-      - miniconda/3.9.12
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -175,8 +169,8 @@ packages:
       prefix: /usr
   sqlite:
     externals:
-    - spec: sqlite@3.37.0+fts~functions+rtree
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+    - spec: sqlite@3.38.2+fts~functions+rtree
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   tar:
     externals:
     - spec: tar@1.26
@@ -192,7 +186,7 @@ packages:
   xz:
     externals:
     - spec: xz@5.2.5
-      prefix: /contrib/spack-stack/apps/miniconda/py39_4.11.0
+      prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   zip:
     externals:
     - spec: zip@3.0

@@ -5,6 +5,7 @@ spack:
   config:
     install_tree:
       root: $env/install
+    deprecated: true
   modules:
     default:
       roots:
