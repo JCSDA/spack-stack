@@ -27,10 +27,10 @@ packages:
   python:
     buildable: False
     externals:
-    - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /p/app/projects/NEPTUNE/spack-stack/miniconda-3.9.12
+    - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /opt/cray/pe/python/3.9.7.1
       modules:
-      - miniconda/3.9.12
+      - cray-python/3.9.7.1
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -66,12 +66,12 @@ packages:
     - spec: diffutils@3.6
       prefix: /usr
   ecflow:
-    buildable: False
+    buildable: false
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4
+      prefix: /p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4-cray-python-3.9.7.1
       modules:
-      - ecflow/5.8.4
+      - ecflow/5.8.4-cray-python-3.9.7.1
   findutils:
     externals:
     - spec: findutils@4.6.0
