@@ -13,7 +13,7 @@ General
 
 2. Build errors with Python 3.10
 
-   There are several build errors with Python 3.10, for example Python packages being installed in nested subdirectories ``local`` of what is supposed to be the target installation directory. We therefore strongly recommend using Python 3.9 until we can confirm that everything works with Python 3.10.
+   These build errors have been addressed, it should now be possible to use Python 3.10. Please report errors to the spack-stack developers and, if applicable, to the spack developers.
 
 3. Issues starting/finding ``ecflow_server`` due to a mismatch of hostnames
    On some systems, ``ecflow_server`` gets confused by multiple hostnames, e.g. ``localhost`` and ``MYORG-L-12345``. The ``ecflow_start.sh`` script reports the hostname it wants to use. This name (or both) must be in ``/etc/hosts`` in the correct address line, often the loopback address (``127.0.0.1``).
