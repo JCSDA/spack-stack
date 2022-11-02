@@ -20,7 +20,7 @@ inputs:
   mpi:
     description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
     required: false
-    default: 'mpich@3'
+    default: 'mpich@4'
   path:
     description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
     required: false
@@ -54,9 +54,9 @@ runs:
         # Needed for the following apt-get install calls to work
         sudo apt-get update
 
-        # Don't do this, breaks several packages
-        ## Install Curl headers. Executable exists by default in spack external find.
-        #sudo apt-get install libcurl4-openssl-dev
+        # Install Curl/ssl headers. Executables exist by default in spack external find.
+        sudo apt-get install libcurl4-openssl-dev
+        sudo apt-get install libssl-dev
 
         # Install git-lfs to avoid compilation errors of "go" with Intel
         sudo apt-get install git-lfs
@@ -84,10 +84,14 @@ runs:
         #brew install curl
         #brew install git
         #brew install git-lfs
+        # For now we need gcc-10/gfortran-10
+        brew install gcc@10
         brew install lmod
         brew install qt@5
         brew install readline
         brew install wget
+
+        pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
       fi
 
       # Install Python poetry to avoid install errors in spack
@@ -118,15 +122,23 @@ runs:
           export FC=gfortran-10
           export CXX=g++-10
           export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
+        elif [[ "${{ inputs.compiler }}" == "gcc@11"* ]]; then
+          export CC=gcc-11
+          export FC=gfortran-11
+          export CXX=g++-11
+          export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
         elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
           export CC=clang
-          export CXX=clang++
           export FC=gfortran-10
+          export CXX=clang++
           export FFLAGS="-fallow-argument-mismatch"
+          export FCFLAGS="-fallow-argument-mismatch"
         fi
 
-        export MPICH_VERSION="3.4.3"
-        export OPENMPI_VERSION="4.1.3"
+        export MPICH_VERSION="4.0.2"
+        export OPENMPI_VERSION="4.1.4"
 
         if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
           wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
@@ -215,7 +227,9 @@ runs:
       # Make homebrew qt@5 detectable on macOS
       PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
 
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
+        spack external find curl
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
         # Make homebrew curl detectable on macOS
         PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
       fi

@@ -32,7 +32,7 @@ spack-stack repo.
 
 Organization | Code Manager(s)
 -------------|----------------
-NOAA EMC | Kyle Gerheiser, Hang Lei, Ed Hartnett
+NOAA EMC | Alex Richert, Hang Lei, Ed Hartnett
 JCSDA | Dom Heinzeller, Steve Herbener
 
 ## Project Process

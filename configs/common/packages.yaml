@@ -29,7 +29,8 @@
     cdo:
       version: [2.0.5]
     cmake:
-      version: [3.22.1]
+      version: [3.23.1]
+      variants: +ownlibs
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       version: [2.4.0]
@@ -196,6 +197,11 @@
       version: [3.0.3]
     py-pandas:
       version: [1.4.0]
+    # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
+    # versions of py-poetry-core when using external/homebrew Python as
+    # we do at the moment in spack-stack.
+    py-poetry-core:
+      version: [1.0.8]
     py-pybind11:
       version: [2.8.1]
     py-pycodestyle:
@@ -217,6 +223,12 @@
       version: [6.0]
     py-scipy:
       version: [1.8.0]
+    # Pin the py-setuptools version to avoid duplicate Python packages
+    py-setuptools:
+      version: [59.4.0]
+    # Pin the py-setuptools-scm version to avoid duplicate Python packages
+    py-setuptools-scm:
+      version: [6.3.2]
     py-shapely:
       version: [1.8.0]
     qt:
