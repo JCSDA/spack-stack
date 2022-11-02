@@ -31,6 +31,8 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.1.0/install``               |
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Narwhal                                       | Dom Heinzeller | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.3.0-cray-python-3.9.7.1/install``|
++----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel                              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217/install`` |
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne GNU                                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.1.0/install``       |
@@ -133,6 +135,36 @@ For ``spack-stack-2.0.0`` with GNU, load the following modules after loading min
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
    module available
+
+.. _Platforms_Narwhal:
+
+------------------------------
+NAVY HPCMP Narwhal
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.1.0
+   module unload intel
+   module unload cray-python
+   module load cray-python/3.9.7.1
+   module unload cray-libsci
+   module load cray-libsci/22.08.1.1
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4-cray-python-3.9.7.1
+
+For ``spack-stack-2.0.0`` with Intel, load the following modules after loading the above modules.
+
+.. code-block:: console
+
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.3.0-cray-python-3.9.7.1/install/modulefiles/Core
+   module load stack-intel/2021.3.0
+   module load stack-cray-mpich/8.1.14
+   module load stack-python/3.9.7
 
 .. _Platforms_Cheyenne:
 
