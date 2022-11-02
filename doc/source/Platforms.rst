@@ -33,6 +33,8 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NAVY HPCMP Narwhal                                       | Dom Heinzeller | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.3.0-cray-python-3.9.7.1/install``|
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Casper                                      | Dom Heinzeller     | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217-casper/install`` |
++----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel                              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217/install`` |
 +----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne GNU                                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.1.0/install``       |
@@ -165,6 +167,28 @@ For ``spack-stack-2.0.0`` with Intel, load the following modules after loading t
    module load stack-intel/2021.3.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
+
+.. _Platforms_Casper:
+
+-------------------
+NCAR-Wyoming Casper
+-------------------
+
+.. code-block:: console
+
+   module purge
+   export LMOD_TMOD_FIND_FIRST=yes
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
+
+For ``spack-stack-2.0.0`` with Intel, load the following modules after loading miniconda and ecflow.
+
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217-casper/install/modulefiles/Core
+   module load stack-intel/19.1.1.217
+   module load stack-intel-mpi/2019.7.217
+   module load stack-python/3.9.12
+   module available
 
 .. _Platforms_Cheyenne:
 

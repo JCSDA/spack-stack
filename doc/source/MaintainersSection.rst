@@ -125,6 +125,14 @@ ecflow
    module load gcc/10.3.0
    module load qt/5.15.2
 
+.. _MaintainersSection_Casper:
+
+------------------------------
+NCAR-Wyoming Casper
+------------------------------
+
+Casper is co-located with Cheyenne and shares the parallel filesystem ``/glade`` and more with it. It is, however, a different operating system with a somewhat different software stack. spack-stack was installed on Casper after it was installed on Cheyenne, and prerequisites from Cheyenne were reused where possible (``miniconda``, ``qt``, ``ecflow``). See below for information on how to install these packages.
+
 .. _MaintainersSection_Cheyenne:
 
 ------------------------------
