@@ -91,9 +91,7 @@ runs:
         brew install readline
         brew install wget
 
-        brew list
-        ls -l /usr/local/bin
-
+        # Remove macOS native Python 3.11 from /usr/local/bin
         cd /usr/local/bin
         rm 2to3-3.11
         rm idle3.11
@@ -109,9 +107,9 @@ runs:
         ln -sf ../Cellar/python@3.10/3.10.8/bin/python3.10 python3
         ln -sf ../Cellar/python@3.10/3.10.8/bin/python3.10-config python3-config
         #ln -sf ... python3-intel64 # doesn't exist
-
         ls -l /usr/local/bin
 
+        # Print version of xcode
         pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
       fi
 
