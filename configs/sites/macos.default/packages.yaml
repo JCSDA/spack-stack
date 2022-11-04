@@ -5,5 +5,11 @@ packages:
     variants: ~openmp
   fms-jcsda:
     variants: ~openmp
+  eckit:
+    variants: ~openmp
+  fckit:
+    variants: ~openmp
+  ecmwf-atlas:
+    variants: ~openmp
   cairo:
     variants: ~png ~svg

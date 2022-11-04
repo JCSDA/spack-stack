@@ -1,0 +1,22 @@
+compilers::
+  - compiler:
+      spec: intel@2021.3.0
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      flags: {}
+      operating_system: sles15
+      target: any
+      modules:
+      - PrgEnv-intel
+      - intel/2021.3.0
+      environment:
+        prepend_path:
+          PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
+          CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
+          LD_LIBRARY_PATH: '/opt/cray/pe/libsci/22.08.1.1/INTEL/19.0/x86_64/lib:/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
+        set:
+          CRAYPE_LINK_TYPE: 'dynamic'
+      extra_rpaths: []

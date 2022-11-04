@@ -74,6 +74,65 @@ openmpi
    CPATH="/usr/include/slurm:$CPATH" make check
    CPATH="/usr/include/slurm:$CPATH" make install
 
+.. _MaintainersSection_Narwhal:
+
+------------------------------
+NAVY HPCMP Narwhal
+------------------------------
+
+On Narwhal, ``git-lfs``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+
+git-lfs
+   The following instructions install ``git-lfs`` in ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the default version for Narwhal. First, download the ``git-lfs`` RPM on a system with full internet access (e.g., Cheyenne) using ``wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm`` and copy this file to ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src``. Then switch to Narwhal and run the following commands. 
+
+   .. code-block:: console
+
+      cd /p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src
+      rpm2cpio git-lfs-2.10.0-lp152.1.2.x86_64.rpm | cpio -idmv
+      mv usr/* ../
+
+   Create modulefile ``/p/app/projects/NEPTUNE/spack-stack/modulefiles/git-lfs/2.10.0`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/p/app/projects/NEPTUNE/spack-stack/qt-5.15.2``.
+
+.. code-block:: console
+
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.1.0
+   module unload intel
+
+   module unload cray-python
+   module load cray-python/3.9.7.1
+   module unload cray-libsci
+   module load cray-libsci/22.08.1.1
+
+   module load gcc/10.3.0
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4-cray-python-3.9.7.1``. Ensure to follow the extra instructions in that section for Narwhal.
+
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.1.0
+   module unload intel
+
+   module unload cray-python
+   module load cray-python/3.9.7.1
+   module unload cray-libsci
+   module load cray-libsci/22.08.1.1
+
+   module load gcc/10.3.0
+   module load qt/5.15.2
+
+.. _MaintainersSection_Casper:
+
+------------------------------
+NCAR-Wyoming Casper
+------------------------------
+
+Casper is co-located with Cheyenne and shares the parallel filesystem ``/glade`` and more with it. It is, however, a different operating system with a somewhat different software stack. spack-stack was installed on Casper after it was installed on Cheyenne, and prerequisites from Cheyenne were reused where possible (``miniconda``, ``qt``, ``ecflow``). See below for information on how to install these packages.
+
 .. _MaintainersSection_Cheyenne:
 
 ------------------------------
@@ -156,7 +215,7 @@ qt (qt@5)
    module load PrgEnv-gnu/6.0.5
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).  Ensure to follow the extra instructions in that section for Gaea.
 
    module unload intel cray-mpich cray-python darshan PrgEnv-intel
    module load gcc/10.3.0
