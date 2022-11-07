@@ -1,0 +1,226 @@
+packages:
+  all:
+    compiler:: [intel@19.1.1.217]
+    providers:
+      mpi:: [intel-mpi@2019.7.217]
+
+### MPI, Python, MKL
+  mpi:
+    buildable: False
+  intel-mpi:
+    externals:
+    - spec: intel-mpi@2019.7.217%intel@19.1.1.217
+      prefix: /glade/u/apps/opt/intel/2020u1
+      modules:
+      - impi/2019.7.217
+  python:
+    buildable: False
+    externals:
+    - spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
+      modules:
+      - miniconda/3.9.12
+
+### All other external packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.13.4
+      prefix: /usr
+  berkeley-db:
+    externals:
+    - spec: berkeley-db@4.7.25
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.27.43
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  bzip2:
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.16.8
+      prefix: /usr/local
+    - spec: cmake@3.22.0
+      modules:
+      - cmake/3.22.0
+  cpio:
+    externals:
+    - spec: cpio@2.11
+      prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.11.23
+      prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.29.0+gssapi+ldap+nghttp2
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.3
+      prefix: /usr
+  doxygen:
+    externals:
+    - spec: doxygen@1.8.5+graphviz~mscgen
+      prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
+  expat:
+    externals:
+    - spec: expat@1.6.0
+      prefix: /usr
+  file:
+    externals:
+    - spec: file@5.11
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.5.11
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.5.37+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.0.2
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  ghostscript:
+    externals:
+    - spec: ghostscript@9.25
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.33.1
+      modules:
+      - git/2.33.1
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.0.2
+      modules:
+      - git/2.33.1
+  gmake:
+    externals:
+    - spec: gmake@3.82
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.2
+      prefix: /usr
+  krb5:
+    buildable: False
+    externals:
+    - spec: krb5@1.15.1
+      prefix: /usr
+  libfuse:
+    externals:
+    - spec: libfuse@2.9.2
+      prefix: /usr
+  libtirpc:
+    variants: ~gssapi
+  libtool:
+    externals:
+    - spec: libtool@2.4.2
+      prefix: /usr
+  libxpm:
+    externals:
+    - spec: libxpm@4.11.0
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.16
+      prefix: /usr
+  ncurses:
+    externals:
+    - spec: ncurses@5.9.20130511+termlib abi=5
+      prefix: /usr
+  # Old re2c on Casper unable to build newer versions of ninja
+  ninja:
+    version:: [1.10.2]
+  openssh:
+    externals:
+    - spec: openssh@7.4p1
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.0.2k-fips
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.16.3~cpanm+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.27.1
+      prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.2
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2/5.15.2/gcc_64
+  rsync:
+    externals:
+    - spec: rsync@3.1.2
+      prefix: /usr
+  ruby:
+    externals:
+    - spec: ruby@2.0.0
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.2.2
+      prefix: /usr
+  sqlite:
+    externals:
+    - spec: sqlite@3.8.10.2~fts~functions+rtree
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.7.14
+      prefix: /usr
+  swig:
+    externals:
+    - spec: swig@2.0.10
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.26
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@5.1
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.14
+      prefix: /usr
+  xz:
+    externals:
+    - spec: xz@5.2.2
+      prefix: /usr
+  zip:
+    externals:
+    - spec: zip@3.0
+      prefix: /usr

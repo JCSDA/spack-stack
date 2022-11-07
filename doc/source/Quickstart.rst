@@ -18,7 +18,7 @@ Quickstart
 
 .. note::
 
-   We strongly recommend using external Python versions 3.8 or 3.9 with spack-stack due to numerous problems with Python 3.10 (see also :numref:`Section %s <KnownIssues>`).
+   We recommend using external Python versions 3.8 or later with spack-stack.
 
 =================================================
 Using spack to create environments and containers
