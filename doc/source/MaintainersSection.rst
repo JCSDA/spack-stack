@@ -111,7 +111,7 @@ qt (qt@5)
    module load gcc/10.3.0
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4-cray-python-3.9.7.1``. Ensure to follow the extra instructions in that section for Narwhal.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``. Ensure to follow the extra instructions in that section for Narwhal.
 
    module unload PrgEnv-cray
    module load PrgEnv-intel/8.1.0
@@ -123,6 +123,7 @@ ecflow
    module load cray-libsci/22.08.1.1
 
    module load gcc/10.3.0
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load qt/5.15.2
 
 .. _MaintainersSection_Casper:
