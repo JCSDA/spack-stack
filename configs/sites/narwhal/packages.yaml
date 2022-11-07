@@ -27,7 +27,7 @@ packages:
   python:
     buildable: False
     externals:
-    - spec: python@3.9.7+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+    - spec: python@3.9.7+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
       prefix: /opt/cray/pe/python/3.9.7.1
       modules:
       - cray-python/3.9.7.1

@@ -16,7 +16,7 @@ packages:
   python:
     buildable: false
     externals:
-    - spec: python@3.8.10+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+    - spec: python@3.8.10+bz2+ctypes+dbm+lzma+nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
       prefix: /usr
 
 ### All other external packages listed alphabetically
