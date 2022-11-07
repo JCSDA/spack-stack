@@ -477,7 +477,7 @@ Note that applications are expected to run faster when the native Arm architectu
 
 A lot of binaries (bash for example) come in a "universal form" meaning they can run as Arm or Intel.
 MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on.
-For example, entering ``arch`` without any arguments will return which archtecture is running in your terminal window.
+For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
 
 Homebrew notes
 --------------
