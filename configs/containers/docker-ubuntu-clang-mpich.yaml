@@ -28,6 +28,7 @@ spack:
   # Additional package config for container
   packages:
     all:
+      target: [x86_64]
       providers:
         mpi: [mpich@4.0.2]
       compiler: [clang@10.0.0]
@@ -79,13 +80,13 @@ spack:
     format: docker
     # How to use:
     #$ spack containerize > Dockerfile
-    #$ docker build -t myimage .
-    #$ docker run -it myimage
+    #$ sudo docker build -t myimage .
+    #$ sudo docker run -it myimage
 
     #format: singularity
     # How to use:
-    #$ spack containerize > hdf5.def
-    #$ sudo singularity build hdf5.sif hdf5.def
+    #$ spack containerize > singularity.def
+    #$ sudo singularity build singularity.sif singularity.def
 
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
