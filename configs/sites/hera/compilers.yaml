@@ -11,11 +11,7 @@ compilers:
     target: any
     modules:
     - intel/2022.1.2
-    environment:
-      prepend_path:
-        PATH: '/apps/gnu/gcc-9.2.0/bin'
-        LD_LIBRARY_PATH: '/apps/gnu/gcc-9.2.0/lib64'
-        CPATH: '/apps/gnu/gcc-9.2.0/include'
+    environment: {}
     extra_rpaths: []
 - compiler:
     spec: gcc@9.2.0
