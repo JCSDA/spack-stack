@@ -1,0 +1,4 @@
+modules:
+  default:
+    enable::
+    - tcl

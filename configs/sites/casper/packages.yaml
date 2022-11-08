@@ -1,30 +1,27 @@
 packages:
   all:
-    compiler:: [intel@2021.5.0]
+    compiler:: [intel@19.1.1.217]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1]
+      mpi:: [intel-mpi@2019.7.217]
+
+### MPI, Python, MKL
   mpi:
     buildable: False
-  intel-oneapi-mpi:
+  intel-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2021.5.0
+    - spec: intel-mpi@2019.7.217%intel@19.1.1.217
+      prefix: /glade/u/apps/opt/intel/2020u1
       modules:
-      - impi/2022.1.2
-      prefix: /apps/oneapi
-  openmpi:
-    externals:
-    - spec: openmpi@3.1.4%gcc@9.2.0~cuda+cxx+cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath schedulers=slurm
-      prefix: /apps/openmpi/3.1.4/gnu/gcc-9.2.0
-      modules:
-      - gnu/9.2.0
-      - openmpi/3.1.4
+      - impi/2019.7.217
   python:
     buildable: False
     externals:
     - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
       modules:
       - miniconda/3.9.12
+
+### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -33,13 +30,13 @@ packages:
     externals:
     - spec: automake@1.13.4
       prefix: /usr
-  bash:
-    externals:
-    - spec: bash@4.2.46
-      prefix: /usr
   berkeley-db:
     externals:
-    - spec: berkeley-db@5.3.21
+    - spec: berkeley-db@4.7.25
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.27.43
       prefix: /usr
   bison:
     externals:
@@ -49,13 +46,24 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.16.8
+      prefix: /usr/local
+    - spec: cmake@3.22.0
+      modules:
+      - cmake/3.22.0
   cpio:
     externals:
     - spec: cpio@2.11
       prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.11.23
+      prefix: /usr
   curl:
     externals:
-    - spec: curl@7.29.0+ldap
+    - spec: curl@7.29.0+gssapi+ldap+nghttp2
       prefix: /usr
   diffutils:
     externals:
@@ -68,10 +76,14 @@ packages:
   ecflow:
     buildable: False
     externals:
-    - spec: ecflow@5.5.3+ui+static_boost
-      prefix: /apps/ecflow/5.5.3
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
       modules:
-      - ecflow/5.5.3
+      - ecflow/5.8.4
+  expat:
+    externals:
+    - spec: expat@1.6.0
+      prefix: /usr
   file:
     externals:
     - spec: file@5.11
@@ -98,33 +110,24 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.18.0+tcltk
-      prefix: /usr
+    - spec: git@2.33.1
+      modules:
+      - git/2.33.1
   git-lfs:
     externals:
-    - spec: git-lfs@2.10.0
-      prefix: /usr
+    - spec: git-lfs@3.0.2
+      modules:
+      - git/2.33.1
   gmake:
     externals:
     - spec: gmake@3.82
-      prefix: /usr
-  go:
-    externals:
-    - spec: go@1.16.13
       prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.2
       prefix: /usr
-  hwloc:
-    externals:
-    - spec: hwloc@1.11.8
-      prefix: /usr
-  openjdk:
-    externals:
-    - spec: openjdk@1.8.0_322-b06
-      prefix: /usr
   krb5:
+    buildable: False
     externals:
     - spec: krb5@1.15.1
       prefix: /usr
@@ -132,13 +135,15 @@ packages:
     externals:
     - spec: libfuse@2.9.2
       prefix: /usr
+  libtirpc:
+    variants: ~gssapi
   libtool:
     externals:
     - spec: libtool@2.4.2
       prefix: /usr
-  lustre:
+  libxpm:
     externals:
-    - spec: lustre@2.12.6_ddn62
+    - spec: libxpm@4.11.0
       prefix: /usr
   m4:
     externals:
@@ -146,18 +151,17 @@ packages:
       prefix: /usr
   ncurses:
     externals:
-    - spec: ncurses@6.3.20211021+termlib abi=6
-      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
     - spec: ncurses@5.9.20130511+termlib abi=5
       prefix: /usr
+  # Old re2c on Casper unable to build newer versions of ninja
+  ninja:
+    version:: [1.10.2]
   openssh:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
   openssl:
     externals:
-    - spec: openssl@1.1.1m
-      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
     - spec: openssl@1.0.2k-fips
       prefix: /usr
   perl:
@@ -168,6 +172,10 @@ packages:
     externals:
     - spec: pkg-config@0.27.1
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.2
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2/5.15.2/gcc_64
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -182,8 +190,16 @@ packages:
       prefix: /usr
   sqlite:
     externals:
-    - spec: sqlite@3.37.0+fts~functions+rtree
-      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
+    - spec: sqlite@3.8.10.2~fts~functions+rtree
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.7.14
+      prefix: /usr
+  swig:
+    externals:
+    - spec: swig@2.0.10
+      prefix: /usr
   tar:
     externals:
     - spec: tar@1.26
@@ -192,14 +208,18 @@ packages:
     externals:
     - spec: texinfo@5.1
       prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
+      prefix: /usr
   wget:
     externals:
     - spec: wget@1.14
       prefix: /usr
   xz:
     externals:
-    - spec: xz@5.2.5
-      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
+    - spec: xz@5.2.2
+      prefix: /usr
   zip:
     externals:
     - spec: zip@3.0
