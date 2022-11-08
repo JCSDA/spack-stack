@@ -36,6 +36,8 @@ apt update
 apt -y upgrade
 reboot
 # ... wait for the instance to come back up again ...
+
+# Install Docker, SingularityCE, and other basic packages
 sudo su
 apt install -y gnome-terminal
 apt install -y \
@@ -63,9 +65,24 @@ python3 -c "import poetry"
 python3 -m pip install awscli
 aws configure
 
+cd ~
+wget https://github.com/sylabs/singularity/releases/download/v3.9.9/singularity-ce_3.9.9-focal_amd64.deb
+apt install ./singularity-ce_3.9.7-bionic_amd64.deb
+# Ignore "N: Download is performed unsandboxed as root as file '/root/singularity-ce_3.9.9-focal_amd64.deb' couldn't be accessed by user '_apt'. - pkgAcquire::Run (13: Permission denied)"
+# Test:
+singularity version
+
 exit
 
 # Run as user ubuntu
 systemctl --user start docker-desktop
 ```
-Then, build/run/upload containers as root user
+Then, build, run, upload containers as root user
+
+### Converting spack-stack docker images to singularity
+As root user:
+```
+#SINGULARITY_NOHTTPS=1 singularity build docker-intel-oneapi-dev.simg docker-daemon://469205354006.dkr.ecr.us-east-1.amazonaws.com/docker-intel-oneapi-dev:latest
+singularity build docker-intel-oneapi-dev.sif docker-daemon://469205354006.dkr.ecr.us-east-1.amazonaws.com/docker-intel-oneapi-dev:latest
+singularity shell docker-intel-oneapi-dev.sif
+```
