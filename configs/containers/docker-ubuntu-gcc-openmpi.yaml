@@ -4,6 +4,7 @@ spack:
   view: false
 
   config:
+    checksum: false
     build_jobs: 2
     connect_timeout: 60
 

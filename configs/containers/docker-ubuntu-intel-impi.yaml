@@ -4,6 +4,7 @@ spack:
   view: false
 
   config:
+    checksum: false
     build_jobs: 2
     connect_timeout: 60
 
@@ -30,7 +31,7 @@ spack:
   # Additional package config for container
   packages:
     all:
-      target: [x86_64]
+      target: [core2]
       providers:
         mpi: [intel-oneapi-mpi@2021.6.0]
       compiler: [intel@2022.1.0]
