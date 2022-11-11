@@ -465,6 +465,38 @@ The instructions below also assume a clean Homebrew installation with a clean Py
 
 Further, it is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
+Intel M1 platform notes
+-----------------------
+With the introduction of the new M1 chip on Mac, there are two architectures that are provided.
+The first architecture is Arm which is denoted by ``arm64`` and ``aarch64``, and the second is Intel which is denoted by ``x86_64`` and ``i386``.
+The Arm architecture is the native architecture on the M1 chip and the Intel architecture is what has existed for a number of years before the M1 chip showed up.
+
+With the new M1 chip, you can toggle between these two architectures, which is accomplished with a new app on M1 Macs called Rosetta2 (which is an Intel architecture emulator).
+When you get a new M1 mac, you may need to download Rosetta2.
+Note that applications are expected to run faster when the native Arm architecture is utilized.
+
+A lot of binaries (bash for example) come in a "universal form" meaning they can run as Arm or Intel.
+MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on.
+For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
+
+Homebrew notes
+--------------
+
+When running with the Intel architecture, homebrew manages its downloads in ``/usr/local`` (as it has been doing in the past).
+When running with the Arm architecture, homebrew manages its downloads in ``/opt/homebrew``.
+Other than the different prefixes for Arm versus Intel, the paths for all the pieces of a given package are identical.
+This separation allows for both Arm and Intel environments to exist on one machine.
+
+For these instructions we will use the variable ``$HOMEBREW_ROOT`` to hold the prefix where homebrew manages its downloads (according to the architecture being used).
+
+.. code-block:: console
+
+    # If building on Arm architecture:
+    export HOMEBREW_ROOT=/opt/homebrew
+    
+    # If building on Intel architecture:
+    export HOMEBREW_ROOT=/usr/local
+
 Prerequisites (one-off)
 -----------------------
 
@@ -480,25 +512,50 @@ This instructions are meant to be a reference that users can follow to set up th
 
    xcode-select --install
 
-2. This step is only required on the new ``aarch64`` systems that are equipped with a Apple M1 silicon chip: Setup of ``x86_64`` environment on ``aarch64`` systems
+2. Set up a terminal and environment using the appropriate architecture
 
-   - Open Applications in Finder
+    a. Arm
 
-   - Duplicate your preferred terminal application (e.g. Terminal or iTerm)
+       In this case the Terminal application should already be running with the Arm architecture.
+       Open a terminal and verify that this is the case:
 
-   - Rename the duplicate to, for example, "Terminal x86_64"
+       .. code-block:: console
+           
+           # In the terminal enter
+           arch
+           # this should respond with "arm64"
 
-   - Right-click / control+click on "Terminal x86_64", choose "Get Info"
+       Add the homebrew bin directory to your PATH variable.
+       Make sure the homebrew bin path goes before ``/usr/local/bin``.
 
-   - Select the box "Open using Rosetta" and close the window
+       .. code-block:: console
+           
+           export PATH=$HOMEBREW_ROOT/bin:$PATH
 
-3. Install Homebrew for ``x86_64`` environment
+    b. Intel
 
-   - If your system is an ``aarch64`` system, make sure to open the newly created "Terminal x86_64" application. Type ``arch`` in the terminal to confirm, if correct the output is ``i386`` (and not ``arm64``)
+       In this case, the idea is to create a new Terminal application that automatically runs bash in the Intel mode (using Rosetta2 underneath the hood.
 
-   - Install Homebrew from the command line. On ``x86_64`` systems and on ``aarch64`` systems using the ``x86_64`` emulator, Homebrew` is installed in ``/usr/local``
+       - Open Applications in Finder
 
-   - It is recommended to install the following prerequisites via Homebrew, as installing them with Spack and Apple's native clang compiler can be tricky.
+       - Duplicate your preferred terminal application (e.g. Terminal or iTerm)
+
+       - Rename the duplicate to, for example, "Terminal x86_64"
+
+       - Right-click / control+click on "Terminal x86_64", choose "Get Info"
+
+       - Select the box "Open using Rosetta" and close the window
+
+       Check to make sure you have ``/usr/local/bin`` in your PATH variable for homebrew.
+
+   From this point on, make sure you run the commands from the Terminal application matching the arhcitecture you are building.
+   That is, use "Terminal" if building for Arm, or use "Terminal x86_64" if building for Intel.
+   Verify that you have the correct architecture by running ``arch`` in the terminal window.
+   From ``arch`` you should see ``arm64`` for Arm, or see ``x86_64`` or ``i386`` for Intel.
+
+3. Install Homebrew
+
+   It is recommended to install the following prerequisites via Homebrew, as installing them with Spack and Apple's native clang compiler can be tricky.
 
 .. code-block:: console
 
@@ -518,17 +575,19 @@ This instructions are meant to be a reference that users can follow to set up th
 
 4. Configure your terminal to use the homebrew installed bash
 
-  After installing bash with homebrew, you need to change your terminal application's default command to use :code:`/usr/local/bin/bash`.
+  After installing bash with homebrew, you need to change your terminal application's default command to use :code:`$HOMEBREW_ROOT/bin/bash`.
   For example with iterm2, you can click on the :code:`preferences` item in the :code:`iTerm2` menu.
-  Then click on the :code:`Profiles` tab and enter :code:`/usr/local/bin/bash` in the :code:`Command` box.
+  Then click on the :code:`Profiles` tab and enter :code:`$HOMEBREW_ROOT/bin/bash` in the :code:`Command` box.
   This is done to avoid issues with the macOS System Integrity Protection (SIP) mechanism when running bash scripts.
   See https://support.apple.com/en-us/HT204899 for more details about SIP.
+
+  It's recommended to quit the terminal window at this point and then start up a fresh terminal window to make sure you proceed using a terminal that is running the :code:`$HOMEBREW_ROOT/bin/bash` shell.
 
 5. Activate the ``lua`` module environment
 
 .. code-block:: console
 
-   source /usr/local/opt/lmod/init/profile
+   source $HOMEBREW_ROOT/opt/lmod/init/profile
 
 6. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
 
@@ -578,10 +637,10 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack external find --scope system python
    spack external find --scope system wget
 
-   PATH="/usr/local/opt/curl/bin:$PATH" \
+   PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
 
-   PATH="/usr/local/opt/qt5/bin:$PATH" \
+   PATH="$HOMEBREW_ROOT/opt/qt5/bin:$PATH" \
        spack external find --scope system qt
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
