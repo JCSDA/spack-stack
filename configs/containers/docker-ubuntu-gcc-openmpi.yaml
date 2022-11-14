@@ -4,6 +4,7 @@ spack:
   view: false
 
   config:
+    checksum: false
     build_jobs: 2
     connect_timeout: 60
 
@@ -26,6 +27,7 @@ spack:
   # Additional package config for container
   packages:
     all:
+      target: [x86_64]
       providers:
         mpi: [openmpi@4.1.4]
       compiler: [gcc@9.4.0]
@@ -66,13 +68,13 @@ spack:
     format: docker
     # How to use:
     #$ spack containerize > Dockerfile
-    #$ docker build -t myimage .
-    #$ docker run -it myimage
+    #$ sudo docker build -t myimage .
+    #$ sudo docker run -it myimage
 
     #format: singularity
     # How to use:
-    #$ spack containerize > hdf5.def
-    #$ sudo singularity build hdf5.sif hdf5.def
+    #$ spack containerize > singularity.def
+    #$ sudo singularity build singularity.sif singularity.def
 
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
@@ -89,6 +91,7 @@ spack:
     ## Additional system packages that are needed at runtime
     os_packages:
       build:
+      - bc
       - cpp
       - g++
       - gcc
@@ -102,6 +105,7 @@ spack:
       - wget
 
       final:
+      - bc
       - cpp
       - g++
       - gcc
@@ -137,7 +141,7 @@ spack:
         ENV CXX=g++
         ENV FC=gfortran
       final: |
-        #Make a non-root user:nonroot / group:nonroot for running MPI
+        # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
@@ -148,10 +152,21 @@ spack:
         mkdir /home/nonroot/.openmpi && \
         echo "rmaps_base_oversubscribe = 1" >> /home/nonroot/.openmpi/mca-params.conf && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.openmpi
-        #Also set the necessary environment variables to run as root
+        # Replicate settings for root user
+        RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
+        echo "ulimit -v unlimited" >> /root/.bashrc && \
+        echo "export CC=gcc" >> /root/.bashrc && \
+        echo "export CXX=g++" >> /root/.bashrc && \
+        echo "export FC=gfortran" >> /root/.bashrc && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig && \
+        mkdir /root/.openmpi && \
+        echo "rmaps_base_oversubscribe = 1" >> /root/.openmpi/mca-params.conf
+        # Also set necessary environment variables for openmpi
         RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
         echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
         echo "export OMPI_MCA_rmaps_base_oversubscribe=1" >> /root/.bashrc
+        # Source spack environment script for root
+        RUN echo "source /etc/profile.d/z10_spack_environment.sh\n" >> /root/.bashrc
 
     # Labels for the image
     labels:
