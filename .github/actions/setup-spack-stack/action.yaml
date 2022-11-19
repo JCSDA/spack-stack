@@ -91,9 +91,9 @@ runs:
         brew install readline
         brew install wget
 
+        ls -l /usr/local/Cellar
+
         # Remove macOS native Python 3.11 from /usr/local/bin
-        ls -l /usr/local/Cellar/
-        exit 1
         cd /usr/local/bin
         rm 2to3-3.11
         rm idle3.11

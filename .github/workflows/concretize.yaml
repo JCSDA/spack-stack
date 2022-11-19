@@ -3,7 +3,6 @@ name: concretize-test
 
 on:
   #pull_request:
-  push:
   workflow_dispatch:
 
 # Use custom shell with -l so .bash_profile is sourced
