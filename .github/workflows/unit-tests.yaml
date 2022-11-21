@@ -18,4 +18,5 @@ jobs:
       - name: run-unit-tests
         run: |
           source ./setup.sh
-          spack unit-test --extension=stack
+          #spack unit-test --extension=stack
+          spack unit-test
