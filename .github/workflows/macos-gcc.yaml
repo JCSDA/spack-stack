@@ -1,12 +1,12 @@
 name: macos-gcc-build
 
 on:
-  #pull_request:
-  #  paths-ignore:
-  #    - 'doc/**'
-  #    - '**.md'
-  #    - '.github/ISSUE_TEMPLATE/*'
-  #    - '.gitignore'
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
   workflow_dispatch:
 
 concurrency:

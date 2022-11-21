@@ -1,13 +1,13 @@
 name: macos-apple-clang-build
 
 on:
-  #pull_request:
-  #  paths-ignore:
-  #    - 'doc/**'
-  #    - '**.md'
-  #    - '.github/ISSUE_TEMPLATE/*'
-  #    - '.gitignore'
-  #workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
