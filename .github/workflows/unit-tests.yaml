@@ -7,7 +7,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: checkout
@@ -18,5 +18,4 @@ jobs:
       - name: run-unit-tests
         run: |
           source ./setup.sh
-          #spack unit-test --extension=stack
-          spack unit-test
+          spack unit-test --extension=stack
