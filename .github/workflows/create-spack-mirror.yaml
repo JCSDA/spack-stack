@@ -1,6 +1,12 @@
 name: create-spack-mirror
 
 on:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
   workflow_dispatch:
     inputs:
       template:
@@ -14,7 +20,7 @@ on:
 
 jobs:
   create-spack-mirror:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     steps:
       - name: checkout
@@ -25,10 +31,10 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack stack create env --template ${{ github.event.inputs.template }} --name mirror
+          spack stack create env --template ${{ github.event.inputs.template || 'jedi-ufs-all' }} --name mirror
           spack env activate -d envs/mirror
           # This doesn't throw and error when specs are an empty string ('')
-          spack add ${{ github.event.inputs.specs }}
+          spack add ${{ github.event.inputs.specs || '' }}
           spack compiler find
           spack add re2c
           spack add clingo
@@ -40,8 +46,8 @@ jobs:
           # upload-artifact does not allow filenames that contain '?'
           rm -vf `find cache/source_cache -name '*\?*'`
 
-      - name: upload-mirror
-        uses: actions/upload-artifact@v2
-        with:
-          name: spack_mirror
-          path: cache/source_cache
+      #- name: upload-mirror
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: spack_mirror
+      #    path: cache/source_cache

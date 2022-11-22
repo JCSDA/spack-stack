@@ -3,7 +3,6 @@ name: concretize-test
 
 on:
   pull_request:
-  push:
   workflow_dispatch:
 
 # Use custom shell with -l so .bash_profile is sourced
@@ -60,7 +59,7 @@ jobs:
       matrix:
         compiler: [gcc@9.4.0, gcc@10.3.0]
         template: [jedi-ufs-all]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -81,7 +80,7 @@ jobs:
     strategy:
       matrix:
         template: [jedi-ufs-all]
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: checkout
         uses: actions/checkout@v2
