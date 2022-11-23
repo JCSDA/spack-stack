@@ -39,7 +39,7 @@ spack:
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
       version: [0.24.1]
-      variants: +fckit -trans
+      variants: +fckit ~trans
     ectrans:
       version: [1.0.0]
       variants: ~enable_mkl
@@ -54,7 +54,7 @@ spack:
     fftw:
       version: [3.3.8]
     fiat:
-      version: [main]
+      version: [1.0.0]
     fms:
       version: [2022.01]
       variants: +64bit +quad_precision +gfs_phys +openmp +pic
