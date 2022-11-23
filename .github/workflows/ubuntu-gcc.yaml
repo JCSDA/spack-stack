@@ -24,7 +24,7 @@ jobs:
       matrix:
         template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
         spec: ['']
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
 
       - name: checkout
