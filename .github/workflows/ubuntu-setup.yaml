@@ -1,0 +1,39 @@
+name: ubuntu-setup
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Use custom shell with -l so .bash_profile is sourced
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        compiler-mpi: [ {compiler: intel, mpi: intel-oneapi-mpi}, {compiler: gcc@9, mpi: mpich@4} ]
+        #mpi: [intel-oneapi-mpi, mpich]
+    runs-on: ubuntu-20.04
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: setup-externals
+        uses: ./.github/actions/setup-externals
+        with:
+          compiler: ${{ matrix.compiler-mpi.compiler }}
+          mpi: ${{ matrix.compiler-mpi.mpi }}
