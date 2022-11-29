@@ -3,7 +3,7 @@
   #url = https://github.com/spack/spack
   #branch = develop
   url = https://github.com/AlexanderRichert-NOAA/spack_NOAAEMC
-  branch = ufs_hera_update
+  branch = develop
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
