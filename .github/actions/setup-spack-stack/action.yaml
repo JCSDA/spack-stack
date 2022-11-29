@@ -319,11 +319,9 @@ runs:
       # Add spack mirror
       ls $HOME/
       ls $HOME/spack-mirror
-      #spack mirror add 
+      spack mirror add local file:///home/runner/spack-mirror
       spack mirror list
       exit 1
-
-      cat ${SPACK_ENV}/spack.yaml
 
       set +eo pipefail
       # Remove specs that don't build under certain configurations.
@@ -337,6 +335,8 @@ runs:
         spack rm jedi-ewok-env || true
       fi
       set -eo pipefail
+
+      cat ${SPACK_ENV}/spack.yaml
 
       mkdir ${GITHUB_WORKSPACE}/logs
 
