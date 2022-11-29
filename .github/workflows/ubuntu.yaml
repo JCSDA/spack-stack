@@ -61,8 +61,10 @@ jobs:
     strategy:
       matrix:
         compiler-mpi: [ {compiler: intel, mpi: intel-oneapi-mpi}, {compiler: gcc@9, mpi: mpich@4} ]
-        template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
-        spec: ['']
+        # DH* TEMPORARY, REVERT!
+        #template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
+        template: [skylab-dev]
+        # *DH
     runs-on: ubuntu-20.04
     steps:
 
@@ -75,7 +77,6 @@ jobs:
         uses: ./.github/actions/setup-spack-stack
         with:
           templates: ${{ matrix.template }}
-          specs: ${{ matrix.spec }}
           compiler: ${{ matrix.compiler-mpi.compiler }}
           mpi: ${{ matrix.compiler-mpi.mpi }}
           path: ${{ github.workspace }}

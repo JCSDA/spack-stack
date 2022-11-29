@@ -1,5 +1,5 @@
 name: 'setup-externals'
-description: 'Setup external MPI library. Requires -l in shell so bash_profile is sourced.'
+description: 'Setup externals such as the Intel compiler, MPI libraries.'
 inputs:
   compiler:
     description: 'Compiler (available options gcc@9, gcc@10, apple-clang, intel)'

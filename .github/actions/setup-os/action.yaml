@@ -1,5 +1,5 @@
 name: 'setup-os'
-description: 'Creates a Spack environment. Requires -l in shell so bash_profile is sourced.'
+description: 'Prepares the OS for building spack environments.'
 
 runs:
   using: "composite"

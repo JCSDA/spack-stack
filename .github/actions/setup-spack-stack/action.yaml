@@ -1,5 +1,5 @@
 name: 'setup-spack-stack'
-description: 'Creates a Spack environment. Requires -l in shell so bash_profile is sourced.'
+description: 'Creates a spack environment.'
 inputs:
   name:
     description: 'Give the environment a name'
@@ -9,10 +9,6 @@ inputs:
     description: 'Base spack.yaml templates. Default is an empty environment.'
     required: false
     default: 'empty'
-  specs:
-    description: 'Which specs to add to the environment'
-    required: false
-    default: ''
   compiler:
     description: 'Compiler (available options gcc@9, gcc@10, apple-clang, intel)'
     required: true
@@ -246,7 +242,6 @@ runs:
       source setup.sh
       spack stack create env --template ${{ inputs.templates }} --name ${{ inputs.name }} --site ${{ inputs.site }}
       spack env activate envs/${{ inputs.name }}
-      spack add ${{ inputs.specs }}
 
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
@@ -316,13 +311,6 @@ runs:
       # DH* STILL NEEDED ???   spack config add "packages:ecflow:variants:~ssl"
       # DH* STILL NEEDED ??? fi
 
-      # Add spack mirror
-      ls $HOME/
-      ls $HOME/spack-mirror
-      spack mirror add local file:///home/runner/spack-mirror
-      spack mirror list
-      exit 1
-
       set +eo pipefail
       # Remove specs that don't build under certain configurations.
       # Only need that for the concretize_only steps, because the full
@@ -335,6 +323,12 @@ runs:
         spack rm jedi-ewok-env || true
       fi
       set -eo pipefail
+
+      # Add spack mirror
+      echo "Contents of local spack mirror:"
+      ls $HOME/spack-mirror
+      spack mirror add local file:///home/runner/spack-mirror
+      spack mirror list
 
       cat ${SPACK_ENV}/spack.yaml
 
@@ -376,7 +370,7 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.specs }}" == "" || ! "${{ inputs.templates }}" == "empty" ]]; then
+      if [[ ! "${{ inputs.templates }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
@@ -388,7 +382,7 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.specs }}" == "" || ! "${{ inputs.templates }}" == "empty" ]]; then
+      if [[ ! "${{ inputs.templates }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         if [[ "$RUNNER_OS" == "Linux" ]]; then
           # Not yet: need lmod installed, loaded and module use command
