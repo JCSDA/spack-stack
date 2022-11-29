@@ -19,11 +19,50 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
+
+  # For simplicity, we create this mirror for a standard ubuntu-20.04 setup,
+  # ignoring potential differences in the concretized environments between
+  # compilers, MPI libraries, templates, ... most of the packages will be
+  # the same, the few missing ones will be fetched from source instead of
+  # the mirror when the spack builds are run.
+  cache-spack-mirror:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: cache-spack-mirror
+        id: cache-spack-mirror
+        uses: actions/cache@v2
+        with:
+          path: $HOME/spack-mirror
+          key: spack-mirror.${{ runner.os }}3
+
+      - name: create-spack-mirror
+        shell: bash
+        if: steps.cache-spack-mirror.outputs.cache-hit != 'true'
+        run: |
+          source ./setup.sh
+          # DH* TODO - REPLACE jedi-ufs-all with a better environment
+          spack stack create env --template 'jedi-ufs-all' --name mirror
+          spack env activate -d envs/mirror
+          spack compiler find
+          spack add re2c
+          spack add clingo
+          spack concretize
+          # But "spack mirror" doesn't like environment variables:
+          # ==> Error: Invalid url format from url: ${SPACK_STACK_DIR}/cache/source_cache
+          sed -i "s#\${SPACK_STACK_DIR}#$SPACK_STACK_DIR#g" envs/mirror/common/config.yaml
+          spack mirror create -a -d $HOME/spack-mirror
+
+  # Cache externals such as Intel compiler/mpi packages and other mpi builds.
   cache-externals:
     strategy:
       matrix:
         compiler-mpi: [ {compiler: intel, mpi: intel-oneapi-mpi}, {compiler: gcc@9, mpi: mpich@4} ]
-        #mpi: [intel-oneapi-mpi, mpich]
     runs-on: ubuntu-20.04
     steps:
 
@@ -39,7 +78,7 @@ jobs:
           mpi: ${{ matrix.compiler-mpi.mpi }}
 
   build-spack-stack:
-    needs: cache-externals
+    needs: [cache-externals, cache-spack-mirror]
     strategy:
       matrix:
         compiler-mpi: [ {compiler: intel, mpi: intel-oneapi-mpi}, {compiler: gcc@9, mpi: mpich@4} ]
@@ -60,7 +99,5 @@ jobs:
           specs: ${{ matrix.spec }}
           compiler: ${{ matrix.compiler-mpi.compiler }}
           mpi: ${{ matrix.compiler-mpi.mpi }}
-          #compiler: intel
-          #mpi: intel-oneapi-mpi
           path: ${{ github.workspace }}
           site: linux.default

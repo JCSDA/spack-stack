@@ -121,8 +121,8 @@ runs:
     id: cache-opt
     uses: actions/cache@v2
     with:
-      path: /opt
-      key: opt-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
+      path: /opt/intel
+      key: opt-intel-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
   - name: check-cache-opt
     shell: bash
@@ -138,12 +138,25 @@ runs:
       path: ~/mpi
       key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
-  # MPI takes a long time to build. Built it externally and cache it.
   - name: check-cache-mpi
     shell: bash
     if: steps.cache-mpi.outputs.cache-hit != 'true'
     run: |
-      echo "Cached ~/mpi not found!"
+      echo "Cached $HOME/mpi not found!"
+      exit 1
+
+  - name: cache-spack-mirror
+    id: cache-spack-mirror
+    uses: actions/cache@v2
+    with:
+      path: $HOME/spack-mirror
+      key: spack-mirror.${{ runner.os }}3
+
+  - name: check-cache-spack-mirror
+    shell: bash
+    if: steps.cache-spack-mirror.outputs.cache-hit != 'true'
+    run: |
+      echo "Cached $HOME/spack-mirror not found!"
       exit 1
 
   ## MPI takes a long time to build. Built it externally and cache it.
@@ -293,13 +306,18 @@ runs:
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
+      # DH* STILL NEEDED ??? if [[ "$RUNNER_OS" == "macOS" ]]; then
+      # DH* STILL NEEDED ???   # Pin Python to 3.10
+      # DH* STILL NEEDED ???   spack config add "packages:python:version:[3.10]"
+      # DH* STILL NEEDED ???   # Turn of SSL for ecflow CI builds for now
+      # DH* STILL NEEDED ???   spack config add "packages:ecflow:variants:~ssl"
+      # DH* STILL NEEDED ??? fi
 
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Pin Python to 3.10
-        spack config add "packages:python:version:[3.10]"
-        # Turn of SSL for ecflow CI builds for now
-        spack config add "packages:ecflow:variants:~ssl"
-      fi
+      # Add spack mirror
+      ls $HOME/spack-mirror
+      #spack mirror add 
+      spack mirror list
+      exit 1
 
       cat ${SPACK_ENV}/spack.yaml
 
