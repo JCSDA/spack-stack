@@ -69,16 +69,16 @@ runs:
         # and also get rid of the macOS homebrew installation/package config
         sudo apt-get install qt5-default qttools5-dev-tools libqt5svg5-dev
 
-        if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-            cd /tmp
-            wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-            sudo apt-get update
-            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
-            echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-        fi
+        # if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        #     cd /tmp
+        #     wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+        #     sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+        #     rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+        #     echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+        #     sudo apt-get update
+        #     sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
+        #     echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
+        # fi
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         # These are already installed
         #brew install curl
@@ -117,6 +117,20 @@ runs:
       # Install Python poetry to avoid install errors in spack
       python3 -m pip install poetry
 
+  - name: cache-opt
+    id: cache-opt
+    uses: actions/cache@v2
+    with:
+      path: /opt
+      key: opt-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
+
+  - name: check-cache-opt
+    shell: bash
+    if: steps.cache-opt.outputs.cache-hit != 'true'
+    run: |
+      echo "Cached /opt/intel not found!"
+      exit 1
+
   - name: cache-mpi
     id: cache-mpi
     uses: actions/cache@v2
@@ -125,77 +139,85 @@ runs:
       key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
   # MPI takes a long time to build. Built it externally and cache it.
-  - name: install-mpi
+  - name: check-cache-mpi
     shell: bash
-    env:
-      OMP_NUM_THREADS: 4
     if: steps.cache-mpi.outputs.cache-hit != 'true'
     run: |
-        echo "" >> ~/.bash_profile
+      echo "Cached ~/mpi not found!"
+      exit 1
 
-        if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
-          export CC=gcc-9
-          export FC=gfortran-9
-          export CXX=g++-9
-        elif [[ "${{ inputs.compiler }}" == "gcc@10"* ]]; then
-          export CC=gcc-10
-          export FC=gfortran-10
-          export CXX=g++-10
-          export FFLAGS="-fallow-argument-mismatch"
-          export FCFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == "gcc@11"* ]]; then
-          export CC=gcc-11
-          export FC=gfortran-11
-          export CXX=g++-11
-          export FFLAGS="-fallow-argument-mismatch"
-          export FCFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
-          export CC=clang
-          export FC=gfortran-10
-          export CXX=clang++
-          export FFLAGS="-fallow-argument-mismatch"
-          export FCFLAGS="-fallow-argument-mismatch"
-        fi
-
-        export MPICH_VERSION="4.0.2"
-        export OPENMPI_VERSION="4.1.4"
-
-        if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
-          tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
-          cd openmpi-${OPENMPI_VERSION}
-          # --with-hwloc=internal --with-libevent=internal : https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            ./configure --prefix=$HOME/mpi \
-                --enable-mpi-fortran --enable-mpi-cxx \
-                --with-hwloc=internal --with-libevent=internal \
-                --with-wrapper-ldflags="-Wl,-commons,use_dylibs" \
-                LIBS="-Wl,-commons,use_dylibs"
-          else
-            ./configure --prefix=$HOME/mpi \
-                --enable-mpi-fortran --enable-mpi-cxx \
-                --with-hwloc=internal --with-libevent=internal
-          fi
-          make -j4
-          make install
-        elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
-          wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
-          tar -xzf mpich-${MPICH_VERSION}.tar.gz
-          cd mpich-${MPICH_VERSION}
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            ./configure --prefix=$HOME/mpi \
-                --enable-fortran --enable-cxx \
-                --with-device=ch4:ofi \
-                --enable-two-level-namespace \
-                LIBS="-Wl,-commons,use_dylibs"
-          else
-            ./configure --prefix=$HOME/mpi \
-                --enable-fortran --enable-cxx \
-                --with-device=ch4:ofi
-          fi
-          make -j4
-          make install
-        fi
+  ## MPI takes a long time to build. Built it externally and cache it.
+  #- name: install-mpi
+  #  shell: bash
+  #  env:
+  #    OMP_NUM_THREADS: 4
+  #  if: steps.cache-mpi.outputs.cache-hit != 'true'
+  #  run: |
+  #      echo "" >> ~/.bash_profile
+  #
+  #      if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
+  #        export CC=gcc-9
+  #        export FC=gfortran-9
+  #        export CXX=g++-9
+  #      elif [[ "${{ inputs.compiler }}" == "gcc@10"* ]]; then
+  #        export CC=gcc-10
+  #        export FC=gfortran-10
+  #        export CXX=g++-10
+  #        export FFLAGS="-fallow-argument-mismatch"
+  #        export FCFLAGS="-fallow-argument-mismatch"
+  #      elif [[ "${{ inputs.compiler }}" == "gcc@11"* ]]; then
+  #        export CC=gcc-11
+  #        export FC=gfortran-11
+  #        export CXX=g++-11
+  #        export FFLAGS="-fallow-argument-mismatch"
+  #        export FCFLAGS="-fallow-argument-mismatch"
+  #      elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
+  #        export CC=clang
+  #        export FC=gfortran-10
+  #        export CXX=clang++
+  #        export FFLAGS="-fallow-argument-mismatch"
+  #        export FCFLAGS="-fallow-argument-mismatch"
+  #      fi
+  #
+  #      export MPICH_VERSION="4.0.2"
+  #      export OPENMPI_VERSION="4.1.4"
+  #
+  #      if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
+  #        wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
+  #        tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
+  #        cd openmpi-${OPENMPI_VERSION}
+  #        # --with-hwloc=internal --with-libevent=internal : https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
+  #        if [[ "$RUNNER_OS" == "macOS" ]]; then
+  #          ./configure --prefix=$HOME/mpi \
+  #              --enable-mpi-fortran --enable-mpi-cxx \
+  #              --with-hwloc=internal --with-libevent=internal \
+  #              --with-wrapper-ldflags="-Wl,-commons,use_dylibs" \
+  #              LIBS="-Wl,-commons,use_dylibs"
+  #        else
+  #          ./configure --prefix=$HOME/mpi \
+  #              --enable-mpi-fortran --enable-mpi-cxx \
+  #              --with-hwloc=internal --with-libevent=internal
+  #        fi
+  #        make -j4
+  #        make install
+  #      elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
+  #        wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
+  #        tar -xzf mpich-${MPICH_VERSION}.tar.gz
+  #        cd mpich-${MPICH_VERSION}
+  #        if [[ "$RUNNER_OS" == "macOS" ]]; then
+  #          ./configure --prefix=$HOME/mpi \
+  #              --enable-fortran --enable-cxx \
+  #              --with-device=ch4:ofi \
+  #              --enable-two-level-namespace \
+  #              LIBS="-Wl,-commons,use_dylibs"
+  #        else
+  #          ./configure --prefix=$HOME/mpi \
+  #              --enable-fortran --enable-cxx \
+  #              --with-device=ch4:ofi
+  #        fi
+  #        make -j4
+  #        make install
+  #      fi
 
   - name: setup-spack-env
     shell: bash

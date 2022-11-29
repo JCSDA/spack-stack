@@ -19,7 +19,7 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  build:
+  cache-externals:
     strategy:
       matrix:
         compiler-mpi: [ {compiler: intel, mpi: intel-oneapi-mpi}, {compiler: gcc@9, mpi: mpich@4} ]
@@ -37,3 +37,30 @@ jobs:
         with:
           compiler: ${{ matrix.compiler-mpi.compiler }}
           mpi: ${{ matrix.compiler-mpi.mpi }}
+
+  build-spack-stack:
+    needs: cache-externals
+    strategy:
+      matrix:
+        compiler-mpi: [ {compiler: intel, mpi: intel-oneapi-mpi}, {compiler: gcc@9, mpi: mpich@4} ]
+        template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
+        spec: ['']
+    runs-on: ubuntu-20.04
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          templates: ${{ matrix.template }}
+          specs: ${{ matrix.spec }}
+          compiler: ${{ matrix.compiler-mpi.compiler }}
+          mpi: ${{ matrix.compiler-mpi.mpi }}
+          #compiler: intel
+          #mpi: intel-oneapi-mpi
+          path: ${{ github.workspace }}
+          site: linux.default

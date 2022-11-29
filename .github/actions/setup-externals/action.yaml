@@ -75,32 +75,33 @@ runs:
       # Install Python poetry to avoid install errors in spack
       python3 -m pip install poetry
 
-  - name: cache-opt
-    id: cache-opt
+  - name: cache-opt-intel
+    id: cache-opt-intel
     uses: actions/cache@v2
     with:
-      path: /opt
-      key: opt-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
+      path: /opt/intel
+      key: opt-intel-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
-  - name: install-opt
+  - name: install-opt-intel
     shell: bash
     env:
       OMP_NUM_THREADS: 4
-    if: steps.cache-opt.outputs.cache-hit != 'true'
+    if: steps.cache-opt-intel.outputs.cache-hit != 'true'
     run: |
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-            cd /tmp
-            wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-            sudo apt-get update
-            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
-            # DH* this needs to go elsewhere
-            #echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-            # *DH
+          cd /tmp
+          wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+          sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+          rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+          echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
+          sudo apt-get update
+          sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
+        else
+            mkdir -p /opt/intel
         fi
+      else
+        mkdir -p /opt/intel
       fi
 
   - name: cache-mpi
@@ -140,6 +141,10 @@ runs:
         export CXX=clang++
         export FFLAGS="-fallow-argument-mismatch"
         export FCFLAGS="-fallow-argument-mismatch"
+      elif [[ "${{ inputs.compiler }}" == "intel"* ]]; then
+        export CC=icc
+        export FC=ifort
+        export CXX=icpc
       fi
 
       export MPICH_VERSION="4.0.2"
@@ -180,4 +185,6 @@ runs:
         fi
         make -j4
         make install
+      else
+        mkdir -p $HOME/mpi
       fi
