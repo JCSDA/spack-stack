@@ -1,0 +1,67 @@
+name: 'setup-os'
+description: 'Creates a Spack environment. Requires -l in shell so bash_profile is sourced.'
+
+runs:
+  using: "composite"
+
+  steps:
+
+  - name: os-setup
+    shell: bash
+    run: |
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
+        # Needed for the following apt-get install calls to work
+        sudo apt-get update
+
+        # Install Curl/ssl headers. Executables exist by default in spack external find.
+        sudo apt-get install libcurl4-openssl-dev
+        sudo apt-get install libssl-dev
+
+        # Install git-lfs to avoid compilation errors of "go" with Intel
+        sudo apt-get install git-lfs
+
+        # Install krb5 to avoid compilation errors of "hdf" on Ubuntu
+        sudo apt-get install krb5-user libkrb5-dev
+
+        # For now, install qt5 using apt on Linux. Later, should consider
+        # using https://github.com/jurplel/install-qt-action for all runners
+        # and also get rid of the macOS homebrew installation/package config
+        sudo apt-get install qt5-default qttools5-dev-tools libqt5svg5-dev
+
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        # These are already installed
+        #brew install curl
+        #brew install git
+        #brew install git-lfs
+        # For now we need gcc-10/gfortran-10
+        brew install gcc@10
+        brew install lmod
+        brew install qt@5
+        brew install readline
+        brew install wget
+        ls -l /usr/local/Cellar
+
+        # Remove macOS native Python 3.11 from /usr/local/bin
+        cd /usr/local/bin
+        rm 2to3-3.11
+        rm idle3.11
+        rm pip3.11
+        rm pydoc3.11
+        rm python3.11
+        rm python3.11-config
+        rm python3.11-intel64
+        ln -sf ../Cellar/python@3.10/3.10.8/bin/2to3-3.10 2to3 
+        ln -sf ../Cellar/python@3.10/3.10.8/bin/idle3.10 idle3
+        ln -sf ../Cellar/python@3.10/3.10.8/bin/pip3.10 pip3
+        ln -sf ../Cellar/python@3.10/3.10.8/bin/pydoc3.10 pydoc3
+        ln -sf ../Cellar/python@3.10/3.10.8/bin/python3.10 python3
+        ln -sf ../Cellar/python@3.10/3.10.8/bin/python3.10-config python3-config
+        #ln -sf ... python3-intel64 # doesn't exist
+        ls -l /usr/local/bin
+
+        # Print version of xcode
+        pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
+      fi
+
+      # Install Python poetry to avoid install errors in spack
+      python3 -m pip install poetry

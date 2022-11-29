@@ -1,4 +1,4 @@
-name: ubuntu-setup
+name: ubuntu
 
 on:
   pull_request:
@@ -38,7 +38,7 @@ jobs:
         id: cache-spack-mirror
         uses: actions/cache@v2
         with:
-          path: $HOME/spack-mirror
+          path: ~/spack-mirror
           key: spack-mirror.${{ runner.os }}3
 
       - name: create-spack-mirror
