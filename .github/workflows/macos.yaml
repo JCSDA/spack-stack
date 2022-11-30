@@ -1,0 +1,83 @@
+name: macos
+
+on:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Use custom shell with -l so .bash_profile is sourced
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+jobs:
+
+  # For simplicity, we create this mirror for a standard macos-11 setup,
+  # ignoring potential differences in the concretized environments between
+  # compilers, MPI libraries, templates, ... most of the packages will be
+  # the same, the few missing ones will be fetched from source instead of
+  # the mirror when the spack builds are run.
+  cache-spack-mirror:
+    runs-on: macos-11
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: setup-spack-mirror
+        uses: ./.github/actions/setup-spack-mirror
+
+  # Cache externals such as Intel compiler/mpi packages and other mpi builds.
+  cache-externals:
+    strategy:
+      matrix:
+        compiler-mpi: [ {compiler: apple-clang, mpi: openmpi@4}, {compiler: gcc@10, mpi: mpich@4} ]
+    runs-on: macos-11
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: setup-externals
+        uses: ./.github/actions/setup-externals
+        with:
+          compiler: ${{ matrix.compiler-mpi.compiler }}
+          mpi: ${{ matrix.compiler-mpi.mpi }}
+
+  build-spack-stack:
+    needs: [cache-externals, cache-spack-mirror]
+    strategy:
+      matrix:
+        compiler-mpi: [ {compiler: apple-clang, mpi: openmpi@4}, {compiler: gcc@10, mpi: mpich@4} ]
+        # DH* TEMPORARY, REVERT!
+        #template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
+        template: [skylab-dev]
+        # *DH
+    runs-on: macos-11
+    steps:
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: install-env
+        uses: ./.github/actions/setup-spack-stack
+        with:
+          templates: ${{ matrix.template }}
+          compiler: ${{ matrix.compiler-mpi.compiler }}
+          mpi: ${{ matrix.compiler-mpi.mpi }}
+          path: ${{ github.workspace }}
+          site: macos.default
