@@ -274,7 +274,12 @@ runs:
       spack external find mpich
       spack external find openmpi
       spack external find perl
-      spack external find python
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
+        spack external find --not-buildable python
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        # Jail spack external find to /usr/local to ignore Framework python
+        spack external find --not-buildable --path /usr/local python
+      fi
       spack external find wget
 
       # Make homebrew qt@5 detectable on macOS
