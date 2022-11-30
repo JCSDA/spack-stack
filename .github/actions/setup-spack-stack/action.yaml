@@ -167,12 +167,10 @@ runs:
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
-      # DH* STILL NEEDED ??? if [[ "$RUNNER_OS" == "macOS" ]]; then
-      # DH* STILL NEEDED ???   # Pin Python to 3.10
-      # DH* STILL NEEDED ???   spack config add "packages:python:version:[3.10]"
-      # DH* STILL NEEDED ???   # Turn of SSL for ecflow CI builds for now
-      # DH* STILL NEEDED ???   spack config add "packages:ecflow:variants:~ssl"
-      # DH* STILL NEEDED ??? fi
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
+        # Turn of SSL for ecflow CI builds for now
+        spack config add "packages:ecflow:variants:~ssl"
+      fi
 
       set +eo pipefail
       # Remove specs that don't build under certain configurations.
