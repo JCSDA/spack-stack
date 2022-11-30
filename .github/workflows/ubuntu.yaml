@@ -61,10 +61,7 @@ jobs:
     strategy:
       matrix:
         compiler-mpi: [ {compiler: intel, mpi: intel-oneapi-mpi}, {compiler: gcc@9, mpi: mpich@4} ]
-        # DH* TEMPORARY, REVERT!
-        #template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
-        template: [skylab-dev]
-        # *DH
+        template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
     runs-on: ubuntu-20.04
     steps:
 

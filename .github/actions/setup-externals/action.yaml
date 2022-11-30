@@ -21,6 +21,7 @@ runs:
   - name: cache-opt-intel
     id: cache-opt-intel
     uses: actions/cache@v2
+    if: runner.os == 'Linux'
     with:
       path: /opt/intel
       key: opt-intel-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
@@ -29,7 +30,7 @@ runs:
     shell: bash
     env:
       OMP_NUM_THREADS: 4
-    if: steps.cache-opt-intel.outputs.cache-hit != 'true'
+    if: steps.cache-opt-intel.outputs.cache-hit != 'true' && runner.os == 'Linux'
     run: |
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         if [[ "${{ inputs.compiler }}" == "intel"* ]]; then

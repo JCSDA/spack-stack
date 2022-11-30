@@ -46,16 +46,17 @@ runs:
   - name: os-setup
     uses: ./.github/actions/setup-os
 
-  - name: cache-opt
-    id: cache-opt
+  - name: cache-opt-intel
+    id: cache-opt-intel
     uses: actions/cache@v2
+    if: runner.os == 'Linux'
     with:
       path: /opt/intel
       key: opt-intel-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
-  - name: check-cache-opt
+  - name: check-cache-opt-intel
     shell: bash
-    if: steps.cache-opt.outputs.cache-hit != 'true'
+    if: steps.cache-opt-intel.outputs.cache-hit != 'true' && runner.os == 'Linux'
     run: |
       echo "Cached /opt/intel not found!"
       exit 1
