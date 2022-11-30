@@ -30,5 +30,9 @@ runs:
       spack concretize
       # But "spack mirror" doesn't like environment variables:
       # ==> Error: Invalid url format from url: ${SPACK_STACK_DIR}/cache/source_cache
-      sed -i "s#\${SPACK_STACK_DIR}#$SPACK_STACK_DIR#g" envs/mirror/common/config.yaml
+      if [[ "$RUNNER_OS" == "Linux" ]]; then
+        sed -i "s#\${SPACK_STACK_DIR}#$SPACK_STACK_DIR#g" envs/mirror/common/config.yaml
+      elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        sed -i "" "s#\${SPACK_STACK_DIR}#$SPACK_STACK_DIR#g" envs/mirror/common/config.yaml
+      fi
       spack mirror create -a -d $HOME/spack-mirror
