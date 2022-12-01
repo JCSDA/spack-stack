@@ -1,5 +1,5 @@
 name: 'setup-spack-stack'
-description: 'Creates a Spack environment. Requires -l in shell so bash_profile is sourced.'
+description: 'Creates a spack environment.'
 inputs:
   name:
     description: 'Give the environment a name'
@@ -9,10 +9,6 @@ inputs:
     description: 'Base spack.yaml templates. Default is an empty environment.'
     required: false
     default: 'empty'
-  specs:
-    description: 'Which specs to add to the environment'
-    required: false
-    default: ''
   compiler:
     description: 'Compiler (available options gcc@9, gcc@10, apple-clang, intel)'
     required: true
@@ -48,74 +44,22 @@ runs:
       submodules: true
 
   - name: os-setup
+    uses: ./.github/actions/setup-os
+
+  - name: cache-opt-intel
+    id: cache-opt-intel
+    uses: actions/cache@v2
+    if: runner.os == 'Linux'
+    with:
+      path: /opt/intel
+      key: opt-intel-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
+
+  - name: check-cache-opt-intel
     shell: bash
+    if: steps.cache-opt-intel.outputs.cache-hit != 'true' && runner.os == 'Linux'
     run: |
-      if [[ "$RUNNER_OS" == "Linux" ]]; then
-        # Needed for the following apt-get install calls to work
-        sudo apt-get update
-
-        # Install Curl/ssl headers. Executables exist by default in spack external find.
-        sudo apt-get install libcurl4-openssl-dev
-        sudo apt-get install libssl-dev
-
-        # Install git-lfs to avoid compilation errors of "go" with Intel
-        sudo apt-get install git-lfs
-
-        # Install krb5 to avoid compilation errors of "hdf" on Ubuntu
-        sudo apt-get install krb5-user libkrb5-dev
-
-        # For now, install qt5 using apt on Linux. Later, should consider
-        # using https://github.com/jurplel/install-qt-action for all runners
-        # and also get rid of the macOS homebrew installation/package config
-        sudo apt-get install qt5-default qttools5-dev-tools libqt5svg5-dev
-
-        if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
-            cd /tmp
-            wget https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            sudo apt-key add GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            rm GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
-            echo "deb https://apt.repos.intel.com/oneapi all main" | sudo tee /etc/apt/sources.list.d/oneAPI.list
-            sudo apt-get update
-            sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
-            echo "source /opt/intel/oneapi/setvars.sh" >> ~/.bash_profile
-        fi
-      elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # These are already installed
-        #brew install curl
-        #brew install git
-        #brew install git-lfs
-        # For now we need gcc-10/gfortran-10
-        brew install gcc@10
-        brew install lmod
-        brew install qt@5
-        brew install readline
-        brew install wget
-        ls -l /usr/local/Cellar
-
-        # Remove macOS native Python 3.11 from /usr/local/bin
-        cd /usr/local/bin
-        rm 2to3-3.11
-        rm idle3.11
-        rm pip3.11
-        rm pydoc3.11
-        rm python3.11
-        rm python3.11-config
-        rm python3.11-intel64
-        ln -sf ../Cellar/python@3.10/3.10.8/bin/2to3-3.10 2to3 
-        ln -sf ../Cellar/python@3.10/3.10.8/bin/idle3.10 idle3
-        ln -sf ../Cellar/python@3.10/3.10.8/bin/pip3.10 pip3
-        ln -sf ../Cellar/python@3.10/3.10.8/bin/pydoc3.10 pydoc3
-        ln -sf ../Cellar/python@3.10/3.10.8/bin/python3.10 python3
-        ln -sf ../Cellar/python@3.10/3.10.8/bin/python3.10-config python3-config
-        #ln -sf ... python3-intel64 # doesn't exist
-        ls -l /usr/local/bin
-
-        # Print version of xcode
-        pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
-      fi
-
-      # Install Python poetry to avoid install errors in spack
-      python3 -m pip install poetry
+      echo "Cached /opt/intel not found!"
+      exit 1
 
   - name: cache-mpi
     id: cache-mpi
@@ -124,78 +68,26 @@ runs:
       path: ~/mpi
       key: mpi-${{ inputs.mpi }}-${{ inputs.compiler }}.${{ runner.os }}3
 
-  # MPI takes a long time to build. Built it externally and cache it.
-  - name: install-mpi
+  - name: check-cache-mpi
     shell: bash
-    env:
-      OMP_NUM_THREADS: 4
     if: steps.cache-mpi.outputs.cache-hit != 'true'
     run: |
-        echo "" >> ~/.bash_profile
+      echo "Cached ~/mpi not found!"
+      exit 1
 
-        if [[ "${{ inputs.compiler }}" == "gcc@9"* ]]; then
-          export CC=gcc-9
-          export FC=gfortran-9
-          export CXX=g++-9
-        elif [[ "${{ inputs.compiler }}" == "gcc@10"* ]]; then
-          export CC=gcc-10
-          export FC=gfortran-10
-          export CXX=g++-10
-          export FFLAGS="-fallow-argument-mismatch"
-          export FCFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == "gcc@11"* ]]; then
-          export CC=gcc-11
-          export FC=gfortran-11
-          export CXX=g++-11
-          export FFLAGS="-fallow-argument-mismatch"
-          export FCFLAGS="-fallow-argument-mismatch"
-        elif [[ "${{ inputs.compiler }}" == "apple-clang"* ]]; then
-          export CC=clang
-          export FC=gfortran-10
-          export CXX=clang++
-          export FFLAGS="-fallow-argument-mismatch"
-          export FCFLAGS="-fallow-argument-mismatch"
-        fi
+  - name: cache-spack-mirror
+    id: cache-spack-mirror
+    uses: actions/cache@v2
+    with:
+      path: ~/spack-mirror
+      key: spack-mirror.${{ runner.os }}3
 
-        export MPICH_VERSION="4.0.2"
-        export OPENMPI_VERSION="4.1.4"
-
-        if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
-          tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
-          cd openmpi-${OPENMPI_VERSION}
-          # --with-hwloc=internal --with-libevent=internal : https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            ./configure --prefix=$HOME/mpi \
-                --enable-mpi-fortran --enable-mpi-cxx \
-                --with-hwloc=internal --with-libevent=internal \
-                --with-wrapper-ldflags="-Wl,-commons,use_dylibs" \
-                LIBS="-Wl,-commons,use_dylibs"
-          else
-            ./configure --prefix=$HOME/mpi \
-                --enable-mpi-fortran --enable-mpi-cxx \
-                --with-hwloc=internal --with-libevent=internal
-          fi
-          make -j4
-          make install
-        elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
-          wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
-          tar -xzf mpich-${MPICH_VERSION}.tar.gz
-          cd mpich-${MPICH_VERSION}
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            ./configure --prefix=$HOME/mpi \
-                --enable-fortran --enable-cxx \
-                --with-device=ch4:ofi \
-                --enable-two-level-namespace \
-                LIBS="-Wl,-commons,use_dylibs"
-          else
-            ./configure --prefix=$HOME/mpi \
-                --enable-fortran --enable-cxx \
-                --with-device=ch4:ofi
-          fi
-          make -j4
-          make install
-        fi
+  - name: check-cache-spack-mirror
+    shell: bash
+    if: steps.cache-spack-mirror.outputs.cache-hit != 'true'
+    run: |
+      echo "Cached ~/spack-mirror not found!"
+      exit 1
 
   - name: setup-spack-env
     shell: bash
@@ -208,7 +100,6 @@ runs:
       source setup.sh
       spack stack create env --template ${{ inputs.templates }} --name ${{ inputs.name }} --site ${{ inputs.site }}
       spack env activate envs/${{ inputs.name }}
-      spack add ${{ inputs.specs }}
 
       if [[ "${{ inputs.compiler }}" == "intel"* ]]; then
         spack compiler add /opt/intel/oneapi/compiler/latest/linux/bin/intel64
@@ -276,15 +167,10 @@ runs:
 
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
 
-
       if [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Pin Python to 3.10
-        spack config add "packages:python:version:[3.10]"
         # Turn of SSL for ecflow CI builds for now
         spack config add "packages:ecflow:variants:~ssl"
       fi
-
-      cat ${SPACK_ENV}/spack.yaml
 
       set +eo pipefail
       # Remove specs that don't build under certain configurations.
@@ -298,6 +184,14 @@ runs:
         spack rm jedi-ewok-env || true
       fi
       set -eo pipefail
+
+      # Add spack mirror
+      echo "Contents of local spack mirror:"
+      ls $HOME/spack-mirror
+      spack mirror add local file:///home/runner/spack-mirror
+      spack mirror list
+
+      cat ${SPACK_ENV}/spack.yaml
 
       mkdir ${GITHUB_WORKSPACE}/logs
 
@@ -337,7 +231,7 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.specs }}" == "" || ! "${{ inputs.templates }}" == "empty" ]]; then
+      if [[ ! "${{ inputs.templates }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         source setup.sh
         spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
@@ -349,7 +243,7 @@ runs:
     if: ${{ inputs.concretize_only == 'false' }}
     shell: bash
     run: |
-      if [[ ! "${{ inputs.specs }}" == "" || ! "${{ inputs.templates }}" == "empty" ]]; then
+      if [[ ! "${{ inputs.templates }}" == "empty" ]]; then
         cd ${{ inputs.path }}
         if [[ "$RUNNER_OS" == "Linux" ]]; then
           # Not yet: need lmod installed, loaded and module use command
