@@ -95,7 +95,7 @@
     grib-util:
       version: [1.2.3]
     gsibec:
-      version: [1.0.5]
+      version: [1.0.6]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -178,7 +178,7 @@
       # don't really need tiff ...
       variants: ~tiff
     python:
-      version: [3.9.12]
+      version: [3.10.8]
     py-cartopy:
       variants: +plotting
     py-click:
@@ -254,7 +254,7 @@
     upp:
       version: [10.0.10]
     w3emc:
-      version: [2.9.1]
+      version: [2.9.2]
     w3nco:
       version: [2.4.1]
     wget:

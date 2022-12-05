@@ -5,7 +5,7 @@
   #url = https://github.com/NOAA-EMC/spack
   #branch = jcsda_emc_spack_stack
   url = https://github.com/climbfuji/spack
-  branch = feature/update_ecflow_add_scipy_jedi_tools
+  branch = feature/ufs-env-plus-sp-base-env-new
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
