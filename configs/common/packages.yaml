@@ -70,7 +70,7 @@
     findutils:
       version: [4.8.0]
     flex:
-      version: [2.6.3]
+      version: [2.6.4]
     # Attention - when updating also check the macos.default site config and
     # the various jcsda-emc-bundles env packages
     fms:
