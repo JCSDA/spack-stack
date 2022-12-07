@@ -20,8 +20,8 @@ runs:
         # Install git-lfs to avoid compilation errors of "go" with Intel
         sudo apt-get install git-lfs
 
-        # Install krb5 to avoid compilation errors of "hdf" on Ubuntu
-        sudo apt-get install krb5-user libkrb5-dev
+        # Do not install krb5 - this leads to duplicate packages being built on Ubuntu
+        #sudo apt-get install krb5-user libkrb5-dev
 
         # For now, install qt5 using apt on Linux. Later, should consider
         # using https://github.com/jurplel/install-qt-action for all runners

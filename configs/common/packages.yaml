@@ -70,7 +70,7 @@
     findutils:
       version: [4.8.0]
     flex:
-      version: [2.6.3]
+      version: [2.6.4]
     # Attention - when updating also check the macos.default site config and
     # the various jcsda-emc-bundles env packages
     fms:
@@ -228,7 +228,7 @@
       version: [59.4.0]
     # Pin the py-setuptools-scm version to avoid duplicate Python packages
     py-setuptools-scm:
-      version: [6.3.2]
+      version: [7.0.5]
     py-shapely:
       version: [1.8.0]
     qt:
@@ -254,7 +254,7 @@
     upp:
       version: [10.0.10]
     w3emc:
-      version: [2.9.1]
+      version: [2.9.2]
     w3nco:
       version: [2.4.1]
     wget:
