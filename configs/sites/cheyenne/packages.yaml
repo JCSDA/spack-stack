@@ -63,10 +63,10 @@ packages:
     externals:
     - spec: berkeley-db@4.8.30
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@2.7
-      prefix: /usr
+  #bison:
+  # externals:
+  # - spec: bison@2.7
+  #   prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -101,10 +101,11 @@ packages:
       prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
-  expat:
-    externals:
-    - spec: expat@1.6.0
-      prefix: /usr
+  # Don't use, leads to duplicate packages being built
+  #expat:
+  #  externals:
+  #  - spec: expat@1.6.0
+  #    prefix: /usr
   file:
     externals:
     - spec: file@5.22

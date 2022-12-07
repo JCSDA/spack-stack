@@ -56,10 +56,10 @@ packages:
     externals:
     - spec: berkeley-db@4.8.30
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@2.7
-      prefix: /usr
+  #bison:
+  #  externals:
+  #  - spec: bison@2.7
+  #    prefix: /usr
   ccache:
     externals:
     - spec: ccache@3.1.9
@@ -101,10 +101,10 @@ packages:
     externals:
     - spec: findutils@4.5.12
       prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.5.37+lex
-      prefix: /usr
+  #flex:
+  #  externals:
+  #  - spec: flex@2.5.37+lex
+  #    prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.1.0
