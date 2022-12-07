@@ -24,6 +24,7 @@ spack:
 
     # Individual packages
     - bacio@2.4.1
+    # Do not request specific version of bison - this leads to duplicate packages being built
     #- bison@3.8.2
     - bufr@11.7.1
     - crtm@2.3.0
@@ -43,6 +44,7 @@ spack:
     - fckit@0.9.5
     # DH* fake version number
     - fiat@1.0.0
+    # Do not request specific version of flex - this leads to duplicate packages being built
     #- flex@2.6.4
     - fms@2022.02
     # DH* fake version number
