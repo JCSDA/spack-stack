@@ -76,7 +76,7 @@ spack:
     grib-util:
       version: [1.2.3]
     gsibec:
-      version: [1.0.5]
+      version: [1.0.6]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -149,7 +149,7 @@ spack:
       version: [8.1.0]
       variants: ~tiff
     python:
-      version: [3.9.12]
+      version: [3.10.8]
     py-cartopy:
       variants: +plotting
     py-click:
