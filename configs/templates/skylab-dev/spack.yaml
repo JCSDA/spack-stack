@@ -24,7 +24,8 @@ spack:
 
     # Individual packages
     - bacio@2.4.1
-    - bison@3.8.2
+    # Do not request specific version of bison - this leads to duplicate packages being built
+    #- bison@3.8.2
     - bufr@11.7.1
     - crtm@2.3.0
     - crtm@2.4.0
@@ -44,7 +45,8 @@ spack:
     - fckit@0.9.5
     # DH* fake version number
     - fiat@1.0.0
-    - flex@2.6.4
+    # Do not request specific version of flex - this leads to duplicate packages being built
+    #- flex@2.6.4
     - fms@2022.02
     # DH* fake version number
     - fms@release-jcsda
@@ -53,7 +55,7 @@ spack:
     #- gdal@3.4.3
     #- geos@3.9.1
     - gftl-shared@1.5.0
-    - gsibec@1.0.5
+    - gsibec@1.0.6
     - hdf5@1.12.1
     - hdf@4.2.15
     - ip@3.3.3
@@ -63,6 +65,7 @@ spack:
     - mapl@2.22.0
     - nccmp@1.9.0.1
     - ncview@2.1.8
+    - nemsio@2.5.2
     - netcdf-c@4.8.1
     - netcdf-cxx4@4.3.1
     - netcdf-fortran@4.5.4
@@ -83,9 +86,11 @@ spack:
     #- r2d2@0.0.1
     # DH* fake version number
     - shumlib@macos_clang_linux_intel_port
+    - sigio@2.3.2
     #- solo@1.0.0
     - sp@2.3.3
     - udunits@2.2.28
+    - w3emc@2.9.2
     - w3nco@2.4.1
     - yafyaml@0.5.1
     - zlib@1.2.13
