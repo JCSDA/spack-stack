@@ -3,7 +3,7 @@
   ##url = https://github.com/spack/spack
   ##branch = develop
   #url = https://github.com/NOAA-EMC/spack
-  #branch = jcsda_emc_spack_stack
+  #branch = release/1.2.0
   url = https://github.com/climbfuji/spack
   branch = feature/crtm_build_type_v2p4_jedip1
 [submodule "doc/CMakeModules"]
