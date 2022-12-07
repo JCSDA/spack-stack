@@ -4,6 +4,7 @@ spack:
   view: false
 
   config:
+    checksum: false
     build_jobs: 2
     connect_timeout: 60
 
@@ -30,6 +31,7 @@ spack:
   # Additional package config for container
   packages:
     all:
+      target: [core2]
       providers:
         mpi: [intel-oneapi-mpi@2021.6.0]
       compiler: [intel@2022.1.0]
@@ -80,13 +82,13 @@ spack:
     format: docker
     # How to use:
     #$ spack containerize > Dockerfile
-    #$ docker build -t myimage .
-    #$ docker run -it myimage
+    #$ sudo docker build -t myimage .
+    #$ sudo docker run -it myimage
 
     #format: singularity
     # How to use:
-    #$ spack containerize > hdf5.def
-    #$ sudo singularity build hdf5.sif hdf5.def
+    #$ spack containerize > singularity.def
+    #$ sudo singularity build singularity.sif singularity.def
 
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
@@ -103,6 +105,7 @@ spack:
     ## Additional system packages that are needed at runtime
     os_packages:
       build:
+      - bc
       - cpp
       - g++
       - gcc
@@ -117,6 +120,7 @@ spack:
       - wget
 
       final:
+      - bc
       - cpp
       - g++
       - gcc
@@ -159,15 +163,12 @@ spack:
         ENV CXX=icpc
         ENV FC=ifort
       final: |
-        # Mark Potts had this:
-        # RUN export TZ=America/New_York && ln -snf /usr/share/zoneinfo/$TZ /etc/localtime
-        # && echo $TZ > /etc/timezone && apt update && apt install -y tzdata
         RUN apt update  && apt install apt-utils && \
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
         apt update && \
         apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 -y
-        #Make a non-root user:nonroot / group:nonroot for running MPI
+        # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
         echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
@@ -178,6 +179,17 @@ spack:
         echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /home/nonroot/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
+        # Replicate settings for root user
+        RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
+        echo "ulimit -v unlimited" >> /root/.bashrc && \
+        echo "export CC=icc" >> /root/.bashrc && \
+        echo "export CXX=icpc" >> /root/.bashrc && \
+        echo "export FC=ifort" >> /root/.bashrc && \
+        echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /root/.bashrc && \
+        echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /root/.bashrc && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
+        # Source spack environment script for root
+        RUN echo "source /etc/profile.d/z10_spack_environment.sh\n" >> /root/.bashrc
 
     # Labels for the image
     labels:

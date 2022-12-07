@@ -20,45 +20,51 @@ spack-stack-v1
 .. note::
    This version supports the JEDI Skylab release end of June/beginning of July 2022, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model). Amazon Web Services AMI are available in the US East 1 region.
 
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| System                                                   | Maintainers               | Location                                                                                                |
-+==========================================================+===========================+=========================================================================================================+
-| MSU Orion Intel                                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2022.0.2/install``           |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| MSU Orion GNU                                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.2.0/install``               |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2022.0.1/install``           |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.1.0/install``               |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne Intel                              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217/install`` |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne GNU                                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.1.0/install``       |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud)                 |                           | not yet supported - coming soon                                                                         |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea                                         | Dom Heinzeller            | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.3.0/install``       |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera Intel                                   | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.5.0/install``        |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera GNU                                     | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-9.2.0/install``             |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet Intel                                    |                           | not yet supported - coming soon                                                                         |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet GNU                                      |                           | not yet supported - coming soon                                                                         |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| TACC Frontera Intel                                      |                           | not yet supported - coming soon                                                                         |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| TACC Frontera GNU                                        |                           | not yet supported - coming soon                                                                         |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4                                   | Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.5.0/install``                 |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Parallelcluster Ubuntu 20.04 GNU |                           | not yet supported - coming soon                                                                         |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Ubuntu 20.04 GNU                 | Dom Heinzeller            | ``/home/ubuntu/spack-stack-v1/envs/skylab-2.0.0-gcc-10.3.0/install``                                    |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU                    | Dom Heinzeller            | ``/home/ec2-user/spack-stack-v1/envs/skylab-2.0.0-gcc-11.2.1/install``                                  |
-+----------------------------------------------------------+---------------------------+---------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| System                                                   | Maintainers               | Location                                                                                                           |
++==========================================================+===========================+====================================================================================================================+
+| MSU Orion Intel                                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2022.0.2/install``                      |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| MSU Orion GNU                                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.2.0/install``                          |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NASA Discover Intel                                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2022.0.1/install``                      |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.1.0/install``                          |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.3.0/install``                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217-casper/install``     |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne Intel                              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217/install``            |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne GNU                                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-10.1.0/install``                  |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NOAA Parallel Works (AWS, Azure, Gcloud)                 |                           | not yet supported - coming soon                                                                                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea                                         | Dom Heinzeller            | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.3.0/install``                  |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Hera Intel                                   | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.5.0/install``                   |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Hera GNU                                     | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-2.0.0-gnu-9.2.0/install``                        |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Jet Intel                                    |                           | not yet supported - coming soon                                                                                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Jet GNU                                      |                           | not yet supported - coming soon                                                                                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| TACC Frontera Intel                                      |                           | not yet supported - coming soon                                                                                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| TACC Frontera GNU                                        |                           | not yet supported - coming soon                                                                                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| UW (Univ. of Wisc.) S4                                   | Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.5.0/install``                            |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Parallelcluster Ubuntu 20.04 GNU |                           | not yet supported - coming soon                                                                                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Ubuntu 20.04 GNU                 | Dom Heinzeller            | ``/home/ubuntu/spack-stack-v1/envs/skylab-2.0.0-gcc-10.3.0/install``                                               |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Ubuntu 22.04 GNU                 | Dom Heinzeller            | ``/home/ubuntu/spack-stack-v1/envs/skylab-2.0.0-gnu-11.2.0/install``                                               |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Red Hat 8 GNU                    | Dom Heinzeller            | ``/home/ec2-user/spack-stack-v1/envs/skylab-2.0.0-gcc-11.2.1/install``                                             |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
@@ -130,6 +136,60 @@ For ``spack-stack-2.0.0`` with GNU, load the following modules after loading min
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
+   module available
+
+.. _Platforms_Narwhal:
+
+------------------------------
+NAVY HPCMP Narwhal
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.1.0
+   module unload intel
+   module unload cray-python
+   module load cray-python/3.9.7.1
+   module unload cray-libsci
+   module load cray-libsci/22.08.1.1
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+
+For ``spack-stack-2.0.0`` with Intel, load the following modules after loading the above modules.
+
+.. code-block:: console
+
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-2021.3.0/install/modulefiles/Core
+   module load stack-intel/2021.3.0
+   module load stack-cray-mpich/8.1.14
+   module load stack-python/3.9.7
+
+.. _Platforms_Casper:
+
+-------------------
+NCAR-Wyoming Casper
+-------------------
+
+.. code-block:: console
+
+   module purge
+   export LMOD_TMOD_FIND_FIRST=yes
+   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
+
+For ``spack-stack-2.0.0`` with Intel, load the following modules after loading miniconda and ecflow.
+
+.. code-block:: console
+
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-2.0.0-intel-19.1.1.217-casper/install/modulefiles/Core
+   module load stack-intel/19.1.1.217
+   module load stack-intel-mpi/2019.7.217
+   module load stack-python/3.9.12
    module available
 
 .. _Platforms_Cheyenne:
@@ -344,7 +404,7 @@ Amazon Web Services Parallelcluster Ubuntu 20.04
 Amazon Web Services Ubuntu 20.04
 --------------------------------
 
-For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-ubuntu20" (ami-06fce89fba374ea67). After logging in, run:
+For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-ubuntu20" (ami-06fce89fba374ea67), available on request in us-east-1. After logging in, run:
 
 .. code-block:: console
 
@@ -354,11 +414,25 @@ For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab
    module load stack-python/3.8.10
    module available
 
+--------------------------------
+Amazon Web Services Ubuntu 22.04
+--------------------------------
+
+For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-ubuntu22" (ami-09e3055e325abe91e), available on request in us-east-2. After logging in, run:
+
+.. code-block:: console
+
+   module use /home/ubuntu/spack-stack-v1/envs/skylab-2.0.0-gnu-11.2.0/install/modulefiles/Core
+   module load stack-gcc/11.2.0
+   module load stack-mpich/4.0.2
+   module load stack-python/3.10.6
+   module available
+
 -----------------------------
 Amazon Web Services Red hat 8
 -----------------------------
 
-For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-redhat8" (ami-0f6b5f8a07d2f4350). After logging in, run:
+For ``spack-stack-2.0.0``, use a t2.2xlarge instance or similar with AMI "skylab-2.0.0-redhat8" (ami-0f6b5f8a07d2f4350), available on request in us-east-1. After logging in, run:
 
 .. code-block:: console
 
@@ -391,6 +465,38 @@ The instructions below also assume a clean Homebrew installation with a clean Py
 
 Further, it is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
+Intel M1 platform notes
+-----------------------
+With the introduction of the new M1 chip on Mac, there are two architectures that are provided.
+The first architecture is Arm which is denoted by ``arm64`` and ``aarch64``, and the second is Intel which is denoted by ``x86_64`` and ``i386``.
+The Arm architecture is the native architecture on the M1 chip and the Intel architecture is what has existed for a number of years before the M1 chip showed up.
+
+With the new M1 chip, you can toggle between these two architectures, which is accomplished with a new app on M1 Macs called Rosetta2 (which is an Intel architecture emulator).
+When you get a new M1 mac, you may need to download Rosetta2.
+Note that applications are expected to run faster when the native Arm architecture is utilized.
+
+A lot of binaries (bash for example) come in a "universal form" meaning they can run as Arm or Intel.
+MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on.
+For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
+
+Homebrew notes
+--------------
+
+When running with the Intel architecture, homebrew manages its downloads in ``/usr/local`` (as it has been doing in the past).
+When running with the Arm architecture, homebrew manages its downloads in ``/opt/homebrew``.
+Other than the different prefixes for Arm versus Intel, the paths for all the pieces of a given package are identical.
+This separation allows for both Arm and Intel environments to exist on one machine.
+
+For these instructions we will use the variable ``$HOMEBREW_ROOT`` to hold the prefix where homebrew manages its downloads (according to the architecture being used).
+
+.. code-block:: console
+
+    # If building on Arm architecture:
+    export HOMEBREW_ROOT=/opt/homebrew
+    
+    # If building on Intel architecture:
+    export HOMEBREW_ROOT=/usr/local
+
 Prerequisites (one-off)
 -----------------------
 
@@ -406,25 +512,50 @@ This instructions are meant to be a reference that users can follow to set up th
 
    xcode-select --install
 
-2. This step is only required on the new ``aarch64`` systems that are equipped with a Apple M1 silicon chip: Setup of ``x86_64`` environment on ``aarch64`` systems
+2. Set up a terminal and environment using the appropriate architecture
 
-   - Open Applications in Finder
+    a. Arm
 
-   - Duplicate your preferred terminal application (e.g. Terminal or iTerm)
+       In this case the Terminal application should already be running with the Arm architecture.
+       Open a terminal and verify that this is the case:
 
-   - Rename the duplicate to, for example, "Terminal x86_64"
+       .. code-block:: console
+           
+           # In the terminal enter
+           arch
+           # this should respond with "arm64"
 
-   - Right-click / control+click on "Terminal x86_64", choose "Get Info"
+       Add the homebrew bin directory to your PATH variable.
+       Make sure the homebrew bin path goes before ``/usr/local/bin``.
 
-   - Select the box "Open using Rosetta" and close the window
+       .. code-block:: console
+           
+           export PATH=$HOMEBREW_ROOT/bin:$PATH
 
-3. Install Homebrew for ``x86_64`` environment
+    b. Intel
 
-   - If your system is an ``aarch64`` system, make sure to open the newly created "Terminal x86_64" application. Type ``arch`` in the terminal to confirm, if correct the output is ``i386`` (and not ``arm64``)
+       In this case, the idea is to create a new Terminal application that automatically runs bash in the Intel mode (using Rosetta2 underneath the hood.
 
-   - Install Homebrew from the command line. On ``x86_64`` systems and on ``aarch64`` systems using the ``x86_64`` emulator, Homebrew` is installed in ``/usr/local``
+       - Open Applications in Finder
 
-   - It is recommended to install the following prerequisites via Homebrew, as installing them with Spack and Apple's native clang compiler can be tricky.
+       - Duplicate your preferred terminal application (e.g. Terminal or iTerm)
+
+       - Rename the duplicate to, for example, "Terminal x86_64"
+
+       - Right-click / control+click on "Terminal x86_64", choose "Get Info"
+
+       - Select the box "Open using Rosetta" and close the window
+
+       Check to make sure you have ``/usr/local/bin`` in your PATH variable for homebrew.
+
+   From this point on, make sure you run the commands from the Terminal application matching the arhcitecture you are building.
+   That is, use "Terminal" if building for Arm, or use "Terminal x86_64" if building for Intel.
+   Verify that you have the correct architecture by running ``arch`` in the terminal window.
+   From ``arch`` you should see ``arm64`` for Arm, or see ``x86_64`` or ``i386`` for Intel.
+
+3. Install Homebrew
+
+   It is recommended to install the following prerequisites via Homebrew, as installing them with Spack and Apple's native clang compiler can be tricky.
 
 .. code-block:: console
 
@@ -444,17 +575,19 @@ This instructions are meant to be a reference that users can follow to set up th
 
 4. Configure your terminal to use the homebrew installed bash
 
-  After installing bash with homebrew, you need to change your terminal application's default command to use :code:`/usr/local/bin/bash`.
+  After installing bash with homebrew, you need to change your terminal application's default command to use :code:`$HOMEBREW_ROOT/bin/bash`.
   For example with iterm2, you can click on the :code:`preferences` item in the :code:`iTerm2` menu.
-  Then click on the :code:`Profiles` tab and enter :code:`/usr/local/bin/bash` in the :code:`Command` box.
+  Then click on the :code:`Profiles` tab and enter :code:`$HOMEBREW_ROOT/bin/bash` in the :code:`Command` box.
   This is done to avoid issues with the macOS System Integrity Protection (SIP) mechanism when running bash scripts.
   See https://support.apple.com/en-us/HT204899 for more details about SIP.
+
+  It's recommended to quit the terminal window at this point and then start up a fresh terminal window to make sure you proceed using a terminal that is running the :code:`$HOMEBREW_ROOT/bin/bash` shell.
 
 5. Activate the ``lua`` module environment
 
 .. code-block:: console
 
-   source /usr/local/opt/lmod/init/profile
+   source $HOMEBREW_ROOT/opt/lmod/init/profile
 
 6. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
 
@@ -504,10 +637,10 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack external find --scope system python
    spack external find --scope system wget
 
-   PATH="/usr/local/opt/curl/bin:$PATH" \
+   PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
 
-   PATH="/usr/local/opt/qt5/bin:$PATH" \
+   PATH="$HOMEBREW_ROOT/opt/qt5/bin:$PATH" \
        spack external find --scope system qt
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
@@ -661,11 +794,12 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y automake
    apt install -y xterm
    apt install -y texlive
+   apt install -y libcurl4-openssl-dev
+   apt install -y libssl-dev
 
    # Python
-   apt install python3-dev python3-pip
+   apt install -y python3-dev python3-pip
    python3 -m pip install poetry
-   # Ignore error "ERROR: launchpadlib 1.10.13 requires testresources, which is not installed."
    # test - successful if no output
    python3 -c "import poetry"
 
@@ -678,8 +812,55 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
 
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
-.. note::
-   The newer Ubuntu 22.04 system by default ships with Python 3.10, which we do not support due to numerous issues when building spack-stack.
+Prerequisites: Ubuntu 22.04 (one-off)
+-------------------------------------
+
+The following instructions were used to prepare a basic Ubuntu 22.04 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Environments>`).
+
+1. Install basic OS packages as `root`
+
+.. code-block:: console
+
+   sudo su
+   apt-get update
+   apt-get upgrade
+
+   # Compilers (gcc@11.2.0)
+   apt install -y gcc g++ gfortran gdb
+
+   # lua/lmod module support
+   apt install -y lmod
+
+   # Do *not* install MPI with yum, this will be done with spack-stack
+
+   # Misc
+   apt install -y build-essential
+   apt install -y libkrb5-dev
+   apt install -y m4
+   apt install -y git
+   apt install -y git-lfs
+   apt install -y unzip
+   apt install -y automake
+   apt install -y xterm
+   apt install -y texlive
+   apt install -y libcurl4-openssl-dev
+   apt install -y libssl-dev
+   apt install -y meson
+
+   # Python
+   apt install -y python3-dev python3-pip
+   python3 -m pip install poetry
+   # test - successful if no output
+   python3 -c "import poetry"
+
+   # Exit root session
+   exit
+
+2. Log out and back in to be able to use the environment modules
+
+3. As regular user, set up the environment to build spack-stack environments
+
+This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
 Creating a new environment
 --------------------------
@@ -708,6 +889,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system python
    spack external find --scope system wget
    spack external find --scope system texlive
+   # On Ubuntu (but not on Red Hat):
+   spack external find --scope system curl
 
 4. Find compilers, add to site config's ``compilers.yaml``
 
@@ -735,13 +918,16 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@10.3.0]"
 
+   # Example for Ubuntu 22.04 following the above instructions
+   sed -i 's/tcl/lmod/g' envs/jedi-ufs.mylinux/site/modules.yaml
+   spack config add "packages:python:buildable:False"
+   spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
+   spack config add "packages:all:compiler:[gcc@11.2.0]"
+
 7. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. warning::
    **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``.
-
-.. warning::
-   **Important:** On Ubuntu 20, remove any external ``openssl`` package, since its presence will confuse the spack concretizer and lead to duplicate packages being installed.
 
 .. code-block:: console
 

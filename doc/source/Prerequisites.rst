@@ -7,7 +7,7 @@ Prerequisites
 Manual software installations
 ==============================
 
-The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult Sect ...., for preconfigured systems please consult Section ... . Note that for preconfigured systems, the following one-off installations are only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
+The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult :numref:`Section %s <Platforms_Preconfigured_Sites>`, for preconfigured systems please consult :numref:`Section %s <Platform_New_Site_Configs>`. Note that for preconfigured systems, the following one-off installations are only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
 
 ..  _Prerequisites_Git_LFS:
 
@@ -15,7 +15,7 @@ The following manual software installations may or may not be required as prereq
 git-lfs
 ------------------------------
 
-Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Stampede2>` describes a manual installation of ``git-lfs`` on TACC Stampede, a Centos7 system.
+Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Frontera>` describes a manual installation of ``git-lfs`` on TACC Frontera, a Centos7.9 system.
 
 ..  _Prerequisites_Miniconda:
 
@@ -108,6 +108,24 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
    make install 2>&1 | tee log.install
 
 Create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
+
+.. note::
+   For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
+
+.. code-block:: console
+
+   if [ "$PE_ENV" = INTEL ] ; then
+      tool=intel
+   fi
+   if [ "$PE_ENV" = CRAY ] ; then
+      tool=cray
+   fi
+
+   Further on Narwhal, the ``cmake`` command for ``ecbuild`` must be told to use the GNU compilers:
+
+.. code-block:: console
+
+   CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
 
 ..  _Prerequisites_Texlive:
 

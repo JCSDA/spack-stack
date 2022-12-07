@@ -40,13 +40,13 @@ spack:
     eccodes:
       version: [2.27.0]
     eckit:
-      version: [1.19.0]
+      version: [1.20.2]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: [0.30.0]
+      version: [0.31.1]
       variants: +fckit +trans
     ectrans:
-      version: [develop]
+      version: [1.1.0]
       variants: ~enable_mkl
     eigen:
       version: [3.4.0]
@@ -59,10 +59,10 @@ spack:
     fftw:
       version: [3.3.10]
     fiat:
-      version: [main]
+      version: [1.0.0]
     fms:
-      version: [2022.01]
-      variants: +64bit +quad_precision +gfs_phys +openmp +pic
+      version: [2022.02]
+      variants: +64bit +quad_precision +gfs_phys +openmp +fpic
     g2:
       version: [3.4.5]
     g2c:
@@ -76,7 +76,7 @@ spack:
     grib-util:
       version: [1.2.3]
     gsibec:
-      version: [1.0.5]
+      version: [1.0.6]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -149,7 +149,7 @@ spack:
       version: [8.1.0]
       variants: ~tiff
     python:
-      version: [3.9.12]
+      version: [3.10.8]
     py-cartopy:
       variants: +plotting
     py-click:
