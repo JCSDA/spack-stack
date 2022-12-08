@@ -225,6 +225,14 @@ runs:
       #  tail -n 10 spack_install.log
       #  sleep 60
       #done
+      echo "which doxygen: $(which doxygen)"
+      echo "which dot: $(which dot)"
+      echo "/usr/bin"
+      ls /usr/bin
+      echo "/usr/local/bin"
+      ls /usr/local/bin
+      echo "find doxygen or dot in Cellar"
+      find /usr/local/Cellar \( -name doxygen -o -name dot \)
       spack install --fail-fast
 
   - name: create-meta-modules
