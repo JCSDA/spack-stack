@@ -174,6 +174,8 @@ For ``spack-stack-2.0.0`` with Intel, load the following modules after loading t
 NCAR-Wyoming Casper
 -------------------
 
+The following is required for building new spack environments and for using spack to build and run software.
+
 .. code-block:: console
 
    module purge
@@ -203,9 +205,7 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
-   module unuse /glade/u/apps/ch/modulefiles/default/compilers
-   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
-   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   export LMOD_TMOD_FIND_FIRST=yes
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
    module load miniconda/3.9.12
    module load ecflow/5.8.4

@@ -44,7 +44,8 @@ spack:
     - crtm@2.3.0
     - crtm@2.4.0
     - crtm@v2.3-jedi.4
-    - crtm@v2.4_jedi
+    - crtm@v2.4-jedi
+    - crtm@v2.4-jedi.1
     - ecbuild@3.6.5
     - eccodes@2.27.0
     # ecflow depends on Python
