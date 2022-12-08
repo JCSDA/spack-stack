@@ -63,6 +63,7 @@ packages:
     externals:
     - spec: berkeley-db@4.8.30
       prefix: /usr
+  # Don't use, leads to duplicate packages being built
   #bison:
   # externals:
   # - spec: bison@2.7
@@ -114,10 +115,11 @@ packages:
     externals:
     - spec: findutils@4.5.12
       prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.5.37+lex
-      prefix: /usr
+  # Don't use, leads to duplicate packages being built
+  #flex:
+  #  externals:
+  #  - spec: flex@2.5.37+lex
+  #    prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.1.0
