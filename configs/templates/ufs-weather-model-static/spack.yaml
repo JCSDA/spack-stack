@@ -30,7 +30,7 @@ spack:
   - ip@3.3.3
   - mapl@2.22.0~pnetcdf+debug~shared
   - mapl@2.22.0~pnetcdf~debug~shared
-  - netcdf-c@4.7.4~parallel-netcdf+v2+mpi~shared~dap
+  - netcdf-c@4.7.4~parallel-netcdf+mpi~shared~dap
   - netcdf-fortran@4.5.4~shared
   - parallel-netcdf@1.12.2~shared
   - parallelio@2.5.7+fortran~pnetcdf~shared
