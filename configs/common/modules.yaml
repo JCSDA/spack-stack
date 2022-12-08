@@ -465,11 +465,15 @@ modules:
       share/aclocal:
       - ACLOCAL_PATH
       lib:
-      - LIBRARY_PATH
+      # Do not set LIBRARY_PATH, this messes up the
+      # rpath handling on macOS (in cmake builds)
+      #- LIBRARY_PATH
       - LD_LIBRARY_PATH
       - DYLD_LIBRARY_PATH
       lib64:
-      - LIBRARY_PATH
+      # Do not set LIBRARY_PATH, this messes up the
+      # rpath handling on macOS (in cmake builds)
+      #- LIBRARY_PATH
       - LD_LIBRARY_PATH
       - DYLD_LIBRARY_PATH
       include:
