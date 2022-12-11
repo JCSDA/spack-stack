@@ -95,9 +95,11 @@ spack:
     images:
       os: ubuntu:20.04
       spack:
-        url: https://github.com/noaa-emc/spack
-        ref: jcsda_emc_spack_stack
-        resolve_sha: false
+        #url: https://github.com/noaa-emc/spack
+        #ref: spack-stack-1.2.0
+        url: https://github.com/climbfuji/spack
+        ref: bugfix/atlas_intel_vectorization
+        resolve_sha: true
 
     # Whether or not to strip binaries
     strip: false
