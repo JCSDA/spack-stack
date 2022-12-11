@@ -115,11 +115,12 @@ packages:
     externals:
     - spec: findutils@4.5.12
       prefix: /usr
-  # Don't use, leads to duplicate packages being built
-  #flex:
-  #  externals:
-  #  - spec: flex@2.5.37+lex
-  #    prefix: /usr
+  flex:
+    # Must set buildable: false to avoid duplicate packages
+    buildable: false
+    externals:
+    - spec: flex@2.5.37+lex
+      prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.1.0
