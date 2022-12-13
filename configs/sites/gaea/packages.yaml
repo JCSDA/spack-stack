@@ -173,6 +173,8 @@ packages:
     externals:
     - spec: ncurses@6.1.20180317+termlib abi=6
       prefix: /usr
+  ncview:
+    variants: ~wrapper
   openssh:
     externals:
     - spec: openssh@7.9p1
