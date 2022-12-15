@@ -1,22 +1,22 @@
 compilers::
   - compiler:
-      spec: intel@2021.3.0
+      spec: intel@2021.4.0
       paths:
-        cc: /opt/intel/oneapi_2021.3.0.3219/compiler/2021.3.0/linux/bin/intel64/icc
-        cxx: /opt/intel/oneapi_2021.3.0.3219/compiler/2021.3.0/linux/bin/intel64/icpc
-        f77: /opt/intel/oneapi_2021.3.0.3219/compiler/2021.3.0/linux/bin/intel64/ifort
-        fc: /opt/intel/oneapi_2021.3.0.3219/compiler/2021.3.0/linux/bin/intel64/ifort
+        cc: /opt/intel/oneapi_2021.4.0.3422/compiler/2021.4.0/linux/bin/intel64/icc
+        cxx: /opt/intel/oneapi_2021.4.0.3422/compiler/2021.4.0/linux/bin/intel64/icpc
+        f77: /opt/intel/oneapi_2021.4.0.3422/compiler/2021.4.0/linux/bin/intel64/ifort
+        fc: /opt/intel/oneapi_2021.4.0.3422/compiler/2021.4.0/linux/bin/intel64/ifort
       flags: {}
       operating_system: sles15
       target: any
       modules:
-      - PrgEnv-intel
-      - intel/2021.3.0
+      - PrgEnv-intel/8.3.3
+      - intel/2021.4.0
       environment:
         prepend_path:
           PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
           CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
           LD_LIBRARY_PATH: '/opt/cray/pe/libsci/22.08.1.1/INTEL/19.0/x86_64/lib:/opt/intel/oneapi_2021.3.0.3219/compiler/2021.3.0/linux/compiler/lib/intel64_lin/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
-        set:
-          CRAYPE_LINK_TYPE: 'dynamic'
+        #set:
+        #  CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []

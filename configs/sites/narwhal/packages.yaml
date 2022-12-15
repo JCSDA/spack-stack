@@ -1,17 +1,23 @@
 packages:
   all:
-    compiler:: [intel@2021.3.0]
+    compiler:: [intel@2021.4.0]
     providers:
-      mpi:: [cray-mpich@8.1.14]
+      mpi:: [cray-mpich@8.1.19]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.14%intel@2021.3.0 ~wrappers
+    - spec: cray-mpich@8.1.14%intel@2021.4.0 ~wrappers
       modules:
       - cray-mpich/8.1.14
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.14%intel@2021.3.0
+      #prefix: /opt/cray/pe/mpich/8.1.19/ofi/intel/19.0
+      modules:
+      - cray-mpich/8.1.19
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2021.3.0
