@@ -49,10 +49,6 @@ packages:
     externals:
     - spec: bison@3.0.4
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.17.0
-      prefix: /usr
   curl:
     externals:
     - spec: curl@7.66.0+gssapi+ldap+nghttp2

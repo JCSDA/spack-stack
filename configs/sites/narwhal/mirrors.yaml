@@ -1,5 +1,5 @@
 mirrors:
-  local:
+  local-source:
     fetch:
       url: file:///p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/source-cache
       access_pair:
