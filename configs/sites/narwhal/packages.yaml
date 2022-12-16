@@ -9,12 +9,7 @@ packages:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.14%intel@2021.4.0 ~wrappers
-      modules:
-      - cray-mpich/8.1.14
-  cray-mpich:
-    externals:
-    - spec: cray-mpich@8.1.14%intel@2021.3.0
+    - spec: cray-mpich@8.1.19%intel@2021.4.0 +wrappers
       #prefix: /opt/cray/pe/mpich/8.1.19/ofi/intel/19.0
       modules:
       - cray-mpich/8.1.19
