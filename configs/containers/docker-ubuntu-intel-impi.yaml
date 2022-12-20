@@ -31,6 +31,7 @@ spack:
   # Additional package config for container
   packages:
     all:
+      require: '%intel'
       target: [core2]
       providers:
         mpi: [intel-oneapi-mpi@2021.6.0]
@@ -60,6 +61,10 @@ spack:
       externals:
       - spec: git-lfs@2.9.2
         prefix: /usr
+    # Turn off crypt, because libxcrypt doesn't
+    # build with Intel.
+    python:
+      variants: ~crypt
     qt:
       buildable: false
       externals:
@@ -96,7 +101,7 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/noaa-emc/spack
-        ref: jcsda_emc_spack_stack
+        ref: spack-stack-1.2.0
         resolve_sha: false
 
     # Whether or not to strip binaries

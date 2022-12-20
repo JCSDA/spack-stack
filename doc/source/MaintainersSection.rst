@@ -7,6 +7,16 @@ Maintainers/Developers Section
 Pre-configuring sites
 ==============================
 
+.. _MaintainersSection_Preface:
+
+------------------------------
+Preface/general instructions
+------------------------------
+
+Preconfigured sites are defined through spack configuration files in the spack-stack directory ``configs/sites``, for example ``configs/sites/orion``. All files in the site-specific subdirectory will be copied into the environment into ``envs/env-name/site``. Site-specific configurations consist of general definitions (``config.yaml``), packages (``packages.yaml``), compilers (``compilers.yaml``), modules (``modules.yaml``), mirrors (``mirrors.yaml``) etc. These configurations overwrite the common configurations that are copied from ``configs/common`` into ``envs/env-name/common``.
+
+The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Quickstart_CreateEnv>`.
+
 .. _MaintainersSection_Orion:
 
 ------------------------------
@@ -373,15 +383,13 @@ The procedure is similar to using spack mirrors for local reuse, but a few addit
 
 3. On the machine with full internet access: Load the basic external modules, if using a machine that is preconfigured for spack-stack (see :numref:`Section %s <Platforms>`) and make sure that ``git`` supports ``lfs`` (if necessary, load the external modules that spack-stack also uses).
 
-4. On the machine with full internet access: check out the same version of ``spack-stack``, run ``setup.sh``, and then the following sequence of commands:
+4. On the machine with full internet access: check out the same version of ``spack-stack``, run ``setup.sh``, and then the following sequence of commands. The mirror will be created in directory ``./spack/var/spack/environments/air_gapped_mirror_env``.
 
 .. code-block:: console
 
    spack env create air_gapped_mirror_env spack.lock
    spack env activate air_gapped_mirror_env
    spack mirror create -a
-
-   The mirror will be created in directory ``./spack/var/spack/environments/air_gapped_mirror_env``
 
 5. On the air-gapped system: Copy the directory from the system with internet access to the local destination for the spack mirror. It is recommended to use ``rsync`` to avoid deleting existing packages, if updating an existing mirror on the air-gapped system.
 

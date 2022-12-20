@@ -29,6 +29,7 @@ spack:
   # Additional package config for container
   packages:
     all:
+      require: '%clang'
       target: [x86_64]
       providers:
         mpi: [mpich@4.0.2]
@@ -95,7 +96,7 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/noaa-emc/spack
-        ref: jcsda_emc_spack_stack
+        ref: spack-stack-1.2.0
         resolve_sha: false
 
     # Whether or not to strip binaries

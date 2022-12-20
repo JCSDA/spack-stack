@@ -24,6 +24,8 @@ Quickstart
 Using spack to create environments and containers
 =================================================
 
+.. _Quickstart_CreateEnv:
+
 ------------------------
 Create local environment
 ------------------------
@@ -51,10 +53,14 @@ The following instructions install a new spack environment on a pre-configured s
    emacs envs/jedi-fv3.hera/common/*.yaml
    emacs envs/jedi-fv3.hera/site/*.yaml
 
-   # Process the specs and install
-   # Note: both steps will take some time!
+   # Process/concretize the specs
    spack concretize
-   spack install [--verbose] [--fail-fast]
+
+   # Optional step for systems with a pre-configured spack mirror, see below.
+
+   # Install the environment, recommended to always use --source
+   # to install the source code with the compiled binary package
+   spack install --source [--verbose] [--fail-fast]
 
    # Create lua module files
    spack module lmod refresh
@@ -67,12 +73,29 @@ The following instructions install a new spack environment on a pre-configured s
   For example:
 
   .. code-block:: bash
-    
+
     spack concretize 2>&1 | tee log.concretize
     spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 .. note::
   For platforms with multiple compilers in the site config, make sure that the correct compiler and corresponding MPI library are set correctly in ``envs/jedi-fv3.hera/site/packages.yaml`` before running ``spack concretize``. Also, check the output of ``spack concretize`` to make sure that the correct compiler is used (e.g. ``%intel-2022.0.1``). If not, edit ``envs/jedi-fv3.hera/site/compilers.yaml`` and remove the offending compiler. Then, remove ``envs/jedi-fv3.hera/spack.lock`` and rerun ``spack concretize``.
+
+Optional step for sites with a preconfigured spack mirror
+---------------------------------------------------------
+
+To check if a mirror is configured, look for ``local-source`` in the output of
+
+.. code-block:: bash
+
+   spack mirror list
+
+If a mirror exists, add new packages to the mirror. Here, ``/path/to/mirror`` is the location from the above list command without the leading ``file://``
+
+.. code-block:: bash
+
+   spack mirror create -a -d /path/to/mirror
+
+If this fails with ``git lfs`` errors, check the site config for which module to load for ``git lfs`` support. Load the module, then run the ``spack mirror add`` command, then unload the module and proceed with the installation.
 
 ----------------
 Create container

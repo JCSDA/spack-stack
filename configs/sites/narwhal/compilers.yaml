@@ -10,7 +10,7 @@ compilers::
       operating_system: sles15
       target: any
       modules:
-      - PrgEnv-intel
+      - PrgEnv-intel/8.3.2
       - intel/2021.3.0
       environment:
         prepend_path:
