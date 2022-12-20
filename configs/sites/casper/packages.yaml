@@ -167,6 +167,9 @@ packages:
     externals:
     - spec: openssl@1.0.2k-fips
       prefix: /usr
+  # Pin patchelf to 0.15.0 for Intel compiler (no C++-17 features)
+  patchelf:
+    version:: [0.15.0]
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
