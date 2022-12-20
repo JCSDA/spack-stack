@@ -3,7 +3,7 @@
   #url = https://github.com/spack/spack
   #branch = develop
   url = https://github.com/NOAA-EMC/spack
-  branch = spack-stack-1.2.0
+  branch = release/1.2.0
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
