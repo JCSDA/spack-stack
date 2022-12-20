@@ -7,6 +7,16 @@ Maintainers/Developers Section
 Pre-configuring sites
 ==============================
 
+.. _MaintainersSection_Preface:
+
+------------------------------
+Preface/general instructions
+------------------------------
+
+Preconfigured sites are defined through spack configuration files in the spack-stack directory ``configs/sites``, for example ``configs/sites/orion``. All files in the site-specific subdirectory will be copied into the environment into ``envs/env-name/site``. Site-specific configurations consist of general definitions (``config.yaml``), packages (``packages.yaml``), compilers (``compilers.yaml``), modules (``modules.yaml``), mirrors (``mirrors.yaml``) etc. These configurations overwrite the common configurations that are copied from ``configs/common`` into ``envs/env-name/common``.
+
+The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Quickstart_CreateEnv>`.
+
 .. _MaintainersSection_Orion:
 
 ------------------------------
