@@ -31,7 +31,7 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install``                          |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.3.0/install``                    |
+| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | currently broken - will be repaired soon                                                                           |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``     |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -141,6 +141,9 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules 
 ------------------------------
 NAVY HPCMP Narwhal
 ------------------------------
+
+.. note::
+   ``spack-stack-1.2.0``/``skylab-3.0.0`` (and previous ``spack-stack-1.1.0``/``skylab-2.0.0``) is broken and will be fixed soon.
 
 The following is required for building new spack environments and for using spack to build and run software.
 
