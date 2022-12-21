@@ -18,7 +18,6 @@ compilers:
         LD_LIBRARY_PATH: '/home/opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/compiler/lib/intel64_lin:/data/prod/hpc-stack/gnu/9.3.0/lib64'
         CPATH: '/data/prod/hpc-stack/gnu/9.3.0/include'
     extra_rpaths: []
-# Not yet tested:
 - compiler:
     spec: gcc@9.3.0
     paths:
@@ -31,7 +30,6 @@ compilers:
     target: x86_64
     modules:
     - gnu/9.3.0
-    prefix: /data/prod/hpc-stack/gnu/9.3.0
     modules: []
     environment: {}
     extra_rpaths: []

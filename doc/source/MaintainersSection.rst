@@ -7,6 +7,16 @@ Maintainers/Developers Section
 Pre-configuring sites
 ==============================
 
+.. _MaintainersSection_Preface:
+
+------------------------------
+Preface/general instructions
+------------------------------
+
+Preconfigured sites are defined through spack configuration files in the spack-stack directory ``configs/sites``, for example ``configs/sites/orion``. All files in the site-specific subdirectory will be copied into the environment into ``envs/env-name/site``. Site-specific configurations consist of general definitions (``config.yaml``), packages (``packages.yaml``), compilers (``compilers.yaml``), modules (``modules.yaml``), mirrors (``mirrors.yaml``) etc. These configurations overwrite the common configurations that are copied from ``configs/common`` into ``envs/env-name/common``.
+
+The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Quickstart_CreateEnv>`.
+
 .. _MaintainersSection_Orion:
 
 ------------------------------
@@ -237,36 +247,7 @@ On Hera, ``miniconda`` must be installed as a one-off before spack can be used.
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
-Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform (e.g. Cheyenne). This can be done as follows.
-
-1. (On Hera) Create an environment as usual and run the concretization step (``spack concretize``), but do not start the installation yet.
-
-2. (On Cheyenne) Load the basic external modules (see :numref:`Section %s <Platforms_Cheyenne>`) and load module ``git/2.33.1`` (for ``git lfs``). Check out a fresh clone of ``spack-stack`` and run ``source setup.sh``.
-
-3. (On Hera) Copy (e.g. using ``scp``) the environment's ``spack.lock`` file to Cheyenne into the ``spack-stack`` directory.
-
-4. (On Cheyenne) Run the following sequence of commands:
-
-.. code-block:: console
-
-   spack env create hera_mirror_env spack.lock
-   spack env activate hera_mirror_env
-   spack mirror create -a
-
-   The mirror will be created in directory ``./spack/var/spack/environments/hera_mirror_env``
-
-5. (On Hera) Copy the directory from Cheyenne to ``/scratch1/NCEPDEV/global/spack-stack/mirror``. It is recommended to use ``rsync`` to avoid deleting existing packages in the mirror directory on Hera.
-
-6. (On Hera) Add the mirror to the spack environment's mirror list. Note that this is already included in the Hera site config in ``spack-stack`` (``configs/sites/hera/mirrors.yaml``).
-
-.. code-block:: console
-
-   spack mirror add local file:///scratch1/NCEPDEV/global/spack-stack/mirror
-   spack mirror list
-
-   The newly created local mirror should be listed at the top, which means that spack will search this directory first.
-
-7. (On Hera) Proceed with the installation as usual.
+Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform (e.g. Cheyenne). This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
 
 .. _MaintainersSection_Jet:
 
@@ -353,6 +334,75 @@ Amazon Web Services Parallelcluster Ubuntu 20.04
 See ``configs/sites/aws-pcluster/README.md``.
 
 .. _MaintainersSection_Testing_New_Packages:
+
+.. _MaintainersSection_spack_mirrors:
+
+==================================
+Creating/maintaining spack mirrors
+==================================
+
+Spack mirrors allow downloading the source code required to build environments once to a local directory (in the following also referred to as source cache), and then use this directory for subsequent installations. If a package cannot be found in the mirror (e.g. because a newer version is required), it will automatically be pulled from the web. It won't be added to the source cache automatically, this is a step that needs to be done manually.
+
+Spack mirrors also make it possible to download the source code for an air-gapped machine on another system, then transferring the entire mirror to the system without internet access and using it during the installation.
+
+-----------------------------
+Spack mirrors for local reuse
+-----------------------------
+
+Since all spack-stack installations are based on environments, we only cover spack mirrors for environments here. For a more general discussion, users are referred to the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_.
+
+1. Create an environment as usual, activate it and run the concretization step (``spack concretize``), but do not start the installation yet.
+
+2. Create the spack mirror in ``/path/to/spack-mirror``.
+
+.. code-block:: console
+
+   spack mirror create -a -d /path/to/spack-source
+
+3. If the spack mirror already exists, then existing packages will be ignored and only new packages will be added to the mirror.
+
+4. If not already included in the environment (e.g. from the spack-stack site config), add the mirror:
+
+.. code-block:: console
+   spack mirror list
+   spack mirror add local-source file:///path/to/spack-source
+
+   The newly created local mirror should be listed at the top, which means that spack will search this directory first.
+
+7. Proceed with the installation as usual.
+
+------------------------------------
+Spack mirrors for air-gapped systems
+------------------------------------
+
+The procedure is similar to using spack mirrors for local reuse, but a few additional steps are needed in between.
+
+1. On the air-gapped system: Create an environment as usual, activate it and run the concretization step (``spack concretize``), but do not start the installation yet.
+
+2. Copy the file ``spack.lock`` (in ``envs/env-name/``) to the machine with full internet access using ``scp``, for example.
+
+3. On the machine with full internet access: Load the basic external modules, if using a machine that is preconfigured for spack-stack (see :numref:`Section %s <Platforms>`) and make sure that ``git`` supports ``lfs`` (if necessary, load the external modules that spack-stack also uses).
+
+4. On the machine with full internet access: check out the same version of ``spack-stack``, run ``setup.sh``, and then the following sequence of commands. The mirror will be created in directory ``./spack/var/spack/environments/air_gapped_mirror_env``.
+
+.. code-block:: console
+
+   spack env create air_gapped_mirror_env spack.lock
+   spack env activate air_gapped_mirror_env
+   spack mirror create -a
+
+5. On the air-gapped system: Copy the directory from the system with internet access to the local destination for the spack mirror. It is recommended to use ``rsync`` to avoid deleting existing packages, if updating an existing mirror on the air-gapped system.
+
+6.. On the air-gapped system: Add the mirror to the spack environment's mirror list, unless already included in the site config.
+
+.. code-block:: console
+
+   spack mirror add locals-source  file:///path/to/spack-source
+   spack mirror list
+
+   The newly created local mirror should be listed at the top, which means that spack will search this directory first.
+
+7. On the air-gapped system: Proceed with the installation as usual.
 
 ==============================
 Testing new packages

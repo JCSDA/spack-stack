@@ -56,10 +56,11 @@ packages:
     externals:
     - spec: berkeley-db@4.8.30
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@2.7
-      prefix: /usr
+  # Don't use, leads to duplicate packages being built
+  #bison:
+  #  externals:
+  #  - spec: bison@2.7
+  #    prefix: /usr
   ccache:
     externals:
     - spec: ccache@3.1.9
@@ -102,6 +103,8 @@ packages:
     - spec: findutils@4.5.12
       prefix: /usr
   flex:
+    # Must set buildable: false to avoid duplicate packages
+    buildable: false
     externals:
     - spec: flex@2.5.37+lex
       prefix: /usr

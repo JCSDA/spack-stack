@@ -5,3 +5,5 @@ modules:
     lmod:
       blacklist:
       - ecflow
+      whitelist:
+      - mpich
