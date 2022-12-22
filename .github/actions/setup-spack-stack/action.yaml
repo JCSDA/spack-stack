@@ -132,9 +132,10 @@ runs:
       spack external find mpich
       spack external find openmpi
       spack external find perl
-      if [[ "$RUNNER_OS" == "Linux" ]]; then
-        spack external find --not-buildable python
-      elif [[ "$RUNNER_OS" == "macOS" ]]; then
+      #if [[ "$RUNNER_OS" == "Linux" ]]; then
+      #  spack external find --not-buildable python
+      #elif [[ "$RUNNER_OS" == "macOS" ]]; then
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
         # Jail spack external find to /usr/local to ignore Framework python
         spack external find --not-buildable --path /usr/local python
       fi
@@ -164,8 +165,8 @@ runs:
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
-
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
+      spack config add "packages:all:require:'%${{ inputs.compiler }}'"
 
       if [[ "$RUNNER_OS" == "macOS" ]]; then
         # Turn of SSL for ecflow CI builds for now
