@@ -4,7 +4,7 @@ packages:
     #compiler:: [gcc@9.3.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.0]
-      #mpi:: [mpich@4.0.2%gcc@9.3.0]
+      #mpi:: [mpich@4.0.2]
 
 ### MPI, Python, MKL
   # Comment out next two lines for gnu@9.3.0 with mpich@4.0.2 built by spack
