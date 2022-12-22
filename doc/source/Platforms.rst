@@ -422,7 +422,7 @@ Amazon Web Services Parallelcluster Ubuntu 20.04
 Amazon Web Services Red hat 8
 -----------------------------
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or similar with AMI "skylab-3.0.0-redhat8" (ami-0e5d6871c77b1c1b3), available on request in us-east-1. After logging in, run:
+For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or similar with AMI "skylab-3.0.0-redhat8" (ami-0b7ee6595f9f79860), available on request in us-east-1. After logging in, run:
 
 .. code-block:: console
 
