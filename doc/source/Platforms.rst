@@ -551,7 +551,6 @@ This instructions are meant to be a reference that users can follow to set up th
 
    brew install coreutils
    brew install gcc
-   brew install python
    brew install git
    brew install git-lfs
    brew install lmod
@@ -581,15 +580,7 @@ This instructions are meant to be a reference that users can follow to set up th
 
 6. Install xquartz using the provided binary at https://www.xquartz.org. This is required for forwarding of remote X displays, and for displaying the ``ecflow`` GUI, amongst others.
 
-7. Temporary workaround for pip installs in spack (see https://github.com/spack/spack/issues/29308). Make sure that ``python3`` points to the Homebrew version.
-
-.. code-block:: console
-
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
-
-8. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
+7. Optional: Install MacTeX if planning to build the ``jedi-tools`` environment with LaTeX/PDF support
 
    If the ``jedi-tools`` application is built with variant ``+latex`` to enable building LaTeX/PDF documentation, install MacTeX 
    `MacTeX  <https://www.tug.org/mactex>`_ and configure your shell to have it in the search path, for example:
@@ -624,7 +615,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack external find --scope system
    spack external find --scope system perl
-   spack external find --scope system python
+   # Don't use any external Python, let spack build it
+   #spack external find --scope system python
    spack external find --scope system wget
 
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
@@ -653,7 +645,6 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
