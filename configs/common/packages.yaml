@@ -216,13 +216,13 @@
       version: [3.1.0]
     py-python-dateutil:
       version: [2.8.2]
-    py-pythran:
-      # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
-      version: [0.11.0]
+    #py-pythran:
+    #  # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
+    #  version: [0.11.0]
     py-pyyaml:
       version: [6.0]
     py-scipy:
-      version: [1.8.0]
+      version: [1.9.3]
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       version: [59.4.0]

@@ -61,7 +61,11 @@ runs:
 
         # Print version of xcode
         pkgutil --pkg-info=com.apple.pkg.CLTools_Executables
+
+        # Install Python poetry to avoid install errors in spack
+        python3 -m pip install poetry
+
       fi
 
-      # Install Python poetry to avoid install errors in spack
-      python3 -m pip install poetry
+      ## Install Python poetry to avoid install errors in spack
+      #python3 -m pip install poetry
