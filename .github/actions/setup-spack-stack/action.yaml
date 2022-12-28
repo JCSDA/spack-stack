@@ -132,23 +132,22 @@ runs:
       spack external find mpich
       spack external find openmpi
       spack external find perl
-      #if [[ "$RUNNER_OS" == "Linux" ]]; then
-      #  spack external find --not-buildable python
-      #elif [[ "$RUNNER_OS" == "macOS" ]]; then
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Jail spack external find to /usr/local to ignore Framework python
-        spack external find --not-buildable --path /usr/local python
-      fi
+      ### #if [[ "$RUNNER_OS" == "Linux" ]]; then
+      ### #  spack external find --not-buildable python
+      ### #elif [[ "$RUNNER_OS" == "macOS" ]]; then
+      ### if [[ "$RUNNER_OS" == "macOS" ]]; then
+      ###   # Jail spack external find to /usr/local to ignore Framework python
+      ###   spack external find --not-buildable --path /usr/local python
+      ### fi
       spack external find wget
 
-      # Make homebrew qt@5 detectable on macOS
-      PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
+      # Find homebrew qt@5 on macOS
+      spack external find --path /usr/local/opt/qt@5 qt
 
       if [[ "$RUNNER_OS" == "Linux" ]]; then
         spack external find curl
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Make homebrew curl detectable on macOS
-        PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
+        spack external find --path /usr/local/opt/curl curl
       fi
 
   - name: configure-options
@@ -253,14 +252,9 @@ runs:
         elif [[ "$RUNNER_OS" == "macOS" ]]; then
           source /usr/local/opt/lmod/init/profile
           module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
-          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
-          # with "gcc/9", otherwise the module load command will fail.
-          # module load stack-${{ inputs.compiler }}
-          # module load stack-python
-          # # jedi-tools doesn't have any mpi dependencies
-          # if [[ ! "${{ inputs.specs }}" == "jedi-tools" ]]; then
-          #   module load stack-${{ inputs.mpi }}
-          # fi
+          module load stack-${{ inputs.compiler }}
+          module load stack-python
+          module load stack-${{ inputs.mpi }}
         fi
       fi
 
