@@ -99,10 +99,10 @@ runs:
       export MPICH_VERSION="4.0.2"
       export OPENMPI_VERSION="4.1.4"
 
-      if [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-        wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${OPENMPI_VERSION}.tar.gz
-        tar -xzf openmpi-${OPENMPI_VERSION}.tar.gz
-        cd openmpi-${OPENMPI_VERSION}
+      if [[ "${MPI_NAME}" == "openmpi" ]]; then
+        wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${MPI_VERSION}.tar.gz
+        tar -xzf openmpi-${MPI_VERSION}.tar.gz
+        cd openmpi-${MPI_VERSION}
         # --with-hwloc=internal --with-libevent=internal : https://www.open-mpi.org/faq/?category=building#libevent-or-hwloc-errors-when-linking-fortran
         if [[ "$RUNNER_OS" == "macOS" ]]; then
           ./configure --prefix=$HOME/mpi \
@@ -117,10 +117,10 @@ runs:
         fi
         make -j4
         make install
-      elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
+      elif [[ "${MPI_NAME}" == "mpich" ]]; then
         wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
-        tar -xzf mpich-${MPICH_VERSION}.tar.gz
-        cd mpich-${MPICH_VERSION}
+        tar -xzf mpich-${MPI_VERSION}.tar.gz
+        cd mpich-${MPI_VERSION}
         if [[ "$RUNNER_OS" == "macOS" ]]; then
           ./configure --prefix=$HOME/mpi \
               --enable-fortran --enable-cxx \
@@ -134,6 +134,13 @@ runs:
         fi
         make -j4
         make install
-      else
+      elif [[ "${MPI_NAME}" == "mvapich2" ]]; then
+        echo "${MPI_NAME} NOT CONFIGURED!"
+        sleep 60
+        exit 1
+      elif [[ "${MPI_NAME}" == "intel-oneapi-mpi" ]]; then
         mkdir -p $HOME/mpi
+      else
+        echo "${MPI_NAME} NOT CONFIGURED!"
+        exit 1
       fi
