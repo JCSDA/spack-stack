@@ -91,6 +91,11 @@ runs:
         export CXX=icpc
       fi
 
+      MPI_NAME=`echo "${{ inputs.mpi }}" | cut -d "@" -f 1`
+      MPI_VERSION=`echo "${{ inputs.mpi }}" | cut -d "@" -f 2`
+      echo "MPI NAME IS ${MPI_NAME}, VERSION IS ${MPI_VERSION}"
+      exit 1
+
       export MPICH_VERSION="4.0.2"
       export OPENMPI_VERSION="4.1.4"
 
