@@ -2,13 +2,11 @@ name: 'setup-externals'
 description: 'Setup externals such as the Intel compiler, MPI libraries.'
 inputs:
   compiler:
-    description: 'Compiler (available options gcc@9, gcc@10, apple-clang, intel)'
+    description: 'Compiler (available options gcc, apple-clang, intel)'
     required: true
-    default: 'gcc@9'
   mpi:
-    description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
-    required: false
-    default: 'mpich@4'
+    description: 'Which MPI flavor (openmpi, mpich, mvapich2, intel-oneapi-mpi)'
+    required: true
 
 runs:
   using: "composite"
@@ -113,7 +111,7 @@ runs:
         make -j4
         make install
       elif [[ "${MPI_NAME}" == "mpich" ]]; then
-        wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz
+        wget http://www.mpich.org/static/downloads/${MPI_VERSION}/mpich-${MPI_VERSION}.tar.gz
         tar -xzf mpich-${MPI_VERSION}.tar.gz
         cd mpich-${MPI_VERSION}
         if [[ "$RUNNER_OS" == "macOS" ]]; then

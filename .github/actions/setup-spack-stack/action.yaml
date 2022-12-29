@@ -10,13 +10,11 @@ inputs:
     required: false
     default: 'empty'
   compiler:
-    description: 'Compiler (available options gcc@9, gcc@10, apple-clang, intel)'
+    description: 'Compiler (available options gcc, apple-clang, intel)'
     required: true
-    default: 'gcc@9'
   mpi:
     description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
-    required: false
-    default: 'mpich@4'
+    required: true
   path:
     description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
     required: false
@@ -111,27 +109,26 @@ runs:
 
       # Need to find external packages with the correct compiler,
       # no way to do that with spack commands.
-      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-        MPI_VERSION=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
+      MPI_NAME=`echo "${{ inputs.mpi }}" | cut -d "@" -f 1`
+      MPI_VERSION=`echo "${{ inputs.mpi }}" | cut -d "@" -f 2`
+      if [[ "${MPI_NAME}" == "intel-oneapi-mpi" ]]; then
         MPI_PREFIX="/opt/intel/oneapi"
-      elif [[ "${{ inputs.mpi }}" == "openmpi"* ]]; then
-        # DH* How to detect from package?
-        MPI_VERSION="4.1.4"
+      elif [[ "${MPI_NAME}" == "openmpi" ]]; then
         MPI_PREFIX="$HOME/mpi"
-      elif [[ "${{ inputs.mpi }}" == "mpich"* ]]; then
-        # DH* How to detect from package?
-        MPI_VERSION="4.0.2"
+      elif [[ "${MPI_NAME}" == "mpich" ]]; then
+        MPI_PREFIX="$HOME/mpi"
+      elif [[ "${MPI_NAME}" == "mvapich2" ]]; then
         MPI_PREFIX="$HOME/mpi"
       else
-        echo "Malformed MPI provider, can only use 'intel-oneapi-mpi', 'openmpi', 'mpich'."
+        echo "Malformed MPI provider, can only use 'intel-oneapi-mpi', 'openmpi', 'mpich', 'mvapich2'."
         exit 1
       fi
       echo "" >> ${SPACK_ENV}/spack.yaml
       echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-      echo "    ${{ inputs.mpi }}:" >> ${SPACK_ENV}/spack.yaml
+      echo "    ${${MPI_NAME}}:" >> ${SPACK_ENV}/spack.yaml
       echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
       echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-      echo "      - spec: ${{ inputs.mpi }}@${MPI_VERSION}%${{ inputs.compiler }}" >> ${SPACK_ENV}/spack.yaml
+      echo "      - spec: ${${MPI_NAME}}@${MPI_VERSION}%${{ inputs.compiler }}" >> ${SPACK_ENV}/spack.yaml
       echo "        prefix: ${MPI_PREFIX}" >> ${SPACK_ENV}/spack.yaml
 
       ### # No external find for intel-oneapi-mpi, 
