@@ -142,8 +142,9 @@ runs:
           exit 1
         else
           ./configure --prefix=$HOME/mpi \
-              --enable-fortran=yes --enable-cxx \
-              --with-device=ch4:ofi
+              --enable-fortran=yes --enable-cxx
+              #--enable-fortran=yes --enable-cxx \
+              #--with-device=ch4:ofi
         fi
         make -j4
         make install
