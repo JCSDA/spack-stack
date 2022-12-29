@@ -133,18 +133,15 @@ runs:
         tar -xzf mvapich2-${MPI_VERSION}-1.tar.gz
         cd mvapich2-${MPI_VERSION}-1
         if [[ "$RUNNER_OS" == "macOS" ]]; then
-          #./configure --prefix=$HOME/mpi \
-          #    --enable-fortran=yes --enable-cxx \
-          #    --enable-two-level-namespace \
-          #    --with-device=ch4:ofi \
-          #    LIBS="-Wl,-commons,use_dylibs"
-          echo "mvapich2 not configured/tested for macOS!"
-          exit 1
+          ./configure --prefix=$HOME/mpi \
+              --enable-fortran=yes --enable-cxx \
+              --enable-two-level-namespace \
+              --with-device=ch3:sock \
+              LIBS="-Wl,-commons,use_dylibs"
         else
           ./configure --prefix=$HOME/mpi \
-              --enable-fortran=yes --enable-cxx
-              #--enable-fortran=yes --enable-cxx \
-              #--with-device=ch4:ofi
+              --enable-fortran=yes --enable-cxx \
+              --with-device=ch3:sock
         fi
         make -j4
         make install
