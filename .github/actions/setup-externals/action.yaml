@@ -93,11 +93,6 @@ runs:
 
       MPI_NAME=`echo "${{ inputs.mpi }}" | cut -d "@" -f 1`
       MPI_VERSION=`echo "${{ inputs.mpi }}" | cut -d "@" -f 2`
-      echo "MPI NAME IS ${MPI_NAME}, VERSION IS ${MPI_VERSION}"
-      exit 1
-
-      export MPICH_VERSION="4.0.2"
-      export OPENMPI_VERSION="4.1.4"
 
       if [[ "${MPI_NAME}" == "openmpi" ]]; then
         wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-${MPI_VERSION}.tar.gz
@@ -135,12 +130,28 @@ runs:
         make -j4
         make install
       elif [[ "${MPI_NAME}" == "mvapich2" ]]; then
-        echo "${MPI_NAME} NOT CONFIGURED!"
-        sleep 60
-        exit 1
+        # Note that 2.3.7 apparently had a bug fix release, adding a "-1" to the tarball name
+        wget https://mvapich.cse.ohio-state.edu/download/mvapich/mv2/mvapich2-${MPI_VERSION}-1.tar.gz
+        tar -xzf mvapich2-${MPI_VERSION}-1.tar.gz
+        cd mvapich2-${MPI_VERSION}-1
+        if [[ "$RUNNER_OS" == "macOS" ]]; then
+          #./configure --prefix=$HOME/mpi \
+          #    --enable-fortran=yes --enable-cxx \
+          #    --enable-two-level-namespace \
+          #    --with-device=ch4:ofi \
+          #    LIBS="-Wl,-commons,use_dylibs"
+          echo "mvapich2 not configured/tested for macOS!"
+          exit 1
+        else
+          ./configure --prefix=$HOME/mpi \
+              --enable-fortran=yes --enable-cxx \
+              --with-device=ch4:ofi
+        fi
+        make -j4
+        make install
       elif [[ "${MPI_NAME}" == "intel-oneapi-mpi" ]]; then
         mkdir -p $HOME/mpi
       else
-        echo "${MPI_NAME} NOT CONFIGURED!"
+        echo "${MPI_NAME} not configured!"
         exit 1
       fi
