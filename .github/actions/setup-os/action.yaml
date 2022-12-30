@@ -34,7 +34,7 @@ runs:
         brew install git-lfs
         # For now we need gcc-10/gfortran-10
         brew install gcc@10
-        # Also install the llvm clang compilers, use 12
+        # Also install the llvm clang-12 compilers for later use
         brew install llvm@12
         brew install lmod
         brew install qt@5
