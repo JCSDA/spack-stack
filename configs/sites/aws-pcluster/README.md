@@ -27,7 +27,6 @@ apt-get -y upgrade
 apt install -y build-essential
 apt install -y libcurl4-openssl-dev
 apt install -y libssl-dev
-#apt install krb5-user
 apt install -y libkrb5-dev
 apt install -y m4
 apt install -y git
@@ -63,10 +62,6 @@ apt install -y libboost-timer1.71-dev
 
 # Python
 apt install -y python3-dev python3-pip
-#python3 -m pip install poetry
-## Ignore error "ERROR: launchpadlib 1.10.13 requires testresources, which is not installed."
-## test - successful if no output
-#python3 -c "import poetry"
 
 # Intel compiler
 wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
@@ -83,13 +78,6 @@ cd /usr/lib64/
 ln -sf /usr/lib/x86_64-linux-gnu/libcrypt.so .
 cd /usr/include
 ln -sf python3.8/pyconfig.h .
-
-# DON'T DO THIS ...
-### # Configure slurm so that interactive session automatically ssh to the first compute node
-### cd /opt/slurm/etc
-### echo "# " >> slurm.conf
-### echo "# Additional settings for JEDI" >> slurm.conf
-### echo "LaunchParameters=use_interactive_step" >> slurm.conf
 
 # Create swapfile - 100GB
 dd if=/dev/zero of=/swapfile bs=128M count=800
@@ -213,6 +201,6 @@ spack config add "packages:all:compiler:[intel@2021.4.0]"
 8. Concretize and install
 ```
 spack concretize 2>&1 | tee log.concretize
-spack install -v 2>&1 | tee log.install
+spack install --verbose --source 2>&1 | tee log.install
 ```
 9. Create the AMI for use in the AWS parallelcluster config.
