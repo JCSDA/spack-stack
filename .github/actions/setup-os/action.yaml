@@ -40,10 +40,6 @@ runs:
         brew install qt@5
         brew install readline
         brew install wget
-        ls -l /usr/local/Cellar
-
-        ls -l /usr/local/Cellar/llvm
-        exit 1
 
         ### # Remove macOS native Python 3.11 from /usr/local/bin
         ### cd /usr/local/bin
