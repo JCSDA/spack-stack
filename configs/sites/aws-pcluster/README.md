@@ -3,6 +3,7 @@
 **Note.** These instructions were used to create this site config. These steps are **not** necessary when building ``spack-stack`` - simply use the existing site config in this directory.
 
 ### Base instance
+Choose a basic AMI from the Community AMIs tab that matches your desired OS and parallelcluster version. Select an instance type of the same family that you are planning to use for the head and the compute nodes, and enough storage for a swap file and a spack-stack installation. For example:
 - AMI ID: ami-091017c7508ac95f6
 - Instance c5n.4xlarge
 - Use 250GB of gp3 storage as /
@@ -60,14 +61,12 @@ apt install -y libboost-test1.71-dev
 apt install -y libboost-thread1.71-dev
 apt install -y libboost-timer1.71-dev
 
-
-
 # Python
 apt install -y python3-dev python3-pip
-python3 -m pip install poetry
-# Ignore error "ERROR: launchpadlib 1.10.13 requires testresources, which is not installed."
-# test - successful if no output
-python3 -c "import poetry"
+#python3 -m pip install poetry
+## Ignore error "ERROR: launchpadlib 1.10.13 requires testresources, which is not installed."
+## test - successful if no output
+#python3 -c "import poetry"
 
 # Intel compiler
 wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
@@ -124,11 +123,7 @@ cmake .. -DENABLE_STATIC_BOOST_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/home/ubuntu/jedi
 make -j4 2>&1 | tee log.make
 make install 2>&1 | tee log.install
 ```
-4. For spack site configuration, to find Intel compiler
-```
-export PATH=/opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64:$PATH
-```
-5. Option 1: Use pre-defined site config in spack-stack (skip step 6 afterwards)
+4. Option 1: Use pre-defined site config in spack-stack (skip steps 5-7 afterwards)
 ```
 cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
@@ -137,6 +132,11 @@ cd spack-stack/
 spack stack create env --site aws-pcluster --template=skylab-dev --name=skylab-2.0.0-intel-2021.4.0
 spack env activate -p envs/skylab-2.0.0-intel-2021.4.0
 ```
+5. Option 2: For spack site configuration, to find Intel compiler
+```
+export PATH=/opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64:$PATH
+```
+
 6. Option 2: Configure site from scratch
 ```
 mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
@@ -208,7 +208,7 @@ spack config add "packages:all:compiler:[intel@2021.4.0]"
 # edit envs/skylab-2.0.0-intel-2021.4.0/site/packages.yaml and remove the older Python versions, keep 3.8.10 only
 ```
 
-7. Temporary workarounds to avoid duplicate hdf5, cmake etc. versions. Edit ``envs/skylab-2.0.0-intel-2021.4.0/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
+7. Option 2: Temporary workarounds to avoid duplicate hdf5, cmake etc. versions. Edit ``envs/skylab-2.0.0-intel-2021.4.0/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
 
 8. Concretize and install
 ```
