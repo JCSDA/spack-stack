@@ -138,36 +138,10 @@ runs:
       echo "      - spec: ${MPI_NAME}@${MPI_VERSION}%${{ inputs.compiler }}" >> ${SPACK_ENV}/spack.yaml
       echo "        prefix: ${MPI_PREFIX}" >> ${SPACK_ENV}/spack.yaml
 
-      ### # No external find for intel-oneapi-mpi, 
-      ### # And no way to add object entry to list using "spack config add"
-      ### # Add this first so "spack config add packages:" will append to this entry
-      ### if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-      ###   impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
-      ###   echo "" >> ${SPACK_ENV}/spack.yaml
-      ###   echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-      ###   echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
-      ###   echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-      ###   echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-      ###   echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
-      ###   echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
-      ### else
-      ###   # So Spack can find external MPI
-      ###   export "PATH=$HOME/mpi/bin:${PATH}"
-      ### fi
-
       # Spack external find is by default only looking for build-tools, Either
       # need to search for additional packages explicitly.
       spack external find
-      ### spack external find mpich
-      ### spack external find openmpi
       spack external find perl
-      ### #if [[ "$RUNNER_OS" == "Linux" ]]; then
-      ### #  spack external find --not-buildable python
-      ### #elif [[ "$RUNNER_OS" == "macOS" ]]; then
-      ### if [[ "$RUNNER_OS" == "macOS" ]]; then
-      ###   # Jail spack external find to /usr/local to ignore Framework python
-      ###   spack external find --not-buildable --path /usr/local python
-      ### fi
       spack external find wget
 
       # Find homebrew qt@5 on macOS
@@ -279,11 +253,12 @@ runs:
           # Not yet: need lmod installed, loaded and module use command
           echo ""
         elif [[ "$RUNNER_OS" == "macOS" ]]; then
-          source /usr/local/opt/lmod/init/profile
-          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
-          module load stack-${{ inputs.compiler }}
-          module load stack-python
-          module load stack-${{ inputs.mpi }}
+          # This needs more work
+          #source /usr/local/opt/lmod/init/profile
+          #module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
+          #module load stack-${{ inputs.compiler }}
+          #module load stack-python
+          #module load stack-${{ inputs.mpi }}
         fi
       fi
 
