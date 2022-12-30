@@ -41,7 +41,7 @@ jobs:
   cache-externals:
     strategy:
       matrix:
-        compiler-mpi: [ {compiler: apple-clang@13.0.0, mpi: openmpi@4.1.4}, {compiler: gcc@10.4.0, mpi: mpich@4.0.2} ]
+        compiler-mpi: [ {compiler: apple-clang@13.0.0, mpi: openmpi@4.1.4}, {compiler: clang@14.0.0, mpi: mpich@4.0.2}  ]
     runs-on: macos-11
     steps:
 
@@ -60,7 +60,7 @@ jobs:
     needs: [cache-externals, cache-spack-mirror]
     strategy:
       matrix:
-        compiler-mpi: [ {compiler: apple-clang@13.0.0, mpi: openmpi@4.1.4}, {compiler: gcc@10.4.0, mpi: mpich@4.0.2} ]
+        compiler-mpi: [ {compiler: apple-clang@13.0.0, mpi: openmpi@4.1.4}, {compiler: clang@14.0.0, mpi: mpich@4.0.2} ]
         template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
     runs-on: macos-11
     steps:

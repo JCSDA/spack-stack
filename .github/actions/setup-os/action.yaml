@@ -34,11 +34,16 @@ runs:
         brew install git-lfs
         # For now we need gcc-10/gfortran-10
         brew install gcc@10
+        # Also install the llvm clang compilers, use 12
+        brew install llvm@12
         brew install lmod
         brew install qt@5
         brew install readline
         brew install wget
         ls -l /usr/local/Cellar
+
+        ls -l /usr/local/Cellar/llvm
+        exit 1
 
         ### # Remove macOS native Python 3.11 from /usr/local/bin
         ### cd /usr/local/bin
