@@ -87,6 +87,13 @@ runs:
       echo "Cached ~/spack-mirror not found!"
       exit 1
 
+  - name: bootstrap-spack
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack bootstrap now
+
   - name: setup-spack-env
     shell: bash
     run: |
@@ -188,7 +195,7 @@ runs:
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
       ## Set compiler as hard requirement for all packages
-      #spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
+      spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
 
       if [[ "$RUNNER_OS" == "macOS" ]]; then
         # Turn of SSL for ecflow CI builds for now
