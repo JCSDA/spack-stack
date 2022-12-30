@@ -125,10 +125,10 @@ runs:
       fi
       echo "" >> ${SPACK_ENV}/spack.yaml
       echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-      echo "    ${${MPI_NAME}}:" >> ${SPACK_ENV}/spack.yaml
+      echo "    ${MPI_NAME}:" >> ${SPACK_ENV}/spack.yaml
       echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
       echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-      echo "      - spec: ${${MPI_NAME}}@${MPI_VERSION}%${{ inputs.compiler }}" >> ${SPACK_ENV}/spack.yaml
+      echo "      - spec: ${MPI_NAME}@${MPI_VERSION}%${{ inputs.compiler }}" >> ${SPACK_ENV}/spack.yaml
       echo "        prefix: ${MPI_PREFIX}" >> ${SPACK_ENV}/spack.yaml
 
       ### # No external find for intel-oneapi-mpi, 
