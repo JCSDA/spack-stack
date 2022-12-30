@@ -187,8 +187,8 @@ runs:
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
-      # Set compiler as hard requirement for all packages
-      spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
+      ## Set compiler as hard requirement for all packages
+      #spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
 
       if [[ "$RUNNER_OS" == "macOS" ]]; then
         # Turn of SSL for ecflow CI builds for now
