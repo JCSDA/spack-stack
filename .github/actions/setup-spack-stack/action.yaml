@@ -114,8 +114,8 @@ runs:
         spack compiler find
       fi
 
-      # Need to find external packages with the correct compiler,
-      # no way to do that with spack commands.
+      # Need to find external packages and annotate with the
+      # correct compiler, no way to do that with spack commands.
       MPI_NAME=`echo "${{ inputs.mpi }}" | cut -d "@" -f 1`
       MPI_VERSION=`echo "${{ inputs.mpi }}" | cut -d "@" -f 2`
       if [[ "${MPI_NAME}" == "intel-oneapi-mpi" ]]; then
@@ -168,7 +168,7 @@ runs:
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
-      ## Set compiler as hard requirement for all packages
+      # Set compiler as hard requirement for all packages
       spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
 
       if [[ "$RUNNER_OS" == "macOS" ]]; then
