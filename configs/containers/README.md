@@ -2,7 +2,7 @@
 
 To avoid hardcoding specs in the generic container recipes, we keep the specs list empty (`specs: []`) and manually add the specs for the particular spack-stack release and application as listed below, *after* running `spack stack create ctr`.
 
-### spack-stack-1.1.0 / skylab-2.0.0 containers
+### spack-stack-1.2.0 / skylab-3.0.0 containers
 ```
   specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, jedi-ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@11.7.1, ecbuild@3.6.5, eccodes@2.27.0, ecflow@5,
@@ -23,12 +23,12 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
 
 ### Create an AMI on AWS EC2 to build docker containers
 
-AMI ami-06157f1b526930ccc (dom-docker-builder-full-backup-20220914; to be updated) was created following the instructions below
+AMI ami-0b5951b8be1fe5709 (dom-docker-builder-full-backup-20221221; JCSDA-NOAA account, us-east-1) was created following the instructions below
 
 - See https://docs.docker.com/desktop/install/ubuntu/
 - Start with ami-052efd3df9dad4825
 - c5n.2xlarge
-- 250GB root volume is plenty
+- 350GB root volume is plenty
 ```
 # Run as root
 sudo su
@@ -82,7 +82,6 @@ Then, build, run, upload containers as root user
 ### Converting spack-stack docker images to singularity
 As root user:
 ```
-#SINGULARITY_NOHTTPS=1 singularity build docker-intel-oneapi-dev.simg docker-daemon://469205354006.dkr.ecr.us-east-1.amazonaws.com/docker-intel-oneapi-dev:latest
 singularity build docker-intel-oneapi-dev.sif docker-daemon://469205354006.dkr.ecr.us-east-1.amazonaws.com/docker-intel-oneapi-dev:latest
 singularity shell docker-intel-oneapi-dev.sif
 ```
