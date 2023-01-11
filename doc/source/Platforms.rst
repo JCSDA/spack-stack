@@ -430,7 +430,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or simila
    module use /home/ec2-user/spack-stack-v1/envs/skylab-3.0.0-gcc-11.2.1/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.4
-   module load stack-python/3.9.7
+   module load stack-python/3.9.13
    module available
 
 ..  _Platform_New_Site_Configs:
