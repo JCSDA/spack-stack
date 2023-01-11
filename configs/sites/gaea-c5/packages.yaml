@@ -62,10 +62,6 @@
       externals:
       - spec: bzip2@1.0.6
         prefix: /usr
-    cmake:
-      externals:
-      - spec: cmake@3.17.0
-        prefix: /usr
     coreutils:
       externals:
       - spec: coreutils@8.32
