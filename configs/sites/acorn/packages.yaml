@@ -10,6 +10,9 @@
         - libfabric
         - craype-network-ofi
         - cray-mpich/8.1.9
+    esmf:
+      version: [8.3.0b09]
+      variants: ~xerces ~pnetcdf +pio esmf_os=Linux esmf_comm=mpich3
     openssl:
       buildable: false
       externals:
@@ -68,7 +71,7 @@
     python:
       buildable: false
       externals:
-      - spec: python@3.8.6+bz2+ctypes+dbm~debug+libxml2+lzma~nis~optimizations+pic+pyexpat+pythoncmd+readline+shared+sqlite3+ssl~tix~tkinter~ucs4+uuid+zlib
+      - spec: python@3.8.6+bz2+ctypes+dbm~debug+libxml2+lzma~nis~optimizations+pic+pyexpat+pythoncmd+readline+shared+sqlite3+ssl~tix~tkinter+uuid+zlib
         modules: [python/3.8.6]
     # On Acorn, perl module requires gcc :(
     perl:
