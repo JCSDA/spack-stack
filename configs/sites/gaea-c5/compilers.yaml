@@ -14,10 +14,10 @@ compilers:
     - intel/2022.0.2
     - craype/2.7.15
     environment:
-        prepend_path:
-          PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
-          CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
-          LD_LIBRARY_PATH: '/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
+      prepend_path:
+        PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
+        CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
+        LD_LIBRARY_PATH: '/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
       set:
         # OpenSUSE on Gaea C5 sets CONFIG_SITE so
         # Automake-based builds are installed in lib64
