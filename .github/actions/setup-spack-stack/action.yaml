@@ -54,7 +54,7 @@ runs:
 
   - name: check-cache-opt-intel
     shell: bash
-    if: steps.cache-opt-intel.outputs.cache-hit != 'true' && runner.os == 'Linux'
+    if: steps.cache-opt-intel.outputs.cache-hit != 'true' && runner.os == 'Linux' && inputs.compiler == 'Intel*'
     run: |
       echo "Cached /opt/intel not found!"
       exit 1
