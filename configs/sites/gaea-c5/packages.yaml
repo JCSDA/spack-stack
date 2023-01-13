@@ -62,13 +62,12 @@
       externals:
       - spec: dos2unix@7.4.0
         prefix: /usr
-  ecflow:
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/ecflow-5.8.4
-      modules:
-      - ecflow/5.8.4
+    ecflow:
+      buildable: False
+      externals:
+      - spec: ecflow@5.8.4+ui+static_boost
+        prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/ecflow-5.8.4
+        modules: [ecflow/5.8.4]
     file:
       externals:
       - spec: file@5.32
@@ -167,10 +166,10 @@
       externals:
       - spec: pkg-config@0.29.2
         prefix: /usr
-  qt:
-    externals:
-    - spec: qt@5.15.2
-      prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/qt-5.15.2/5.15.2/gcc_64
+    qt:
+      externals:
+      - spec: qt@5.15.2
+        prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/qt-5.15.2/5.15.2/gcc_64
     rdma-core:
       externals:
       - spec: rdma-core@37.0
