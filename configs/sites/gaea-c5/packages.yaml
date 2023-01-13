@@ -5,7 +5,7 @@
         mpi:: [cray-mpich@8.1.16]
     cray-mpich:
       externals:
-      - spec: cray-mpich@8.1.16~wrappers
+      - spec: cray-mpich@8.1.16%intel@2022.0.2~wrappers
         modules:
         - libfabric
         - craype-network-ofi
@@ -13,26 +13,6 @@
     esmf:
       version: [8.3.0b09]
       variants: ~xerces ~pnetcdf +pio esmf_os=Linux esmf_comm=mpich3
-    cmake:
-      buildable: false
-      externals:
-      - spec: cmake@3.23.1
-        modules: [cmake/3.23.1]
-    git:
-      buildable: false
-      externals:
-      - spec: git@2.35.2
-        modules: [git/2.35.2]
-    git-lfs:
-      buildable: false
-      externals:
-      - spec: git-lfs@2.11.0
-        modules: [git-lfs/2.11.0]
-    pkg-config:
-      buildable: false
-      externals:
-      - spec: pkg-config@0.29.2
-        prefix: /usr
     python:
       buildable: false
       externals:
@@ -82,6 +62,13 @@
       externals:
       - spec: dos2unix@7.4.0
         prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
     file:
       externals:
       - spec: file@5.32
@@ -106,6 +93,21 @@
       externals:
       - spec: ghostscript@9.52
         prefix: /usr
+    cmake:
+      buildable: false
+      externals:
+      - spec: cmake@3.23.1
+        modules: [cmake/3.23.1]
+    git:
+      buildable: false
+      externals:
+      - spec: git@2.35.2
+        modules: [git/2.35.2]
+    git-lfs:
+      buildable: false
+      externals:
+      - spec: git-lfs@2.11.0
+        modules: [git-lfs/2.11.0]
     gmake:
       externals:
       - spec: gmake@4.2.1
@@ -117,10 +119,6 @@
     hwloc:
       externals:
       - spec: hwloc@2.6.0a1
-        prefix: /usr
-    openjdk:
-      externals:
-      - spec: openjdk@11.0.16_8-suse-150000.3.83.1-x8664
         prefix: /usr
     libfuse:
       externals:
@@ -148,6 +146,10 @@
       externals:
       - spec: ncurses@6.1.20180317+termlib abi=6
         prefix: /usr
+    openjdk:
+      externals:
+      - spec: openjdk@11.0.16_8-suse-150000.3.83.1-x8664
+        prefix: /usr
     openssh:
       externals:
       - spec: openssh@8.4p1
@@ -159,6 +161,19 @@
     perl:
       externals:
       - spec: perl@5.26.1~cpanm+shared+threads
+        prefix: /usr
+    pkg-config:
+      buildable: false
+      externals:
+      - spec: pkg-config@0.29.2
+        prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.2
+      prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/qt-5.15.2/5.15.2/gcc_64
+    rdma-core:
+      externals:
+      - spec: rdma-core@37.0
         prefix: /usr
     rsync:
       externals:
@@ -203,8 +218,4 @@
     zip:
       externals:
       - spec: zip@3.0
-        prefix: /usr
-    rdma-core:
-      externals:
-      - spec: rdma-core@37.0
         prefix: /usr
