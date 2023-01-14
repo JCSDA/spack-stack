@@ -205,6 +205,7 @@ runs:
       cd ${{ inputs.path }}
       source setup.sh
       spack env activate ${{ inputs.path }}/envs/${{ inputs.name }}
+      sed -i '/curl:/,+3d' ${SPACK_ENV}/spack.yaml
       cat ${SPACK_ENV}/spack.yaml
       spack concretize | tee ${GITHUB_WORKSPACE}/logs/concretize.txt
 
