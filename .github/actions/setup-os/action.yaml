@@ -14,7 +14,7 @@ runs:
         sudo apt-get update
 
         # Install Curl/ssl headers. Executables exist by default in spack external find.
-        sudo apt-get remove '.*curl.*'
+        sudo apt-get remove 'libcurl-dev'
         sudo apt-get install libssl-dev
 
         # Install git-lfs to avoid compilation errors of "go" with Intel
