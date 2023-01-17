@@ -13,9 +13,12 @@ runs:
         # Needed for the following apt-get install calls to work
         sudo apt-get update
 
-        # Install Curl/ssl headers. Executables exist by default in spack external find.
-        sudo apt-get install libcurl4-openssl-dev
-        sudo apt-get install libssl-dev
+        set +eo pipefail
+        # TEST # Install Curl/ssl headers. Executables exist by default in spack external find.
+        # TEST #sudo apt-get install libcurl4-openssl-dev
+        # TEST #sudo apt-get install libssl-dev
+        sudo apt-get remove curl libcurl4-openssl-dev
+        set -eo pipefail
 
         # Install git-lfs to avoid compilation errors of "go" with Intel
         sudo apt-get install git-lfs
