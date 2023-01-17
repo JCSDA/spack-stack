@@ -54,7 +54,7 @@ runs:
 
   - name: check-cache-opt-intel
     shell: bash
-    if: steps.cache-opt-intel.outputs.cache-hit != 'true' && runner.os == 'Linux' && inputs.compiler == 'Intel*'
+    if: steps.cache-opt-intel.outputs.cache-hit != 'true' && runner.os == 'Linux'
     run: |
       echo "Cached /opt/intel not found!"
       exit 1
@@ -148,7 +148,7 @@ runs:
       spack external find --path /usr/local/opt/qt@5 qt
 
       if [[ "$RUNNER_OS" == "Linux" ]]; then
-        echo spack external find curl
+        spack external find curl
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         spack external find --path /usr/local/opt/curl curl
       fi
