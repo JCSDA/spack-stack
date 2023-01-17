@@ -14,9 +14,7 @@ runs:
         sudo apt-get update
 
         set +eo pipefail
-        # TEST # Install Curl/ssl headers. Executables exist by default in spack external find.
-        # TEST #sudo apt-get install libcurl4-openssl-dev
-        # TEST #sudo apt-get install libssl-dev
+        # Remove curl to avoid build errors on Ubuntu
         sudo apt-get remove curl libcurl4-openssl-dev
         set -eo pipefail
 
