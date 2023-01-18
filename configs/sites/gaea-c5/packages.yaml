@@ -16,7 +16,7 @@
     python:
       buildable: false
       externals:
-      - spec: python@3.9.12 +bz2 +ctypes +dbm ~debug +libxml2 +lzma ~nis ~optimizations +pic +pyexpat +pythoncmd +readline +shared +sqlite3 +ssl ~tix ~tkinter +uuid +zlib
+      - spec: python@3.9.12
         modules: [python/3.9.12]
     autoconf:
       externals:
@@ -38,10 +38,16 @@
       externals:
       - spec: bison@3.0.4
         prefix: /usr
-    bzip2:
+    # Don't use, it's missing the headers
+    #bzip2:
+    #  externals:
+    #  - spec: bzip2@1.0.6
+    #    prefix: /usr
+    cmake:
+      buildable: false
       externals:
-      - spec: bzip2@1.0.6
-        prefix: /usr
+      - spec: cmake@3.23.1
+        modules: [cmake/3.23.1]
     coreutils:
       externals:
       - spec: coreutils@8.32
@@ -92,11 +98,6 @@
       externals:
       - spec: ghostscript@9.52
         prefix: /usr
-    cmake:
-      buildable: false
-      externals:
-      - spec: cmake@3.23.1
-        modules: [cmake/3.23.1]
     git:
       buildable: false
       externals:
@@ -119,12 +120,20 @@
       externals:
       - spec: hwloc@2.6.0a1
         prefix: /usr
+  # This package is incomplete, but still works for us
+  krb5:
+    externals:
+    - spec: krb5@1.16.3
+      #prefix: /usr/lib/mit
+      prefix: /usr
     libfuse:
       externals:
       - spec: libfuse@2.9.7
         prefix: /usr
       - spec: libfuse@3.6.1
         prefix: /usr
+    libtirpc:
+      variants: ~gssapi
     libtool:
       externals:
       - spec: libtool@2.4.6
