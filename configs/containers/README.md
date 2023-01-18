@@ -12,7 +12,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.8.1, netcdf-cxx4@4.3.1,
     netcdf-fortran@4.5.4, nlohmann-json-schema-validator@2.1.0, nlohmann-json@3.10.5,
     parallel-netcdf@1.12.2, parallelio@2.5.7, py-eccodes@1.4.2, py-f90nml@1.4.3, py-numpy@1.22.3,
-    py-pandas@1.4.0, py-pyyaml@6.0, py-scipy@1.9.3, py-shapely@1.8.0, py-xarray@2022.3.0,
+    py-pandas@1.4.0, py-pip, py-pyyaml@6.0, py-scipy@1.9.3, py-shapely@1.8.0, py-xarray@2022.3.0,
     sp@2.3.3, udunits@2.2.28, w3nco@2.4.1, nco@5.0.6,
     yafyaml@0.5.1, zlib@1.2.13, odc@1.4.5, crtm@v2.4-jedi.2, shumlib@macos_clang_linux_intel_port]
     # Don't build ESMF and MAPL for now:
