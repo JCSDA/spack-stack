@@ -31,7 +31,7 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install``                          |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | currently broken - will be repaired soon                                                                           |
+| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``     |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -41,7 +41,9 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud)                 |                           | not yet supported - coming soon                                                                                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea                                         | Dom Heinzeller            | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.3.0/install``                  |
+| NOAA RDHPCS Gaea (C3/C4)                                 | Dom Heinzeller            | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.3.0/install``                  |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea (C5)                                    | Alex Richert / Dom Heinzeller | not yet supported - coming soon                                                                                |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Hera Intel                                   | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install``                   |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -142,9 +144,6 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules 
 NAVY HPCMP Narwhal
 ------------------------------
 
-.. note::
-   ``spack-stack-1.2.0``/``skylab-3.0.0`` (and previous ``spack-stack-1.1.0``/``skylab-2.0.0``) is broken and will be fixed soon.
-
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
@@ -152,7 +151,7 @@ The following is required for building new spack environments and for using spac
    module unload PrgEnv-cray
    module load PrgEnv-intel/8.3.2
    module unload intel
-   module load intel/2021.3.0
+   module load intel-classic/2021.4.0
    module unload cray-mpich
    module load cray-mpich/8.1.14
    module unload cray-python
@@ -167,8 +166,8 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 
 .. code-block:: console
 
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.3.0/install/modulefiles/Core
-   module load stack-intel/2021.3.0
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install/modulefiles/Core
+   module load stack-intel/2021.4.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
 
@@ -272,7 +271,7 @@ The following is required for building new spack environments and for using spac
 .. _Platforms_Gaea:
 
 ------------------------------
-NOAA RDHPCS Gaea
+NOAA RDHPCS Gaea (C3/C4)
 ------------------------------
 
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
@@ -303,6 +302,20 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 .. code-block:: console
 
    cmake -DCMAKE_CROSSCOMPILING_EMULATOR="/usr/bin/srun;-n;1" -DMPIEXEC_EXECUTABLE="/usr/bin/srun" -DMPIEXEC_NUMPROC_FLAG="-n" PATH_TO_SOURCE
+
+------------------------------
+NOAA RDHPCS Gaea (C5)
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
+
+.. code-block:: console
+
+   module load PrgEnv-intel/8.3.3
+   module load intel/2022.0.2
+   module load cray-mpich/8.1.16
+   module load python/3.9.12
+
 
 .. _Platforms_Hera:
 
