@@ -46,7 +46,7 @@ spack:
       version: [0.31.1]
       variants: +fckit +trans
     ectrans:
-      version: [1.1.0]
+      version: [1.2.0]
       variants: ~enable_mkl
     eigen:
       version: [3.4.0]
@@ -59,10 +59,10 @@ spack:
     fftw:
       version: [3.3.10]
     fiat:
-      version: [1.0.0]
+      version: [1.1.0]
     fms:
-      version: [2022.02]
-      variants: +64bit +quad_precision +gfs_phys +openmp +fpic
+      version: [2022.04]
+      variants: +64bit +quad_precision +gfs_phys +openmp +fpic constants=GFS
     g2:
       version: [3.4.5]
     g2c:
