@@ -22,6 +22,7 @@ spack:
   - crtm@2.4.0
   - esmf@8.3.0b09+debug~shared
   - esmf@8.3.0b09~debug~shared
+  - fms@2022.01
   - fms@2022.04 constants=GFS
   - g2@3.4.5
   - g2tmpl@1.10.0
