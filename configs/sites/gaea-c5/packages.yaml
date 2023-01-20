@@ -120,12 +120,12 @@
       externals:
       - spec: hwloc@2.6.0a1
         prefix: /usr
-  # This package is incomplete, but still works for us
-  krb5:
-    externals:
-    - spec: krb5@1.16.3
-      #prefix: /usr/lib/mit
-      prefix: /usr
+    # This package is currently incomplete (no headers), but still works
+    krb5:
+      externals:
+      - spec: krb5@1.16.3
+        #prefix: /usr/lib/mit
+        prefix: /usr
     libfuse:
       externals:
       - spec: libfuse@2.9.7
@@ -138,10 +138,22 @@
       externals:
       - spec: libtool@2.4.6
         prefix: /usr
+    # This package is currently incomplete (no headers), but still works
+    libxaw:
+      externals:
+      - spec: libxaw@1.10.13
+        prefix: /usr
     libxml2:
       externals:
       - spec: libxml2@2.9.7
         prefix: /usr
+    # This package is currently incomplete (no headers) and doesn't work
+    # for us. But it's only needed to build libxaw, for which we can use
+    # the existing (incomplete) installation in /usr, see above
+    #libxpm:
+    #  externals:
+    #  - spec: libxpm@4.11.0
+    #    prefix: /usr
     lustre:
       externals:
       - spec: lustre@2.15.0.2_rc2_cray_113_g62287d0
