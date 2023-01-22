@@ -29,6 +29,7 @@ spack:
   # Additional package config for container
   packages:
     all:
+      require: '%clang'
       target: [x86_64]
       providers:
         mpi: [mpich@4.0.2]

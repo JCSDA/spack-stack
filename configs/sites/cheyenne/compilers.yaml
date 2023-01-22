@@ -14,9 +14,9 @@ compilers::
   #    - intel/2022.1
   #    environment:
   #      prepend_path:
-  #        PATH: '/glade/u/apps/ch/opt/gnu/10.1.0/bin'
-  #        CPATH: '/glade/u/apps/ch/opt/gnu/10.1.0/include'
-  #        LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2022.1/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
+  #        PATH: '/glade/u/apps/ch/opt/gnu/9.1.0/bin'
+  #        CPATH: '/glade/u/apps/ch/opt/gnu/9.1.0/include'
+  #        LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2022.1/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
   #      set:
   #        I_MPI_ROOT: '/glade/u/apps/opt/intel/2022.1/mpi/2021.5.1'
   #    extra_rpaths: []
@@ -34,9 +34,9 @@ compilers::
       - intel/19.1.1
       environment:
         prepend_path:
-          PATH: '/glade/u/apps/ch/opt/gnu/10.1.0/bin'
-          CPATH: '/glade/u/apps/ch/opt/gnu/10.1.0/include'
-          LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries/linux/lib/intel64_lin:/glade/u/apps/ch/opt/gnu/10.1.0/lib64'
+          PATH: '/glade/u/apps/ch/opt/gnu/9.1.0/bin'
+          CPATH: '/glade/u/apps/ch/opt/gnu/9.1.0/include'
+          LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries/linux/lib/intel64_lin:/glade/u/apps/ch/opt/gnu/9.1.0/lib64'
         set:
           INTEL_LICENSE_FILE: '28518@128.117.177.41'
           LM_LICENSE_FILE: '28518@128.117.177.41'

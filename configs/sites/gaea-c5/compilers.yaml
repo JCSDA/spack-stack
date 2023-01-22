@@ -1,0 +1,27 @@
+compilers:
+- compiler:
+    spec: intel@2022.0.2
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: sles15
+    target: any
+    modules:
+    - PrgEnv-intel/8.3.3
+    - intel/2022.0.2
+    - craype/2.7.15
+    - libfabric/1.11.0.4.128
+    environment:
+      prepend_path:
+        PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
+        CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
+        LD_LIBRARY_PATH: '/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
+      set:
+        # OpenSUSE on Gaea C5 sets CONFIG_SITE so
+        # Automake-based builds are installed in lib64
+        # which confuses some packages.
+        CONFIG_SITE: ''
+    extra_rpaths: []

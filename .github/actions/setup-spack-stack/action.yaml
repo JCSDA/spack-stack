@@ -10,13 +10,11 @@ inputs:
     required: false
     default: 'empty'
   compiler:
-    description: 'Compiler (available options gcc@9, gcc@10, apple-clang, intel)'
+    description: 'Compiler (available options gcc, apple-clang, intel)'
     required: true
-    default: 'gcc@9'
   mpi:
     description: 'Which MPI flavor (openmpi, mpich, intel-oneapi-mpi)'
-    required: false
-    default: 'mpich@4'
+    required: true
   path:
     description: 'Use custom checkout of Spack Stack. Useful in the Spack repo CI.'
     required: false
@@ -89,6 +87,13 @@ runs:
       echo "Cached ~/spack-mirror not found!"
       exit 1
 
+  - name: bootstrap-spack
+    shell: bash
+    run: |
+      cd ${{ inputs.path }}
+      source setup.sh
+      spack bootstrap now
+
   - name: setup-spack-env
     shell: bash
     run: |
@@ -109,45 +114,44 @@ runs:
         spack compiler find
       fi
 
-      # No external find for intel-oneapi-mpi, 
-      # And no way to add object entry to list using "spack config add"
-      # Add this first so "spack config add packages:" will append to this entry
-      if [[ "${{ inputs.mpi }}" == "intel-oneapi-mpi" ]]; then
-        impi_ver=$(find /opt/intel/oneapi/mpi -maxdepth 1 -mindepth 1 -type d | xargs basename)
-        echo "" >> ${SPACK_ENV}/spack.yaml
-        echo "  packages:" >> ${SPACK_ENV}/spack.yaml
-        echo "    intel-oneapi-mpi:" >> ${SPACK_ENV}/spack.yaml
-        echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
-        echo "      externals:" >> ${SPACK_ENV}/spack.yaml
-        echo "      - spec: intel-oneapi-mpi@${impi_ver}" >> ${SPACK_ENV}/spack.yaml
-        echo "        prefix: /opt/intel/oneapi" >> ${SPACK_ENV}/spack.yaml
+      # Need to find external packages and annotate with the
+      # correct compiler, no way to do that with spack commands.
+      MPI_NAME=`echo "${{ inputs.mpi }}" | cut -d "@" -f 1`
+      MPI_VERSION=`echo "${{ inputs.mpi }}" | cut -d "@" -f 2`
+      if [[ "${MPI_NAME}" == "intel-oneapi-mpi" ]]; then
+        MPI_PREFIX="/opt/intel/oneapi"
+      elif [[ "${MPI_NAME}" == "openmpi" ]]; then
+        MPI_PREFIX="$HOME/mpi"
+      elif [[ "${MPI_NAME}" == "mpich" ]]; then
+        MPI_PREFIX="$HOME/mpi"
+      elif [[ "${MPI_NAME}" == "mvapich2" ]]; then
+        MPI_PREFIX="$HOME/mpi"
       else
-        # So Spack can find external MPI
-        export "PATH=$HOME/mpi/bin:${PATH}"
+        echo "Malformed MPI provider, can only use 'intel-oneapi-mpi', 'openmpi', 'mpich', 'mvapich2'."
+        exit 1
       fi
+      echo "" >> ${SPACK_ENV}/spack.yaml
+      echo "  packages:" >> ${SPACK_ENV}/spack.yaml
+      echo "    ${MPI_NAME}:" >> ${SPACK_ENV}/spack.yaml
+      echo "      buildable: False" >> ${SPACK_ENV}/spack.yaml
+      echo "      externals:" >> ${SPACK_ENV}/spack.yaml
+      echo "      - spec: ${MPI_NAME}@${MPI_VERSION}%${{ inputs.compiler }}" >> ${SPACK_ENV}/spack.yaml
+      echo "        prefix: ${MPI_PREFIX}" >> ${SPACK_ENV}/spack.yaml
 
       # Spack external find is by default only looking for build-tools, Either
       # need to search for additional packages explicitly.
       spack external find
-      spack external find mpich
-      spack external find openmpi
       spack external find perl
-      if [[ "$RUNNER_OS" == "Linux" ]]; then
-        spack external find --not-buildable python
-      elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Jail spack external find to /usr/local to ignore Framework python
-        spack external find --not-buildable --path /usr/local python
-      fi
       spack external find wget
 
-      # Make homebrew qt@5 detectable on macOS
-      PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
+      # Find homebrew qt@5 on macOS
+      spack external find --path /usr/local/opt/qt@5 qt
 
-      if [[ "$RUNNER_OS" == "Linux" ]]; then
-        spack external find curl
-      elif [[ "$RUNNER_OS" == "macOS" ]]; then
-        # Make homebrew curl detectable on macOS
-        PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
+      # if [[ "$RUNNER_OS" == "Linux" ]]; then
+      #   spack external find curl
+      # elif [[ "$RUNNER_OS" == "macOS" ]]; then
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
+        spack external find --path /usr/local/opt/curl curl
       fi
 
   - name: configure-options
@@ -164,8 +168,9 @@ runs:
       # Use external MPI to save compilation time
       spack config add "packages:mpi:buildable:False"
       spack config add "packages:all:providers:mpi:[${{ inputs.mpi }}]"
-
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
+      # Set compiler as hard requirement for all packages
+      spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
 
       if [[ "$RUNNER_OS" == "macOS" ]]; then
         # Turn of SSL for ecflow CI builds for now
@@ -245,21 +250,17 @@ runs:
     run: |
       if [[ ! "${{ inputs.templates }}" == "empty" ]]; then
         cd ${{ inputs.path }}
-        if [[ "$RUNNER_OS" == "Linux" ]]; then
-          # Not yet: need lmod installed, loaded and module use command
-          echo ""
-        elif [[ "$RUNNER_OS" == "macOS" ]]; then
-          source /usr/local/opt/lmod/init/profile
-          module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
-          # This needs more work: need to replace "${{ inputs.compiler }}" = "gcc@9"
-          # with "gcc/9", otherwise the module load command will fail.
-          # module load stack-${{ inputs.compiler }}
-          # module load stack-python
-          # # jedi-tools doesn't have any mpi dependencies
-          # if [[ ! "${{ inputs.specs }}" == "jedi-tools" ]]; then
-          #   module load stack-${{ inputs.mpi }}
-          # fi
-        fi
+        #if [[ "$RUNNER_OS" == "Linux" ]]; then
+        #  # Not yet: need lmod installed, loaded and module use command
+        #  echo ""
+        #elif [[ "$RUNNER_OS" == "macOS" ]]; then
+        #  # This needs more work
+        #  #source /usr/local/opt/lmod/init/profile
+        #  #module use $PWD/envs/${{ inputs.name }}/install/modulefiles/Core
+        #  #module load stack-${{ inputs.compiler }}
+        #  #module load stack-python
+        #  #module load stack-${{ inputs.mpi }}
+        #fi
       fi
 
   - name: Upload logs

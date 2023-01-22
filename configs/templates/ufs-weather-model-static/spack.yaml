@@ -1,0 +1,39 @@
+spack:
+  concretizer:
+    unify: when_possible
+  config:
+    install_tree:
+      root: $env/install
+  modules:
+    default:
+      roots:
+        lmod: $env/install/modulefiles
+        tcl: $env/install/modulefiles
+  view: false
+  include:
+  - site
+  - common
+  specs:
+  - jasper@2.0.25~shared
+  - libjpeg-turbo~shared
+  - libpng@1.6.37~shared
+  - zlib@1.2.11~shared
+  - bacio@2.4.1
+  - crtm@2.4.0
+  - esmf@8.3.0b09+debug~shared
+  - esmf@8.3.0b09~debug~shared
+  - fms@2022.01
+  - fms@2022.04 constants=GFS
+  - g2@3.4.5
+  - g2tmpl@1.10.0
+  - gftl-shared@1.5.0
+  - hdf5@1.10.6+hl+mpi~shared
+  - ip@3.3.3
+  - mapl@2.22.0~pnetcdf+debug~shared
+  - mapl@2.22.0~pnetcdf~debug~shared
+  - netcdf-c@4.7.4~parallel-netcdf+mpi~shared~dap
+  - netcdf-fortran@4.5.4~shared
+  - parallel-netcdf@1.12.2~shared
+  - parallelio@2.5.7+fortran~pnetcdf~shared
+  - sp@2.3.3
+  - w3emc@2.9.2

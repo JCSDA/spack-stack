@@ -51,7 +51,7 @@
       version: [0.31.1]
       variants: +fckit +trans
     ectrans:
-      version: [1.1.0]
+      version: [1.2.0]
       variants: ~enable_mkl
     eigen:
       version: [3.4.0]
@@ -66,16 +66,15 @@
     fftw:
       version: [3.3.10]
     fiat:
-      version: [1.0.0]
+      version: [1.1.0]
     findutils:
       version: [4.8.0]
     flex:
-      version: [2.6.3]
-    # Attention - when updating also check the macos.default site config and
-    # the various jcsda-emc-bundles env packages
+      version: [2.6.4]
+    # Attention - when updating also check the various jcsda-emc-bundles env packages
     fms:
-      version: [2022.02]
-      variants: +64bit +quad_precision +gfs_phys +openmp +fpic
+      version: [2022.04]
+      variants: +64bit +quad_precision +gfs_phys +openmp +fpic constants=GFS
     g2:
       version: [3.4.5]
     g2c:
@@ -216,19 +215,19 @@
       version: [3.1.0]
     py-python-dateutil:
       version: [2.8.2]
-    py-pythran:
-      # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
-      version: [0.11.0]
+    #py-pythran:
+    #  # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
+    #  version: [0.11.0]
     py-pyyaml:
       version: [6.0]
     py-scipy:
-      version: [1.8.0]
+      version: [1.9.3]
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       version: [59.4.0]
     # Pin the py-setuptools-scm version to avoid duplicate Python packages
     py-setuptools-scm:
-      version: [6.3.2]
+      version: [7.0.5]
     py-shapely:
       version: [1.8.0]
     qt:
@@ -254,7 +253,7 @@
     upp:
       version: [10.0.10]
     w3emc:
-      version: [2.9.1]
+      version: [2.9.2]
     w3nco:
       version: [2.4.1]
     wget:

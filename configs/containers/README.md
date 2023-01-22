@@ -2,19 +2,19 @@
 
 To avoid hardcoding specs in the generic container recipes, we keep the specs list empty (`specs: []`) and manually add the specs for the particular spack-stack release and application as listed below, *after* running `spack stack create ctr`.
 
-### spack-stack-1.1.0 / skylab-2.0.0 containers
+### spack-stack-1.2.0 / skylab-3.0.0 containers
 ```
   specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, jedi-ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@11.7.1, ecbuild@3.6.5, eccodes@2.27.0, ecflow@5,
-    eckit@1.19.0, ecmwf-atlas@0.30.0 +trans ~fftw, ectrans@1.0.0 ~fftw, eigen@3.4.0,
+    eckit@1.20.2, ecmwf-atlas@0.31.1 +trans ~fftw, ectrans@1.2.0 ~fftw, eigen@3.4.0,
     fckit@0.9.5, flex@2.6.4, fms@release-jcsda, g2@3.4.5, g2tmpl@1.10.0, gftl-shared@1.5.0,
     gsibec@1.0.6, hdf5@1.12.1, hdf@4.2.15, ip@3.3.3, jasper@2.0.32, jedi-cmake@1.4.0,
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.8.1, netcdf-cxx4@4.3.1,
     netcdf-fortran@4.5.4, nlohmann-json-schema-validator@2.1.0, nlohmann-json@3.10.5,
     parallel-netcdf@1.12.2, parallelio@2.5.7, py-eccodes@1.4.2, py-f90nml@1.4.3, py-numpy@1.22.3,
-    py-pandas@1.4.0, py-pyyaml@6.0, py-scipy@1.8.0, py-shapely@1.8.0, py-xarray@2022.3.0,
+    py-pandas@1.4.0, py-pip, py-pyyaml@6.0, py-scipy@1.9.3, py-shapely@1.8.0, py-xarray@2022.3.0,
     sp@2.3.3, udunits@2.2.28, w3nco@2.4.1, nco@5.0.6,
-    yafyaml@0.5.1, zlib@1.2.13, odc@1.4.5, crtm@v2.4_jedi, shumlib@macos_clang_linux_intel_port]
+    yafyaml@0.5.1, zlib@1.2.13, odc@1.4.5, crtm@v2.4-jedi.2, shumlib@macos_clang_linux_intel_port]
     # Don't build ESMF and MAPL for now:
     # https://github.com/JCSDA-internal/MPAS-Model/issues/38
     # https://github.com/NOAA-EMC/spack-stack/issues/326
@@ -23,12 +23,12 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
 
 ### Create an AMI on AWS EC2 to build docker containers
 
-AMI ami-06157f1b526930ccc (dom-docker-builder-full-backup-20220914; to be updated) was created following the instructions below
+AMI ami-0b5951b8be1fe5709 (dom-docker-builder-full-backup-20221221; JCSDA-NOAA account, us-east-1) was created following the instructions below
 
 - See https://docs.docker.com/desktop/install/ubuntu/
 - Start with ami-052efd3df9dad4825
 - c5n.2xlarge
-- 250GB root volume is plenty
+- 350GB root volume is plenty
 ```
 # Run as root
 sudo su
@@ -82,7 +82,6 @@ Then, build, run, upload containers as root user
 ### Converting spack-stack docker images to singularity
 As root user:
 ```
-#SINGULARITY_NOHTTPS=1 singularity build docker-intel-oneapi-dev.simg docker-daemon://469205354006.dkr.ecr.us-east-1.amazonaws.com/docker-intel-oneapi-dev:latest
 singularity build docker-intel-oneapi-dev.sif docker-daemon://469205354006.dkr.ecr.us-east-1.amazonaws.com/docker-intel-oneapi-dev:latest
 singularity shell docker-intel-oneapi-dev.sif
 ```
