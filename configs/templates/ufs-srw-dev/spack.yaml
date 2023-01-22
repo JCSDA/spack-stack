@@ -12,10 +12,12 @@ spack:
         projections:
           parallelio: 'pio/{version}'
           wrf-io: 'wrf_io/{version}'
+          gsi-ncdiag: 'ncdiag/{version}'
       tcl: 
         projections:
           parallelio: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/pio/{version}'
           wrf-io: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/wrf_io/{version}'
+          gsi-ncdiag: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/ncdiag/{version}'
 
   view: false
   include:
@@ -51,5 +53,6 @@ spack:
   - wgrib2@2.0.8
   - wrf-io@1.2.0
   - ncio@1.1.2
+  - gsi-ncdiag@1.0.0
   - met@10.1.0
   - metplus@4.1.0
