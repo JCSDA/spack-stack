@@ -57,6 +57,7 @@ jobs:
           mpi: ${{ matrix.compiler-mpi.mpi }}
 
   build-spack-stack:
+    if: '! github.event.pull_request.draft'
     needs: [cache-externals, cache-spack-mirror]
     strategy:
       matrix:
