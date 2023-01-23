@@ -10,7 +10,10 @@ spack:
         tcl: $env/install/modulefiles
       lmod:
         projections:
-          parallelio: 'parallelio/2.5.2'
+          gsi-ncdiag: 'ncdiag/{version}'
+      tcl: 
+        projections:
+          gsi-ncdiag: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/ncdiag/{version}'
 
   view: false
   include: []
@@ -47,3 +50,4 @@ spack:
   - sigio@2.3.2
   - w3emc@2.7.3
   - wgrib2@2.0.8
+  - gsi-ncdiag@1.0.0

@@ -1,23 +1,23 @@
 packages:
   all:
-    #compiler:: [intel@2022.0.2]
-    compiler:: [intel@19.1.1.217]
+    compiler:: [intel@2022.0.2]
+    #compiler:: [intel@19.1.1.217]
     #compiler:: [gcc@10.1.0]
     providers:
-      #mpi:: [intel-oneapi-mpi@2021.5.1]
-      mpi:: [intel-mpi@2019.7.217]
+      mpi:: [intel-oneapi-mpi@2021.5.1]
+      #mpi:: [intel-mpi@2019.7.217]
       #mpi:: [openmpi@4.1.1]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
   # Note. Weird MPI issues when running single-task jobs (mpiexec -np 1) with latest Intel compiler/mpi library - code simply hangs forever
-  #intel-oneapi-mpi:
-  #  externals:
-  #  - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-  #    prefix: /glade/u/apps/opt/intel/2022.1
-  #    modules:
-  #    - impi/2022.1
+  intel-oneapi-mpi:
+    externals:
+    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
+      prefix: /glade/u/apps/opt/intel/2022.1
+      modules:
+      - impi/2022.1
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2021.5.1%intel@2022.0.2
@@ -30,12 +30,12 @@ packages:
   #    prefix: /glade/u/apps/opt/intel/2022.1
   #    modules:
   #    - impi/2022.1
-  intel-mpi:
-    externals:
-    - spec: intel-mpi@2019.7.217%intel@19.1.1.217
-      prefix: /glade/u/apps/opt/intel/2020u1
-      modules:
-      - impi/2019.7.217
+  #intel-mpi:
+  #  externals:
+  #  - spec: intel-mpi@2019.7.217%intel@19.1.1.217
+  #    prefix: /glade/u/apps/opt/intel/2020u1
+  #    modules:
+  #    - impi/2019.7.217
   openmpi:
     externals: 
     - spec: openmpi@4.1.1%gcc@10.1.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm,tm
@@ -46,9 +46,13 @@ packages:
     buildable: False
     externals:
     - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
+      prefix: /glade/work/epicufsrt/contrib/miniconda3/4.12.0
       modules:
-      - miniconda/3.9.12
+      - miniconda3/4.12.0
+    #- spec: python@3.9.12+bz2+ctypes+dbm+ensurepip+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+    #  prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
+    #  modules:
+    #  - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -63,11 +67,10 @@ packages:
     externals:
     - spec: berkeley-db@4.8.30
       prefix: /usr
-  # Don't use, leads to duplicate packages being built
-  #bison:
-  # externals:
-  # - spec: bison@2.7
-  #   prefix: /usr
+  bison:
+    externals:
+    - spec: bison@2.7
+      prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -102,11 +105,10 @@ packages:
       prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
-  # Don't use, leads to duplicate packages being built
-  #expat:
-  #  externals:
-  #  - spec: expat@1.6.0
-  #    prefix: /usr
+  expat:
+    externals:
+    - spec: expat@1.6.0
+      prefix: /usr
   file:
     externals:
     - spec: file@5.22
@@ -116,8 +118,6 @@ packages:
     - spec: findutils@4.5.12
       prefix: /usr
   flex:
-    # Must set buildable: false to avoid duplicate packages
-    buildable: false
     externals:
     - spec: flex@2.5.37+lex
       prefix: /usr
@@ -134,15 +134,14 @@ packages:
     - spec: ghostscript@9.25
       prefix: /usr
   git:
+    buildable: False
     externals:
-    - spec: git@2.33.1
-      modules:
-      - git/2.33.1
+    - spec: git@2.33.0+tcltk
+      prefix: /glade/u/apps/ch/opt/git/2.33.1/gnu/9.1.0
   git-lfs:
     externals:
     - spec: git-lfs@3.0.2
-      modules:
-      - git/2.33.1
+      prefix: /glade/u/apps/ch/opt/git/2.33.1/gnu/9.1.0
   gmake:
     externals:
     - spec: gmake@4.0
@@ -189,9 +188,6 @@ packages:
     externals:
     - spec: openssl@1.0.2p-fips
       prefix: /usr
-  # Pin patchelf to 0.15.0 for Intel compiler (no C++-17 features)
-  patchelf:
-    version:: [0.15.0]
   perl:
     externals:
     - spec: perl@5.18.2~cpanm+shared+threads
