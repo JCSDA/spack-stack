@@ -1,44 +1,51 @@
 spack:
-  view: false
-
-  include: []
-
   concretizer:
     unify: when_possible
-  
-  config:
-    install_tree:
-       root: $env/install
-
-  modules:
-    default:
-      roots:
-        lmod: $env/install/modulefiles
-        tcl: $env/install/modulefiles
-      lmod:
-        core_specs:
-        - jedi-tools-env
 
   view: false
+  include: []
 
   packages:
+    #
+    all:
+      providers:
+        blas: [openblas]
+        fftw-api: [fftw]
+        gl: [opengl]
+        glu: [openglu]
+        jpeg: [libjpeg-turbo]
+        lapack: [openblas]
+        yacc: [bison]
+    #
     bacio:
       version: [2.4.1]
+    bison:
+      version: [3.8.2]
+    # Attention - when updating also check orion site config
     boost:
       version: [1.78.0]
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
       version: [11.7.1]
       variants: +python
+    # Newer versions of CDO require the C++-17 standard, which doesn't
+    # work with all compilers that are currently in use in spack-stack
+    cdo:
+      version: [2.0.5]
     cmake:
-      version: [3.22.1]
+      version: [3.23.1]
+      variants: +ownlibs
+    # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
-      version: [2.3.0]
+      version: [2.4.0]
       variants: +fix
     ecbuild:
       version: [3.6.5]
     eccodes:
       version: [2.27.0]
+    ecflow:
+      version: [5.8.4]
+      variants: +ui
     eckit:
       version: [1.20.2]
       variants: linalg=eigen,lapack compression=lz4,bzip2
@@ -50,6 +57,8 @@ spack:
       variants: ~enable_mkl
     eigen:
       version: [3.4.0]
+    # Attention - when updating the version also check the common modules.yaml
+    # config and update the projections for lmod/tcl
     esmf:
       version: [8.3.0b09]
       variants: ~xerces ~pnetcdf +pio
@@ -68,11 +77,17 @@ spack:
     g2c:
       version: [1.6.4]
     g2tmpl:
-      version: [1.10.0]
+      version: [1.10.2]
     gfsio:
       version: [1.4.1]
     gftl-shared:
       version: [1.5.0]
+    #git-lfs:
+      # Assume git-lfs is provided, hard to install
+      # because of dependencies on go/go-bootstrap.
+      # Note: Uncommenting this entry will break
+      # the container builds.
+      #version: [2.11.0]
     grib-util:
       version: [1.2.3]
     gsibec:
@@ -108,9 +123,13 @@ spack:
       variants: +python +grib2
     metplus:
       version: [4.1.1]
+    mpich:
+      variants: ~hwloc +two_level_namespace
     nco:
       version: [5.0.6]
       variants: ~doc
+    # ncview - when adding information here, also check Orion
+    # and Discover site configs
     nemsio:
       version: [2.5.2]
     nemsiogfs:
@@ -126,6 +145,8 @@ spack:
       version: [4.3.1]
     netcdf-fortran:
       version: [4.5.4]
+    # ninja - when adding information here, also check Cheyenne
+    # and Discover site configs
     nlohmann-json:
       version: [3.10.5]
     nlohmann-json-schema-validator:
@@ -136,11 +157,14 @@ spack:
     openblas:
       version: [0.3.19]
       variants: +noavx512
+    openmpi:
+      variants: +internal-hwloc +two_level_namespace
     parallelio:
       version: [2.5.7]
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
+    # Do not build pkgconf - https://github.com/NOAA-EMC/spack-stack/issues/123
     pkgconf:
       buildable: False
     prod-util:
@@ -168,6 +192,11 @@ spack:
       version: [3.0.3]
     py-pandas:
       version: [1.4.0]
+    ## To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
+    ## versions of py-poetry-core when using external/homebrew Python as
+    ## we do at the moment in spack-stack.
+    #py-poetry-core:
+    #  version: [1.0.8]
     py-pybind11:
       version: [2.8.1]
     py-pycodestyle:
@@ -183,13 +212,22 @@ spack:
     py-python-dateutil:
       version: [2.8.2]
     #py-pythran:
+    #  # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
     #  version: [0.11.0]
     py-pyyaml:
       version: [6.0]
     py-scipy:
       version: [1.9.3]
+    # Pin the py-setuptools version to avoid duplicate Python packages
+    py-setuptools:
+      version: [59.4.0]
+    # Pin the py-setuptools-scm version to avoid duplicate Python packages
+    py-setuptools-scm:
+      version: [7.0.5]
     py-shapely:
       version: [1.8.0]
+    qt:
+      version: [5.15.3]
     sfcio:
       version: [1.4.1]
     shumlib:
@@ -198,6 +236,14 @@ spack:
       version: [2.3.2]
     sp:
       version: [2.3.3]
+    #texlive:
+      # Assume texlive is provided, hard to install
+      # because of its dependencies. Both Linux and
+      # macOS provide easy-to-install packages that
+      # can be added as external packages.
+      # Note: Uncommenting this entry will break
+      # the container builds.
+      #version: [2.11.0]
     udunits:
       version: [2.2.28]
     upp:
@@ -218,22 +264,23 @@ spack:
       version: [1.2.13]
 
   definitions:
-  - compilers: ['%gcc', '%intel']
+  - compilers: ['%apple-clang', '%gcc', '%intel']
   - packages:
-      - jedi-ewok-env@hpc-dev-v1
-      - jedi-fv3-env@hpc-dev-v1
-      - jedi-tools-env@hpc-dev-v1
-      - jedi-ufs-env@hpc-dev-v1
-      - jedi-um-env@hpc-dev-v1
-      - global-workflow-env@hpc-dev-v1
-      - ufs-weather-model-env@hpc-dev-v1
-      - ufs-weather-model-env+debug@hpc-dev-v1
-      - upp-env@hpc-dev-v1
-      - ww3-env@hpc-dev-v1
-      - gsi-env@hpc-dev-v1
-      - ufs-utils-env@hpc-dev-v1
-      - nceplibs-env@hpc-dev-v1
-      - soca-env@hpc-dev-v1
+      - global-workflow-env@unified-dev
+      #- gsi-env@unified-dev
+      - jedi-ewok-env@unified-dev
+      - jedi-fv3-env@unified-dev
+      - jedi-tools-env@unified-dev
+      - jedi-ufs-env@unified-dev
+      - jedi-um-env@unified-dev
+      #- nceplibs-env@unified-dev
+      - soca-env@unified-dev
+      - ufs-srw-app-env@unified-dev
+      #- ufs-utils-env@unified-dev
+      - ufs-weather-model-env~debug@unified-dev
+      - ufs-weather-model-env+debug@unified-dev
+      #- upp-env@unified-dev
+      #- ww3-env@unified-dev
 
   specs:
     - matrix:

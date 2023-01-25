@@ -6,7 +6,7 @@ modules:
     arch_folder: false
     tcl:
       # Core compiler is a dummy that is not used to build the stack, do not change.
-      # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
+      # Hopefully nobody is trying to build software with gcc-4.6 in 2023 ...
       core_compilers::
       - gcc@4.6
       projections:
@@ -117,10 +117,10 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
-          ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
-          ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
           ^esmf@8.3.0~debug: 'esmf-8.3.0'
           ^esmf@8.3.0+debug: 'esmf-8.3.0-debug'
+          ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
+          ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
       openmpi:
         environment:
           set:
@@ -231,7 +231,7 @@ modules:
 
     lmod:
       # Core compiler is a dummy that is not used to build the stack, do not change.
-      # Hopefully nobody is trying to build software with gcc-4.6 in 2022 ...
+      # Hopefully nobody is trying to build software with gcc-4.6 in 2023 ...
       core_compilers::
       - gcc@4.6
       projections:
@@ -340,10 +340,10 @@ modules:
         suffixes:
           ^esmf@8.2.0~debug: 'esmf-8.2.0'
           ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
-          ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
-          ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
           ^esmf@8.3.0~debug: 'esmf-8.3.0'
           ^esmf@8.3.0+debug: 'esmf-8.3.0-debug'
+          ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
+          ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
       openmpi:
         environment:
           set:
