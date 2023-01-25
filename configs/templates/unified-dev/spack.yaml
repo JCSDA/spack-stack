@@ -192,11 +192,11 @@ spack:
       version: [3.0.3]
     py-pandas:
       version: [1.4.0]
-    ## To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
-    ## versions of py-poetry-core when using external/homebrew Python as
-    ## we do at the moment in spack-stack.
-    #py-poetry-core:
-    #  version: [1.0.8]
+    # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
+    # versions of py-poetry-core when using external/homebrew Python as
+    # we do at the moment in spack-stack.
+    py-poetry-core:
+      version: [1.0.8]
     py-pybind11:
       version: [2.8.1]
     py-pycodestyle:
