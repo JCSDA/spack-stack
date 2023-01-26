@@ -62,7 +62,7 @@ jobs:
     strategy:
       matrix:
         compiler-mpi: [ {compiler: apple-clang@13.0.0, mpi: openmpi@4.1.4} ]
-        template: [skylab-dev, ufs-weather-model, ufs-srw-dev]
+        template: [unified-dev] # [skylab-dev, ufs-weather-model, ufs-srw-dev]
     runs-on: macos-11
     steps:
 
