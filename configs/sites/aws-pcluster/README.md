@@ -42,6 +42,9 @@ apt install -y qt5-default
 apt install -y libqt5svg5-dev
 apt install -y qt5dxcb-plugin
 
+# For R2D2 mysql backend, already installed
+#apt install -y mysql-server
+
 # Remove AWS openmpi
 apt remove -y openmpi40-aws
 
