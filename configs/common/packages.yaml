@@ -119,8 +119,6 @@
       version: [4.1.1]
     mpich:
       variants: ~hwloc +two_level_namespace
-    mysql:
-      buildable: False
     nco:
       version: [5.0.6]
       variants: ~doc
