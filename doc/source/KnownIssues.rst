@@ -69,7 +69,7 @@ UW (Univ. of Wisconsin) S4
 macOS
 ==============================
 
-1. Error `invalid argument '-fgnu89-inline' not allowed with 'C++'`
+1. Error ``invalid argument '-fgnu89-inline' not allowed with 'C++'``
 
    This error occurs on macOS Monterey with ``mpich-3.4.3`` installed via Homebrew when trying to build the jedi bundles that use ``ecbuild``. The reason was that the C compiler flag ``-fgnu89-inline`` from ``/usr/local/Cellar/mpich/3.4.3/lib/pkgconfig/mpich.pc`` was added to the C++ compiler flags by ecbuild. The solution was to set ``CC=mpicc FC=mpif90 CXX=mpicxx`` when calling ``ecbuild`` for those bundles. Note that it is recommended to install ``mpich`` or ``openmpi`` with spack-stack, not with Homebrew.
 
@@ -77,10 +77,17 @@ macOS
 
    This can happen when multiple versions of Python were installed with Homebrew and ``pip3``/``python3`` point to different versions. Run ``brew doctor`` and check if there are issues with Python not being properly linked. Follow the instructions given by ``brew``, if applicable.
 
-3. Errors handling exceptions on macOS. A large number of errors related to handling exceptions thrown by applications was found when using default builds or Homebrew installations of ``mpich`` or ``openmpi``, which use flat namespaces. With our spack version, ``mpich`` and ``openmpi`` are installed with a ``+two_level_namespace`` option that fixes the problem.
+3. Error ``AttributeError: Can't get attribute 'Mark' on <module 'ruamel.yaml.error' from ...`` when running ``spack install``
 
-4. Errors such as ``Symbol not found: __cg_png_create_info_struct``
+   Some users are seeing this with Python 3.10 installed via Homebrew on macOS. Run ``export | grep SPACK_PYTHON`` to verify the Python version used, then run ``brew list`` to check if there are alternative Python versions available. Manually setting ``SPACK_PYTHON`` to a different version, for example via ``export SPACK_PYTHON=/usr/local/bin/python3.9``, solves the problem.
+
+4. Errors handling exceptions on macOS.
+
+   A large number of errors related to handling exceptions thrown by applications was found when using default builds or Homebrew installations of ``mpich`` or ``openmpi``, which use flat namespaces. With our spack version, ``mpich`` and ``openmpi`` are installed with a ``+two_level_namespace`` option that fixes the problem.
+
+5. Errors such as ``Symbol not found: __cg_png_create_info_struct``
+
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
 
-5. Error building MET 10.1.1.20220419 build error on macOS Monterey 12.1
+6. Error building MET 10.1.1.20220419 build error on macOS Monterey 12.1
    See https://github.com/NOAA-EMC/spack-stack/issues/316. Note that this error does not occur in the macOS CI tests.
