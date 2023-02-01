@@ -119,6 +119,8 @@
       version: [4.1.1]
     mpich:
       variants: ~hwloc +two_level_namespace
+    mysql:
+      buildable: False
     nco:
       version: [5.0.6]
       variants: ~doc
@@ -176,6 +178,8 @@
       version: [1.4.2]
     py-h5py:
       version: [3.6.0]
+    py-mysql-connector-python:
+      version: [8.0.13]
     py-netcdf4:
       version: [1.5.3]
       variants: +mpi
