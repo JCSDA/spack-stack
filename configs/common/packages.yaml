@@ -154,7 +154,7 @@
     openmpi:
       variants: +internal-hwloc +two_level_namespace
     parallelio:
-      version: [2.5.7]
+      version: [2.5.9]
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
