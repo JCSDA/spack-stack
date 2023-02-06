@@ -174,6 +174,12 @@ runs:
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
       # Set compiler as hard requirement for all packages
       spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
+      # Modify the compiler matrix definition
+      if [[ "$RUNNER_OS" == "macOS" ]]; then
+        sed -i "" "s/- compilers: ['%apple-clang', '%gcc', '%intel']/- compilers: ['%${{ inputs.compiler }}']/g" ${{ inputs.path }}/envs/${{ inputs.name }}/spack.yaml
+      else
+        sed -i "s/- compilers: ['%apple-clang', '%gcc', '%intel']/- compilers: ['%${{ inputs.compiler }}']/g" ${{ inputs.path }}/envs/${{ inputs.name }}/spack.yaml
+      fi
 
       if [[ "$RUNNER_OS" == "macOS" ]]; then
         # Turn of SSL for ecflow CI builds for now
