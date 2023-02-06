@@ -661,7 +661,14 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
+7. Edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
+
+.. code-block:: console
+
+   definitions:
+   - compilers: ['%apple-clang']
+
+8. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -669,20 +676,20 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/common/*.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-8. Process the specs and install
+9. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-9. Create lmod module files
+10. Create lmod module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-10. Create meta-modules for compiler, mpi, python
+11. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
@@ -918,7 +925,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@11.2.0]"
 
-7. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+7. Edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
+
+.. code-block:: console
+
+   definitions:
+   - compilers: ['%gcc']
+
+8. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. warning::
    **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
@@ -929,14 +943,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-8. Process the specs and install
+9. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-9. Create tcl module files
+10. Create tcl module files
 
 .. code-block:: console
 
