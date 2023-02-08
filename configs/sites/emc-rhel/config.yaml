@@ -1,7 +1,7 @@
 # Disk space on EMC workstations may be limited, so the following settings
 # put tmp directories under /dev/shm (where executables can still be run).
-config:
-  build_stage: [/dev/shm/spack/build_stage]
-  source_cache: /dev/shm/spack/source_cache
-  test_stage: /dev/shm/spack/test_stage
-  misc_cache: /dev/shm/spack/misc_cache
+#config:
+#  build_stage: [/dev/shm/spack/build_stage]
+#  source_cache: /dev/shm/spack/source_cache
+#  test_stage: /dev/shm/spack/test_stage
+#  misc_cache: /dev/shm/spack/misc_cache
