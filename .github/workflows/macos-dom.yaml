@@ -49,7 +49,7 @@ jobs:
           PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
           spack compiler find
 
-          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%${{ inputs.compiler }}'\]/g" envs/${{ inputs.template || 'unified-dev' }}.macos-dom/spack.yaml
+          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" envs/${{ inputs.template || 'unified-dev' }}.macos-dom/spack.yaml
 
           spack concretize
           spack install --fail-fast
