@@ -37,10 +37,6 @@ packages:
     externals:
     - spec: cpio@2.12
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.61.1+gssapi+ldap+nghttp2
-      prefix: /usr
   cvs:
     externals:
     - spec: cvs@1.11.23
