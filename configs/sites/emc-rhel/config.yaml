@@ -1,6 +1,6 @@
-# Disk space on EMC workstations may be limited, so the following settings
-# put tmp directories under /dev/shm (where executables can still be run).
-#config:
+config:
+  build_jobs: 8
+# If disk space is limited, use the following to cache/build in memory:
 #  build_stage: [/dev/shm/spack/build_stage]
 #  source_cache: /dev/shm/spack/source_cache
 #  test_stage: /dev/shm/spack/test_stage
