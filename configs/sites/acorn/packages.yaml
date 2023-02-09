@@ -12,7 +12,7 @@
         - cray-mpich/8.1.9
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio esmf_os=Linux esmf_comm=mpich3
+      variants: ~xerces ~pnetcdf +pio snapshot=b09 esmf_os=Linux esmf_comm=mpich3
     openssl:
       buildable: false
       externals:
