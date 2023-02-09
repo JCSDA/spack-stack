@@ -1,6 +1,8 @@
 packages:
   all:
     compiler:: [intel@2022.0.2, intel@18.0.5, gcc@10.2.0]
+    # Use for intel@18.0.5 only
+    #target: [sandybridge]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.1, intel-mpi@2018.5.274, openmpi@4.0.4]
 
