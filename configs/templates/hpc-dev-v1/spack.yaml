@@ -52,7 +52,7 @@ spack:
       version: [3.4.0]
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio
+      variants: ~xerces ~pnetcdf +pio snapshot=b09
     fckit:
       version: [0.9.5]
       variants: +eckit
