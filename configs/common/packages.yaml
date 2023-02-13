@@ -133,9 +133,9 @@
     ncio:
       version: [1.1.2]
     netcdf-c:
-      version: [4.9.1]
-      # Turn off byterange variant for 4.9.1, compile error
-      variants: +dap +mpi ~parallel-netcdf ~byterange
+      version: [4.9.0]
+      # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
+      variants: +dap +mpi ~parallel-netcdf
     netcdf-cxx4:
       version: [4.3.1]
     netcdf-fortran:
