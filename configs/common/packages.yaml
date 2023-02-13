@@ -134,7 +134,8 @@
       version: [1.1.2]
     netcdf-c:
       version: [4.9.1]
-      variants: +dap +mpi ~parallel-netcdf
+      # Turn off byterange variant for 4.9.1, compile error
+      variants: +dap +mpi ~parallel-netcdf ~byterange
     netcdf-cxx4:
       version: [4.3.1]
     netcdf-fortran:
