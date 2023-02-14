@@ -171,12 +171,14 @@ runs:
       spack config add "packages:all:compiler:[${{ inputs.compiler }}]"
       # Set compiler as hard requirement for all packages
       spack config add "packages:all:require:one_of:['%${{ inputs.compiler }}']"
-      # Modify the compiler matrix definition
-      if [[ "$RUNNER_OS" == "macOS" ]]; then
-        sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%${{ inputs.compiler }}'\]/g" ${{ inputs.path }}/envs/${{ inputs.name }}/spack.yaml
-      else
-        sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%${{ inputs.compiler }}'\]/g" ${{ inputs.path }}/envs/${{ inputs.name }}/spack.yaml
-      fi
+      # DH* Add this in when switching to unified-dev
+      ## Modify the compiler matrix definition
+      #if [[ "$RUNNER_OS" == "macOS" ]]; then
+      #  sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%${{ inputs.compiler }}'\]/g" ${{ inputs.path }}/envs/${{ inputs.name }}/spack.yaml
+      #else
+      #  sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%${{ inputs.compiler }}'\]/g" ${{ inputs.path }}/envs/${{ inputs.name }}/spack.yaml
+      #fi
+      # *DH
 
       if [[ "$RUNNER_OS" == "macOS" ]]; then
         # Turn of SSL for ecflow CI builds for now
