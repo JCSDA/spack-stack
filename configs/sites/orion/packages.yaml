@@ -19,12 +19,6 @@ packages:
       prefix: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/mpi
       modules:
       - impi/2018.4
-  #intel-mkl:
-  #  externals:
-  #  - spec: intel-mkl@2018.5.274%intel@18.0.5
-  #    prefix: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/mkl
-  #    modules:
-  #    - intel/2018.4
   openmpi:
     externals:
     - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath

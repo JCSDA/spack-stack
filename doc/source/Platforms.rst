@@ -661,7 +661,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. Edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
+7. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
 .. code-block:: console
 
@@ -925,7 +925,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@11.2.0]"
 
-7. Edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
+7. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
 
 .. code-block:: console
 
