@@ -31,7 +31,9 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install``                          |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
+| NAVY HPCMP Narwhal Intel                                 | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Narwhal GNU (**TEMPORARY**)                   | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0/install``               |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``     |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -144,7 +146,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules 
 NAVY HPCMP Narwhal
 ------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software.
+With Intel, the following is required for building new spack environments and for using spack to build and run software:
 
 .. code-block:: console
 
@@ -168,6 +170,35 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 
    module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install/modulefiles/Core
    module load stack-intel/2021.4.0
+   module load stack-cray-mpich/8.1.14
+   module load stack-python/3.9.7
+
+With GNU, the following is required for building new spack environments and for using spack to build and run software:
+
+.. code-block:: console
+
+   module unload PrgEnv-cray
+   module load PrgEnv-gnu/8.3.2
+   module unload gcc
+   module load gcc/10.3.0
+   module unload cray-mpich
+   module load cray-mpich/8.1.14
+   module unload cray-python
+   module load cray-python/3.9.7.1
+   module unload cray-libsci
+   module load cray-libsci/22.08.1.1
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+
+For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules.
+
+**TEMPORARY**
+
+.. code-block:: console
+
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0/install/modulefiles/Core
+   module load stack-gcc/10.3.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
 
