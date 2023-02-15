@@ -20,7 +20,8 @@ compilers::
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
-  - compiler: gcc@10.3.0
+  - compiler:
+      spec: gcc@10.3.0
       paths:
         cc: cc
         cxx: CC
