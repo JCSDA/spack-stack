@@ -3,3 +3,5 @@ packages:
     variants: ~openmp
   cairo:
     variants: ~png ~svg
+  global-workflow-env:
+    variants: ~ncl
