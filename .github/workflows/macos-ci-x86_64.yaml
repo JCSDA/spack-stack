@@ -64,6 +64,10 @@ jobs:
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
+          # For buildcaches
+          spack config add config:padded_length:true
+
+          # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
           spack config add "packages:all:compiler:[apple-clang@14.0.0]"
           sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
@@ -71,6 +75,12 @@ jobs:
           spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.0
           spack mirror add local file:///Users/ec2-user/spack-stack/source-cache/
           spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
+
+          # Break installation up in pieces and create buildcache in between
+          spack install --fail-fast --source base-env 2>&1 | tee log.install.base-env.apple-clang-14.0.0
+          spack buildcache create -a -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
+
+          exit 1
 
           spack install --fail-fast --source 2>&1 | tee log.install.apple-clang-14.0.0
           # Missing: binary cache stuff
