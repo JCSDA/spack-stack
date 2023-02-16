@@ -28,7 +28,7 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  macos-dom-build:
+  macos-ci-x86_64-build:
     #if: ${{ github.event.label.name == 'run-macos-dom' }} || ${{ inputs.template }}
     runs-on: [macos-ci-x86_64]
 
@@ -72,7 +72,7 @@ jobs:
           spack mirror add local file:///Users/ec2-user/spack-stack/source-cache/
           spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
 
-          spack install --fail-fast --source --verbose 2>&1 | tee log.install.apple-clang-14.0.0
+          spack install --fail-fast --source 2>&1 | tee log.install.apple-clang-14.0.0
           # Missing: binary cache stuff
           spack clean -a
           spack module lmod refresh -y
@@ -84,7 +84,7 @@ jobs:
           export ENVDIR=$PWD/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
           module use $ENVDIR/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
-          module load stack-apple-clang/4.1.4
+          module load stack-openmpi/4.1.4
           module load stack-python/3.10.8
           module load jedi-ufs-env/1.0.0 jedi-ewok-env/1.0.0 soca-env/1.0.0
 
