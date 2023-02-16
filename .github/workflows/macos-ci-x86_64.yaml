@@ -78,7 +78,7 @@ jobs:
 
           # Break installation up in pieces and create buildcache in between
           spack install --fail-fast --source base-env 2>&1 | tee log.install.base-env.apple-clang-14.0.0
-          spack buildcache create -a -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
 
           exit 1
 
