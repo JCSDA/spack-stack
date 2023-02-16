@@ -30,7 +30,7 @@ defaults:
 jobs:
   macos-dom-build:
     #if: ${{ github.event.label.name == 'run-macos-dom' }} || ${{ inputs.template }}
-    runs-on: [self-hosted, macOS, X64, CI]
+    runs-on: [macos-ci-x86_64]
 
     steps:
       - name: checkout
