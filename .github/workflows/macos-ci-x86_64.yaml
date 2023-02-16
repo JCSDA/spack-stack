@@ -80,13 +80,15 @@ jobs:
 
           # Add binary cache and reindex it
           spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
+          spack buildcache update-index /Users/ec2-user/spack-stack/build-cache/
+          echo "spack buildcache list:"
           spack buildcache list
-          
+          echo "exit"
           exit 1
 
           # Break installation up in pieces and create build caches in between
           spack install --fail-fast --source base-env 2>&1 | tee log.install.base-env.apple-clang-14.0.0
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/ --rebuild-index
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
 
           exit 1
 
