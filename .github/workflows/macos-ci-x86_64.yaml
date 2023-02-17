@@ -89,13 +89,13 @@ jobs:
           # six hours, and/or fail later in the build process.
 
           # base-env
-          spack install --fail-fast --source base-env 2>&1 | tee log.install.base-env.apple-clang-14.0.0
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.base-env.apple-clang-14.0.0
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
           # jedi-base-env
-          spack install --fail-fast --source jedi-base-env 2>&1 | tee log.install.jedi-base-env.apple-clang-14.0.0
+          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.jedi-base-env.apple-clang-14.0.0
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
           # the rest
-          spack install --fail-fast --source 2>&1 | tee log.install.apple-clang-14.0.0
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
