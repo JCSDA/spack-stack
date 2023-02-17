@@ -81,19 +81,25 @@ jobs:
           # Add binary cache and reindex it
           spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
           spack buildcache update-index -m local-binary
-          echo "spack buildcache list:"
+          echo "Packages in combined spack build caches:"
           spack buildcache list
-          echo "exit"
-          exit 1
 
           # Break installation up in pieces and create build caches in between
+          # This allows us to "spin up" builds that altogether take longer than
+          # six hours, and/or fail later in the build process.
+
+          # base-env
           spack install --fail-fast --source base-env 2>&1 | tee log.install.base-env.apple-clang-14.0.0
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
-
-          exit 1
-
+          # jedi-base-env
+          spack install --fail-fast --source jedi-base-env 2>&1 | tee log.install.jedi-base-env.apple-clang-14.0.0
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
+          # the rest
           spack install --fail-fast --source 2>&1 | tee log.install.apple-clang-14.0.0
-          # Missing: binary cache stuff
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
+
+          # Next steps: synchronize source and build cache to a central/combined mirror?
+
           spack clean -a
           spack module lmod refresh -y
           spack stack setup-meta-modules
