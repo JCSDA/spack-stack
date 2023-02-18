@@ -42,7 +42,7 @@ apt install -y qt5-default
 apt install -y libqt5svg5-dev
 apt install -y qt5dxcb-plugin
 
-# For R2D2 mysql backend, already installed
+# For R2D2 mysql backend
 apt install -y mysql-server
 
 # Remove AWS openmpi
@@ -71,6 +71,20 @@ wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCT
 echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list 
 apt-get update
 apt-get install -y intel-hpckit-2021.4.0/all
+
+# Docker DH* STUFF MISSING
+# See https://docs.docker.com/engine/install/ubuntu/
+apt-get update
+apt-get install ca-certificates curl gnupg lsb-release
+mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+docker run hello-world
+# DH* MISSING: Add users to group docker so that non-root users can run it
+# See https://docs.docker.com/engine/install/linux-postinstall/
+
 
 # Configure X windows
 echo "X11Forwarding yes" >> /etc/ssh/sshd_config

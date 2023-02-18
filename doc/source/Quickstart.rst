@@ -39,14 +39,14 @@ The following instructions install a new spack environment on a pre-configured s
 
    # Create a pre-configured Spack environment in envs/<template>.<site>
    # (copies site-specific, application-specific, and common config files into the environment directory)
-   spack stack create env --site hera --template unified-env --name unified-env.hera
+   spack stack create env --site hera --template unified-dev --name unified-dev.hera
 
    # Activate the newly created environment
    # Optional: decorate the command line prompt using -p
    #     Note: in some cases, this can mess up long lines in bash
    #     because color codes are not escaped correctly. In this
    #     case, use export SPACK_COLOR='never' first.
-   spack env activate [-p] envs/unified-env.hera
+   spack env activate [-p] envs/unified-dev.hera
 
    # Edit the main config file for the environment and adjust the compiler matrix
    # to match the compilers available on your system, or a subset of them (see
@@ -56,11 +56,11 @@ The following instructions install a new spack environment on a pre-configured s
    # with the appropriate list of compilers for your system and desires, e.g.
    #    definitions:
    #    - compilers: ['%gcc', '%intel']
-   emacs envs/unified-env.hera/spack.yaml
+   emacs envs/unified-dev.hera/spack.yaml
 
    # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
-   emacs envs/unified-env.hera/common/*.yaml
-   emacs envs/unified-env.hera/site/*.yaml
+   emacs envs/unified-dev.hera/common/*.yaml
+   emacs envs/unified-dev.hera/site/*.yaml
 
    # Process/concretize the specs
    spack concretize
