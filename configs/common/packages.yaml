@@ -18,8 +18,6 @@
     # Attention - when updating also check orion site config
     boost:
       version: [1.78.0]
-      # Install only the minimum needed (JEDI packages need headers only,
-      # but ecflow needs several libraries)
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
       version: [11.7.1]
@@ -34,15 +32,13 @@
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       version: [2.4.0]
-    diffutils:
-      version: [3.7]
+      variants: +fix
     ecbuild:
       version: [3.6.5]
     eccodes:
       version: [2.27.0]
-      #variants: +netcdf
     ecflow:
-      version: [5.8.3]
+      version: [5.8.4]
       variants: +ui
     eckit:
       version: [1.20.2]
@@ -59,7 +55,7 @@
     # config and update the projections for lmod/tcl
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio
+      variants: ~xerces ~pnetcdf +pio snapshot=b09
     fckit:
       version: [0.9.5]
       variants: +eckit
@@ -67,11 +63,6 @@
       version: [3.3.10]
     fiat:
       version: [1.1.0]
-    findutils:
-      version: [4.8.0]
-    flex:
-      version: [2.6.4]
-    # Attention - when updating also check the various jcsda-emc-bundles env packages
     fms:
       version: [2022.04]
       variants: +64bit +quad_precision +gfs_phys +openmp +fpic constants=GFS
@@ -80,7 +71,7 @@
     g2c:
       version: [1.6.4]
     g2tmpl:
-      version: [1.10.0]
+      version: [1.10.2]
     gfsio:
       version: [1.4.1]
     gftl-shared:
@@ -101,8 +92,8 @@
       version: [4.2.15]
       variants: ~fortran ~netcdf
     hdf5:
-      version: [1.12.1]
-      variants: +hl +fortran +mpi +threadsafe
+      version: [1.14.0]
+      variants: +hl +fortran +mpi +threadsafe +szip
     ip:
       version: [3.3.3]
     ip2:
@@ -142,12 +133,13 @@
     ncio:
       version: [1.1.2]
     netcdf-c:
-      version: [4.8.1]
-      variants: +dap +mpi +parallel-netcdf
+      version: [4.9.0]
+      # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
+      variants: +dap +mpi ~parallel-netcdf
     netcdf-cxx4:
       version: [4.3.1]
     netcdf-fortran:
-      version: [4.5.4]
+      version: [4.6.0]
     # ninja - when adding information here, also check Cheyenne
     # and Discover site configs
     nlohmann-json:
@@ -163,7 +155,7 @@
     openmpi:
       variants: +internal-hwloc +two_level_namespace
     parallelio:
-      version: [2.5.7]
+      version: [2.5.9]
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
@@ -174,7 +166,6 @@
       version: [1.2.2]
     proj:
       version: [8.1.0]
-      # don't really need tiff ...
       variants: ~tiff
     python:
       version: [3.10.8]
