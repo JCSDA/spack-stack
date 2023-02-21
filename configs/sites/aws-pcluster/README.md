@@ -72,7 +72,7 @@ echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt
 apt-get update
 apt-get install -y intel-hpckit-2021.4.0/all
 
-# Docker DH* STUFF MISSING
+# Docker
 # See https://docs.docker.com/engine/install/ubuntu/
 apt-get update
 apt-get install ca-certificates curl gnupg lsb-release
@@ -82,7 +82,7 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
   $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
 apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 docker run hello-world
-# DH* MISSING: Add users to group docker so that non-root users can run it
+# DH* TODO 2023/02/21: Add users to group docker so that non-root users can run it
 # See https://docs.docker.com/engine/install/linux-postinstall/
 
 
