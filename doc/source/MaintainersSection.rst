@@ -150,7 +150,7 @@ ecflow
 NCAR-Wyoming Casper
 ------------------------------
 
-Casper is co-located with Cheyenne and shares the parallel filesystem ``/glade`` and more with it. It is, however, a different operating system with a somewhat different software stack. spack-stack was installed on Casper after it was installed on Cheyenne, and prerequisites from Cheyenne were reused where possible (``miniconda``, ``qt``, ``ecflow``). See below for information on how to install these packages.
+Casper is co-located with Cheyenne and shares the parallel filesystem ``/glade`` and more with it. It is, however, a different operating system with a somewhat different software stack. spack-stack was installed on Casper after it was installed on Cheyenne, and prerequisites from Cheyenne were reused where possible (``miniconda``, ``qt``, ``ecflow``, ``mysql``). See below for information on how to install these packages.
 
 .. _MaintainersSection_Cheyenne:
 
@@ -189,6 +189,9 @@ ecflow
    module load miniconda/3.9.12
    module load qt/5.15.2
    module load cmake/3.18.2
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_WCOSS2:
 
