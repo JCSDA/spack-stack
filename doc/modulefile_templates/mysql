@@ -1,0 +1,19 @@
+#%Module1.0
+
+module-whatis "Provides a mysql-8.0.31 installation for use with spack."
+
+conflict mysql
+
+proc ModulesHelp { } {
+puts stderr "Provides a mysql-8.0.31 installation for use with spack."
+}
+
+# Set this value
+set MYSQL_PATH "/work/noaa/da/role-da/spack-stack/mysql-8.0.31"
+
+prepend-path PATH "${MYSQL_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${MYSQL_PATH}/lib"
+prepend-path LIBRARY_PATH "${MYSQL_PATH}/lib"
+prepend-path CPATH "${MYSQL_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${MYSQL_PATH}"
+setenv mysql_ROOT ""${MYSQL_PATH}

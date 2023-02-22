@@ -2,7 +2,6 @@
 
 module-whatis "Provides an ecflow-5.8.4 server+ui installation for use with spack."
 
-# Only allow one instance of compiler to load
 conflict ecflow
 
 proc ModulesHelp { } {
