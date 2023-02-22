@@ -23,6 +23,8 @@ The instructions below are platform-specific tasks that only need to be done onc
 MSU Orion
 ------------------------------
 
+On Orion, it is necessary to change the default ``umask`` from ``0027`` to ``0022`` so that users not in the group of the role account can still see and use the software stack. This can be done by running ``umask 022`` after logging into the role account.
+
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
@@ -36,6 +38,9 @@ ecflow
    module load miniconda/3.9.7
    module load cmake/3.22.1
    module load gcc/10.2.0
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_Discover:
 
@@ -83,6 +88,9 @@ openmpi
    CPATH="/usr/include/slurm:$CPATH" make VERBOSE=1 -j4
    CPATH="/usr/include/slurm:$CPATH" make check
    CPATH="/usr/include/slurm:$CPATH" make install
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/discover/swdev/jcsda/spack-stack/mysql-8.0.31``. Note that the ``glibc`` version on Discover is 2.22, which works with the latest available ``glibc`` version for the ``mysql`` server ``2.17``.
 
 .. _MaintainersSection_Narwhal:
 

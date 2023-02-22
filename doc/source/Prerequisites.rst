@@ -127,6 +127,31 @@ Create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/ecflow/5.8.4``
 
    CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
 
+..  _Prerequisites_MySQL:
+
+------------------------------
+MySQL (server and client)
+------------------------------
+
+We do not build ``mysql`` with spack, since it depends on specific versions of the ``boost`` library and C++ standards that make our large environments very complicated and often don't build on older systems. Instead, we identify the default ``glibc`` of the system, obtain the binary tarball from the `MySQL Community Downloads <https://dev.mysql.com/downloads/mysql/>`_  page and make it available to spack as an external package. The following instructions are for Orion:
+
+1. Check the glibc version by executing ``ldd --version``
+```
+ldd (GNU libc) 2.17
+```
+2. Download and unpack the correct tarball, in this case option "Linux - Generic (glibc 2.17) (x86, 64-bit), Compressed TAR Archive Minimal Install 8.0.31"
+```
+cd /work/noaa/da/role-da/spack-stack/
+mkdir -p mysql-8.0.31/src
+cd mysql-8.0.31/src
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.31-linux-glibc2.17-x86_64-minimal.tar.xz
+tar -xvf mysql-8.0.31-linux-glibc2.17-x86_64-minimal.tar.xz
+# This moves the content of directory "mysql-8.0.31-linux-glibc2.17-x86_64-minimal" one level up, next to the "src" directory
+mv mysql-8.0.31-linux-glibc2.17-x86_64-minimal/* ..
+rmdir mysql-8.0.31-linux-glibc2.17-x86_64-minimal
+```
+3. Create modulefile ``/work/noaa/da/role-da/spack-stack/modulefiles/mysql/8.0.31`` from template ``doc/modulefile_templates/mysql`` and update ``MYSQL_PATH`` in this file.
+
 ..  _Prerequisites_Texlive:
 
 ------------------------------

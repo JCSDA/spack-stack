@@ -160,6 +160,13 @@ packages:
     externals:
     - spec: m4@1.4.16
       prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /work/noaa/da/role-da/spack-stack/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
   ncurses:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5

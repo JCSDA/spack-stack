@@ -82,8 +82,9 @@ The following is required for building new spack environments and for using spac
    module use /work/noaa/da/role-da/spack-stack/modulefiles
    module load miniconda/3.9.7
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
@@ -93,7 +94,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
@@ -117,8 +118,9 @@ The following is required for building new spack environments and for using spac
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
@@ -128,7 +130,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
