@@ -16,4 +16,4 @@ prepend-path LD_LIBRARY_PATH "${MYSQL_PATH}/lib"
 prepend-path LIBRARY_PATH "${MYSQL_PATH}/lib"
 prepend-path CPATH "${MYSQL_PATH}/include"
 prepend-path CMAKE_PREFIX_PATH "${MYSQL_PATH}"
-setenv mysql_ROOT ""${MYSQL_PATH}
+setenv mysql_ROOT "${MYSQL_PATH}"

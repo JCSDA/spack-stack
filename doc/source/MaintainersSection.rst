@@ -333,6 +333,9 @@ ecflow
    module load miniconda/3.9.12
    module load gcc/9.3.0
 
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/data/prod/jedi/spack-stack/mysql-8.0.31``.
+
 .. _MaintainersSection_AWS_Pcluster_Ubuntu:
 
 ------------------------------------------------
