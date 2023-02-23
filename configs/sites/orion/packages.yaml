@@ -1,10 +1,10 @@
 packages:
   all:
-    compiler:: [intel@2022.0.2]
-    #compiler:: [gcc@10.2.0]
+    compiler:: [intel@2022.0.2, gcc@10.2.0]
+    #compiler:: [intel@18.0.5]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1]
-      #mpi:: [openmpi@4.0.4]
+      mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.0.4]
+      #mpi:: [intel-mpi@2018.5.274]
 
 ### MPI, Python, MKL
   mpi:
@@ -15,22 +15,12 @@ packages:
       prefix: /apps/intel-2022.1.2/intel-2022.1.2
       modules:
       - impi/2022.1.2
-    - spec: intel-oneapi-mpi@2021.2.0%intel@2021.2.0
-      prefix: /apps/intel-2021.2/intel-2021.2
+  intel-mpi:
+    externals:
+    - spec: intel-mpi@2018.5.274%intel@18.0.5
+      prefix: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/mpi
       modules:
-      - impi/2021.2
-  #intel-oneapi-tbb:
-  #  externals:
-  #  - spec: intel-oneapi-tbb@2021.2.0%intel@2021.2.0
-  #    prefix: /apps/intel-2021.2/intel-2021.2
-  #    modules:
-  #    - intel/2021.2
-  #intel-oneapi-mkl:
-  #  externals:
-  #  - spec: intel-oneapi-mkl@2021.2.0%intel@2021.2.0
-  #    prefix: /apps/intel-2021.2/intel-2021.2
-  #    modules:
-  #    - intel/2021.2
+      - impi/2018.4
   openmpi:
     externals:
     - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
@@ -82,10 +72,6 @@ packages:
       prefix: /apps/cmake-3.22.1
       modules:
       - cmake/3.22.1
-    - spec: cmake@3.18.1
-      prefix: /apps/cmake-3.18.1
-      modules:
-      - cmake/3.18.1
   cpio:
     externals:
     - spec: cpio@2.11

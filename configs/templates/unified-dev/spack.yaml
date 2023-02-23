@@ -1,0 +1,42 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  definitions:
+  - compilers: ['%apple-clang', '%gcc', '%intel']
+  - packages:
+      - global-workflow-env@unified-dev
+      #- gsi-env@unified-dev
+      - jedi-ewok-env@unified-dev
+      - jedi-fv3-env@unified-dev
+      - jedi-tools-env@unified-dev
+      - jedi-ufs-env@unified-dev
+      - jedi-um-env@unified-dev
+      #- nceplibs-env@unified-dev
+      - soca-env@unified-dev
+      - ufs-srw-app-env@unified-dev
+      #- ufs-utils-env@unified-dev
+      - ufs-weather-model-env~debug@unified-dev
+      - ufs-weather-model-env+debug@unified-dev
+      #- upp-env@unified-dev
+      #- ww3-env@unified-dev
+
+  specs:
+    - matrix:
+      - [$packages]
+      - [$compilers]
+      exclude:
+        # jedi-tools doesn't build with Intel
+        - jedi-tools-env%intel
+        # Don't even bother building those with Intel 18,
+        # not needed. Many of the Python packages don't build.
+        - jedi-ewok-env%intel@18
+        - jedi-fv3-env%intel@18
+        - jedi-tools-env%intel@18
+        - jedi-ufs-env%intel@18
+        - jedi-um-env%intel@18
+        - soca-env%intel@18
+

@@ -33,7 +33,7 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NAVY HPCMP Narwhal Intel                                 | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal GNU (**TEMPORARY**)                   | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0/install``               |
+| NAVY HPCMP Narwhal GNU (**TEMPORARY LOCATION**)          | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install``|
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``     |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -191,13 +191,11 @@ With GNU, the following is required for building new spack environments and for 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules.
-
-**TEMPORARY**
+For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules. **Note: temporary location!**
 
 .. code-block:: console
 
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0/install/modulefiles/Core
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install/modulefiles/Core
    module load stack-gcc/10.3.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
@@ -493,11 +491,11 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 macOS
 ------------------------------
 
-On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``python``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
+On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
 
-The instructions below also assume a clean Homebrew installation with a clean Python installation inside. This means that the Homebrew Python only contains nothing but what gets installed with ``pip install poetry`` (which is a temporary workaround). If this is not the case, users can try to install a separate Python using Miniconda as described in :numref:`Sections %s <Prerequisites_Miniconda>`.
+Unlike in previous versions, the instructions below assume that ``Python`` is built by ``spack``. That means that when using the ``spack`` environments (i.e., loading the modules for building or running code), the ``spack`` installation of ``Python`` with its available ``Python`` modules should be used to ensure consistency. However, a Homebrew ``Python`` installation may still be needed to build new ``spack`` environments. It can also be beneficial for the user to have a version of ``Python`` installed with Homebrew that can be used for virtual environments that are completely independent of any ``spack``-built environment.
 
-Further, it is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
+It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
 Intel M1 platform notes
 -----------------------
@@ -685,14 +683,21 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
+6. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. Optionally, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
+7. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
+
+.. code-block:: console
+
+   definitions:
+   - compilers: ['%apple-clang']
+
+8. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -700,20 +705,20 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/common/*.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-8. Process the specs and install
+9. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-9. Create lmod module files
+10. Create lmod module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-10. Create meta-modules for compiler, mpi, python
+11. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
@@ -770,9 +775,6 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    # Python
    yum -y install python39-devel
    alternatives --set python3 /usr/bin/python3.9
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -824,9 +826,6 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
 
    # Python
    apt install -y python3-dev python3-pip
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -874,9 +873,6 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
 
    # Python
    apt install -y python3-dev python3-pip
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -911,7 +907,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    spack external find --scope system
    spack external find --scope system perl
-   spack external find --scope system python
+   # Don't use any external Python, let spack build it
+   #spack external find --scope system python
    spack external find --scope system wget
    spack external find --scope system texlive
    # On Ubuntu (but not on Red Hat):
@@ -929,27 +926,31 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
+6. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
    # Example for Ubuntu 20.04 following the above instructions
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@10.3.0]"
 
    # Example for Ubuntu 22.04 following the above instructions
    sed -i 's/tcl/lmod/g' envs/jedi-ufs.mylinux/site/modules.yaml
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@11.2.0]"
 
-7. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+7. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
+
+.. code-block:: console
+
+   definitions:
+   - compilers: ['%gcc']
+
+8. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. warning::
    **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
@@ -960,14 +961,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-8. Process the specs and install
+9. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-9. Create tcl module files
+10. Create tcl module files
 
 .. code-block:: console
 

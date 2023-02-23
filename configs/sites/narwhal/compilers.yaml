@@ -34,8 +34,8 @@ compilers::
       - PrgEnv-gnu/8.3.2
       - gcc/10.3.0
       environment:
-        #prepend_path:
-        #  LD_LIBRARY_PATH: '/opt/cray/pe/libsci/22.08.1.1/INTEL/19.0/x86_64/lib' - NOT INTEL!!!
+        prepend_path:
+          LD_LIBRARY_PATH: '/opt/cray/pe/libsci/22.08.1.1/GNU/9.1/x86_64/lib'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
