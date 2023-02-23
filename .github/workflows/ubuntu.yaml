@@ -61,7 +61,8 @@ jobs:
     needs: [cache-externals, cache-spack-mirror]
     strategy:
       matrix:
-        compiler-mpi: [ {compiler: intel@2021.8.0, mpi: intel-oneapi-mpi@2021.8.0}, {compiler: gcc@9.4.0, mpi: mvapich2@2.3.7}, {compiler: gcc@10.3.0, mpi: mpich@4.0.2} ]
+        #compiler-mpi: [ {compiler: intel@2021.8.0, mpi: intel-oneapi-mpi@2021.8.0}, {compiler: gcc@9.4.0, mpi: mvapich2@2.3.7}, {compiler: gcc@10.3.0, mpi: mpich@4.0.2} ]
+        compiler-mpi: [ {compiler: gcc@9.4.0, mpi: mvapich2@2.3.7}, {compiler: gcc@10.3.0, mpi: mpich@4.0.2} ]
         template: [skylab-dev, ufs-weather-model, ufs-srw-dev] # [unified-dev]
     runs-on: ubuntu-20.04
     steps:
