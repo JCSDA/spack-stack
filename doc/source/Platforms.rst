@@ -221,7 +221,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the followi
 
 .. code-block:: console
 
-   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217/install/modulefiles/Core
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/19.1.1.217
    module load stack-intel-mpi/2019.7.217
    module load stack-python/3.9.12
@@ -231,7 +231,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
 
 .. code-block:: console
 
-   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.1
    module load stack-python/3.9.12

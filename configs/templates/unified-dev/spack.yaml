@@ -31,11 +31,11 @@ spack:
       exclude:
         # jedi-tools doesn't build with Intel
         - jedi-tools-env%intel
-        # Don't even bother building those with Intel 18,
-        # not needed. Many of the Python packages don't build.
-        - jedi-ewok-env%intel@18
-        - jedi-fv3-env%intel@18
-        - jedi-tools-env%intel@18
-        - jedi-ufs-env%intel@18
-        - jedi-um-env%intel@18
-        - soca-env%intel@18
+        ## Don't even bother building those with Intel 18,
+        ## not needed. Many of the Python packages don't build.
+        #- jedi-ewok-env%intel@18
+        #- jedi-fv3-env%intel@18
+        #- jedi-tools-env%intel@18
+        #- jedi-ufs-env%intel@18
+        #- jedi-um-env%intel@18
+        #- soca-env%intel@18
