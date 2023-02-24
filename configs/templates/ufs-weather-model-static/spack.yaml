@@ -19,7 +19,7 @@ spack:
   - libpng@1.6.37~shared
   - zlib@1.2.11~shared
   - bacio@2.4.1
-  - crtm@2.4.0
+  - crtm@2.4.0~fix
   - esmf@8.3.0b09+debug~shared snapshot=b09
   - esmf@8.3.0b09~debug~shared snapshot=b09
   - fms@2022.04 constants=GFS
