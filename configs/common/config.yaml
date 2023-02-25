@@ -5,6 +5,8 @@ config:
     root: $env/install
     projections:
       all: "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
+    # Needed for relocation of binary packages (build caches)
+    #padded_length: true
 
   # The build stage can be purged with `spack clean --stage` and
   # `spack clean -a`, so it is important that the specified directory uniquely
