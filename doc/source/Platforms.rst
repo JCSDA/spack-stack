@@ -336,21 +336,21 @@ The following is required for building new spack environments and for using spac
    module load miniconda/3.9.12
    module load ecflow/5.5.3
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install/modulefiles/Core
+   module use /scratch1/NCEPDEV/global/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.12
    module available
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-9.2.0/install/modulefiles/Core
+   module use /scratch1/NCEPDEV/global/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/9.2.0
    module load stack-openmpi/3.1.4
    module load stack-python/3.9.12
@@ -364,8 +364,25 @@ Note that on Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow
 NOAA RDHPCS Jet
 ------------------------------
 
-.. note::
-   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
+   module load stack-intel/2021.5.0
+   module load stack-intel-oneapi-mpi/2021.5.1
+   module load stack-python/3.9.12
+   module available
+
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
+   module load stack-gcc/9.2.0
+   module load stack-openmpi/3.1.4
+   module load stack-python/3.9.12
+   module available
 
 **WORK IN PROGRESS**
 
