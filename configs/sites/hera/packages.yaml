@@ -1,10 +1,10 @@
 packages:
   all:
-    compiler:: [intel@2021.5.0]
-    #compiler:: [gcc@9.2.0]
+    compiler:: [intel@2021.5.0, gcc@9.2.0]
+    #compiler:: [intel@18.0.5.274]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1]
-      #mpi:: [openmpi@3.1.4]
+      mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@3.1.4]
+      #mpi:: [intel-mpi@2018.0.4]
   mpi:
     buildable: False
   intel-mpi:
