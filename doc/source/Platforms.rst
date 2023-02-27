@@ -23,21 +23,15 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | System                                                   | Maintainers               | Location                                                                                                           |
 +==========================================================+===========================+====================================================================================================================+
-| MSU Orion Intel                                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.2/install``                      |
+| MSU Orion Intel/GNU (**TEMPORARY**)                      | Dom Heinzeller            | ``/work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                           |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| MSU Orion GNU                                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.2.0/install``                          |
-+----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.1/install``                      |
-+----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install``                          |
+| NASA Discover Intel/GNU (**TEMPORARY**)                  | Dom Heinzeller            | ``/gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                  |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NAVY HPCMP Narwhal                                       | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``     |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne Intel                              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217/install``            |
-+----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne GNU                                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install``                  |
+| NCAR-Wyoming Cheyenne Intel/GNU (**TEMPORARY**)          | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``        |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud)                 |                           | not yet supported - coming soon                                                                                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -88,7 +82,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the followi
 
 .. code-block:: console
 
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.2/install/modulefiles/Core
+   module use /work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.7
@@ -98,7 +92,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
 
 .. code-block:: console
 
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.2.0/install/modulefiles/Core
+   module use /work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.9.7
@@ -124,7 +118,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the followi
 
 .. code-block:: console
 
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.1/install/modulefiles/Core
+   module use /gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.7
@@ -134,7 +128,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
 
 .. code-block:: console
 
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
