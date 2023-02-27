@@ -88,6 +88,8 @@ jobs:
           # This allows us to "spin up" builds that altogether take longer than
           # six hours, and/or fail later in the build process.
 
+          set -x
+
           # base-env
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.base-env.apple-clang-14.0.0
           # For some reason the buildcache create step returns a non-zero status ...
