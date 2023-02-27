@@ -346,7 +346,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
    module load stack-python/3.9.12
    module available
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
@@ -365,7 +365,7 @@ NOAA RDHPCS Jet
 ------------------------------
 
 .. note::
-``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
+   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
 
 **WORK IN PROGRESS**
 
