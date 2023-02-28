@@ -95,23 +95,26 @@ jobs:
           # six hours, and/or fail later in the build process.
 
           # base-env
-          spack install --fail-fast --source --no-check-signature base-env
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
           # For some reason the buildcache create step returns a non-zero status ...
-          set +eo pipefail
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
-          set -eo pipefail
+          #set +eo pipefail
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error
+          echo "Return code: '$?'"
+          #set -eo pipefail
 
           # jedi-base-env
-          spack install --fail-fast --source --no-check-signature jedi-base-env
-          set +eo pipefail
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
-          set -eo pipefail
+          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.apple-clang-14.0.0.jedi-base-env
+          #set +eo pipefail
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error
+          echo "Return code: '$?'"
+          #set -eo pipefail
 
           # the rest
-          spack install --fail-fast --source --no-check-signature
-          set +eo pipefail
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --rebuild-index
-          set -eo pipefail
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'skylab-dev' }}
+          #set +eo pipefail
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error
+          echo "Return code: '$?'"
+          #set -eo pipefail
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
 
