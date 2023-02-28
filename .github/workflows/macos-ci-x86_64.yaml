@@ -122,6 +122,7 @@ jobs:
 
       - name: test-env
         run: |
+          source /usr/local/opt/lmod/init/profile
           export ENVDIR=$PWD/envs/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
           module use $ENVDIR/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
