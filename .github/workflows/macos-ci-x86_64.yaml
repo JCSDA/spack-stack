@@ -41,7 +41,7 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          export ENVDIR=$PWD/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
+          export ENVDIR=$PWD/envs/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
           spack stack create env --site macos.default --template ${{ inputs.template || 'skylab-dev' }} --name ${ENVDIR}
           spack env activate -d ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
@@ -116,7 +116,7 @@ jobs:
 
       - name: test-env
         run: |
-          export ENVDIR=$PWD/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
+          export ENVDIR=$PWD/envs/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
           module use $ENVDIR/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
           module load stack-openmpi/4.1.4
