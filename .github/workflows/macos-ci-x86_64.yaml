@@ -37,7 +37,7 @@ jobs:
         run: |
           pwd
           ls -lart
-          exit 1
+          rm -fr *
 
       - name: checkout
         uses: actions/checkout@v2
