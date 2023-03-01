@@ -1,4 +1,4 @@
-name: macos-ci-x86_64-build
+name: ubuntu-ci-x86_64-build
 on:
   pull_request:
     paths-ignore:
@@ -28,8 +28,8 @@ defaults:
     shell: bash -leo pipefail {0}
 
 jobs:
-  macos-ci-x86_64-build:
-    runs-on: [macos-ci-x86_64]
+  ubuntu-ci-x86_64-build:
+    runs-on: [ubuntu-ci-x86_64]
 
     steps:
       - name: cleanup
@@ -46,8 +46,8 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          export ENVDIR=$PWD/envs/${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
-          spack stack create env --site macos.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVDIR}
+          export ENVDIR=$PWD/envs/${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
+          spack stack create env --site linux.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVDIR}
           spack env activate -d ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
@@ -72,18 +72,18 @@ jobs:
           spack config add config:padded_length:true
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
-          spack config add "packages:all:compiler:[apple-clang@14.0.0]"
-          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
+          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.4.0]"
+          spack config add "packages:all:compiler:[intel@2021.4.0]"
+          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
-          spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.0
+          spack concretize 2>&1 | tee log.concretize.intel-2021.4.0
 
           # Add and update source cache
-          spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
-          spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
+          spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
+          spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
 
           # Add binary cache and reindex it
-          spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
+          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
           spack buildcache update-index -m local-binary
           echo "Packages in combined spack build caches:"
           spack buildcache list
@@ -94,13 +94,13 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.4.0.base-env
+          spack buildcache create -a -r -u -d /home/ubuntu/spack-stack/build-cache/ --skip-on-error || true
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel@2021.4.0.${{ inputs.template || 'unified-dev' }}
+          spack buildcache create -a -r -u -d /home/ubuntu/spack-stack/build-cache/ --skip-on-error || true
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
@@ -112,10 +112,10 @@ jobs:
       - name: test-env
         run: |
           source /usr/local/opt/lmod/init/profile
-          export ENVDIR=$PWD/envs/${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
+          export ENVDIR=$PWD/envs/${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
           module use $ENVDIR/install/modulefiles/Core
-          module load stack-apple-clang/14.0.0
-          module load stack-openmpi/4.1.4
+          module load stack-intel/2021.4.0
+          module load stack-intel-oneapi-mpi/2021.4.0
           module load stack-python/3.10.8
           module load jedi-ufs-env/1.0.0 jedi-ewok-env/1.0.0 soca-env/1.0.0
 
