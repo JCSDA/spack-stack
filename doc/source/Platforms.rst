@@ -27,7 +27,9 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NASA Discover Intel/GNU (**TEMPORARY**)                  | Dom Heinzeller            | ``/gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                  |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
+| NAVY HPCMP Narwhal Intel                                 | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
++----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Narwhal GNU (**TEMPORARY LOCATION**)          | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install``|
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``     |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -140,7 +142,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
 NAVY HPCMP Narwhal
 ------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software.
+With Intel, the following is required for building new spack environments and for using spack to build and run software:
 
 .. code-block:: console
 
@@ -164,6 +166,33 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 
    module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install/modulefiles/Core
    module load stack-intel/2021.4.0
+   module load stack-cray-mpich/8.1.14
+   module load stack-python/3.9.7
+
+With GNU, the following is required for building new spack environments and for using spack to build and run software:
+
+.. code-block:: console
+
+   module unload PrgEnv-cray
+   module load PrgEnv-gnu/8.3.2
+   module unload gcc
+   module load gcc/10.3.0
+   module unload cray-mpich
+   module load cray-mpich/8.1.14
+   module unload cray-python
+   module load cray-python/3.9.7.1
+   module unload cray-libsci
+   module load cray-libsci/22.08.1.1
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+
+For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules. **Note: temporary location!**
+
+.. code-block:: console
+
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install/modulefiles/Core
+   module load stack-gcc/10.3.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
 
@@ -462,11 +491,11 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 macOS
 ------------------------------
 
-On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``python``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
+On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
 
-The instructions below also assume a clean Homebrew installation with a clean Python installation inside. This means that the Homebrew Python only contains nothing but what gets installed with ``pip install poetry`` (which is a temporary workaround). If this is not the case, users can try to install a separate Python using Miniconda as described in :numref:`Sections %s <Prerequisites_Miniconda>`.
+Unlike in previous versions, the instructions below assume that ``Python`` is built by ``spack``. That means that when using the ``spack`` environments (i.e., loading the modules for building or running code), the ``spack`` installation of ``Python`` with its available ``Python`` modules should be used to ensure consistency. However, a Homebrew ``Python`` installation may still be needed to build new ``spack`` environments. It can also be beneficial for the user to have a version of ``Python`` installed with Homebrew that can be used for virtual environments that are completely independent of any ``spack``-built environment.
 
-Further, it is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
+It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
 Intel M1 platform notes
 -----------------------
@@ -654,7 +683,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
+6. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
@@ -746,9 +775,6 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    # Python
    yum -y install python39-devel
    alternatives --set python3 /usr/bin/python3.9
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -800,9 +826,6 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
 
    # Python
    apt install -y python3-dev python3-pip
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -850,9 +873,6 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
 
    # Python
    apt install -y python3-dev python3-pip
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -887,7 +907,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    spack external find --scope system
    spack external find --scope system perl
-   spack external find --scope system python
+   # Don't use any external Python, let spack build it
+   #spack external find --scope system python
    spack external find --scope system wget
    spack external find --scope system texlive
    # On Ubuntu (but not on Red Hat):
@@ -905,23 +926,20 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
+6. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
    # Example for Ubuntu 20.04 following the above instructions
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@10.3.0]"
 
    # Example for Ubuntu 22.04 following the above instructions
    sed -i 's/tcl/lmod/g' envs/jedi-ufs.mylinux/site/modules.yaml
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@11.2.0]"
 
