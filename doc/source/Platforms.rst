@@ -329,6 +329,7 @@ The following is required for building new spack environments and for using spac
    module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load ecflow/5.5.3
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 

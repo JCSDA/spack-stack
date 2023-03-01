@@ -13,10 +13,9 @@ packages:
       prefix: /opt/intel/oneapi/2022.1
       modules:
       - intel/2022.1
-  packages:
   openmpi:
     externals:
-    - spec: openmpi@4.1.5%gcc@9.3.0~cuda~cxx~cxx_exceptions~java+lustre~memchecker+pmi~static~wrapper-rpath
+    - spec: openmpi@4.1.5%gcc@9.3.0 ~cuda~cxx~cxx_exceptions~java+lustre~memchecker+pmi~static~wrapper-rpath
         schedulers=slurm
       prefix: /data/prod/jedi/spack-stack/openmpi-4.1.5/gcc-9.3.0
       modules:
