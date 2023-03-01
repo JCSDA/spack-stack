@@ -1,0 +1,143 @@
+name: macos-ci-x86_64-build
+on:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  workflow_dispatch:
+  #  inputs:
+  #    template:
+  #      description: 'Base spack.yaml template. Default is a complete JEDI-UFS environment.'
+  #      required: true
+  #      default: 'skylab-dev'
+  #    specs:
+  #      description: 'Which specs to add to the template. Default is none (empty string).'
+  #      required: false
+  #      default: ''
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+# Use custom shell with -l so .bash_profile is sourced
+defaults:
+  run:
+    shell: bash -leo pipefail {0}
+
+jobs:
+  macos-ci-x86_64-build:
+    #if: ${{ github.event.label.name == 'run-macos-dom' }} || ${{ inputs.template }}
+    runs-on: [macos-ci-x86_64]
+
+    steps:
+      - name: cleanup
+        run: |
+          pwd
+          ls -lart
+          rm -fr *
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: create-env
+        run: |
+          source ./setup.sh
+          export ENVDIR=$PWD/envs/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
+          spack stack create env --site macos.default --template ${{ inputs.template || 'skylab-dev' }} --name ${ENVDIR}
+          spack env activate -d ${ENVDIR}
+          spack add ${{ inputs.specs || '' }}
+          export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
+
+          # Find external packages
+          spack external find --scope system
+          spack external find --scope system perl
+          spack external find --scope system wget
+          PATH="/usr/local/opt/curl/bin:$PATH" \
+              spack external find --scope system curl
+          PATH="/usr/local/opt/qt5/bin:$PATH" \
+              spack external find --scope system qt
+          spack external find --scope system texlive
+          # NOT YET
+          # spack external find --scope system mysql
+
+          # Find compilers
+          spack compiler find --scope system
+
+          export -n SPACK_SYSTEM_CONFIG_PATH
+
+          # For buildcaches
+          spack config add config:padded_length:true
+
+          # Set compiler and MPI
+          spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
+          spack config add "packages:all:compiler:[apple-clang@14.0.0]"
+          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
+
+          spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.0
+
+          # Add and update source cache
+          spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
+          spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
+
+          # Add binary cache and reindex it
+          spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
+          spack buildcache update-index -m local-binary
+          echo "Packages in combined spack build caches:"
+          spack buildcache list
+
+          # Break installation up in pieces and create build caches in between
+          # This allows us to "spin up" builds that altogether take longer than
+          # six hours, and/or fail later in the build process.
+
+          # base-env
+          echo "base-env ..."
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
+          #set +eo pipefail
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
+          #echo "Return code: '$?'"
+          #set -eo pipefail
+
+          ## jedi-base-env
+          #echo "jedi-base-env ..."
+          #spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.apple-clang-14.0.0.jedi-base-env
+          ##set +eo pipefail
+          #spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
+          ##echo "Return code: '$?'"
+          ##set -eo pipefail
+
+          # the rest
+          echo "${{ inputs.template || 'skylab-dev' }} ..."
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'skylab-dev' }}
+          #set +eo pipefail
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
+          #echo "Return code: '$?'"
+          #set -eo pipefail
+
+          # Next steps: synchronize source and build cache to a central/combined mirror?
+          echo "Next steps ..."
+          spack clean -a
+          spack module lmod refresh -y
+          spack stack setup-meta-modules
+          spack env deactivate
+
+      - name: test-env
+        run: |
+          source /usr/local/opt/lmod/init/profile
+          export ENVDIR=$PWD/envs/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
+          module use $ENVDIR/install/modulefiles/Core
+          module load stack-apple-clang/14.0.0
+          module load stack-openmpi/4.1.4
+          module load stack-python/3.10.8
+          module load jedi-ufs-env/1.0.0 jedi-ewok-env/1.0.0 soca-env/1.0.0
+
+      # Skip this for now, copied from other yaml
+      #- name: upload-mirror
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: spack_mirror
+      #    path: cache/source_cache
