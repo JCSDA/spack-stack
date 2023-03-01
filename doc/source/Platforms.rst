@@ -414,7 +414,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules 
 
    module use /data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-9.3.0/install/modulefiles/Core
    module load stack-gcc/9.3.0
-   module load stack-mpich/4.0.2
+   module load stack-openmpi/4.1.5
    module load stack-python/3.9.12
    module unuse /data/prod/hpc-stack/modulefiles/compiler/gnu/9.3.0
    module available
