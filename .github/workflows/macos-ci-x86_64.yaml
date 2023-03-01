@@ -22,10 +22,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# Use custom shell with -l so .bash_profile is sourced
 defaults:
   run:
-    shell: bash -leo pipefail {0}
+    shell: bash
+    #shell: bash -leo pipefail {0}
 
 jobs:
   macos-ci-x86_64-build:
@@ -69,7 +69,7 @@ jobs:
           export -n SPACK_SYSTEM_CONFIG_PATH
 
           # For buildcaches
-          spack config add config:padded_length:true
+          spack config add config:install_tree:padded_length:true
 
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
