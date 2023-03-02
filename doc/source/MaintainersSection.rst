@@ -278,6 +278,10 @@ miniconda
    module load miniconda/3.9.12
    # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
    module load gnu/9.2.0
+   
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/lfs4/HFIP/hfv3gfs/role.epic/apps/mysql-8.0.31``. Since Jet cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
+
 
 .. _MaintainersSection_Frontera:
 
