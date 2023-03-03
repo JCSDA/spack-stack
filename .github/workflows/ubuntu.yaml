@@ -1,4 +1,4 @@
-name: macos
+name: ubuntu
 
 on:
   pull_request:
@@ -20,13 +20,13 @@ defaults:
 
 jobs:
 
-  # For simplicity, we create this mirror for a standard macos-11 setup,
+  # For simplicity, we create this mirror for a standard ubuntu-20.04 setup,
   # ignoring potential differences in the concretized environments between
   # compilers, MPI libraries, templates, ... most of the packages will be
   # the same, the few missing ones will be fetched from source instead of
   # the mirror when the spack builds are run.
   cache-spack-mirror:
-    runs-on: macos-11
+    runs-on: ubuntu-20.04
 
     steps:
       - name: checkout
@@ -41,8 +41,8 @@ jobs:
   cache-externals:
     strategy:
       matrix:
-        compiler-mpi: [ {compiler: apple-clang@13.0.0, mpi: openmpi@4.1.4} ]
-    runs-on: macos-11
+        compiler-mpi: [ {compiler: intel@2021.8.0, mpi: intel-oneapi-mpi@2021.8.0}, {compiler: gcc@9.4.0, mpi: mvapich2@2.3.7}, {compiler: gcc@10.3.0, mpi: mpich@4.0.2} ]
+    runs-on: ubuntu-20.04
     steps:
 
       - name: checkout
@@ -61,9 +61,10 @@ jobs:
     needs: [cache-externals, cache-spack-mirror]
     strategy:
       matrix:
-        compiler-mpi: [ {compiler: apple-clang@13.0.0, mpi: openmpi@4.1.4} ]
-        template: [skylab-dev, ufs-weather-model, ufs-srw-dev] # [unified-dev]
-    runs-on: macos-11
+        #compiler-mpi: [ {compiler: intel@2021.8.0, mpi: intel-oneapi-mpi@2021.8.0}, {compiler: gcc@9.4.0, mpi: mvapich2@2.3.7}, {compiler: gcc@10.3.0, mpi: mpich@4.0.2} ]
+        compiler-mpi: [ {compiler: gcc@9.4.0, mpi: mvapich2@2.3.7}, {compiler: gcc@10.3.0, mpi: mpich@4.0.2} ]
+        template: [base-env]
+    runs-on: ubuntu-20.04
     steps:
 
       - name: checkout
@@ -78,4 +79,4 @@ jobs:
           compiler: ${{ matrix.compiler-mpi.compiler }}
           mpi: ${{ matrix.compiler-mpi.mpi }}
           path: ${{ github.workspace }}
-          site: macos.default
+          site: linux.default
