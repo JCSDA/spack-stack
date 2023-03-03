@@ -133,7 +133,12 @@ jobs:
           module load stack-apple-clang/14.0.0
           module load stack-openmpi/4.1.4
           module load stack-python/3.10.8
-          module load jedi-ufs-env/1.0.0 jedi-ewok-env/1.0.0 soca-env/1.0.0
+          module available
+
+          module load jedi-ufs-env/unified-dev
+          module load jedi-ewok-env/unified-dev
+          module load soca-env/unified-dev
+          module list
 
       # Skip this for now, copied from other yaml
       #- name: upload-mirror
