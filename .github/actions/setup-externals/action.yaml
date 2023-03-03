@@ -41,9 +41,11 @@ runs:
           sudo apt-get install intel-oneapi-dev-utilities intel-oneapi-openmp intel-oneapi-compiler-fortran intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic intel-oneapi-mpi-devel
         else
           sudo mkdir -p /opt/intel
+          sudo touch /opt/intel/dummy
         fi
       else
         sudo mkdir -p /opt/intel
+        sudo touch /opt/intel/dummy
       fi
 
   - name: cache-mpi
@@ -147,6 +149,7 @@ runs:
         make install
       elif [[ "${MPI_NAME}" == "intel-oneapi-mpi" ]]; then
         mkdir -p $HOME/mpi
+        touch $HOME/mpi/dummy
       else
         echo "${MPI_NAME} not configured!"
         exit 1

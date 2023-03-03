@@ -2,7 +2,6 @@
 
 module-whatis "Provides a qt-5.15.2 installation for use with spack."
 
-# Only allow one instance of compiler to load
 conflict qt
 
 proc ModulesHelp { } {

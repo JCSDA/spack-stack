@@ -177,6 +177,8 @@
       version: [1.4.2]
     py-h5py:
       version: [3.6.0]
+    py-mysql-connector-python:
+      version: [8.0.13]
     py-netcdf4:
       version: [1.5.3]
       variants: +mpi

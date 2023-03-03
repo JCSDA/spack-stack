@@ -11,7 +11,7 @@ on:
   #    template:
   #      description: 'Base spack.yaml template. Default is a complete JEDI-UFS environment.'
   #      required: true
-  #      default: 'skylab-dev'
+  #      default: 'unified-dev'
   #    specs:
   #      description: 'Which specs to add to the template. Default is none (empty string).'
   #      required: false
@@ -22,14 +22,13 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
-# Use custom shell with -l so .bash_profile is sourced
 defaults:
   run:
-    shell: bash -leo pipefail {0}
+    shell: bash
+    #shell: bash -leo pipefail {0}
 
 jobs:
   macos-ci-x86_64-build:
-    #if: ${{ github.event.label.name == 'run-macos-dom' }} || ${{ inputs.template }}
     runs-on: [macos-ci-x86_64]
 
     steps:
@@ -47,8 +46,14 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          export ENVDIR=$PWD/envs/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
-          spack stack create env --site macos.default --template ${{ inputs.template || 'skylab-dev' }} --name ${ENVDIR}
+          # DH* 20230302 - to avoid using padded_length for build caches,
+          # always build in the same environment so that the length of the
+          # path doesn't change - see also other 'DH* 20230302' changes below
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
+          export ENVNAME=ci-env.macos-ci-x86_64
+          # *DH
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          spack stack create env --site macos.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
           spack env activate -d ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
@@ -62,16 +67,17 @@ jobs:
           PATH="/usr/local/opt/qt5/bin:$PATH" \
               spack external find --scope system qt
           spack external find --scope system texlive
-          # NOT YET
-          # spack external find --scope system mysql
+          spack external find --scope system mysql
 
           # Find compilers
           spack compiler find --scope system
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
-          # For buildcaches
-          spack config add config:padded_length:true
+          # DH* 20230302 - Don't use yet, too many problems
+          ## For buildcaches
+          #spack config add config:install_tree:padded_length:true
+          # *DH
 
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
@@ -97,26 +103,12 @@ jobs:
           # base-env
           echo "base-env ..."
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
-          #set +eo pipefail
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
-          #echo "Return code: '$?'"
-          #set -eo pipefail
-
-          ## jedi-base-env
-          #echo "jedi-base-env ..."
-          #spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.apple-clang-14.0.0.jedi-base-env
-          ##set +eo pipefail
-          #spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
-          ##echo "Return code: '$?'"
-          ##set -eo pipefail
 
           # the rest
-          echo "${{ inputs.template || 'skylab-dev' }} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'skylab-dev' }}
-          #set +eo pipefail
+          echo "${{ inputs.template || 'unified-dev' }} ..."
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
-          #echo "Return code: '$?'"
-          #set -eo pipefail
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
@@ -128,12 +120,25 @@ jobs:
       - name: test-env
         run: |
           source /usr/local/opt/lmod/init/profile
-          export ENVDIR=$PWD/envs/${{ inputs.template || 'skylab-dev' }}.macos-ci-x86_64
-          module use $ENVDIR/install/modulefiles/Core
+
+          # DH* 20230302 - to avoid using padded_length for build caches,
+          # always build in the same environment so that the length of the
+          # path doesn't change - see also other 'DH* 20230302' changes below
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
+          export ENVNAME=ci-env.macos-ci-x86_64
+          # *DH
+          export ENVDIR=$PWD/envs/${ENVNAME}
+
+          module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
           module load stack-openmpi/4.1.4
           module load stack-python/3.10.8
-          module load jedi-ufs-env/1.0.0 jedi-ewok-env/1.0.0 soca-env/1.0.0
+          module available
+
+          module load jedi-ufs-env/unified-dev
+          module load jedi-ewok-env/unified-dev
+          module load soca-env/unified-dev
+          module list
 
       # Skip this for now, copied from other yaml
       #- name: upload-mirror
