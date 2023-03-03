@@ -527,6 +527,9 @@ For these instructions we will use the variable ``$HOMEBREW_ROOT`` to hold the p
     # If building on Intel architecture:
     export HOMEBREW_ROOT=/usr/local
 
+.. note::
+   By default, every call to ``brew`` attempts to update the entire ``brew`` installation, which often means that existing spack-stack installations and other builds won't work anymore. With ``export HOMEBREW_NO_AUTO_UPDATE=1`` before running ``brew``, this automatic update is disabled.
+
 Prerequisites (one-off)
 -----------------------
 
@@ -601,6 +604,7 @@ This instructions are meant to be a reference that users can follow to set up th
    brew install openssl
    # Note - need to pin to version 5
    brew install qt@5
+   brew install mysql
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -658,6 +662,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Don't use any external Python, let spack build it
    #spack external find --scope system python
    spack external find --scope system wget
+   spack external find --scope system mysql
 
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
@@ -764,6 +769,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install xterm
    yum -y install texlive
    # Do not install qt@5 for now
+   yum -y install mysql-server
 
    # For screen utility (optional)
    yum -y remove https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
@@ -821,6 +827,7 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y texlive
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
+   apt install -y mysql-server
 
    # Python
    apt install -y python3-dev python3-pip
@@ -868,6 +875,7 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y meson
+   apt install -y mysql-server
 
    # Python
    apt install -y python3-dev python3-pip
@@ -908,6 +916,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # Don't use any external Python, let spack build it
    #spack external find --scope system python
    spack external find --scope system wget
+   spack external find --scope system mysql
    spack external find --scope system texlive
    # On Ubuntu (but not on Red Hat):
    spack external find --scope system curl
