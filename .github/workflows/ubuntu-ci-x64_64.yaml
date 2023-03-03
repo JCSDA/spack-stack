@@ -151,7 +151,7 @@ jobs:
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
           spack clean -a
-          spack module lmod refresh -y
+          spack module tcl refresh -y
           spack stack setup-meta-modules
           spack env deactivate
 
