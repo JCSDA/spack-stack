@@ -120,8 +120,16 @@ jobs:
       - name: test-env
         run: |
           source /usr/local/opt/lmod/init/profile
-          export ENVDIR=$PWD/envs/${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
-          module use $ENVDIR/install/modulefiles/Core
+
+          # DH* 20230302 - to avoid using padded_length for build caches,
+          # always build in the same environment so that the length of the
+          # path doesn't change - see also other 'DH* 20230302' changes below
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
+          export ENVNAME=ci-env.macos-ci-x86_64
+          # *DH
+          export ENVDIR=$PWD/envs/${ENVNAME}
+
+          module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
           module load stack-openmpi/4.1.4
           module load stack-python/3.10.8
