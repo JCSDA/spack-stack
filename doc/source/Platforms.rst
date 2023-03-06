@@ -294,6 +294,7 @@ The following is required for building new spack environments and for using spac
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
+   module load mysql/8.0.31
 
 .. _Platforms_Gaea:
 
