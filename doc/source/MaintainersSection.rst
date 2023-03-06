@@ -131,6 +131,8 @@ qt (qt@5)
 ecflow
   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``. Ensure to follow the extra instructions in that section for Narwhal.
 
+.. code-block:: console
+
    module unload PrgEnv-cray
    module load PrgEnv-intel/8.1.0
    module unload intel
@@ -143,6 +145,9 @@ ecflow
    module load gcc/10.3.0
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load qt/5.15.2
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_Casper:
 
@@ -247,6 +252,9 @@ ecflow
    module load miniconda/3.9.12
    module load qt/5.15.2
 
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
+
 .. _MaintainersSection_Hera:
 
 ------------------------------
@@ -328,7 +336,10 @@ UW (Univ. of Wisconsin) S4
 ------------------------------
 
 gnu (module only)
-   The ``gnu/9.3.0`` module provided by the system administrators is broken (circular dependencies etc.). To create a usable version, copy ``/data/prod/hpc-stack/modulefiles/core/gnu/9.3.0.lua`` into directory ``/data/prod/jedi/spack-stack/modulefiles/gnu`.`
+   The ``gnu/9.3.0`` module provided by the system administrators is broken. To create a usable version, turn ``/data/prod/hpc-stack/modulefiles/core/gnu/9.3.0.lua`` into a simple environment module (``tcl``) in ``/data/prod/jedi/spack-stack/modulefiles/gnu``.
+
+mpich (module only)
+   The ``mpich/4.0.1`` module provided by the system administrators is broken. To create a usable version, turn ``/data/prod/hpc-stack/modulefiles/compiler/gnu/9.3.0/mpich/4.0.1.lua`` into a simple environment module (``tcl``) in ``/data/prod/jedi/spack-stack/modulefiles/mpich``.
 
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.

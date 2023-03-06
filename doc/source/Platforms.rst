@@ -157,6 +157,7 @@ With Intel, the following is required for building new spack environments and fo
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading the above modules.
 
@@ -184,6 +185,7 @@ With GNU, the following is required for building new spack environments and for 
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules. **Note: temporary location!**
 
@@ -310,6 +312,7 @@ The following is required for building new spack environments and for using spac
    module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -331,6 +334,9 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 ------------------------------
 NOAA RDHPCS Gaea (C5)
 ------------------------------
+
+.. note::
+   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
 
@@ -442,12 +448,9 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
 
    module use /data/prod/jedi/spack-stack/spack-stack-feature-mysql-testing/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/9.3.0
-   module load stack-openmpi/4.1.5
+   module load stack-mpich/4.0.1
    module load stack-python/3.9.12
-   module unuse /data/prod/hpc-stack/modulefiles/compiler/gnu/9.3.0
    module available
-
-Note the additional `module unuse` command, that needs to be run after the stack metamodules are loaded. Loading the GNU compiler meta module loads the GNU compiler module provided by the sysadmins, which adds this directory to the module path. This directory contains duplicate libraries that are not compatible with our stack, such as ``sp`` or ``bufr``.
 
 ------------------------------------------------
 Amazon Web Services Parallelcluster Ubuntu 20.04
