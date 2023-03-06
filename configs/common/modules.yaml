@@ -65,6 +65,7 @@ modules:
       - libyaml
       - lz4
       - m4
+      - mysql
       - nasm
       - ncurses
       - openssh
@@ -290,6 +291,7 @@ modules:
       - libyaml
       - lz4
       - m4
+      - mysql
       - nasm
       - ncurses
       - openssh

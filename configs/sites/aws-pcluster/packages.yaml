@@ -91,6 +91,11 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.30
+      prefix: /usr
   openssh:
     externals:
     - spec: openssh@8.2p1
