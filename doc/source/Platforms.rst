@@ -157,6 +157,7 @@ With Intel, the following is required for building new spack environments and fo
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading the above modules.
 
@@ -184,6 +185,7 @@ With GNU, the following is required for building new spack environments and for 
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules. **Note: temporary location!**
 
@@ -292,6 +294,7 @@ The following is required for building new spack environments and for using spac
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
+   module load mysql/8.0.31
 
 .. _Platforms_Gaea:
 
@@ -310,6 +313,7 @@ The following is required for building new spack environments and for using spac
    module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -331,6 +335,9 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 ------------------------------
 NOAA RDHPCS Gaea (C5)
 ------------------------------
+
+.. note::
+   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
 
@@ -442,12 +449,9 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
 
    module use /data/prod/jedi/spack-stack/spack-stack-feature-mysql-testing/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/9.3.0
-   module load stack-openmpi/4.1.5
+   module load stack-mpich/4.0.1
    module load stack-python/3.9.12
-   module unuse /data/prod/hpc-stack/modulefiles/compiler/gnu/9.3.0
    module available
-
-Note the additional `module unuse` command, that needs to be run after the stack metamodules are loaded. Loading the GNU compiler meta module loads the GNU compiler module provided by the sysadmins, which adds this directory to the module path. This directory contains duplicate libraries that are not compatible with our stack, such as ``sp`` or ``bufr``.
 
 ------------------------------------------------
 Amazon Web Services Parallelcluster Ubuntu 20.04
@@ -527,6 +531,9 @@ For these instructions we will use the variable ``$HOMEBREW_ROOT`` to hold the p
     # If building on Intel architecture:
     export HOMEBREW_ROOT=/usr/local
 
+.. note::
+   By default, every call to ``brew`` attempts to update the entire ``brew`` installation, which often means that existing spack-stack installations and other builds won't work anymore. With ``export HOMEBREW_NO_AUTO_UPDATE=1`` before running ``brew``, this automatic update is disabled.
+
 Prerequisites (one-off)
 -----------------------
 
@@ -601,6 +608,7 @@ This instructions are meant to be a reference that users can follow to set up th
    brew install openssl
    # Note - need to pin to version 5
    brew install qt@5
+   brew install mysql
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -658,6 +666,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Don't use any external Python, let spack build it
    #spack external find --scope system python
    spack external find --scope system wget
+   spack external find --scope system mysql
 
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
@@ -764,6 +773,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install xterm
    yum -y install texlive
    # Do not install qt@5 for now
+   yum -y install mysql-server
 
    # For screen utility (optional)
    yum -y remove https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
@@ -821,6 +831,7 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y texlive
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
+   apt install -y mysql-server
 
    # Python
    apt install -y python3-dev python3-pip
@@ -868,6 +879,7 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y meson
+   apt install -y mysql-server
 
    # Python
    apt install -y python3-dev python3-pip
@@ -908,6 +920,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # Don't use any external Python, let spack build it
    #spack external find --scope system python
    spack external find --scope system wget
+   spack external find --scope system mysql
    spack external find --scope system texlive
    # On Ubuntu (but not on Red Hat):
    spack external find --scope system curl

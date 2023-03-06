@@ -151,7 +151,7 @@ jobs:
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
           spack clean -a
-          spack module lmod refresh -y
+          spack module tcl refresh -y
           spack stack setup-meta-modules
           spack env deactivate
 
@@ -162,11 +162,12 @@ jobs:
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
           # path doesn't change - see also other 'DH* 20230302' changes below
-          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
-          export ENVNAME=ci-env.macos-ci-x86_64
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
+          export ENVNAME=ci-env.ubuntu-ci-x86_64
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
 
+          module use ${ENVDIR}/install/modulefiles/Core
           module load stack-intel/2021.4.0
           module load stack-intel-oneapi-mpi/2021.4.0
           module load stack-python/3.10.8

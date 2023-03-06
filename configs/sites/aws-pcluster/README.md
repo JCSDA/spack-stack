@@ -5,7 +5,7 @@
 ### Base instance
 Choose a basic AMI from the Community AMIs tab that matches your desired OS and parallelcluster version. Select an instance type of the same family that you are planning to use for the head and the compute nodes, and enough storage for a swap file and a spack-stack installation. For example:
 - AMI ID: ami-091017c7508ac95f6
-- Instance c5n.4xlarge
+- Instance c6i.4xlarge
 - Use 250GB of gp3 storage as /
 
 ### Prerequisites
