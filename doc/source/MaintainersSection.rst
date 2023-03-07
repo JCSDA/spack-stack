@@ -42,6 +42,22 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
 
+.. _MaintainersSection_Orion:
+
+------------------------------
+MSU Hercules
+------------------------------
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After unloading all modules (``module purge``), refer to 
+   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After unloading all modules (``module purge``), follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Since Orion and Hercules share the filesystems and since the MySQL community server comes pre-installed, it is possible to reuse the Orion installation in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
+
 .. _MaintainersSection_Discover:
 
 ------------------------------
