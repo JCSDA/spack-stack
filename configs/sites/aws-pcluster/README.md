@@ -4,9 +4,9 @@
 
 ### Base instance
 Choose a basic AMI from the Community AMIs tab that matches your desired OS and parallelcluster version. Select an instance type of the same family that you are planning to use for the head and the compute nodes, and enough storage for a swap file and a spack-stack installation. For example:
-- AMI ID: ami-091017c7508ac95f6
-- Instance c5n.4xlarge
-- Use 250GB of gp3 storage as /
+- AMI ID: ami-093dab62f7840644b
+- Instance c6i.8xlarge
+- Use 500GB of gp3 storage as /
 
 ### Prerequisites
 1. As `root`:
@@ -15,13 +15,44 @@ sudo su
 apt-get -y update
 apt-get -y upgrade
 # These were already installed
-#apt install -y apt-utils
+apt install -y apt-utils
 
 # Compilers - already installed
-#apt install -y gcc g++ gfortran gdb
+apt install -y gcc g++ gfortran gdb
 
-# Environment module support - already installed
-#apt install -y environment-modules
+# lua/lmod?
+apt install -y lmod
+# Now repair broken module setup - remove environment modules, fix lua modules
+rm /etc/profile.d/modules.sh
+echo "module use /usr/share/modules/modulefiles" >> /etc/profile.d/lmod.sh
+echo "module use /opt/intel/mpi/2021.6.0/modulefiles" >> /etc/profile.d/lmod.sh
+#
+echo "conflict openmpi" >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
+echo "prereq libfabric-aws" >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
+#
+echo "conflict intelmpi" >> /usr/share/modules/modulefiles/openmpi/4.1.4
+echo "prereq libfabric-aws" >> /usr/share/modules/modulefiles/openmpi/4.1.4
+#
+
+### # Environment module support - already installed
+### apt install -y environment-modules
+
+# Log out completely, ssh back into the instance and check if lua modules work
+exit
+exit
+
+ssh ...
+# Now user ubuntu
+module av
+module load libfabric-aws/1.16.0~amzn4.0
+module load openmpi/4.1.4
+module unload openmpi/4.1.4
+module load intelmpi
+module purge
+module list
+
+# Continue as root
+sudo su
 
 # Misc
 apt install -y build-essential
@@ -42,11 +73,9 @@ apt install -y qt5-default
 apt install -y libqt5svg5-dev
 apt install -y qt5dxcb-plugin
 
-# For R2D2 mysql backend
-apt install -y mysql-server
 
-# Remove AWS openmpi
-apt remove -y openmpi40-aws
+### # Remove AWS openmpi
+### apt remove -y openmpi40-aws
 
 # This is because boost doesn't work with the Intel compiler
 apt install -y libboost1.71-dev
@@ -70,7 +99,7 @@ apt install -y python3-dev python3-pip
 wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
 echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list 
 apt-get update
-apt-get install -y intel-hpckit-2021.4.0/all
+apt-get install -y intel-hpckit-2022.2.0/all
 
 # Docker
 # See https://docs.docker.com/engine/install/ubuntu/
@@ -80,7 +109,8 @@ mkdir -m 0755 -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
   $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+apt-get update
+apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 docker run hello-world
 # DH* TODO 2023/02/21: Add users to group docker so that non-root users can run it
 # See https://docs.docker.com/engine/install/linux-postinstall/
@@ -110,7 +140,7 @@ exit
 
 2. Log out and back in to enable x11 forwarding
 
-3. Build ecflow outside of spack to be able to link against OS boost
+3a. Build ecflow outside of spack to be able to link against OS boost
 ```
 mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
 cd /home/ubuntu/jedi/ecflow-5.8.4/src
@@ -124,9 +154,24 @@ export BOOST_ROOT=/usr
 cd $WK
 mkdir build
 cd build
-cmake .. -DENABLE_STATIC_BOOST_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/home/ubuntu/jedi/ecflow-5.8.4 2>&1 | tee log.cmake
+cmake .. -DPython3_EXECUTABLE=/usr/bin/python3 -DENABLE_STATIC_BOOST_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/home/ubuntu/jedi/ecflow-5.8.4 2>&1 | tee log.cmake
 make -j4 2>&1 | tee log.make
 make install 2>&1 | tee log.install
+```
+3b. Install msql community server
+```
+cd /home/ubuntu/jedi
+mkdir -p mysql-8.0.31/src
+cd mysql-8.0.31/src
+wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-server_8.0.32-1ubuntu20.04_amd64.deb-bundle.tar
+tar -xvf mysql-server_8.0.32-1ubuntu20.04_amd64.deb-bundle.tar
+# Switch to root
+sudo su
+dpkg -i *.deb
+apt --fix-broken install
+dpkg -i *.deb
+# Set root password, choose strong password encryption option
+exit
 ```
 4. Option 1: Use pre-defined site config in spack-stack (skip steps 5-7 afterwards)
 ```
