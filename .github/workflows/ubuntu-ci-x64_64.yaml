@@ -1,0 +1,186 @@
+name: ubuntu-ci-x86_64-build
+on:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  workflow_dispatch:
+  #  inputs:
+  #    template:
+  #      description: 'Base spack.yaml template. Default is a complete JEDI-UFS environment.'
+  #      required: true
+  #      default: 'unified-dev'
+  #    specs:
+  #      description: 'Which specs to add to the template. Default is none (empty string).'
+  #      required: false
+  #      default: ''
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    #shell: bash -leo pipefail {0}
+
+jobs:
+  ubuntu-ci-x86_64-build:
+    runs-on: [ubuntu-ci-x86_64]
+
+    steps:
+      - name: cleanup
+        run: |
+          pwd
+          ls -lart
+          rm -fr *
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: create-env
+        run: |
+          source ./setup.sh
+          # DH* 20230302 - to avoid using padded_length for build caches,
+          # always build in the same environment so that the length of the
+          # path doesn't change - see also other 'DH* 20230302' changes below
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
+          export ENVNAME=ci-env.ubuntu-ci-x86_64
+          # *DH
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          spack stack create env --site linux.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
+          spack env activate -d ${ENVDIR}
+          spack add ${{ inputs.specs || '' }}
+          export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
+
+          # Find external packages
+          spack external find --scope system
+          spack external find --scope system perl
+          spack external find --scope system wget
+          PATH="/usr/local/opt/curl/bin:$PATH" \
+              spack external find --scope system curl
+          PATH="/usr/local/opt/qt5/bin:$PATH" \
+              spack external find --scope system qt
+          spack external find --scope system texlive
+          spack external find --scope system mysql
+
+          # For GNU
+          # MISSING
+
+          # For Intel
+          # Need to find external Intel MPI and annotate with the
+          # correct compiler, no way to do that with spack commands.
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-mpi@2021.4.0%intel@2021.4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      - libfabric-aws/1.16.0~amzn3.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      - intelmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+
+          # For GNU
+          ## Find compilers
+          #spack compiler find --scope system
+
+          # For Intel
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "compilers:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "- compiler:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    spec: intel@2021.4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cc: /opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64/icc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cxx: /opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      f77: /opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fc: /opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    operating_system: ubuntu20.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    environment:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      prepend_path:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "        LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.4.0/linux/compiler/lib/intel64_lin'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      set:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "        I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    extra_rpaths: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+
+          export -n SPACK_SYSTEM_CONFIG_PATH
+
+          # DH* 20230302 - Don't use yet, too many problems
+          ## For buildcaches
+          #spack config add config:install_tree:padded_length:true
+          # *DH
+
+          # Set compiler and MPI
+          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.4.0]"
+          spack config add "packages:all:compiler:[intel@2021.4.0]"
+          sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
+
+          spack concretize 2>&1 | tee log.concretize.intel-2021.4.0
+
+          # Add and update source cache
+          spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
+          spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
+
+          # Add binary cache and reindex it
+          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+          spack buildcache update-index -m local-binary
+          echo "Packages in combined spack build caches:"
+          spack buildcache list
+
+          # Break installation up in pieces and create build caches in between
+          # This allows us to "spin up" builds that altogether take longer than
+          # six hours, and/or fail later in the build process.
+
+          # base-env
+          echo "base-env ..."
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.4.0.base-env
+          spack buildcache create -a -r -u -d /home/ubuntu/spack-stack/build-cache/ --skip-on-error || true
+
+          # the rest
+          echo "${{ inputs.template || 'unified-dev' }} ..."
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel@2021.4.0.${{ inputs.template || 'unified-dev' }}
+          spack buildcache create -a -r -u -d /home/ubuntu/spack-stack/build-cache/ --skip-on-error || true
+
+          # Next steps: synchronize source and build cache to a central/combined mirror?
+          echo "Next steps ..."
+          spack clean -a
+          spack module tcl refresh -y
+          spack stack setup-meta-modules
+          spack env deactivate
+
+      - name: test-env
+        run: |
+          source /etc/profile.d/modules.sh
+
+          # DH* 20230302 - to avoid using padded_length for build caches,
+          # always build in the same environment so that the length of the
+          # path doesn't change - see also other 'DH* 20230302' changes below
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
+          export ENVNAME=ci-env.ubuntu-ci-x86_64
+          # *DH
+          export ENVDIR=$PWD/envs/${ENVNAME}
+
+          module use ${ENVDIR}/install/modulefiles/Core
+          module load stack-intel/2021.4.0
+          module load stack-intel-oneapi-mpi/2021.4.0
+          module load stack-python/3.10.8
+          module available
+
+          module load jedi-ufs-env/unified-dev
+          module load jedi-ewok-env/unified-dev
+          module load soca-env/unified-dev
+          module list
+
+      # Skip this for now, copied from other yaml
+      #- name: upload-mirror
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: spack_mirror
+      #    path: cache/source_cache

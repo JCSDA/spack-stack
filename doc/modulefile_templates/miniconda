@@ -2,7 +2,6 @@
 
 module-whatis "Provides a basic python-3.9.12 installation based on miniconda for use with spack."
 
-# Only allow one instance of compiler to load
 conflict python,anaconda,conda,miniconda,intelpython
 #family python
 

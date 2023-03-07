@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.3.0]
+    compiler:: [intel@2021.3.0, gcc@10.3.0]
     providers:
       mpi:: [cray-mpich@8.1.14]
 
@@ -10,6 +10,9 @@ packages:
   cray-mpich:
     externals:
     - spec: cray-mpich@8.1.14%intel@2021.3.0 ~wrappers
+      modules:
+      - cray-mpich/8.1.14
+    - spec: cray-mpich@8.1.14%gcc@10.3.0 ~wrappers
       modules:
       - cray-mpich/8.1.14
   #intel-oneapi-tbb:
@@ -106,6 +109,13 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
   openssh:
     externals:
     - spec: openssh@8.6p1a

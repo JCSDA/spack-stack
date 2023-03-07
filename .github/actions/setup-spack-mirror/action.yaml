@@ -35,4 +35,5 @@ runs:
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         sed -i "" "s#\${SPACK_STACK_DIR}#$SPACK_STACK_DIR#g" envs/mirror/common/config.yaml
       fi
-      spack mirror create -a -d $HOME/spack-mirror
+      # Ignore checksum errors when creating the mirror
+      spack mirror create -a -d $HOME/spack-mirror || true
