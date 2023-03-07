@@ -259,3 +259,6 @@
       version: [0.5.1]
     zlib:
       version: [1.2.13]
+    zstd:
+      version: [1.5.2]
+      variants: +programs
