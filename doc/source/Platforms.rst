@@ -23,21 +23,17 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | System                                                   | Maintainers               | Location                                                                                                           |
 +==========================================================+===========================+====================================================================================================================+
-| MSU Orion Intel                                          | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.2/install``                      |
+| MSU Orion Intel/GNU (**TEMPORARY**)                      | Dom Heinzeller            | ``/work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                           |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| MSU Orion GNU                                            | Dom Heinzeller            | ``/work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.2.0/install``                          |
+| NASA Discover Intel/GNU (**TEMPORARY**)                  | Dom Heinzeller            | ``/gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                  |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel                                      | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.1/install``                      |
+| NAVY HPCMP Narwhal Intel                                 | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NASA Discover GNU                                        | Dom Heinzeller            | ``/discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install``                          |
-+----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal                                       | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                    |
+| NAVY HPCMP Narwhal GNU (**TEMPORARY LOCATION**)          | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install``|
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``     |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne Intel                              | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217/install``            |
-+----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne GNU                                | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install``                  |
+| NCAR-Wyoming Cheyenne Intel/GNU (**TEMPORARY**)          | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``        |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud)                 |                           | not yet supported - coming soon                                                                                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -57,9 +53,7 @@ spack-stack-v1
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | TACC Frontera GNU                                        |                           | not yet supported - coming soon                                                                                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4 Intel                             | Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install``                            |
-+----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4 GNU                               | Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-9.3.0/install``                                 |
+| UW (Univ. of Wisc.) S4 Intel/GNU (**TEMPORARY LOCATION**)| Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-feature-mysql-testing/envs/unified-4.0.0-rc1/install``                   |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
 | Amazon Web Services AMI Parallelcluster Ubuntu 20.04 GNU | Dom Heinzeller            | not yet supported - coming soon                                                                                    |
 +----------------------------------------------------------+---------------------------+--------------------------------------------------------------------------------------------------------------------+
@@ -82,22 +76,23 @@ The following is required for building new spack environments and for using spac
    module use /work/noaa/da/role-da/spack-stack/modulefiles
    module load miniconda/3.9.7
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.2/install/modulefiles/Core
+   module use /work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/da/role-da/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.2.0/install/modulefiles/Core
+   module use /work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.9.7
@@ -117,22 +112,23 @@ The following is required for building new spack environments and for using spac
    module use /discover/swdev/jcsda/spack-stack/modulefiles
    module load miniconda/3.9.7
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2022.0.1/install/modulefiles/Core
+   module use /gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /discover/swdev/jcsda/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
@@ -144,7 +140,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules 
 NAVY HPCMP Narwhal
 ------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software.
+With Intel, the following is required for building new spack environments and for using spack to build and run software:
 
 .. code-block:: console
 
@@ -161,6 +157,7 @@ The following is required for building new spack environments and for using spac
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading the above modules.
 
@@ -168,6 +165,34 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 
    module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install/modulefiles/Core
    module load stack-intel/2021.4.0
+   module load stack-cray-mpich/8.1.14
+   module load stack-python/3.9.7
+
+With GNU, the following is required for building new spack environments and for using spack to build and run software:
+
+.. code-block:: console
+
+   module unload PrgEnv-cray
+   module load PrgEnv-gnu/8.3.2
+   module unload gcc
+   module load gcc/10.3.0
+   module unload cray-mpich
+   module load cray-mpich/8.1.14
+   module unload cray-python
+   module load cray-python/3.9.7.1
+   module unload cray-libsci
+   module load cray-libsci/22.08.1.1
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+   module load mysql/8.0.31
+
+For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules. **Note: temporary location!**
+
+.. code-block:: console
+
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install/modulefiles/Core
+   module load stack-gcc/10.3.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
 
@@ -186,6 +211,7 @@ The following is required for building new spack environments and for using spac
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
    module load miniconda/3.9.12
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow.
 
@@ -212,22 +238,23 @@ The following is required for building new spack environments and for using spac
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
    module load miniconda/3.9.12
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow. Note that there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops.
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow. Note that there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops.
 
 .. code-block:: console
 
-   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217/install/modulefiles/Core
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/19.1.1.217
    module load stack-intel-mpi/2019.7.217
    module load stack-python/3.9.12
    module available
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-10.1.0/install/modulefiles/Core
+   module use /glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.1
    module load stack-python/3.9.12
@@ -267,6 +294,7 @@ The following is required for building new spack environments and for using spac
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
+   module load mysql/8.0.31
 
 .. _Platforms_Gaea:
 
@@ -285,6 +313,7 @@ The following is required for building new spack environments and for using spac
    module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -306,6 +335,9 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 ------------------------------
 NOAA RDHPCS Gaea (C5)
 ------------------------------
+
+.. note::
+   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
 
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
 
@@ -331,6 +363,7 @@ The following is required for building new spack environments and for using spac
    module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load ecflow/5.5.3
+   module load mysql/8.0.31
 
 For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
@@ -393,12 +426,13 @@ The following is required for building new spack environments and for using spac
    module use /data/prod/jedi/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load ecflow/5.8.4
+   module load mysql/8.0.31
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install/modulefiles/Core
+   module use /data/prod/jedi/spack-stack/spack-stack-feature-mysql-testing/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.9.12
@@ -409,18 +443,15 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 Note the two `module unuse` commands, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
 
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /data/prod/jedi/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-9.3.0/install/modulefiles/Core
+   module use /data/prod/jedi/spack-stack/spack-stack-feature-mysql-testing/envs/unified-4.0.0-rc1/install/modulefiles/Core
    module load stack-gcc/9.3.0
-   module load stack-mpich/4.0.2
+   module load stack-mpich/4.0.1
    module load stack-python/3.9.12
-   module unuse /data/prod/hpc-stack/modulefiles/compiler/gnu/9.3.0
    module available
-
-Note the additional `module unuse` command, that needs to be run after the stack metamodules are loaded. Loading the GNU compiler meta module loads the GNU compiler module provided by the sysadmins, which adds this directory to the module path. This directory contains duplicate libraries that are not compatible with our stack, such as ``sp`` or ``bufr``.
 
 ------------------------------------------------
 Amazon Web Services Parallelcluster Ubuntu 20.04
@@ -462,11 +493,11 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 macOS
 ------------------------------
 
-On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``python``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
+On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
 
-The instructions below also assume a clean Homebrew installation with a clean Python installation inside. This means that the Homebrew Python only contains nothing but what gets installed with ``pip install poetry`` (which is a temporary workaround). If this is not the case, users can try to install a separate Python using Miniconda as described in :numref:`Sections %s <Prerequisites_Miniconda>`.
+Unlike in previous versions, the instructions below assume that ``Python`` is built by ``spack``. That means that when using the ``spack`` environments (i.e., loading the modules for building or running code), the ``spack`` installation of ``Python`` with its available ``Python`` modules should be used to ensure consistency. However, a Homebrew ``Python`` installation may still be needed to build new ``spack`` environments. It can also be beneficial for the user to have a version of ``Python`` installed with Homebrew that can be used for virtual environments that are completely independent of any ``spack``-built environment.
 
-Further, it is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
+It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
 Intel M1 platform notes
 -----------------------
@@ -499,6 +530,9 @@ For these instructions we will use the variable ``$HOMEBREW_ROOT`` to hold the p
     
     # If building on Intel architecture:
     export HOMEBREW_ROOT=/usr/local
+
+.. note::
+   By default, every call to ``brew`` attempts to update the entire ``brew`` installation, which often means that existing spack-stack installations and other builds won't work anymore. With ``export HOMEBREW_NO_AUTO_UPDATE=1`` before running ``brew``, this automatic update is disabled.
 
 Prerequisites (one-off)
 -----------------------
@@ -574,6 +608,7 @@ This instructions are meant to be a reference that users can follow to set up th
    brew install openssl
    # Note - need to pin to version 5
    brew install qt@5
+   brew install mysql
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -631,6 +666,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Don't use any external Python, let spack build it
    #spack external find --scope system python
    spack external find --scope system wget
+   spack external find --scope system mysql
 
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
@@ -654,7 +690,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
+6. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
@@ -737,6 +773,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install xterm
    yum -y install texlive
    # Do not install qt@5 for now
+   yum -y install mysql-server
 
    # For screen utility (optional)
    yum -y remove https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
@@ -746,9 +783,6 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    # Python
    yum -y install python39-devel
    alternatives --set python3 /usr/bin/python3.9
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -797,12 +831,10 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y texlive
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
+   apt install -y mysql-server
 
    # Python
    apt install -y python3-dev python3-pip
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -847,12 +879,10 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y meson
+   apt install -y mysql-server
 
    # Python
    apt install -y python3-dev python3-pip
-   python3 -m pip install poetry
-   # test - successful if no output
-   python3 -c "import poetry"
 
    # Exit root session
    exit
@@ -887,8 +917,10 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    spack external find --scope system
    spack external find --scope system perl
-   spack external find --scope system python
+   # Don't use any external Python, let spack build it
+   #spack external find --scope system python
    spack external find --scope system wget
+   spack external find --scope system mysql
    spack external find --scope system texlive
    # On Ubuntu (but not on Red Hat):
    spack external find --scope system curl
@@ -905,23 +937,20 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library and flag Python as non-buildable (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
+6. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[gcc@11.2.1]"
 
    # Example for Ubuntu 20.04 following the above instructions
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@10.3.0]"
 
    # Example for Ubuntu 22.04 following the above instructions
    sed -i 's/tcl/lmod/g' envs/jedi-ufs.mylinux/site/modules.yaml
-   spack config add "packages:python:buildable:False"
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@11.2.0]"
 

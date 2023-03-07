@@ -29,6 +29,9 @@ runs:
         # and also get rid of the macOS homebrew installation/package config
         sudo apt-get install qt5-default qttools5-dev-tools libqt5svg5-dev
 
+        # For R2D2 mysql backend
+        sudo apt-get install mysql-server
+
       elif [[ "$RUNNER_OS" == "macOS" ]]; then
         brew install curl
         brew install git
@@ -41,6 +44,9 @@ runs:
         brew install qt@5
         brew install readline
         brew install wget
+
+        # For R2D2 mysql backend
+        brew install mysql
 
         # Print version of xcode
         pkgutil --pkg-info=com.apple.pkg.CLTools_Executables

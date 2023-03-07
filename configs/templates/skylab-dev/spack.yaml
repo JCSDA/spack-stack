@@ -27,14 +27,13 @@ spack:
     - eccodes@2.27.0
     - ecflow@5
     - eckit@1.20.2
-    - ecmwf-atlas@0.31.1
+    - ecmwf-atlas@0.32.1
     - ectrans@1.2.0
     - eigen@3.4.0
     - esmf@8.3.0b09+pio
     # DH* fake version number
     #- ewok@0.0.1
-    - fckit@0.9.5
-    # DH* fake version number
+    - fckit@0.10.0
     - fiat@1.1.0
     # Do not request specific version of flex - this leads to duplicate packages being built
     #- flex@2.6.4
@@ -42,13 +41,13 @@ spack:
     # DH* fake version number
     - fms@release-jcsda
     - g2@3.4.5
-    - g2tmpl@1.10.0
+    - g2tmpl@1.10.2
     #- gdal@3.4.3
     #- geos@3.9.1
     - gftl-shared@1.5.0
-    - gsibec@1.0.6
-    - hdf5@1.12.1
+    - gsibec@1.0.7
     - hdf@4.2.15
+    - hdf5@1.14.0
     - ip@3.3.3
     - jasper@2.0.32
     - jedi-cmake@1.4.0
@@ -57,14 +56,14 @@ spack:
     - nccmp@1.9.0.1
     - ncview@2.1.8
     - nemsio@2.5.2
-    - netcdf-c@4.8.1
+    - netcdf-c@4.9.0
     - netcdf-cxx4@4.3.1
-    - netcdf-fortran@4.5.4
-    - nlohmann-json-schema-validator@2.1.0
+    - netcdf-fortran@4.6.0
     - nlohmann-json@3.10.5
+    - nlohmann-json-schema-validator@2.1.0
     - odc@1.4.5
+    - parallelio@2.5.9
     - parallel-netcdf@1.12.2
-    - parallelio@2.5.7
     - py-eccodes@1.4.2
     - py-f90nml@1.4.3
     - py-numpy@1.22.3

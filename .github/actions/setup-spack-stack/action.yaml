@@ -147,6 +147,9 @@ runs:
       # Find homebrew qt@5 on macOS
       spack external find --path /usr/local/opt/qt@5 qt
 
+      # Find mysql server
+      spack external find --not-buildable mysql
+
       # if [[ "$RUNNER_OS" == "Linux" ]]; then
       #   spack external find curl
       # elif [[ "$RUNNER_OS" == "macOS" ]]; then

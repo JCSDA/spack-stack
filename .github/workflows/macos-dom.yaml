@@ -27,7 +27,7 @@ defaults:
 jobs:
   macos-dom-build:
     if: ${{ github.event.label.name == 'run-macos-dom' }} || ${{ inputs.template }}
-    runs-on: [self-hosted, macOS, X64, macos-dom]
+    runs-on: [macos-dom]
 
     steps:
       - name: checkout
@@ -45,8 +45,10 @@ jobs:
           spack external find
           spack external find perl
           spack external find wget
-          PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
           PATH="/usr/local/opt/curl/bin:${PATH}" spack external find curl
+          PATH="/usr/local/opt/qt@5/bin:${PATH}" spack external find qt
+          spack external find --scope system texlive
+          spack external find --scope system mysql
           spack compiler find
 
           sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" envs/${{ inputs.template || 'unified-dev' }}.macos-dom/spack.yaml
