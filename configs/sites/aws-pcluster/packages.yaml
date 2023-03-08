@@ -1,8 +1,9 @@
 packages:
   all:
-    compiler: [intel@2021.4.0, oneapi@2022.1.0, gcc@9.4.0]
+    compiler: [intel@2022.1.0, gcc@9.4.0]
+    #compiler: [oneapi@2022.1.0]
     providers:
-      mpi: [intel-oneapi-mpi@2021.4.0, openmpi@4.1.4]
+      mpi: [intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]
 
 ### MPI, Python, MKL
   mpi:
@@ -14,12 +15,12 @@ packages:
       modules:
       - libfabric-aws/1.16.0~amzn3.0
       - intelmpi
-    externals:
-    - spec: intel-oneapi-mpi@2021.6.0%oneapi@2022.1.0
-      prefix: /opt/intel
-      modules:
-      - libfabric-aws/1.16.0~amzn3.0
-      - intelmpi
+    #externals:
+    #- spec: intel-oneapi-mpi@2021.6.0%oneapi@2022.1.0
+    #  prefix: /opt/intel
+    #  modules:
+    #  - libfabric-aws/1.16.0~amzn3.0
+    #  - intelmpi
   openmpi:
     externals:
     - spec: openmpi@4.1.4%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath

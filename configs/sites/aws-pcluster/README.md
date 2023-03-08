@@ -158,6 +158,7 @@ cmake .. -DPython3_EXECUTABLE=/usr/bin/python3 -DENABLE_STATIC_BOOST_LIBS=OFF -D
 make -j4 2>&1 | tee log.make
 make install 2>&1 | tee log.install
 ```
+
 3b. Install msql community server
 ```
 cd /home/ubuntu/jedi
@@ -172,15 +173,20 @@ apt --fix-broken install
 dpkg -i *.deb
 # Set root password, choose strong password encryption option
 exit
+rm *.deb
 ```
-4. Option 1: Use pre-defined site config in spack-stack (skip steps 5-7 afterwards)
+
+4. Option 1: Testing existing site config in spack-stack (skip steps 5-7 afterwards)
 ```
-cd /home/ubuntu/jedi
+mkdir -p /home/ubuntu/sandpit
+cd /home/ubuntu/sandpit
 git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site aws-pcluster --template=skylab-dev --name=skylab-2.0.0-intel-2021.4.0
-spack env activate -p envs/skylab-2.0.0-intel-2021.4.0
+spack stack create env --site aws-pcluster --template=unified-dev --name=unified-dev
+spack env activate -p envs/unified-dev
+sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
+
 ```
 5. Option 2: For spack site configuration, to find Intel compiler
 ```
