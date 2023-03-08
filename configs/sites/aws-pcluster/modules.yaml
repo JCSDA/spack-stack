@@ -5,6 +5,4 @@ modules:
     lmod:
       whitelist:
       # List of packages for which we need modules that are blacklisted by default
-      - intel-oneapi-mpi
-      - openmpi
-      - mpich
+      - python

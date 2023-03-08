@@ -20,23 +20,57 @@ apt install -y apt-utils
 # Compilers - already installed
 apt install -y gcc g++ gfortran gdb
 
-# lua/lmod?
-apt install -y lmod
-# Now repair broken module setup - remove environment modules, fix lua modules
-rm /etc/profile.d/modules.sh
-echo "module use /usr/share/modules/modulefiles" >> /etc/profile.d/lmod.sh
-echo "module use /opt/intel/mpi/2021.6.0/modulefiles" >> /etc/profile.d/lmod.sh
+# Install lua/lmod manually, because apt only has older versions
+# that are not compatible with the modern lua modules spack produces
+# https://lmod.readthedocs.io/en/latest/030_installing.html#install-lua-x-y-z-tar-gz
+mkdir -p /opt/lua/5.1.4.9/src
+cd /opt/lua/5.1.4.9/src
+wget https://sourceforge.net/projects/lmod/files/lua-5.1.4.9.tar.bz2
+tar -xvf lua-5.1.4.9.tar.bz2
+cd lua-5.1.4.9
+./configure --prefix=/opt/lua/5.1.4.9 2>&1 | tee log.config
+make VERBOSE=1 2>&1 | tee log.make
+make install 2>&1 | tee log.install
 #
+echo "# Set environment variables for lua" >> /etc/profile.d/02-lua.sh
+echo "export PATH=\"/opt/lua/5.1.4.9/bin:\$PATH\"" >> /etc/profile.d/02-lua.sh
+echo "export LD_LIBRARY_PATH=\"/opt/lua/5.1.4.9/lib:\$LD_LIBRARY_PATH\"" >> /etc/profile.d/02-lua.sh
+echo "export CPATH=\"/opt/lua/5.1.4.9/include:\$CPATH\"" >> /etc/profile.d/02-lua.sh
+echo "export MANPATH=\"/opt/lua/5.1.4.9/man:\$MANPATH\"" >> /etc/profile.d/02-lua.sh
+#
+source /etc/profile.d/02-lua.sh
+
+mkdir -p /opt/lmod/8.7/src
+cd /opt/lmod/8.7/src
+wget https://sourceforge.net/projects/lmod/files/Lmod-8.7.tar.bz2
+tar -xvf Lmod-8.7.tar.bz2
+cd Lmod-8.7
+# Note the weird prefix, lmod installs in PREFIX/lmod/X.Y automatically
+./configure --prefix=/opt/ \
+--with-lmodConfigDir=/opt/lmod/8.7/config \
+2>&1 | tee log.config
+make install 2>&1 | tee log.install
+ln -sf /opt/lmod/lmod/init/profile /etc/profile.d/z00_lmod.sh
+ln -sf /opt/lmod/lmod/init/cshrc /etc/profile.d/z00_lmod.csh
+ln -sf /opt/lmod/lmod/init/profile.fish /etc/profile.d/z00_lmod.fish
+
+# Add custom module locations and fix existing modules
+#
+# intelmpi
 echo "conflict openmpi" >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
-echo "prereq libfabric-aws" >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
-#
+echo 'if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.16.0~amzn4.0 ] } {' >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
+echo '    module load libfabric-aws/1.16.0~amzn4.0' >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
+echo '}' >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
+# openmpi
 echo "conflict intelmpi" >> /usr/share/modules/modulefiles/openmpi/4.1.4
-echo "prereq libfabric-aws" >> /usr/share/modules/modulefiles/openmpi/4.1.4
+echo 'if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.16.0~amzn4.0 ] } {' >> /usr/share/modules/modulefiles/openmpi/4.1.4
+echo '    module load libfabric-aws/1.16.0~amzn4.0' >> /usr/share/modules/modulefiles/openmpi/4.1.4
+echo '}' >> /usr/share/modules/modulefiles/openmpi/4.1.4
 #
-
-### # Environment module support - already installed
-### apt install -y environment-modules
-
+echo "module use /usr/share/modules/modulefiles" >> /etc/profile.d/z01_lmod.sh
+echo "module use /opt/intel/mpi/2021.6.0/modulefiles" >> /etc/profile.d/z01_lmod.sh
+echo "module use /home/ubuntu/jedi/modulefiles" >> /etc/profile.d/z01_lmod.sh
+#
 # Log out completely, ssh back into the instance and check if lua modules work
 exit
 exit
@@ -46,8 +80,10 @@ ssh ...
 module av
 module load libfabric-aws/1.16.0~amzn4.0
 module load openmpi/4.1.4
+module list
 module unload openmpi/4.1.4
 module load intelmpi
+module list
 module purge
 module list
 
@@ -72,7 +108,6 @@ apt install -y texlive
 apt install -y qt5-default
 apt install -y libqt5svg5-dev
 apt install -y qt5dxcb-plugin
-
 
 ### # Remove AWS openmpi
 ### apt remove -y openmpi40-aws
@@ -140,7 +175,7 @@ exit
 
 2. Log out and back in to enable x11 forwarding
 
-3a. Build ecflow outside of spack to be able to link against OS boost
+3. Build ecflow outside of spack to be able to link against OS boost
 ```
 mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
 cd /home/ubuntu/jedi/ecflow-5.8.4/src
@@ -157,9 +192,34 @@ cd build
 cmake .. -DPython3_EXECUTABLE=/usr/bin/python3 -DENABLE_STATIC_BOOST_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/home/ubuntu/jedi/ecflow-5.8.4 2>&1 | tee log.cmake
 make -j4 2>&1 | tee log.make
 make install 2>&1 | tee log.install
+
+# Create a modulefiles directory with the following ecflow/5.8.4 module in it (w/o the '%%%%...' lines):
+mkdir -p /home/ubuntu/jedi/modulefiles/ecflow
+vi /home/ubuntu/jedi/modulefiles/ecflow/5.8.4
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+#%Module1.0
+
+module-whatis "Provides an ecflow-5.8.4 server+ui installation for use with spack."
+
+conflict ecflow
+
+proc ModulesHelp { } {
+puts stderr "Provides an ecflow-5.8.4 server+ui installation for use with spack."
+}
+
+# Set this value
+set ECFLOW_PATH "/home/ubuntu/jedi/ecflow-5.8.4"
+
+prepend-path PATH "${ECFLOW_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${ECFLOW_PATH}/lib"
+prepend-path LIBRARY_PATH "${ECFLOW_PATH}/lib"
+prepend-path CPATH "${ECFLOW_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${ECFLOW_PATH}"
+prepend-path PYTHONPATH "${ECFLOW_PATH}/lib/python3.8/site-packages"
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ```
 
-3b. Install msql community server
+4. Install msql community server
 ```
 cd /home/ubuntu/jedi
 mkdir -p mysql-8.0.31/src
@@ -176,7 +236,7 @@ exit
 rm *.deb
 ```
 
-4. Option 1: Testing existing site config in spack-stack (skip steps 5-7 afterwards)
+5. Option 1: Testing existing site config in spack-stack (skip steps 5-7 afterwards)
 ```
 mkdir -p /home/ubuntu/sandpit
 cd /home/ubuntu/sandpit
@@ -186,23 +246,18 @@ cd spack-stack/
 spack stack create env --site aws-pcluster --template=unified-dev --name=unified-dev
 spack env activate -p envs/unified-dev
 sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
-
-```
-5. Option 2: For spack site configuration, to find Intel compiler
-```
-export PATH=/opt/intel/oneapi/compiler/2021.4.0/linux/bin/intel64:$PATH
 ```
 
-6. Option 2: Configure site from scratch
+6. Option 2: Test configuring site from scratch
 ```
 mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site linux.default --template=skylab-dev --name=skylab-2.0.0-intel-2021.4.0
-spack env activate -p envs/skylab-2.0.0-intel-2021.4.0
+spack stack create env --site linux.default --template=unified-dev --name=unified-dev
+spack env activate -p envs/unified-dev
 
-export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/skylab-2.0.0-intel-2021.4.0/site
+export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/unified-dev/site
 
 spack external find --scope system
 spack external find --scope system perl
@@ -210,16 +265,27 @@ spack external find --scope system python
 spack external find --scope system wget
 spack external find --scope system curl
 spack external find --scope system texlive
+spack external find --scope system mysql
 
 # No external find for pre-installed intel-oneapi-mpi (from pcluster AMI),
 # and no way to add object entry to list using "spack config add".
 echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: intel-oneapi-mpi@2021.4.0%intel@2021.4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "    - spec: intel-oneapi-mpi@2021.6.0%intel@2022.1.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "      prefix: /opt/intel" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "      - libfabric-aws/1.16.0~amzn4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "      - intelmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+
+# Add external openmpi
+echo "  openmpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "    - spec: openmpi@4.1.4%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "        fabrics=ofi schedulers=slurm" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "      prefix: /opt/amazon/openmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "      - libfabric-aws/1.16.0~amzn3.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "      - openmpi/4.1.4" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
 # Can't find qt5 because qtpluginfo is broken,
 # and no way to add object entry to list using "spack config add".
@@ -247,28 +313,31 @@ spack compiler find --scope system
 
 export -n SPACK_SYSTEM_CONFIG_PATH
 
+spack config add "packages:mpi:buildable:False"
 spack config add "packages:python:buildable:False"
 spack config add "packages:openssl:buildable:False"
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.4.0]"
-spack config add "packages:all:compiler:[intel@2021.4.0]"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
+spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 
-# edit envs/skylab-2.0.0-intel-2021.4.0/site/compilers.yaml and replace the following line in the **Intel** compiler section:
+# edit envs/unified-dev/site/compilers.yaml and replace the following line in the **Intel** compiler section:
 #     environment: {}
 # -->
 #     environment:
 #       prepend_path:
-#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.4.0/linux/compiler/lib/intel64_lin'
+#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.6.0/linux/compiler/lib/intel64_lin'
 #       set:
 #         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
-
-# edit envs/skylab-2.0.0-intel-2021.4.0/site/packages.yaml and remove the older Python versions, keep 3.8.10 only
 ```
 
-7. Option 2: Temporary workarounds to avoid duplicate hdf5, cmake etc. versions. Edit ``envs/skylab-2.0.0-intel-2021.4.0/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
+7. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-dev/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
 
 8. Concretize and install
 ```
 spack concretize 2>&1 | tee log.concretize
 spack install --verbose --source 2>&1 | tee log.install
+spack module lmod refresh
+spack stack setup-meta-modules
 ```
-9. Create the AMI for use in the AWS parallelcluster config.
+9. Test spack-stack installation using your favorite application.
+10. (Optional) Remove test installs of spack-stack environments, if desired.
+11. Create the AMI for use in the AWS parallelcluster config.
