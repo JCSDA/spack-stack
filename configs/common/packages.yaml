@@ -44,7 +44,7 @@
       version: [1.20.2]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: [0.31.1]
+      version: [0.32.1]
       variants: +fckit +trans
     ectrans:
       version: [1.2.0]
@@ -57,7 +57,7 @@
       version: [8.3.0b09]
       variants: ~xerces ~pnetcdf +pio snapshot=b09
     fckit:
-      version: [0.9.5]
+      version: [0.10.0]
       variants: +eckit
     fftw:
       version: [3.3.10]
@@ -85,7 +85,7 @@
     grib-util:
       version: [1.2.3]
     gsibec:
-      version: [1.0.6]
+      version: [1.0.7]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -259,3 +259,6 @@
       version: [0.5.1]
     zlib:
       version: [1.2.13]
+    zstd:
+      version: [1.5.2]
+      variants: +programs
