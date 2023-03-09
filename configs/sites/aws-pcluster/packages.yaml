@@ -1,18 +1,34 @@
 packages:
   all:
-    compiler: [intel@2021.4.0]
+    compiler: [intel@2022.1.0, gcc@9.4.0]
+    #compiler: [oneapi@2022.1.0]
     providers:
-      mpi: [intel-oneapi-mpi@2021.4.0]
+      mpi: [intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]
 
 ### MPI, Python, MKL
-  intel-oneapi-mpi:
+  mpi:
     buildable: false
+  intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.4.0%intel@2021.4.0
+    - spec: intel-oneapi-mpi@2021.6.0%intel@2022.1.0
       prefix: /opt/intel
       modules:
-      - libfabric-aws/1.16.0~amzn3.0
+      - libfabric-aws/1.16.0~amzn4.0
       - intelmpi
+    #externals:
+    #- spec: intel-oneapi-mpi@2021.6.0%oneapi@2022.1.0
+    #  prefix: /opt/intel
+    #  modules:
+    #  - libfabric-aws/1.16.0~amzn4.0
+    #  - intelmpi
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.4%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+        fabrics=ofi schedulers=slurm
+      prefix: /opt/amazon/openmpi
+      modules:
+      - libfabric-aws/1.16.0~amzn4.0
+      - openmpi/4.1.4
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -42,6 +58,10 @@ packages:
   #  externals:
   #  - spec: cmake@3.16.3
   #    prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.30
+      prefix: /usr
   curl:
     externals:
     - spec: curl@7.68.0+gssapi+ldap+nghttp2
@@ -94,7 +114,7 @@ packages:
   mysql:
     buildable: False
     externals:
-    - spec: mysql@8.0.30
+    - spec: mysql@8.0.32
       prefix: /usr
   openssh:
     externals:
@@ -104,7 +124,6 @@ packages:
   # leading to duplicate packages (libarchive with different compression
   # settings, somehow triggered by different cmake versions) being installed.
   #openssl:
-  #  buildable: false
   #  externals:
   #  - spec: openssl@1.1.1f
   #    prefix: /usr
