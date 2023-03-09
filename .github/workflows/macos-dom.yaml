@@ -38,9 +38,14 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack stack create env --site macos.default --template ${{ inputs.template || 'unified-dev' }} --name ${{ inputs.template || 'unified-dev' }}.macos-dom
-          spack env activate -d envs/${{ inputs.template || 'unified-dev' }}.macos-dom
+          export ENVNAME=ci-env.macos-dom
+          export ENVDIR=$PWD/envs/${ENVNAME}
+
+          spack stack create env --site macos.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
+          spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
+          export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
+          echo "SPACK_SYSTEM_CONFIG_PATH: ${SPACK_SYSTEM_CONFIG_PATH}"
 
           spack external find --scope system
           spack external find --scope system perl
@@ -51,10 +56,23 @@ jobs:
           spack external find --scope system mysql
           spack compiler find --scope system
 
-          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" envs/${{ inputs.template || 'unified-dev' }}.macos-dom/spack.yaml
+          export -n SPACK_SYSTEM_CONFIG_PATH
 
-          spack concretize
-          spack install --source --fail-fast
+          # Set compiler and MPI
+          spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
+          spack config add "packages:all:compiler:[apple-clang@13.1.6]"
+          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
+
+          # Concretize, add source cache (read-only!), install
+          spack concretize 2>&1 | tee log.concretize.apple-clang-13.1.6
+          spack mirror add local-source file:///Users/heinzell/prod/spack-source-cache/
+          spack install --fail-fast --source 2>&1 | tee log.install.apple-clang-13.1.6.${{ inputs.template || 'unified-dev' }}
+
+          # Test module generation
+          spack clean -a
+          spack module lmod refresh -y
+          spack stack setup-meta-modules
+          spack env deactivate
 
       # Skip this - takes forever and isn't necessary
       #- name: upload-mirror
