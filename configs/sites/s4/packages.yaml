@@ -1,13 +1,10 @@
 packages:
   all:
-    compiler:: [intel@2021.5.0]
-    #compiler:: [gcc@9.3.0]
+    compiler:: [intel@2021.5.0, gcc@9.3.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.0]
-      #mpi:: [mpich@4.0.2]
+      mpi:: [intel-oneapi-mpi@2021.5.0, mpich@4.0.1]
 
 ### MPI, Python, MKL
-  # Comment out next two lines for gnu@9.3.0 with mpich@4.0.2 built by spack
   mpi:
     buildable: False
   intel-oneapi-mpi:
@@ -16,16 +13,12 @@ packages:
       prefix: /opt/intel/oneapi/2022.1
       modules:
       - intel/2022.1
-  #intel-oneapi-tbb:
-  #  externals:
-  #  - spec: intel-oneapi-tbb@2021.5.0%intel@2021.5.0
-  #    prefix: /opt/intel/oneapi/2022.1
-  #intel-oneapi-mkl:
-  #  externals:
-  #  - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
-  #    prefix: /opt/intel/oneapi/2022.1
   mpich:
-    version: [4.0.2]
+    externals:
+    - spec: mpich@4.0.1%gcc@9.3.0 ~hydra device=ch4
+      prefix: /data/prod/hpc-stack/gnu-9.3.0/mpich/4.0.1
+      modules:
+      - mpich/4.0.1
   python:
     buildable: False
     externals:
@@ -166,6 +159,13 @@ packages:
     externals:
     - spec: m4@1.4.16
       prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /data/prod/jedi/spack-stack/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
   openssh:
     externals:
     - spec: openssh@7.4p1

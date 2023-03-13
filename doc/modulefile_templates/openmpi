@@ -2,7 +2,6 @@
 
 module-whatis "Provides an openmpi-4.1.3 installation for use with spack and gcc-10.1.0."
 
-# Only allow one instance of compiler to load
 conflict openmpi
 conflict mpich
 conflict mpi

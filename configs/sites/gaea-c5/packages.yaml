@@ -162,6 +162,13 @@
       externals:
       - spec: m4@1.4.18
         prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
     ncurses:
       externals:
       - spec: ncurses@6.1.20180317+termlib abi=6
