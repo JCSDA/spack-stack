@@ -42,7 +42,7 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
 
-.. _MaintainersSection_Orion:
+.. _MaintainersSection_Hercules:
 
 ------------------------------
 MSU Hercules
