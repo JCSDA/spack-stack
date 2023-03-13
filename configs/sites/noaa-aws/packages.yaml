@@ -89,6 +89,10 @@ packages:
     externals:
     - spec: lustre@2.12.7
       prefix: /usr
+  mysql:
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /contrib/spack-stack/mysql-8.0.31
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
