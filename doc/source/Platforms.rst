@@ -290,7 +290,7 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module unuse /opt/cray/craype/default/modulefiles
-   module unuse opt/cray/modulefiles
+   module unuse /opt/cray/modulefiles
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
