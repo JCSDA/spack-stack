@@ -1,6 +1,5 @@
 spack:
   concretizer:
-    #unify: true
     unify: when_possible
 
   view: false
@@ -25,7 +24,8 @@ spack:
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
-      # Additional crtm tag for testing
+      # Additional crtm tag for testing - don't activate by default,
+      # this can lead to duplicate packages (e.g. in Ubuntu CI tests)
       #- crtm@v3.0.0-rc.1
 
   specs:
