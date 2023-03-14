@@ -46,8 +46,8 @@ spack:
     eigen:
       version: [3.3.7]
     esmf:
-      version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf snapshot=b09
+      version: [8.4.1]
+      variants: ~xerces ~pnetcdf
     fckit:
       version: [0.9.2]
       variants: +eckit
@@ -95,7 +95,7 @@ spack:
     libpng:
       version: [1.6.37]
     mapl:
-      version: [2.22.0]
+      version: [2.35.2]
     met:
       version: [10.1.1]
       variants: +python +grib2

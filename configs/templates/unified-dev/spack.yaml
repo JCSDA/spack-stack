@@ -24,6 +24,9 @@ spack:
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
+      # Additional crtm tag for testing
+      - crtm@v3.0.0-rc.1
+
   specs:
     - matrix:
       - [$packages]

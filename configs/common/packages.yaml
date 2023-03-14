@@ -54,8 +54,8 @@
     # Attention - when updating the version also check the common modules.yaml
     # config and update the projections for lmod/tcl
     esmf:
-      version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio snapshot=b09
+      version: [8.4.1]
+      variants: ~xerces ~pnetcdf +pio
     fckit:
       version: [0.10.0]
       variants: +eckit
@@ -111,7 +111,7 @@
     libpng:
       version: [1.6.37]
     mapl:
-      version: [2.22.0]
+      version: [2.35.2]
     met:
       version: [10.1.1]
       variants: +python +grib2
