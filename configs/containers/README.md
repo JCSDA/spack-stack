@@ -18,7 +18,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     # Don't build ESMF and MAPL for now:
     # https://github.com/JCSDA-internal/MPAS-Model/issues/38
     # https://github.com/NOAA-EMC/spack-stack/issues/326
-    # jedi-ufs-env@1.0.0, esmf@8.3.0b09, mapl@2.12.3
+    # jedi-ufs-env@1.0.0, esmf@8.4.1, mapl@2.35.2
 ```
 
 ### Create an AMI on AWS EC2 to build docker containers
