@@ -489,7 +489,7 @@ Installing a new spack environment
 Create local environment
 ------------------------
 
-The following instructions install a new spack environment on a pre-configured site (see :numref:`Section %s <Platforms_Preconfigured_Sites>`. Instructions for creating a new site config on a configurable system (i.e. a generic Linux or macOS system) can be found in :numref:`Section %s <NewSiteConfigs>`. The options for the ``spack stack`` extension are explained in :numref:`Section %s <SpackStackExtension>`.
+The following instructions install a new spack environment on a pre-configured site. Instructions for creating a new site config on a configurable system (i.e. a generic Linux or macOS system) can be found in :numref:`Section %s <NewSiteConfigs>`. The options for the ``spack stack`` extension are explained in :numref:`Section %s <SpackStackExtension>`.
 
 .. code-block:: console
 

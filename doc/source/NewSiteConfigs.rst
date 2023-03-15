@@ -171,7 +171,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    source setup.sh
 
    # Add this SPACK_STACK_DIR to your shell environment.
-   echo "export SPACK_STACK_DIR=$(pwd)" >> $HOME/.bashrc
+   echo "export SPACK_STACK_DIR=$(pwd)" >> $HOME/.bash_profile
 
 2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
