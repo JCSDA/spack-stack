@@ -23,7 +23,7 @@ Intel Arm platform notes
 -----------------------
 With the introduction of the Arm architecture M1 and M2 chips on Mac, the OS offers execution and building of two architectures via Apple's Rosetta tool. Rosetta is a binary translator that can convert Intel executable instructions to native Arm instructions at runtime. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture supported by Rosetta is denoted by ``x86_64`` and ``i386``.
 
-When you get a new Arm mac, you may need to install Rosetta. This can be done with the shell command ``softwareupdate --install-rosetta``. Note that applications are expected to run faster when the native Arm architecture is utilized, although intel binaries are very close to native performance.
+When you get a new Arm mac, you may need to install Rosetta. This can be done with the shell command ``softwareupdate --install-rosetta``. Note that applications are expected to run faster when the native Arm architecture is utilized, although Intel binaries are very close to native performance.
 
 A lot of binaries (iTerm2 for example) come in a "universal form" meaning they can run as Arm or Intel (you can toggle this by right clicking on the application in finder, selecting "get info", then checking the "Open using Rosetta" box). MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on. For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
 
@@ -576,6 +576,7 @@ First, activate the lua environment and load the spack meta-modules directory in
 If you run ``module available`` now, you will see only one option; the compiler. Loading the compiler meta-module will give access to the Python and MPI provider module and access to packages that only depend on the compiler, not on the MPI provider or the Python provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path, and so on.
 
 .. code-block:: console
+
    # If you are unsure of module name or version, use "module available".
    module load stack-compiler-name/compiler-version
    module load stack-python-name/python-version
