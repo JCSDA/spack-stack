@@ -29,6 +29,6 @@ spack-stack is maintained by:
 Getting Started
 ===============
 
-Many of the platforms supported by spack stack have ready-to-use spack-stack installations already available on site. You can see a list of those sites and site-specific instructions and caveats in :numref:`Section %s <Platforms>`.
+Many of the platforms supported by spack stack have ready-to-use spack-stack installations already available locally. You can see a list of those sites and site-specific instructions and caveats in :numref:`Section %s <Platforms>`.
 
 If you are a developer looking to build and run software locally using spack-stack, or if you are looking to install spack-stack on a new platform you can follow the instructions in :numref:`Section %s <NewSiteConfigs>`.
