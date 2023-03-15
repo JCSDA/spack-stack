@@ -9,7 +9,7 @@ Table of Contents
 
    Overview
    Platforms
-   NewDeveloperSetup
+   NewSiteConfigs
    BuildingContainers
    Environments
    Prerequisites
