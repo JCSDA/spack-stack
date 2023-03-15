@@ -774,6 +774,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install texlive
    # Do not install qt@5 for now
    yum -y install mysql-server
+   yum -y install mysql-devel
 
    # For screen utility (optional)
    yum -y remove https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
