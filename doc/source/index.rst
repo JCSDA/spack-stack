@@ -8,8 +8,9 @@ Table of Contents
    :maxdepth: 3
 
    Overview
-   Quickstart
    Platforms
+   NewDeveloperSetup
+   BuildingContainers
    Environments
    Prerequisites
    SpackStackExtension

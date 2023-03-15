@@ -1,14 +1,13 @@
-.. _Platform_New_Site_Configs:
+.. _NewSiteConfigs:
 
-==============================
 Generating new site configs
-==============================
+*****************************
 
-In general, the recommended approach is as follows (see following sections for specific examples): Start with an empty/default site config (`linux.default` or `macos.default`). Then run ``spack external find`` to locate external packages such as build tools and a few other packages. Next, run ``spack compiler find`` to locate compilers in your path. Compilers or external packages with modules may need to be loaded prior to running ``spack external find``, or added manually. The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>`.
+The instructions here describe how to generate a new site config. In addition to configuring new production and testing systems, this is the recommended way for developers to use spack-stack locally on their Linux or MacOS workstations. In general, the recommended approach is to start with an empty/default site config (`linux.default` or `macos.default`). The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <NewSiteConfigs_macOS>` and :numref:`%s <NewSiteConfigs_Linux>`.
 
 It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``.
 
-..  _Platform_macOS:
+..  _NewSiteConfigs_macOS:
 
 ------------------------------
 macOS
@@ -20,19 +19,13 @@ Unlike in previous versions, the instructions below assume that ``Python`` is bu
 
 It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
-Intel M1 platform notes
+Intel Arm platform notes
 -----------------------
-With the introduction of the new M1 chip on Mac, there are two architectures that are provided.
-The first architecture is Arm which is denoted by ``arm64`` and ``aarch64``, and the second is Intel which is denoted by ``x86_64`` and ``i386``.
-The Arm architecture is the native architecture on the M1 chip and the Intel architecture is what has existed for a number of years before the M1 chip showed up.
+With the introduction of the Arm architecture M1 and M2 chips on Mac, the OS offers execution and building of two architectures via Apple's Rosetta tool. Rosetta is a binary translator that can convert Intel executable instructions to native Arm instructions at runtime. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture supported by Rosetta is denoted by ``x86_64`` and ``i386``.
 
-With the new M1 chip, you can toggle between these two architectures, which is accomplished with a new app on M1 Macs called Rosetta2 (which is an Intel architecture emulator).
-When you get a new M1 mac, you may need to download Rosetta2.
-Note that applications are expected to run faster when the native Arm architecture is utilized.
+When you get a new Arm mac, you may need to install Rosetta. This can be done with the shell command ``softwareupdate --install-rosetta``. Note that applications are expected to run faster when the native Arm architecture is utilized, although intel binaries are very close to native performance.
 
-A lot of binaries (bash for example) come in a "universal form" meaning they can run as Arm or Intel.
-MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on.
-For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
+A lot of binaries (iTerm2 for example) come in a "universal form" meaning they can run as Arm or Intel (you can toggle this by right clicking on the application in finder, selecting "get info", then checking the "Open using Rosetta" box). MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on. For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
 
 Homebrew notes
 --------------
@@ -130,6 +123,8 @@ This instructions are meant to be a reference that users can follow to set up th
    # Note - need to pin to version 5
    brew install qt@5
    brew install mysql
+   # git-lfs must configure system git hooks.
+   git lfs install
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -246,13 +241,37 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack module lmod refresh
 
-11. Create meta-modules for compiler, mpi, python
+11. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/jedi-ufs.mymacos/modulefiles/Core``.
 
 .. code-block:: console
 
    spack stack setup-meta-modules
 
-..  _Platform_Linux:
+
+Using your environment to build code
+------------------------------------
+
+Spack environments are used by loading the modulefiles that generated at the end of the installation process. The ``spack`` command itself is not needed in this setup, and the setup instructions can be ignored can be ignored. The following is sufficient for loading the modules and using them to compile and run user code. Do not add any of the following to your `.bashrc`, `.bash_profile` since it can be hard to unload modules or change sources cleanly. Instead code to shell scripts that can be sourced to conveniently configure a user environment for a specific task instead.
+
+First, activate the lua environment and load the spack meta-modules directory into the module path.
+
+.. code-block:: console
+
+   source $HOMEBREW_ROOT/opt/lmod/init/profile
+   module use envs/jedi-ufs.mymacos/modulefiles/Core
+
+Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path. Use ``module available`` to look for the exact names of the meta-modules.
+
+.. code-block:: console
+
+   module load stack-compiler-name/compiler-version
+   module load stack-python-name/python-version
+   module load stack-mpi-name/mpi-version
+
+Now list all available modules via ``module available``. For the environment packages described in Section :numref:`Section %s <Environments>`, convenience modules are created that can be loaded and that automatically load the required dependency modules.
+
+
+..  _NewSiteConfigs_Linux:
 
 ------------------------------
 Linux
@@ -353,6 +372,7 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y mysql-server
+   git lfs install
 
    # Python
    apt install -y python3-dev python3-pip
@@ -401,6 +421,7 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
    apt install -y libssl-dev
    apt install -y meson
    apt install -y mysql-server
+   git lfs install
 
    # Python
    apt install -y python3-dev python3-pip
@@ -511,3 +532,25 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 .. code-block:: console
 
    spack stack setup-meta-modules
+
+Using your environment to build code
+------------------------------------
+
+Spack environments are used by loading the modulefiles that generated at the end of the installation process. The ``spack`` command itself is not needed in this setup, and the setup instructions can be ignored can be ignored. The following is sufficient for loading the modules and using them to compile and run user code. Do not add any of the following to your `.bashrc`, `.bash_profile` since it can be hard to unload modules or change sources cleanly. Instead code to shell scripts that can be sourced to conveniently configure a user environment for a specific task instead.
+
+First, activate the lua environment and load the spack meta-modules directory into the module path.
+
+.. code-block:: console
+
+   source $HOMEBREW_ROOT/opt/lmod/init/profile
+   module use envs/jedi-ufs.mymacos/modulefiles/Core
+
+Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path. Use ``module available`` to look for the exact names of the meta-modules.
+
+.. code-block:: console
+
+   module load stack-compiler-name/compiler-version
+   module load stack-python-name/python-version
+   module load stack-mpi-name/mpi-version
+
+Now list all available modules via ``module available``. For the environment packages described in Section :numref:`Section %s <Environments>`, convenience modules are created that can be loaded and that automatically load the required dependency modules.
