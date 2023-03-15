@@ -648,7 +648,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack stack create env --site macos.default [--template jedi-ufs-all] --name jedi-ufs.mymacos
+   spack stack create env --site macos.default [--template unified-dev] --name jedi-ufs.mymacos
    spack env activate [-p] envs/jedi-ufs.mymacos
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
@@ -902,7 +902,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack stack create env --site linux.default [--template jedi-ufs-all] --name jedi-ufs.mylinux
+   spack stack create env --site linux.default [--template unified-dev] --name jedi-ufs.mylinux
    spack env activate [-p] envs/jedi-ufs.mylinux
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``

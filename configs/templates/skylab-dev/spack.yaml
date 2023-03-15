@@ -57,7 +57,7 @@ spack:
     - nccmp@1.9.0.1
     - ncview@2.1.8
     - nemsio@2.5.2
-    - netcdf-c@4.9.0
+    - netcdf-c@4.9.2
     - netcdf-cxx4@4.3.1
     - netcdf-fortran@4.6.0
     - nlohmann-json@3.10.5
