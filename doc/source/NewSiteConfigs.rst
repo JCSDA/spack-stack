@@ -160,20 +160,33 @@ Creating a new environment
 
 Remember to activate the ``lua`` module environment and have MacTeX in your search path, if applicable. It is also recommended to increase the stacksize limit to 65Kb using ``ulimit -S -s unlimited``.
 
-1. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
+1. You will need to clone spack-stack and its dependencies and activate the spack-stack tool. It is also a good idea to save the directory in your environment for later use.
+
+.. code-block:: console
+
+   git clone --recursive https://github.com/NOAA-EMC/spack-stack.git
+   cd spack-stack
+
+   # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
+   source setup.sh
+
+   # Add this SPACK_STACK_DIR to your shell environment.
+   echo "export SPACK_STACK_DIR=$(pwd)" >> $HOME/.bashrc
+
+2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
 .. code-block:: console
 
    spack stack create env --site macos.default [--template jedi-ufs-all] --name jedi-ufs.mymacos
    spack env activate [-p] envs/jedi-ufs.mymacos
 
-2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
+3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
 
 .. code-block:: console
 
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mymacos/site"
 
-3. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
+4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
 .. code-block:: console
 
@@ -194,33 +207,33 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # The texlive bin directory must have been added to PATH (see above)
    spack external find --scope system texlive
 
-4. Find compilers, add to site config's ``compilers.yaml``
+5. Find compilers, add to site config's ``compilers.yaml``
 
 .. code-block:: console
 
    spack compiler find --scope system
 
-5. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
+6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
 
 .. code-block:: console
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
+7. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
    spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
    spack config add "packages:all:compiler:[apple-clang@13.1.6]"
 
-7. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
+8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
 .. code-block:: console
 
    definitions:
    - compilers: ['%apple-clang']
 
-8. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
+9. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -228,20 +241,20 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi envs/jedi-ufs.mymacos/common/*.yaml
    vi envs/jedi-ufs.mymacos/site/*.yaml
 
-9. Process the specs and install
+10. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-10. Create lmod module files
+11. Create lmod module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-11. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/jedi-ufs.mymacos/modulefiles/Core``.
+12. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/jedi-ufs.mymacos/modulefiles/Core``.
 
 .. code-block:: console
 
@@ -251,24 +264,25 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 Using your environment to build code
 ------------------------------------
 
-Spack environments are used by loading the modulefiles that generated at the end of the installation process. The ``spack`` command itself is not needed in this setup, and the setup instructions can be ignored can be ignored. The following is sufficient for loading the modules and using them to compile and run user code. Do not add any of the following to your `.bashrc`, `.bash_profile` since it can be hard to unload modules or change sources cleanly. Instead code to shell scripts that can be sourced to conveniently configure a user environment for a specific task instead.
+Spack environments are used by loading the modulefiles that generated at the end of the installation process. The ``spack`` command itself is not needed for this process. The following is sufficient for loading the modules and using them to compile and run user code. Do not add any of the following to your `.bashrc` or `.bash_profile` since it can be hard to unload modules or change dependencies cleanly. Instead you can maintain shell scripts that can be sourced to conveniently configure a user environment for a specific task.
 
 First, activate the lua environment and load the spack meta-modules directory into the module path.
 
 .. code-block:: console
 
    source $HOMEBREW_ROOT/opt/lmod/init/profile
-   module use envs/jedi-ufs.mymacos/modulefiles/Core
+   module use $SPACK_STACK_DIR/envs/jedi-ufs.mymacos/install/modulefiles/Core
 
-Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path. Use ``module available`` to look for the exact names of the meta-modules.
+If you run ``module available`` now, you will see only one option; the compiler. Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider or the Python provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path, and so on.
 
 .. code-block:: console
 
-   module load stack-compiler-name/compiler-version
-   module load stack-python-name/python-version
-   module load stack-mpi-name/mpi-version
+   # Versions heere are from the example above, make sure to the versions specific to your install.
+   module load stack-apple-clang/13.1.6
+   module load stack-openmpi/4.1.4
+   module load stack-python/3.10.8
 
-Now list all available modules via ``module available``. For the environment packages described in Section :numref:`Section %s <Environments>`, convenience modules are created that can be loaded and that automatically load the required dependency modules.
+Now list all available modules via ``module available``. You may be required to load additional packages depending on your build target's requirements, but now you have loaded a basic spack environment and you are ready to build.
 
 
 ..  _NewSiteConfigs_Linux:
@@ -440,20 +454,34 @@ Creating a new environment
 
 It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimited``, and to test if the module environment functions correctly (``module available``).
 
-1. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
+1. You will need to clone spack-stack and its dependencies and activate the spack-stack tool. It is also a good idea to save the directory in your environment for later use.
+
+.. code-block:: console
+
+   git clone --recursive https://github.com/NOAA-EMC/spack-stack.git
+   cd spack-stack
+
+   # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
+   source setup.sh
+
+   # Add this SPACK_STACK_DIR to your shell environment.
+   echo "export SPACK_STACK_DIR=$(pwd)" >> $HOME/.bashrc
+
+
+2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
 .. code-block:: console
 
    spack stack create env --site linux.default [--template jedi-ufs-all] --name jedi-ufs.mylinux
    spack env activate [-p] envs/jedi-ufs.mylinux
 
-2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``
+3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``
 
 .. code-block:: console
 
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mylinux/site"
 
-3. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
+4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
 .. code-block:: console
 
@@ -467,19 +495,19 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # On Ubuntu (but not on Red Hat):
    spack external find --scope system curl
 
-4. Find compilers, add to site config's ``compilers.yaml``
+5. Find compilers, add to site config's ``compilers.yaml``
 
 .. code-block:: console
 
    spack compiler find --scope system
 
-5. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
+6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
 
 .. code-block:: console
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-6. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
+7. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
 
@@ -496,14 +524,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
    spack config add "packages:all:compiler:[gcc@11.2.0]"
 
-7. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
+8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
 
 .. code-block:: console
 
    definitions:
    - compilers: ['%gcc']
 
-8. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+9. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. warning::
    **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
@@ -514,20 +542,20 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-9. Process the specs and install
+10. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-10. Create tcl module files
+11. Create tcl module files
 
 .. code-block:: console
 
    spack module tcl refresh
 
-11. Create meta-modules for compiler, mpi, python
+12. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
@@ -543,14 +571,14 @@ First, activate the lua environment and load the spack meta-modules directory in
 .. code-block:: console
 
    source $HOMEBREW_ROOT/opt/lmod/init/profile
-   module use envs/jedi-ufs.mymacos/modulefiles/Core
+   module use $SPACK_STACK_DIR/envs/jedi-ufs.mylinux/install/modulefiles/Core
 
-Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path. Use ``module available`` to look for the exact names of the meta-modules.
+If you run ``module available`` now, you will see only one option; the compiler. Loading the compiler meta-module will give access to the Python and MPI provider module and access to packages that only depend on the compiler, not on the MPI provider or the Python provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path, and so on.
 
 .. code-block:: console
-
+   # If you are unsure of module name or version, use "module available".
    module load stack-compiler-name/compiler-version
    module load stack-python-name/python-version
    module load stack-mpi-name/mpi-version
 
-Now list all available modules via ``module available``. For the environment packages described in Section :numref:`Section %s <Environments>`, convenience modules are created that can be loaded and that automatically load the required dependency modules.
+Now list all available modules via ``module available``. You may be required to load additional packages depending on your build target's requirements, but now you have loaded a basic spack environment and you are ready to build.
