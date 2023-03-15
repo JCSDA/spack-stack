@@ -26,6 +26,7 @@
     # work with all compilers that are currently in use in spack-stack
     cdo:
       version: [2.0.5]
+      variants: ~openmp
     cmake:
       version: [3.23.1]
       variants: +ownlibs
