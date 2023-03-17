@@ -290,7 +290,7 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module unuse /opt/cray/craype/default/modulefiles
-   module unuse opt/cray/modulefiles
+   module unuse /opt/cray/modulefiles
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.7
@@ -648,7 +648,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack stack create env --site macos.default [--template jedi-ufs-all] --name jedi-ufs.mymacos
+   spack stack create env --site macos.default [--template unified-dev] --name jedi-ufs.mymacos
    spack env activate [-p] envs/jedi-ufs.mymacos
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
@@ -774,6 +774,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install texlive
    # Do not install qt@5 for now
    yum -y install mysql-server
+   yum -y install mysql-devel
 
    # For screen utility (optional)
    yum -y remove https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
@@ -902,7 +903,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack stack create env --site linux.default [--template jedi-ufs-all] --name jedi-ufs.mylinux
+   spack stack create env --site linux.default [--template unified-dev] --name jedi-ufs.mylinux
    spack env activate [-p] envs/jedi-ufs.mylinux
 
 2. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``

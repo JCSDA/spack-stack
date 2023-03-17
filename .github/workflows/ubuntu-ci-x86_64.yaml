@@ -54,7 +54,7 @@ jobs:
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
-          spack env activate -d ${ENVDIR}
+          spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
