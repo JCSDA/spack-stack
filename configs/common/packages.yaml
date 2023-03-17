@@ -94,7 +94,7 @@
       variants: ~fortran ~netcdf
     hdf5:
       version: [1.14.0]
-      variants: +hl +fortran +mpi +threadsafe +szip
+      variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: [3.3.3]
     ip2:
@@ -178,11 +178,12 @@
       version: [1.4.2]
     py-h5py:
       version: [3.6.0]
+      variants: ~mpi
     py-mysql-connector-python:
       version: [8.0.13]
     py-netcdf4:
       version: [1.5.3]
-      variants: +mpi
+      variants: ~mpi
     py-numpy:
       version: [1.22.3]
       variants: +blas +lapack
