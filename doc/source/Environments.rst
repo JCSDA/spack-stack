@@ -9,7 +9,7 @@ Environments can be constructed in two ways in spack-stack:
 
 1. Start with an empty template, ``spack stack create env --template=empty`` or just ``spack stack create env`` without specifying a template.
 
-    - Configure the environment as shown in :numref:`Sections %s <Quickstart>` and :numref:`%s <Platforms>`.
+    - Configure the environment as shown in :numref:`Sections %s <NewSiteConfigs>`.
 
     - Add spack packages (also referred to as ``specs``) to the environment using ``spack add``. These packages can be virtual environments described in :numref:`Section %s <EnvironmentsVirtualPackages>` below, or individual packages, e.g. ``esmf`` or ``atlas``. Examples:
 

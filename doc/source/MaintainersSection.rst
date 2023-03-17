@@ -15,7 +15,7 @@ Preface/general instructions
 
 Preconfigured sites are defined through spack configuration files in the spack-stack directory ``configs/sites``, for example ``configs/sites/orion``. All files in the site-specific subdirectory will be copied into the environment into ``envs/env-name/site``. Site-specific configurations consist of general definitions (``config.yaml``), packages (``packages.yaml``), compilers (``compilers.yaml``), modules (``modules.yaml``), mirrors (``mirrors.yaml``) etc. These configurations overwrite the common configurations that are copied from ``configs/common`` into ``envs/env-name/common``.
 
-The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Quickstart_CreateEnv>`.
+The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Preconfigured_Sites_ExtendingEnvironments>`.
 
 .. _MaintainersSection_Orion:
 
@@ -180,7 +180,7 @@ NCAR-Wyoming Cheyenne
 ------------------------------
 
 On Cheyenne, a workaround is needed to avoid the modules provided by CISL take precedence over the spack modules. The default module path for compilers is removed, the module path is set to a different location and that location is then loaded into the module environment. If new compilers or MPI libraries are
-added to ``/glade/u/apps/ch/modulefiles/default/compilers`` by CISL, the spack-stack maintainers need to make the corresponding changes in ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers``. See :numref:`Section %s <Platforms_Cheyenne>` for details.
+added to ``/glade/u/apps/ch/modulefiles/default/compilers`` by CISL, the spack-stack maintainers need to make the corresponding changes in ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers``. See :numref:`Section %s <Preconfigured_Sites_Cheyenne>` for details.
 
 miniconda
    Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
@@ -432,7 +432,7 @@ The procedure is similar to using spack mirrors for local reuse, but a few addit
 
 2. Copy the file ``spack.lock`` (in ``envs/env-name/``) to the machine with full internet access using ``scp``, for example.
 
-3. On the machine with full internet access: Load the basic external modules, if using a machine that is preconfigured for spack-stack (see :numref:`Section %s <Platforms>`) and make sure that ``git`` supports ``lfs`` (if necessary, load the external modules that spack-stack also uses).
+3. On the machine with full internet access: Load the basic external modules, if using a machine that is preconfigured for spack-stack (see :numref:`Section %s <Preconfigured_Sites>`) and make sure that ``git`` supports ``lfs`` (if necessary, load the external modules that spack-stack also uses).
 
 4. On the machine with full internet access: check out the same version of ``spack-stack``, run ``setup.sh``, and then the following sequence of commands. The mirror will be created in directory ``./spack/var/spack/environments/air_gapped_mirror_env``, while the mirror source code downloaded based on ``spack.lock`` will be placed in the directory specified by the ``-d`` argument passed to ``spack mirror create`` (below).
 
@@ -467,7 +467,7 @@ Testing new packages
 Using spack to test/add packages
 --------------------------------
 
-The simplest case of adding new packages that are available in spack-stack is described in :numref:`Section %s <QuickstartExtendingEnvironments>`. As mentioned there, it is advised to take a backup of the spack environment (and install directories if outside the spack environment directory tree). It is also possible to chain spack installations, which means creating a test environment that uses installed packages and modulefiles from another (e.g. authoritative) spack environment and build the packages to be tested in isolation.
+The simplest case of adding new packages that are available in spack-stack is described in :numref:`Section %s <Preconfigured_Sites_ExtendingEnvironments>`. As mentioned there, it is advised to take a backup of the spack environment (and install directories if outside the spack environment directory tree). It is also possible to chain spack installations, which means creating a test environment that uses installed packages and modulefiles from another (e.g. authoritative) spack environment and build the packages to be tested in isolation.
 
 Chaining spack-stack installations
 ----------------------------------

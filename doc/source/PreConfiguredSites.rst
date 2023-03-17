@@ -1,15 +1,9 @@
-.. _Platforms:
+.. _Preconfigured_Sites:
 
-Platforms
+Pre-configured sites
 *************************
 
-.. _Platforms_Preconfigured_Sites:
-
-==============================
-Pre-configured sites
-==============================
-
-Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found further down in :numref:`Section %s <Platform_New_Site_Configs>`.
+Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
 Ready-to-use spack-stack installations are available on the following platforms. This table will be expanded as more platforms are added.
 
@@ -62,7 +56,7 @@ spack-stack-v1
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
-.. _Platforms_Orion:
+.. _Preconfigured_Sites_Orion:
 
 ------------------------------
 MSU Orion
@@ -98,7 +92,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
    module load stack-python/3.9.7
    module available
 
-.. _Platforms_Discover:
+.. _Preconfigured_Sites_Discover:
 
 ------------------------------
 NASA Discover
@@ -134,7 +128,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
    module load stack-python/3.9.7
    module available
 
-.. _Platforms_Narwhal:
+.. _Preconfigured_Sites_Narwhal:
 
 ------------------------------
 NAVY HPCMP Narwhal
@@ -196,7 +190,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules 
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
 
-.. _Platforms_Casper:
+.. _Preconfigured_Sites_Casper:
 
 -------------------
 NCAR-Wyoming Casper
@@ -223,7 +217,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
    module load stack-python/3.9.12
    module available
 
-.. _Platforms_Cheyenne:
+.. _Preconfigured_Sites_Cheyenne:
 
 ---------------------
 NCAR-Wyoming Cheyenne
@@ -260,7 +254,7 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following
    module load stack-python/3.9.12
    module available
 
-.. _Platforms_Acorn:
+.. _Preconfigured_Sites_Acorn:
 
 -------------------------------
 NOAA Acorn (WCOSS2 test system)
@@ -276,7 +270,7 @@ CONFIG_SITE should be set to empty in `compilers.yaml`.
 .. note::
    ``spack`` software installations are maintained by NCO on this platform.
 
-.. _Platforms_Parallel_Works:
+.. _Preconfigured_Sites_Parallel_Works:
 
 ----------------------------------------
 NOAA Parallel Works (AWS, Azure, Gcloud)
@@ -296,7 +290,7 @@ The following is required for building new spack environments and for using spac
    module load miniconda/3.9.7
    module load mysql/8.0.31
 
-.. _Platforms_Gaea:
+.. _Preconfigured_Sites_Gaea:
 
 ------------------------------
 NOAA RDHPCS Gaea (C3/C4)
@@ -349,7 +343,7 @@ The following is required for building new spack environments and for using spac
    module load python/3.9.12
 
 
-.. _Platforms_Hera:
+.. _Preconfigured_Sites_Hera:
 
 ------------------------------
 NOAA RDHPCS Hera
@@ -387,7 +381,7 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules 
 
 Note that on Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
 
-.. _Platforms_Jet:
+.. _Preconfigured_Sites_Jet:
 
 ------------------------------
 NOAA RDHPCS Jet
@@ -477,13 +471,13 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or simila
    module load stack-python/3.9.13
    module available
 
-.. _Platforms_NewEnv:
+.. _Preconfigured_Sites_NewEnv:
 
 =====================================
 Installing a new spack environment
 =====================================
 
-.. _Platforms_CreateEnv:
+.. _Preconfigured_Sites_CreateEnv:
 
 ------------------------
 Create local environment
@@ -573,7 +567,7 @@ If a mirror exists, add new packages to the mirror. Here, ``/path/to/mirror`` is
 
 If this fails with ``git lfs`` errors, check the site config for which module to load for ``git lfs`` support. Load the module, then run the ``spack mirror add`` command, then unload the module and proceed with the installation.
 
-.. _Platforms_ExtendingEnvironments:
+.. _Preconfigured_Sites_ExtendingEnvironments:
 
 ------------------------
 Extending environments
@@ -613,7 +607,7 @@ Further information on how to define variants for new packages, how to use these
 .. note::
    Instead of ``spack add ecmwf-atlas@0.29.0``, ``spack concretize`` and ``spack install``, one can also just use ``spack install ecmwf-atlas@0.29.0`` after checking in the first step (``spack spec``) that the package will be installed as desired.
 
-.. _Platforms_UseSpackStack:
+.. _Preconfigured_Sites_UseSpackStack:
 
 =================================================
 Using a spack environment to compile and run code
@@ -625,7 +619,7 @@ Spack environments are used by loading the modulefiles that generated at the end
 Pre-configured sites
 --------------------
 
-For pre-configured sites, follow the instructions in :numref:`Section %s <Platforms_Preconfigured_Sites>` to set the basic environment.
+For pre-configured sites, follow the instructions in :numref:`Section %s <Preconfigured_Sites_Preconfigured_Sites>` to set the basic environment.
 
 .. note::
    Customizations of the user environment in `.bashrc`, `.bash_profile`, ..., that load certain modules automatically may interfere with the setup. It is highly advised to avoid "polluting" the standard environment, i.e. to keep the default environment as clean as possible, and create shell scripts that can be sourced to conveniently configure a user environment for a specific task instead.
@@ -636,7 +630,7 @@ Next, load the spack meta-modules directory into the module path using
 
    module use $LOCATION/modulefiles/Core
 
-where ``$LOCATION`` refers to the install location listed in the table in :numref:`Section %s <Platforms_Preconfigured_Sites>`. Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path. Use ``module available`` to look for the exact names of the meta-modules.
+where ``$LOCATION`` refers to the install location listed in the table in :numref:`Section %s <Preconfigured_Sites_Preconfigured_Sites>`. Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path. Use ``module available`` to look for the exact names of the meta-modules.
 
 .. code-block:: console
 

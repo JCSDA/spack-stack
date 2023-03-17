@@ -7,7 +7,7 @@ Prerequisites
 Manual software installations
 ==============================
 
-The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult :numref:`Section %s <Platforms_Preconfigured_Sites>`, for preconfigured systems please consult :numref:`Section %s <Platform_New_Site_Configs>`. Note that for preconfigured systems, the following one-off installations are only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
+The following manual software installations may or may not be required as prerequisites, depending on the specific platform. For configurable/user systems, please consult :numref:`Section %s <Preconfigured_Sites>`, for preconfigured systems please consult :numref:`Section %s <NewSiteConfigs>`. Note that for preconfigured systems, the following one-off installations are only necessary for the maintainers of the preconfigured installations, users **do not** have to repeat any of these steps.
 
 ..  _Prerequisites_Git_LFS:
 
@@ -15,7 +15,7 @@ The following manual software installations may or may not be required as prereq
 git-lfs
 ------------------------------
 
-Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). :numref:`Section %s <MaintainersSection_Frontera>` describes a manual installation of ``git-lfs`` on TACC Frontera, a Centos7.9 system.
+Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <NewSiteConfigs_macOS>` and :numref:`%s <NewSiteConfigs_Linux>` for examples). :numref:`Section %s <MaintainersSection_Frontera>` describes a manual installation of ``git-lfs`` on TACC Frontera, a Centos7.9 system.
 
 ..  _Prerequisites_Miniconda:
 
@@ -47,7 +47,7 @@ Which runs the following commands
 qt (qt@5)
 ------------------------------
 
-Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <Platform_macOS>` and :numref:`%s <Platform_Linux>` for examples). 
+Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <NewSiteConfigs_macOS>` and :numref:`%s <NewSiteConfigs_Linux>` for examples). 
 
 On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64``.
 
@@ -164,4 +164,4 @@ Texlive (TeX/LaTeX)
 
 Building ``texlive`` isn't straightforward as it has many dependencies. Since it is only used to generated documentation for ``spack-stack`` (and other projects), i.e. not to compile any code, it makes no sense to build it with ``spack``. We therefore require ``texlive`` or any other compatible TeX/LaTeX distribution as an external package.
 
-On many of the HPC systems, it is already available as a separate module or as part of the default operating system. On macOS, the MacTeX distribution provides a full and easy-to-install TeX/LaTeX environment (see :numref:`Section %s <Platform_macOS>`). On Linux, ``texlive`` can be installed using the default package manager (see :numref:`Section %s <Platform_Linux>`).
+On many of the HPC systems, it is already available as a separate module or as part of the default operating system. On macOS, the MacTeX distribution provides a full and easy-to-install TeX/LaTeX environment (see :numref:`Section %s <NewSiteConfigs_macOS>`). On Linux, ``texlive`` can be installed using the default package manager (see :numref:`Section %s <NewSiteConfigs_Linux>`).
