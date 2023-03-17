@@ -136,7 +136,7 @@ This instructions are meant to be a reference that users can follow to set up th
 
   It's recommended to quit the terminal window at this point and then start up a fresh terminal window to make sure you proceed using a terminal that is running the :code:`$HOMEBREW_ROOT/bin/bash` shell.
 
-5. Activate the ``lua`` module environment
+5. Activate the ``lua`` module environment (note: This is not persistent and must be done at the beginning of each session you intend to use spack-stack modules).
 
 .. code-block:: console
 
@@ -260,29 +260,10 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack stack setup-meta-modules
 
+.. note::
+   Unlike preconfigured environments and linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
 
-Using your environment to build code
-------------------------------------
-
-Spack environments are used by loading the modulefiles that generated at the end of the installation process. The ``spack`` command itself is not needed for this process. The following is sufficient for loading the modules and using them to compile and run user code. Do not add any of the following to your `.bashrc` or `.bash_profile` since it can be hard to unload modules or change dependencies cleanly. Instead you can maintain shell scripts that can be sourced to conveniently configure a user environment for a specific task.
-
-First, activate the lua environment and load the spack meta-modules directory into the module path.
-
-.. code-block:: console
-
-   source $HOMEBREW_ROOT/opt/lmod/init/profile
-   module use $SPACK_STACK_DIR/envs/jedi-ufs.mymacos/install/modulefiles/Core
-
-If you run ``module available`` now, you will see only one option; the compiler. Loading the compiler meta-module will give access to the Python and MPI provider module and to packages that only depend on the compiler, not on the MPI provider or the Python provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path, and so on.
-
-.. code-block:: console
-
-   # Versions heere are from the example above, make sure to the versions specific to your install.
-   module load stack-apple-clang/13.1.6
-   module load stack-openmpi/4.1.4
-   module load stack-python/3.10.8
-
-Now list all available modules via ``module available``. You may be required to load additional packages depending on your build target's requirements, but now you have loaded a basic spack environment and you are ready to build.
+13. You now have a spack-stack environment that can be accessed by running ``module use $SPACK_STACK_DIR/envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux:
@@ -464,9 +445,6 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
    source setup.sh
 
-   # Add this SPACK_STACK_DIR to your shell environment.
-   echo "export SPACK_STACK_DIR=$(pwd)" >> $HOME/.bashrc
-
 
 2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
@@ -561,25 +539,4 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    spack stack setup-meta-modules
 
-Using your environment to build code
-------------------------------------
-
-Spack environments are used by loading the modulefiles that generated at the end of the installation process. The ``spack`` command itself is not needed in this setup, and the setup instructions can be ignored can be ignored. The following is sufficient for loading the modules and using them to compile and run user code. Do not add any of the following to your `.bashrc`, `.bash_profile` since it can be hard to unload modules or change sources cleanly. Instead code to shell scripts that can be sourced to conveniently configure a user environment for a specific task instead.
-
-First, activate the lua environment and load the spack meta-modules directory into the module path.
-
-.. code-block:: console
-
-   source $HOMEBREW_ROOT/opt/lmod/init/profile
-   module use $SPACK_STACK_DIR/envs/jedi-ufs.mylinux/install/modulefiles/Core
-
-If you run ``module available`` now, you will see only one option; the compiler. Loading the compiler meta-module will give access to the Python and MPI provider module and access to packages that only depend on the compiler, not on the MPI provider or the Python provider. Loading the MPI meta-module will then add the MPI-dependent packages to the module path, and so on.
-
-.. code-block:: console
-
-   # If you are unsure of module name or version, use "module available".
-   module load stack-compiler-name/compiler-version
-   module load stack-python-name/python-version
-   module load stack-mpi-name/mpi-version
-
-Now list all available modules via ``module available``. You may be required to load additional packages depending on your build target's requirements, but now you have loaded a basic spack environment and you are ready to build.
+13. You now have a spack-stack environment that can be accessed by running ``module use $SPACK_STACK_DIR/envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.

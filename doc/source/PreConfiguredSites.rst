@@ -7,6 +7,8 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 
 Ready-to-use spack-stack installations are available on the following platforms. This table will be expanded as more platforms are added.
 
+
+.. _Preconfigured_Sites_LocationTable:
 --------------
 spack-stack-v1
 --------------

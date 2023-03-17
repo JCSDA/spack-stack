@@ -8,6 +8,7 @@ Table of Contents
    :maxdepth: 3
 
    Overview
+   UsingSpackEnvironments
    Platforms
    NewSiteConfigs
    BuildingContainers

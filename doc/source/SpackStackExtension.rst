@@ -37,4 +37,4 @@ Following a successful creation of an environment (not a container), and the gen
 
    spack stack setup-meta-modules
 
-This step completes the environment generation and outputs a ``Core`` directory to screen that must be added to the module path (``module use .../Core``) as shown in :numref:`Section %s <BuildingCode>`.
+This step completes the environment generation and outputs a ``Core`` directory to screen that must be added to the module path (``module use .../Core``) as shown in :numref:`Section %s <UsingSpackEnvironments>`.
