@@ -51,7 +51,7 @@ For these instructions we will use the variable ``$HOMEBREW_ROOT`` to hold the p
 Prerequisites (one-off)
 -----------------------
 
-This instructions are meant to be a reference that users can follow to set up their own system. Depending on the user's setup and needs, some steps will differ, some may not be needed and others may be missing. Also, the package versions may change over time.
+These instructions are meant to be a reference that users can follow to set up their own system. Depending on the user's setup and needs, some steps will differ, some may not be needed and others may be missing. Also, the package versions may change over time.
 
 1. Install Apple's command line utilities
 
@@ -123,8 +123,6 @@ This instructions are meant to be a reference that users can follow to set up th
    # Note - need to pin to version 5
    brew install qt@5
    brew install mysql
-   # git-lfs must configure system git hooks.
-   git lfs install
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -169,9 +167,6 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
    source setup.sh
-
-   # Add this SPACK_STACK_DIR to your shell environment.
-   echo "export SPACK_STACK_DIR=$(pwd)" >> $HOME/.bash_profile
 
 2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
 
@@ -263,7 +258,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. note::
    Unlike preconfigured environments and linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
 
-13. You now have a spack-stack environment that can be accessed by running ``module use $SPACK_STACK_DIR/envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+13. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux:
@@ -367,7 +362,6 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y mysql-server
-   git lfs install
 
    # Python
    apt install -y python3-dev python3-pip
@@ -416,7 +410,6 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
    apt install -y libssl-dev
    apt install -y meson
    apt install -y mysql-server
-   git lfs install
 
    # Python
    apt install -y python3-dev python3-pip
@@ -539,4 +532,4 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    spack stack setup-meta-modules
 
-13. You now have a spack-stack environment that can be accessed by running ``module use $SPACK_STACK_DIR/envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+13. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.

@@ -475,9 +475,9 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or simila
 
 .. _Preconfigured_Sites_NewEnv:
 
-=====================================
-Installing a new spack environment
-=====================================
+===========================================================
+Installing a new spack environment on a pre-configured site
+===========================================================
 
 .. _Preconfigured_Sites_CreateEnv:
 
