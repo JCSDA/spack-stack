@@ -191,10 +191,10 @@ MSU Orion
 On Orion, it is necessary to change the default ``umask`` from ``0027`` to ``0022`` so that users not in the group of the role account can still see and use the software stack. This can be done by running ``umask 022`` after logging into the role account.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Note that the default/system ``qt@5`` can be used on Orion.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Note that the default/system ``qt@5`` can be used on Orion.
 
 .. code-block:: console
 
@@ -205,7 +205,7 @@ ecflow
    module load gcc/10.2.0
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_Hercules:
 
@@ -215,10 +215,10 @@ MSU Hercules
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After unloading all modules (``module purge``), refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
+   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After unloading all modules (``module purge``), follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After unloading all modules (``module purge``), follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
 
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Since Orion and Hercules share the filesystems and since the MySQL community server comes pre-installed, it is possible to reuse the Orion installation in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
@@ -232,14 +232,14 @@ NASA Discover
 On Discover, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
+   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
 
 .. code-block:: console
 
@@ -271,7 +271,7 @@ openmpi
    CPATH="/usr/include/slurm:$CPATH" make install
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/discover/swdev/jcsda/spack-stack/mysql-8.0.31``. Note that the ``glibc`` version on Discover is 2.22, which works with the latest available ``glibc`` version for the ``mysql`` server ``2.17``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/discover/swdev/jcsda/spack-stack/mysql-8.0.31``. Note that the ``glibc`` version on Discover is 2.22, which works with the latest available ``glibc`` version for the ``mysql`` server ``2.17``.
 
 .. _MaintainersSection_Narwhal:
 
@@ -294,7 +294,7 @@ git-lfs
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/p/app/projects/NEPTUNE/spack-stack/qt-5.15.2``.
+   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/p/app/projects/NEPTUNE/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -310,7 +310,7 @@ qt (qt@5)
    module load gcc/10.3.0
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``. Ensure to follow the extra instructions in that section for Narwhal.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``. Ensure to follow the extra instructions in that section for Narwhal.
 
 .. code-block:: console
 
@@ -328,7 +328,7 @@ ecflow
    module load qt/5.15.2
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_Casper:
 
@@ -348,10 +348,10 @@ On Cheyenne, a workaround is needed to avoid the modules provided by CISL take p
 added to ``/glade/u/apps/ch/modulefiles/default/compilers`` by CISL, the spack-stack maintainers need to make the corresponding changes in ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers``. See :numref:`Section %s <Preconfigured_Sites_Cheyenne>` for details.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
 
 qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2``. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``.
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2``. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``.
 
 .. code-block:: console
 
@@ -362,7 +362,7 @@ qt (qt@5)
    module load gnu/10.1.0
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Also, because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Also, because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).
 
 .. code-block:: console
 
@@ -377,7 +377,7 @@ ecflow
    module load cmake/3.18.2
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_WCOSS2:
 
@@ -396,7 +396,7 @@ NOAA Parallel Works (AWS, Azure, Gcloud)
 **WORK IN PROGRESS**
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/contrib/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/contrib/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_Gaea:
 
@@ -407,7 +407,7 @@ NOAA RDHPCS Gaea
 On Gaea, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment. Use the following workaround to avoid the terminal being spammed by error messages about missing version information (``/bin/bash: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/libtinfo.so.6: no version information available (required by /lib64/libreadline.so.7)``):
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment. Use the following workaround to avoid the terminal being spammed by error messages about missing version information (``/bin/bash: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/libtinfo.so.6: no version information available (required by /lib64/libreadline.so.7)``):
 
 .. code-block:: console
 
@@ -417,7 +417,7 @@ miniconda
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <Prerequisites_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.2``.
+   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.2``.
 
 .. code-block:: console
 
@@ -426,7 +426,7 @@ qt (qt@5)
    module load PrgEnv-gnu/6.0.5
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).  Ensure to follow the extra instructions in that section for Gaea.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).  Ensure to follow the extra instructions in that section for Gaea.
 
    module unload intel cray-mpich cray-python darshan PrgEnv-intel
    module load gcc/10.3.0
@@ -437,7 +437,7 @@ ecflow
    module load qt/5.15.2
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_Hera:
 
@@ -448,10 +448,10 @@ NOAA RDHPCS Hera
 On Hera, ``miniconda`` must be installed as a one-off before spack can be used.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/scratch1/NCEPDEV/global/spack-stack/apps/mysql-8.0.31``. Since Hera cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/scratch1/NCEPDEV/global/spack-stack/apps/mysql-8.0.31``. Since Hera cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
 
 Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform (e.g. Cheyenne). This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
 
@@ -462,7 +462,7 @@ NOAA RDHPCS Jet
 ------------------------------
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 .. code-block:: console
 
@@ -472,7 +472,7 @@ miniconda
    module load gnu/9.2.0
    
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/lfs4/HFIP/hfv3gfs/role.epic/apps/mysql-8.0.31``. Since Jet cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lfs4/HFIP/hfv3gfs/role.epic/apps/mysql-8.0.31``. Since Jet cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
 
 
 .. _MaintainersSection_Frontera:
@@ -484,10 +484,10 @@ TACC Frontera
 Several packages need to be installed as a one-off before spack can be used.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation in ``/work2/06146/USERNAME/frontera/spack-stack/miniconda-3.9.12`` and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation in ``/work2/06146/USERNAME/frontera/spack-stack/miniconda-3.9.12`` and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
 
 .. code-block:: console
 
@@ -526,10 +526,10 @@ mpich (module only)
    The ``mpich/4.0.1`` module provided by the system administrators is broken. To create a usable version, turn ``/data/prod/hpc-stack/modulefiles/compiler/gnu/9.3.0/mpich/4.0.1.lua`` into a simple environment module (``tcl``) in ``/data/prod/jedi/spack-stack/modulefiles/mpich``.
 
 miniconda
-   Follow the instructions in :numref:`Section %s <Prerequisites_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <Prerequisites_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
 
 .. code-block:: console
 
@@ -539,7 +539,7 @@ ecflow
    module load gcc/9.3.0
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <Prerequisites_MySQL>` to install ``mysql`` in ``/data/prod/jedi/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/data/prod/jedi/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_AWS_Pcluster_Ubuntu:
 
