@@ -9,7 +9,7 @@ Table of Contents
 
    Overview
    UsingSpackEnvironments
-   Platforms
+   PreConfiguredSites
    NewSiteConfigs
    BuildingContainers
    Environments
