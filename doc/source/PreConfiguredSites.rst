@@ -9,9 +9,9 @@ Ready-to-use spack-stack installations are available on the following platforms.
 
 
 .. _Preconfigured_Sites_LocationTable:
---------------
-spack-stack-v1
---------------
+----------------------------------------------
+Officially supported spack-stack installations
+----------------------------------------------
 
 .. note::
    This version supports the JEDI Skylab release 3 of December 2022, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model). Amazon Web Services AMI are available in the US East 1 or 2 regions.
@@ -472,12 +472,6 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or simila
    module load stack-openmpi/4.1.4
    module load stack-python/3.9.13
    module available
-
-.. _Preconfigured_Sites_NewEnv:
-
-===========================================================
-Installing a new spack environment on a pre-configured site
-===========================================================
 
 .. _Preconfigured_Sites_CreateEnv:
 
