@@ -21,7 +21,7 @@ The full list of options for creating environments is:
 
    spack stack create env [--template TEMPLATE] [--specs [SPECS [SPECS ...]]] [--name NAME] [--dir DIR] [--overwrite] [--packages PACKAGES] [--site SITE] [--prefix PREFIX] [--envs-file ENVS_FILE]
 
-Here, ``TEMPLATE`` corresponds to a pre-defined list of specs (see :numref:`Section %s <EnvironmentsTemplates>`), ``SITE`` to a pre-configured or a configurable site (see :numref:`Section %s <Platforms>`). For all other options, consult the output of ``spack stack create env -h``.
+Here, ``TEMPLATE`` corresponds to a pre-defined list of specs (see :numref:`Section %s <EnvironmentsTemplates>`), ``SITE`` to a pre-configured or a configurable site (see :numref:`Section %s <Preconfigured_Sites>`). For all other options, consult the output of ``spack stack create env -h``.
 
 The full list of options for creating containers is:
 
@@ -37,4 +37,4 @@ Following a successful creation of an environment (not a container), and the gen
 
    spack stack setup-meta-modules
 
-This step completes the environment generation and outputs a ``Core`` directory to screen that must be added to the module path (``module use .../Core``) as shown in :numref:`Section %s <QuickstartUseSpackStack>`.
+This step completes the environment generation and outputs a ``Core`` directory to screen that must be added to the module path (``module use .../Core``) as shown in :numref:`Section %s <UsingSpackEnvironments>`.
