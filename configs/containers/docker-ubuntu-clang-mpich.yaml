@@ -116,6 +116,7 @@ spack:
       - git
       - git-lfs
       - make
+      - mysql-server
       - qt5-default
       - libqt5svg5-dev
       - qt5dxcb-plugin
@@ -133,6 +134,7 @@ spack:
       - git
       - git-lfs
       - make
+      - mysql-server
       - qt5-default
       - libqt5svg5-dev
       - qt5dxcb-plugin
