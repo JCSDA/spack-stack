@@ -393,8 +393,17 @@ Note that on Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow
 NOAA RDHPCS Jet
 ------------------------------
 
-.. note::
-   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   module use /lfs4/HFIP/hfv3gfs/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   module load ecflow/5.5.3
+   module use /lfs4/HFIP/hfv3gfs/role.epic/modulefiles
+   module load mysql/8.0.31
+
 
 **WORK IN PROGRESS**
 
