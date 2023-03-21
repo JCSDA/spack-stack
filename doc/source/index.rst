@@ -8,8 +8,10 @@ Table of Contents
    :maxdepth: 3
 
    Overview
-   Quickstart
-   Platforms
+   UsingSpackEnvironments
+   PreConfiguredSites
+   NewSiteConfigs
+   BuildingContainers
    Environments
    Prerequisites
    SpackStackExtension
