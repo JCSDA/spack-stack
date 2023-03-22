@@ -5,7 +5,7 @@ Pre-configured sites
 
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
-Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Supported_Sites_LocationTable>`), and Tier 2 (sites with configuration files that were tested at some point or have been contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
+Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested at some point or have been contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
 .. _Preconfigured_Sites_Tier1:
 =======================================================
@@ -14,43 +14,37 @@ Officially supported spack-stack installations (tier 1)
 
 Ready-to-use spack-stack installations are available on the following, fully supported platforms. This version supports the JEDI Skylab release 4 of March 2023, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model, the UFS Short Range Weather Application, and the EMC Global Workflow). Amazon Web Services AMI are available on request in the US East 1 or 2 regions.
 
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| System                                                   | Maintainers               | Location                                                                                                             |
-+==========================================================+===========================+======================================================================================================================+
-| MSU Orion Intel/GNU (**TEMPORARY**)                      | Dom Heinzeller            | ``/work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                             |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NASA Discover Intel/GNU (**TEMPORARY**)                  | Dom Heinzeller            | ``/gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                    |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal Intel                                 | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                      |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal GNU (**TEMPORARY LOCATION**)          | Dom Heinzeller            | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install``|
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Casper                                      | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``       |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NCAR-Wyoming Cheyenne Intel/GNU (**TEMPORARY**)          | Dom Heinzeller            | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``          |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud)                 |                           | not yet supported - coming soon                                                                                      |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea (C3/C4)                                 | Dom Heinzeller            | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.3.0/install``                    |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea (C5)                                    | Alex Richert / Dom Heinzeller | not yet supported - coming soon                                                                                  |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera Intel                                   | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install``                     |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera GNU                                     | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-9.2.0/install``                          |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet Intel/GNU                                |                           | not yet supported - coming soon                                                                                      |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| TACC Frontera Intel                                      |                           | not yet supported - coming soon                                                                                      |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| TACC Frontera GNU                                        |                           | not yet supported - coming soon                                                                                      |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| UW (Univ. of Wisc.) S4 Intel/GNU (**TEMPORARY LOCATION**)| Dom Heinzeller            | ``/data/prod/jedi/spack-stack/spack-stack-feature-mysql-testing/envs/unified-4.0.0-rc1/install``                     |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Parallelcluster Ubuntu 20.04 GNU | Dom Heinzeller            | not yet supported - coming soon                                                                                      |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU                    | Dom Heinzeller            | ``/home/ec2-user/spack-stack-v1/envs/skylab-3.0.0-gcc-11.2.1/install``                                               |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| System                                                   | Maintainers                   | Location                                                                                                             |
++==========================================================+===============================+======================================================================================================================+
+| MSU Orion Intel/GNU (**TEMPORARY**)                      | Cam Book / Dom Heinzeller     | ``/work2/noaa/da/role-da/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                             |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NASA Discover Intel/GNU (**TEMPORARY**)                  | Dom Heinzeller / ???          | ``/gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                    |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Narwhal Intel/GNU                             | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                      |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Casper Intel                                | Dom Heinzeller / ???          | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``       |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne Intel/GNU (**TEMPORARY**)          | Cam Book / Dom Heinzeller     | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``          |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NOAA Parallel Works (AWS, Azure, Gcloud) Intel/GNU?      | Cam Book / ???                | not yet supported - coming soon                                                                                      |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NOAA Acorn Intel                                         | Hang Lei / ???                | **missing, will be supported**                                                                                       |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea (C3/C4)                                 | Dom Heinzeller / ???          | ``/lustre/f2/pdata/esrl/gsd/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.3.0/install``                    |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea (C5)                                    | Alex Richert / Dom Heinzeller | not yet supported - coming soon                                                                                      |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Hera Intel/GNU                               | Mark Potts / Dom Heinzeller   | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.5.0/install``                     |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Jet Intel/GNU                                | Cam Book / ???                | **missing, will be supported**                                                                                       |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| UW (Univ. of Wisc.) S4 Intel/GNU (**TEMPORARY LOCATION**)| Dom Heinzeller / Mark Potts   | ``/data/prod/jedi/spack-stack/spack-stack-feature-mysql-testing/envs/unified-4.0.0-rc1/install``                     |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Parallelcluster Ubuntu 20.04 GNU | Dom Heinzeller / ???          | **work in progress for this release**                                                                                |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Red Hat 8 GNU                    | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack-v1/envs/skylab-3.0.0-gcc-11.2.1/install``                                               |
++----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
@@ -324,23 +318,6 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0`` with Intel, load the following module
 
    cmake -DCMAKE_CROSSCOMPILING_EMULATOR="/usr/bin/srun;-n;1" -DMPIEXEC_EXECUTABLE="/usr/bin/srun" -DMPIEXEC_NUMPROC_FLAG="-n" PATH_TO_SOURCE
 
-------------------------------
-NOAA RDHPCS Gaea (C5)
-------------------------------
-
-.. note::
-   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
-
-The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
-
-.. code-block:: console
-
-   module load PrgEnv-intel/8.3.3
-   module load intel/2022.0.2
-   module load cray-mpich/8.1.16
-   module load python/3.9.12
-
-
 .. _Preconfigured_Sites_Hera:
 
 ------------------------------
@@ -399,22 +376,6 @@ The following is required for building new spack environments and for using spac
 **WORK IN PROGRESS**
 
 ------------------------------
-TACC Frontera
-------------------------------
-
-.. note::
-   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
-
-The following is required for building new spack environments and for using spack to build and run software.
-
-.. code-block:: console
-
-   module purge
-   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load ecflow/5.8.4
-
-------------------------------
 UW (Univ. of Wisconsin) S4
 ------------------------------
 
@@ -441,7 +402,6 @@ For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with Intel, load the followi
    module available
 
 Note the two `module unuse` commands, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
-
 
 For ``spack-stack-1.3.0-rc1``/``unified-4.0.0-rc1`` with GNU, load the following modules after loading miniconda and ecflow:
 
@@ -478,10 +438,41 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or simila
    module available
 
 .. _Preconfigured_Sites_Tier2:
-===================================================
-Unsupported sites with site configurations (tier 2)
-===================================================
+========================================
+Unsupport, pre-configured sites (tier 2)
+========================================
 
+------------------------------
+NOAA RDHPCS Gaea (C5)
+------------------------------
+
+.. note::
+   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
+
+The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
+
+.. code-block:: console
+
+   module load PrgEnv-intel/8.3.3
+   module load intel/2022.0.2
+   module load cray-mpich/8.1.16
+   module load python/3.9.12
+
+------------------------------
+TACC Frontera
+------------------------------
+
+.. note::
+   ``spack-stack-1.2.0``/``skylab-3.0.0`` is currently not supported on this platform and will be added in the near future.
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
 
 .. _Configurable_Sites_CreateEnv:
 
