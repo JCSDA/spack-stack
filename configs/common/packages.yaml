@@ -56,7 +56,7 @@
     # config and update the projections for lmod/tcl
     esmf:
       version: [8.4.1]
-      variants: ~xerces ~pnetcdf
+      variants: ~xerces ~pnetcdf +parallelio
     fckit:
       version: [0.10.0]
       variants: +eckit
