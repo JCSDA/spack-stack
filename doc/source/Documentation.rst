@@ -4,7 +4,7 @@ Generating Sphinx Documentation
 *******************************
 
 This documentation is generated using ``sphinx``, supported formats are HTML and TeX/LaTeX (in PDF). ``sphinx`` and its dependencies can be installed using ``spack-stack``
-and the environment spec ``jedi-tools-env`` (see :numref:`Section %s <Environments>`). Note that in order to generate TeX/LaTeX documentation, a TeX/LaTeX distribution is required as an external package (see :numref:`Section %s <Prerequisites_Texlive>`), and the ``jedi-tools-env`` environment spec must be built with the variant ``+latex``.
+and the environment spec ``jedi-tools-env`` (see :numref:`Section %s <Environments>`). Note that in order to generate TeX/LaTeX documentation, a TeX/LaTeX distribution is required as an external package (see :numref:`Section %s <MaintainersSection_Texlive>`), and the ``jedi-tools-env`` environment spec must be built with the variant ``+latex``.
 
 Steps to generate the documentation locally:
 

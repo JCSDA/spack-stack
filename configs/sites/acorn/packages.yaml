@@ -71,7 +71,7 @@
     python:
       buildable: false
       externals:
-      - spec: python@3.8.6+bz2+ctypes+dbm~debug+libxml2+lzma~nis~optimizations+pic+pyexpat+pythoncmd+readline+shared+sqlite3+ssl~tix~tkinter+uuid+zlib
+      - spec: python@3.8.6
         modules: [python/3.8.6]
     # On Acorn, perl module requires gcc :(
     perl:
