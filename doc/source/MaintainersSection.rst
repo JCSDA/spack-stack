@@ -182,6 +182,12 @@ Preconfigured sites are defined through spack configuration files in the spack-s
 
 The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Preconfigured_Sites_ExtendingEnvironments>`.
 
+Note that, for official installations of new environments on any supported platform, the ``spack install`` command should be invoked with the ``--source`` and ``--verbose`` arguments, i.e.:
+
+.. code-block:: console
+    
+   spack install --source --verbose
+
 .. _MaintainersSection_Orion:
 
 ------------------------------
