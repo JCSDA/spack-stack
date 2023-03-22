@@ -5,16 +5,14 @@ Pre-configured sites
 
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
-Ready-to-use spack-stack installations are available on the following platforms. This table will be expanded as more platforms are added.
+Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Supported_Sites_LocationTable>`), and Tier 2 (sites with configuration files that were tested at some point or have been contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
+.. _Preconfigured_Sites_Tier1:
+=======================================================
+Officially supported spack-stack installations (tier 1)
+=======================================================
 
-.. _Preconfigured_Sites_LocationTable:
-----------------------------------------------
-Officially supported spack-stack installations
-----------------------------------------------
-
-.. note::
-   This version supports the JEDI Skylab release 3 of December 2022, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model). Amazon Web Services AMI are available in the US East 1 or 2 regions.
+Ready-to-use spack-stack installations are available on the following, fully supported platforms. This version supports the JEDI Skylab release 4 of March 2023, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model, the UFS Short Range Weather Application, and the EMC Global Workflow). Amazon Web Services AMI are available on request in the US East 1 or 2 regions.
 
 +----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
 | System                                                   | Maintainers               | Location                                                                                                             |
@@ -41,9 +39,7 @@ Officially supported spack-stack installations
 +----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Hera GNU                                     | Hang Lei / Dom Heinzeller | ``/scratch1/NCEPDEV/global/spack-stack/spack-stack-v1/envs/skylab-3.0.0-gnu-9.2.0/install``                          |
 +----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet Intel                                    |                           | not yet supported - coming soon                                                                                      |
-+----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Jet GNU                                      |                           | not yet supported - coming soon                                                                                      |
+| NOAA RDHPCS Jet Intel/GNU                                |                           | not yet supported - coming soon                                                                                      |
 +----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
 | TACC Frontera Intel                                      |                           | not yet supported - coming soon                                                                                      |
 +----------------------------------------------------------+---------------------------+----------------------------------------------------------------------------------------------------------------------+
@@ -481,11 +477,17 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or simila
    module load stack-python/3.9.13
    module available
 
-.. _Preconfigured_Sites_CreateEnv:
+.. _Preconfigured_Sites_Tier2:
+===================================================
+Unsupported sites with site configurations (tier 2)
+===================================================
 
-------------------------
+
+.. _Configurable_Sites_CreateEnv:
+
+========================
 Create local environment
-------------------------
+========================
 
 The following instructions install a new spack environment on a pre-configured site. Instructions for creating a new site config on a configurable system (i.e. a generic Linux or macOS system) can be found in :numref:`Section %s <NewSiteConfigs>`. The options for the ``spack stack`` extension are explained in :numref:`Section %s <SpackStackExtension>`.
 
@@ -554,28 +556,11 @@ The following instructions install a new spack environment on a pre-configured s
 .. note::
   For platforms with multiple compilers in the site config, make sure that the correct compiler and corresponding MPI library are set correctly in ``envs/jedi-fv3.hera/site/packages.yaml`` before running ``spack concretize``. Also, check the output of ``spack concretize`` to make sure that the correct compiler is used (e.g. ``%intel-2022.0.1``). If not, edit ``envs/jedi-fv3.hera/site/compilers.yaml`` and remove the offending compiler. Then, remove ``envs/jedi-fv3.hera/spack.lock`` and rerun ``spack concretize``.
 
-Optional step for sites with a preconfigured spack mirror
----------------------------------------------------------
-
-To check if a mirror is configured, look for ``local-source`` in the output of
-
-.. code-block:: bash
-
-   spack mirror list
-
-If a mirror exists, add new packages to the mirror. Here, ``/path/to/mirror`` is the location from the above list command without the leading ``file://``
-
-.. code-block:: bash
-
-   spack mirror create -a -d /path/to/mirror
-
-If this fails with ``git lfs`` errors, check the site config for which module to load for ``git lfs`` support. Load the module, then run the ``spack mirror add`` command, then unload the module and proceed with the installation.
-
 .. _Preconfigured_Sites_ExtendingEnvironments:
 
-------------------------
+======================
 Extending environments
-------------------------
+======================
 
 Additional packages (and their dependencies) or new versions of packages can be added to existing environments. It is recommended to take a backup of the existing environment directory (e.g. using ``rsync``) or test this first as described in :numref:`Section %s <MaintainersSection_Testing_New_Packages>`, especially if new versions of packages are added that act themselves as dependencies for other packages. In some cases, adding new versions of packages will require rebuilding large portions of the stack, for example if a new version of ``hdf5`` is needed. In this case, it is recommended to start over with an entirely new environment.
 
