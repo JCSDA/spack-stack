@@ -54,9 +54,13 @@
       version: [3.4.0]
     # Attention - when updating the version also check the common modules.yaml
     # config and update the projections for lmod/tcl
+    # Note: Stay away from esmf@8.4.1 ... breaks all sorts of things
+    #esmf:
+    #  version: [8.4.1]
+    #  variants: ~xerces ~pnetcdf +parallelio
     esmf:
-      version: [8.4.1]
-      variants: ~xerces ~pnetcdf +parallelio
+      version: [8.3.0b09]
+      variants: ~xerces ~pnetcdf +pio snapshot=b09
     fckit:
       version: [0.10.0]
       variants: +eckit
@@ -112,7 +116,9 @@
     libpng:
       version: [1.6.37]
     mapl:
-      version: [2.35.2]
+      # 2.35.2 goes with esmf@8.4.1
+      #version: [2.35.2]
+      version: [2.22.0]
     met:
       version: [10.1.1]
       variants: +python +grib2

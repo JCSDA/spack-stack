@@ -46,7 +46,7 @@ spack:
     - ecmwf-atlas@0.32.1
     - ectrans@1.2.0
     - eigen@3.4.0
-    - esmf@8.4.1
+    - esmf@8.3.0b09
     # DH* fake version number
     #- ewok@0.0.1
     - fckit@0.10.0
@@ -68,7 +68,7 @@ spack:
     - jasper@2.0.32
     - jedi-cmake@1.4.0
     - libpng@1.6.37
-    - mapl@2.35.2
+    - mapl@2.22.0
     - nccmp@1.9.0.1
     - ncview@2.1.8
     - nemsio@2.5.2
