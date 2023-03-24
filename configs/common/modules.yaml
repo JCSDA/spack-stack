@@ -116,12 +116,8 @@ modules:
             'PNG_ROOT': '{prefix}'
       mapl:
         suffixes:
-          ^esmf@8.2.0~debug: 'esmf-8.2.0'
-          ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
           ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
           ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
-          ^esmf@8.3.0~debug: 'esmf-8.3.0'
-          ^esmf@8.3.0+debug: 'esmf-8.3.0-debug'
           ^esmf@8.4.0~debug: 'esmf-8.4.0'
           ^esmf@8.4.0+debug: 'esmf-8.4.0-debug'
           ^esmf@8.4.1~debug: 'esmf-8.4.1'
@@ -344,12 +340,8 @@ modules:
             'PNG_ROOT': '{prefix}'
       mapl:
         suffixes:
-          ^esmf@8.2.0~debug: 'esmf-8.2.0'
-          ^esmf@8.2.0+debug: 'esmf-8.2.0-debug'
           ^esmf@8.3.0b09~debug: 'esmf-8.3.0b09'
           ^esmf@8.3.0b09+debug: 'esmf-8.3.0b09-debug'
-          ^esmf@8.3.0~debug: 'esmf-8.3.0'
-          ^esmf@8.3.0+debug: 'esmf-8.3.0-debug'
           ^esmf@8.4.0~debug: 'esmf-8.4.0'
           ^esmf@8.4.0+debug: 'esmf-8.4.0-debug'
           ^esmf@8.4.1~debug: 'esmf-8.4.1'
