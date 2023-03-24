@@ -183,7 +183,7 @@
     py-eccodes:
       version: [1.4.2]
     py-h5py:
-      version: [3.6.0]
+      version: [3.8.0]
       variants: ~mpi
     py-mysql-connector-python:
       version: [8.0.13]
