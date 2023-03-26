@@ -60,6 +60,11 @@ spack:
       - spec: mpich@4.0.2
         prefix: /opt/mpich-4.0.2
       version: [4.0.2]
+    mysql:
+      buildable: false
+      externals:
+      - spec: mysql@8.0.32
+        prefix: /usr
     qt:
       buildable: false
       externals:
@@ -96,7 +101,7 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/noaa-emc/spack
-        ref: jcsda_emc_spack_stack
+        ref: release/1.3.0
         resolve_sha: false
 
     # Whether or not to strip binaries
