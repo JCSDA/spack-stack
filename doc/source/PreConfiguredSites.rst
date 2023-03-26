@@ -5,7 +5,7 @@ Pre-configured sites
 
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
-Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested at some point or have been contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
+Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
 .. _Preconfigured_Sites_Tier1:
 =======================================================
@@ -21,7 +21,7 @@ Ready-to-use spack-stack installations are available on the following, fully sup
 +----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
 | NASA Discover Intel/GNU (**TEMPORARY**)                  | Dom Heinzeller / ???          | ``/gpfsm/dnb55/projects/p01/s2127/spack-stack-feature-r2d2-mysql/envs/unified-4.0.0-rc1/install``                    |
 +----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Narwhal Intel/GNU                             | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                      |
+| NAVY HPCMP Narwhal Intel                                 | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-2021.4.0/install``                      |
 +----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper Intel                                | Dom Heinzeller / ???          | ``/glade/work/jedipara/cheyenne/spack-stack/spack-stack-v1/envs/skylab-3.0.0-intel-19.1.1.217-casper/install``       |
 +----------------------------------------------------------+-------------------------------+----------------------------------------------------------------------------------------------------------------------+
@@ -173,14 +173,8 @@ With GNU, the following is required for building new spack environments and for 
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.2.0``/``skylab-3.0.0`` with GNU, load the following modules after loading the above modules. **Note: temporary location!**
-
-.. code-block:: console
-
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-test-20230214/envs/skylab-dev-gnu-10.3.0-libsci-22.08.1.1/install/modulefiles/Core
-   module load stack-gcc/10.3.0
-   module load stack-cray-mpich/8.1.14
-   module load stack-python/3.9.7
+.. note::
+   ``spack-stack-1.3.0``/``unified-dev`` is currently not supported with GNU due to numerous build problems.
 
 .. _Preconfigured_Sites_Casper:
 
@@ -438,9 +432,11 @@ For ``spack-stack-1.2.0``/``skylab-3.0.0``, use a c6i.2xlarge instance or simila
    module available
 
 .. _Preconfigured_Sites_Tier2:
-========================================
-Unsupport, pre-configured sites (tier 2)
-========================================
+=============================
+Pre-configured sites (tier 2)
+=============================
+
+Tier 2 sites are sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team. The configuration files for these sites may not be up to date or functional.
 
 ------------------------------
 NOAA RDHPCS Gaea (C5)
