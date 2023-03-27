@@ -3,7 +3,6 @@
 Maintainers/Developers Section
 ******************************
 
-
 ==============================
 Manual software installations
 ==============================
@@ -167,6 +166,26 @@ Building ``texlive`` isn't straightforward as it has many dependencies. Since it
 
 On many of the HPC systems, it is already available as a separate module or as part of the default operating system. On macOS, the MacTeX distribution provides a full and easy-to-install TeX/LaTeX environment (see :numref:`Section %s <NewSiteConfigs_macOS>`). On Linux, ``texlive`` can be installed using the default package manager (see :numref:`Section %s <NewSiteConfigs_Linux>`).
 
+
+.. _Preconfigured_Sites_SpackMirror:
+
+=========================================================
+Optional step for sites with a preconfigured spack mirror
+=========================================================
+
+To check if a mirror is configured, look for ``local-source`` in the output of
+
+.. code-block:: bash
+
+   spack mirror list
+
+If a mirror exists, add new packages to the mirror. Here, ``/path/to/mirror`` is the location from the above list command without the leading ``file://``
+
+.. code-block:: bash
+
+   spack mirror create -a -d /path/to/mirror
+
+If this fails with ``git lfs`` errors, check the site config for which module to load for ``git lfs`` support. Load the module, then run the ``spack mirror add`` command, then unload the module and proceed with the installation.
 
 ==============================
 Pre-configuring sites
