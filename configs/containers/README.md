@@ -7,7 +7,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
   specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, jedi-ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@11.7.1, ecbuild@3.6.5, eccodes@2.27.0, ecflow@5,
     eckit@1.20.2, ecmwf-atlas@0.32.1 +trans ~fftw, ectrans@1.2.0 ~fftw, eigen@3.4.0,
-    fckit@0.10.0, fms@release-jcsda, g2@3.4.5, g2tmpl@1.10.2, gftl-shared@1.5.0,
+    fckit@0.10.0, fms@release-jcsda, g2@3.4.5, g2tmpl@1.10.0, gftl-shared@1.5.0,
     gsibec@1.0.7, hdf@4.2.15, hdf5@1.14.0, ip@3.3.3, jasper@2.0.32, jedi-cmake@1.4.0,
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.9.2, netcdf-cxx4@4.3.1,
     netcdf-fortran@4.6.0, nlohmann-json@3.10.5, nlohmann-json-schema-validator@2.1.0,
