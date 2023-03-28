@@ -486,6 +486,8 @@ Hera sits behind the NOAA firewall and doesn't have access to all packages on th
 NOAA RDHPCS Jet
 ------------------------------
 
+Note that the ``target`` architecture for Jet must be set to ``core2`` to satisfy differences between the various Jet partitions and ensure that installations run on the front-end nodes (xjet-like) will function on the other partitions.
+
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
