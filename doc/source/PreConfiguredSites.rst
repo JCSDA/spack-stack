@@ -41,9 +41,9 @@ Ready-to-use spack-stack installations are available on the following, fully sup
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | UW (Univ. of Wisc.) S4 Intel/GNU                           | Dom Heinzeller / Mark Potts   | ``/data/prod/jedi/spack-stack-1.3.0/envs/unified-env``                                                       |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| Amazon Web Services Parallelcluster Ubuntu 20.04 Intel/GNU | Dom Heinzeller / ???          | ``/mnt/experiments-efs/skylab-v4/spack-stack-1.3.0/envs/unified-env`                                         |
+| Amazon Web Services Parallelcluster Ubuntu 20.04 Intel/GNU | Dom Heinzeller / ???          | ``/mnt/experiments-efs/skylab-v4/spack-stack-1.3.0/envs/unified-env``                                        |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``//home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env``                                           |
+| Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env``                                            |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
@@ -481,7 +481,7 @@ For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab
    module use /home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.4
-   module load stack-python/3.9.13
+   module load stack-python/3.10.8
    module available
 
 .. _Preconfigured_Sites_Tier2:
