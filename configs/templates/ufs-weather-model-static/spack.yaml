@@ -16,7 +16,7 @@ spack:
   specs:
   - jasper@2.0.25~shared
   - libjpeg-turbo~shared
-  - libpng@1.6.37~shared
+  - libpng@1.6.37 libs=static
   - zlib@1.2.11~shared
   - bacio@2.4.1
   - crtm@2.4.0~fix
