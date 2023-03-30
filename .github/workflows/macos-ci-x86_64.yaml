@@ -105,6 +105,11 @@ jobs:
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
 
+          # DH* temp
+          echo "py-mysql-connector-python ..."
+          spack install --fail-fast --source --no-check-signature py-mysql-connector-python 2>&1 | tee log.install.apple-clang-14.0.0.py-mysql-connector-python
+          # *DH temp
+
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
