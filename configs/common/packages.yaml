@@ -186,8 +186,12 @@
     py-h5py:
       version: [3.7.0]
       variants: ~mpi
-    py-mysql-connector-python:
-      version: [8.0.32]
+    # Comment out for now until build problems are solved
+    # https://github.com/NOAA-EMC/spack-stack/issues/522
+    # see also jedi-ewok-env virtual package and container
+    # README.md
+    #py-mysql-connector-python:
+    #  version: [8.0.32]
     py-netcdf4:
       version: [1.5.3]
       variants: ~mpi
