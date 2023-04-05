@@ -26,6 +26,13 @@ packages:
       prefix: /discover/swdev/jcsda/spack-stack/miniconda-3.9.7/
       modules:
       - miniconda/3.9.7
+  py-pip:
+    buildable: False
+    externals:
+    - spec: py-pip@21.2.4
+      prefix: /discover/swdev/jcsda/spack-stack/miniconda-3.9.7/
+      modules:
+      - miniconda/3.9.7
 
 ### All other external packages listed alphabetically
   autoconf:
