@@ -32,6 +32,15 @@ packages:
       prefix: /scratch1/NCEPDEV/global/spack-stack/apps/miniconda/py39_4.12.0
       modules:
       - miniconda/3.9.12
+  py-pip:
+    buildable: False
+    externals:
+    - spec: py-pip@21.2.4
+      prefix: /scratch1/NCEPDEV/global/spack-stack/apps/miniconda/py39_4.12.0
+      modules:
+      - miniconda/3.9.12
+
+### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
