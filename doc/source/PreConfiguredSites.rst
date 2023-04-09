@@ -468,7 +468,7 @@ For ``spack-stack-1.3.0`` with Intel, run the following commands/load the follow
 Amazon Web Services Red Hat 8
 -----------------------------
 
-For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (ami-04a74896e17b9f9a0 in region us-east-1, ami-0d4506dfd5cf2168f in region us-east-2, , available on request from JCSDA). After logging in, run:
+For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (ami-098a3fdd801055c14 in region us-east-1, ami-039759644cac741eb in region us-east-2). After logging in, run:
 
 .. code-block:: console
 
