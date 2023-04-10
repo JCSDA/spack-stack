@@ -29,13 +29,13 @@ Ready-to-use spack-stack installations are available on the following, fully sup
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env``                             |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud) Intel/GNU?        | Mark Potts / Cam Book         | **missing, will be supported**                                                                               |
+| NOAA Parallel Works (AWS, Azure, Gcloud) Intel/GNU?        | Mark Potts / Cam Book         | **will be supported soon**                                                                                   |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA Acorn Intel                                           | Hang Lei / ???                | **missing, will be supported**                                                                               |
+| NOAA Acorn Intel                                           | Hang Lei / ???                | **will be supported soon**                                                                                   |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Gaea (C3/C4)                                   | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env``                      |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Hera Intel/GNU                                 | Mark Potts / Dom Heinzeller   | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-dev``                          |
+| NOAA RDHPCS Hera Intel/GNU                                 | Mark Potts / Dom Heinzeller   | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-env``                          |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Jet Intel/GNU                                  | Cam Book / Dom Heinzeller     | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-env``                          |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -252,10 +252,8 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading min
 NOAA Acorn (WCOSS2 test system)
 -------------------------------
 
-**THIS SECTION STILL NEEDS UPDATING FOR SPACK-STACK-1.3.0**
-
 .. note::
-   ``spack-stack-1.3.0`` is not yet supported on this platform, but will be added in this release.
+   ``spack-stack-1.3.0`` is not yet supported on this platform, but will be added on develop later.
 
 On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
 
@@ -270,10 +268,8 @@ CONFIG_SITE should be set to empty in `compilers.yaml`. Don't use ``module purge
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-**THIS SECTION STILL NEEDS UPDATING FOR SPACK-STACK-1.3.0**
-
 .. note::
-   ``spack-stack-1.3.0`` is not yet supported on this platform, but will be added in this release.
+   ``spack-stack-1.3.0`` is not yet supported on this platform, but will be added on develop later.
 
 The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path.
 
@@ -345,7 +341,7 @@ For ``spack-stack-1.3.0`` with Intel, load the following modules after loading m
 
 .. code-block:: console
 
-   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-dev/install/modulefiles/Core
+   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.12
@@ -355,7 +351,7 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
-   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-dev/install/modulefiles/Core
+   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/9.2.0
    module load stack-openmpi/3.1.4
    module load stack-python/3.9.12
@@ -472,7 +468,7 @@ For ``spack-stack-1.3.0`` with Intel, run the following commands/load the follow
 Amazon Web Services Red Hat 8
 -----------------------------
 
-For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (ami-04a74896e17b9f9a0 in region us-east-1, ami-0d4506dfd5cf2168f in region us-east-2, , available on request from JCSDA). After logging in, run:
+For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (ami-098a3fdd801055c14 in region us-east-1, ami-039759644cac741eb in region us-east-2). After logging in, run:
 
 .. code-block:: console
 

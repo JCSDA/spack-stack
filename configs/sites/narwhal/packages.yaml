@@ -34,6 +34,13 @@ packages:
       prefix: /opt/cray/pe/python/3.9.7.1
       modules:
       - cray-python/3.9.7.1
+  py-pip:
+    buildable: False
+    externals:
+    - spec: py-pip@21.2.3
+      prefix: /opt/cray/pe/python/3.9.7.1
+      modules:
+      - cray-python/3.9.7.1
 
 ### All other external packages listed alphabetically
   autoconf:
