@@ -362,6 +362,7 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y mysql-server
+   apt install -y libmysqlclient-dev
 
    # Python
    apt install -y python3-dev python3-pip
@@ -410,6 +411,7 @@ The following instructions were used to prepare a basic Ubuntu 22.04 system as i
    apt install -y libssl-dev
    apt install -y meson
    apt install -y mysql-server
+   apt install -y libmysqlclient-dev
 
    # Python
    apt install -y python3-dev python3-pip
