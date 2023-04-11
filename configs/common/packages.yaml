@@ -54,9 +54,13 @@
       version: [3.4.0]
     # Attention - when updating the version also check the common modules.yaml
     # config and update the projections for lmod/tcl
+    # Note: Stay away from esmf@8.4.1 ... breaks all sorts of things
+    #esmf:
+    #  version: [8.4.1]
+    #  variants: ~xerces ~pnetcdf +parallelio ~shared
     esmf:
-      version: [8.4.1]
-      variants: ~xerces ~pnetcdf
+      version: [8.3.0b09]
+      variants: ~xerces ~pnetcdf +pio snapshot=b09 ~shared
     fckit:
       version: [0.10.0]
       variants: +eckit
@@ -112,7 +116,10 @@
     libpng:
       version: [1.6.37]
     mapl:
-      version: [2.35.2]
+      # 2.35.2 goes with esmf@8.4.1
+      #version: [2.35.2]
+      version: [2.22.0]
+      variants: ~shared
     met:
       version: [10.1.1]
       variants: +python +grib2
@@ -177,10 +184,14 @@
     py-eccodes:
       version: [1.4.2]
     py-h5py:
-      version: [3.6.0]
+      version: [3.7.0]
       variants: ~mpi
-    py-mysql-connector-python:
-      version: [8.0.13]
+    # Comment out for now until build problems are solved
+    # https://github.com/NOAA-EMC/spack-stack/issues/522
+    # see also jedi-ewok-env virtual package and container
+    # README.md
+    #py-mysql-connector-python:
+    #  version: [8.0.32]
     py-netcdf4:
       version: [1.5.3]
       variants: ~mpi

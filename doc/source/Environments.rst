@@ -9,7 +9,7 @@ Environments can be constructed in two ways in spack-stack:
 
 1. Start with an empty template, ``spack stack create env --template=empty`` or just ``spack stack create env`` without specifying a template.
 
-    - Configure the environment as shown in :numref:`Sections %s <Quickstart>` and :numref:`%s <Platforms>`.
+    - Configure the environment as shown in :numref:`Sections %s <NewSiteConfigs>`.
 
     - Add spack packages (also referred to as ``specs``) to the environment using ``spack add``. These packages can be virtual environments described in :numref:`Section %s <EnvironmentsVirtualPackages>` below, or individual packages, e.g. ``esmf`` or ``atlas``. Examples:
 
@@ -77,14 +77,3 @@ Templates are vetted combinations of packages, i.e. these have been tested to bu
 
 .. _EnvironmentsContainers:
 
------------------
-Container recipes
------------------
-
-Container recipes are self-contained except that at container creation time (``spack stack create ctr ...``) package information from the common ``packages.yaml`` (or a manually provided version) is added to the ``packages:`` section, and specs are added in the section ``specs`` as defined in the template (default is an empty template with no specs.) Container recipes are defined in ``configs/containers``. Currently available container recipes are:
-
-**WORK IN PROGRESS**
-
-**AUTOMATICALLY GENERATE A TABLE WITH NAME AND DESCRIPTION BASED ON THE FILE NAME AND ... WHAT ELSE? IF WE DO THAT, ALSO UPDATE THE SECTION ON GENERATING DOCUMENTATION WITH THE NECESSARY DETAILS**
-
-**For now, check the contents of ``configs/containers/`` yourself, sorry.**

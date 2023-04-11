@@ -1,2 +1,3 @@
 config:
   build_jobs: 6
+  build_stage: $tempdir/$user/spack-stage
