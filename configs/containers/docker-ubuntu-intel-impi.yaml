@@ -61,6 +61,11 @@ spack:
       externals:
       - spec: git-lfs@2.9.2
         prefix: /usr
+    mysql:
+      buildable: false
+      externals:
+      - spec: mysql@8.0.32
+        prefix: /usr
     # Turn off crypt, because libxcrypt doesn't
     # build with Intel.
     python:
@@ -119,6 +124,7 @@ spack:
       - git-lfs
       - gpg
       - make
+      - mysql-server
       - qt5-default
       - libqt5svg5-dev
       - qt5dxcb-plugin
@@ -134,6 +140,7 @@ spack:
       - git-lfs
       - gpg
       - make
+      - mysql-server
       - qt5-default
       - libqt5svg5-dev
       - qt5dxcb-plugin

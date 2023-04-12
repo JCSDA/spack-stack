@@ -60,6 +60,11 @@ spack:
       - spec: mpich@4.0.2
         prefix: /opt/mpich-4.0.2
       version: [4.0.2]
+    mysql:
+      buildable: false
+      externals:
+      - spec: mysql@8.0.32
+        prefix: /usr
     qt:
       buildable: false
       externals:
@@ -116,6 +121,7 @@ spack:
       - git
       - git-lfs
       - make
+      - mysql-server
       - qt5-default
       - libqt5svg5-dev
       - qt5dxcb-plugin
@@ -133,6 +139,7 @@ spack:
       - git
       - git-lfs
       - make
+      - mysql-server
       - qt5-default
       - libqt5svg5-dev
       - qt5dxcb-plugin

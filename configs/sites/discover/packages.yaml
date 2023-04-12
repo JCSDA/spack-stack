@@ -3,6 +3,7 @@ packages:
     compiler:: [intel@2022.0.1, gcc@10.1.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.0, openmpi@4.1.3]
+    target: [ivybridge]
 
 ### MPI, Python, MKL
   mpi:
@@ -23,6 +24,13 @@ packages:
     buildable: False
     externals:
     - spec: python@3.9.7
+      prefix: /discover/swdev/jcsda/spack-stack/miniconda-3.9.7/
+      modules:
+      - miniconda/3.9.7
+  py-pip:
+    buildable: False
+    externals:
+    - spec: py-pip@21.2.4
       prefix: /discover/swdev/jcsda/spack-stack/miniconda-3.9.7/
       modules:
       - miniconda/3.9.7

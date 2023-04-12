@@ -31,6 +31,13 @@ packages:
       prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12
       modules:
       - miniconda/3.9.12
+  py-pip:
+    buildable: False
+    externals:
+    - spec: py-pip@21.2.4
+      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12
+      modules:
+      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:

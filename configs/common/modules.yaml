@@ -124,6 +124,8 @@ modules:
           ^esmf@8.3.0+debug snapshot=none: 'esmf-8.3.0-debug'
           ^esmf@8.4.0~debug snapshot=none: 'esmf-8.4.0'
           ^esmf@8.4.0+debug snapshot=none: 'esmf-8.4.0-debug'
+          ^esmf@8.4.1~debug snapshot=none: 'esmf-8.4.1'
+          ^esmf@8.4.1+debug snapshot=none: 'esmf-8.4.1-debug'
       openmpi:
         environment:
           set:
@@ -350,6 +352,8 @@ modules:
           ^esmf@8.3.0+debug snapshot=none: 'esmf-8.3.0-debug'
           ^esmf@8.4.0~debug snapshot=none: 'esmf-8.4.0'
           ^esmf@8.4.0+debug snapshot=none: 'esmf-8.4.0-debug'
+          ^esmf@8.4.1~debug snapshot=none: 'esmf-8.4.1'
+          ^esmf@8.4.1+debug snapshot=none: 'esmf-8.4.1-debug'
       openmpi:
         environment:
           set:
