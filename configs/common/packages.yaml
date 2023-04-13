@@ -66,7 +66,7 @@
       version: [1.1.0]
     fms:
       version: [2022.04]
-      variants: precision=64 +quad_precision +gfs_phys +openmp +fpic constants=GFS
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +fpic constants=GFS
     g2:
       version: [3.4.5]
     g2c:
