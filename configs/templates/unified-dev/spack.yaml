@@ -19,8 +19,7 @@ spack:
       - soca-env@unified-dev
       - ufs-srw-app-env@unified-dev
       #- ufs-utils-env@unified-dev
-      - ufs-weather-model-env~debug@unified-dev
-      - ufs-weather-model-env+debug@unified-dev
+      - ufs-weather-model-env@unified-dev
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
