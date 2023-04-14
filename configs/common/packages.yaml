@@ -155,7 +155,7 @@
     nlohmann-json-schema-validator:
       version: [2.1.0]
     odc:
-      version: [1.4.5]
+      version: [1.4.6]
       variants: ~fortran
     openblas:
       version: [0.3.19]
