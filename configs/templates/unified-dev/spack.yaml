@@ -20,14 +20,11 @@ spack:
       - ufs-srw-app-env@unified-dev
       #- ufs-utils-env@unified-dev
       - ufs-weather-model-env~debug@unified-dev
-      - ufs-weather-model-env+debug@unified-dev
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
       # Additional esmf/mapl tag for testing
-      #- esmf@8.4.1+debug+parallelio
       #- esmf@8.4.1~debug+parallelio
-      #- mapl@2.35.2+debug ^esmf@8.4.1+debug+parallelio
       #- mapl@2.35.2~debug ^esmf@8.4.1~debug+parallelio
 
       # Additional crtm tag for testing - don't activate by default,
