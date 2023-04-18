@@ -101,6 +101,7 @@ jobs:
           # Break installation up in pieces and create build caches in between
           # This allows us to "spin up" builds that altogether take longer than
           # six hours, and/or fail later in the build process.
+          spack clean -a
 
           # base-env
           echo "base-env ..."
