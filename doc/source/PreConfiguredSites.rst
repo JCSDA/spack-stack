@@ -8,11 +8,11 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
 .. _Preconfigured_Sites_Tier1:
-=======================================================
-Officially supported spack-stack installations (tier 1)
-=======================================================
+=============================================================
+Officially supported spack-stack 1.3.0 installations (tier 1)
+=============================================================
 
-Ready-to-use spack-stack installations are available on the following, fully supported platforms. This version supports the JEDI Skylab release 4 of March 2023, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model, the UFS Short Range Weather Application, and the EMC Global Workflow). Amazon Web Services AMI are available on request in the US East 1 or 2 regions.
+Ready-to-use spack-stack 1.3.0 installations are available on the following, fully supported platforms. This version can be used for testing spack-stack with UFS applications (e.g. the UFS Weather Model, the UFS Short Range Weather Application, and the EMC Global Workflow). Amazon Web Services AMI are available in the US East 1 or 2 regions.
 
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | System                                                     | Maintainers                   | Location                                                                                                     |
@@ -44,6 +44,30 @@ Ready-to-use spack-stack installations are available on the following, fully sup
 | Amazon Web Services Parallelcluster Ubuntu 20.04 Intel/GNU | Dom Heinzeller / ???          | ``/mnt/experiments-efs/skylab-v4/spack-stack-1.3.0/envs/unified-env``                                        |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env``                                            |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+
+For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
+
+=======================================================================
+Officially supported spack-stack 1.3.1 installations (subset of tier 1)
+=======================================================================
+
+Ready-to-use spack-stack 1.3.1 installations are available on the following, fully supported platforms. This version supports the JEDI Skylab release 4 of March 2023, and can be used for testing spack-stack with other applications (e.g. the UFS Weather Model, the UFS Short Range Weather Application, and the EMC Global Workflow). Amazon Web Services AMI are available in the US East 1 or 2 regions.
+
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| System                                                     | Maintainers                   | Location                                                                                                     |
++============================================================+===============================+==============================================================================================================+
+| MSU Orion Intel/GNU                                        | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env``                           |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NASA Discover Intel/GNU                                    | Dom Heinzeller / ???          | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.3.1/envs/unified-env``                                       |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env``                             |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| UW (Univ. of Wisc.) S4 Intel/GNU                           | Dom Heinzeller / Mark Potts   | ``/data/prod/jedi/spack-stack/spack-stack-1.3.1/envs/unified-env``                                           |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services Parallelcluster Ubuntu 20.04 Intel/GNU | Dom Heinzeller / ???          | ``/mnt/experiments-efs/skylab-v4/spack-stack-1.3.1/envs/unified-env``                                        |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack/spack-stack-1.3.1/envs/unified-env``                                            |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
@@ -84,6 +108,26 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading min
    module load stack-python/3.9.7
    module available
 
+For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2022.0.2
+   module load stack-intel-oneapi-mpi/2021.5.1
+   module load stack-python/3.9.7
+   module available
+
+For ``spack-stack-1.3.1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-gcc/10.2.0
+   module load stack-openmpi/4.0.4
+   module load stack-python/3.9.7
+   module available
+
 .. _Preconfigured_Sites_Discover:
 
 ------------------------------
@@ -115,6 +159,26 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading min
 .. code-block:: console
 
    module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module load stack-gcc/10.1.0
+   module load stack-openmpi/4.1.3
+   module load stack-python/3.9.7
+   module available
+
+For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2022.0.1
+   module load stack-intel-oneapi-mpi/2021.5.0
+   module load stack-python/3.9.7
+   module available
+
+For ``spack-stack-1.3.1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.9.7
@@ -241,6 +305,26 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading min
 .. code-block:: console
 
    module use /glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module load stack-gcc/10.1.0
+   module load stack-openmpi/4.1.1
+   module load stack-python/3.9.12
+   module available
+
+For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow.
+
+.. code-block:: console
+
+   module use /glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/19.1.1.217
+   module load stack-intel-mpi/2019.7.217
+   module load stack-python/3.9.12
+   module available
+
+For ``spack-stack-1.3.1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.1
    module load stack-python/3.9.12
@@ -429,7 +513,30 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading min
 .. code-block:: console
 
    module use /data/prod/jedi/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module load stack-gcc/9.3.0
+   module load stack-mpich/4.0.1
+   module load stack-python/3.9.12
+   module available
 
+For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /data/prod/jedi/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2021.5.0
+   module load stack-intel-oneapi-mpi/2021.5.0
+   module load stack-python/3.9.12
+   module unuse /opt/apps/modulefiles/Compiler/intel/non-default/22
+   module unuse /opt/apps/modulefiles/Compiler/intel/22
+   module available
+
+Note the two `module unuse` commands, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
+
+For ``spack-stack-1.3.1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /data/prod/jedi/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/9.3.0
    module load stack-mpich/4.0.1
    module load stack-python/3.9.12
@@ -464,17 +571,52 @@ For ``spack-stack-1.3.0`` with Intel, run the following commands/load the follow
    module load stack-python/3.10.8
    module available
 
+For ``spack-stack-1.3.1`` with Intel, run the following commands/load the following modules:
+
+.. code-block:: console
+
+   module purge
+   ulimit -s unlimited
+   source /opt/intel/oneapi/compiler/2022.1.0/env/vars.sh
+   module use /mnt/experiments-efs/skylab-v4/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2022.1.0
+   module load stack-intel-oneapi-mpi/2021.6.0
+   module load stack-python/3.10.8
+   module available
+
+For ``spack-stack-1.3.1`` with Intel, run the following commands/load the following modules:
+
+   module purge
+   ulimit -s unlimited
+   module use /mnt/experiments-efs/skylab-v4/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-gcc/9.4.0
+   module load stack-openmpi/4.1.4
+   module load stack-python/3.10.8
+   module available
+
 -----------------------------
 Amazon Web Services Red Hat 8
 -----------------------------
 
-For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (ami-098a3fdd801055c14 in region us-east-1, ami-039759644cac741eb in region us-east-2). After logging in, run:
+For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (TODO UPDATE ami-098a3fdd801055c14 in region us-east-1, TODO UPDATE ami-039759644cac741eb in region us-east-2). After logging in, run:
 
 .. code-block:: console
 
    ulimit -s unlimited
    scl enable gcc-toolset-11 bash
    module use /home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module load stack-gcc/11.2.1
+   module load stack-openmpi/4.1.4
+   module load stack-python/3.10.8
+   module available
+
+For ``spack-stack-1.3.1`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (TODO UPDATE ami-098a3fdd801055c14 in region us-east-1, TODO UPDATE ami-039759644cac741eb in region us-east-2). After logging in, run:
+
+.. code-block:: console
+
+   ulimit -s unlimited
+   scl enable gcc-toolset-11 bash
+   module use /home/ec2-user/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.4
    module load stack-python/3.10.8
