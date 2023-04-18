@@ -60,7 +60,7 @@
     #  variants: ~xerces ~pnetcdf +parallelio ~shared
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio snapshot=b09 ~shared
+      variants: ~xerces ~pnetcdf snapshot=b09 ~shared esmf_pio=internal
     fckit:
       version: [0.10.0]
       variants: +eckit
