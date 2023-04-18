@@ -1,6 +1,8 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/NOAA-EMC/spack
+  #url = https://github.com/NOAA-EMC/spack
+  #branch = 1.3.1
+  url = https://github.com/climbfuji/spack
   branch = release/1.3.1
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
