@@ -54,7 +54,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
 
 ### Create an AMI on AWS EC2 to build docker containers
 
-AMI ami-0b5951b8be1fe5709 (dom-docker-builder-full-backup-20221221; JCSDA-NOAA account, us-east-1) was created following the instructions below
+Note to self: Update! AMI ami-0b5951b8be1fe5709 (dom-docker-builder-full-backup-20221221; JCSDA-NOAA account, us-east-1) was created following the instructions below
 
 - See https://docs.docker.com/desktop/install/ubuntu/
 - Start with ami-052efd3df9dad4825
