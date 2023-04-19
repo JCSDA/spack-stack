@@ -12,6 +12,7 @@ spack:
       #- gsi-env@unified-dev
       - jedi-ewok-env@unified-dev
       - jedi-fv3-env@unified-dev
+      - jedi-mpas-env@unified-dev
       - jedi-tools-env@unified-dev
       - jedi-ufs-env@unified-dev
       - jedi-um-env@unified-dev
