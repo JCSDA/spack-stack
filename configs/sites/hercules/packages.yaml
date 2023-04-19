@@ -67,6 +67,13 @@ packages:
     externals:
     - spec: diffutils@3.7
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /work2/noaa/da/dheinzel-new/spack-stack-hercules/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   findutils:
     externals:
     - spec: findutils@4.8.0
@@ -105,6 +112,13 @@ packages:
     externals:
     - spec: m4@1.4.19
       prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /work2/noaa/da/dheinzel-new/spack-stack-hercules/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
   openssh:
     externals:
     - spec: openssh@8.7p1
@@ -122,6 +136,12 @@ packages:
     externals:
     - spec: pkgconf@1.7.3
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.8
+      prefix: /apps/spack-managed/gcc-11.3.1/qt-5.15.8-d47tsna6f5dylcpblkfgw4gpn2cucihd
+      modules:
+      - qt/5.15.8
   subversion:
     externals:
     - spec: subversion@1.14.1
