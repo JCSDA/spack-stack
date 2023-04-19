@@ -80,7 +80,7 @@ jobs:
           # *DH
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
+          spack config add "packages:all:providers:mpi:[openmpi]"
           spack config add "packages:all:compiler:[apple-clang@14.0.0]"
           sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
@@ -131,7 +131,7 @@ jobs:
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
-          module load stack-openmpi/4.1.4
+          module load stack-openmpi
           module load stack-python/3.10.8
           module available
 
