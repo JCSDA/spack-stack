@@ -15,11 +15,16 @@ spack-stack is mainly a collection of Spack configuration files, but provides a 
 
 spack-stack is maintained by:
 
-- Alex Richert (@AlexanderRichert-NOAA), NOAA-EMC
+- Alex Richert (@AlexanderRichert-NOAA) and Ed Hartnett (@edwardhartnett), NOAA-EMC
 
-- Dom Heinzeller (@climbfuji), JCSDA
+- Dom Heinzeller (@climbfuji) and Steve Herbener (@srherbener), JCSDA
 
-- not yet appointed, EPIC
+- Cameron Book (@ulmononian) and Mark Potts (@mark-a-potts), EPIC
 
-.. note::
-   spack-stack is in early development and not yet ready for use. Instructions may be incomplete or invalid.
+===============
+Getting Started
+===============
+
+Basic usage of spack-stack is described :numref:`Section %s <UsingSpackEnvironments>`. Using spack-stack requires that you have a fully configured and installed spack-stack environment. In Many of supported platforms ready-to-use spack-stack installations available locally. You can see a list of those sites and site-specific instructions and caveats in :numref:`Section %s <Preconfigured_Sites>`.
+
+If you are a developer looking to build and run software locally using spack-stack, or if you are looking to install spack-stack on a new platform you can follow the instructions in :numref:`Section %s <NewSiteConfigs>`.
