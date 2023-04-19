@@ -46,7 +46,6 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          spack clean -a
 
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
@@ -139,7 +138,6 @@ jobs:
           # Break installation up in pieces and create build caches in between
           # This allows us to "spin up" builds that altogether take longer than
           # six hours, and/or fail later in the build process.
-          spack clean -a
 
           # base-env
           echo "base-env ..."
