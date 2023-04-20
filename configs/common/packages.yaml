@@ -238,6 +238,8 @@
       version: [1.8.0]
     qt:
       version: [5.15.3]
+    scotch:
+      version: [7.0.3]
     sfcio:
       version: [1.4.1]
     shumlib:
