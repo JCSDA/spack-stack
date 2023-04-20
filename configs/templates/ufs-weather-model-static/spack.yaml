@@ -36,3 +36,4 @@ spack:
   - parallelio@2.5.9+fortran~pnetcdf~shared
   - sp@2.3.3
   - w3emc@2.9.2
+  - scotch@7.0.3
