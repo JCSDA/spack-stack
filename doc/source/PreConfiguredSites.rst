@@ -561,7 +561,7 @@ For ``spack-stack-1.3.0`` with Intel, run the following commands/load the follow
    module load stack-python/3.10.8
    module available
 
-For ``spack-stack-1.3.0`` with Intel, run the following commands/load the following modules:
+For ``spack-stack-1.3.0`` with GNU, run the following commands/load the following modules:
 
    module purge
    ulimit -s unlimited
@@ -584,7 +584,7 @@ For ``spack-stack-1.3.1`` with Intel, run the following commands/load the follow
    module load stack-python/3.10.8
    module available
 
-For ``spack-stack-1.3.1`` with Intel, run the following commands/load the following modules:
+For ``spack-stack-1.3.1`` with GNU, run the following commands/load the following modules:
 
    module purge
    ulimit -s unlimited
@@ -598,7 +598,9 @@ For ``spack-stack-1.3.1`` with Intel, run the following commands/load the follow
 Amazon Web Services Red Hat 8
 -----------------------------
 
-For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (TODO UPDATE ami-098a3fdd801055c14 in region us-east-1, TODO UPDATE ami-039759644cac741eb in region us-east-2). After logging in, run:
+Use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8-update-20230419" (ami-01e025b0334795ffa in region us-east-1, TODO MAKE PUBLIC  ami-094361e081de18589 in region us-east-2).
+
+For ``spack-stack-1.3.0``, run:
 
 .. code-block:: console
 
@@ -610,7 +612,7 @@ For ``spack-stack-1.3.0`` use a c6i.4xlarge instance or similar with AMI "skylab
    module load stack-python/3.10.8
    module available
 
-For ``spack-stack-1.3.1`` use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8" (TODO UPDATE ami-098a3fdd801055c14 in region us-east-1, TODO UPDATE ami-039759644cac741eb in region us-east-2). After logging in, run:
+For ``spack-stack-1.3.1``, run:
 
 .. code-block:: console
 
