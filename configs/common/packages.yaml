@@ -35,17 +35,17 @@
       version: [2.4.0]
       variants: +fix
     ecbuild:
-      version: [3.6.5]
+      version: [3.7.2]
     eccodes:
       version: [2.27.0]
     ecflow:
       version: [5.8.4]
       variants: +ui
     eckit:
-      version: [1.20.2]
+      version: [1.23.0]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: [0.32.1]
+      version: [0.33.0]
       variants: +fckit +trans
     ectrans:
       version: [1.2.0]
@@ -62,7 +62,7 @@
       version: [8.3.0b09]
       variants: ~xerces ~pnetcdf +pio snapshot=b09 ~shared
     fckit:
-      version: [0.10.0]
+      version: [0.10.1]
       variants: +eckit
     fftw:
       version: [3.3.10]
@@ -90,14 +90,14 @@
     grib-util:
       version: [1.2.3]
     gsibec:
-      version: [1.0.7]
+      version: [1.1.2]
     gsl-lite:
       version: [0.37.0]
     hdf:
       version: [4.2.15]
       variants: ~fortran ~netcdf
     hdf5:
-      version: [1.14.0]
+      version: [1.12.2]
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: [3.3.3]
@@ -155,7 +155,7 @@
     nlohmann-json-schema-validator:
       version: [2.1.0]
     odc:
-      version: [1.4.5]
+      version: [1.4.6]
       variants: ~fortran
     openblas:
       version: [0.3.19]
@@ -184,7 +184,7 @@
     py-eccodes:
       version: [1.4.2]
     py-h5py:
-      version: [3.7.0]
+      version: [3.6.0]
       variants: ~mpi
     # Comment out for now until build problems are solved
     # https://github.com/NOAA-EMC/spack-stack/issues/522
