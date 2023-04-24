@@ -563,6 +563,8 @@ For ``spack-stack-1.3.0`` with Intel, run the following commands/load the follow
 
 For ``spack-stack-1.3.0`` with GNU, run the following commands/load the following modules:
 
+.. code-block:: console
+
    module purge
    ulimit -s unlimited
    module use /mnt/experiments-efs/skylab-v4/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
@@ -585,6 +587,8 @@ For ``spack-stack-1.3.1`` with Intel, run the following commands/load the follow
    module available
 
 For ``spack-stack-1.3.1`` with GNU, run the following commands/load the following modules:
+
+.. code-block:: console
 
    module purge
    ulimit -s unlimited
