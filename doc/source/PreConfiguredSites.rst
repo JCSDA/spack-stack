@@ -598,7 +598,7 @@ For ``spack-stack-1.3.1`` with GNU, run the following commands/load the followin
 Amazon Web Services Red Hat 8
 -----------------------------
 
-Use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8-update-20230419" (ami-01e025b0334795ffa in region us-east-1, TODO MAKE PUBLIC  ami-094361e081de18589 in region us-east-2).
+Use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8-update-20230419" (ami-01e025b0334795ffa in region us-east-1, ami-094361e081de18589 in region us-east-2).
 
 For ``spack-stack-1.3.0``, run:
 
