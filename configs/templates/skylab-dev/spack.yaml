@@ -21,20 +21,20 @@ spack:
     - bufr@11.7.1
     - crtm@2.3.0
     - crtm@2.4.0
-    - crtm@v2.3-jedi.4
     - crtm@v2.4-jedi.2
+    - crtm@v2.4.1-jedi
     - crtm@v3.0.0-rc.1
-    - ecbuild@3.6.5
+    - ecbuild@3.7.2
     - eccodes@2.27.0
     - ecflow@5
-    - eckit@1.20.2
-    - ecmwf-atlas@0.32.1
+    - eckit@1.23.0
+    - ecmwf-atlas@0.33.0
     - ectrans@1.2.0
     - eigen@3.4.0
     - esmf@8.3.0b09
     # DH* fake version number
     #- ewok@0.0.1
-    - fckit@0.10.0
+    - fckit@0.10.1
     - fiat@1.1.0
     # Do not request specific version of flex - this leads to duplicate packages being built
     #- flex@2.6.4
@@ -46,9 +46,9 @@ spack:
     #- gdal@3.4.3
     #- geos@3.9.1
     - gftl-shared@1.5.0
-    - gsibec@1.0.7
+    - gsibec@1.1.2
     - hdf@4.2.15
-    - hdf5@1.14.0
+    - hdf5@1.12.2
     - ip@3.3.3
     - jasper@2.0.32
     - jedi-cmake@1.4.0
@@ -62,11 +62,12 @@ spack:
     - netcdf-fortran@4.6.0
     - nlohmann-json@3.10.5
     - nlohmann-json-schema-validator@2.1.0
-    - odc@1.4.5
+    - odc@1.4.6
     - parallelio@2.5.9
     - parallel-netcdf@1.12.2
     - py-eccodes@1.4.2
     - py-f90nml@1.4.3
+    - py-h5py@3.6.0
     - py-numpy@1.22.3
     - py-pandas@1.4.0
     - py-pyyaml@6.0
