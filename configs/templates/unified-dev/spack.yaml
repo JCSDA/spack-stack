@@ -12,6 +12,7 @@ spack:
       #- gsi-env@unified-dev
       - jedi-ewok-env@unified-dev
       - jedi-fv3-env@unified-dev
+      - jedi-mpas-env@unified-dev
       - jedi-tools-env@unified-dev
       - jedi-ufs-env@unified-dev
       - jedi-um-env@unified-dev
@@ -19,8 +20,7 @@ spack:
       - soca-env@unified-dev
       - ufs-srw-app-env@unified-dev
       #- ufs-utils-env@unified-dev
-      - ufs-weather-model-env~debug@unified-dev
-      - ufs-weather-model-env+debug@unified-dev
+      - ufs-weather-model-env@unified-dev
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
