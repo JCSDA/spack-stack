@@ -1,4 +1,4 @@
-# spack-stack
+![spack-stack-logo](https://user-images.githubusercontent.com/8006981/234488735-45b2c5fa-1de6-47ad-ae3b-4a6829ae49b9.png)
 
 Spack-stack enables the installation of software required
 for HPC system deployments of NOAA's Unified Forecast System (UFS) and
