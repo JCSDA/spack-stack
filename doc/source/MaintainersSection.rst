@@ -31,7 +31,7 @@ The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `py
    mkdir -p miniconda-${miniconda_ver}/src
    cd miniconda-${miniconda_ver}/src
    wget https://repo.anaconda.com/miniconda/Miniconda3-${miniconda_ver}-${platform}.sh
-   sh ${name} -u -b -p /path/to/top-level/spack-stack/miniconda-${miniconda_ver}
+   sh Miniconda3-${miniconda_ver}-${platform}.sh -u -b -p /path/to/top-level/spack-stack/miniconda-${miniconda_ver}
    eval "$(${miniconda_prefix}/bin/conda shell.bash hook)"
    conda install -y -c conda-forge libpython-static
 ```
