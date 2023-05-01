@@ -59,6 +59,8 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 +============================================================+===============================+==============================================================================================================+
 | MSU Orion Intel/GNU                                        | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env``                           |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| MSU Hercules Intel/GNU                                     | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1-hercules/envs/unified-env``                  |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NASA Discover Intel/GNU                                    | Dom Heinzeller / ???          | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.3.1/envs/unified-env``                                       |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env``                             |
@@ -129,6 +131,21 @@ For ``spack-stack-1.3.1`` with GNU, load the following modules after loading min
    module load stack-openmpi/4.0.4
    module load stack-python/3.9.7
    module available
+
+------------------------------
+MSU Hercules
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/modulefiles
+   module load ecflow/5.8.4-hercules
+   module load mysql/8.0.31-hercules
+
+**THE REST IS MISSING NEEDS TO BE ADDED**
 
 .. _Preconfigured_Sites_Discover:
 
@@ -669,6 +686,8 @@ The following is required for building new spack environments and for using spac
    module load cray-mpich/8.1.16
    module load python/3.9.12
 
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles
+   
 ------------------------------
 TACC Frontera
 ------------------------------

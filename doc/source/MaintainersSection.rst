@@ -461,6 +461,39 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
 
+.. _MaintainersSection_Gaea:
+
+------------------------------
+NOAA RDHPCS Gaea C5
+------------------------------
+
+On Gaea, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/qt-5.15.2-c5``. Note that the installation must be done as a regular user due to problems with graphical applications for role accounts.
+
+.. code-block:: console
+
+   module unload intel-classic cray-mpich PrgEnv-intel
+   module load gcc/10.3.0
+   module load PrgEnv-gnu/8.3.3
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5` and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. 
+  
+   Ensure to follow the extra instructions in that section for Gaea.
+
+   module unload intel-classic cray-mpich PrgEnv-intel
+   module load gcc/10.3.0
+   module load PrgEnv-gnu/8.3.3
+   module load python/3.9.12
+
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles
+   module load qt/5.15.2-c5
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
+
 .. _MaintainersSection_Hera:
 
 ------------------------------
