@@ -103,7 +103,7 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
    make -j4 2>&1 | tee log.make
    make install 2>&1 | tee log.install
 
-Create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
+Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
 
 .. note::
    For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
