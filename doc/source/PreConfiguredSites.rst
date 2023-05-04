@@ -59,7 +59,7 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 +============================================================+===============================+==============================================================================================================+
 | MSU Orion Intel/GNU                                        | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env``                           |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| MSU Hercules Intel/GNU                                     | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1-hercules/envs/unified-env``                  |
+| MSU Hercules Intel/GNU^*                                   | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1-hercules/envs/unified-env``                  |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NASA Discover Intel/GNU                                    | Dom Heinzeller / ???          | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.3.1/envs/unified-env``                                       |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -73,6 +73,8 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack/spack-stack-1.3.1/envs/unified-env``                                            |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+
+^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
@@ -682,12 +684,14 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module load PrgEnv-intel/8.3.3
-   module load intel/2022.0.2
+   module load intel-classic/2022.2.1
    module load cray-mpich/8.1.16
-   module load python/3.9.12
 
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles
-   
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles-c5
+   module load miniconda/3.9.12
+   module load ecflow/5.8.4
+   module load mysql/8.0.31
+
 ------------------------------
 TACC Frontera
 ------------------------------

@@ -1,27 +1,29 @@
 packages:
   all:
-    compiler:: [intel@2022.0.2]
+    compiler:: [intel@2022.2.1]
     providers:
-      mpi:: [cray-mpich@8.1.16]
+      mpi:: [cray-mpich@8.1.25]
 
 ### MPI, Python, MKL
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.16%intel@2022.0.2~wrappers
+    - spec: cray-mpich@8.1.25%intel@2022.2.1~wrappers
+      prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
       modules:
-      - libfabric
       - craype-network-ofi
-      - cray-mpich/8.1.16
+      - cray-mpich/8.1.25
   python:
     buildable: false
     externals:
     - spec: python@3.9.12
-      modules: [python/3.9.12]
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/miniconda-3.9.12-c5
+      modules: [miniconda/3.9.12]
   py-pip:
     buildable: False
     externals:
     - spec: py-pip@21.2.4
-      modules: [python/3.9.12]
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/miniconda-3.9.12-c5
+      modules: [miniconda/3.9.12]
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -78,7 +80,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/ecflow-5.8.4
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/ecflow-5.8.4-c5
       modules: [ecflow/5.8.4]
   file:
     externals:
@@ -168,13 +170,12 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
-mysql:
-  buildable: False
-  externals:
-  - spec: mysql@8.0.31
-    prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31
-    modules:
-    - mysql/8.0.31
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/mysql-8.0.31-c5
+      modules: [mysql/8.0.31]
   ncurses:
     externals:
     - spec: ncurses@6.1.20180317+termlib abi=6
@@ -203,7 +204,7 @@ mysql:
   qt:
     externals:
     - spec: qt@5.15.2
-      prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/qt-5.15.2/5.15.2/gcc_64
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/qt-5.15.2-c5/5.15.2/gcc_64
   rdma-core:
     externals:
     - spec: rdma-core@37.0
