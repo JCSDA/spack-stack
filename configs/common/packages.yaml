@@ -184,7 +184,7 @@
     py-eccodes:
       version: [1.4.2]
     py-h5py:
-      version: [3.7.0]
+      version: [3.6.0]
       variants: ~mpi
     # Comment out for now until build problems are solved
     # https://github.com/NOAA-EMC/spack-stack/issues/522
