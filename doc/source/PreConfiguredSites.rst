@@ -31,7 +31,7 @@ Ready-to-use spack-stack 1.3.0 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud) Intel/GNU?        | Mark Potts / Cam Book         | **will be supported soon**                                                                                   |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA Acorn Intel                                           | Hang Lei / ???                | **will be supported soon**                                                                                   |
+| NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | **will be supported soon**                                                                                   |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Gaea (C3/C4) Intel                             | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env``                      |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -66,6 +66,8 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 | NCAR-Wyoming Casper Intel                                  | Dom Heinzeller / ???          | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1-casper/envs/unified-env``                      |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env``                             |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.3.1/envs/unified-env``                              |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Gaea (C3/C4) Intel                             | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env``                      |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -424,6 +426,8 @@ The following is required for building new spack environments and for using spac
 
 For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
+# DH* DOES THIS STILL WORK? I DON'T THINK SO, IF COMPILERS HAVE BEEN REMOVED FROM THE COMPUTE NODES
+
 .. code-block:: console
 
    module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
@@ -437,7 +441,7 @@ For ``spack-stack-1.3.1`` with Intel, load the following modules after loading m
 .. code-block:: console
 
    module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2021.3.0
+   module load stack-intel/2022.0.2
    module load stack-cray-mpich/7.7.11
    module load stack-python/3.9.12
    module available
