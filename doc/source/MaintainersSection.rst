@@ -505,9 +505,9 @@ ecflow
    module unload intel-classic cray-mpich PrgEnv-intel
    module load gcc/10.3.0
    module load PrgEnv-gnu/8.3.3
+   module load python/3.9.12
 
    module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles-c5
-   module load miniconda/3.9.12
    module load qt/5.15.2
 
 mysql

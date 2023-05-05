@@ -16,14 +16,14 @@ packages:
     buildable: false
     externals:
     - spec: python@3.9.12
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/miniconda-3.9.12-c5
-      modules: [miniconda/3.9.12]
+      prefix: /sw/gaea-c5/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/python-3.9.12-n7xlvqjslbeeaexdaibryhi7miqjjoa2
+      modules: [python/3.9.12]
   py-pip:
     buildable: False
     externals:
-    - spec: py-pip@21.2.4
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/miniconda-3.9.12-c5
-      modules: [miniconda/3.9.12]
+    - spec: py-pip@22.0.4
+      prefix: /sw/gaea-c5/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/python-3.9.12-n7xlvqjslbeeaexdaibryhi7miqjjoa2
+      modules: [python/3.9.12]
 
 ### All other external packages listed alphabetically
   autoconf:
