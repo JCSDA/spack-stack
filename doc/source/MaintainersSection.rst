@@ -20,26 +20,22 @@ Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootst
 ..  _MaintainersSection_Miniconda:
 
 ------------------------------
-Miniconda
+Miniconda (legacy)
 ------------------------------
 
-If required, miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. A Bash script is provided to bootstrap the Miniconda installation and create a default directory layout.
+miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. This is not recommended on configurable systems (user workstations and laptops using GNU compiler) where Python gets installed by spack. But any system using Intel compilers with spack-stack will need an external Python to build ecflow with Python bindings (because ecflow requires a boost serialization function that does **not** work with Intel, a known yet ignored bug), and then both Python and ecflow are presented to spack as external packages. Often, it is possible to use the default (OS) Python if new enough (3.9+), or a module provided by the system administrators. If none of this works, use the following instructions to install a basic Python interpreter using miniconda:
 
-.. code-block:: console
-
-   cd spack-stack/bootstrap
-   ./bootstrap.sh -p ${prefix}
-
-Which runs the following commands
-
-.. code-block:: console
-
-   eval "$(/work/noaa/gsd-hpcs/dheinzel/jcsda/miniconda-3.9.12/bin/conda shell.bash hook)"
-   conda install -c conda-forge libpython-static
-   conda install poetry
-   # Test, successful if silent
-   python3 -c "import poetry"
-   # log out to forget about the conda environment
+The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `python_ver=3.9.12`) and `platform="MacOSX-x86_64"` or `platform="Linux-x86_64"`
+````
+   cd /path/to/top-level/spack-stack/
+   mkdir -p miniconda-${miniconda_ver}/src
+   cd miniconda-${miniconda_ver}/src
+   wget https://repo.anaconda.com/miniconda/Miniconda3-${miniconda_ver}-${platform}.sh
+   sh Miniconda3-${miniconda_ver}-${platform}.sh -u -b -p /path/to/top-level/spack-stack/miniconda-${miniconda_ver}
+   eval "$(${miniconda_prefix}/bin/conda shell.bash hook)"
+   conda install -y -c conda-forge libpython-static
+```
+After the successful installation, create modulefile ``/path/to/top-level/spack-stack/modulefiles/miniconda/${python_ver}`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` and the Python version in this file.
 
 ..  _MaintainersSection_Qt5:
 
