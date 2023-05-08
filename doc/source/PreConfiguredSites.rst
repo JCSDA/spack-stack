@@ -167,6 +167,7 @@ For ``spack-stack-1.3.1`` with Intel, load the following modules after loading m
 
 .. code-block:: console
 
+   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1-hercules/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.7.1
    module load stack-intel-oneapi-mpi/2021.7.1
    module load stack-python/3.9.14
@@ -176,6 +177,7 @@ For ``spack-stack-1.3.1`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
+   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1-hercules/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.3.1
    module load stack-openmpi/4.1.4
    module load stack-python/3.9.14
