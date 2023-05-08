@@ -25,8 +25,8 @@ spack:
       #- ww3-env@unified-dev
 
       # Additional esmf/mapl tag for testing
-      #- esmf@8.4.1~debug+parallelio
-      #- mapl@2.35.2~debug ^esmf@8.4.1~debug+parallelio
+      #- esmf@8.4.1~debug+external-parallelio
+      #- mapl@2.35.2~debug ^esmf@8.4.1~debug+external-parallelio
 
       # Additional crtm tag for testing - don't activate by default,
       # this can lead to duplicate packages (e.g. in Ubuntu CI tests)
