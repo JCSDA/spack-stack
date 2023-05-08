@@ -29,11 +29,13 @@ Ready-to-use spack-stack 1.3.0 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env``                             |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud) Intel/GNU?        | Mark Potts / Cam Book         | **will be supported soon**                                                                                   |
+| NOAA Parallel Works (AWS, Azure, Gcloud) Intel             | Mark Potts / Cam Book         | ``/contrib/EPIC/spack-stack/spack-stack-1.3.0/envs/unified-env``                                             |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | **will be supported soon**                                                                                   |
+| NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.3.0/envs/unified-env``                              |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea (C3/C4) Intel                             | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env``                      |
+| NOAA RDHPCS Gaea C4 Intel                                  | Dom Heinzeller / ???          | **no longer supported**                                                                                      |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea C5 Intel                                  | Dom Heinzeller / ???          | **not supported**                                                                                            |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Hera Intel/GNU                                 | Mark Potts / Dom Heinzeller   | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.0/envs/unified-env``                          |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -67,9 +69,13 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env``                             |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NOAA Parallel Works (AWS, Gcloud) Intel^**                 | Mark Potts / Cam Book         | ``/contrib/EPIC/spack-stack/spack-stack-1.3.1/envs/unified-env``                                             |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.3.1/envs/unified-env``                              |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea (C3/C4) Intel                             | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env``                      |
+| NOAA RDHPCS Gaea C4 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env``                      |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NOAA RDHPCS Gaea C5 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1-c5/envs/unified-env``                   |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Hera Intel/GNU                                 | Mark Potts / Dom Heinzeller   | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.3.1/envs/unified-env``                          |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -83,6 +89,8 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 
 ^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
+
+^** spack-stack-1.3.1 is not yet available on NOAA Parallel Works Azure, but on AWS and Gcloud.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
 
@@ -155,7 +163,23 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4-hercules
    module load mysql/8.0.31-hercules
 
-**THE REST IS MISSING NEEDS TO BE ADDED**
+For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module load stack-intel/2021.7.1
+   module load stack-intel-oneapi-mpi/2021.7.1
+   module load stack-python/3.9.14
+   module available
+
+For ``spack-stack-1.3.1`` with GNU, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module load stack-gcc/11.3.1
+   module load stack-openmpi/4.1.4
+   module load stack-python/3.9.14
+   module available
 
 .. _Preconfigured_Sites_Discover:
 
@@ -375,9 +399,6 @@ For ``spack-stack-1.3.1`` with GNU, load the following modules after loading min
 NOAA Acorn (WCOSS2 test system)
 -------------------------------
 
-.. note::
-   ``spack-stack-1.3.0`` is not yet supported on this platform, but will be added on develop later.
-
 On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
 
 CONFIG_SITE should be set to empty in `compilers.yaml`. Don't use ``module purge`` on Acorn!
@@ -391,9 +412,6 @@ CONFIG_SITE should be set to empty in `compilers.yaml`. Don't use ``module purge
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-.. note::
-   ``spack-stack-1.3.0`` is not yet supported on this platform, but will be added on develop later.
-
 The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path.
 
 .. code-block:: console
@@ -402,13 +420,32 @@ The following is required for building new spack environments and for using spac
    module unuse /opt/cray/modulefiles
    export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
    module use /contrib/spack-stack/modulefiles/core
-   module load miniconda/3.9.7
+   module load miniconda/3.9.12
    module load mysql/8.0.31
+
+For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
+
+   module use /contrib/EPIC/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2021.3.0
+   module load stack-intel-oneapi-mpi/2021.3.0
+   module load stack-python/3.9.12
+   module available
+
+For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+   module use /contrib/EPIC/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2021.3.0
+   module load stack-intel-oneapi-mpi/2021.3.0
+   module load stack-python/3.9.12
+   module available
+
+.. note::
+   ``spack-stack-1.3.1`` is not yet available on Azure.
 
 .. _Preconfigured_Sites_Gaea:
 
 ------------------------------
-NOAA RDHPCS Gaea (C3/C4)
+NOAA RDHPCS Gaea C4
 ------------------------------
 
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
@@ -424,18 +461,6 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
-
-# DH* DOES THIS STILL WORK? I DON'T THINK SO, IF COMPILERS HAVE BEEN REMOVED FROM THE COMPUTE NODES
-
-.. code-block:: console
-
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2021.3.0
-   module load stack-cray-mpich/7.7.11
-   module load stack-python/3.9.12
-   module available
-
 For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
@@ -443,6 +468,42 @@ For ``spack-stack-1.3.1`` with Intel, load the following modules after loading m
    module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-cray-mpich/7.7.11
+   module load stack-python/3.9.12
+   module available
+
+.. note::
+   On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. A workaround is to use the `cmake` cross-compiling emulator for this:
+
+.. code-block:: console
+
+   cmake -DCMAKE_CROSSCOMPILING_EMULATOR="/usr/bin/srun;-n;1" -DMPIEXEC_EXECUTABLE="/usr/bin/srun" -DMPIEXEC_NUMPROC_FLAG="-n" PATH_TO_SOURCE
+
+.. _Preconfigured_Sites_Gaea_C5:
+
+------------------------------
+NOAA RDHPCS Gaea (C5)
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
+
+.. code-block:: console
+
+   module load PrgEnv-intel/8.3.3
+   module load intel-classic/2022.2.1
+   module load cray-mpich/8.1.25
+   module load python/3.9.12
+
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles-c5
+   module load ecflow/5.8.4
+   module load mysql/8.0.31
+
+For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
+
+.. code-block:: console
+
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1-c5/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2022.2.1
+   module load stack-cray-mpich/8.1.25
    module load stack-python/3.9.12
    module available
 
@@ -713,28 +774,12 @@ For ``spack-stack-1.3.1``, run:
    module available
 
 .. _Preconfigured_Sites_Tier2:
+
 =============================
 Pre-configured sites (tier 2)
 =============================
 
 Tier 2 sites are sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team. The configuration files for these sites may not be up to date or functional.
-
-------------------------------
-NOAA RDHPCS Gaea (C5)
-------------------------------
-
-The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
-
-.. code-block:: console
-
-   module load PrgEnv-intel/8.3.3
-   module load intel-classic/2022.2.1
-   module load cray-mpich/8.1.25
-   module load python/3.9.12
-
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles-c5
-   module load ecflow/5.8.4
-   module load mysql/8.0.31
 
 ------------------------------
 TACC Frontera
