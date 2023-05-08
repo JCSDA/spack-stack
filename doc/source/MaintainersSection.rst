@@ -519,13 +519,28 @@ mysql
 NOAA RDHPCS Hera
 ------------------------------
 
-On Hera, ``miniconda`` must be installed as a one-off before spack can be used.
+On Hera, ``miniconda``, ``mysql`` must be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/scratch1/NCEPDEV/global/spack-stack/apps/mysql-8.0.31``. Since Hera cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
+
+openmpi
+   It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.5`` MPI library with ``gcc@9.2.0`` as referenced in the Hera site config. After the installation, create modulefile `openmpi/4.1.5` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs.
+
+.. code-block:: console
+
+   module purge
+   module load gnu/9.2.0
+   ./configure \
+       --prefix=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/openmpi-4.1.5 \
+       --with-pmi=/apps/slurm/default \
+       --with-lustre
+   make VERBOSE=1 -j4
+   make check
+   make install
 
 Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform (e.g. Cheyenne). This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
 
