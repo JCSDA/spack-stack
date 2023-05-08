@@ -137,7 +137,7 @@ jobs:
           module available
 
           module load jedi-ufs-env/unified-dev
-          module load jedi-ewok-env/unified-dev
+          module load ewok-env/unified-dev
           module load soca-env/unified-dev
           module list
 

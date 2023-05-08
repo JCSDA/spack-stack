@@ -188,7 +188,7 @@
       variants: ~mpi
     # Comment out for now until build problems are solved
     # https://github.com/NOAA-EMC/spack-stack/issues/522
-    # see also jedi-ewok-env virtual package and container
+    # see also ewok-env virtual package and container
     # README.md
     #py-mysql-connector-python:
     #  version: [8.0.32]

@@ -10,7 +10,7 @@ spack:
   - packages:
       - global-workflow-env@unified-dev
       #- gsi-env@unified-dev
-      - jedi-ewok-env@unified-dev
+      - ewok-env@unified-dev
       - jedi-fv3-env@unified-dev
       - jedi-mpas-env@unified-dev
       - jedi-tools-env@unified-dev
@@ -43,7 +43,7 @@ spack:
         - jedi-tools-env%intel
         ## Don't even bother building those with Intel 18,
         ## not needed. Many of the Python packages don't build.
-        #- jedi-ewok-env%intel@18
+        #- ewok-env%intel@18
         #- jedi-fv3-env%intel@18
         #- jedi-tools-env%intel@18
         #- jedi-ufs-env%intel@18

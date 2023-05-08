@@ -4,7 +4,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
 
 ### spack-stack-1.3.1 / skylab-4.0.0 containers for fv3-jedi and mpas-jedi (but not for ufs-jedi)
 ```
-  specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, jedi-ewok-env@1.0.0, jedi-fv3-env@1.0.0,
+  specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@11.7.1, ecbuild@3.7.2, eccodes@2.27.0, ecflow@5,
     eckit@1.23.0, ecmwf-atlas@0.33.0 +trans ~fftw, ectrans@1.2.0 ~fftw, eigen@3.4.0,
     fckit@0.10.1, fms@release-jcsda, g2@3.4.5, g2tmpl@1.10.0, gftl-shared@1.5.0,
