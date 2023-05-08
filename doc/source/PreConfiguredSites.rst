@@ -481,7 +481,7 @@ For ``spack-stack-1.3.1`` with Intel, load the following modules after loading m
 .. _Preconfigured_Sites_Gaea_C5:
 
 ------------------------------
-NOAA RDHPCS Gaea (C5)
+NOAA RDHPCS Gaea C5
 ------------------------------
 
 The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!

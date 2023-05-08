@@ -106,7 +106,7 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
 Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
 
 .. note::
-   For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea (C3/4) and Gaea C5, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
+   For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea C4/C5, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
 
 .. code-block:: console
 
@@ -431,7 +431,7 @@ mysql
 .. _MaintainersSection_Gaea:
 
 ------------------------------
-NOAA RDHPCS Gaea
+NOAA RDHPCS Gaea C4
 ------------------------------
 
 On Gaea, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
