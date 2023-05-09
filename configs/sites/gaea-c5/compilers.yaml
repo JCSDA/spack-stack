@@ -8,7 +8,6 @@ compilers:
       fc: ftn
     flags: {}
     operating_system: sles15
-    target: any
     modules:
     - PrgEnv-intel/8.3.3
     - intel/2022.0.2
