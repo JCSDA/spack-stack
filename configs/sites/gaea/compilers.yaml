@@ -8,7 +8,6 @@ compilers::
         fc: ftn
       flags: {}
       operating_system: cnl7
-      target: any
       modules:
       - PrgEnv-intel
       - intel/2021.3.0
