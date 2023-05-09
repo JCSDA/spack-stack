@@ -20,8 +20,8 @@ sys.path.insert(0, os.path.abspath('.'))
 # -- Project information -----------------------------------------------------
 
 project = 'spack-stack'
-copyright = '2022 '
-author = 'Dom Heinzeller, Alex Richert'
+copyright = '2023 '
+author = 'Dominikus Heinzeller, Alexander Richert, Cameron Book'
 
 # The short X.Y version
 version = ''
@@ -142,7 +142,7 @@ latex_elements = {
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
-    'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Heinzeller, D., K. Gerheiser, 2022. spack-stack documentation release v0.0.1. Available at https://spack-stack.readthedocs.io/\textunderscore/downloads/en/v0.0.1/pdf/.}\sphinxmaketitle'
+    'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Heinzeller, D., A. Richert, C. Book, 2023. spack-stack documentation release v1.3.1. Available at https://spack-stack.readthedocs.io/\textunderscore/downloads/en/v1.3.1/pdf/.}\sphinxmaketitle'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
