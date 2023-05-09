@@ -1,248 +1,255 @@
-  packages:
-    all:
-      compiler:: [intel@2022.0.2]
-      providers:
-        mpi:: [cray-mpich@8.1.16]
-    cray-mpich:
-      externals:
-      - spec: cray-mpich@8.1.16%intel@2022.0.2~wrappers
-        modules:
-        - libfabric
-        - craype-network-ofi
-        - cray-mpich/8.1.16
-    esmf:
-      version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio snapshot=b09 esmf_os=Linux esmf_comm=mpich3
-    python:
-      buildable: false
-      externals:
-      - spec: python@3.9.12
-        modules: [python/3.9.12]
-    autoconf:
-      externals:
-      - spec: autoconf@2.69
-        prefix: /usr
-    automake:
-      externals:
-      - spec: automake@1.15.1
-        prefix: /usr
-    bash:
-      externals:
-      - spec: bash@4.4.23
-        prefix: /usr
-    binutils:
-      externals:
-      - spec: binutils@2.37.20211103
-        prefix: /usr
-    bison:
-      externals:
-      - spec: bison@3.0.4
-        prefix: /usr
-    # Don't use, it's missing the headers
-    #bzip2:
-    #  externals:
-    #  - spec: bzip2@1.0.6
-    #    prefix: /usr
-    cmake:
-      buildable: false
-      externals:
-      - spec: cmake@3.23.1
-        modules: [cmake/3.23.1]
-    coreutils:
-      externals:
-      - spec: coreutils@8.32
-        prefix: /usr
-    cpio:
-      externals:
-      - spec: cpio@2.12
-        prefix: /usr
-    curl:
-      externals:
-      - spec: curl@7.66.0+gssapi+ldap+nghttp2
-        prefix: /usr
-    diffutils:
-      externals:
-      - spec: diffutils@3.6
-        prefix: /usr
-    dos2unix:
-      externals:
-      - spec: dos2unix@7.4.0
-        prefix: /usr
-    ecflow:
-      buildable: False
-      externals:
-      - spec: ecflow@5.8.4+ui+static_boost
-        prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/ecflow-5.8.4
-        modules: [ecflow/5.8.4]
-    file:
-      externals:
-      - spec: file@5.32
-        prefix: /usr
-    findutils:
-      externals:
-      - spec: findutils@4.8.0
-        prefix: /usr
-    flex:
-      externals:
-      - spec: flex@2.6.4+lex
-        prefix: /usr
-    gawk:
-      externals:
-      - spec: gawk@4.2.1
-        prefix: /usr
-    gettext:
-      externals:
-      - spec: gettext@0.20.2
-        prefix: /usr
-    ghostscript:
-      externals:
-      - spec: ghostscript@9.52
-        prefix: /usr
-    git:
-      buildable: false
-      externals:
-      - spec: git@2.35.2
-        modules: [git/2.35.2]
-    git-lfs:
-      buildable: false
-      externals:
-      - spec: git-lfs@2.11.0
-        modules: [git-lfs/2.11.0]
-    gmake:
-      externals:
-      - spec: gmake@4.2.1
-        prefix: /usr
-    groff:
-      externals:
-      - spec: groff@1.22.3
-        prefix: /usr
-    hwloc:
-      externals:
-      - spec: hwloc@2.6.0a1
-        prefix: /usr
-    # This package is currently incomplete (no headers), but still works
-    krb5:
-      externals:
-      - spec: krb5@1.16.3
-        #prefix: /usr/lib/mit
-        prefix: /usr
-    libfuse:
-      externals:
-      - spec: libfuse@2.9.7
-        prefix: /usr
-      - spec: libfuse@3.6.1
-        prefix: /usr
-    libtirpc:
-      variants: ~gssapi
-    libtool:
-      externals:
-      - spec: libtool@2.4.6
-        prefix: /usr
-    # This package is currently incomplete (no headers), but still works
-    libxaw:
-      externals:
-      - spec: libxaw@1.10.13
-        prefix: /usr
-    libxml2:
-      externals:
-      - spec: libxml2@2.9.7
-        prefix: /usr
-    # This package is currently incomplete (no headers) and doesn't work
-    # for us. But it's only needed to build libxaw, for which we can use
-    # the existing (incomplete) installation in /usr, see above
-    #libxpm:
-    #  externals:
-    #  - spec: libxpm@4.11.0
-    #    prefix: /usr
-    lustre:
-      externals:
-      - spec: lustre@2.15.0.2_rc2_cray_113_g62287d0
-        prefix: /usr
-    m4:
-      externals:
-      - spec: m4@1.4.18
-        prefix: /usr
+packages:
+  all:
+    compiler:: [intel@2022.2.1]
+    providers:
+      mpi:: [cray-mpich@8.1.25]
+
+### MPI, Python, MKL
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.25%intel@2022.2.1~wrappers
+      prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
+      modules:
+      - craype-network-ofi
+      - cray-mpich/8.1.25
+  python:
+    buildable: false
+    externals:
+    - spec: python@3.9.12
+      prefix: /sw/gaea-c5/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/python-3.9.12-n7xlvqjslbeeaexdaibryhi7miqjjoa2
+      modules: [python/3.9.12]
+  py-pip:
+    buildable: False
+    externals:
+    - spec: py-pip@22.0.4
+      prefix: /sw/gaea-c5/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/python-3.9.12-n7xlvqjslbeeaexdaibryhi7miqjjoa2
+      modules: [python/3.9.12]
+
+### All other external packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.15.1
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@4.4.23
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.37.20211103
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  # Don't use, it's missing the headers
+  #bzip2:
+  #  externals:
+  #  - spec: bzip2@1.0.6
+  #    prefix: /usr
+  cmake:
+    buildable: false
+    externals:
+    - spec: cmake@3.23.1
+      modules: [cmake/3.23.1]
+  coreutils:
+    externals:
+    - spec: coreutils@8.32
+      prefix: /usr
+  cpio:
+    externals:
+    - spec: cpio@2.12
+      prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.66.0+gssapi+ldap+nghttp2
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  dos2unix:
+    externals:
+    - spec: dos2unix@7.4.0
+      prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/ecflow-5.8.4-c5
+      modules: [ecflow/5.8.4]
+  file:
+    externals:
+    - spec: file@5.32
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.8.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.20.2
+      prefix: /usr
+  ghostscript:
+    externals:
+    - spec: ghostscript@9.52
+      prefix: /usr
+  git:
+    buildable: false
+    externals:
+    - spec: git@2.35.2
+      modules: [git/2.35.2]
+  git-lfs:
+    buildable: false
+    externals:
+    - spec: git-lfs@2.11.0
+      modules: [git-lfs/2.11.0]
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  hwloc:
+    externals:
+    - spec: hwloc@2.6.0a1
+      prefix: /usr
+  # This package is currently incomplete (no headers), but still works
+  krb5:
+    externals:
+    - spec: krb5@1.16.3
+      #prefix: /usr/lib/mit
+      prefix: /usr
+  libfuse:
+    externals:
+    - spec: libfuse@2.9.7
+      prefix: /usr
+    - spec: libfuse@3.6.1
+      prefix: /usr
+  libtirpc:
+    variants: ~gssapi
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  # This package is currently incomplete (no headers), but still works
+  libxaw:
+    externals:
+    - spec: libxaw@1.10.13
+      prefix: /usr
+  libxml2:
+    externals:
+    - spec: libxml2@2.9.7
+      prefix: /usr
+  # This package is currently incomplete (no headers) and doesn't work
+  # for us. But it's only needed to build libxaw, for which we can use
+  # the existing (incomplete) installation in /usr, see above
+  #libxpm:
+  #  externals:
+  #  - spec: libxpm@4.11.0
+  #    prefix: /usr
+  lustre:
+    externals:
+    - spec: lustre@2.15.0.2_rc2_cray_113_g62287d0
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
   mysql:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31
-      modules:
-      - mysql/8.0.31
-    ncurses:
-      externals:
-      - spec: ncurses@6.1.20180317+termlib abi=6
-        prefix: /usr
-    openjdk:
-      externals:
-      - spec: openjdk@11.0.16_8-suse-150000.3.83.1-x8664
-        prefix: /usr
-    openssh:
-      externals:
-      - spec: openssh@8.4p1
-        prefix: /usr
-    openssl:
-      externals:
-      - spec: openssl@1.1.1d
-        prefix: /usr
-    perl:
-      externals:
-      - spec: perl@5.26.1~cpanm+shared+threads
-        prefix: /usr
-    pkg-config:
-      buildable: false
-      externals:
-      - spec: pkg-config@0.29.2
-        prefix: /usr
-    qt:
-      externals:
-      - spec: qt@5.15.2
-        prefix: /lustre/f2/scratch/Dom.Heinzeller/spack-stack-c5/qt-5.15.2/5.15.2/gcc_64
-    rdma-core:
-      externals:
-      - spec: rdma-core@37.0
-        prefix: /usr
-    rsync:
-      externals:
-      - spec: rsync@3.1.3
-        prefix: /usr
-    ruby:
-      externals:
-      - spec: ruby@2.5.9
-        prefix: /usr
-    sed:
-      externals:
-      - spec: sed@4.4
-        prefix: /usr
-    slurm:
-      externals:
-      - spec: slurm@21.08.8
-        prefix: /usr
-    subversion:
-      externals:
-      - spec: subversion@1.10.6
-        prefix: /usr
-    tar:
-      externals:
-      - spec: tar@1.34
-        prefix: /usr
-    texinfo:
-      externals:
-      - spec: texinfo@6.5
-        prefix: /usr
-    wget:
-      externals:
-      - spec: wget@1.20.3
-        prefix: /usr
-    which:
-      externals:
-      - spec: which@2.21
-        prefix: /usr
-    xz:
-      externals:
-      - spec: xz@5.2.3
-        prefix: /usr
-    zip:
-      externals:
-      - spec: zip@3.0
-        prefix: /usr
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/mysql-8.0.31-c5
+      modules: [mysql/8.0.31]
+  ncurses:
+    externals:
+    - spec: ncurses@6.1.20180317+termlib abi=6
+      prefix: /usr
+  openjdk:
+    externals:
+    - spec: openjdk@11.0.16_8-suse-150000.3.83.1-x8664
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.4p1
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.1.1d
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.26.1~cpanm+shared+threads
+      prefix: /usr
+  pkg-config:
+    buildable: false
+    externals:
+    - spec: pkg-config@0.29.2
+      prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.2
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/qt-5.15.2-c5/5.15.2/gcc_64
+  rdma-core:
+    externals:
+    - spec: rdma-core@37.0
+      prefix: /usr
+  rsync:
+    externals:
+    - spec: rsync@3.1.3
+      prefix: /usr
+  ruby:
+    externals:
+    - spec: ruby@2.5.9
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.4
+      prefix: /usr
+  slurm:
+    externals:
+    - spec: slurm@21.08.8
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.10.6
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.34
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.20.3
+      prefix: /usr
+  which:
+    externals:
+    - spec: which@2.21
+      prefix: /usr
+  xz:
+    externals:
+    - spec: xz@5.2.3
+      prefix: /usr
+  zip:
+    externals:
+    - spec: zip@3.0
+      prefix: /usr
