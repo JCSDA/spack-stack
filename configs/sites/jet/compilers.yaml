@@ -8,7 +8,6 @@ compilers:
       fc: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
     flags: {}
     operating_system: centos7
-    target: any
     modules:
     - intel/2022.1.2
     environment:
@@ -26,7 +25,6 @@ compilers:
       fc: /apps/intel/parallel_studio_xe_2018.4.057/compilers_and_libraries_2018/linux/bin/intel64/ifort
     flags: {}
     operating_system: centos7
-    target: any
     modules:
     - intel/18.0.5.274
 - compiler:
@@ -38,7 +36,6 @@ compilers:
       fc:  /apps/gnu/gcc-9.2.0/bin/gfortran
     flags: {}
     operating_system: centos7
-    target: any
     modules:
     - gnu/9.2.0
     environment: {}

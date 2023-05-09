@@ -60,7 +60,7 @@
     #  variants: ~xerces ~pnetcdf +parallelio ~shared
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio snapshot=b09 ~shared
+      variants: ~xerces ~pnetcdf snapshot=b09 ~shared esmf_pio=internal
     fckit:
       version: [0.10.1]
       variants: +eckit
@@ -70,7 +70,7 @@
       version: [1.1.0]
     fms:
       version: [2022.04]
-      variants: +64bit +quad_precision +gfs_phys +openmp +fpic constants=GFS
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +fpic constants=GFS
     g2:
       version: [3.4.5]
     g2c:
@@ -184,7 +184,7 @@
     py-eccodes:
       version: [1.4.2]
     py-h5py:
-      version: [3.7.0]
+      version: [3.6.0]
       variants: ~mpi
     # Comment out for now until build problems are solved
     # https://github.com/NOAA-EMC/spack-stack/issues/522
