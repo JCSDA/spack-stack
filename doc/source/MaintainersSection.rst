@@ -28,11 +28,11 @@ miniconda can be used to provide a basic version of Python that spack-stack uses
 The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `python_ver=3.9.12`) and `platform="MacOSX-x86_64"` or `platform="Linux-x86_64"`
 ````
    cd /path/to/top-level/spack-stack/
-   mkdir -p miniconda-${miniconda_ver}/src
-   cd miniconda-${miniconda_ver}/src
+   mkdir -p miniconda-${python_ver}/src
+   cd miniconda-${python_ver}/src
    wget https://repo.anaconda.com/miniconda/Miniconda3-${miniconda_ver}-${platform}.sh
-   sh Miniconda3-${miniconda_ver}-${platform}.sh -u -b -p /path/to/top-level/spack-stack/miniconda-${miniconda_ver}
-   eval "$(${miniconda_prefix}/bin/conda shell.bash hook)"
+   sh Miniconda3-${miniconda_ver}-${platform}.sh -u -b -p /path/to/top-level/spack-stack/miniconda-${python_ver}
+   eval "$(/path/to/top-level/spack-stack/miniconda-${python_ver}/bin/conda shell.bash hook)"
    conda install -y -c conda-forge libpython-static
 ```
 After the successful installation, create modulefile ``/path/to/top-level/spack-stack/modulefiles/miniconda/${python_ver}`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` and the Python version in this file.
@@ -103,10 +103,10 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
    make -j4 2>&1 | tee log.make
    make install 2>&1 | tee log.install
 
-Create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
+Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
 
 .. note::
-   For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
+   For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea C4/C5, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
 
 .. code-block:: console
 
@@ -117,11 +117,19 @@ Create modulefile ``/discover/swdev/jcsda/spack-stack/modulefiles/ecflow/5.8.4``
       tool=cray
    fi
 
+.. note::
    Further on Narwhal, the ``cmake`` command for ``ecbuild`` must be told to use the GNU compilers:
 
 .. code-block:: console
 
    CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
+
+.. note::
+   Finally, on Gaea C5, one needs to pass the correct ``python3`` executable to the ``cmake`` command:
+
+.. code-block:: console
+
+   cmake .. -DPython3_EXECUTABLE=`which python3` -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
 
 ..  _MaintainersSection_MySQL:
 
@@ -234,15 +242,16 @@ mysql
 MSU Hercules
 ------------------------------
 
-qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After unloading all modules (``module purge``), refer to 
-   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
-
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After unloading all modules (``module purge``), follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library, using an available ``Qt5`` installation. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/ecflow-5.8.4-hercules``.
+
+.. code-block:: console
+
+   module purge
+   module load qt/5.15.8
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Since Orion and Hercules share the filesystems and since the MySQL community server comes pre-installed, it is possible to reuse the Orion installation in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules``.
 
 .. _MaintainersSection_Discover:
 
@@ -422,7 +431,7 @@ mysql
 .. _MaintainersSection_Gaea:
 
 ------------------------------
-NOAA RDHPCS Gaea
+NOAA RDHPCS Gaea C4
 ------------------------------
 
 On Gaea, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
@@ -460,19 +469,78 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
 
+.. _MaintainersSection_Gaea:
+
+------------------------------
+NOAA RDHPCS Gaea C5
+------------------------------
+
+On Gaea C5, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+
+miniconda
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment. Use the following workaround to avoid the terminal being spammed by error messages about missing version information (``/usr/bin/lua5.3: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/miniconda-3.9.12-c5/lib/libtinfo.so.6: no version information available (required by /lib64/libreadline.so.7)``):
+
+.. code-block:: console
+
+   cd /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/miniconda-3.9.12-c5/lib
+   mv libtinfow.so.6.3 libtinfow.so.6.3.conda.original
+   ln -sf /lib64/libtinfo.so.6 libtinfow.so.6.3
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/qt-5.15.2-c5``. Note that the installation must be done as a regular user due to problems with graphical applications for role accounts.
+
+.. code-block:: console
+
+   module unload intel-classic cray-mpich PrgEnv-intel
+   module load gcc/10.3.0
+   module load PrgEnv-gnu/8.3.3
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5` and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2-c5``).  Ensure to follow the extra instructions in that section for Gaea C5.
+  
+   Ensure to follow the extra instructions in that section for Gaea.
+
+.. code-block:: console
+
+   module unload intel-classic cray-mpich PrgEnv-intel
+   module load gcc/10.3.0
+   module load PrgEnv-gnu/8.3.3
+   module load python/3.9.12
+
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/modulefiles-c5
+   module load qt/5.15.2
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/mysql-8.0.31-c5``.
+
 .. _MaintainersSection_Hera:
 
 ------------------------------
 NOAA RDHPCS Hera
 ------------------------------
 
-On Hera, ``miniconda`` must be installed as a one-off before spack can be used.
+On Hera, ``miniconda``, ``mysql`` must be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/scratch1/NCEPDEV/global/spack-stack/apps/mysql-8.0.31``. Since Hera cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
+
+openmpi
+   It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.5`` MPI library with ``gcc@9.2.0`` as referenced in the Hera site config. After the installation, create modulefile `openmpi/4.1.5` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs.
+
+.. code-block:: console
+
+   module purge
+   module load gnu/9.2.0
+   ./configure \
+       --prefix=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/openmpi-4.1.5 \
+       --with-pmi=/apps/slurm/default \
+       --with-lustre
+   make VERBOSE=1 -j4
+   make check
+   make install
 
 Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform (e.g. Cheyenne). This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
 

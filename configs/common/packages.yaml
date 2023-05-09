@@ -268,6 +268,7 @@
       version: [2.4.1]
     wget:
       version: [1.21.2]
+    # When changing wgrib2, also check Hercules site config
     wgrib2:
       version: [2.0.8]
     wrf-io:
