@@ -450,7 +450,7 @@ For ``spack-stack-1.3.1`` with Intel, load the following modules after loading m
 NOAA RDHPCS Gaea C4
 ------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
+The following is required for building new spack environments and for using spack to build and run software. Make sure to log into a C4 head node, and don't use ``module purge`` on Gaea!
 
 .. code-block:: console
 
@@ -469,7 +469,7 @@ For ``spack-stack-1.3.1`` with Intel, load the following modules after loading m
 
    module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.0.2
-   module load stack-cray-mpich/7.7.11
+   module load stack-cray-mpich/7.7.20
    module load stack-python/3.9.12
    module available
 
@@ -486,7 +486,7 @@ For ``spack-stack-1.3.1`` with Intel, load the following modules after loading m
 NOAA RDHPCS Gaea C5
 ------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. Don't use ``module purge`` on Gaea!
+The following is required for building new spack environments and for using spack to build and run software. Make sure to log into a C5 head node, and don't use ``module purge`` on Gaea!
 
 .. code-block:: console
 

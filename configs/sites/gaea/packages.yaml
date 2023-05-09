@@ -2,16 +2,16 @@ packages:
   all:
     compiler:: [intel@2022.0.2]
     providers:
-      mpi:: [cray-mpich@7.7.11]
+      mpi:: [cray-mpich@7.7.20]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@7.7.11%intel@2022.0.2
+    - spec: cray-mpich@7.7.20%intel@2022.0.2
       modules:
-      - cray-mpich/7.7.11
+      - cray-mpich/7.7.20
   #intel-oneapi-tbb:
   #  externals:
   #  - spec: intel-oneapi-tbb@2021.3.0
