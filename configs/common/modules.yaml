@@ -62,7 +62,6 @@ modules:
       - libxrandr
       - libxrender
       - libxxf86vm
-      - libyaml
       - lz4
       - m4
       - mysql
@@ -114,6 +113,12 @@ modules:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
+      libyaml:
+        environment:
+          set:
+            'YAML_DIR': '{prefix}'
+            'YAML_LIB': '{prefix}/lib'
+            'YAML_INC': '{prefix}/include'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
@@ -290,7 +295,6 @@ modules:
       - libxrandr
       - libxrender
       - libxxf86vm
-      - libyaml
       - lz4
       - m4
       - mysql
@@ -342,6 +346,12 @@ modules:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
+      libyaml:
+        environment:
+          set:
+            'YAML_DIR': '{prefix}'
+            'YAML_LIB': '{prefix}/lib'
+            'YAML_INC': '{prefix}/include'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
