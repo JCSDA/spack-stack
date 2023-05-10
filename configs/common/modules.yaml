@@ -109,6 +109,10 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+      hdf5:
+        environment:
+          set:
+            'HDF5_DIR': '{prefix}'
       libpng:
         environment:
           set:
@@ -135,6 +139,12 @@ modules:
         environment:
           set:
             'OMPI_MCA_rmaps_base_oversubscribe': '1'
+      p4est:
+        environment:
+          set:
+            'P4EST_API_DIR': '{prefix}'
+            'P4EST_API_LIB': '{prefix}/lib'
+            'P4EST_API_INC': '{prefix}/include'
       bacio:
         environment:
           set:
@@ -342,6 +352,10 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+      hdf5:
+        environment:
+          set:
+            'HDF5_DIR': '{prefix}'
       libpng:
         environment:
           set:
@@ -368,6 +382,12 @@ modules:
         environment:
           set:
             'OMPI_MCA_rmaps_base_oversubscribe': '1'
+      p4est:
+        environment:
+          set:
+            'P4EST_API_DIR': '{prefix}'
+            'P4EST_API_LIB': '{prefix}/lib'
+            'P4EST_API_INC': '{prefix}/include'
       bacio:
         environment:
           set:
