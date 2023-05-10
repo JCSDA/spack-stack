@@ -424,6 +424,8 @@ The following is required for building new spack environments and for using spac
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.12
    module load mysql/8.0.31
+   # So far only on NOAA-AWS for spack-stack develop versions newer than 1.3.1
+   module load ecflow/5.8.4
 
 For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
