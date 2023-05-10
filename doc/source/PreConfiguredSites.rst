@@ -8,6 +8,7 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
 .. _Preconfigured_Sites_Tier1:
+
 =============================================================
 Officially supported spack-stack 1.3.0 installations (tier 1)
 =============================================================
@@ -93,6 +94,12 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 ^** spack-stack-1.3.1 is not yet available on NOAA Parallel Works Azure, but on AWS and Gcloud.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
+
+.. _Preconfigured_Sites_Tier1:
+
+=============================================================
+Pre-configured sites (tier 1)
+=============================================================
 
 .. _Preconfigured_Sites_Orion:
 
