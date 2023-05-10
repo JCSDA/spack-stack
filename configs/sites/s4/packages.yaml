@@ -89,7 +89,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /contrib/spack-stack/apps/ecflow-5.8.4
+      prefix: /data/prod/jedi/spack-stack/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   file:
