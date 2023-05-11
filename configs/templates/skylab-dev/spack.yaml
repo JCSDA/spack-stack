@@ -7,7 +7,7 @@ spack:
 
   specs:
     # Virtual environment packages
-    - jedi-ewok-env
+    - ewok-env
     - jedi-fv3-env
     - jedi-mpas-env
     - jedi-ufs-env
