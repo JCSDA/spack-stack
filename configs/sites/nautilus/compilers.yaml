@@ -1,0 +1,39 @@
+compilers:
+- compiler:
+    spec: aocc@4.0.0
+    paths:
+      cc: /p/app/compilers/amd/aocc/4.0.0/bin/clang
+      cxx: /p/app/compilers/amd/aocc/4.0.0/bin/clang++
+      f77: /p/app/compilers/amd/aocc/4.0.0/bin/flang
+      fc: /p/app/compilers/amd/aocc/4.0.0/bin/flang
+    flags:
+      cflags: null
+      cxxflags: null
+      fflags: null
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - amd/aocc/4.0.0
+    - amd/aocl/aocc/4.0
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: intel@2021.5.0
+    paths:
+      cc: /p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/bin/intel64/icc
+      cxx: /p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/bin/intel64/icpc
+      f77: /p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
+      fc: /p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - intel/compiler/2022.0.2
+    environment:
+      prepend_path:
+        PATH: '/opt/rh/gcc-toolset-11/root/usr/bin'
+        CPATH: '/opt/rh/gcc-toolset-11/root/usr/include'
+        LD_LIBRARY_PATH: '/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
+      #set:
+      #  I_MPI_ROOT: '/glade/u/apps/opt/intel/2020u1/impi/2019.7.217/intel64'
+    extra_rpaths: []
