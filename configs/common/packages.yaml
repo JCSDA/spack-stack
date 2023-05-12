@@ -167,7 +167,7 @@
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
-    # Do not build pkgconf - https://github.com/NOAA-EMC/spack-stack/issues/123
+    # Do not build pkgconf - https://github.com/jcsda/spack-stack/issues/123
     pkgconf:
       buildable: False
     prod-util:
@@ -187,7 +187,7 @@
       version: [3.6.0]
       variants: ~mpi
     # Comment out for now until build problems are solved
-    # https://github.com/NOAA-EMC/spack-stack/issues/522
+    # https://github.com/jcsda/spack-stack/issues/522
     # see also ewok-env virtual package and container
     # README.md
     #py-mysql-connector-python:

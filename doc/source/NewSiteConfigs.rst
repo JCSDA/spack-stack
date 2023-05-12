@@ -162,7 +162,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/NOAA-EMC/spack-stack.git
+   git clone --recursive https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
@@ -434,7 +434,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/NOAA-EMC/spack-stack.git
+   git clone --recursive https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
