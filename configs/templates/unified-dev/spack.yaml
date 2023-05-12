@@ -6,7 +6,7 @@ spack:
   include: []
 
   definitions:
-  - compilers: ['%apple-clang', '%gcc', '%intel']
+  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
       - global-workflow-env@unified-dev
       #- gsi-env@unified-dev
