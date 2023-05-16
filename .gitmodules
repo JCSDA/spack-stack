@@ -3,7 +3,7 @@
   #url = https://github.com/spack/spack
   #branch = develop
   url = https://github.com/AlexanderRichert-NOAA/spack
-  branch = dummy-test-no-merge
+  branch = dummy-test-no-merge-2
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
