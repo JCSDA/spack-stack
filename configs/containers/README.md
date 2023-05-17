@@ -18,10 +18,10 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     yafyaml@0.5.1, zlib@1.2.13, odc@1.4.6, crtm@v2.4.1-jedi, shumlib@macos_clang_linux_intel_port]
     # Don't build ESMF and MAPL for now:
     # https://github.com/JCSDA-internal/MPAS-Model/issues/38
-    # https://github.com/NOAA-EMC/spack-stack/issues/326
+    # https://github.com/jcsda/spack-stack/issues/326
     # jedi-ufs-env@1.0.0, esmf@8.3.0b09, mapl@2.22.0
     # Comment out for now until build problems are solved
-    # https://github.com/NOAA-EMC/spack-stack/issues/522
+    # https://github.com/jcsda/spack-stack/issues/522
     # py-mysql-connector-python@8.0.32, 
 ```
 
