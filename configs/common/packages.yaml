@@ -70,7 +70,7 @@
       version: [1.1.0]
     fms:
       version: [2023.01]
-      variants: precision=32,64 +quad_precision +gfs_phys +openmp +fpic constants=GFS
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS
     g2:
       version: [3.4.5]
     g2c:
@@ -163,6 +163,8 @@
       variants: +noavx512
     openmpi:
       variants: +internal-hwloc +two_level_namespace
+    openssl:
+      variants: +shared
     p4est:
       version: [2.8]
     parallelio:
