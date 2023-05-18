@@ -16,12 +16,12 @@ spack:
   specs:
   - jasper@2.0.25~shared
   - libjpeg-turbo~shared
-  - libpng@1.6.37~shared
+  - libpng@1.6.37 libs=static
   - zlib@1.2.11~shared
   - bacio@2.4.1
   - crtm@2.4.0~fix
-  - esmf@8.4.1+debug~shared+parallelio
-  - esmf@8.4.1~debug~shared+parallelio
+  - esmf@8.4.1+debug~shared+external-parallelio
+  - esmf@8.4.1~debug~shared+external-parallelio
   - fms@2022.04 constants=GFS
   - g2@3.4.5
   - g2tmpl@1.10.0

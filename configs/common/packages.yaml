@@ -35,17 +35,17 @@
       version: [2.4.0]
       variants: +fix
     ecbuild:
-      version: [3.6.5]
+      version: [3.7.2]
     eccodes:
       version: [2.27.0]
     ecflow:
       version: [5.8.4]
       variants: +ui
     eckit:
-      version: [1.20.2]
+      version: [1.23.0]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: [0.32.1]
+      version: [0.33.0]
       variants: +fckit +trans
     ectrans:
       version: [1.2.0]
@@ -60,9 +60,9 @@
     #  variants: ~xerces ~pnetcdf +parallelio ~shared
     esmf:
       version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf +pio snapshot=b09 ~shared
+      variants: ~xerces ~pnetcdf snapshot=b09 ~shared esmf_pio=internal
     fckit:
-      version: [0.10.0]
+      version: [0.10.1]
       variants: +eckit
     fftw:
       version: [3.3.10]
@@ -70,7 +70,7 @@
       version: [1.1.0]
     fms:
       version: [2022.04]
-      variants: +64bit +quad_precision +gfs_phys +openmp +fpic constants=GFS
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +fpic constants=GFS
     g2:
       version: [3.4.5]
     g2c:
@@ -90,14 +90,14 @@
     grib-util:
       version: [1.2.3]
     gsibec:
-      version: [1.0.7]
+      version: [1.1.2]
     gsl-lite:
       version: [0.37.0]
     hdf:
       version: [4.2.15]
       variants: ~fortran ~netcdf
     hdf5:
-      version: [1.14.0]
+      version: [1.12.2]
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: [3.3.3]
@@ -115,6 +115,8 @@
       version: [2.1.0]
     libpng:
       version: [1.6.37]
+    libyaml:
+      version: [0.2.5]
     mapl:
       # 2.35.2 goes with esmf@8.4.1
       #version: [2.35.2]
@@ -155,19 +157,21 @@
     nlohmann-json-schema-validator:
       version: [2.1.0]
     odc:
-      version: [1.4.5]
+      version: [1.4.6]
       variants: ~fortran
     openblas:
       version: [0.3.19]
       variants: +noavx512
     openmpi:
       variants: +internal-hwloc +two_level_namespace
+    p4est:
+      version: [2.8]
     parallelio:
       version: [2.5.9]
       variants: +pnetcdf
     parallel-netcdf:
       version: [1.12.2]
-    # Do not build pkgconf - https://github.com/NOAA-EMC/spack-stack/issues/123
+    # Do not build pkgconf - https://github.com/jcsda/spack-stack/issues/123
     pkgconf:
       buildable: False
     prod-util:
@@ -184,11 +188,11 @@
     py-eccodes:
       version: [1.4.2]
     py-h5py:
-      version: [3.7.0]
+      version: [3.6.0]
       variants: ~mpi
     # Comment out for now until build problems are solved
-    # https://github.com/NOAA-EMC/spack-stack/issues/522
-    # see also jedi-ewok-env virtual package and container
+    # https://github.com/jcsda/spack-stack/issues/522
+    # see also ewok-env virtual package and container
     # README.md
     #py-mysql-connector-python:
     #  version: [8.0.32]
@@ -221,9 +225,10 @@
       version: [3.1.0]
     py-python-dateutil:
       version: [2.8.2]
-    #py-pythran:
-    #  # Earlier versions don't compile on macOS with llvm-clang/13.0.0 and Python/3.9
-    #  version: [0.11.0]
+    py-pythran:
+      # Versions earlier than 0.11.0 don't compile on macOS with llvm-clang/13.0.0 and Python/3.9,
+      # and 0.11.0 leads to downstream errors in py-scipy with the Intel compilers
+      version: [0.12.2]
     py-pyyaml:
       version: [6.0]
     py-scipy:
@@ -264,6 +269,7 @@
       version: [2.4.1]
     wget:
       version: [1.21.2]
+    # When changing wgrib2, also check Hercules site config
     wgrib2:
       version: [2.0.8]
     wrf-io:

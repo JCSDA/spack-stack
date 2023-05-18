@@ -105,7 +105,7 @@ spack:
     images:
       os: ubuntu:20.04
       spack:
-        url: https://github.com/noaa-emc/spack
+        url: https://github.com/jcsda/spack
         ref: jcsda_emc_spack_stack
         resolve_sha: false
 

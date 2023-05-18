@@ -46,6 +46,7 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
+
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
           # path doesn't change - see also other 'DH* 20230302' changes below
@@ -80,7 +81,7 @@ jobs:
           # *DH
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
+          spack config add "packages:all:providers:mpi:[openmpi]"
           spack config add "packages:all:compiler:[apple-clang@14.0.0]"
           sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
@@ -103,12 +104,12 @@ jobs:
           # base-env
           echo "base-env ..."
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ --skip-on-error || true
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
@@ -131,12 +132,12 @@ jobs:
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
-          module load stack-openmpi/4.1.4
+          module load stack-openmpi
           module load stack-python/3.10.8
           module available
 
           module load jedi-ufs-env/unified-dev
-          module load jedi-ewok-env/unified-dev
+          module load ewok-env/unified-dev
           module load soca-env/unified-dev
           module list
 

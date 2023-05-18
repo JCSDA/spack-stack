@@ -88,6 +88,3 @@ macOS
 5. Errors such as ``Symbol not found: __cg_png_create_info_struct``
 
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
-
-6. Error building MET 10.1.1.20220419 build error on macOS Monterey 12.1
-   See https://github.com/NOAA-EMC/spack-stack/issues/316. Note that this error does not occur in the macOS CI tests.

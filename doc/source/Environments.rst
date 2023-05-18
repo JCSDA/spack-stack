@@ -18,7 +18,7 @@ Environments can be constructed in two ways in spack-stack:
            spack add netcdf-c@4.7.4
            spack add ufs-weather-model-env
            spack add ufs-weather-model-env@1.0.0 +debug
-           spack add jedi-ewok-env +solo +r2d2 +ewok 
+           spack add ewok-env
            spack add mapl@2.12.3 +debug ^esmf@8.3.0 +debug
            spack add mapl@2.12.3 +debug ^esmf@8.3.0 +debug
            ...
@@ -59,7 +59,7 @@ The purpose of virtual packages is to provide a convenient collection of package
 
 **AUTOMATICALLY GENERATE A TABLE WITH NAME AND DESCRIPTION BASED ON THE FILE NAME AND THE DOXSTRING? IF WE DO THAT, ALSO UPDATE THE SECTION ON GENERATING DOCUMENTATION WITH THE NECESSARY DETAILS**
 
-**For now, check the contents of ``spack/var/spack/repos/jcsda-emc-bundles/packages/`` yourself, sorry. Also, run ``spack info jedi-ewok-env``, for example, to obtain further information on the package.**
+**For now, check the contents of ``spack/var/spack/repos/jcsda-emc-bundles/packages/`` yourself, sorry. Also, run ``spack info ewok-env``, for example, to obtain further information on the package.**
 
 .. _EnvironmentsTemplates:
 

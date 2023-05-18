@@ -10,8 +10,10 @@ spack:
   - packages:
       - global-workflow-env@unified-dev
       #- gsi-env@unified-dev
-      - jedi-ewok-env@unified-dev
+      - ewok-env@unified-dev
       - jedi-fv3-env@unified-dev
+      - jedi-mpas-env@unified-dev
+      - jedi-neptune-env@unified-dev
       - jedi-tools-env@unified-dev
       - jedi-ufs-env@unified-dev
       - jedi-um-env@unified-dev
@@ -19,19 +21,18 @@ spack:
       - soca-env@unified-dev
       - ufs-srw-app-env@unified-dev
       #- ufs-utils-env@unified-dev
-      - ufs-weather-model-env~debug@unified-dev
-      - ufs-weather-model-env+debug@unified-dev
+      - ufs-weather-model-env@unified-dev
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
-      # Additional esmf/mapl tag for testing
-      #- esmf@8.4.1+debug+parallelio
-      #- esmf@8.4.1~debug+parallelio
-      #- mapl@2.35.2+debug ^esmf@8.4.1+debug+parallelio
-      #- mapl@2.35.2~debug ^esmf@8.4.1~debug+parallelio
+      # Additional esmf/mapl tags - don't activate by default, this
+      # can lead to duplicate packages (e.g. in Ubuntu CI tests)
+      #- esmf@8.4.2~debug+external-parallelio
+      #- mapl@2.35.2~debug ^esmf@8.4.2~debug+external-parallelio
 
-      # Additional crtm tag for testing - don't activate by default,
-      # this can lead to duplicate packages (e.g. in Ubuntu CI tests)
+      # Additional crtm tags - don't activate by default, this
+      # can lead to duplicate packages (e.g. in Ubuntu CI tests)
+      #- crtm@v2.4-jedi.2
       #- crtm@v3.0.0-rc.1
 
   specs:
@@ -43,7 +44,7 @@ spack:
         - jedi-tools-env%intel
         ## Don't even bother building those with Intel 18,
         ## not needed. Many of the Python packages don't build.
-        #- jedi-ewok-env%intel@18
+        #- ewok-env%intel@18
         #- jedi-fv3-env%intel@18
         #- jedi-tools-env%intel@18
         #- jedi-ufs-env%intel@18
