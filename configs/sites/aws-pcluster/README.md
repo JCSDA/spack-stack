@@ -240,7 +240,7 @@ rm *.deb
 ```
 mkdir -p /home/ubuntu/sandpit
 cd /home/ubuntu/sandpit
-git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
+git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
 spack stack create env --site aws-pcluster --template=unified-dev --name=unified-dev
@@ -251,7 +251,7 @@ sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs
 6. Option 2: Test configuring site from scratch
 ```
 mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
-git clone -b develop --recursive https://github.com/noaa-emc/spack-stack spack-stack
+git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
 spack stack create env --site linux.default --template=unified-dev --name=unified-dev
