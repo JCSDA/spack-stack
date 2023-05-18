@@ -115,6 +115,8 @@
       version: [2.1.0]
     libpng:
       version: [1.6.37]
+    libyaml:
+      version: [0.2.5]
     mapl:
       # 2.35.2 goes with esmf@8.4.1
       #version: [2.35.2]
@@ -164,6 +166,8 @@
       variants: +internal-hwloc +two_level_namespace
     openssl:
       variants: +shared
+    p4est:
+      version: [2.8]
     parallelio:
       version: [2.5.9]
       variants: +pnetcdf

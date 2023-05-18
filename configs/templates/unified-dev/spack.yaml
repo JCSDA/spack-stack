@@ -13,6 +13,7 @@ spack:
       - ewok-env@unified-dev
       - jedi-fv3-env@unified-dev
       - jedi-mpas-env@unified-dev
+      - jedi-neptune-env@unified-dev
       - jedi-tools-env@unified-dev
       - jedi-ufs-env@unified-dev
       - jedi-um-env@unified-dev
@@ -24,12 +25,14 @@ spack:
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
-      # Additional esmf/mapl tag for testing
-      #- esmf@8.4.1~debug+external-parallelio
-      #- mapl@2.35.2~debug ^esmf@8.4.1~debug+external-parallelio
+      # Additional esmf/mapl tags - don't activate by default, this
+      # can lead to duplicate packages (e.g. in Ubuntu CI tests)
+      #- esmf@8.4.2~debug+external-parallelio
+      #- mapl@2.35.2~debug ^esmf@8.4.2~debug+external-parallelio
 
-      # Additional crtm tag for testing - don't activate by default,
-      # this can lead to duplicate packages (e.g. in Ubuntu CI tests)
+      # Additional crtm tags - don't activate by default, this
+      # can lead to duplicate packages (e.g. in Ubuntu CI tests)
+      #- crtm@v2.4-jedi.2
       #- crtm@v3.0.0-rc.1
 
   specs:
