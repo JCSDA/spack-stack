@@ -69,7 +69,7 @@
     fiat:
       version: [1.1.0]
     fms:
-      version: [2022.04]
+      version: [2023.01]
       variants: precision=32,64 +quad_precision +gfs_phys +openmp +fpic constants=GFS
     g2:
       version: [3.4.5]
@@ -97,7 +97,7 @@
       version: [4.2.15]
       variants: ~fortran ~netcdf
     hdf5:
-      version: [1.12.2]
+      version: [1.14.1]
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: [3.3.3]
