@@ -6,7 +6,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
 ```
   specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@11.7.1, ecbuild@3.7.2, eccodes@2.27.0, ecflow@5,
-    eckit@1.23.0, ecmwf-atlas@0.33.0 +trans ~fftw, ectrans@1.2.0 ~fftw, eigen@3.4.0,
+    eckit@1.23.1-pre, ecmwf-atlas@0.33.1-pre-jcsda +trans ~fftw, ectrans@1.2.0 ~fftw, eigen@3.4.0,
     fckit@0.10.1, fms@release-jcsda, g2@3.4.5, g2tmpl@1.10.0, gftl-shared@1.5.0,
     gsibec@1.1.2, hdf@4.2.15, hdf5@1.12.2, ip@3.3.3, jasper@2.0.32, jedi-cmake@1.4.0,
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.9.2, netcdf-cxx4@4.3.1,
@@ -32,7 +32,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
 ```
   specs: [base-env@1.0.0,
     bacio@2.4.1, bison@3.8.2, bufr@11.7.1, ecbuild@3.7.2, eccodes@2.27.0, ecflow@5,
-    eckit@1.23.0, ecmwf-atlas@0.33.0 +trans ~fftw, ectrans@1.2.0 ~fftw, eigen@3.4.0,
+    eckit@1.23.1-pre, ecmwf-atlas@0.33.1-pre-jcsda +trans ~fftw, ectrans@1.2.0 ~fftw, eigen@3.4.0,
     fckit@0.10.1, fms@2022.04, g2@3.4.5, g2tmpl@1.10.0, gftl-shared@1.5.0,
     gsibec@1.1.2, hdf@4.2.15, hdf5@1.12.2, ip@3.3.3, jasper@2.0.32, jedi-cmake@1.4.0,
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.9.2, netcdf-cxx4@4.3.1,
