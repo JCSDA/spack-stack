@@ -303,9 +303,9 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading the
 
 .. _Preconfigured_Sites_Casper:
 
--------------------
+------------------------------
 NCAR-Wyoming Casper
--------------------
+------------------------------
 
 The following is required for building new spack environments and for using spack to build and run software.
 

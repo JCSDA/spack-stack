@@ -3,8 +3,8 @@ packages:
     #compiler:: [intel@2022.0.2, gcc@10.1.0]
     compiler:: [intel@19.1.1.217, gcc@10.1.0]
     providers:
-      #mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.1.1]
-      mpi:: [intel-mpi@2019.7.217, openmpi@4.1.1]
+      #mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.1.5]
+      mpi:: [intel-mpi@2019.7.217, openmpi@4.1.5]
 
 ### MPI, Python, MKL
   mpi:
@@ -35,11 +35,12 @@ packages:
       modules:
       - impi/2019.7.217
   openmpi:
-    externals: 
-    - spec: openmpi@4.1.1%gcc@10.1.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm,tm
-      prefix: /glade/u/apps/ch/opt/openmpi/4.1.1/gnu/10.1.0
+    externals:
+    - spec: openmpi@4.1.5%gcc@10.1.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+        fabrics=ucx schedulers=slurm,tm
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/openmpi-4.1.5
       modules:
-      - openmpi/4.1.1
+      - openmpi/4.1.5
   python:
     buildable: False
     externals:
