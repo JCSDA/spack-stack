@@ -1,6 +1,6 @@
 compilers::
   - compiler:
-      spec: intel@2021.3.0
+      spec: intel@2022.0.2
       paths:
         cc: cc
         cxx: CC
@@ -8,10 +8,9 @@ compilers::
         fc: ftn
       flags: {}
       operating_system: cnl7
-      target: any
       modules:
       - PrgEnv-intel
-      - intel/2021.3.0
+      - intel/intel-classic.2022.0.2
       environment:
         prepend_path:
           PATH: '/opt/gcc/10.3.0/snos/bin'
