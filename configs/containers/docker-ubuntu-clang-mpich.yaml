@@ -187,7 +187,9 @@ spack:
         ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
       build: |
         # Put output of spack find into a file
-        RUN spack concretize 2>&1 | tee /root/spack_concretize.out
+        RUN cd /opt/spack-environment && \
+        spack env activate -d . && \
+        spack find 2>&1 | tee /root/spack_find.out
       pre_final: |
         #Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
@@ -206,8 +208,8 @@ spack:
         ln -svf clang-cpp-10 clang-cpp && \
         cd /usr/lib/llvm-10/lib && \
         ln -svf libc++abi.so.1.0 libc++abi.so
-        # Copy concretizer output from builder
-        COPY --from=builder /root/spack_concretize.out /root/spack_concretize.out
+        # Copy spack find output from builder
+        COPY --from=builder /root/spack_find.out /root/spack_find.out
         # Copy mpich-${MPICH_VERSION} installation from builder
         COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI
