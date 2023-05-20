@@ -18,7 +18,6 @@ spack:
         fc: /usr/bin/gfortran
       flags: {}
       operating_system: ubuntu20.04
-      target: any
       modules: []
       environment: {}
       extra_rpaths: []
@@ -30,7 +29,7 @@ spack:
       require: '%gcc'
       target: [x86_64]
       providers:
-        mpi: [openmpi@4.1.4]
+        mpi: [openmpi@4.1.5]
       compiler: [gcc@9.4.0]
     gcc:
       buildable: false
@@ -148,7 +147,14 @@ spack:
         ENV CC=gcc
         ENV CXX=g++
         ENV FC=gfortran
+      build: |
+        # Put output of spack find into a file
+        RUN cd /opt/spack-environment && \
+        spack env activate -d . && \
+        spack find 2>&1 | tee /root/spack_find.out
       final: |
+        # Copy spack find output from builder
+        COPY --from=builder /root/spack_find.out /root/spack_find.out
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
