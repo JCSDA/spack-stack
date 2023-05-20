@@ -208,8 +208,8 @@ spack:
         ln -svf libc++abi.so.1.0 libc++abi.so
         # Copy concretizer output from builder
         COPY --from=builder /root/spack_concretize.out /root/spack_concretize.out
-        # Copy mpich-4.0.2 installation from builder
-        COPY --from=builder /opt/mpich-4.0.2 /opt/mpich-4.0.2
+        # Copy mpich-${MPICH_VERSION} installation from builder
+        COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
