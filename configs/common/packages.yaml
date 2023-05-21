@@ -45,7 +45,7 @@
       version: [1.23.1-pre]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: [0.33.1-pre-jcsda]
+      version: [0.33.1-pre-jcsda-cxx14]
       variants: +fckit +trans
     ectrans:
       version: [1.2.0]
