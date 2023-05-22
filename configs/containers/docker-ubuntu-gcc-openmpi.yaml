@@ -36,6 +36,11 @@ spack:
       externals:
       - spec: gcc@9.4.0
         prefix: /usr
+    diffutils:
+      buildable: false
+      externals:
+      - spec: diffutils@3.7
+        prefix: /usr
     git:
       buildable: false
       externals:

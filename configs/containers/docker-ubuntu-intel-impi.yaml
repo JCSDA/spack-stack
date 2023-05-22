@@ -50,6 +50,11 @@ spack:
       externals:
       - spec: intel-oneapi-mkl@2022.1.0
         prefix: /opt/intel/oneapi
+    diffutils:
+      buildable: false
+      externals:
+      - spec: diffutils@3.7
+        prefix: /usr
     git:
       buildable: false
       externals:
