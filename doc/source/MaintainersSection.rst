@@ -422,7 +422,11 @@ NOAA NCO WCOSS2
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-On NOAA Parallel Works, ``miniconda``, ``ecflow``, ``mysql`` and a few additional utilities need to be installed as a one-off before spack can be used.
+On NOAA Parallel Works, ``miniconda``, ``ecflow``, ``mysql`` and a few additional utilities need to be installed as a one-off before spack can be used. An additional command needs to be run once to fix a problem with a missing library:
+
+.. code-block:: console
+
+   sudo ln -s /apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin/libintlc.so /apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin/libintl.so
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation in ``/contrib/spack-stack/apps/miniconda/miniconda3``.
