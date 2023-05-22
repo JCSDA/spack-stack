@@ -59,8 +59,8 @@
     #  version: [8.4.1]
     #  variants: ~xerces ~pnetcdf +parallelio ~shared
     esmf:
-      version: [8.3.0b09]
-      variants: ~xerces ~pnetcdf snapshot=b09 ~shared esmf_pio=internal
+      version: [8.4.2]
+      variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
     fckit:
       version: [0.10.1]
       variants: +eckit
@@ -69,7 +69,7 @@
     fiat:
       version: [1.1.0]
     fms:
-      version: [2022.04]
+      version: [2023.01]
       variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS
     g2:
       version: [3.4.5]
@@ -97,7 +97,7 @@
       version: [4.2.15]
       variants: ~fortran ~netcdf
     hdf5:
-      version: [1.12.2]
+      version: [1.14.1-2]
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: [3.3.3]
@@ -119,8 +119,7 @@
       version: [0.2.5]
     mapl:
       # 2.35.2 goes with esmf@8.4.1
-      #version: [2.35.2]
-      version: [2.22.0]
+      version: [2.35.2]
       variants: ~shared
     met:
       version: [10.1.1]
@@ -190,7 +189,7 @@
     py-eccodes:
       version: [1.4.2]
     py-h5py:
-      version: [3.6.0]
+      version: [3.7.0]
       variants: ~mpi
     # Comment out for now until build problems are solved
     # https://github.com/jcsda/spack-stack/issues/522
@@ -245,6 +244,8 @@
       version: [1.8.0]
     qt:
       version: [5.15.3]
+    scotch:
+      version: [7.0.3]
     sfcio:
       version: [1.4.1]
     shumlib:
