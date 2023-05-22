@@ -42,7 +42,7 @@
       version: [5.8.4]
       variants: +ui
     eckit:
-      version: [1.23.1-pre]
+      version: [1.23.2-pre]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
       version: [0.33.1-pre-jcsda-cxx14]
