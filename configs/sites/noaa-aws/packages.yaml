@@ -45,7 +45,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /data/prod/jedi/spack-stack/ecflow-5.8.4
+      prefix: /contrib/spack-stack/apps/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   file:
@@ -99,7 +99,7 @@ packages:
   mysql:
     externals:
     - spec: mysql@8.0.31
-      prefix: /contrib/spack-stack/mysql-8.0.31
+      prefix: /contrib/spack-stack/apps/mysql-8.0.31
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
