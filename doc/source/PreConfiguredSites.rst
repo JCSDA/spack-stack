@@ -5,9 +5,8 @@ Pre-configured sites
 
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
-Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
+Pre-configured sites are split into two categories: Tier 1 with officially supported spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
-.. _Preconfigured_Sites_Tier1:
 =============================================================
 Officially supported spack-stack 1.3.0 installations (tier 1)
 =============================================================
@@ -24,6 +23,10 @@ Ready-to-use spack-stack 1.3.0 installations are available on the following, ful
 | NAVY HPCMP Narwhal Intel                                   | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.3.0/envs/unified-env-intel-2021.4.0``                    |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NAVY HPCMP Narwhal GNU                                     | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.3.0/envs/unified-env-gcc-10.3.0``                        |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Nautilus Intel                                  | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-add-nautilus/envs/jedi-fv3-intel-2021.5.0/``(temporary)    |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Nautilus AMD clang/flang                        | Dom Heinzeller / ???          | ``WORK IN PROGRESS``                                                                                         |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper Intel                                  | Dom Heinzeller / ???          | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0-casper/envs/unified-env``                      |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -93,6 +96,12 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 ^** spack-stack-1.3.1 is not yet available on NOAA Parallel Works Azure, but on AWS and Gcloud.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
+
+.. _Preconfigured_Sites_Tier1:
+
+=============================================================
+Pre-configured sites (tier 1)
+=============================================================
 
 .. _Preconfigured_Sites_Orion:
 
@@ -301,6 +310,49 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading the
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
 
+.. _Preconfigured_Sites_Nautilus:
+
+------------------------------
+NAVY HPCMP Nautilus
+------------------------------
+
+With Intel, the following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+
+   module load slurm
+   module load intel/compiler/2022.0.2
+   module load intel/mpi/2021.5.1
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+   module load mysql/8.0.31
+
+With AMD clang/flang (aocc), the following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+
+   module load slurm
+   module load amd/aocc/4.0.0
+   module load amd/aocl/aocc/4.0
+   module load penguin/openmpi/4.1.4/aocc
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+   module load mysql/8.0.31
+
+.. note::
+
+   There are still problems launching the ecflow GUI, although the package is installed.
+
+.. note::
+
+   spack-stack is not yet officially supported on Nautilus. Test installations for a limited set of packages are in ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-add-nautilus/envs/jedi-fv3-intel-2021.5.0/`` and ``WORK IN PROGRESS``, respectively.
+
 .. _Preconfigured_Sites_Casper:
 
 ------------------------------
@@ -414,7 +466,7 @@ CONFIG_SITE should be set to empty in `compilers.yaml`. Don't use ``module purge
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path.
+The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works >`).
 
 .. code-block:: console
 
@@ -424,6 +476,8 @@ The following is required for building new spack environments and for using spac
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.12
    module load mysql/8.0.31
+   # So far only on NOAA-AWS for spack-stack develop versions newer than 1.3.1
+   module load ecflow/5.8.4
 
 For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
