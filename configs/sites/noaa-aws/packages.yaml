@@ -41,6 +41,13 @@ packages:
     externals:
     - spec: diffutils@3.3
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /contrib/spack-stack/apps/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   file:
     externals:
     - spec: file@5.11
@@ -92,7 +99,7 @@ packages:
   mysql:
     externals:
     - spec: mysql@8.0.31
-      prefix: /contrib/spack-stack/mysql-8.0.31
+      prefix: /contrib/spack-stack/apps/mysql-8.0.31
   ncurses:
     externals:
     - spec: ncurses@6.3.20211021+termlib abi=6
