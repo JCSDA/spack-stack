@@ -13,15 +13,15 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
 +===========================================+======================================================================+===========================+
-| Intel classic (icc, icpc, ifort)          | 18.0.5.274 to the latest available version in oneAPI 2022.2.1        | `intel@`                  |
+| Intel classic (icc, icpc, ifort)          | 18.0.5.274 to the latest available version in oneAPI 2022.2.1        | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2022.2.1       | `intel@`                  |
+| Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2022.2.1       | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | `gcc@`                    |
+| GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Apple clang (clang, clang++, w/ gfortran) | 10.0.0 to 14.0.3                                                     | `apple-clang@`            |
+| Apple clang (clang, clang++, w/ gfortran) | 10.0.0 to 14.0.3                                                     | ``apple-clang@``          |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | `clang@`                  |
+| LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 
 ..  _NewSiteConfigs_macOS:

@@ -7,9 +7,9 @@ Known Issues
 General
 ==============================
 
-1. `gcc@13` (`gcc`, `g++`, `gfortran`) not yet supported
+1. ``gcc@13`` (``gcc``, ``g++``, ``gfortran``) not yet supported
 
-   Our software stack doesn't build with `gcc@13` yet. This is also true when combining the LLVM or Apple `clang` compiler with `gfortran@13`.
+   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``.
 
 2. Build errors with Python 3.10
 
