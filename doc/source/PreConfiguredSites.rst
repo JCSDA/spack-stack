@@ -5,9 +5,8 @@ Pre-configured sites
 
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
-Pre-configured sites are split into two categories: Tier 1 with officially support spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
+Pre-configured sites are split into two categories: Tier 1 with officially supported spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
-.. _Preconfigured_Sites_Tier1:
 =============================================================
 Officially supported spack-stack 1.3.0 installations (tier 1)
 =============================================================
@@ -97,6 +96,12 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 ^** spack-stack-1.3.1 is not yet available on NOAA Parallel Works Azure, but on AWS and Gcloud.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
+
+.. _Preconfigured_Sites_Tier1:
+
+=============================================================
+Pre-configured sites (tier 1)
+=============================================================
 
 .. _Preconfigured_Sites_Orion:
 
@@ -461,7 +466,7 @@ CONFIG_SITE should be set to empty in `compilers.yaml`. Don't use ``module purge
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path.
+The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works >`).
 
 .. code-block:: console
 
@@ -471,6 +476,8 @@ The following is required for building new spack environments and for using spac
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.12
    module load mysql/8.0.31
+   # So far only on NOAA-AWS for spack-stack develop versions newer than 1.3.1
+   module load ecflow/5.8.4
 
 For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
