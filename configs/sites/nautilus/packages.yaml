@@ -47,6 +47,13 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   findutils:
     externals:
     - spec: findutils@4.6.0
@@ -87,6 +94,8 @@ packages:
     externals:
     - spec: mysql@8.0.31
       prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
   openssh:
     externals:
     - spec: openssh@8.0p1
