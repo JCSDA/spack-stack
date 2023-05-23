@@ -7,6 +7,23 @@ The instructions here describe how to generate a new site config. In addition to
 
 It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``.
 
+.. note::
+   We try to maintain compatibility with as many compilers and compiler versions as possible. The following table lists the compilers that are known to work. Please be aware that if you choose to use a different, older or newer compiler, spack-stack may not work as expected and we have limited resources available for support. Further note that Intel compiler versions are confusing, because the oneAPI version doesn't match the compiler version. We generally refer to the compiler version being the version string in the path to the compiler, e.g, `/apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort`.
+
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
++===========================================+======================================================================+===========================+
+| Intel classic (icc, icpc, ifort)          | 18.0.5.274 to the latest available version in oneAPI 2022.2.1        | ``intel@``                |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2022.2.1       | ``intel@``                |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| Apple clang (clang, clang++, w/ gfortran) | 10.0.0 to 14.0.3                                                     | ``apple-clang@``          |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+
 ..  _NewSiteConfigs_macOS:
 
 ------------------------------
@@ -111,7 +128,8 @@ These instructions are meant to be a reference that users can follow to set up t
 .. code-block:: console
 
    brew install coreutils
-   brew install gcc
+   # For now, use gcc@12
+   brew install gcc@12
    brew install git
    brew install git-lfs
    brew install lmod
