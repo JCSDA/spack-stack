@@ -259,7 +259,7 @@ mysql
 NASA Discover
 ------------------------------
 
-On Discover, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
+On Discover, ``miniconda``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
@@ -309,7 +309,7 @@ mysql
 NAVY HPCMP Narwhal
 ------------------------------
 
-On Narwhal, ``git-lfs``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+On Narwhal, ``git-lfs``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
 
 git-lfs
    The following instructions install ``git-lfs`` in ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the default version for Narwhal. First, download the ``git-lfs`` RPM on a system with full internet access (e.g., Cheyenne) using ``wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm`` and copy this file to ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src``. Then switch to Narwhal and run the following commands. 
@@ -360,6 +360,28 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
+.. _MaintainersSection_Narwhal:
+
+------------------------------
+NAVY HPCMP Nautilus
+------------------------------
+
+On Nautilus, ``mysql`` and ``ecflow`` need to be installed as a one-off before spack can be used.
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``.
+
+.. code-block:: console
+
+   module purge
+
+   module load slurm
+   module load amd/aocc/4.0.0
+   module load amd/aocl/aocc/4.0
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
+
 .. _MaintainersSection_Casper:
 
 ------------------------------
@@ -374,8 +396,7 @@ Casper is co-located with Cheyenne and shares the parallel filesystem ``/glade``
 NCAR-Wyoming Cheyenne
 ------------------------------
 
-On Cheyenne, a workaround is needed to avoid the modules provided by CISL take precedence over the spack modules. The default module path for compilers is removed, the module path is set to a different location and that location is then loaded into the module environment. If new compilers or MPI libraries are
-added to ``/glade/u/apps/ch/modulefiles/default/compilers`` by CISL, the spack-stack maintainers need to make the corresponding changes in ``/glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers``. See :numref:`Section %s <Preconfigured_Sites_Cheyenne>` for details. Note also that there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops. This is why an older version Intel 19 is used here and on Casper.
+On Cheyenne, there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops. This is why an older version Intel 19 is used here and on Casper.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
@@ -440,10 +461,33 @@ NOAA NCO WCOSS2
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-**WORK IN PROGRESS**
+On NOAA Parallel Works, ``miniconda``, ``ecflow``, ``mysql`` and a few additional utilities need to be installed as a one-off before spack can be used. An additional command needs to be run once to fix a problem with a missing library:
+
+.. code-block:: console
+
+   sudo ln -s /apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin/libintlc.so /apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin/libintl.so
+
+miniconda
+   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation in ``/contrib/spack-stack/apps/miniconda/miniconda3``.
+
+ecflow
+   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda` and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/contrib/spack-stack/apps/ecflow-5.8.4``. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module. If the ``cmake`` step for ``ecflow`` fails with an error related to Python, add ``-DPython3_EXECUTABLE=`which python3` `` to the ``cmake`` command.
+
+.. code-block:: console
+
+   module unuse /opt/cray/craype/default/modulefiles
+   module unuse /opt/cray/modulefiles
+   export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
+   module use /contrib/spack-stack/modulefiles/core
+   module load miniconda/3.9.12
+   module load gnu/9.2.0
+   module load cmake/3.20.1
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/contrib/spack-stack/mysql-8.0.31``.
+   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/contrib/spack-stack/apps/mysql-8.0.31``.
+
+Other utilities
+   The following utilities need to be installed in ``/contrib/spack-stack/apps/utils/bin``: ``curl``, ``git-lfs``, ``rg``. **The instructions for this step are missing**.
 
 .. _MaintainersSection_Gaea:
 
@@ -451,7 +495,7 @@ mysql
 NOAA RDHPCS Gaea C4
 ------------------------------
 
-On Gaea, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+On Gaea, ``miniconda``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment. Use the following workaround to avoid the terminal being spammed by error messages about missing version information (``/bin/bash: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12/lib/libtinfo.so.6: no version information available (required by /lib64/libreadline.so.7)``):
@@ -492,7 +536,7 @@ mysql
 NOAA RDHPCS Gaea C5
 ------------------------------
 
-On Gaea C5, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+On Gaea C5, ``miniconda``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment. Use the following workaround to avoid the terminal being spammed by error messages about missing version information (``/usr/bin/lua5.3: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/miniconda-3.9.12-c5/lib/libtinfo.so.6: no version information available (required by /lib64/libreadline.so.7)``):
@@ -536,7 +580,7 @@ mysql
 NOAA RDHPCS Hera
 ------------------------------
 
-On Hera, ``miniconda``, ``mysql`` must be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library.
+On Hera, ``miniconda`` and ``mysql`` must be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
