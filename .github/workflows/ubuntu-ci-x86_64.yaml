@@ -121,7 +121,7 @@ jobs:
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.4.0]"
           spack config add "packages:all:compiler:[intel@2021.4.0]"
-          sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
+          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
           spack concretize 2>&1 | tee log.concretize.intel-2021.4.0
 
