@@ -24,6 +24,10 @@ Ready-to-use spack-stack 1.3.0 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NAVY HPCMP Narwhal GNU                                     | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.3.0/envs/unified-env-gcc-10.3.0``                        |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Nautilus Intel                                  | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-add-nautilus/envs/jedi-fv3-intel-2021.5.0/``(temporary)    |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| NAVY HPCMP Nautilus AMD clang/flang                        | Dom Heinzeller / ???          | ``WORK IN PROGRESS``                                                                                         |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Casper Intel                                  | Dom Heinzeller / ???          | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0-casper/envs/unified-env``                      |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/spack-stack-1.3.0/envs/unified-env``                             |
@@ -305,6 +309,49 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading the
    module load stack-gcc/10.3.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.9.7
+
+.. _Preconfigured_Sites_Nautilus:
+
+------------------------------
+NAVY HPCMP Nautilus
+------------------------------
+
+With Intel, the following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+
+   module load slurm
+   module load intel/compiler/2022.0.2
+   module load intel/mpi/2021.5.1
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+   module load mysql/8.0.31
+
+With AMD clang/flang (aocc), the following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+
+   module load slurm
+   module load amd/aocc/4.0.0
+   module load amd/aocl/aocc/4.0
+   module load penguin/openmpi/4.1.4/aocc
+
+   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
+   module load ecflow/5.8.4
+   module load mysql/8.0.31
+
+.. note::
+
+   There are still problems launching the ecflow GUI, although the package is installed.
+
+.. note::
+
+   spack-stack is not yet officially supported on Nautilus. Test installations for a limited set of packages are in ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-add-nautilus/envs/jedi-fv3-intel-2021.5.0/`` and ``WORK IN PROGRESS``, respectively.
 
 .. _Preconfigured_Sites_Casper:
 

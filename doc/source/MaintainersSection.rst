@@ -360,6 +360,28 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
+.. _MaintainersSection_Narwhal:
+
+------------------------------
+NAVY HPCMP Nautilus
+------------------------------
+
+On Nautilus, ``mysql`` and ``ecflow`` need to be installed as a one-off before spack can be used.
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``.
+
+.. code-block:: console
+
+   module purge
+
+   module load slurm
+   module load amd/aocc/4.0.0
+   module load amd/aocl/aocc/4.0
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
+
 .. _MaintainersSection_Casper:
 
 ------------------------------
