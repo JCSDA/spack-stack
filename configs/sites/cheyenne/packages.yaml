@@ -35,7 +35,7 @@ packages:
       modules:
       - impi/2019.7.217
   openmpi:
-    externals: 
+    externals:
     - spec: openmpi@4.1.1%gcc@10.1.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm,tm
       prefix: /glade/u/apps/ch/opt/openmpi/4.1.1/gnu/10.1.0
       modules:

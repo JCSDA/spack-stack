@@ -47,7 +47,7 @@ Ready-to-use spack-stack 1.3.0 installations are available on the following, ful
 | Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env``                                            |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 
-For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
+For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
 =======================================================================
 Officially supported spack-stack 1.3.1 installations (subset of tier 1)
@@ -91,7 +91,7 @@ Ready-to-use spack-stack 1.3.1 installations are available on the following, ful
 
 ^** spack-stack-1.3.1 is not yet available on NOAA Parallel Works Azure, but on AWS and Gcloud.
 
-For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/noaa-emc/spack-stack/issues>`_ and `discussions <https://github.com/noaa-emc/spack-stack/discussions>`_ first.
+For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
 .. _Preconfigured_Sites_Tier1:
 
@@ -308,9 +308,9 @@ For ``spack-stack-1.3.0`` with GNU, load the following modules after loading the
 
 .. _Preconfigured_Sites_Casper:
 
--------------------
+------------------------------
 NCAR-Wyoming Casper
--------------------
+------------------------------
 
 The following is required for building new spack environments and for using spack to build and run software.
 
@@ -816,7 +816,7 @@ The following instructions install a new spack environment on a pre-configured s
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/NOAA-EMC/spack-stack.git
+   git clone --recursive https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Ensure Python 3.8+ is available and the default before sourcing spack

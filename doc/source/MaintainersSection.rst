@@ -385,9 +385,7 @@ qt (qt@5)
 .. code-block:: console
 
    module purge
-   module unuse /glade/u/apps/ch/modulefiles/default/compilers
-   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
-   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   export LMOD_TMOD_FIND_FIRST=yes
    module load gnu/10.1.0
 
 ecflow
@@ -396,9 +394,7 @@ ecflow
 .. code-block:: console
 
    module purge
-   module unuse /glade/u/apps/ch/modulefiles/default/compilers
-   export MODULEPATH_ROOT=/glade/work/jedipara/cheyenne/spack-stack/modulefiles
-   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/compilers
+   export LMOD_TMOD_FIND_FIRST=yes
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
    module load gnu/10.1.0
    module load miniconda/3.9.12
@@ -407,6 +403,27 @@ ecflow
 
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31``.
+
+openmpi
+
+    module purge
+    export LMOD_TMOD_FIND_FIRST=yes
+    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+    module load gnu/10.1.0
+
+   ./configure \
+       --prefix=/glade/work/epicufsrt/contrib/spack-stack/openmpi-4.1.5 \
+       --without-verbs \
+       --with-ucx=/glade/u/apps/ch/opt//ucx/1.12.1 \
+       --disable-wrapper-runpath \
+       --with-tm=/opt/pbs \
+       --enable-mca-no-build=btl-uct \
+       2>&1 | tee log.config
+   make VERBOSE=1 -j2
+   make check
+   make install
+
+
 
 .. _MaintainersSection_WCOSS2:
 
