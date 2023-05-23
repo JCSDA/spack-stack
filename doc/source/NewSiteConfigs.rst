@@ -217,9 +217,11 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 7. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
-
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
-   spack config add "packages:all:compiler:[apple-clang@13.1.6]"
+   # Check your clang version then add it to your site compiler config.
+   clang --version
+   spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
+   
 
 8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
@@ -434,7 +436,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 7. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
-   # Check your gcc site's GCC version then add it to your site compiler config.
+   # Check your gcc version then add it to your site compiler config.
    gcc --version
    spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
    
