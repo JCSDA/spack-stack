@@ -1,10 +1,18 @@
-### Describe the changes in this PR
+### Summary
 
-### Describe the testing done
+Describe the changes made in this PR and why they are needed.
 
-### List the applications (UFS, JEDI, etc.) affected by this PR (intentionally or unintentionally)
+### Testing
 
-### Summarize which systems are affected by this change
+Describe the testing done for this PR.
+
+### Applications affected
+
+List all known applications (UFS WM, JEDI, SRW, etc.) intentionally or unintentionally affected by this PR.
+
+### Systems affected
+
+List all systems intentionally or unintentionally affected by this PR.
 
 ### Dependencies
 
