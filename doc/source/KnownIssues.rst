@@ -7,9 +7,9 @@ Known Issues
 General
 ==============================
 
-1. First call to ``spack concretize`` fails with ``[Errno 2] No such file or directory: ... .json``
+1. `gcc@13` (`gcc`, `g++`, `gfortran`) not yet supported
 
-   This can happen when ``spack concretize`` is called the very first time in a new spack-stack clone, during which the boostrapping (installation of ``clingo``) is done first. Simply rerunning the command should solve the problem.
+   Our software stack doesn't build with `gcc@13` yet. This is also true when combining the LLVM or Apple `clang` compiler with `gfortran@13`.
 
 2. Build errors with Python 3.10
 
