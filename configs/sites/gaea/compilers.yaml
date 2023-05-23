@@ -10,7 +10,7 @@ compilers::
       operating_system: cnl7
       modules:
       - PrgEnv-intel
-      - intel/intel-classic.2022.0.2
+      - intel-classic/2022.0.2
       environment:
         prepend_path:
           PATH: '/opt/gcc/10.3.0/snos/bin'
