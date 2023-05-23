@@ -128,7 +128,8 @@ These instructions are meant to be a reference that users can follow to set up t
 .. code-block:: console
 
    brew install coreutils
-   brew install gcc
+   # For now, use gcc@12
+   brew install gcc@12
    brew install git
    brew install git-lfs
    brew install lmod
