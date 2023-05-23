@@ -434,14 +434,15 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 7. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
-   GCC_VERSION="$(gcc --version | grep -o -m1 -P "\d{1,2}\.\d{1,2}\.\d{1,2}$")"
-   spack config add "packages:all:compiler:[gcc@${GCC_VERSION}]"
+   # Check your gcc site's GCC version then add it to your site compiler config.
+   gcc --version
+   spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
    
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
    
    # Example for Ubuntu 20.04 or 22.04 following the above instructions
-   spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
+   spack config add "packages:all:providers:mpi:[mpich@4.1.1]"
 
 8. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
 
