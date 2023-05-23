@@ -350,9 +350,9 @@ With AMD clang/flang (aocc), the following is required for building new spack en
 
 .. _Preconfigured_Sites_Casper:
 
--------------------
+------------------------------
 NCAR-Wyoming Casper
--------------------
+------------------------------
 
 The following is required for building new spack environments and for using spack to build and run software.
 

@@ -30,6 +30,18 @@ NASA Discover
    Discover's connection to the outside world can be very slow and spack sometimes aborts with fetch timeouts. Try again until it works, sometimes have to wait for a bit.
 
 ==============================
+NCAR-Wyoming Casper
+==============================
+
+1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Casper.
+
+==============================
+NCAR-Wyoming Cheyenne
+==============================
+
+1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Cheyenne.
+
+==============================
 NOAA Parallel Works
 ==============================
 
