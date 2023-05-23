@@ -403,10 +403,16 @@ NOAA Acorn (WCOSS2 test system)
 
 On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
 
-CONFIG_SITE should be set to empty in `compilers.yaml`. Don't use ``module purge`` on Acorn!
+`CONFIG_SITE` should be set to empty in `compilers.yaml`. Don't use ``module purge`` on Acorn!
+
+When installing an official `spack-stack` on Acorn, be mindful of umask and group ownership, as these can be finnicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
+
+Due to a combined quirk of Cray and Spack, the ``PrgEnv-gnu`` and ``gcc`` modules must be loaded when `ESMF` is being installed with `GCC`.
+
+As of spring 2023, there is an inconsistency in `libstdc++` versions on Acorn between the login and compute nodes. It is advisable to compile on the compute nodes, which requires running ``spack fetch`` prior to installing through a batch job.
 
 .. note::
-   ``spack`` software installations are maintained by NCO on this platform.
+   System-wide ``spack`` software installations are maintained by NCO on this platform. The spack-stack official installations use those installations for some dependencies.
 
 .. _Preconfigured_Sites_Parallel_Works:
 
