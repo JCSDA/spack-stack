@@ -1,10 +1,12 @@
 [submodule "spack"]
   path = spack
-  #url = https://github.com/spack/spack
-  #branch = develop
-  url = https://github.com/jcsda/spack
-  # to be replaced by final tag
-  branch = release/1.4.0
+  ##url = https://github.com/spack/spack
+  ##branch = develop
+  #url = https://github.com/jcsda/spack
+  ## to be replaced by final tag
+  #branch = release/1.4.0
+  url = https://github.com/climbfuji/spack
+  branch = bugfix/conflict_intel_hdf5_fortran
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
