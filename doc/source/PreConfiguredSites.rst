@@ -641,7 +641,7 @@ For ``spack-stack-1.4.0`` with GNU, run the following commands/load the followin
 Amazon Web Services Red Hat 8
 -----------------------------
 
-Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-redhat8" (ami-02324faac94a9cac9 in region us-east-1, TODO MAKE PUBLIC ami-038d9beca351f9005 in region us-east-2).
+Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-redhat8" (ami-02324faac94a9cac9 in region us-east-1, ami-038d9beca351f9005 in region us-east-2).
 
 For ``spack-stack-1.4.0``, run:
 
@@ -659,7 +659,7 @@ For ``spack-stack-1.4.0``, run:
 Amazon Web Services Ubuntu 20
 -----------------------------
 
-Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-ubuntu20" (ami-09a8c9d3775feafcf in region us-east-1, TODO MAKE PUBLIC ami-03e47cdb4ced34d7e in region us-east-2).
+Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-ubuntu20" (ami-09a8c9d3775feafcf in region us-east-1, ami-03e47cdb4ced34d7e in region us-east-2).
 
 For ``spack-stack-1.4.0``, run:
 
