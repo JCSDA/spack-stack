@@ -468,7 +468,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 .. warning::
    On some systems, the default compiler (e.g., ``gcc`` on Ubuntu 20) may not get used by spack if a newer version is found. Compare your entry to the output of the concretization step later and adjust the entry, if necessary.
 
-8. Set a few more package variants and versions to avoid duplicate packages being built (for both Red Hat and Ubuntu):
+8. Set a few more package variants and versions to avoid linker errors and duplicate packages being built (for both Red Hat and Ubuntu):
 
 .. code-block:: console
 
