@@ -16,7 +16,7 @@ Ready-to-use spack-stack 1.4.0 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | System                                                     | Maintainers                   | Location                                                                                                     |
 +============================================================+===============================+==============================================================================================================+
-| MSU Orion Intel/GNU                                        | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.0/envs/unified-env``                           |
+| MSU Orion Intel/GNU                                        | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0/envs/unified-env``                           |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | MSU Hercules Intel/GNU^*                                   | Cam Book / Dom Heinzeller     | ``/work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0-hercules/envs/unified-env``                  |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -50,7 +50,9 @@ Ready-to-use spack-stack 1.4.0 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | Amazon Web Services Parallelcluster Ubuntu 20.04 Intel/GNU | Dom Heinzeller / ???          | ``/mnt/experiments-efs/skylab-v5/spack-stack-1.4.0/envs/unified-env``                                        |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env``                                            |
+| Amazon Web Services AMI Red Hat 8 GNU                      | Dom Heinzeller / ???          | ``/home/ec2-user/spack-stack/spack-stack-1.4.0/envs/unified-env``                                            |
++------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
+| Amazon Web Services AMI Ubuntu 20 GNU                      | Dom Heinzeller / ???          | ``/home/ubuntu/spack-stack/spack-stack-1.4.0/envs/unified-env``                                              |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 
 ^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
@@ -79,41 +81,21 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.4.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.7
    module available
 
-For ``spack-stack-1.3.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.4.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
-   module load stack-gcc/10.2.0
-   module load stack-openmpi/4.0.4
-   module load stack-python/3.9.7
-   module available
-
-For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
-
-.. code-block:: console
-
-   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2022.0.2
-   module load stack-intel-oneapi-mpi/2021.5.1
-   module load stack-python/3.9.7
-   module available
-
-For ``spack-stack-1.3.1`` with GNU, load the following modules after loading miniconda and ecflow:
-
-.. code-block:: console
-
-   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic-ps/role-epic-ps/spack-stack/spack-stack-1.4.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.9.7
@@ -659,29 +641,34 @@ For ``spack-stack-1.4.0`` with GNU, run the following commands/load the followin
 Amazon Web Services Red Hat 8
 -----------------------------
 
-Use a c6i.4xlarge instance or similar with AMI "skylab-4.0.0-redhat8-update-20230419" (ami-01e025b0334795ffa in region us-east-1, ami-094361e081de18589 in region us-east-2).
+Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-redhat8" (ami-02324faac94a9cac9 in region us-east-1, ami-038d9beca351f9005 in region us-east-2).
 
-For ``spack-stack-1.3.0``, run:
+For ``spack-stack-1.4.0``, run:
 
 .. code-block:: console
 
    ulimit -s unlimited
    scl enable gcc-toolset-11 bash
-   module use /home/ec2-user/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module use /home/ec2-user/spack-stack/spack-stack-1.4.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.2.1
-   module load stack-openmpi/4.1.4
+   module load stack-openmpi/4.1.5
    module load stack-python/3.10.8
    module available
 
-For ``spack-stack-1.3.1``, run:
+-----------------------------
+Amazon Web Services Ubuntu 20
+-----------------------------
+
+Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-ubuntu20" (ami-09a8c9d3775feafcf in region us-east-1, ami-03e47cdb4ced34d7e in region us-east-2).
+
+For ``spack-stack-1.4.0``, run:
 
 .. code-block:: console
 
    ulimit -s unlimited
-   scl enable gcc-toolset-11 bash
-   module use /home/ec2-user/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
-   module load stack-gcc/11.2.1
-   module load stack-openmpi/4.1.4
+   module use /home/ubuntu/spack-stack/spack-stack-1.4.0/envs/unified-env/install/modulefiles/Core
+   module load stack-gcc/10.3.0
+   module load stack-openmpi/4.1.5
    module load stack-python/3.10.8
    module available
 
