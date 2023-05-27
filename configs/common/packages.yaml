@@ -97,7 +97,7 @@
       version: [4.2.15]
       variants: ~fortran ~netcdf
     hdf5:
-      version: [1.14.1-2]
+      version: [1.14.0]
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: [3.3.3]
