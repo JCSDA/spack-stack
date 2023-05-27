@@ -8,13 +8,13 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
-      - ewok-env@unified-dev
-      - jedi-fv3-env@unified-dev
-      - jedi-mpas-env@unified-dev
-      - jedi-neptune-env@unified-dev
-      - jedi-ufs-env@unified-dev
-      - jedi-um-env@unified-dev
-      - soca-env@unified-dev
+      - ewok-env@skylab-dev
+      - jedi-fv3-env@skylab-dev
+      - jedi-mpas-env@skylab-dev
+      - jedi-neptune-env@skylab-dev
+      - jedi-ufs-env@skylab-dev
+      - jedi-um-env@skylab-dev
+      - soca-env@skylab-dev
 
   specs:
     - matrix:
