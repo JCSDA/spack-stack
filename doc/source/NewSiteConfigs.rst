@@ -235,11 +235,11 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 7. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
+
    # Check your clang version then add it to your site compiler config.
    clang --version
    spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
    spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
-   
 
 8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
@@ -454,30 +454,44 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 7. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
 
 .. code-block:: console
+
    # Check your gcc version then add it to your site compiler config.
    gcc --version
    spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
-   
+
    # Example for Red Hat 8 following the above instructions
    spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
-   
+
    # Example for Ubuntu 20.04 or 22.04 following the above instructions
    spack config add "packages:all:providers:mpi:[mpich@4.1.1]"
 
-8. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
+.. warning::
+   On some systems, the default compiler (e.g., ``gcc`` on Ubuntu 20) may not get used by spack if a newer version is found. Compare your entry to the output of the concretization step later and adjust the entry, if necessary.
+
+8. Set a few more package variants and versions to avoid linker errors and duplicate packages being built (for both Red Hat and Ubuntu):
+
+.. code-block:: console
+
+   spack config add "packages:fontconfig:variants:+pic"
+   spack config add "packages:pixman:variants:+pic"
+   spack config add "packages:cairo:variants:+pic"
+   spack config add "packages:libffi:version:[3.3]"
+   spack config add "packages:flex:version:[2.6.4]"
+
+9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
 
 .. code-block:: console
 
    sed -i 's/tcl/lmod/g' envs/jedi-ufs.mylinux/site/modules.yaml
 
-9. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
+10. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
 
 .. code-block:: console
 
    definitions:
    - compilers: ['%gcc']
 
-10. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. warning::
    **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
@@ -488,23 +502,23 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-11. Process the specs and install
+12. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-12. Create tcl module files
+13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
 
 .. code-block:: console
 
    spack module tcl refresh
 
-13. Create meta-modules for compiler, mpi, python
+14. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
    spack stack setup-meta-modules
 
-14. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
