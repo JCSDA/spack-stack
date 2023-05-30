@@ -18,6 +18,11 @@ packages:
     - spec: openmpi@4.1.4%aocc@4.0.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm
       prefix: /p/app/penguin/openmpi/4.1.4/aoc
 
+### Modifications of common packages
+  # Version 2.0.8 doesn't compile on Nautilus
+  wgrib2:
+    version:: [3.1.1]
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
