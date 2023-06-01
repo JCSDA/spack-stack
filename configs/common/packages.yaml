@@ -122,10 +122,10 @@
       version: [2.35.2]
       variants: ~shared
     met:
-      version: [10.1.1]
+      version: [11.0.1]
       variants: +python +grib2
     metplus:
-      version: [4.1.1]
+      version: [5.0.1]
     mpich:
       variants: ~hwloc +two_level_namespace
     nco:
