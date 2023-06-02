@@ -57,10 +57,11 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
+  # Don't use, can lead to duplicate packages
+  #bison:
+  #  externals:
+  #  - spec: bison@3.0.4
+  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6

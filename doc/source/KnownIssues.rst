@@ -11,9 +11,9 @@ General
 
    Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``.
 
-2. Build errors with Python 3.10
+2. Build errors for ``mapl@2.35.2`` with ``mpich@4.1.1``
 
-   These build errors have been addressed, it should now be possible to use Python 3.10. Please report errors to the spack-stack developers and, if applicable, to the spack developers.
+   This problem is described in https://github.com/JCSDA/spack-stack/issues/608.
 
 3. Issues starting/finding ``ecflow_server`` due to a mismatch of hostnames
 
@@ -26,6 +26,12 @@ General
 5. Installation of duplicate package ``nco``
 
    We tracked this down to multiple versions of ``bison`` being used. The best solution is to remove external ``bison`` versions earlier than 3.8 from the site config (``packages.yaml``).
+
+==============================
+MSU Hercules
+==============================
+
+1. ``wgrib2@2.0.8`` doesn't build on Hercules, use ``wgrib2@3.1.1`` instead.
 
 ==============================
 NASA Discover
@@ -90,6 +96,12 @@ NAVY HPCMP Narwhal
 1. On Narwhal (like on any other Cray), the spack build environment depends on the currently loaded modules. It is therefore necessary to build separate environments for different compilers while having the correct modules for that setup loaded.
 
 2. ``mapl@2.35.2`` does not build on Narwhal, see https://github.com/JCSDA/spack-stack/issues/524. When using the ``unified-dev`` template, one has to manually remove ``jedi-ufs-env`` and ``ufs-weather-model-env`` from the environment's ``spack.yaml``.
+
+==============================
+NAVY HPCMP Nautilus
+==============================
+
+1. ``wgrib2@2.0.8`` doesn't build on Nautilus, use ``wgrib2@3.1.1`` instead.
 
 ==============================
 macOS
