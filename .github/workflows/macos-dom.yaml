@@ -61,7 +61,7 @@ jobs:
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
           spack config add "packages:all:compiler:[apple-clang@13.1.6]"
-          sed -i '' "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
+          sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
           # Concretize, add source cache (read-only!), install
           spack concretize 2>&1 | tee log.concretize.apple-clang-13.1.6

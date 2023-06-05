@@ -7,19 +7,31 @@ Known Issues
 General
 ==============================
 
-1. First call to ``spack concretize`` fails with ``[Errno 2] No such file or directory: ... .json``
+1. ``gcc@13`` (``gcc``, ``g++``, ``gfortran``) not yet supported
 
-   This can happen when ``spack concretize`` is called the very first time in a new spack-stack clone, during which the boostrapping (installation of ``clingo``) is done first. Simply rerunning the command should solve the problem.
+   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``.
 
-2. Build errors with Python 3.10
+2. Build errors for ``mapl@2.35.2`` with ``mpich@4.1.1``
 
-   These build errors have been addressed, it should now be possible to use Python 3.10. Please report errors to the spack-stack developers and, if applicable, to the spack developers.
+   This problem is described in https://github.com/JCSDA/spack-stack/issues/608.
 
 3. Issues starting/finding ``ecflow_server`` due to a mismatch of hostnames
+
    On some systems, ``ecflow_server`` gets confused by multiple hostnames, e.g. ``localhost`` and ``MYORG-L-12345``. The ``ecflow_start.sh`` script reports the hostname it wants to use. This name (or both) must be in ``/etc/hosts`` in the correct address line, often the loopback address (``127.0.0.1``).
 
 4. Installation of duplicate packages ``ecbuild``, ``hdf5``
+
    One reason for this is an external ``cmake@3.20`` installation, which confuses the concretizer when building a complex environment such as the ``skylab-dev`` or ```jedi-ufs-all`` environment. For certain packages (and thus their dependencies), a newer version than ``cmake@3.20`` is required, for others ``cmake@3.20`` works, and spack then thinks that it needs to build two identical versions of the same package with different versions of ``cmake``. The solution is to remove any external ``cmake@3.20`` package (and best also earlier versions) in the site config and run the concretization step again. Another reason on Ubuntu 20 is the presence of external ``openssl`` packages, which should be removed before re-running the concretization step.
+
+5. Installation of duplicate package ``nco``
+
+   We tracked this down to multiple versions of ``bison`` being used. The best solution is to remove external ``bison`` versions earlier than 3.8 from the site config (``packages.yaml``).
+
+==============================
+MSU Hercules
+==============================
+
+1. ``wgrib2@2.0.8`` doesn't build on Hercules, use ``wgrib2@3.1.1`` instead.
 
 ==============================
 NASA Discover
@@ -76,6 +88,20 @@ UW (Univ. of Wisconsin) S4
    [94%] Linking CXX executable test_ufo_parameters
    icpc: error #10106: Fatal error in /home/opt/intel/oneapi/2022.1/compiler/2022.0.1/linux/bin/intel64/../../bin/intel64/mcpcom, terminated by kill signal
    ...
+
+==============================
+NAVY HPCMP Narwhal
+==============================
+
+1. On Narwhal (like on any other Cray), the spack build environment depends on the currently loaded modules. It is therefore necessary to build separate environments for different compilers while having the correct modules for that setup loaded.
+
+2. ``mapl@2.35.2`` does not build on Narwhal, see https://github.com/JCSDA/spack-stack/issues/524. When using the ``unified-dev`` template, one has to manually remove ``jedi-ufs-env`` and ``ufs-weather-model-env`` from the environment's ``spack.yaml``.
+
+==============================
+NAVY HPCMP Nautilus
+==============================
+
+1. ``wgrib2@2.0.8`` doesn't build on Nautilus, use ``wgrib2@3.1.1`` instead.
 
 ==============================
 macOS
