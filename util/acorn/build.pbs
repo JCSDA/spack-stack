@@ -1,6 +1,7 @@
 #PBS -l walltime=05:59:59
 #PBS -j oe
 #PBS -l select=2:ncpus=8:mem=20GB
+#PBS -l place=scatter:excl
 #PBS -S /bin/bash
 #PBS -W umask=002
 #PBS -A NCEPLIBS-DEV
@@ -23,6 +24,8 @@ module load cfp
 
 cd $PBS_O_WORKDIR
 rm -f ./build_stage
+# Note $TMPDIR is local to each node, so ./build_stage links to a different directory
+# for each node.
 ln -s $TMPDIR ./build_stage
 mkdir -p output
 for i in {1..1}; do
