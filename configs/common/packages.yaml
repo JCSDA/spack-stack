@@ -121,6 +121,7 @@
       version: [2.1.0]
     libpng:
       version: [1.6.37]
+      variants: +pic
     libyaml:
       version: [0.2.5]
     mapl:
