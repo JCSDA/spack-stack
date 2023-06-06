@@ -1,0 +1,30 @@
+#PBS -l walltime=05:59:59
+#PBS -j oe
+#PBS -l select=2:ncpus=8:mem=20GB
+#PBS -S /bin/bash
+#PBS -W umask=002
+#PBS -A NCEPLIBS-DEV
+
+# This script dispatches Spack installation tasks through the spackinstall.sh script.
+# Make sure that the number of nodes in 'select=#' corresponds with the number of nodes
+# specified for 'mpiexec -n #', and that 'ncpus=X' corresponds with the number of procs
+# specified for the 'spack install ... -jX' command in spackinstall.sh.
+#
+# The walltime and memory allocations seem to be sufficient for building everything
+# in the unified environment.
+
+module reset
+module load PrgEnv-gnu
+module load gcc/11.2.0
+module load craype
+module load cray-mpich
+module load cray-pals
+module load cfp
+
+cd $PBS_O_WORKDIR
+rm -f ./build_stage
+ln -s $TMPDIR ./build_stage
+mkdir -p output
+for i in {1..1}; do
+  mpiexec -n 2 -ppn 1 --cpu-bind none ./spackinstall.sh
+done
