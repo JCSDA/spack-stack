@@ -97,7 +97,7 @@
       version: [4.2.15]
       variants: ~fortran ~netcdf
     hdf5:
-      version: [1.14.1-2]
+      version: [1.14.0]
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: [3.3.3]
@@ -122,10 +122,10 @@
       version: [2.35.2]
       variants: ~shared
     met:
-      version: [10.1.1]
+      version: [11.0.2]
       variants: +python +grib2
     metplus:
-      version: [4.1.1]
+      version: [5.0.1]
     mpich:
       variants: ~hwloc +two_level_namespace
     nco:
@@ -272,7 +272,7 @@
       version: [2.4.1]
     wget:
       version: [1.21.2]
-    # When changing wgrib2, also check Hercules site config
+    # When changing wgrib2, also check Hercules and Nautilus site configs
     wgrib2:
       version: [2.0.8]
     wrf-io:
