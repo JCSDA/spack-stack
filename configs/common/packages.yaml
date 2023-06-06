@@ -71,6 +71,9 @@
     fms:
       version: [2023.01]
       variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS
+    fontconfig:
+      version: [2.14.2]
+      variants: +pic
     freetype:
       version: [2.11.1]
       variants: +pic
