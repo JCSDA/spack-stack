@@ -1,7 +1,6 @@
 #PBS -l walltime=05:59:59
 #PBS -j oe
 #PBS -l select=2:ncpus=8:mem=20GB
-#PBS -l place=scatter:excl
 #PBS -S /bin/bash
 #PBS -W umask=002
 #PBS -A NCEPLIBS-DEV
