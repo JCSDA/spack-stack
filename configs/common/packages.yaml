@@ -246,6 +246,7 @@
       version: [5.15.3]
     scotch:
       version: [7.0.3]
+      variants: +mpi+metis~shared~threads~mpi_thread+noarch
     sfcio:
       version: [1.4.1]
     shumlib:
