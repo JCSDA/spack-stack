@@ -2,8 +2,8 @@
   path = spack
   #url = https://github.com/spack/spack
   #branch = develop
-  url = https://github.com/AlexanderRichert-NOAA/spack
-  branch = ufs_jun2023
+  url = https://github.com/jcsda/spack
+  branch = release/1.4.1
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
