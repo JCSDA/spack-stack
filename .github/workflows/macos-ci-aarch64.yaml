@@ -1,0 +1,156 @@
+name: macos-ci-aarch64-build
+on:
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  workflow_dispatch:
+  #  inputs:
+  #    template:
+  #      description: 'Base spack.yaml template. Default is a complete JEDI-UFS environment.'
+  #      required: true
+  #      default: 'unified-dev'
+  #    specs:
+  #      description: 'Which specs to add to the template. Default is none (empty string).'
+  #      required: false
+  #      default: ''
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+    #shell: bash -leo pipefail {0}
+
+jobs:
+  macos-ci-aarch64-build:
+    runs-on: [macos-ci-aarch64]
+
+    steps:
+      - name: cleanup
+        run: |
+          pwd
+          ls -lart
+          rm -fr *
+
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: create-env
+        run: |
+          # Set up homebrew and lmod support
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+          source /opt/homebrew/opt/lmod/init/profile
+
+          # Set up spack-stack
+          source ./setup.sh
+          # Important!
+          export SPACK_PYTHON=/usr/bin/python3
+
+          # DH* 20230302 - to avoid using padded_length for build caches,
+          # always build in the same environment so that the length of the
+          # path doesn't change - see also other 'DH* 20230302' changes below
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-aarch64
+          export ENVNAME=ci-env.macos-ci-aarch64
+          # *DH
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          spack stack create env --site macos.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
+          spack env activate ${ENVDIR}
+          spack add ${{ inputs.specs || '' }}
+          export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
+
+          # Find external packages
+          spack external find --scope system
+          spack external find --scope system perl
+          spack external find --scope system wget
+          PATH="/opt/homebrew/opt/curl/bin:$PATH" \
+              spack external find --scope system curl
+          PATH="/opt/homebrew/opt/qt5/bin:$PATH" \
+              spack external find --scope system qt
+          spack external find --scope system texlive
+          spack external find --scope system mysql
+
+          # Find compilers
+          spack compiler find --scope system
+
+          export -n SPACK_SYSTEM_CONFIG_PATH
+
+          # DH* 20230302 - Don't use yet, too many problems
+          ## For buildcaches
+          #spack config add config:install_tree:padded_length:true
+          # *DH
+
+          # Set compiler and MPI
+          spack config add "packages:all:providers:mpi:[openmpi]"
+          spack config add "packages:all:compiler:[apple-clang@14.0.0]"
+          sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
+
+          spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.0
+
+          # Add and update source cache
+          spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
+          spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
+
+          # Add binary cache and reindex it
+          spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
+          spack buildcache update-index -m local-binary
+          echo "Packages in combined spack build caches:"
+          spack buildcache list
+
+          # Break installation up in pieces and create build caches in between
+          # This allows us to "spin up" builds that altogether take longer than
+          # six hours, and/or fail later in the build process.
+
+          # base-env
+          echo "base-env ..."
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
+
+          # the rest
+          echo "${{ inputs.template || 'unified-dev' }} ..."
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
+          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
+
+          # Next steps: synchronize source and build cache to a central/combined mirror?
+          echo "Next steps ..."
+          spack clean -a
+          spack module lmod refresh -y
+          spack stack setup-meta-modules
+          spack env deactivate
+
+      - name: test-env
+        run: |
+          source /usr/local/opt/lmod/init/profile
+
+          # DH* 20230302 - to avoid using padded_length for build caches,
+          # always build in the same environment so that the length of the
+          # path doesn't change - see also other 'DH* 20230302' changes below
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-aarch64
+          export ENVNAME=ci-env.macos-ci-aarch64
+          # *DH
+          export ENVDIR=$PWD/envs/${ENVNAME}
+
+          module use ${ENVDIR}/install/modulefiles/Core
+          module load stack-apple-clang/14.0.0
+          module load stack-openmpi
+          module load stack-python/3.10.8
+          module available
+
+          module load jedi-ufs-env/unified-dev
+          module load ewok-env/unified-dev
+          module load soca-env/unified-dev
+          module list
+
+      # Skip this for now, copied from other yaml
+      #- name: upload-mirror
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: spack_mirror
+      #    path: cache/source_cache
