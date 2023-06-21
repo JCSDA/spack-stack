@@ -20,7 +20,7 @@
       version: [1.78.0]
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
-      version: [11.7.1]
+      version: [12.0.0]
       variants: +python
     # Newer versions of CDO require the C++-17 standard, which doesn't
     # work with all compilers that are currently in use in spack-stack
