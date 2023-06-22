@@ -127,7 +127,9 @@ jobs:
 
       - name: test-env
         run: |
-          source /usr/local/opt/lmod/init/profile
+          # Set up homebrew and lmod support
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+          source /opt/homebrew/opt/lmod/init/profile
 
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
