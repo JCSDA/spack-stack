@@ -65,10 +65,11 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
+  # Do not use, can lead to duplicate versions of nco being installed
+  #bison:
+  #  externals:
+  #  - spec: bison@3.0.4
+  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6

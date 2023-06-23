@@ -62,7 +62,6 @@ modules:
       - libxrandr
       - libxrender
       - libxxf86vm
-      - libyaml
       - lz4
       - m4
       - mysql
@@ -110,10 +109,20 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+      hdf5:
+        environment:
+          set:
+            'HDF5_DIR': '{prefix}'
       libpng:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
+      libyaml:
+        environment:
+          set:
+            'YAML_DIR': '{prefix}'
+            'YAML_LIB': '{prefix}/lib'
+            'YAML_INC': '{prefix}/include'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
@@ -126,10 +135,18 @@ modules:
           ^esmf@8.4.0+debug snapshot=none: 'esmf-8.4.0-debug'
           ^esmf@8.4.1~debug snapshot=none: 'esmf-8.4.1'
           ^esmf@8.4.1+debug snapshot=none: 'esmf-8.4.1-debug'
+          ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
+          ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
       openmpi:
         environment:
           set:
             'OMPI_MCA_rmaps_base_oversubscribe': '1'
+      p4est:
+        environment:
+          set:
+            'P4EST_API_DIR': '{prefix}'
+            'P4EST_API_LIB': '{prefix}/lib'
+            'P4EST_API_INC': '{prefix}/include'
       bacio:
         environment:
           set:
@@ -290,7 +307,6 @@ modules:
       - libxrandr
       - libxrender
       - libxxf86vm
-      - libyaml
       - lz4
       - m4
       - mysql
@@ -338,10 +354,20 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+      hdf5:
+        environment:
+          set:
+            'HDF5_DIR': '{prefix}'
       libpng:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
+      libyaml:
+        environment:
+          set:
+            'YAML_DIR': '{prefix}'
+            'YAML_LIB': '{prefix}/lib'
+            'YAML_INC': '{prefix}/include'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
@@ -354,10 +380,18 @@ modules:
           ^esmf@8.4.0+debug snapshot=none: 'esmf-8.4.0-debug'
           ^esmf@8.4.1~debug snapshot=none: 'esmf-8.4.1'
           ^esmf@8.4.1+debug snapshot=none: 'esmf-8.4.1-debug'
+          ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
+          ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
       openmpi:
         environment:
           set:
             'OMPI_MCA_rmaps_base_oversubscribe': '1'
+      p4est:
+        environment:
+          set:
+            'P4EST_API_DIR': '{prefix}'
+            'P4EST_API_LIB': '{prefix}/lib'
+            'P4EST_API_INC': '{prefix}/include'
       bacio:
         environment:
           set:
