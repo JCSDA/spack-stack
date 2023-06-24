@@ -16,7 +16,7 @@ List all systems intentionally or unintentionally affected by this PR.
 
 ### Dependencies
 
-If there are PRs that need to be merged before or along with this one, please add "waiting for another PR" label and link to the relevant issues/PRs.
+If there are PRs that need to be merged before or along with this one, please add "- [ ] waiting on LINK_TO_PR" for each of them
 
 ### Issue(s) addressed
 
