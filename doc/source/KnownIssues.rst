@@ -131,9 +131,9 @@ macOS
 Ubuntu
 ==============================
 
-1. The lmod version in Ubuntu 22.04 LTS breaks spack-stack modules.
+1. The lmod version in Ubuntu 22.04 LTS breaks spack modules.
 
-   Ubuntu 22.04 LTS will install lmod 6.6 from official apt repositories. Module files authored by spack use the `depends_on` directive that was introduced in lmod 7.0. The new site config instructions in :numref:`Section %s <NewSiteConfigs_Linux>` circumvent the issue by using `tcl/tk` environment modules. If you attempt to use lmod 6.6 you will get the following error when you attempt to load modules:
+   Ubuntu 22.04 LTS will install lmod 6.6 from official apt repositories. Module files authored by spack use the `depends_on` directive that was introduced in lmod 7.0. The new site config instructions in :numref:`Section %s <NewSiteConfigs_Linux>` circumvent the issue by using `tcl/tk` environment modules. If you attempt to use lmod 6.6 you will get the following error:
 
    .. code-block:: console
 
