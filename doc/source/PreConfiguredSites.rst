@@ -188,6 +188,7 @@ With Intel, the following is required for building new spack environments and fo
 
 .. code-block:: console
 
+   umask 0022
    module unload PrgEnv-cray
    module load PrgEnv-intel/8.3.2
    module unload intel
@@ -216,6 +217,7 @@ With GNU, the following is required for building new spack environments and for 
 
 .. code-block:: console
 
+   umask 0022
    module unload PrgEnv-cray
    module load PrgEnv-gnu/8.3.2
    module unload gcc
@@ -254,7 +256,9 @@ With Intel, the following is required for building new spack environments and fo
 
 .. code-block:: console
 
+   umask 0022
    module purge
+
    module load slurm
    module load intel/compiler/2022.0.2
    module load penguin/openmpi/4.1.5rc2/intel
@@ -276,6 +280,7 @@ With AMD clang/flang (aocc), the following is required for building new spack en
 
 .. code-block:: console
 
+   umask 0022
    module purge
 
    module load slurm
