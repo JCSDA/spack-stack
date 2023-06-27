@@ -26,7 +26,7 @@ def show_duplicate_packages(txt_to_check, ignore_list=[], only_show_dups=False):
         line = line.replace("^", "")
         package_name = re.findall("\s\w{7}\s+(\^?[^\s@]+)@", line)
         if not package_name: continue
-        if package_name[0] in ignore_list: continue
+        if [package_name[0]] in ignore_list: continue
         line = "  ".join(line.split()[1:])
         dd[package_name[0]].add(line)
     duplicates_found = False
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Check output of `spack concretize` for duplicate packages")
     parser.add_argument("filename", nargs="?")
     parser.add_argument("-d", action="store_true")
-    parser.add_argument("-i", nargs="*", default=[])
+    parser.add_argument("-i", nargs="*", action="append")
     args = parser.parse_args()
     if args.filename:
         with open(args.filename, "r") as f:
