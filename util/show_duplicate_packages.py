@@ -39,6 +39,7 @@ def show_duplicate_packages(txt_to_check, only_show_dups=False):
             print(colorize_spec(line, key, colorize=colorize))
     sys.stderr.write("===\n%suplicates found%s\n" % (("D","!") if duplicates_found else ("No d",".")))
     sys.stderr.flush()
+    return int(duplicates_found)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Check output of `spack concretize` for duplicate packages")
@@ -51,4 +52,5 @@ if __name__ == "__main__":
             txt_to_check = f.read()
     else:
         txt_to_check = sys.stdin.read()
-    show_duplicate_packages(txt_to_check, only_show_dups=args.d)
+    ret = show_duplicate_packages(txt_to_check, only_show_dups=args.d)
+    sys.exit(ret)
