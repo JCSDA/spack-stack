@@ -124,6 +124,7 @@ jobs:
           sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
           spack concretize 2>&1 | tee log.concretize.intel-2021.4.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.4.0
 
           # Add and update source cache
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
