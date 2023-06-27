@@ -7,6 +7,7 @@
 #   spack concretize | tee log.concretize | show_duplicate_packages.py > list_of_duplicates.txt
 #
 # '-d' argument prints only duplicates (and disables highlighting).
+# '-i' argument ignores a specific package, and can be invoked multiple times.
 #
 # Alex Richert, June 2023
 
