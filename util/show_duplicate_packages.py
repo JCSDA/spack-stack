@@ -43,14 +43,14 @@ def show_duplicate_packages(txt_to_check, only_show_dups=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Check output of `spack concretize` for duplicate packages")
-    if sys.stdin.isatty():
-        parser.add_argument("filename")
+    parser.add_argument("filename", nargs="?")
     parser.add_argument("-d", action="store_true")
     args = parser.parse_args()
-    if sys.stdin.isatty():
+    if args.filename:
         with open(args.filename, "r") as f:
             txt_to_check = f.read()
     else:
         txt_to_check = sys.stdin.read()
     ret = show_duplicate_packages(txt_to_check, only_show_dups=args.d)
     sys.exit(ret)
+
