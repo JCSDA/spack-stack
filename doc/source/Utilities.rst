@@ -18,7 +18,7 @@ The utility located at util/show_duplicate_packages.py parses the output of `spa
    spack concretize |& tee log.concretize
    ${SPACK_STACK_DIR}/util/show_duplicate_packages.py log.concretize
 
-The `-d` option shows only a list of the duplicates, as opposed to the default behavior, which is to show a print-out of all packages with colorized duplicates. In any case, the identification of any duplicates will yield a return code of 1.
+The `-d` option shows only a list of the duplicates, as opposed to the default behavior, which is to show a print-out of all packages with colorized duplicates. In any case, the identification of any duplicates will yield a return code of 1. The `-i` option can be invoked multiple times to skip specific package names.
 
 .. _Acorn_Utilities:
 
