@@ -20,6 +20,14 @@ The utility located at util/show_duplicate_packages.py parses the output of ``sp
 
 The ``-d`` option shows only a list of the duplicates, as opposed to the default behavior, which is to show a print-out of all packages with colorized duplicates. In any case, the identification of any duplicates will yield a return code of 1. The ``-i`` option can be invoked multiple times to skip specific package names.
 
+.. _Permissions_Checker:
+
+------------------------------
+check_permissions.sh
+------------------------------
+
+The utility located at util/check_permissions.sh can be run inside any spack-stack environment directory intended for multiple users (i.e., on an HPC or cloud platform). It will return errors if the environment directory is inaccessible to non-owning users and groups (i.e., if o+rx not set), as well as if any directories or files have permissions that make them inaccessible to other users.
+
 .. _Acorn_Utilities:
 
 ------------------------------
