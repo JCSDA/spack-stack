@@ -25,15 +25,13 @@ spack:
       #- upp-env@unified-dev
       #- ww3-env@unified-dev
 
-      # Additional esmf/mapl tags - don't activate by default, this
-      # can lead to duplicate packages (e.g. in Ubuntu CI tests)
+      # Additional esmf/mapl tags
       #- esmf@8.4.2~debug+external-parallelio
       #- mapl@2.35.2~debug ^esmf@8.4.2~debug+external-parallelio
 
-      # Additional crtm tags - don't activate by default, this
-      # can lead to duplicate packages (e.g. in Ubuntu CI tests)
-      #- crtm@v2.4-jedi.2
-      #- crtm@v3.0.0-rc.1
+      # Additional crtm tags
+      - crtm@v2.4-jedi.2
+      - crtm@v2.4.1-jedi
 
   specs:
     - matrix:
