@@ -16,6 +16,10 @@ spack:
       - jedi-um-env@skylab-dev
       - soca-env@skylab-dev
 
+      # Additional crtm tags
+      - crtm@v2.4-jedi.2
+      - crtm@v2.4.1-jedi
+
   specs:
     - matrix:
       - [$packages]
