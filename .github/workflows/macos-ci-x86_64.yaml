@@ -60,7 +60,7 @@ jobs:
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
-          spack external find --scope system
+          spack external find --scope system --exclude bison
           spack external find --scope system perl
           spack external find --scope system wget
           PATH="/usr/local/opt/curl/bin:$PATH" \
@@ -86,6 +86,7 @@ jobs:
           sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
           spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.0 -i fms -i crtm
 
           # Add and update source cache
           spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
