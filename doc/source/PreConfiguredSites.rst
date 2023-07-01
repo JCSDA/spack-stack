@@ -271,7 +271,7 @@ For ``spack-stack-1.4.0`` with Intel, load the following modules after loading t
 
 .. code-block:: console
 
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-intel-2021.5.0-openmpi-4.1.5/install/modulefiles/Core
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-dev-20230628/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-openmpi/4.1.5rc2
    module load stack-python/3.10.8
