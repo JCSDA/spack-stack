@@ -45,9 +45,9 @@ def show_duplicate_packages(txt_to_check, ignore_list=[], only_show_dups=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Check output of `spack concretize` for duplicate packages")
-    parser.add_argument("filename", nargs="?")
-    parser.add_argument("-d", action="store_true")
-    parser.add_argument("-i", nargs="*", action="append")
+    parser.add_argument("filename", nargs="?", help="'log.concretize' or other concretization output; if not set, stdin will be used")
+    parser.add_argument("-d", action="store_true", help="Only show duplicates (default output is colorized list of all packages)")
+    parser.add_argument("-i", default=[], nargs="*", action="append", help="Ignore package name (e.g., 'hdf5', 'netcdf-c')")
     args = parser.parse_args()
     if args.filename:
         with open(args.filename, "r") as f:
