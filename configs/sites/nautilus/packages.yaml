@@ -7,6 +7,7 @@ packages:
       mpi:: [openmpi@4.1.5rc2]
       #mpi:: [openmpi@4.1.4]
       blas:: [intel-oneapi-mkl]
+      fftw-api:: [intel-oneapi-mkl]
       lapack:: [intel-oneapi-mkl]
   ectrans:
     variants:: +mkl
