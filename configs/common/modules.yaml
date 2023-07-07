@@ -196,7 +196,7 @@ modules:
         environment:
           set:
             'NEMSIO_INC': '{prefix}/include'
-            'NEMSIO_LIB': '{prefix}/lib'
+            'NEMSIO_LIB': '{prefix}/lib64'
             'MKGFSNEMSIOCTL': '{prefix}/mkgfsnemsioctl'
             'NEMSIO_CHGDATE': '{prefix}/bin/nemsio_chgdate'
             'NEMSIO_GET': '{prefix}/bin/nemsio_get'
@@ -441,7 +441,7 @@ modules:
         environment:
           set:
             'NEMSIO_INC': '{prefix}/include'
-            'NEMSIO_LIB': '{prefix}/lib'
+            'NEMSIO_LIB': '{prefix}/lib64'
             'MKGFSNEMSIOCTL': '{prefix}/mkgfsnemsioctl'
             'NEMSIO_CHGDATE': '{prefix}/bin/nemsio_chgdate'
             'NEMSIO_GET': '{prefix}/bin/nemsio_get'
