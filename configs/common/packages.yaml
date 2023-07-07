@@ -136,7 +136,7 @@
     # ncview - when adding information here, also check Orion
     # and Discover site configs
     nemsio:
-      version: [2.5.2]
+      version: [2.5.4]
     nemsiogfs:
       version: [2.5.3]
     nccmp:
