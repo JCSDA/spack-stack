@@ -74,9 +74,9 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /work/noaa/epic-ps/role-epic-ps/spack-stack/ecflow-5.8.4-hercules
+      prefix: /work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4
       modules:
-      - ecflow/5.8.4-hercules
+      - ecflow/5.8.4
   findutils:
     externals:
     - spec: findutils@4.8.0
@@ -119,9 +119,9 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules
+      prefix: /work/noaa/epic/role-epic/spack-stack/hercules/mysql-8.0.31
       modules:
-      - mysql/8.0.31-hercules
+      - mysql/8.0.31
   openssh:
     externals:
     - spec: openssh@8.7p1
