@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.7.1, gcc@11.3.1]
+    compiler:: [intel@2021.7.1, gcc@12.2.0]
     #compiler:: [oneapi@2022.2.1]
     providers:
       mpi:: [intel-oneapi-mpi@2021.7.1, openmpi@4.1.4]
@@ -20,10 +20,14 @@ packages:
     #  - intel-oneapi-mpi/2021.7.1
   openmpi:
     externals:
-    - spec: openmpi@4.1.4%gcc@11.3.1 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
+    - spec: openmpi@4.1.4%gcc@12.2.0 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
         fabrics=ucx schedulers=slurm
-      prefix: /apps/spack-managed/gcc-11.3.1/openmpi-4.1.4-ruvlmb6yyvzbzbiqaov4zk75ogthczsp
+      prefix: /apps/spack-managed/gcc-12.2.0/openmpi-4.1.4-vkwtvxdep4xawgt5vt5ldkoadvahvowt
       modules:
+      - contrib/0.1
+      - noaa-gcc/12.2.0
+      - slurm/22.05.8
+      - ucx/1.13.1
       - openmpi/4.1.4
   python:
     buildable: False
@@ -144,7 +148,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.8
-      prefix: /apps/spack-managed/gcc-11.3.1/qt-5.15.8-d47tsna6f5dylcpblkfgw4gpn2cucihd
+      prefix: /apps/spack-managed/gcc-12.2.0/qt-5.15.8-gayzhaahclvlybiiykwj2cym4vo33w6x
       modules:
       - qt/5.15.8
   subversion:
