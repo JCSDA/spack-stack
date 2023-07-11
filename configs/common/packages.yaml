@@ -97,6 +97,8 @@
       version: [1.2.3]
     gsibec:
       version: [1.1.2]
+    gsi-ncdiag:
+      version: [1.1.1]
     gsl-lite:
       version: [0.37.0]
     hdf:

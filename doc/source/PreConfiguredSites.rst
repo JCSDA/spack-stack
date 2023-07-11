@@ -30,7 +30,7 @@ Ready-to-use spack-stack 1.4.0 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NAVY HPCMP Narwhal GNU^**                                  | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-gcc-10.3.0``                        |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NAVY HPCMP Nautilus Intel^*                                | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-intel-2021.5.0-hdf5-1.14.0``        |
+| NAVY HPCMP Nautilus Intel^*                                | Dom Heinzeller / ???          | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-intel-2021.5.0-openmpi-4.1.5``      |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NAVY HPCMP Nautilus AMD clang/flang                        | Dom Heinzeller / ???          | **currently not supported**                                                                                  |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -40,7 +40,7 @@ Ready-to-use spack-stack 1.4.0 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA Parallel Works (AWS, Azure, Gcloud) Intel             | Mark Potts / Cam Book         | **will be added later (on develop)**                                                                         |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | **will be added later (on develop)**                                                                         |
+| NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.0/envs/unified-env``                              |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Gaea C4 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.4.0-c4/envs/unified-env-v2``                |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -188,6 +188,7 @@ With Intel, the following is required for building new spack environments and fo
 
 .. code-block:: console
 
+   umask 0022
    module unload PrgEnv-cray
    module load PrgEnv-intel/8.3.2
    module unload intel
@@ -216,6 +217,7 @@ With GNU, the following is required for building new spack environments and for 
 
 .. code-block:: console
 
+   umask 0022
    module unload PrgEnv-cray
    module load PrgEnv-gnu/8.3.2
    module unload gcc
@@ -254,11 +256,12 @@ With Intel, the following is required for building new spack environments and fo
 
 .. code-block:: console
 
+   umask 0022
    module purge
 
    module load slurm
    module load intel/compiler/2022.0.2
-   module load intel/mpi/2021.5.1
+   module load penguin/openmpi/4.1.5rc2/intel
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
@@ -268,15 +271,16 @@ For ``spack-stack-1.4.0`` with Intel, load the following modules after loading t
 
 .. code-block:: console
 
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-intel-2021.5.0-hdf5-1.14.0/install/modulefiles/Core
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-dev-20230628/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
-   module load stack-intel-oneapi-mpi/2021.5.1
+   module load stack-openmpi/4.1.5rc2
    module load stack-python/3.10.8
 
 With AMD clang/flang (aocc), the following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console
 
+   umask 0022
    module purge
 
    module load slurm
@@ -378,6 +382,8 @@ When installing an official `spack-stack` on Acorn, be mindful of umask and grou
 Due to a combined quirk of Cray and Spack, the ``PrgEnv-gnu`` and ``gcc`` modules must be loaded when `ESMF` is being installed with `GCC`.
 
 As of spring 2023, there is an inconsistency in `libstdc++` versions on Acorn between the login and compute nodes. It is advisable to compile on the compute nodes, which requires running ``spack fetch`` prior to installing through a batch job.
+
+Note that certain packages, such as recent versions of `py-scipy`, cannot be compiled on compute nodes because their build systems require internet access.
 
 .. note::
    System-wide ``spack`` software installations are maintained by NCO on this platform. The spack-stack official installations use those installations for some dependencies.
@@ -740,8 +746,8 @@ The following instructions install a new spack environment on a pre-configured s
    emacs envs/unified-dev.hera/common/*.yaml
    emacs envs/unified-dev.hera/site/*.yaml
 
-   # Process/concretize the specs
-   spack concretize
+   # Process/concretize the specs; optionally check for duplicate packages
+   spack concretize | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
 
    # Optional step for systems with a pre-configured spack mirror, see below.
 
@@ -754,6 +760,9 @@ The following instructions install a new spack environment on a pre-configured s
 
    # Create meta-modules for compiler, mpi, python
    spack stack setup-meta-modules
+
+   # Check permissions for systems where non-owning users/groups need access
+   ${SPACK_STACK_DIR}/util/check_permissions.sh
 
 .. note::
   You may want to capture the output from :code:`spack concretize` and :code:`spack install` comands in log files.
