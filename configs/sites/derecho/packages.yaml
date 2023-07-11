@@ -154,16 +154,16 @@ packages:
     buildable: False
     externals:
     - spec: boost@1.78.0
-      prefix: /glade/u/home/mpotts/boost
+      prefix: /lustre/desc1/scratch/epicufsrt/contrib/boost_1_78_0
   mysql:
     buildable: False
     externals:
     - spec: mysql@8.0.33 
-      prefix: /lustre/desc1/scratch/mpotts/mysql-8.0.33
+      prefix: /lustre/desc1/scratch/epicufsrt/contrib/mysql-8.0.33
   doxygen:
     externals:
     - spec: doxygen@1.9.6
-      prefix: /glade/u/home/mpotts/doxygen
+      prefix: /lustre/desc1/scratch/epicufsrt/contrib/doxygen
 
 
 
