@@ -2,7 +2,7 @@ packages:
   all:
     compiler:: [intel@2021.8.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.8.0]
+      mpi:: [intel-oneapi-mpi@2021.8.0, cray-mpich@8.1.25]
     target: [core2]
 ### MPI, Python, MKL
   mpi:
@@ -13,6 +13,13 @@ packages:
       prefix: /glade/u/apps/derecho/23.06/spack/opt/spack/intel-oneapi-mpi/2021.8.0/oneapi/2023.0.0/mhf4
       modules:
       - intel-mpi/2021.8.0  
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.25%intel@2021.8.0   
+      prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
+      modules:
+      - craype/2.7.20
+      - cray-mpich/8.1.25 
 # openmpi:
 #   externals:
 #   - spec: openmpi@4.1.1%gcc@10.1.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm,tm
