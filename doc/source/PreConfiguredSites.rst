@@ -360,21 +360,15 @@ For ``spack-stack-1.4.1`` with GNU, load the following modules after loading min
 NOAA Acorn (WCOSS2 test system)
 -------------------------------
 
-**This information is incomplete - need EMC to fill in**
+For spack-stack-1.4.1, the meta modules are in ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core``.
 
-.. code-block:: console
+On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed in ``lib64``, breaking the ``lib`` assumption made by some packages. Therefore, ``CONFIG_SITE`` should be set to empty in ``compilers.yaml``. Also, don't use ``module purge`` on Acorn!
 
-   module use /lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core
+When installing an official ``spack-stack`` on Acorn, be mindful of umask and group ownership, as these can be finicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
 
-On WCOSS2 OpenSUSE sets `CONFIG_SITE` which causes libraries to be installed in `lib64`, breaking the `lib` assumption made by some packages.
+Due to a combined quirk of Cray and Spack, the ``PrgEnv-gnu`` and ``gcc`` modules must be loaded when `ESMF` is being installed with ``gcc``.
 
-`CONFIG_SITE` should be set to empty in `compilers.yaml`. Don't use ``module purge`` on Acorn!
-
-When installing an official `spack-stack` on Acorn, be mindful of umask and group ownership, as these can be finicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
-
-Due to a combined quirk of Cray and Spack, the ``PrgEnv-gnu`` and ``gcc`` modules must be loaded when `ESMF` is being installed with `GCC`.
-
-As of spring 2023, there is an inconsistency in `libstdc++` versions on Acorn between the login and compute nodes. It is advisable to compile on the compute nodes, which requires running ``spack fetch`` prior to installing through a batch job.
+As of spring 2023, there is an inconsistency in ``libstdc++`` versions on Acorn between the login and compute nodes. It is advisable to compile on the compute nodes, which requires running ``spack fetch`` prior to installing through a batch job.
 
 .. note::
    System-wide ``spack`` software installations are maintained by NCO on this platform. The spack-stack official installations use those installations for some dependencies.
@@ -401,7 +395,7 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
 
 .. note::
-   Support for spack-stack-1.4.0 will be added later on develop. The instructions below are for an older release.
+   Support for spack-stack-1.4.1 will be added later on develop. The instructions below are for an older release.
 
 For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
