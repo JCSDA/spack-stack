@@ -25,7 +25,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     # py-mysql-connector-python@8.0.32
 ```
 
-### spack-stack-1.4.1 / ufs-weather-model-x.y.z containers for ufs-weather-model as of May 18, 2023
+### spack-stack-1.4.1 / ufs-weather-model-x.y.z containers for ufs-weather-model as of July 5, 2023
 
 **Note. This is not yet working correctly, some libraries are missing. Please do not use yet! Also, if using the clang-mpich container, need to disable openmp for fms, not clear how to do this cleanly.**
 
