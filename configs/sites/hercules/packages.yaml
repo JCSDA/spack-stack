@@ -144,7 +144,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.8
-      prefix: /apps/spack-managed/gcc-12.2.0/qt-5.15.8-gayzhaahclvlybiiykwj2cym4vo33w6x
+      prefix: /apps/spack-managed/gcc-11.3.1/qt-5.15.8-d47tsna6f5dylcpblkfgw4gpn2cucihd
       modules:
       - qt/5.15.8
   subversion:
