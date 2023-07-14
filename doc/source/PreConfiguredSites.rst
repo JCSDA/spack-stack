@@ -34,7 +34,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NCAR-Wyoming Cheyenne Intel/GNU                            | Cam Book / Dom Heinzeller     | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env``                    |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA Parallel Works (AWS, Azure, Gcloud) Intel             | Mark Potts / Cam Book         | **will be added later (on develop)**                                                                         |
+| NOAA Parallel Works (AWS, Azure, Gcloud) Intel             | Mark Potts / Cam Book         | ``/contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev``                                             |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA Acorn Intel                                           | Hang Lei / Alex Richert       | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.1/envs/unified-env``                              |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -379,8 +379,6 @@ As of spring 2023, there is an inconsistency in ``libstdc++`` versions on Acorn 
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-**Note. This section needs updating from EPIC**
-
 The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works >`).
 
 .. code-block:: console
@@ -391,30 +389,15 @@ The following is required for building new spack environments and for using spac
    module use /contrib/spack-stack/modulefiles/core
    module load miniconda/3.9.12
    module load mysql/8.0.31
-   # So far only on NOAA-AWS for spack-stack develop versions newer than 1.3.1
    module load ecflow/5.8.4
 
-.. note::
-   Support for spack-stack-1.4.1 will be added later on develop. The instructions below are for an older release.
+For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda, mysql and ecflow:
 
-For ``spack-stack-1.3.0`` with Intel, load the following modules after loading miniconda and ecflow:
-
-   module use /contrib/EPIC/spack-stack/spack-stack-1.3.0/envs/unified-env/install/modulefiles/Core
+   module use /contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev/install/modulefiles/Core
    module load stack-intel/2021.3.0
    module load stack-intel-oneapi-mpi/2021.3.0
    module load stack-python/3.9.12
    module available
-
-For ``spack-stack-1.3.1`` with Intel, load the following modules after loading miniconda and ecflow:
-
-   module use /contrib/EPIC/spack-stack/spack-stack-1.3.1/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2021.3.0
-   module load stack-intel-oneapi-mpi/2021.3.0
-   module load stack-python/3.9.12
-   module available
-
-.. note::
-   ``spack-stack-1.3.1`` is not yet available on Azure.
 
 .. _Preconfigured_Sites_Gaea:
 
