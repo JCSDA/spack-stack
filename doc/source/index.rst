@@ -15,6 +15,7 @@ Table of Contents
    Environments
    Prerequisites
    SpackStackExtension
+   Utilities
    KnownIssues
    MaintainersSection
    Documentation

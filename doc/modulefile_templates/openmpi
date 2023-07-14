@@ -31,7 +31,7 @@ unsetenv SLURM_EXPORT_ENV
 setenv PSM2_PATH_SELECTION "static_base"
 setenv SLURM_CPU_BIND "none"
 
-# Settings specific for Cheyenne
+# Settings specific for Cheyenne and Hercules
 setenv MPI_ROOT ${OPENMPI_PATH}
 setenv UCX_MAX_RNDV_RAILS "1"
 setenv OMPI_MCA_btl "^openib"
