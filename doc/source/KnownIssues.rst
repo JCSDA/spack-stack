@@ -7,19 +7,31 @@ Known Issues
 General
 ==============================
 
-1. First call to ``spack concretize`` fails with ``[Errno 2] No such file or directory: ... .json``
+1. ``gcc@13`` (``gcc``, ``g++``, ``gfortran``) not yet supported
 
-   This can happen when ``spack concretize`` is called the very first time in a new spack-stack clone, during which the boostrapping (installation of ``clingo``) is done first. Simply rerunning the command should solve the problem.
+   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``.
 
-2. Build errors with Python 3.10
+2. Build errors for ``mapl@2.35.2`` with ``mpich@4.1.1``
 
-   These build errors have been addressed, it should now be possible to use Python 3.10. Please report errors to the spack-stack developers and, if applicable, to the spack developers.
+   This problem is described in https://github.com/JCSDA/spack-stack/issues/608.
 
 3. Issues starting/finding ``ecflow_server`` due to a mismatch of hostnames
+
    On some systems, ``ecflow_server`` gets confused by multiple hostnames, e.g. ``localhost`` and ``MYORG-L-12345``. The ``ecflow_start.sh`` script reports the hostname it wants to use. This name (or both) must be in ``/etc/hosts`` in the correct address line, often the loopback address (``127.0.0.1``).
 
 4. Installation of duplicate packages ``ecbuild``, ``hdf5``
+
    One reason for this is an external ``cmake@3.20`` installation, which confuses the concretizer when building a complex environment such as the ``skylab-dev`` or ```jedi-ufs-all`` environment. For certain packages (and thus their dependencies), a newer version than ``cmake@3.20`` is required, for others ``cmake@3.20`` works, and spack then thinks that it needs to build two identical versions of the same package with different versions of ``cmake``. The solution is to remove any external ``cmake@3.20`` package (and best also earlier versions) in the site config and run the concretization step again. Another reason on Ubuntu 20 is the presence of external ``openssl`` packages, which should be removed before re-running the concretization step.
+
+5. Installation of duplicate package ``nco``
+
+   We tracked this down to multiple versions of ``bison`` being used. The best solution is to remove external ``bison`` versions earlier than 3.8 from the site config (``packages.yaml``).
+
+==============================
+MSU Hercules
+==============================
+
+1. ``wgrib2@2.0.8`` doesn't build on Hercules, use ``wgrib2@3.1.1`` instead.
 
 ==============================
 NASA Discover
@@ -28,6 +40,18 @@ NASA Discover
 1. Timeout when fetching software during spack installs.
 
    Discover's connection to the outside world can be very slow and spack sometimes aborts with fetch timeouts. Try again until it works, sometimes have to wait for a bit.
+
+==============================
+NCAR-Wyoming Casper
+==============================
+
+1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Casper.
+
+==============================
+NCAR-Wyoming Cheyenne
+==============================
+
+1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Cheyenne.
 
 ==============================
 NOAA Parallel Works
@@ -66,6 +90,20 @@ UW (Univ. of Wisconsin) S4
    ...
 
 ==============================
+NAVY HPCMP Narwhal
+==============================
+
+1. On Narwhal (like on any other Cray), the spack build environment depends on the currently loaded modules. It is therefore necessary to build separate environments for different compilers while having the correct modules for that setup loaded.
+
+2. ``mapl@2.35.2`` does not build on Narwhal, see https://github.com/JCSDA/spack-stack/issues/524. When using the ``unified-dev`` template, one has to manually remove ``jedi-ufs-env`` and ``ufs-weather-model-env`` from the environment's ``spack.yaml``.
+
+==============================
+NAVY HPCMP Nautilus
+==============================
+
+1. ``wgrib2@2.0.8`` doesn't build on Nautilus, use ``wgrib2@3.1.1`` instead.
+
+==============================
 macOS
 ==============================
 
@@ -88,3 +126,17 @@ macOS
 5. Errors such as ``Symbol not found: __cg_png_create_info_struct``
 
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
+
+==============================
+Ubuntu
+==============================
+
+1. The lmod version in Ubuntu 22.04 LTS breaks spack modules.
+
+   Ubuntu 22.04 LTS will install lmod 6.6 from official apt repositories. Module files authored by spack use the `depends_on` directive that was introduced in lmod 7.0. The new site config instructions in :numref:`Section %s <NewSiteConfigs_Linux>` circumvent the issue by using `tcl/tk` environment modules. If you attempt to use lmod 6.6 you will get the following error:
+
+   .. code-block:: console
+
+      $ module load stack-python
+      Lmod has detected the following error:  Unable to load module: python/3.10.8
+      /home/ubuntu/spack-stack-1.3.1/envs/skylab-4/install/modulefiles/gcc/11.3.0/python/3.10.8.lua : [string "-- -*- lua -*-..."]:16: attempt to call global 'depends_on' (a nil value)

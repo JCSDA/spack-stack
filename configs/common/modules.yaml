@@ -135,6 +135,8 @@ modules:
           ^esmf@8.4.0+debug snapshot=none: 'esmf-8.4.0-debug'
           ^esmf@8.4.1~debug snapshot=none: 'esmf-8.4.1'
           ^esmf@8.4.1+debug snapshot=none: 'esmf-8.4.1-debug'
+          ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
+          ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
       openmpi:
         environment:
           set:
@@ -194,7 +196,7 @@ modules:
         environment:
           set:
             'NEMSIO_INC': '{prefix}/include'
-            'NEMSIO_LIB': '{prefix}/lib'
+            'NEMSIO_LIB': '{prefix}/lib64/libnemsio.a'
             'MKGFSNEMSIOCTL': '{prefix}/mkgfsnemsioctl'
             'NEMSIO_CHGDATE': '{prefix}/bin/nemsio_chgdate'
             'NEMSIO_GET': '{prefix}/bin/nemsio_get'
@@ -378,6 +380,8 @@ modules:
           ^esmf@8.4.0+debug snapshot=none: 'esmf-8.4.0-debug'
           ^esmf@8.4.1~debug snapshot=none: 'esmf-8.4.1'
           ^esmf@8.4.1+debug snapshot=none: 'esmf-8.4.1-debug'
+          ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
+          ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
       openmpi:
         environment:
           set:
@@ -437,7 +441,7 @@ modules:
         environment:
           set:
             'NEMSIO_INC': '{prefix}/include'
-            'NEMSIO_LIB': '{prefix}/lib'
+            'NEMSIO_LIB': '{prefix}/lib64/libnemsio.a'
             'MKGFSNEMSIOCTL': '{prefix}/mkgfsnemsioctl'
             'NEMSIO_CHGDATE': '{prefix}/bin/nemsio_chgdate'
             'NEMSIO_GET': '{prefix}/bin/nemsio_get'

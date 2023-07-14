@@ -7,13 +7,30 @@ The instructions here describe how to generate a new site config. In addition to
 
 It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``.
 
+.. note::
+   We try to maintain compatibility with as many compilers and compiler versions as possible. The following table lists the compilers that are known to work. Please be aware that if you choose to use a different, older or newer compiler, spack-stack may not work as expected and we have limited resources available for support. Further note that Intel compiler versions are confusing, because the oneAPI version doesn't match the compiler version. We generally refer to the compiler version being the version string in the path to the compiler, e.g, `/apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort`.
+
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
++===========================================+======================================================================+===========================+
+| Intel classic (icc, icpc, ifort)          | 18.0.5.274 to the latest available version in oneAPI 2022.2.1        | ``intel@``                |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2022.2.1       | ``intel@``                |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| Apple clang (clang, clang++, w/ gfortran) | 10.0.0 to 14.0.3                                                     | ``apple-clang@``          |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+
 ..  _NewSiteConfigs_macOS:
 
 ------------------------------
 macOS
 ------------------------------
 
-On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
+On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations. Occasionally, the use of external packages may lead to concretization issues in the form of duplicate packages (i.e., more than one spec per package). This is the case with ``bison``, therefore the package should be installed by ``spack``.
 
 Unlike in previous versions, the instructions below assume that ``Python`` is built by ``spack``. That means that when using the ``spack`` environments (i.e., loading the modules for building or running code), the ``spack`` installation of ``Python`` with its available ``Python`` modules should be used to ensure consistency. However, a Homebrew ``Python`` installation may still be needed to build new ``spack`` environments. It can also be beneficial for the user to have a version of ``Python`` installed with Homebrew that can be used for virtual environments that are completely independent of any ``spack``-built environment.
 
@@ -111,7 +128,8 @@ These instructions are meant to be a reference that users can follow to set up t
 .. code-block:: console
 
    brew install coreutils
-   brew install gcc
+   # For now, use gcc@12
+   brew install gcc@12
    brew install git
    brew install git-lfs
    brew install lmod
@@ -185,7 +203,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack external find --scope system
+   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3
    spack external find --scope system perl
    # Don't use any external Python, let spack build it
    #spack external find --scope system python
@@ -218,8 +236,10 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
-   spack config add "packages:all:compiler:[apple-clang@13.1.6]"
+   # Check your clang version then add it to your site compiler config.
+   clang --version
+   spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
 
 8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
@@ -327,10 +347,10 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
 
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
-Prerequisites: Ubuntu 20.04 (one-off)
+Prerequisites: Ubuntu (one-off)
 -------------------------------------
 
-The following instructions were used to prepare a basic Ubuntu 20.04 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Environments>`).
+The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LTS system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Environments>`).
 
 1. Install basic OS packages as `root`
 
@@ -344,9 +364,8 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y gcc g++ gfortran gdb
 
    # Environment module support
+   # Note: lmod is available in 22.04, but is out of date: https://github.com/JCSDA/spack-stack/issues/593
    apt install -y environment-modules
-
-   # Do *not* install MPI with yum, this will be done with spack-stack
 
    # Misc
    apt install -y build-essential
@@ -355,54 +374,6 @@ The following instructions were used to prepare a basic Ubuntu 20.04 system as i
    apt install -y git
    apt install -y git-lfs
    apt install -y bzip2
-   apt install -y unzip
-   apt install -y automake
-   apt install -y xterm
-   apt install -y texlive
-   apt install -y libcurl4-openssl-dev
-   apt install -y libssl-dev
-   apt install -y mysql-server
-   apt install -y libmysqlclient-dev
-
-   # Python
-   apt install -y python3-dev python3-pip
-
-   # Exit root session
-   exit
-
-2. Log out and back in to be able to use the environment modules
-
-3. As regular user, set up the environment to build spack-stack environments
-
-This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
-
-Prerequisites: Ubuntu 22.04 (one-off)
--------------------------------------
-
-The following instructions were used to prepare a basic Ubuntu 22.04 system as it is available on Amazon Web Services to build and install all of the environments available in spack-stack (see :numref:`Sections %s <Environments>`).
-
-1. Install basic OS packages as `root`
-
-.. code-block:: console
-
-   sudo su
-   apt-get update
-   apt-get upgrade
-
-   # Compilers (gcc@11.2.0)
-   apt install -y gcc g++ gfortran gdb
-
-   # lua/lmod module support
-   apt install -y lmod
-
-   # Do *not* install MPI with yum, this will be done with spack-stack
-
-   # Misc
-   apt install -y build-essential
-   apt install -y libkrb5-dev
-   apt install -y m4
-   apt install -y git
-   apt install -y git-lfs
    apt install -y unzip
    apt install -y automake
    apt install -y xterm
@@ -484,27 +455,43 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
+   # Check your gcc version then add it to your site compiler config.
+   gcc --version
+   spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
+
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.4]"
-   spack config add "packages:all:compiler:[gcc@11.2.1]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
 
-   # Example for Ubuntu 20.04 following the above instructions
-   spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
-   spack config add "packages:all:compiler:[gcc@10.3.0]"
+   # Example for Ubuntu 20.04 or 22.04 following the above instructions
+   spack config add "packages:all:providers:mpi:[mpich@4.1.1]"
 
-   # Example for Ubuntu 22.04 following the above instructions
+.. warning::
+   On some systems, the default compiler (e.g., ``gcc`` on Ubuntu 20) may not get used by spack if a newer version is found. Compare your entry to the output of the concretization step later and adjust the entry, if necessary.
+
+8. Set a few more package variants and versions to avoid linker errors and duplicate packages being built (for both Red Hat and Ubuntu):
+
+.. code-block:: console
+
+   spack config add "packages:fontconfig:variants:+pic"
+   spack config add "packages:pixman:variants:+pic"
+   spack config add "packages:cairo:variants:+pic"
+   spack config add "packages:libffi:version:[3.3]"
+   spack config add "packages:flex:version:[2.6.4]"
+
+9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
+
+.. code-block:: console
+
    sed -i 's/tcl/lmod/g' envs/jedi-ufs.mylinux/site/modules.yaml
-   spack config add "packages:all:providers:mpi:[mpich@4.0.2]"
-   spack config add "packages:all:compiler:[gcc@11.2.0]"
 
-8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
+10. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
 
 .. code-block:: console
 
    definitions:
    - compilers: ['%gcc']
 
-9. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
 
 .. warning::
    **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
@@ -515,23 +502,23 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi envs/jedi-ufs.mylinux/common/*.yaml
    vi envs/jedi-ufs.mylinux/site/*.yaml
 
-10. Process the specs and install
+12. Process the specs and install
 
 .. code-block:: console
 
    spack concretize
    spack install [--verbose] [--fail-fast]
 
-11. Create tcl module files
+13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
 
 .. code-block:: console
 
    spack module tcl refresh
 
-12. Create meta-modules for compiler, mpi, python
+14. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
    spack stack setup-meta-modules
 
-13. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
