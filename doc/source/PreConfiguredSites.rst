@@ -460,7 +460,7 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.4.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
