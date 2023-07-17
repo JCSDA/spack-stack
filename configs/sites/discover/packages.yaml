@@ -179,7 +179,7 @@ packages:
       prefix: /usr
   # Old re2c on Discover unable to build newer versions of ninja
   ninja:
-    version:: [1.10.2]
+    version:: ['1.10.2']
   openssl:
     externals:
     - spec: openssl@1.0.2j-fips

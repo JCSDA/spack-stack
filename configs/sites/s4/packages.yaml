@@ -35,7 +35,7 @@ packages:
       - miniconda/3.9.12
   # Versions 1.73+ don't compile on s4 (bootstrap.sh fails)
   boost:
-    version:: [1.72.0]
+    version:: ['1.72.0']
 
 ### All other external packages listed alphabetically
   autoconf:
