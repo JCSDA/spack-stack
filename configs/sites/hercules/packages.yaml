@@ -164,10 +164,10 @@ packages:
     externals:
     - spec: wget@1.21.1
       prefix: /usr
-  # Need to use external zlib, because of qt dependence on it (otherwise issues with tar command)
-  zlib:
-    externals:
-    - spec: zlib@1.2.13
-      prefix: /apps/spack-managed/gcc-11.3.1/zlib-1.2.13-ltp4c3zzde3zi3gf7x4b7c7nj5ww4i4g
-      modules:
-      - zlib/1.2.13
+  # Do not use external zlib; causes issues with tar due to qt/zlib dependencies
+  # zlib:
+  #   externals:
+  #   - spec: zlib@1.2.13
+  #     prefix: /apps/spack-managed/gcc-11.3.1/zlib-1.2.13-ltp4c3zzde3zi3gf7x4b7c7nj5ww4i4g
+  #     modules:
+  #     - zlib/1.2.13
