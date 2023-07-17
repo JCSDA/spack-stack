@@ -246,7 +246,7 @@ MSU Hercules
 ------------------------------
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library, using an available ``Qt5`` installation. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4``.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library, using an available ``Qt5`` installation. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4``. NOTE: do NOT include the ``Qt5`` module dependency in the ``ecflow`` modulefile, as it is only needed at build time (and causes issues with zlib/tar if the depedency is kept in the modulefile). 
 
 .. code-block:: console
 
