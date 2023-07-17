@@ -452,7 +452,7 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module load PrgEnv-intel/8.3.3
-   module load intel-classic/2022.2.1
+   module load intel-classic/2023.1.0
    module load cray-mpich/8.1.25
    module load python/3.9.12
 
