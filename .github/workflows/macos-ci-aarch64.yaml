@@ -101,7 +101,7 @@ jobs:
 
           # Add binary cache and reindex it
           spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
-          spack buildcache update-index -m local-binary
+          spack buildcache update-index local-binary
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
