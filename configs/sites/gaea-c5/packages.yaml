@@ -7,7 +7,7 @@ packages:
 ### MPI, Python, MKL
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.25%intel@2022.2.1~wrappers
+    - spec: cray-mpich@8.1.25%intel@2023.1.0~wrappers
       prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
       modules:
       - craype-network-ofi
