@@ -18,7 +18,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +============================================================+===============================+==============================================================================================================+
 | MSU Orion Intel/GNU                                        | Cam Book / Dom Heinzeller     | ``/work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                                 |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| MSU Hercules Intel/GNU^*                                   | Cam Book / Dom Heinzeller     | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230717/envs/unified-env``                        |
+| MSU Hercules Intel/GNU^*                                   | Cam Book / Dom Heinzeller     | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230717/envs/unified-env``                 |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NASA Discover Intel/GNU                                    | Dom Heinzeller / ???          | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.4.1/envs/unified-env``                                       |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -40,7 +40,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Gaea C4 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.4.1-c4/envs/unified-env``                   |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea C5 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-dev-20230717/envs/unified-env``                   |
+| NOAA RDHPCS Gaea C5 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-dev-20230717/envs/unified-env``            |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Hera Intel/GNU                                 | Mark Potts / Dom Heinzeller   | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                          |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -388,7 +388,7 @@ Note that certain packages, such as recent versions of `py-scipy`, cannot be com
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works >`).
+The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works>`).
 
 .. code-block:: console
 
@@ -401,6 +401,8 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
 
 For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda, mysql and ecflow:
+
+.. code-block:: console
 
    module use /contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev/install/modulefiles/Core
    module load stack-intel/2021.3.0
