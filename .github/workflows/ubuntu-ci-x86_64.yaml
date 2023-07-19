@@ -175,9 +175,9 @@ jobs:
           module load stack-python/3.10.8
           module available
 
-          module load jedi-ufs-env/unified-dev
-          module load ewok-env/unified-dev
-          module load soca-env/unified-dev
+          module load jedi-ufs-env/1.0.0
+          module load ewok-env/1.0.0
+          module load soca-env/1.0.0
           module list
 
       # Skip this for now, copied from other yaml
