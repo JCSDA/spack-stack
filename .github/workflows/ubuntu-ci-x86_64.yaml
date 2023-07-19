@@ -60,7 +60,7 @@ jobs:
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
-          spack external find --scope system
+          spack external find --scope system --exclude bison --exclude openssl
           spack external find --scope system perl
           spack external find --scope system wget
           PATH="/usr/local/opt/curl/bin:$PATH" \
