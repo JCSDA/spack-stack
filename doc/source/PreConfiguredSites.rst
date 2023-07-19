@@ -388,7 +388,7 @@ Note that certain packages, such as recent versions of `py-scipy`, cannot be com
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_NOAA_Parallel_Works>`).
+The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works>`).
 
 .. code-block:: console
 
