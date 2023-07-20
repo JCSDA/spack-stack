@@ -58,7 +58,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Parallelcluster Ubuntu 20.04     |                 | ``/mnt/experiments-efs/skylab-v5/spack-stack-1.4.1/envs/unified-env``                                   | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | RDHPCS Cloud                     | Intel           | ``/contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev``                                        | Mark Potts / Cam Book         |
+| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev``                                        | Mark Potts / Cam Book         |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
 ^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
