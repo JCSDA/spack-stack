@@ -18,7 +18,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +============================================================+===============================+==============================================================================================================+
 | MSU Orion Intel/GNU                                        | Cam Book / Dom Heinzeller     | ``/work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                                 |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| MSU Hercules Intel/GNU^*                                   | Cam Book / Dom Heinzeller     | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.4.1/envs/unified-env``                        |
+| MSU Hercules Intel/GNU^*                                   | Cam Book / Dom Heinzeller     | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230717/envs/unified-env``                 |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NASA Discover Intel/GNU                                    | Dom Heinzeller / ???          | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.4.1/envs/unified-env``                                       |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -40,7 +40,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Gaea C4 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.4.1-c4/envs/unified-env``                   |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
-| NOAA RDHPCS Gaea C5 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.4.1/envs/unified-env``                   |
+| NOAA RDHPCS Gaea C5 Intel                                  | Dom Heinzeller / ???          | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-dev-20230717/envs/unified-env``            |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
 | NOAA RDHPCS Hera Intel/GNU                                 | Mark Potts / Dom Heinzeller   | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                          |
 +------------------------------------------------------------+-------------------------------+--------------------------------------------------------------------------------------------------------------+
@@ -116,25 +116,28 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-dev-20230717`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2021.7.1
-   module load stack-intel-oneapi-mpi/2021.7.1
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230717/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2021.9.0
+   module load stack-intel-oneapi-mpi/2021.9.0
    module load stack-python/3.9.14
    module available
 
-For ``spack-stack-1.4.1`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-dev-20230717`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230717/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.3.1
    module load stack-openmpi/4.1.5
    module load stack-python/3.9.14
    module available
+
+.. note::
+   The recent update to ``spack-stack-dev-20230717`` was required on Hercules due to a bug in the Intel compilers used in ``spack-stack-1.4.1``.
 
 .. _Preconfigured_Sites_Discover:
 
@@ -385,7 +388,7 @@ Note that certain packages, such as recent versions of `py-scipy`, cannot be com
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works >`).
+The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works>`).
 
 .. code-block:: console
 
@@ -398,6 +401,8 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
 
 For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda, mysql and ecflow:
+
+.. code-block:: console
 
    module use /contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev/install/modulefiles/Core
    module load stack-intel/2021.3.0
@@ -452,7 +457,7 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module load PrgEnv-intel/8.3.3
-   module load intel-classic/2022.2.1
+   module load intel-classic/2023.1.0
    module load cray-mpich/8.1.25
    module load python/3.9.12
 
@@ -460,15 +465,19 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.4.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-20230717`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2022.2.1
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-dev-20230717/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2023.1.0
    module load stack-cray-mpich/8.1.25
    module load stack-python/3.9.12
    module -t available
+
+.. note::
+
+   The recent update to ``spack-stack-dev-20230717`` was required on Gaea C5 due to a bug in the Intel compilers used in ``spack-stack-1.4.1``.
 
 .. note::
    On Gaea C5, running ``module available`` without the option ``-t`` leads to an error: ``/usr/bin/lua5.3: /opt/cray/pe/lmod/lmod/libexec/Spider.lua:568: stack overflow``
