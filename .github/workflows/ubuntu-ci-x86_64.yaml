@@ -168,6 +168,7 @@ jobs:
           export ENVNAME=ci-env.ubuntu-ci-x86_64
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
+          ls -l ${ENVDIR}/install/modulefiles/Core
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-intel/2021.4.0

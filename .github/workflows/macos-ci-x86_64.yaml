@@ -130,6 +130,7 @@ jobs:
           export ENVNAME=ci-env.macos-ci-x86_64
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
+          ls -l ${ENVDIR}/install/modulefiles/Core
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
