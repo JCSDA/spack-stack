@@ -100,7 +100,8 @@ jobs:
           spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
 
           # Add binary cache and reindex it
-          spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
+          # DH* 20230721 - TODO CLEAN UP OLD BUILD CACHE AFTER MERGE
+          spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache-new/
           spack buildcache update-index local-binary
           echo "Packages in combined spack build caches:"
           spack buildcache list
