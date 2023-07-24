@@ -187,7 +187,7 @@ Official updates need to be made consistently across all platforms. There shall 
 Since official updates require coordination across all platforms, the timeline for these installs must be more generous than for test installs.
 
 ## Lifetime of spack-stack installations
-Regular, full releases of spack-stack are made every three months around end of February, May, August, November.
+Regular, full releases of spack-stack are made every three months around the end of February, May, August, and November.
 
 spack-stack developers are committed to maintaining a rolling stock of the last four releases, i.e. one year's worth of spack-stack releases. Under special circumstances (e.g. operational implementations that require long-term support, long-running official retrospectives), selected releases may be kept longer.
 
