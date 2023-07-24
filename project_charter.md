@@ -189,6 +189,6 @@ Since official updates require coordination across all platforms, the timeline f
 ## Lifetime of spack-stack installations
 Regular, full releases of spack-stack are made every three months around end of February, May, August, November.
 
-spack-stack developers are committed to maintaining a rolling stock of the last four releases, i.e. one year worth of spack-stack releases. Under special circumstances (e.g. operational implementations that require long-term support, long-running official retrospectives), selected releases may be kept longer.
+spack-stack developers are committed to maintaining a rolling stock of the last four releases, i.e. one year's worth of spack-stack releases. Under special circumstances (e.g. operational implementations that require long-term support, long-running official retrospectives), selected releases may be kept longer.
 
 Developers in need of a long-term installation for their personal experiments are required to install spack-stack themselves - the spack-stack developers are available for support during the original installation. spack-stack developers cannot assist with updating old spack-stack installations from individuals in case they stop working (e.g. due to HPC OS/compiler updates).
