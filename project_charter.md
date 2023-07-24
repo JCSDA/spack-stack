@@ -175,7 +175,7 @@ Test installations are made outside the official spack-stack release environment
 module use /path/to/separate/spack-stack-1.4.1-testing/envs/fms-2023.02-chained/install/modulefiles/openmpi/4.1.6/gcc/11.3.1
 module load fms/2023.02
 ```
-The advantace is that it is obvious to the developer, the reviewers and the code managers that a library update in a PR is not officially rolled out everywhere yet. Further, there is no risk to corrupt official spack-stack installations with frequent test installs. 
+The advantage is that it is obvious to the developer, the reviewers and the code managers that a library update in a PR is not officially rolled out everywhere yet. Further, there is no risk to corrupt official spack-stack installations with frequent test installs. 
 
 #### Official updates / patch releases
 Official updates should be limited in frequency and are only allowed after full acceptance testing (see test installations above).
