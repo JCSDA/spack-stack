@@ -164,7 +164,7 @@ Spack-stack unified environments serve multiple applications at the same time: `
 We need to consider two types of installations: test installations and official updates
 
 #### Test installations
-Test installations can be requested as part of issues (which should be mandatory for pull requests anyway). This can be more frequent than official updates.
+Test installations can be requested as part of issues (which should be mandatory for pull requests anyway). These can be more frequent than official updates.
 Issues can be in the application (e.g. `ufs-weather-model` repo) or in spack-stack, clearly describing the need and with a reasonable timeline.
 
 Test installations are limited to one platform at a time (depending on the developer’s needs). The installers for that platform (see table in https://spack-stack.readthedocs.io/en/1.4.1/PreConfiguredSites.html) are responsible for installing it.
