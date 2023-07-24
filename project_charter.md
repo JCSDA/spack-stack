@@ -182,7 +182,7 @@ Official updates should be limited in frequency and are only allowed after full 
 
 Updates that will generate module duplicates require a completely new spack-stack installation. Making these kinds of updates between releases should be the absolute exception when it is really urgent (critical bugs or security issues). We roll out a new spack-stack release every three months anyway!
 
-Official updates need to be made consistently across all platforms. There shall never be a situation when an official spack-stack installation on one platform differs from the others in their packages, package configurations etc (unless required by and encoded in spack-stack itself).
+Official updates need to be made consistently across all platforms. There shall never be a situation when an official spack-stack installation on one platform differs from the others in their packages, package configurations, etc. (unless required by and encoded in spack-stack itself).
 
 Since official updates require coordination across all platforms, the timeline for these installs must be more generous than for test installs.
 
