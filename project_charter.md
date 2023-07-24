@@ -80,7 +80,7 @@ Any stakeholder can perform a release at any time.
 
 The release process:
 * Add a new epic (github issue) explaining the reason for the release, and to notify all other stakeholders.
-* Unless it is a patch release (increasing the z in x.y.z,) create a project board for the release at https://github.com/JCSDA/spack-stack/actions.
+* Unless it is a patch release (increasing the z in x.y.z,) create a project board for the release at https://github.com/JCSDA/spack-stack/projects.
 * Designate any issues that must be fixed before release by assigning it to the epic and the project board, and ensure their completion.
 * Install the release tags (or the final version of the release branches to allow for last-minute site config updates) on all supported platforms.
 * Update the documentation and create release tags for the spack-stack repo and the spack submodule.
