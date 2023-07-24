@@ -72,7 +72,7 @@ sending updates in our fork to upstream.
 
 The spack-stack stack must be installed on various NOAA, NCAR, NASA,
 and other HPC systems. Each stakeholder will designate developers to
-install on their systems (see https://spack-stack.readthedocs.io/en/latest/#).
+install on their systems (see https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html).
 
 ### Releases
 
