@@ -138,6 +138,7 @@ These instructions are meant to be a reference that users can follow to set up t
    brew install curl
    brew install cmake
    brew install openssl
+   brew install pkg-config
    # Note - need to pin to version 5
    brew install qt@5
    brew install mysql
