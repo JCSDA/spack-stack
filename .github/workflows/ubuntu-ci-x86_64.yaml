@@ -156,7 +156,11 @@ jobs:
           spack env activate ${PWD}/envs/chaintest
           spack add nccmp@1.8.9.0%intel
           cat envs/chaintest/spack.yaml
-          unwanted_duplicates=$(spack concretize -f | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' | wc -l)
+          spack concretize | tee envs/chaintest/log.concretize
+          echo here
+          cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' | wc -l
+          unwanted_duplicates=$(cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' | wc -l)
+          echo over here
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Env chaining test failed"; exit 1; fi
           spack env deactivate
           spack env activate envs/ci-env.ubuntu-ci-x86_64
