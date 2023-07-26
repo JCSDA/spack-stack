@@ -165,7 +165,6 @@ jobs:
 
           # Test environment chaining
           echo "Test environment chaining"
-          spack env deactivate
           spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/ci-env.ubuntu-ci-x86_64/install)
           # Retain config from upstream so we don't have to rebuild:
           cp -r $PWD/envs/ci-env.ubuntu-ci-x86_64/{site,common} $PWD/envs/chaintest/.
