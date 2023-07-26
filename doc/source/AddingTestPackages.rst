@@ -19,3 +19,6 @@ To install in an additional environment within an official spack-stack space, si
     spack stack setup-meta-modules
 
 To use the environment, access it in the same way as a regular spack-stack installation, i.e., add the directory provided by ``spack stack setup-meta-modules`` ending with '/modulefiles/Core' to your MODULEPATH variable. This will give access to the upstream modules needed while avoiding package conflicts; do not use the upstream environment in ``$MODULEPATH`` directly.
+
+.. note::
+   The ``--upstream`` option for the ``spack stack create env`` command adds a specified Spack/spack-stack installation path as an upstream environment in the resulting spack.yaml, and can be invoked multiple times in order to include multiple upstream environments. The command will *give a warning but not fail* if an invalid directory is provided (either because it does not end with the typical 'install/' directory name, or because it does not exist). Be mindful of these warnings, and if the path does not exist, check for typos and make sure that you are using the path for the correct system from the table in :numref:`Section %s <Preconfigured_Sites>`.
