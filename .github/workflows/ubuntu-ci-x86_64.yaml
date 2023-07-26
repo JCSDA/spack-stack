@@ -158,7 +158,8 @@ jobs:
           cat envs/chaintest/spack.yaml
           spack concretize | tee envs/chaintest/log.concretize
           echo here
-          cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' | wc -l
+          cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0'
+          echo right here
           unwanted_duplicates=$(cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' | wc -l)
           echo over here
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Env chaining test failed"; exit 1; fi
