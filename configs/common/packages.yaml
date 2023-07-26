@@ -91,6 +91,8 @@
       version: [1.2.3]
     gsibec:
       version: [1.1.2]
+    gsi-ncdiag:
+      version: [1.1.1]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -122,10 +124,10 @@
       version: [2.35.2]
       variants: ~shared
     met:
-      version: [10.1.1]
+      version: [11.0.2]
       variants: +python +grib2
     metplus:
-      version: [4.1.1]
+      version: [5.0.1]
     mpich:
       variants: ~hwloc +two_level_namespace
     nco:
@@ -134,7 +136,7 @@
     # ncview - when adding information here, also check Orion
     # and Discover site configs
     nemsio:
-      version: [2.5.2]
+      version: [2.5.4]
     nemsiogfs:
       version: [2.5.3]
     nccmp:

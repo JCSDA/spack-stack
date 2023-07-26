@@ -1,23 +1,18 @@
 packages:
   all:
-    compiler:: [intel@2021.7.1, gcc@11.3.1]
-    #compiler:: [oneapi@2022.2.1]
+    compiler:: [intel@2021.9.0, gcc@11.3.1]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.7.1, openmpi@4.1.5]
+      mpi:: [intel-oneapi-mpi@2021.9.0, openmpi@4.1.5]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.7.1%intel@2021.7.1
-      prefix: /apps/spack-managed/oneapi-2022.2.1/intel-oneapi-mpi-2021.7.1-zfmfvyc4a4wkhgxe2f34irg663e6dcoh
+    - spec: intel-oneapi-mpi@2021.9.0%intel@2021.9.0
+      prefix: /apps/spack-managed/oneapi-2023.1.0/intel-oneapi-mpi-2021.9.0-a66eaipzsnyrdgaqzxmqmqz64qzvhkse 
       modules:
-      - intel-oneapi-mpi/2021.7.1
-    #- spec: intel-oneapi-mpi@2021.7.1%oneapi@2022.2.1
-    #  prefix: /apps/spack-managed/oneapi-2022.2.1/intel-oneapi-mpi-2021.7.1-zfmfvyc4a4wkhgxe2f34irg663e6dcoh
-    #  modules:
-    #  - intel-oneapi-mpi/2021.7.1
+      - intel-oneapi-mpi/2021.9.0
   openmpi:
     externals:
     - spec: openmpi@4.1.5%gcc@11.3.1~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
@@ -144,7 +139,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.8
-      prefix: /apps/spack-managed/gcc-12.2.0/qt-5.15.8-gayzhaahclvlybiiykwj2cym4vo33w6x
+      prefix: /apps/spack-managed/gcc-11.3.1/qt-5.15.8-d47tsna6f5dylcpblkfgw4gpn2cucihd
       modules:
       - qt/5.15.8
   subversion:
@@ -164,10 +159,10 @@ packages:
     externals:
     - spec: wget@1.21.1
       prefix: /usr
-  # Need to use external zlib, because of qt dependence on it (otherwise issues with tar command)
-  zlib:
-    externals:
-    - spec: zlib@1.2.13
-      prefix: /apps/spack-managed/gcc-11.3.1/zlib-1.2.13-ltp4c3zzde3zi3gf7x4b7c7nj5ww4i4g
-      modules:
-      - zlib/1.2.13
+  # Do not use external zlib; causes issues with tar due to qt/zlib dependencies
+  # zlib:
+  #   externals:
+  #   - spec: zlib@1.2.13
+  #     prefix: /apps/spack-managed/gcc-11.3.1/zlib-1.2.13-ltp4c3zzde3zi3gf7x4b7c7nj5ww4i4g
+  #     modules:
+  #     - zlib/1.2.13

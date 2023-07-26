@@ -1,4 +1,4 @@
-name: macos-ci-x86_64-build
+name: macos-ci-aarch64-build
 on:
   pull_request:
     paths-ignore:
@@ -28,8 +28,8 @@ defaults:
     #shell: bash -leo pipefail {0}
 
 jobs:
-  macos-ci-x86_64-build:
-    runs-on: [macos-ci-x86_64]
+  macos-ci-aarch64-build:
+    runs-on: [macos-ci-aarch64]
 
     steps:
       - name: cleanup
@@ -45,13 +45,20 @@ jobs:
 
       - name: create-env
         run: |
+          # Set up homebrew and lmod support
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+          source /opt/homebrew/opt/lmod/init/profile
+
+          # Set up spack-stack
           source ./setup.sh
+          # Important!
+          export SPACK_PYTHON=/usr/bin/python3
 
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
           # path doesn't change - see also other 'DH* 20230302' changes below
-          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
-          export ENVNAME=ci-env.macos-ci-x86_64
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-aarch64
+          export ENVNAME=ci-env.macos-ci-aarch64
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site macos.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
@@ -63,9 +70,9 @@ jobs:
           spack external find --scope system --exclude bison
           spack external find --scope system perl
           spack external find --scope system wget
-          PATH="/usr/local/opt/curl/bin:$PATH" \
+          PATH="/opt/homebrew/opt/curl/bin:$PATH" \
               spack external find --scope system curl
-          PATH="/usr/local/opt/qt5/bin:$PATH" \
+          PATH="/opt/homebrew/opt/qt5/bin:$PATH" \
               spack external find --scope system qt
           spack external find --scope system texlive
           spack external find --scope system mysql
@@ -127,13 +134,15 @@ jobs:
 
       - name: test-env
         run: |
-          source /usr/local/opt/lmod/init/profile
+          # Set up homebrew and lmod support
+          eval "$(/opt/homebrew/bin/brew shellenv)"
+          source /opt/homebrew/opt/lmod/init/profile
 
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
           # path doesn't change - see also other 'DH* 20230302' changes below
-          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-x86_64
-          export ENVNAME=ci-env.macos-ci-x86_64
+          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.macos-ci-aarch64
+          export ENVNAME=ci-env.macos-ci-aarch64
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
 

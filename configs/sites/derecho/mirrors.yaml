@@ -1,7 +1,7 @@
 mirrors:
-  local-source-efs:
+  local-source:
     fetch:
-      url: file:///mnt/experiments-efs/spack-stack/source-cache
+      url: file:///glade/work/epicufsrt/contrib/spack-stack/source-cache
       access_pair:
       - null
       - null
@@ -9,7 +9,7 @@ mirrors:
       profile: null
       endpoint_url: null
     push:
-      url: file:///mnt/experiments-efs/spack-stack/source-cache
+      url: file:///glade/work/epicufsrt/contrib/spack-stack/source-cache
       access_pair:
       - null
       - null
