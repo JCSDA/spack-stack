@@ -14,7 +14,6 @@ Table of Contents
    AddingTestPackages
    BuildingContainers
    Environments
-   Prerequisites
    SpackStackExtension
    Utilities
    KnownIssues
