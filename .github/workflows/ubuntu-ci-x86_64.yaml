@@ -157,8 +157,9 @@ jobs:
           spack add nccmp@1.8.9.0%intel
           cat envs/chaintest/spack.yaml
           spack concretize
-          unwanted_duplicates=$(spack concretize -f | grep '^ -  ' | grep -Fv '1.8.9.0' | wc -l)
-          if [ ${unwanted_duplicates} -gt 0 ]; then exit 1; fi
+          unwanted_duplicates=$(spack concretize -f | grep '^ -  ' | grep -Fv 'nccmp@1.8.9.0' | wc -l)
+          echo $unwanted_duplicates
+          if [ ${unwanted_duplicates} -gt 0 ]; then echo hello; exit 1; fi
           spack env deactivate
           spack env activate envs/ci-env.ubuntu-ci-x86_64
           # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
