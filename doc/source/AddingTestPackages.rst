@@ -1,7 +1,7 @@
 .. _Add_Test_Packages:
 
 Adding test packages (chaining environments)
-*********************
+********************************************
 
 Releases of spack-stack are deployed quarterly on supported platforms. Between releases, additional packages may be installed through the following steps, which make use of Spack's environment chaining capabilities. This allows parts of the stack to be replaced while leaving the release environment untouched.
 
