@@ -167,6 +167,7 @@ jobs:
           spack stack create env --name chaintest --template empty --site linux.default --upstream /home/ubuntu/spack-stack/CI/actions-runner/_work/spack-stack/spack-stack/envs/ci-env.ubuntu-ci-x86_64/install
           spack env activate ${PWD}/envs/chaintest
           spack add bufr@11.5.0
+          spack concretize
           unwanted_duplicates=$(spack concretize | grep '^ -  ' | grep -Fv 'bufr@11.5.0' | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then exit 1; fi
           spack env deactivate
