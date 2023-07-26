@@ -163,6 +163,14 @@ jobs:
           spack stack setup-meta-modules
           spack env deactivate
 
+          # Test environment chaining
+          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}
+          spack env activate ${PWD}/envs/chaintest
+          spack add bufr@11.5.0
+          unwanted_duplicates=$(spack concretize | grep '^ -  ' | grep -Fv 'bufr@11.5.0' | wc -l)
+          if [ ${unwanted_duplicates} -gt 0 ]; then exit 1; fi
+          spack env deactivate
+
       - name: test-env
         run: |
           source /etc/profile.d/modules.sh
