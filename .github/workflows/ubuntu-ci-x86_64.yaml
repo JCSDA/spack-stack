@@ -156,8 +156,7 @@ jobs:
           spack env activate ${PWD}/envs/chaintest
           spack add nccmp@1.8.9.0%intel
           cat envs/chaintest/spack.yaml
-          spack concretize
-          unwanted_duplicates=$(spack concretize -f | grep '^ -  ' | grep -Fv 'nccmp@1.8.9.0' | wc -l)
+          unwanted_duplicates=$(spack concretize | grep '^ -  ' | grep -Fv 'nccmp@1.8.9.0' | wc -l)
           echo $unwanted_duplicates
           if [ ${unwanted_duplicates} -gt 0 ]; then echo hello; exit 1; fi
           spack env deactivate
