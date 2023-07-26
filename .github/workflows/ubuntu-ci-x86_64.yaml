@@ -53,7 +53,7 @@ jobs:
           #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
           export ENVNAME=ci-env.ubuntu-ci-x86_64
           # *DH
-          export ENVDIR=${PWD}/envs/${ENVNAME}
+          export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
@@ -146,21 +146,6 @@ jobs:
           echo "base-env ..."
           # DH* 20230721 - todo remove --no-checksum
           spack install --fail-fast --source --no-check-signature --no-checksum base-env 2>&1 | tee log.install.intel-2021.4.0.base-env
-
-          # Test environment chaining
-          echo "ENVCHAINING"
-          spack env deactivate
-          spack stack create env --name chaintest --template empty --site linux.default --upstream /home/ubuntu/spack-stack/CI/actions-runner/_work/spack-stack/spack-stack/envs/ci-env.ubuntu-ci-x86_64/install
-          # Retain config from upstream so we don't have to rebuild:
-          cp -r $PWD/envs/ci-env.ubuntu-ci-x86_64/{site,common} $PWD/envs/chaintest/.
-          spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.8.9.0%intel
-          cat envs/chaintest/spack.yaml
-          spack concretize | tee envs/chaintest/log.concretize
-          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
-          if [ ${unwanted_duplicates} -gt 0 ]; then echo "Env chaining test failed"; exit 1; fi
-          spack env deactivate
-          spack env activate envs/ci-env.ubuntu-ci-x86_64
           # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
           spack buildcache create -a -r -u -d /home/ubuntu/spack-stack/build-cache/ || true
 
@@ -176,6 +161,20 @@ jobs:
           spack clean -a
           spack module tcl refresh -y
           spack stack setup-meta-modules
+          spack env deactivate
+
+          # Test environment chaining
+          echo "Test environment chaining"
+          spack env deactivate
+          spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/ci-env.ubuntu-ci-x86_64/install)
+          # Retain config from upstream so we don't have to rebuild:
+          cp -r $PWD/envs/ci-env.ubuntu-ci-x86_64/{site,common} $PWD/envs/chaintest/.
+          spack env activate ${PWD}/envs/chaintest
+          spack add nccmp@1.8.9.0%intel
+          cat envs/chaintest/spack.yaml
+          spack concretize | tee envs/chaintest/log.concretize
+          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
+          if [ ${unwanted_duplicates} -gt 0 ]; then echo "Env chaining test failed"; exit 1; fi
           spack env deactivate
 
       - name: test-env
