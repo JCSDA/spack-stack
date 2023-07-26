@@ -165,9 +165,11 @@ jobs:
 
           # Test environment chaining
           spack stack create env --name chaintest --template empty --site linux.default --upstream /home/ubuntu/spack-stack/CI/actions-runner/_work/spack-stack/spack-stack/envs/ci-env.ubuntu-ci-x86_64/install
+          # Retain config from upstream so we don't have to rebuild:
+          cp $PWD/envs/ci-env.ubuntu-ci-x86_64/spack.yaml $PWD/envs/chaintest
           spack env activate ${PWD}/envs/chaintest
+          spack remove --all
           spack add bufr@11.5.0
-          spack concretize
           unwanted_duplicates=$(spack concretize | grep '^ -  ' | grep -Fv 'bufr@11.5.0' | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then exit 1; fi
           spack env deactivate
