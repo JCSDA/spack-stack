@@ -53,7 +53,7 @@ jobs:
           #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
           export ENVNAME=ci-env.ubuntu-ci-x86_64
           # *DH
-          export ENVDIR=$PWD/envs/${ENVNAME}
+          export ENVDIR=${PWD}/envs/${ENVNAME}
           spack stack create env --site linux.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
@@ -164,7 +164,7 @@ jobs:
           spack env deactivate
 
           # Test environment chaining
-          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install/
+          spack stack create env --name chaintest --template empty --site linux.default --upstream /home/ubuntu/spack-stack/CI/actions-runner/_work/spack-stack/spack-stack/envs/ci-env.ubuntu-ci-x86_64/install
           spack env activate ${PWD}/envs/chaintest
           spack add bufr@11.5.0
           unwanted_duplicates=$(spack concretize | grep '^ -  ' | grep -Fv 'bufr@11.5.0' | wc -l)
