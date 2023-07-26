@@ -164,7 +164,7 @@ jobs:
           spack env deactivate
 
           # Test environment chaining
-          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}
+          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install/
           spack env activate ${PWD}/envs/chaintest
           spack add bufr@11.5.0
           unwanted_duplicates=$(spack concretize | grep '^ -  ' | grep -Fv 'bufr@11.5.0' | wc -l)
