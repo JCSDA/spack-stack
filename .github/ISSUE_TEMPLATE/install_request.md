@@ -1,6 +1,6 @@
 ---
-name: Install request
-about: Request an installation of package in the stack on HPC's
+name: Install/upgrade request
+about: Request an installation or upgrade of a package on HPCs
 title: '[INSTALL] <title>'
 labels: 'install'
 assignees: 'Hang-Lei-NOAA, AlexanderRichert-NOAA, jkbk2004, climbfuji'
@@ -18,11 +18,11 @@ Please provide the version/tag of the software to be installed.
 **What compilation options would you like set?**
 Give a detailed list of compilation options, compiler and MPI flavors and versions, etc.
 
-**Which machines would you like to have the software installed?**
-See currently managed HPC machines.
+**Installation timeframe: Would you like this package to be installed in an upcoming quarterly spack-stack release, or sooner? If it is needed sooner (such as for testing a new package/version before incorporating it into a full release), please specify a preferred timeline and *one* machine on which you would like it to be installed for testing prior to the next spack-stack release.**
+See currently [managed HPC machines](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html).
 
 **Any other relevant information that we should know to correctly install the software??**
-Please describe in as much detail as possible.
+Please describe in as much detail as possible (such as whether there is currently a Spack recipe for this package).
 
 **Additional context**
 Add any other context or screenshots about the install request here.
