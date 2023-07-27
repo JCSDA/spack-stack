@@ -258,9 +258,14 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 10. Process the specs and install
 
+It is recommended to save the output of concretize in a log file and inspect that log file using the show_duplicate_packages.py utility.
+This is done to find and fix duplicate package specifications before running the install and discovering the duplicate packages hours later.
+There a few acceptable (i.e., by design) duplicate packages which are: crtm, fms, mapl and esmf.
+
 .. code-block:: console
 
-   spack concretize
+   spack concretize 2>&1 | tee log.concretize
+   util/show_duplicate_packages.py -d log.concretize
    spack install [--verbose] [--fail-fast]
 
 11. Create lmod module files
@@ -504,9 +509,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 12. Process the specs and install
 
+It is recommended to save the output of concretize in a log file and inspect that log file using the show_duplicate_packages.py utility.
+This is done to find and fix duplicate package specifications before running the install and discovering the duplicate packages hours later.
+There a few acceptable (i.e., by design) duplicate packages which are: crtm, fms, mapl and esmf.
+
 .. code-block:: console
 
-   spack concretize
+   spack concretize 2>&1 | tee log.concretize
+   util/show_duplicate_packages.py -d log.concretize
    spack install [--verbose] [--fail-fast]
 
 13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
