@@ -261,6 +261,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 It is recommended to save the output of concretize in a log file and inspect that log file using the show_duplicate_packages.py utility.
 This is done to find and fix duplicate package specifications before running the install and discovering the duplicate packages hours later.
 There a few acceptable (i.e., by design) duplicate packages which are: crtm, fms, mapl and esmf.
+See :numref:`%s <Duplicate_Checker>` for details.
 
 .. code-block:: console
 
@@ -512,6 +513,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 It is recommended to save the output of concretize in a log file and inspect that log file using the show_duplicate_packages.py utility.
 This is done to find and fix duplicate package specifications before running the install and discovering the duplicate packages hours later.
 There a few acceptable (i.e., by design) duplicate packages which are: crtm, fms, mapl and esmf.
+See :numref:`%s <Duplicate_Checker>` for details.
 
 .. code-block:: console
 
