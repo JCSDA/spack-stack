@@ -258,10 +258,9 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 10. Process the specs and install
 
-It is recommended to save the output of concretize in a log file and inspect that log file using the :code:`show_duplicate_packages.py` utility.
+It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
 This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
-There a few acceptable (i.e., by design) duplicate packages which are: crtm, fms, mapl and esmf.
-See :numref:`section %s <Duplicate_Checker>` for details.
+Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
 
 .. code-block:: console
 
@@ -510,10 +509,9 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 12. Process the specs and install
 
-It is recommended to save the output of concretize in a log file and inspect that log file using the :code:`show_duplicate_packages.py` utility.
+It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
 This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
-There a few acceptable (i.e., by design) duplicate packages which are: crtm, fms, mapl and esmf.
-See :numref:`section %s <Duplicate_Checker>` for details.
+Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
 
 .. code-block:: console
 
