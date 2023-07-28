@@ -11,9 +11,9 @@ Table of Contents
    UsingSpackEnvironments
    PreConfiguredSites
    NewSiteConfigs
+   AddingTestPackages
    BuildingContainers
    Environments
-   Prerequisites
    SpackStackExtension
    Utilities
    KnownIssues

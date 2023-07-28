@@ -37,7 +37,7 @@ Unlike in previous versions, the instructions below assume that ``Python`` is bu
 It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
 Intel Arm platform notes
------------------------
+------------------------
 With the introduction of the Arm architecture M1 and M2 chips on Mac, the OS offers execution and building of two architectures via Apple's Rosetta tool. Rosetta is a binary translator that can convert Intel executable instructions to native Arm instructions at runtime. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture supported by Rosetta is denoted by ``x86_64`` and ``i386``.
 
 When you get a new Arm mac, you may need to install Rosetta. This can be done with the shell command ``softwareupdate --install-rosetta``. Note that applications are expected to run faster when the native Arm architecture is utilized, although Intel binaries are very close to native performance.
@@ -259,9 +259,14 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 10. Process the specs and install
 
+It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
+This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
+Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
+
 .. code-block:: console
 
-   spack concretize
+   spack concretize 2>&1 | tee log.concretize
+   util/show_duplicate_packages.py -d log.concretize
    spack install [--verbose] [--fail-fast]
 
 11. Create lmod module files
@@ -505,9 +510,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 12. Process the specs and install
 
+It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
+This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
+Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
+
 .. code-block:: console
 
-   spack concretize
+   spack concretize 2>&1 | tee log.concretize
+   util/show_duplicate_packages.py -d log.concretize
    spack install [--verbose] [--fail-fast]
 
 13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
