@@ -3,7 +3,7 @@ modules:
     enable::
     - lmod
     lmod:
-      blacklist:
+      exclude:
       - ecflow
-      whitelist:
+      include:
       - mpich
