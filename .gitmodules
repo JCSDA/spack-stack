@@ -4,8 +4,8 @@
   ##branch = develop
   #url = https://github.com/jcsda/spack
   #branch = jcsda_emc_spack_stack
-  url = https://github.com/climbfuji/spack
-  branch = feature/merge_spack_develop_20230710
+  url = https://github.com/AlexanderRichert-NOAA/spack
+  branch = spack_merge_july2023
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
