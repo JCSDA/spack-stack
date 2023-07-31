@@ -103,7 +103,7 @@ jobs:
           # Add binary cache and reindex it
           spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
           # DH* 20230721 - todo remove || true
-          spack buildcache update-index -m local-binary || true
+          spack buildcache update-index local-binary || true
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
@@ -113,27 +113,17 @@ jobs:
 
           # base-env
           echo "base-env ..."
-<<<<<<< HEAD
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
-          spack buildcache push -a -u local-binary || true
-
-          # the rest
-          echo "${{ inputs.template || 'unified-dev' }} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
-          spack buildcache push -a -u local-binary || true
-=======
           # DH* 20230721 - todo remove --no-checksum
           spack install --fail-fast --source --no-check-signature --no-checksum base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
           # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
+          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
           # DH* 20230721 - todo remove --no-checksum
           spack install --fail-fast --source --no-check-signature --no-checksum 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
           # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
->>>>>>> jcsda/develop
+          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
