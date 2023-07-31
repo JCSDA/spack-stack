@@ -203,8 +203,7 @@
       version: ['1.5.3']
       variants: ~mpi
     py-numpy:
-      # DH* 20230719 try without version
-      #version: ['1.22.3']
+      version: ['1.22.3']
       variants: +blas +lapack
     py-openpyxl:
       version: ['3.0.3']
