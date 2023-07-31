@@ -200,7 +200,7 @@
     #py-mysql-connector-python:
     #  version: ['8.0.32']
     py-netcdf4:
-      version: ['1.5.3']
+      version: ['1.5.8']
       variants: ~mpi
     py-numpy:
       version: ['1.22.3']
