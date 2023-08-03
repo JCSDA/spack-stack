@@ -67,7 +67,7 @@ jobs:
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
-          spack external find --scope system
+          spack external find --scope system --exclude bison
           spack external find --scope system perl
           spack external find --scope system wget
           PATH="/opt/homebrew/opt/curl/bin:$PATH" \
@@ -93,14 +93,17 @@ jobs:
           sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
           spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.0 -i fms -i crtm
 
           # Add and update source cache
           spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
-          spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
+          # DH* 20230721 - todo remove || true
+          spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/ || true
 
           # Add binary cache and reindex it
           spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
-          spack buildcache update-index -m local-binary
+          # DH* 20230721 - todo remove || true
+          spack buildcache update-index -m local-binary || true
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
@@ -110,12 +113,16 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
+          # DH* 20230721 - todo remove --no-checksum
+          spack install --fail-fast --source --no-check-signature --no-checksum base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
+          # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
+          # DH* 20230721 - todo remove --no-checksum
+          spack install --fail-fast --source --no-check-signature --no-checksum 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
+          # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
           spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
 
           # Next steps: synchronize source and build cache to a central/combined mirror?

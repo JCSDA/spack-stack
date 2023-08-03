@@ -1,13 +1,13 @@
 packages:
   all:
-    compiler:: [intel@2022.2.1]
+    compiler:: [intel@2023.1.0]
     providers:
       mpi:: [cray-mpich@8.1.25]
 
 ### MPI, Python, MKL
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.25%intel@2022.2.1~wrappers
+    - spec: cray-mpich@8.1.25%intel@2023.1.0~wrappers
       prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
       modules:
       - craype-network-ofi
@@ -80,7 +80,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/ecflow-5.8.4-c5
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4
       modules: [ecflow/5.8.4]
   file:
     externals:
@@ -174,7 +174,7 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/mysql-8.0.31-c5
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/mysql-8.0.31
       modules: [mysql/8.0.31]
   ncurses:
     externals:
@@ -204,7 +204,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.2
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/qt-5.15.2-c5/5.15.2/gcc_64
+      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/qt-5.15.2/5.15.2/gcc_64
   rdma-core:
     externals:
     - spec: rdma-core@37.0

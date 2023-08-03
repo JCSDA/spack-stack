@@ -20,7 +20,7 @@
       version: [1.78.0]
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
     bufr:
-      version: [11.7.1]
+      version: [12.0.0]
       variants: +python
     # Newer versions of CDO require the C++-17 standard, which doesn't
     # work with all compilers that are currently in use in spack-stack
@@ -42,7 +42,7 @@
       version: [5.8.4]
       variants: +ui
     eckit:
-      version: [1.23.0]
+      version: [1.23.1]
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
       version: [0.33.0]
@@ -70,7 +70,7 @@
       version: [1.1.0]
     fms:
       version: [2023.01]
-      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
     g2:
       version: [3.4.5]
     g2c:
@@ -91,6 +91,8 @@
       version: [1.2.3]
     gsibec:
       version: [1.1.2]
+    gsi-ncdiag:
+      version: [1.1.1]
     gsl-lite:
       version: [0.37.0]
     hdf:
@@ -134,7 +136,7 @@
     # ncview - when adding information here, also check Orion
     # and Discover site configs
     nemsio:
-      version: [2.5.2]
+      version: [2.5.4]
     nemsiogfs:
       version: [2.5.3]
     nccmp:
@@ -246,6 +248,7 @@
       version: [5.15.3]
     scotch:
       version: [7.0.3]
+      variants: +mpi+metis~shared~threads~mpi_thread+noarch
     sfcio:
       version: [1.4.1]
     shumlib:

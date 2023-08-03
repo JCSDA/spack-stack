@@ -1,18 +1,18 @@
 compilers:
 - compiler:
-    spec: intel@2021.7.1
+    spec: intel@2021.9.0
     paths:
-      cc: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2022.2.1-z2sjni66fcyqcsamnoccgb7c77mn37qj/compiler/2022.2.1/linux/bin/intel64/icc
-      cxx: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2022.2.1-z2sjni66fcyqcsamnoccgb7c77mn37qj/compiler/2022.2.1/linux/bin/intel64/icpc
-      f77: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2022.2.1-z2sjni66fcyqcsamnoccgb7c77mn37qj/compiler/2022.2.1/linux/bin/intel64/ifort
-      fc: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2022.2.1-z2sjni66fcyqcsamnoccgb7c77mn37qj/compiler/2022.2.1/linux/bin/intel64/ifort
+      cc: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/icc
+      cxx: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/icpc
+      f77: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/ifort
+      fc: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/ifort
     flags:
       cflags: -diag-disable=10441
       cxxflags: -diag-disable=10441
     operating_system: rocky9
     target: x86_64
     modules:
-    - intel-oneapi-compilers/2022.2.1
+    - intel-oneapi-compilers/2023.1.0
     environment: {}
     extra_rpaths: []
 # Spack gets confused if both intel and oneapi are present

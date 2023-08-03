@@ -126,3 +126,17 @@ macOS
 5. Errors such as ``Symbol not found: __cg_png_create_info_struct``
 
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
+
+==============================
+Ubuntu
+==============================
+
+1. The lmod version in Ubuntu 22.04 LTS breaks spack modules.
+
+   Ubuntu 22.04 LTS will install lmod 6.6 from official apt repositories. Module files authored by spack use the `depends_on` directive that was introduced in lmod 7.0. The new site config instructions in :numref:`Section %s <NewSiteConfigs_Linux>` circumvent the issue by using `tcl/tk` environment modules. If you attempt to use lmod 6.6 you will get the following error:
+
+   .. code-block:: console
+
+      $ module load stack-python
+      Lmod has detected the following error:  Unable to load module: python/3.10.8
+      /home/ubuntu/spack-stack-1.3.1/envs/skylab-4/install/modulefiles/gcc/11.3.0/python/3.10.8.lua : [string "-- -*- lua -*-..."]:16: attempt to call global 'depends_on' (a nil value)

@@ -30,14 +30,14 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 macOS
 ------------------------------
 
-On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations.
+On macOS, it is important to use certain Homebrew packages as external packages, because the native macOS packages are incomplete (e.g. missing the development header files): ``curl``, ``qt``, etc. The instructions provided in the following have been tested extensively on many macOS installations. Occasionally, the use of external packages may lead to concretization issues in the form of duplicate packages (i.e., more than one spec per package). This is the case with ``bison``, therefore the package should be installed by ``spack``.
 
 Unlike in previous versions, the instructions below assume that ``Python`` is built by ``spack``. That means that when using the ``spack`` environments (i.e., loading the modules for building or running code), the ``spack`` installation of ``Python`` with its available ``Python`` modules should be used to ensure consistency. However, a Homebrew ``Python`` installation may still be needed to build new ``spack`` environments. It can also be beneficial for the user to have a version of ``Python`` installed with Homebrew that can be used for virtual environments that are completely independent of any ``spack``-built environment.
 
 It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
 Intel Arm platform notes
------------------------
+------------------------
 With the introduction of the Arm architecture M1 and M2 chips on Mac, the OS offers execution and building of two architectures via Apple's Rosetta tool. Rosetta is a binary translator that can convert Intel executable instructions to native Arm instructions at runtime. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture supported by Rosetta is denoted by ``x86_64`` and ``i386``.
 
 When you get a new Arm mac, you may need to install Rosetta. This can be done with the shell command ``softwareupdate --install-rosetta``. Note that applications are expected to run faster when the native Arm architecture is utilized, although Intel binaries are very close to native performance.
@@ -203,7 +203,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack external find --scope system
+   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3
    spack external find --scope system perl
    # Don't use any external Python, let spack build it
    #spack external find --scope system python
@@ -258,9 +258,14 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 10. Process the specs and install
 
+It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
+This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
+Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
+
 .. code-block:: console
 
-   spack concretize
+   spack concretize 2>&1 | tee log.concretize
+   util/show_duplicate_packages.py -d log.concretize
    spack install [--verbose] [--fail-fast]
 
 11. Create lmod module files
@@ -504,9 +509,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 12. Process the specs and install
 
+It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
+This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
+Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
+
 .. code-block:: console
 
-   spack concretize
+   spack concretize 2>&1 | tee log.concretize
+   util/show_duplicate_packages.py -d log.concretize
    spack install [--verbose] [--fail-fast]
 
 13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
