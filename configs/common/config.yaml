@@ -4,7 +4,7 @@ config:
   install_tree:
     root: $env/install
     projections:
-      all: "${COMPILERNAME}/${COMPILERVER}/${PACKAGE}-${VERSION}-${HASH}"
+      all: "{compiler.name}/{compiler.version}/{name}-{version}-{hash}"
     # Needed for relocation of binary packages (build caches)
     #padded_length: true
 

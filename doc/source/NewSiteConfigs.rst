@@ -203,10 +203,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3
+   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1
    spack external find --scope system perl
-   # Don't use any external Python, let spack build it
-   #spack external find --scope system python
    spack external find --scope system wget
    spack external find --scope system mysql
 
@@ -434,10 +432,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack external find --scope system
+   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1
    spack external find --scope system perl
-   # Don't use any external Python, let spack build it
-   #spack external find --scope system python
    spack external find --scope system wget
    spack external find --scope system mysql
    spack external find --scope system texlive
