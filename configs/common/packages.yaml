@@ -102,7 +102,7 @@
       version: ['1.14.0']
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
-      version: ['3.3.3']
+      version: ['4.1.0']
     ip2:
       version: ['1.1.2']
     jasper:
