@@ -3,5 +3,5 @@ modules:
     enable::
     - tcl
     tcl:
-      blacklist:
+      exclude:
       - ecflow

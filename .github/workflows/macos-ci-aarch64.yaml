@@ -67,7 +67,7 @@ jobs:
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
-          spack external find --scope system --exclude bison
+          spack external find --scope system --exclude bison --exclude openssl
           spack external find --scope system perl
           spack external find --scope system wget
           PATH="/opt/homebrew/opt/curl/bin:$PATH" \
@@ -103,7 +103,7 @@ jobs:
           # Add binary cache and reindex it
           spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
           # DH* 20230721 - todo remove || true
-          spack buildcache update-index -m local-binary || true
+          spack buildcache update-index local-binary || true
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
@@ -116,14 +116,14 @@ jobs:
           # DH* 20230721 - todo remove --no-checksum
           spack install --fail-fast --source --no-check-signature --no-checksum base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
           # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
+          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
           # DH* 20230721 - todo remove --no-checksum
           spack install --fail-fast --source --no-check-signature --no-checksum 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
           # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -r -u -d /Users/ec2-user/spack-stack/build-cache/ || true
+          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
@@ -145,16 +145,17 @@ jobs:
           export ENVNAME=ci-env.macos-ci-aarch64
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
+          ls -l ${ENVDIR}/install/modulefiles/Core
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
-          module load stack-openmpi
+          module load stack-openmpi/4.1.5
           module load stack-python/3.10.8
           module available
 
-          module load jedi-ufs-env/unified-dev
-          module load ewok-env/unified-dev
-          module load soca-env/unified-dev
+          module load jedi-ufs-env/1.0.0
+          module load ewok-env/1.0.0
+          module load soca-env/1.0.0
           module list
 
       # Skip this for now, copied from other yaml
