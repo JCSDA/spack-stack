@@ -203,7 +203,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1
+   spack external find --scope system --exclude bison --exclude openssl
+   spack external find --scope system libiconv
    spack external find --scope system perl
    spack external find --scope system wget
    spack external find --scope system mysql
