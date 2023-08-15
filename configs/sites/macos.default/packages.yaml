@@ -1,10 +1,9 @@
 packages:
-  libiconv:
-    buildable: false
-    externals:
-    - spec: libiconv@1.17
-      prefix: /usr
-  wgrib2:
-    variants: ~openmp
   cairo:
     variants: ~png ~svg
+  git:
+    buildable: false
+  libiconv:
+    buildable: false
+  wgrib2:
+    variants: ~openmp
