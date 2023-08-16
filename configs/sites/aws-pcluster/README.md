@@ -5,8 +5,8 @@
 ### Base instance
 Choose a basic AMI from the Community AMIs tab that matches your desired OS and parallelcluster version. Select an instance type of the same family that you are planning to use for the head and the compute nodes, and enough storage for a swap file and a spack-stack installation. For example:
 - AMI ID: ami-093dab62f7840644b
-- Instance c6i.8xlarge
-- Use 500GB of gp3 storage as /
+- Instance hpc6a.48xlarge
+- Use 350GB of gp3 storage as /
 
 ### Prerequisites
 1. As `root`:
@@ -147,9 +147,8 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 apt-get update
 apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 docker run hello-world
-# DH* TODO 2023/02/21: Add users to group docker so that non-root users can run it
-# See https://docs.docker.com/engine/install/linux-postinstall/
-
+# Add user ubuntu to group docker - see https://docs.docker.com/engine/install/linux-postinstall/
+gpasswd -a ubuntu docker
 
 # Configure X windows
 echo "X11Forwarding yes" >> /etc/ssh/sshd_config
@@ -171,6 +170,9 @@ echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
 
 # Exit root session
 exit
+
+# Basic git config
+git config --global credential.helper cache
 ```
 
 2. Log out and back in to enable x11 forwarding
@@ -231,7 +233,12 @@ sudo su
 dpkg -i *.deb
 apt --fix-broken install
 dpkg -i *.deb
-# Set root password, choose strong password encryption option
+# Use an empty password for root, choose legacy authentication method; test connection
+mysql -u root
+show databases;
+# exit mysql
+exit
+# exit root session
 exit
 rm *.deb
 ```
@@ -243,9 +250,11 @@ cd /home/ubuntu/sandpit
 git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site aws-pcluster --template=unified-dev --name=unified-dev
-spack env activate -p envs/unified-dev
-sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
+spack stack create env --site aws-pcluster --template=unified-dev --name=unified-env
+spack env activate -p envs/unified-env
+sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
+spack concretize 2>&1 | tee log.concretize.env.001
+# CHECK FOR DUPLICATES
 ```
 
 6. Option 2: Test configuring site from scratch
