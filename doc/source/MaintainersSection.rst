@@ -799,57 +799,7 @@ The simplest case of adding new packages that are available in spack-stack is de
 Chaining spack-stack installations
 ----------------------------------
 
-Chaining spack-stack installations is a powerful way to test adding new packages without affecting the existing packages. The idea is to define one or more upstream spack installations that the environment can use as dependencies. One possible way to do this is:
-
-1. Mirror the environment config of the upstream repository, i.e. copy the entire directory without the ``install`` and ``.spack_env`` directories and without `spack.lock`. For example:
-
-.. code-block:: console
-
-   rsync -av --exclude='install' --exclude='.spack-env' --exclude='spack.lock' \
-       envs/jedi-ufs/ \
-       envs/jedi-ufs-chain-test/
-
-2. Edit `envs/jedi-ufs-chain-test/spack.yaml`` and add an upstream configuration entry directly under the ``spack:`` config so that the contents looks like:
-
-.. code-block:: console
-
-   spack:
-     upstreams:
-       spack-instance-1:
-         install_tree: /path/to/spack-stack-1.0.0/envs/jedi-ufs/install
-     concretizer:
-       unify: when_possible
-     ...
-
-3. Activate the environment
-
-4. Install the new packages, for example:
-
-.. code-block:: console
-
-    spack install -v --reuse esmf@8.3.0b09+debug
-
-5. Create modulefiles
-
-.. code-block:: console
-
-    spack module [lmod|tcl] refresh
-
-6. When using ``tcl`` module files, run the ``spack stack setup-meta-modules`` script. This is not needed when using ``lmod`` modulefiles, because the meta modules in ``/path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/Core`` will be ignored entirely.
-
-To use the chained spack environment, first load the usual modules from the upstream spack environment. Then add the full path to the newly created modules manually, ignoring the meta modules (``.../Core``), for example:
-
-.. code-block:: console
-
-    module use /path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/openmpi/4.1.3/apple-clang/13.1.6
-
-7. Load the newly created modules. When using `tcl` module files, make sure that conflicting modules are unloaded (`lmod` takes care of this).
-
-.. note::
-   After activating the chained environment, ``spack find`` doesn't show the packages installed in upstream, unfortunately.
-
-.. note::
-   More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_. Those words of caution need to be taken seriously, especially those referring to not deleting modulefiles and dependencies in the upstream spack environment (if having permissions to do so)!
+Chaining spack-stack installations is a powerful way to test adding new packages without affecting the existing packages. The idea is to define one or more upstream spack installations that the environment can use as dependencies. This is described in detail in :numref:`Section %s <Add_Test_Packages>`.
 
 ----------------------------------------
 Testing/adding packages outside of spack
