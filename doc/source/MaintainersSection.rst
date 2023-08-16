@@ -25,8 +25,10 @@ Miniconda (legacy)
 
 miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. This is not recommended on configurable systems (user workstations and laptops using GNU compiler) where Python gets installed by spack. But any system using Intel compilers with spack-stack will need an external Python to build ecflow with Python bindings (because ecflow requires a boost serialization function that does **not** work with Intel, a known yet ignored bug), and then both Python and ecflow are presented to spack as external packages. Often, it is possible to use the default (OS) Python if new enough (3.9+), or a module provided by the system administrators. If none of this works, use the following instructions to install a basic Python interpreter using miniconda:
 
-The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `python_ver=3.9.12`) and `platform="MacOSX-x86_64"` or `platform="Linux-x86_64"`
-```
+The following is for the example of ``miniconda_ver="py39_4.12.0"`` (for which ``python_ver=3.9.12``) and ``platform="MacOSX-x86_64"`` or ``platform="Linux-x86_64"``
+
+.. code-block:: console
+
    cd /path/to/top-level/spack-stack/
    mkdir -p miniconda-${python_ver}/src
    cd miniconda-${python_ver}/src
@@ -34,7 +36,7 @@ The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `py
    sh Miniconda3-${miniconda_ver}-${platform}.sh -u -b -p /path/to/top-level/spack-stack/miniconda-${python_ver}
    eval "$(/path/to/top-level/spack-stack/miniconda-${python_ver}/bin/conda shell.bash hook)"
    conda install -y -c conda-forge libpython-static
-```
+
 After the successful installation, create modulefile ``/path/to/top-level/spack-stack/modulefiles/miniconda/${python_ver}`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` and the Python version in this file.
 
 ..  _MaintainersSection_Qt5:
