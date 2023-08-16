@@ -26,7 +26,7 @@ Miniconda (legacy)
 miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. This is not recommended on configurable systems (user workstations and laptops using GNU compiler) where Python gets installed by spack. But any system using Intel compilers with spack-stack will need an external Python to build ecflow with Python bindings (because ecflow requires a boost serialization function that does **not** work with Intel, a known yet ignored bug), and then both Python and ecflow are presented to spack as external packages. Often, it is possible to use the default (OS) Python if new enough (3.9+), or a module provided by the system administrators. If none of this works, use the following instructions to install a basic Python interpreter using miniconda:
 
 The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `python_ver=3.9.12`) and `platform="MacOSX-x86_64"` or `platform="Linux-x86_64"`
-````
+```
    cd /path/to/top-level/spack-stack/
    mkdir -p miniconda-${python_ver}/src
    cd miniconda-${python_ver}/src
@@ -464,8 +464,6 @@ openmpi
    make check
    make install
 
-
-
 .. _MaintainersSection_WCOSS2:
 
 ------------------------------
@@ -836,53 +834,3 @@ Python packages can be added in various ways:
 
 .. note::
    Users are equally strongly advised to not use ``conda`` or ``miniconda`` in combination with Python modules provided by spack-stack, as well as not installing packages other than ``poetry`` in the basic ``miniconda`` installation for spack-stack (if using such a setup).
-
-.. _MaintainersSection_Directory_Layout:
-
-==============================
-Recommended Directory Layout
-==============================
-
-To support multiple installs it is recommended to use `bootstrap.sh` to setup Miniconda and create a standard directory layout.
-
-After running `bootstrap.sh -p <prefix>` the directory will have the following directories:
-
-* apps - Externally installed pre-requisites such as Miniconda and git-lfs.
-* modulefiles - External modules such as Miniconda that are not tied to Spack.
-* src - Prerequisite and spack-stack sources.
-* envs - Spack environment installation location.
-
-A single checkout of Spack can support multiple environments. To differentiate them spack-stack sources in `src` and corresponding environments in `envs` should be grouped by major version.
-
-For example, major versions of spack-stack v1.x.y should be checked out in the `src/spack-stack` directory as `v1` and each corresponding environment should be installed in `envs/v1`.
-
-.. code-block:: console
-
-   spack-stack
-   ├── apps
-   │   └── miniconda
-   │       └── py39_4.12.0
-   ├── envs
-   │   └── v1
-   │       ├── jedi-ufs-all
-   │       └── skylab-1.0.0
-   ├── modulefiles
-   │   └── miniconda
-   │       └── py39_4.12.0
-   └── src
-      ├── miniconda
-      │   └── py39_4.12.0
-      │       └── Miniconda3-py39_4.12.0-MacOSX-x86_64.sh
-      └── spack-stack
-         └── v1
-               ├── envs
-               │   ├── jedi-ufs-all
-               │   └── skylab-1.0.0
-
-
-The install location can be set from the command line with:
-
-.. code-block:: console
-
-   spack config add "config:install_tree:root:<prefix>/envs/v1/jedi-ufs-all"
-   spack config add "modules:default:roots:lmod:<prefix>/envs/v1/jedi-ufs-all/modulefiles"
