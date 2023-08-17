@@ -2,7 +2,7 @@
 
 To avoid hardcoding specs in the generic container recipes, we keep the specs list empty (`specs: []`) and manually add the specs for the particular spack-stack release and application as listed below, *after* running `spack stack create ctr`.
 
-### spack-stack-1.4.1 / skylab-5.0.0 containers for fv3-jedi and mpas-jedi (but not for ufs-jedi)
+### spack-stack-1.5.0 / skylab-6.0.0 containers for fv3-jedi and mpas-jedi (but not for ufs-jedi)
 ```
   specs: [base-env@1.0.0, jedi-base-env@1.0.0 ~fftw, ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@12.0.0, ecbuild@3.7.2, eccodes@2.27.0, ecflow@5,
@@ -11,23 +11,19 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     gsibec@1.1.2, hdf@4.2.15, hdf5@1.14.1-2, ip@3.3.3, jasper@2.0.32, jedi-cmake@1.4.0,
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.9.2, netcdf-cxx4@4.3.1,
     netcdf-fortran@4.6.0, nlohmann-json@3.10.5, nlohmann-json-schema-validator@2.1.0,
-    parallelio@2.5.9, parallel-netcdf@1.12.2, py-eccodes@1.4.2, py-f90nml@1.4.3,
+    parallelio@2.5.10, parallel-netcdf@1.12.2, py-eccodes@1.4.2, py-f90nml@1.4.3,
     py-gitpython@3.1.27, py-h5py@3.7.0, py-numpy@1.22.3,
     py-pandas@1.4.0, py-pip, py-pyyaml@6.0, py-scipy@1.9.3, py-shapely@1.8.0, py-xarray@2022.3.0,
-    sp@2.3.3, udunits@2.2.28, w3nco@2.4.1, nco@5.0.6,
+    sp@2.3.3, udunits@2.2.28, w3nco@2.4.1, nco@5.0.6, esmf@8.4.2, mapl@2.35.2,
     yafyaml@0.5.1, zlib@1.2.13, odc@1.4.6, shumlib@macos_clang_linux_intel_port]
     # Don't build CRTM by default so that it gets built in the JEDI bundles:
     # crtm@v2.4.1-jedi
-    # Don't build ESMF and MAPL for now:
-    # https://github.com/JCSDA-internal/MPAS-Model/issues/38
-    # https://github.com/jcsda/spack-stack/issues/326
-    # jedi-ufs-env@1.0.0, esmf@8.4.2, mapl@2.35.2
     # Comment out for now until build problems are solved
     # https://github.com/jcsda/spack-stack/issues/522
     # py-mysql-connector-python@8.0.32
 ```
 
-### spack-stack-1.4.1 / ufs-weather-model-x.y.z containers for ufs-weather-model as of July 5, 2023
+### spack-stack-1.5.0 / ufs-weather-model-x.y.z containers for ufs-weather-model as of July 5, 2023
 
 **Note. This is not yet working correctly, some libraries are missing. Please do not use yet! Also, if using the clang-mpich container, need to disable openmp for fms, not clear how to do this cleanly.**
 
@@ -39,7 +35,7 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     gsibec@1.1.2, hdf@4.2.15, hdf5@1.14.1-2, ip@3.3.3, jasper@2.0.32, jedi-cmake@1.4.0,
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.9.2, netcdf-cxx4@4.3.1,
     netcdf-fortran@4.6.0, nlohmann-json@3.10.5, nlohmann-json-schema-validator@2.1.0,
-    parallelio@2.5.9, parallel-netcdf@1.12.2, py-eccodes@1.4.2, py-f90nml@1.4.3,
+    parallelio@2.5.10, parallel-netcdf@1.12.2, py-eccodes@1.4.2, py-f90nml@1.4.3,
     py-gitpython@3.1.27, py-h5py@3.7.0, py-numpy@1.22.3, py-pandas@1.4.0,
     py-pip, py-pyyaml@6.0, py-scipy@1.9.3, py-shapely@1.8.0, py-xarray@2022.3.0,
     sp@2.3.3, udunits@2.2.28, w3emc@2.9.2, w3nco@2.4.1, nco@5.0.6, esmf@8.4.2, mapl@2.35.2,

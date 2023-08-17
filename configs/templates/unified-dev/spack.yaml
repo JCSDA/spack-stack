@@ -25,10 +25,6 @@ spack:
       #- upp-env
       #- ww3-env
 
-      # Additional esmf/mapl tags
-      #- esmf@8.4.2~debug+external-parallelio
-      #- mapl@2.35.2~debug ^esmf@8.4.2~debug+external-parallelio
-
       # Additional crtm tags
       - crtm@v2.4-jedi.2
       - crtm@v2.4.1-jedi
