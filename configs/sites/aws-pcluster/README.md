@@ -347,6 +347,6 @@ spack install --verbose --source 2>&1 | tee log.install
 spack module lmod refresh
 spack stack setup-meta-modules
 ```
-9. Test spack-stack installation using your favorite application.
+9. Test spack-stack installation using your favorite application. Note that the jedi-bundle ctests requiring MPI don't work correctly, because the modules are configured for SLURM integration but the node in its current state doesn't have SLURM available.
 10. (Optional) Remove test installs of spack-stack environments, if desired.
 11. Create the AMI for use in the AWS parallelcluster config.
