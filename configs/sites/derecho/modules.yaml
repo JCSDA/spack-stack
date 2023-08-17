@@ -3,5 +3,5 @@ modules:
     enable::
     - lmod
     lmod:
-      blacklist:
+      exclude:
       - ecflow
