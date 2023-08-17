@@ -13,9 +13,9 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
 +===========================================+======================================================================+===========================+
-| Intel classic (icc, icpc, ifort)          | 18.0.5.274 to the latest available version in oneAPI 2022.2.1        | ``intel@``                |
+| Intel classic (icc, icpc, ifort)          | 18.0.5.274 to the latest available version in oneAPI 2023.1.0        | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2022.2.1       | ``intel@``                |
+| Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2023.1.0       | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
@@ -47,10 +47,7 @@ A lot of binaries (iTerm2 for example) come in a "universal form" meaning they c
 Homebrew notes
 --------------
 
-When running with the Intel architecture, homebrew manages its downloads in ``/usr/local`` (as it has been doing in the past).
-When running with the Arm architecture, homebrew manages its downloads in ``/opt/homebrew``.
-Other than the different prefixes for Arm versus Intel, the paths for all the pieces of a given package are identical.
-This separation allows for both Arm and Intel environments to exist on one machine.
+When running with the Intel architecture, homebrew manages its downloads in ``/usr/local`` (as it has been doing in the past). When running with the Arm architecture, homebrew manages its downloads in ``/opt/homebrew``. Other than the different prefixes for Arm versus Intel, the paths for all the pieces of a given package are identical. This separation allows for both Arm and Intel environments to exist on one machine.
 
 For these instructions we will use the variable ``$HOMEBREW_ROOT`` to hold the prefix where homebrew manages its downloads (according to the architecture being used).
 
@@ -70,7 +67,7 @@ Prerequisites (one-off)
 
 These instructions are meant to be a reference that users can follow to set up their own system. Depending on the user's setup and needs, some steps will differ, some may not be needed and others may be missing. Also, the package versions may change over time.
 
-1. Install Apple's command line utilities
+1. Install Apple's command line utilities.
 
    - Launch the Terminal, found in ``/Applications/Utilities``
 
@@ -79,6 +76,10 @@ These instructions are meant to be a reference that users can follow to set up t
 .. code-block:: console
 
    xcode-select --install
+   sudo xcode-select --switch /Library/Developer/CommandLineTools
+
+.. note::
+   If you encounter build errors for gdal later on in spack-stack (see :numref:`Section %s <KnownIssues>`), you may need to install the full ``Xcode`` application and then switch ``xcode-select`` over with ``sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`` (change the path if you installed Xcode somewhere else).
 
 2. Set up a terminal and environment using the appropriate architecture
 
@@ -167,7 +168,7 @@ These instructions are meant to be a reference that users can follow to set up t
 
 .. code-block:: console
 
-   export PATH="/usr/local/texlive/2022/bin/universal-darwin:$PATH"
+   export PATH="/usr/local/texlive/2023/bin/universal-darwin:$PATH"
 
 This environment enables working with spack and building new software environments, as well as loading modules that are created by spack for building JEDI and UFS software.
 
@@ -186,24 +187,25 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
    source setup.sh
 
-2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
+2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines). The choice of the template depends on the applications you want to run, see ``configs/templates/`` in the spack-stack repo for the available options. The ``unified-dev`` templates creates the largest of all environments, because it contains everything needed for the NOAA Unified Forecast System, the JCSDA JEDI application, ...
 
 .. code-block:: console
 
-   spack stack create env --site macos.default [--template jedi-ufs-all] --name jedi-ufs.mymacos
-   spack env activate [-p] envs/jedi-ufs.mymacos
+   spack stack create env --site macos.default [--template unified-dev] --name unified-env.mymacos
+   spack env activate [-p] envs/unified-env.mymacos
 
-3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mymacos/site``
+3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mymacos/site``
 
 .. code-block:: console
 
-   export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mymacos/site"
+   export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/unified-env.mymacos/site"
 
 4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
 .. code-block:: console
 
-   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1
+   spack external find --scope system --exclude bison --exclude openssl
+   spack external find --scope system libiconv
    spack external find --scope system perl
    spack external find --scope system wget
    spack external find --scope system mysql
@@ -246,13 +248,13 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    definitions:
    - compilers: ['%apple-clang']
 
-9. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mymacos/spack.yaml``, etc.
+9. If needed, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
-   vi envs/jedi-ufs.mymacos/spack.yaml
-   vi envs/jedi-ufs.mymacos/common/*.yaml
-   vi envs/jedi-ufs.mymacos/site/*.yaml
+   vi envs/unified-env.mymacos/spack.yaml
+   vi envs/unified-env.mymacos/common/*.yaml
+   vi envs/unified-env.mymacos/site/*.yaml
 
 10. Process the specs and install
 
@@ -272,7 +274,7 @@ Note that in the unified environment, there may be deliberate duplicates; consul
 
    spack module lmod refresh
 
-12. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/jedi-ufs.mymacos/modulefiles/Core``.
+12. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/unified-env.mymacos/modulefiles/Core``.
 
 .. code-block:: console
 
@@ -281,7 +283,7 @@ Note that in the unified environment, there may be deliberate duplicates; consul
 .. note::
    Unlike preconfigured environments and linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
 
-13. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+13. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux:
@@ -415,18 +417,18 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    source setup.sh
 
 
-2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines)
+2. Create a pre-configured environment with a default (nearly empty) site config and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines). The choice of the template depends on the applications you want to run, see ``configs/templates/`` in the spack-stack repo for the available options. The ``unified-dev`` templates creates the largest of all environments, because it contains everything needed for the NOAA Unified Forecast System, the JCSDA JEDI application, ...
 
 .. code-block:: console
 
-   spack stack create env --site linux.default [--template jedi-ufs-all] --name jedi-ufs.mylinux
-   spack env activate [-p] envs/jedi-ufs.mylinux
+   spack stack create env --site linux.default [--template unified-env-all] --name unified-env.mylinux
+   spack env activate [-p] envs/unified-env.mylinux
 
-3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-ufs.mylinux/site``
+3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mylinux/site``
 
 .. code-block:: console
 
-   export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/jedi-ufs.mylinux/site"
+   export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/unified-env.mylinux/site"
 
 4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
@@ -483,7 +485,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   sed -i 's/tcl/lmod/g' envs/jedi-ufs.mylinux/site/modules.yaml
+   sed -i 's/tcl/lmod/g' envs/unified-env.mylinux/site/modules.yaml
 
 10. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
 
@@ -492,16 +494,16 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    definitions:
    - compilers: ['%gcc']
 
-11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/jedi-ufs.mylinux/spack.yaml``, etc.
+11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mylinux/spack.yaml``, etc.
 
 .. warning::
-   **Important:** Remove any external ``cmake@3.20`` package from ``envs/jedi-ufs.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
+   **Important:** Remove any external ``cmake@3.20`` package from ``envs/unified-env.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
 
 .. code-block:: console
 
-   vi envs/jedi-ufs.mylinux/spack.yaml
-   vi envs/jedi-ufs.mylinux/common/*.yaml
-   vi envs/jedi-ufs.mylinux/site/*.yaml
+   vi envs/unified-env.mylinux/spack.yaml
+   vi envs/unified-env.mylinux/common/*.yaml
+   vi envs/unified-env.mylinux/site/*.yaml
 
 12. Process the specs and install
 
@@ -527,4 +529,4 @@ Note that in the unified environment, there may be deliberate duplicates; consul
 
    spack stack setup-meta-modules
 
-15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/jedi-ufs.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
