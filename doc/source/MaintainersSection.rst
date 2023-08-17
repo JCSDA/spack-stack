@@ -109,7 +109,7 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
 Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
 
 .. note::
-   For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea C4/C5, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
+   For Cray systems, for example NRL's Narwhal, NOAA's Gaea C4/C5, or NCAR's Derecho, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
 
 .. code-block:: console
 
@@ -474,7 +474,7 @@ NCAR-Wyoming Derecho
 ------------------------------
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Be sure to follow the extra instructions for Derecho in that section.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/lustre/desc1/scratch/epicufsrt/contrib/ecflow-5.8.4``. Be sure to follow the extra instructions for Derecho in that section.
 
 .. code-block:: console
 

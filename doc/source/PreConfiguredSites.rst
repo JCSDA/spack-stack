@@ -18,7 +18,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +=====================+==================================+=================+=========================================================================================================+===============================+
 | **HPC platforms**                                                                                                                                                                                                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hercules                         | GCC^*, Intel    | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230717/envs/unified-env``            | Cam Book / Dom Heinzeller     |
+|                     | Hercules^**                      | GCC^*, Intel    | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230717/envs/unified-env``            | Cam Book / Dom Heinzeller     |
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                            | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -28,7 +28,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env``               | Cam Book / Dom Heinzeller     |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Derecho                          | Intel           | ``/lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-env``       | Mark Potts / Dom Heinzeller   |
+|                     | Derecho^**                       | Intel           | ``/lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-env``       | Mark Potts / Dom Heinzeller   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.1/envs/unified-env``                         | Hang Lei / Alex Richert       |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -42,7 +42,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-intel-2021.4.0-hdf5-1.14.0``   | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Narwhal                          | Intel (test)    | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-dev-20230628/envs/unified-env-intel-2021.4.0``        | Dom Heinzeller / Sarah King   |
+|                     | Narwhal^**                       | Intel (test)    | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-dev-20230628/envs/unified-env-intel-2021.4.0``        | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | GCC             | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-gcc-10.3.0``                   | Dom Heinzeller / Sarah King   |
 | U.S. Navy (HPCMP)   +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -66,6 +66,8 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
 ^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
+
+^** This system uses a different version of spack-stack (mostly newer), which is usually the case when we onboard a new system in between spack-stack releases.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
@@ -358,7 +360,7 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda and ecflow.
+For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda, ecflow and mysql.
 
 .. code-block:: console
 
@@ -368,7 +370,7 @@ For ``spack-stack-1.4.1`` with Intel, load the following modules after loading m
    module load stack-python/3.9.12
    module available
 
-For ``spack-stack-1.4.1`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.4.1`` with GNU, load the following modules after loading miniconda, ecflow and mysql.
 
 .. code-block:: console
 
@@ -389,10 +391,21 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
+   # ignore that the sticky module ncarenv/... is not unloaded
    export LMOD_TMOD_FIND_FIRST=yes
    module use /lustre/desc1/scratch/epicufsrt/contrib/modulefiles
    module load ecflow/5.8.4
    module load mysql/8.0.33
+
+For ``spack-stack-develop`` as of 2023/08/14 with Intel, load the following modules after loading ecflow and mysql:
+
+.. code-block:: console
+
+   module use /lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2021.8.0
+   module load stack-cray-mpich/8.1.25
+   module load stack-python/3.10.10
+   module available
 
 .. _Preconfigured_Sites_Acorn:
 
