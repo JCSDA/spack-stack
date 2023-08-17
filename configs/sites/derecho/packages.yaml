@@ -32,6 +32,10 @@ packages:
     - spec: py-pip@22.0.4
       prefix: /usr
 
+### Modification of common packages
+  esmf:
+    variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich3
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -77,11 +81,6 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  #boost:
-  #  buildable: False
-  #  externals:
-  #  - spec: boost@1.78.0
-  #    prefix: /lustre/desc1/scratch/epicufsrt/contrib/boost_1_78_0
   doxygen:
     externals:
     - spec: doxygen@1.9.6
@@ -133,10 +132,11 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
-  meson:
-    externals:
-    - spec: meson@1.1.0
-      prefix: /glade/u/apps/derecho/23.06/opt
+  # Automatically detected, but don't use - missing "ninja" dependency
+  #meson:
+  #  externals:
+  #  - spec: meson@1.1.0
+  #    prefix: /glade/u/apps/derecho/23.06/opt
   mysql:
     buildable: False
     externals:

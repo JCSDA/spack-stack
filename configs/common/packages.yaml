@@ -53,11 +53,8 @@
     eigen:
       version: ['3.4.0']
     # Attention - when updating the version also check the common modules.yaml
-    # config and update the projections for lmod/tcl
-    # Note: Stay away from esmf@8.4.1 ... breaks all sorts of things
-    #esmf:
-    #  version: ['8.4.1']
-    #  variants: ~xerces ~pnetcdf +parallelio ~shared
+    # config and update the projections for lmod/tcl.
+    # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
       version: ['8.4.2']
       variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
