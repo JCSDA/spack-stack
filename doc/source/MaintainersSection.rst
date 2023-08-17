@@ -25,8 +25,10 @@ Miniconda (legacy)
 
 miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. This is not recommended on configurable systems (user workstations and laptops using GNU compiler) where Python gets installed by spack. But any system using Intel compilers with spack-stack will need an external Python to build ecflow with Python bindings (because ecflow requires a boost serialization function that does **not** work with Intel, a known yet ignored bug), and then both Python and ecflow are presented to spack as external packages. Often, it is possible to use the default (OS) Python if new enough (3.9+), or a module provided by the system administrators. If none of this works, use the following instructions to install a basic Python interpreter using miniconda:
 
-The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `python_ver=3.9.12`) and `platform="MacOSX-x86_64"` or `platform="Linux-x86_64"`
-````
+The following is for the example of ``miniconda_ver="py39_4.12.0"`` (for which ``python_ver=3.9.12``) and ``platform="MacOSX-x86_64"`` or ``platform="Linux-x86_64"``
+
+.. code-block:: console
+
    cd /path/to/top-level/spack-stack/
    mkdir -p miniconda-${python_ver}/src
    cd miniconda-${python_ver}/src
@@ -34,7 +36,7 @@ The following is for the example of `miniconda_ver="py39_4.12.0"` (for which `py
    sh Miniconda3-${miniconda_ver}-${platform}.sh -u -b -p /path/to/top-level/spack-stack/miniconda-${python_ver}
    eval "$(/path/to/top-level/spack-stack/miniconda-${python_ver}/bin/conda shell.bash hook)"
    conda install -y -c conda-forge libpython-static
-```
+
 After the successful installation, create modulefile ``/path/to/top-level/spack-stack/modulefiles/miniconda/${python_ver}`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` and the Python version in this file.
 
 ..  _MaintainersSection_Qt5:
@@ -819,57 +821,7 @@ The simplest case of adding new packages that are available in spack-stack is de
 Chaining spack-stack installations
 ----------------------------------
 
-Chaining spack-stack installations is a powerful way to test adding new packages without affecting the existing packages. The idea is to define one or more upstream spack installations that the environment can use as dependencies. One possible way to do this is:
-
-1. Mirror the environment config of the upstream repository, i.e. copy the entire directory without the ``install`` and ``.spack_env`` directories and without `spack.lock`. For example:
-
-.. code-block:: console
-
-   rsync -av --exclude='install' --exclude='.spack-env' --exclude='spack.lock' \
-       envs/jedi-ufs/ \
-       envs/jedi-ufs-chain-test/
-
-2. Edit `envs/jedi-ufs-chain-test/spack.yaml`` and add an upstream configuration entry directly under the ``spack:`` config so that the contents looks like:
-
-.. code-block:: console
-
-   spack:
-     upstreams:
-       spack-instance-1:
-         install_tree: /path/to/spack-stack-1.0.0/envs/jedi-ufs/install
-     concretizer:
-       unify: when_possible
-     ...
-
-3. Activate the environment
-
-4. Install the new packages, for example:
-
-.. code-block:: console
-
-    spack install -v --reuse esmf@8.3.0b09+debug
-
-5. Create modulefiles
-
-.. code-block:: console
-
-    spack module [lmod|tcl] refresh
-
-6. When using ``tcl`` module files, run the ``spack stack setup-meta-modules`` script. This is not needed when using ``lmod`` modulefiles, because the meta modules in ``/path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/Core`` will be ignored entirely.
-
-To use the chained spack environment, first load the usual modules from the upstream spack environment. Then add the full path to the newly created modules manually, ignoring the meta modules (``.../Core``), for example:
-
-.. code-block:: console
-
-    module use /path/to/spack-stack-1.0.0/envs/jedi-ufs-chain-test/install/modulefiles/openmpi/4.1.3/apple-clang/13.1.6
-
-7. Load the newly created modules. When using `tcl` module files, make sure that conflicting modules are unloaded (`lmod` takes care of this).
-
-.. note::
-   After activating the chained environment, ``spack find`` doesn't show the packages installed in upstream, unfortunately.
-
-.. note::
-   More details and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_. Those words of caution need to be taken seriously, especially those referring to not deleting modulefiles and dependencies in the upstream spack environment (if having permissions to do so)!
+Chaining spack-stack installations is a powerful way to test adding new packages without affecting the existing packages. The idea is to define one or more upstream spack installations that the environment can use as dependencies. This is described in detail in :numref:`Section %s <Add_Test_Packages>`.
 
 ----------------------------------------
 Testing/adding packages outside of spack
@@ -906,53 +858,3 @@ Python packages can be added in various ways:
 
 .. note::
    Users are equally strongly advised to not use ``conda`` or ``miniconda`` in combination with Python modules provided by spack-stack, as well as not installing packages other than ``poetry`` in the basic ``miniconda`` installation for spack-stack (if using such a setup).
-
-.. _MaintainersSection_Directory_Layout:
-
-==============================
-Recommended Directory Layout
-==============================
-
-To support multiple installs it is recommended to use `bootstrap.sh` to setup Miniconda and create a standard directory layout.
-
-After running `bootstrap.sh -p <prefix>` the directory will have the following directories:
-
-* apps - Externally installed pre-requisites such as Miniconda and git-lfs.
-* modulefiles - External modules such as Miniconda that are not tied to Spack.
-* src - Prerequisite and spack-stack sources.
-* envs - Spack environment installation location.
-
-A single checkout of Spack can support multiple environments. To differentiate them spack-stack sources in `src` and corresponding environments in `envs` should be grouped by major version.
-
-For example, major versions of spack-stack v1.x.y should be checked out in the `src/spack-stack` directory as `v1` and each corresponding environment should be installed in `envs/v1`.
-
-.. code-block:: console
-
-   spack-stack
-   ├── apps
-   │   └── miniconda
-   │       └── py39_4.12.0
-   ├── envs
-   │   └── v1
-   │       ├── jedi-ufs-all
-   │       └── skylab-1.0.0
-   ├── modulefiles
-   │   └── miniconda
-   │       └── py39_4.12.0
-   └── src
-      ├── miniconda
-      │   └── py39_4.12.0
-      │       └── Miniconda3-py39_4.12.0-MacOSX-x86_64.sh
-      └── spack-stack
-         └── v1
-               ├── envs
-               │   ├── jedi-ufs-all
-               │   └── skylab-1.0.0
-
-
-The install location can be set from the command line with:
-
-.. code-block:: console
-
-   spack config add "config:install_tree:root:<prefix>/envs/v1/jedi-ufs-all"
-   spack config add "modules:default:roots:lmod:<prefix>/envs/v1/jedi-ufs-all/modulefiles"
