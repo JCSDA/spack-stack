@@ -15,11 +15,7 @@ spack:
   include: []
 
   specs:
-    - ufs-utils-env~debug  
-
-  view: false
-  
-  specs:
+  - ufs-utils-env~debug  
   - sigio@2.3.2
   - sfcio@1.4.1
   - g2@3.4.5
