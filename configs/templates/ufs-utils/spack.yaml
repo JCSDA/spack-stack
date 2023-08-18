@@ -34,6 +34,3 @@ spack:
   - jasper@2.0.25
   - bufr@11.7.0
   - wgrib2@2.0.8
-  include:
-  - site
-  - common
