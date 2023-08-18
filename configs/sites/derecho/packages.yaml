@@ -2,21 +2,21 @@ packages:
   all:
     compiler:: [intel@2021.8.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.8.0, cray-mpich@8.1.25]
+      mpi:: [cray-mpich@8.1.25] # intel-oneapi-mpi@2021.8.0, 
     target: [core2]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  intel-oneapi-mpi:
-    externals:
-    - spec: intel-oneapi-mpi@2021.8.0%intel@2021.8.0
-      prefix: /glade/u/apps/derecho/23.06/spack/opt/spack/intel-oneapi-mpi/2021.8.0/oneapi/2023.0.0/mhf4
-      modules:
-      - intel-mpi/2021.8.0
+  #intel-oneapi-mpi:
+  #  externals:
+  #  - spec: intel-oneapi-mpi@2021.8.0%intel@2021.8.0
+  #    prefix: /glade/u/apps/derecho/23.06/spack/opt/spack/intel-oneapi-mpi/2021.8.0/oneapi/2023.0.0/mhf4
+  #    modules:
+  #    - intel-mpi/2021.8.0
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.25%intel@2021.8.0
+    - spec: cray-mpich@8.1.25%intel@2021.8.0 ~wrappers
       prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
       modules:
       - craype/2.7.20
@@ -33,8 +33,8 @@ packages:
       prefix: /usr
 
 ### Modification of common packages
-  esmf:
-    variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich3
+  #esmf:
+  #  variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich3
 
 ### All other external packages listed alphabetically
   autoconf:
