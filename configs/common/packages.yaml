@@ -69,9 +69,10 @@
     fiat:
       version: ['1.1.0']
     fms:
-      version: ['2023.01']
-      # when switching to 2023.02, need to add "+use_fmsio" to variants
-      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
+      #version: ['2023.01']
+      #variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
+      version: ['2023.02']
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +use_fmsio
     g2:
       version: ['3.4.5']
     g2c:
