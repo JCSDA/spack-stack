@@ -139,10 +139,16 @@ These instructions are meant to be a reference that users can follow to set up t
    brew install curl
    brew install cmake
    brew install openssl
-   brew install pkg-config
    # Note - need to pin to version 5
    brew install qt@5
    brew install mysql
+
+.. note::
+  On an Intel based Mac, you will need to also install pkg-config using homebrew.
+  This is done to work around an issue where libraries (eg, openssl) cannot be properly found during code compilation.
+
+  .. code-block:: console
+    brew install pkg-config
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -220,6 +226,12 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Optional, only if planning to build jedi-tools environment with LaTeX support
    # The texlive bin directory must have been added to PATH (see above)
    spack external find --scope system texlive
+
+.. note::
+  On an Intel based Mac, you need to add the following spack config command to prevent spack from building pkg-config.
+  This will force spack to use the pkg-config installed by homebrew (see above).
+  .. code-block:: console
+    spack config --scope system add packages:pkg-config:buildable:false
 
 5. Find compilers, add to site config's ``compilers.yaml``
 
