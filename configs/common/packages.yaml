@@ -42,10 +42,10 @@
       version: ['5.8.4']
       variants: +ui
     eckit:
-      version: ['1.23.1']
+      version: ['1.24.4']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.33.0']
+      version: ['0.34.0']
       variants: +fckit +trans
     ectrans:
       version: ['1.2.0']
@@ -62,12 +62,12 @@
       version: ['8.4.2']
       variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
     fckit:
-      version: ['0.10.1']
+      version: ['0.11.0']
       variants: +eckit
     fftw:
       version: ['3.3.10']
     fiat:
-      version: ['1.1.0']
+      version: ['1.2.0']
     fms:
       #version: ['2023.01']
       #variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
