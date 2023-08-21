@@ -146,8 +146,10 @@ These instructions are meant to be a reference that users can follow to set up t
 .. note::
   On an Intel based Mac, you will need to also install pkg-config using homebrew.
   This is done to work around an issue where libraries (eg, openssl) cannot be properly found during code compilation.
+
 .. code-block:: console
-    brew install pkg-config
+
+  brew install pkg-config  # Intel based Mac only
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -229,8 +231,10 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. note::
   On an Intel based Mac, you need to add the following spack config command to prevent spack from building pkg-config.
   This will force spack to use the pkg-config installed by homebrew (see above).
+
 .. code-block:: console
-    spack config --scope system add packages:pkg-config:buildable:false
+
+  spack config --scope system add packages:pkg-config:buildable:false  # Intel based Mac only
 
 5. Find compilers, add to site config's ``compilers.yaml``
 
