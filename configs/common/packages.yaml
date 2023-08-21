@@ -250,7 +250,7 @@
     qt:
       version: ['5.15.3']
     scotch:
-      version: ['7.0.3']
+      version: ['7.0.4']
       variants: +mpi+metis~shared~threads~mpi_thread+noarch
     sfcio:
       version: ['1.4.1']
