@@ -192,7 +192,7 @@ packages:
       prefix: /usr
   # Old re2c on Cheyenne unable to build newer versions of ninja
   ninja:
-    version:: [1.10.2]
+    version:: ['1.10.2']
   openssh:
     externals:
     - spec: openssh@7.2p2
@@ -203,7 +203,7 @@ packages:
       prefix: /usr
   # Pin patchelf to 0.15.0 for Intel compiler (no C++-17 features)
   patchelf:
-    version:: [0.15.0]
+    version:: ['0.15.0']
   perl:
     externals:
     - spec: perl@5.18.2~cpanm+shared+threads

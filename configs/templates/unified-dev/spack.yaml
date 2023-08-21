@@ -8,22 +8,22 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
-      - global-workflow-env@unified-dev
-      #- gsi-env@unified-dev
-      - ewok-env@unified-dev
-      - jedi-fv3-env@unified-dev
-      - jedi-mpas-env@unified-dev
-      - jedi-neptune-env@unified-dev
-      - jedi-tools-env@unified-dev
-      - jedi-ufs-env@unified-dev
-      - jedi-um-env@unified-dev
-      #- nceplibs-env@unified-dev
-      - soca-env@unified-dev
-      - ufs-srw-app-env@unified-dev
-      #- ufs-utils-env@unified-dev
-      - ufs-weather-model-env@unified-dev
-      #- upp-env@unified-dev
-      #- ww3-env@unified-dev
+      - global-workflow-env
+      #- gsi-env
+      - ewok-env
+      - jedi-fv3-env
+      - jedi-mpas-env
+      - jedi-neptune-env
+      - jedi-tools-env
+      - jedi-ufs-env
+      - jedi-um-env
+      #- nceplibs-env
+      - soca-env
+      - ufs-srw-app-env
+      #- ufs-utils-env
+      - ufs-weather-model-env
+      #- upp-env
+      #- ww3-env
 
       # Additional esmf/mapl tags
       #- esmf@8.4.2~debug+external-parallelio

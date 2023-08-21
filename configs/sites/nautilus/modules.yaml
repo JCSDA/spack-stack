@@ -3,8 +3,8 @@ modules:
     enable::
     - tcl
     tcl:
-      whitelist:
+      include:
       # List of packages for which we need modules that are blacklisted by default
       - python
-      blacklist:
+      exclude:
       - ecflow
