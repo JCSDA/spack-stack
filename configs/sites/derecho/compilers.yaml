@@ -2,10 +2,10 @@ compilers::
   - compiler:
       spec: intel@2021.8.0
       paths:
-        cc: /glade/u/apps/common/23.04/spack/opt/spack/intel-oneapi-compilers/2023.0.0/compiler/2023.0.0/linux/bin/intel64/icc
-        cxx: /glade/u/apps/common/23.04/spack/opt/spack/intel-oneapi-compilers/2023.0.0/compiler/2023.0.0/linux/bin/intel64/icpc
-        f77: /glade/u/apps/common/23.04/spack/opt/spack/intel-oneapi-compilers/2023.0.0/compiler/2023.0.0/linux/bin/intel64/ifort
-        fc: /glade/u/apps/common/23.04/spack/opt/spack/intel-oneapi-compilers/2023.0.0/compiler/2023.0.0/linux/bin/intel64/ifort
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
       flags: {}
       operating_system: sles15
       target: x86_64
