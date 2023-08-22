@@ -16,6 +16,9 @@ spack:
       - jedi-um-env
       - soca-env
 
+      # Additional fms tags
+      - fms@2023.02
+
       # Additional crtm tags
       - crtm@v2.4-jedi.2
       - crtm@v2.4.1-jedi
