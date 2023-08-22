@@ -253,8 +253,11 @@ cd spack-stack/
 spack stack create env --site aws-pcluster --template=unified-dev --name=unified-env
 spack env activate -p envs/unified-env
 sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
-spack concretize 2>&1 | tee log.concretize.env.001
-# CHECK FOR DUPLICATES
+spack concretize 2>&1 | tee log.concretize.unified-env.001
+./util/show_duplicate_packages.py -d log.concretize.unified-env.001
+spack install --verbose 2>&1 | tee log.install.unified-env.001
+spack module lmod refresh
+spack stack setup-meta-modules
 ```
 
 6. Option 2: Test configuring site from scratch
@@ -263,10 +266,10 @@ mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site linux.default --template=unified-dev --name=unified-dev
-spack env activate -p envs/unified-dev
+spack stack create env --site linux.default --template=unified-dev --name=unified-env
+spack env activate -p envs/unified-env
 
-export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/unified-dev/site
+export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/unified-env/site
 
 spack external find --scope system
 spack external find --scope system perl
@@ -328,7 +331,7 @@ spack config add "packages:openssl:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
 spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 
-# edit envs/unified-dev/site/compilers.yaml and replace the following line in the **Intel** compiler section:
+# edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
 #     environment: {}
 # -->
 #     environment:
@@ -338,15 +341,16 @@ spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 #         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
 ```
 
-7. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-dev/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
+7. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-env/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
 
 8. Concretize and install
 ```
-spack concretize 2>&1 | tee log.concretize
-spack install --verbose --source 2>&1 | tee log.install
+spack concretize 2>&1 | tee log.concretize.unified-env.001
+./util/show_duplicate_packages.py -d log.concretize.unified-env.001
+spack install --verbose 2>&1 | tee log.install.unified-env.001
 spack module lmod refresh
 spack stack setup-meta-modules
 ```
-9. Test spack-stack installation using your favorite application. Note that the jedi-bundle ctests requiring MPI don't work correctly, because the modules are configured for SLURM integration but the node in its current state doesn't have SLURM available.
+9. Test spack-stack installation using your favorite application. Note that the jedi-bundle ctests requiring MPI don't work correctly, because the modules are configured for SLURM integration but the node in its current state doesn't have SLURM available. These test failures must be ignored and run once the parallel cluster has been provisioned.
 10. (Optional) Remove test installs of spack-stack environments, if desired.
 11. Create the AMI for use in the AWS parallelcluster config.
