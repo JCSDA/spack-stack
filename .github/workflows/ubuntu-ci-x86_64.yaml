@@ -177,7 +177,7 @@ jobs:
 
       - name: test-env
         run: |
-          source /etc/profile.d/modules.sh
+          source /etc/profile.d/z00_lmod.sh
 
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
