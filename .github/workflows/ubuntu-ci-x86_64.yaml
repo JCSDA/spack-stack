@@ -178,6 +178,9 @@ jobs:
       - name: test-env
         run: |
           source /etc/profile.d/z00_lmod.sh
+          module use /usr/share/modules/modulefiles
+          module use /opt/intel/mpi/2021.6.0/modulefiles
+          module use /home/ubuntu/jedi/modulefiles
 
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
