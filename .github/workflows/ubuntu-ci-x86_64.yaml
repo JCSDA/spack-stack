@@ -126,6 +126,7 @@ jobs:
           # Switch from default tcl to lmod modules
           sed -i "s/tcl/lmod/g" $ENVDIR/site/modules.yaml
 
+          # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.intel-2022.1.0
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2022.1.0 -i fms -i crtm
 
