@@ -18,7 +18,7 @@
     # Attention - when updating also check orion site config
     boost:
       version: ['1.78.0']
-      variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden
+      variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
     bufr:
       version: ['12.0.0']
       variants: +python
@@ -42,10 +42,10 @@
       version: ['5.8.4']
       variants: +ui
     eckit:
-      version: ['1.23.1']
+      version: ['1.24.4']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.33.0']
+      version: ['0.34.0']
       variants: +fckit +trans
     ectrans:
       version: ['1.2.0']
@@ -62,16 +62,17 @@
       version: ['8.4.2']
       variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
     fckit:
-      version: ['0.10.1']
+      version: ['0.11.0']
       variants: +eckit
     fftw:
       version: ['3.3.10']
     fiat:
-      version: ['1.1.0']
+      version: ['1.2.0']
     fms:
-      version: ['2023.01']
-      # when switching to 2023.02, need to add "+use_fmsio" to variants
-      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
+      #version: ['2023.01']
+      #variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
+      version: ['2023.02']
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +use_fmsio
     g2:
       version: ['3.4.5']
     g2c:
@@ -121,14 +122,14 @@
     libyaml:
       version: ['0.2.5']
     mapl:
-      # 2.35.2 goes with esmf@8.4.1
+      # 2.35.2 goes with esmf@8.4.2
       version: ['2.35.2']
       variants: ~shared
     met:
-      version: ['11.0.2']
+      version: ['11.1.0']
       variants: +python +grib2
     metplus:
-      version: ['5.0.1']
+      version: ['5.1.0']
     mpich:
       variants: ~hwloc +two_level_namespace
     nco:
@@ -171,7 +172,7 @@
     p4est:
       version: ['2.8']
     parallelio:
-      version: ['2.5.9']
+      version: ['2.5.10']
       variants: +pnetcdf
     parallel-netcdf:
       version: ['1.12.2']
@@ -249,7 +250,7 @@
     qt:
       version: ['5.15.3']
     scotch:
-      version: ['7.0.3']
+      version: ['7.0.4']
       variants: +mpi+metis~shared~threads~mpi_thread+noarch
     sfcio:
       version: ['1.4.1']

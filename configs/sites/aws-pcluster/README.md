@@ -311,7 +311,7 @@ echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "  boost:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
 # Add external ecflow
