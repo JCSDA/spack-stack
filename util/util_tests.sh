@@ -45,9 +45,11 @@ run_and_check 1 "check_permissions G" ${SPACK_STACK_DIR}/util/check_permissions.
 
 # Check show_duplicate_packages.py
 cd ${SPACK_STACK_DIR}/util/checks
-echo -e " -  abcdefg hdf6@1.2.3\n -  tuvwxyz hdf6@1.2.3" > fakeconcrete.A
+echo -e " -  abcdefg hdf6@1.2.3%intel\n -  tuvwxyz hdf6@1.2.3%gcc" > fakeconcrete.A
 run_and_check 1 "show_duplicate_packages.py A1" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.A
 run_and_check 1 "show_duplicate_packages.py A2" "cat fakeconcrete.A | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py"
+run_and_check 0 "show_duplicate_packages.py A3" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -c fakeconcrete.A
+run_and_check 0 "show_duplicate_packages.py A4" "cat fakeconcrete.A | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -c"
 echo -e " -  abcdefg hdf6@1.2.3\n -  tuvwxyz hdf6@1.2.4" > fakeconcrete.B
 run_and_check 1 "show_duplicate_packages.py B1" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.B
 run_and_check 1 "show_duplicate_packages.py B2" "cat fakeconcrete.B | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py"

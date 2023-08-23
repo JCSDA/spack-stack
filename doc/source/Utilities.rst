@@ -18,7 +18,7 @@ The utility located at util/show_duplicate_packages.py parses the output of ``sp
    spack concretize |& tee log.concretize
    ${SPACK_STACK_DIR}/util/show_duplicate_packages.py log.concretize
 
-The ``-d`` option shows only a list of the duplicates, as opposed to the default behavior, which is to show a print-out of all packages with colorized duplicates. In any case, the identification of any duplicates will yield a return code of 1. The ``-i`` option can be invoked multiple times to skip specific package names.
+The ``-d`` option shows only a list of the duplicates, as opposed to the default behavior, which is to show a print-out of all packages with colorized duplicates. In any case, the identification of any duplicates will yield a return code of 1. The ``-i`` option can be invoked multiple times to skip specific package names. The ``-c`` option can be used to ignore duplicates associated with different compilers; in an environment with, say, GCC and Intel copies of any given package, those two copies of a package will not be reported as duplicates.
 
 .. _Permissions_Checker:
 
