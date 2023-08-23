@@ -750,7 +750,7 @@ The following instructions install a new spack environment on a pre-configured s
    emacs envs/unified-dev.hera/site/*.yaml
 
    # Process/concretize the specs; optionally check for duplicate packages
-   spack concretize | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
+   spack concretize | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
 
    # Optional step for systems with a pre-configured spack mirror, see below.
 
