@@ -25,11 +25,13 @@ spack:
       #- upp-env
       #- ww3-env
 
-      # Additional esmf/mapl tags
-      #- esmf@8.4.2~debug+external-parallelio
-      #- mapl@2.35.2~debug ^esmf@8.4.2~debug+external-parallelio
+      # Various fms tags (list all to avoid duplicate packages)
+      - fms@release-jcsda
+      - fms@2023.01
+      - fms@2023.02
 
-      # Additional crtm tags
+      # Various crtm tags (list all to avoid duplicate packages)
+      - crtm@2.4.0
       - crtm@v2.4-jedi.2
       - crtm@v2.4.1-jedi
 
