@@ -5,8 +5,8 @@
 ### Base instance
 Choose a basic AMI from the Community AMIs tab that matches your desired OS and parallelcluster version. Select an instance type of the same family that you are planning to use for the head and the compute nodes, and enough storage for a swap file and a spack-stack installation. For example:
 - AMI ID: ami-093dab62f7840644b
-- Instance c6i.8xlarge
-- Use 500GB of gp3 storage as /
+- Instance hpc6a.48xlarge
+- Use 350GB of gp3 storage as /
 
 ### Prerequisites
 1. As `root`:
@@ -147,9 +147,8 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.
 apt-get update
 apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 docker run hello-world
-# DH* TODO 2023/02/21: Add users to group docker so that non-root users can run it
-# See https://docs.docker.com/engine/install/linux-postinstall/
-
+# Add user ubuntu to group docker - see https://docs.docker.com/engine/install/linux-postinstall/
+gpasswd -a ubuntu docker
 
 # Configure X windows
 echo "X11Forwarding yes" >> /etc/ssh/sshd_config
@@ -171,6 +170,9 @@ echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
 
 # Exit root session
 exit
+
+# Basic git config
+git config --global credential.helper cache
 ```
 
 2. Log out and back in to enable x11 forwarding
@@ -231,7 +233,12 @@ sudo su
 dpkg -i *.deb
 apt --fix-broken install
 dpkg -i *.deb
-# Set root password, choose strong password encryption option
+# Use an empty password for root, choose legacy authentication method; test connection
+mysql -u root
+show databases;
+# exit mysql
+exit
+# exit root session
 exit
 rm *.deb
 ```
@@ -243,9 +250,14 @@ cd /home/ubuntu/sandpit
 git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site aws-pcluster --template=unified-dev --name=unified-dev
-spack env activate -p envs/unified-dev
-sed -i "s/\['\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
+spack stack create env --site aws-pcluster --template=unified-dev --name=unified-env
+spack env activate -p envs/unified-env
+sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
+spack concretize 2>&1 | tee log.concretize.unified-env.001
+./util/show_duplicate_packages.py -d log.concretize.unified-env.001
+spack install --verbose 2>&1 | tee log.install.unified-env.001
+spack module lmod refresh
+spack stack setup-meta-modules
 ```
 
 6. Option 2: Test configuring site from scratch
@@ -254,10 +266,10 @@ mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
-spack stack create env --site linux.default --template=unified-dev --name=unified-dev
-spack env activate -p envs/unified-dev
+spack stack create env --site linux.default --template=unified-dev --name=unified-env
+spack env activate -p envs/unified-env
 
-export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/unified-dev/site
+export SPACK_SYSTEM_CONFIG_PATH=/home/ubuntu/jedi/spack-stack/envs/unified-env/site
 
 spack external find --scope system
 spack external find --scope system perl
@@ -299,7 +311,7 @@ echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "  boost:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer ~wave cxxstd=14 visibility=hidden" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+echo "    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
 # Add external ecflow
@@ -319,7 +331,7 @@ spack config add "packages:openssl:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
 spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 
-# edit envs/unified-dev/site/compilers.yaml and replace the following line in the **Intel** compiler section:
+# edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
 #     environment: {}
 # -->
 #     environment:
@@ -329,15 +341,16 @@ spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 #         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
 ```
 
-7. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-dev/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
+7. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-env/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
 
 8. Concretize and install
 ```
-spack concretize 2>&1 | tee log.concretize
-spack install --verbose --source 2>&1 | tee log.install
+spack concretize 2>&1 | tee log.concretize.unified-env.001
+./util/show_duplicate_packages.py -d log.concretize.unified-env.001
+spack install --verbose 2>&1 | tee log.install.unified-env.001
 spack module lmod refresh
 spack stack setup-meta-modules
 ```
-9. Test spack-stack installation using your favorite application.
+9. Test spack-stack installation using your favorite application. Note that the jedi-bundle ctests requiring MPI don't work correctly, because the modules are configured for SLURM integration but the node in its current state doesn't have SLURM available. These test failures must be ignored and run once the parallel cluster has been provisioned.
 10. (Optional) Remove test installs of spack-stack environments, if desired.
 11. Create the AMI for use in the AWS parallelcluster config.
