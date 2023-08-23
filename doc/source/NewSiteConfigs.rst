@@ -527,11 +527,12 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
 This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
 Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
+See the :ref:`documentation <Duplicate_Checker>` for usage information including command line options.
 
 .. code-block:: console
 
    spack concretize 2>&1 | tee log.concretize
-   util/show_duplicate_packages.py -d log.concretize
+   util/show_duplicate_packages.py -d [-c] log.concretize
    spack install [--verbose] [--fail-fast]
 
 13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
