@@ -16,7 +16,13 @@ spack:
       - jedi-um-env
       - soca-env
 
-      # Additional crtm tags
+      # Various fms tags (list all to avoid duplicate packages)
+      - fms@release-jcsda
+      - fms@2023.01
+      - fms@2023.02
+
+      # Various crtm tags (list all to avoid duplicate packages)
+      - crtm@2.4.0
       - crtm@v2.4-jedi.2
       - crtm@v2.4.1-jedi
 
