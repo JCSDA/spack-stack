@@ -28,7 +28,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env``               | Cam Book / Dom Heinzeller     |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Derecho^**                       | Intel           | ``/lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-env``       | Mark Potts / Dom Heinzeller   |
+|                     | Derecho^**                       | Intel           | ``/lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-en2``       | Mark Potts / Dom Heinzeller   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.4.1/envs/unified-env``                         | Hang Lei / Alex Richert       |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -401,11 +401,14 @@ For ``spack-stack-develop`` as of 2023/08/14 with Intel, load the following modu
 
 .. code-block:: console
 
-   module use /lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-env/install/modulefiles/Core
+   module use /lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-en2/install/modulefiles/Core
    module load stack-intel/2021.8.0
    module load stack-cray-mpich/8.1.25
    module load stack-python/3.10.10
    module available
+
+.. note::
+   CISL restricts the amount of memory available for processes on the login nodes. For example, it is impossible to compile JEDI with even one task (``make -j1``) with the Intel compiles in release mode (``-O2``). We therefore recommend compiling on compute nodes using interactive jobs, if possible.
 
 .. _Preconfigured_Sites_Acorn:
 
