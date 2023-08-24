@@ -111,7 +111,7 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
 Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
 
 .. note::
-   For certain Cray systems, for example NRL's Narwhal or NOAA's Gaea C4/C5, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
+   For Cray systems, for example NRL's Narwhal, NOAA's Gaea C4/C5, or NCAR's Derecho, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
 
 .. code-block:: console
 
@@ -130,11 +130,14 @@ Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8
    CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
 
 .. note::
-   Finally, on Gaea C5, one needs to pass the correct ``python3`` executable to the ``cmake`` command:
+   Further, on Gaea C5, one needs to pass the correct ``python3`` executable to the ``cmake`` command:
 
 .. code-block:: console
 
    cmake .. -DPython3_EXECUTABLE=`which python3` -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
+
+.. note::
+   Finally, on Derecho (or any other system with ``gcc@12.2.0``), one needs to patch file ``ecflow-5.8.4/src/ecFlow-5.8.4-Source/ACore/src/Passwd.cpp`` by adding ``#include <ctime>`` below line ``#include "Passwd.hpp"`` before running ``make``.
 
 ..  _MaintainersSection_MySQL:
 
@@ -465,6 +468,25 @@ openmpi
    make VERBOSE=1 -j2
    make check
    make install
+
+.. _MaintainersSection_Derecho:
+
+------------------------------
+NCAR-Wyoming Derecho
+------------------------------
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/lustre/desc1/scratch/epicufsrt/contrib/ecflow-5.8.4``. Be sure to follow the extra instructions for Derecho in that section.
+
+.. code-block:: console
+
+   module purge
+   export LMOD_TMOD_FIND_FIRST=yes
+   module load gcc/12.2.0
+   module load cmake/3.26.3
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/desc1/scratch/epicufsrt/contrib/mysql-8.0.33``.
 
 .. _MaintainersSection_WCOSS2:
 
