@@ -123,6 +123,10 @@ modules:
             'YAML_DIR': '{prefix}'
             'YAML_LIB': '{prefix}/lib'
             'YAML_INC': '{prefix}/include'
+      madis:
+        environment:
+          set:
+            'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
@@ -368,6 +372,10 @@ modules:
             'YAML_DIR': '{prefix}'
             'YAML_LIB': '{prefix}/lib'
             'YAML_INC': '{prefix}/include'
+      madis:
+        environment:
+          set:
+            'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
