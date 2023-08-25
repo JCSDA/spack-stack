@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.8.0]
+    compiler:: [intel@2021.8.0, gcc@12.2.0]
     providers:
       mpi:: [cray-mpich@8.1.25] # intel-oneapi-mpi@2021.8.0, 
     target: [core2]
@@ -16,7 +16,12 @@ packages:
   #    - intel-mpi/2021.8.0
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.25%intel@2021.8.0 ~wrappers
+    - spec: cray-mpich@8.1.25%intel@2021.10.0 ~wrappers
+      prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
+      modules:
+      - craype/2.7.20
+      - cray-mpich/8.1.25
+    - spec: cray-mpich@8.1.25%gcc@12.2.0 ~wrappers
       prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
       modules:
       - craype/2.7.20

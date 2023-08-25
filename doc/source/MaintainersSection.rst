@@ -475,6 +475,9 @@ openmpi
 NCAR-Wyoming Derecho
 ------------------------------
 
+intel (temporary)
+  Until CISL makes the newest Intel compilers available in the default module tree, create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/intel`` and copy ``/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/Core/intel/2023.2.1.lua`` to this directory. Edit the file and remove the block of lines starting with ``-- Find custom moduleroots`` and ending with ``append_path("MODULEPATH", "/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/oneapi/2023.2.1")``.
+
 ecflow
   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/lustre/desc1/scratch/epicufsrt/contrib/ecflow-5.8.4``. Be sure to follow the extra instructions for Derecho in that section.
 

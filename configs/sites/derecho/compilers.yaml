@@ -1,6 +1,6 @@
 compilers::
   - compiler:
-      spec: intel@2021.8.0
+      spec: intel@2021.10.0
       paths:
         cc: cc
         cxx: CC
@@ -11,29 +11,34 @@ compilers::
       target: x86_64
       modules:
       - ncarenv/23.06
-      - intel-classic/2023.0.0
+      - intel/2023.2.1
+      - craype/2.7.20
       environment:
         prepend_path:
           PATH: '/opt/cray/pe/gcc/12.2.0/bin'
           CPATH: '/opt/cray/pe/gcc/12.2.0/snos/include'
-          LD_LIBRARY_PATH: '/glade/u/apps/common/23.04/spack/opt/spack/intel-oneapi-compilers/2023.0.0/compiler/2023.0.0/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/default/snos/lib:/opt/cray/pe/gcc/default/snos/lib64'
+          LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/default/snos/lib:/opt/cray/pe/gcc/default/snos/lib64'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
         #set:
-        #  I_MPI_ROOT: '/glade/u/apps/derecho/23.06/spack/opt/spack/intel-oneapi-mpi/2021.8.0/oneapi/2023.0.0/mhf4/mpi/2021.8.0'
+        #  I_MPI_ROOT: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/mpi/2021.10.0'
       extra_rpaths: []
-# - compiler:
-#     spec: gcc@10.1.0
-#     paths:
-#       cc: /glade/u/apps/ch/opt/gnu/10.1.0/bin/gcc
-#       cxx: /glade/u/apps/ch/opt/gnu/10.1.0/bin/g++
-#       f77: /glade/u/apps/ch/opt/gnu/10.1.0/bin/gfortran
-#       fc: /glade/u/apps/ch/opt/gnu/10.1.0/bin/gfortran
-#     flags: {}
-#     operating_system: sles12
-#     target: x86_64
-#     modules:
-#     - gnu/10.1.0
-#     environment: {}
-#     extra_rpaths: []
+  - compiler:
+      spec: gcc@12.2.0
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      flags: {}
+      operating_system: sles15
+      target: x86_64
+      modules:
+      - ncarenv/23.06
+      - gcc/12.2.0
+      - craype/2.7.20
+      environment: {}
+        set:
+          CRAYPE_LINK_TYPE: 'dynamic'
+      extra_rpaths: []
 
