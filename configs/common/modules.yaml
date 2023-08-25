@@ -158,6 +158,10 @@ modules:
             'BACIO_INC8': '{prefix}/include_8'
             'BACIO_LIB4': '{prefix}/lib/libbacio_4.a'
             'BACIO_LIB8': '{prefix}/lib/libbacio_8.a'
+      bufr:
+        environment:
+          set:
+            'BUFR_ROOT': '{prefix}'
       crtm:
         environment:
           set:
@@ -407,6 +411,10 @@ modules:
             'BACIO_INC8': '{prefix}/include_8'
             'BACIO_LIB4': '{prefix}/lib/libbacio_4.a'
             'BACIO_LIB8': '{prefix}/lib/libbacio_8.a'
+      bufr:
+        environment:
+          set:
+            'BUFR_ROOT': '{prefix}'
       crtm:
         environment:
           set:
