@@ -34,6 +34,9 @@
     crtm:
       version: ['2.4.0']
       variants: +fix
+    # Need to enable nghttp2 variant for curl to avoid duplicate packages being built
+    curl:
+      variants: +nghttp2
     ecbuild:
       version: ['3.7.2']
     eccodes:
