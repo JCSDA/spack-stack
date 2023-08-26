@@ -2,10 +2,10 @@ compilers::
   - compiler:
       spec: intel@2021.10.0
       paths:
-        cc: cc
-        cxx: CC
-        f77: ftn
-        fc: ftn
+        cc: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/bin/intel64/icc
+        cxx: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/bin/intel64/icpc
+        f77: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/bin/intel64/ifort
+        fc: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/bin/intel64/ifort
       flags: {}
       operating_system: sles15
       target: x86_64
@@ -26,10 +26,10 @@ compilers::
   - compiler:
       spec: gcc@12.2.0
       paths:
-        cc: cc
-        cxx: CC
-        f77: ftn
-        fc: ftn
+        cc: /opt/cray/pe/gcc/12.2.0/bin/gcc
+        cxx: /opt/cray/pe/gcc/12.2.0/bin/g++
+        f77: /opt/cray/pe/gcc/12.2.0/bin/gfortran
+        fc: /opt/cray/pe/gcc/12.2.0/bin/gfortran
       flags: {}
       operating_system: sles15
       target: x86_64
@@ -37,7 +37,7 @@ compilers::
       - ncarenv/23.06
       - gcc/12.2.0
       - craype/2.7.20
-      environment: {}
+      environment:
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
