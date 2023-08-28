@@ -438,7 +438,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack stack create env --site linux.default [--template unified-env-all] --name unified-env.mylinux
+   spack stack create env --site linux.default [--template unified-dev] --name unified-env.mylinux
    spack env activate [-p] envs/unified-env.mylinux
 
 3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mylinux/site``
