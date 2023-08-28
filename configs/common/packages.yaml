@@ -38,6 +38,7 @@
       version: ['3.7.2']
     eccodes:
       version: ['2.27.0']
+      variants: +png
     ecflow:
       version: ['5.8.4']
       variants: +ui
