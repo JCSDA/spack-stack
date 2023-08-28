@@ -12,7 +12,6 @@ compilers::
       modules:
       - ncarenv/23.06
       - intel/2023.2.1
-      - craype/2.7.20
       environment:
         prepend_path:
           PATH: '/opt/cray/pe/gcc/12.2.0/bin'
@@ -20,8 +19,6 @@ compilers::
           LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/default/snos/lib:/opt/cray/pe/gcc/default/snos/lib64'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
-        #set:
-        #  I_MPI_ROOT: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/mpi/2021.10.0'
       extra_rpaths: []
   - compiler:
       spec: gcc@12.2.0
@@ -36,7 +33,6 @@ compilers::
       modules:
       - ncarenv/23.06
       - gcc/12.2.0
-      - craype/2.7.20
       environment:
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
