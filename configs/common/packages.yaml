@@ -58,6 +58,8 @@
     esmf:
       version: ['8.4.2']
       variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
+      require:
+        - any_of: ['%intel fflags="-fp-model precise" cxxflags="-fp-model precise"', '@:']
     fckit:
       version: ['0.11.0']
       variants: +eckit
