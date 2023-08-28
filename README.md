@@ -43,28 +43,11 @@ https://spack-stack.readthedocs.io/en/latest/
 
 spack-stack is maintained by:
 
-- [Alex Richert](https://www.github.com/AlexanderRichert-NOAA), [Hang
+- NOAA-EMC: [Alex Richert](https://www.github.com/AlexanderRichert-NOAA), [Hang
   Lei](https://www.github.com/Hang-Lei-NOAA), [Ed
-  Hartnett](https://www.github.com/edwardhartnett) NOAA-EMC
-
-- [Dom Heinzeller](https://www.github.com/climbfuji), JCSDA
+  Hartnett](https://www.github.com/edwardhartnett)
+- JCSDA: [Dom Heinzeller](https://www.github.com/climbfuji), [Steve Herbener](https://github.com/srherbener)
+- EPIC: [Cam Book](https://github.com/ulmononian), [Natalie Perlin](https://github.com/natalie-perlin)
 
 For more information about the organization of the spack-stack
 project, see the [Project Charter](project_charter.md).
-
-## Disclaimer
-
-The United States Department of Commerce (DOC) GitHub project code is
-provided on an "as is" basis and the user assumes responsibility for
-its use. DOC has relinquished control of the information and no longer
-has responsibility to protect the integrity, confidentiality, or
-availability of the information. Any claims against the Department of
-Commerce stemming from the use of its GitHub project will be governed
-by all applicable Federal law. Any reference to specific commercial
-products, processes, or services by service mark, trademark,
-manufacturer, or otherwise, does not constitute or imply their
-endorsement, recommendation or favoring by the Department of
-Commerce. The Department of Commerce seal and logo, or the seal and
-logo of a DOC bureau, shall not be used in any manner to imply
-endorsement of any commercial product or activity by DOC or the United
-States Government.

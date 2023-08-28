@@ -123,6 +123,10 @@ modules:
             'YAML_DIR': '{prefix}'
             'YAML_LIB': '{prefix}/lib'
             'YAML_INC': '{prefix}/include'
+      madis:
+        environment:
+          set:
+            'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
@@ -154,6 +158,10 @@ modules:
             'BACIO_INC8': '{prefix}/include_8'
             'BACIO_LIB4': '{prefix}/lib/libbacio_4.a'
             'BACIO_LIB8': '{prefix}/lib/libbacio_8.a'
+      bufr:
+        environment:
+          set:
+            'BUFR_ROOT': '{prefix}'
       crtm:
         environment:
           set:
@@ -368,6 +376,10 @@ modules:
             'YAML_DIR': '{prefix}'
             'YAML_LIB': '{prefix}/lib'
             'YAML_INC': '{prefix}/include'
+      madis:
+        environment:
+          set:
+            'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
           ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
@@ -399,6 +411,10 @@ modules:
             'BACIO_INC8': '{prefix}/include_8'
             'BACIO_LIB4': '{prefix}/lib/libbacio_4.a'
             'BACIO_LIB8': '{prefix}/lib/libbacio_8.a'
+      bufr:
+        environment:
+          set:
+            'BUFR_ROOT': '{prefix}'
       crtm:
         environment:
           set:
