@@ -60,7 +60,12 @@
       version: ['8.4.2']
       variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
       require:
-        - any_of: ['%intel fflags="-fp-model precise" cxxflags="-fp-model precise"', '@:']
+        - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
+          when: "%intel"
+          message: "Extra ESMF compile options for Intel"
+        - any_of: ['']
+          when: "%gcc"
+          message: "Extra ESMF compile options for GCC"
     fckit:
       version: ['0.11.0']
       variants: +eckit
