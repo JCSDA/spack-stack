@@ -8,20 +8,20 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
-      - global-workflow-env
+      - global-workflow-env ^mapl@2.40.3 ^esmf@8.5.0
       #- gsi-env
       - ewok-env
       - jedi-fv3-env
       - jedi-mpas-env
       - jedi-neptune-env
       - jedi-tools-env
-      - jedi-ufs-env
+      - jedi-ufs-env ^mapl@2.40.3 ^esmf@8.5.0
       - jedi-um-env
       #- nceplibs-env
       - soca-env
-      - ufs-srw-app-env
+      - ufs-srw-app-env ^mapl@2.40.3 ^esmf@8.5.0
       #- ufs-utils-env
-      - ufs-weather-model-env
+      - ufs-weather-model-env ^mapl@2.40.3 ^esmf@8.5.0
       #- upp-env
       #- ww3-env
 
@@ -37,6 +37,10 @@ spack:
 
       # MADIS for WCOSS2 decoders.
       - madis@4.5
+
+      # Various ESMF/MAPL combinations
+      - mapl@2.35.2 ^esmf@8.4.2
+      - mapl@2.40.3 ^esmf@8.5.0
 
   specs:
     - matrix:

@@ -127,7 +127,7 @@
     libyaml:
       version: ['0.2.5']
     mapl:
-      # 2.35.2 goes with esmf@8.4.2
+      # 2.35.2 goes with esmf@8.4.2, 2.40.3 goes with esmf@8.5.0
       version: ['2.35.2']
       variants: ~shared
     met:

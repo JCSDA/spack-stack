@@ -12,7 +12,7 @@ spack:
       - jedi-fv3-env
       - jedi-mpas-env
       - jedi-neptune-env
-      - jedi-ufs-env
+      - jedi-ufs-env ^mapl@2.40.3 ^esmf@8.5.0
       - jedi-um-env
       - soca-env
 
@@ -25,6 +25,10 @@ spack:
       - crtm@2.4.0
       - crtm@v2.4-jedi.2
       - crtm@v2.4.1-jedi
+
+      # Various ESMF/MAPL combinations
+      - mapl@2.35.2 ^esmf@8.4.2
+      - mapl@2.40.3 ^esmf@8.5.0
 
   specs:
     - matrix:
