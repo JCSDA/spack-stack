@@ -189,7 +189,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/jcsda/spack-stack.git
+   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
@@ -200,7 +200,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. code-block:: console
 
    spack stack create env --site macos.default [--template unified-dev] --name unified-env.mymacos
-   spack env activate [-p] envs/unified-env.mymacos
+   cd envs/unified-env.mymacos/
+   spack env activate [-p] .
 
 3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mymacos/site``
 
@@ -427,7 +428,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/jcsda/spack-stack.git
+   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
@@ -439,7 +440,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 .. code-block:: console
 
    spack stack create env --site linux.default [--template unified-dev] --name unified-env.mylinux
-   spack env activate [-p] envs/unified-env.mylinux
+   cd envs/unified-env.mylinux/
+   spack env activate [-p] .
 
 3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mylinux/site``
 
@@ -451,7 +453,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1
+   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1, and cmake 3.20 and earlier
    spack external find --scope system perl
    spack external find --scope system wget
    spack external find --scope system mysql
@@ -514,7 +516,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mylinux/spack.yaml``, etc.
 
 .. warning::
-   **Important:** Remove any external ``cmake@3.20`` package from ``envs/unified-env.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
+   Remove any external ``cmake`` package version 3.20 or earlier from ``envs/unified-env.mylinux/site/packages.yaml`` (or use add ``--exclude cmake`` to the ``spack external find`` command). Further, on Red Hat/CentOS, remove any external ``curl`` that might have been found.
 
 .. code-block:: console
 
@@ -547,4 +549,4 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 
    spack stack setup-meta-modules
 
-15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.

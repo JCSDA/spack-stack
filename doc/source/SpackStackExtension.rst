@@ -29,7 +29,7 @@ The full list of options for creating containers is:
 
    spack stack create ctr [--template TEMPLATE] [--name NAME] [--dir DIR] [--overwrite] [--packages PACKAGES] container
 
-``TEMPLATE`` is identical to creating environments, and ``container`` corresponds to a pre-defined container recipe (see :numref:`Section %s <EnvironmentsContainers>`). For all other options, consult the output of ``spack stack create ctr -h``.
+``TEMPLATE`` is identical to creating environments, and ``container`` corresponds to a pre-defined container recipe (see :numref:`Section %s <BuildingContainers>`). For all other options, consult the output of ``spack stack create ctr -h``.
 
 Following a successful creation of an environment (not a container), and the generation of the ``spack`` ``lmod/tcl`` module files via ``spack module [lmod|tcl] refresh``, the meta modules for compiler, Python interpreter and MPI library are generated with
 

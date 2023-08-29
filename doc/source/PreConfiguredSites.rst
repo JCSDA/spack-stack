@@ -747,7 +747,7 @@ The following instructions install a new spack environment on a pre-configured s
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/jcsda/spack-stack.git
+   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Ensure Python 3.8+ is available and the default before sourcing spack
@@ -767,7 +767,8 @@ The following instructions install a new spack environment on a pre-configured s
    #     Note: in some cases, this can mess up long lines in bash
    #     because color codes are not escaped correctly. In this
    #     case, use export SPACK_COLOR='never' first.
-   spack env activate [-p] envs/unified-dev.hera
+   cd envs/unified-dev.hera/
+   spack env activate [-p] .
 
    # Edit the main config file for the environment and adjust the compiler matrix
    # to match the compilers available on your system, or a subset of them (see

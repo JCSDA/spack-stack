@@ -13,8 +13,8 @@ To install in an additional environment within an official spack-stack space, si
     cd envs/netcdf-test
     spack env activate .
     spack add ufs-weather-model-env%intel ^netcdf-c@5.0.0
-    spack concretize | tee log.concretize
-    spack install | tee log.install
+    spack concretize 2>&1 | tee log.concretize
+    spack install 2>&1 | tee log.install
     spack module lmod refresh --upstream-modules
     spack stack setup-meta-modules
 
