@@ -384,7 +384,7 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
-.. _MaintainersSection_Narwhal:
+.. _MaintainersSection_Nautilus:
 
 ------------------------------
 NAVY HPCMP Nautilus
@@ -451,6 +451,8 @@ mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31``.
 
 openmpi
+
+.. code-block:: console
 
     module purge
     export LMOD_TMOD_FIND_FIRST=yes
@@ -571,7 +573,7 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
 
-.. _MaintainersSection_Gaea:
+.. _MaintainersSection_GaeaC5:
 
 ------------------------------
 NOAA RDHPCS Gaea C5
