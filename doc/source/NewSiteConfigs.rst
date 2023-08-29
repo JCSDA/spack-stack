@@ -514,7 +514,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mylinux/spack.yaml``, etc.
 
 .. warning::
-   **Important:** Remove any external ``cmake@3.20`` package from ``envs/unified-env.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
+   Remove any external ``cmake@3.20`` package from ``envs/unified-env.mylinux/site/packages.yaml``. It is in fact recommended to remove all versions of ``cmake`` up to ``3.20``. Further, on Red Hat/CentOS, remove any external curl that might have been found.
 
 .. code-block:: console
 
@@ -547,4 +547,4 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 
    spack stack setup-meta-modules
 
-15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.

@@ -25,6 +25,9 @@ spack-stack is maintained by:
 Getting Started
 ===============
 
-Basic usage of spack-stack is described :numref:`Section %s <UsingSpackEnvironments>`. Using spack-stack requires that you have a fully configured and installed spack-stack environment. In Many of supported platforms ready-to-use spack-stack installations available locally. You can see a list of those sites and site-specific instructions and caveats in :numref:`Section %s <Preconfigured_Sites>`.
+In order to **access an existing spack-stack installation** on a given system, see the instructions in :numref:`Section %s <UsingSpackEnvironments>`. Ready-to-use spack-stack installations are available on a number of HPC and cloud platforms. A list of those platforms, along with special instructions and caveats for each, can be found in :numref:`Section %s <Preconfigured_Sites>`.
 
-If you are a developer looking to build and run software locally using spack-stack, or if you are looking to install spack-stack on a new platform you can follow the instructions in :numref:`Section %s <NewSiteConfigs>`.
+If you wish to **create a new site configuration** in order to create a new spack-stack installation, see the instructions in :numref:`Section %s <NewSiteConfigs>`.
+
+.. note::
+   As spack-stack is intended to support NOAA EMC, JCSDA, and EPIC applications, users seeking to install software for other purposes, such as developing non-NOAA/JCSDA/EPIC applications, even those that use weather-related libraries, are recommended to simply use `Spack <https://github.com/spack/spack>`_ instead.
