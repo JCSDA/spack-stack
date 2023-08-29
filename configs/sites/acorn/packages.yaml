@@ -11,8 +11,7 @@
         - craype-network-ofi
         - cray-mpich/8.1.9
     esmf:
-      version: ['8.3.0b09']
-      variants: ~xerces ~pnetcdf +pio ~shared snapshot=b09 esmf_os=Linux esmf_comm=mpich3
+      variants: esmf_os=Linux esmf_comm=mpich3
     git:
       buildable: false
       externals:

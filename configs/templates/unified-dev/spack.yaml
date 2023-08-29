@@ -32,8 +32,10 @@ spack:
 
       # Various crtm tags (list all to avoid duplicate packages)
       - crtm@2.4.0
-      - crtm@v2.4-jedi.2
       - crtm@v2.4.1-jedi
+
+      # MADIS for WCOSS2 decoders.
+      - madis@4.5
 
   specs:
     - matrix:
