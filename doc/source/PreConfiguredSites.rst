@@ -747,7 +747,7 @@ The following instructions install a new spack environment on a pre-configured s
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/jcsda/spack-stack.git
+   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Ensure Python 3.8+ is available and the default before sourcing spack
