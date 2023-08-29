@@ -23,7 +23,6 @@ spack:
 
       # Various crtm tags (list all to avoid duplicate packages)
       - crtm@2.4.0
-      - crtm@v2.4-jedi.2
       - crtm@v2.4.1-jedi
 
       # Various ESMF/MAPL combinations
