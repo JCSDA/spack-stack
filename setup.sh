@@ -3,10 +3,10 @@
 # This may have unwanted/unexpected behavior on some systems, so use carefully.
 if [ "$1" == "-i" ]; then
   echo "Resetting PATH to system defaults"
-  PATH=$(env -u PATH -u PROFILEREAD bash -c 'echo $PATH')
+  PATH=$(env -u PATH -u PROFILEREAD bash -i -c 'echo $PATH')
   case "$(hostname -s)" in
-    Orion-login-[1-4]) module load python/3.7.5
-    ;;
+    Orion-login-[1-4]) module load python/3.7.5 ;;
+    alogin0[1-3]) module load intel/19.1.3.304 python/3.8.6 ;;
   esac
 fi
 
