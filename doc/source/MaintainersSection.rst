@@ -764,10 +764,11 @@ Since all spack-stack installations are based on environments, we only cover spa
 4. If not already included in the environment (e.g. from the spack-stack site config), add the mirror:
 
 .. code-block:: console
+
    spack mirror list
    spack mirror add local-source file:///path/to/spack-source
 
-   The newly created local mirror should be listed at the top, which means that spack will search this directory first.
+The newly created local mirror should be listed at the top, which means that spack will search this directory first.
 
 7. Proceed with the installation as usual.
 

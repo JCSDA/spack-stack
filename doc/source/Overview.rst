@@ -27,7 +27,7 @@ Getting started
 
 If you wish to **access an existing spack-stack installation** on a given system, such as to load packages and compile and run a UFS or JEDI application, see the instructions in :numref:`Section %s <UsingSpackEnvironments>`. Ready-to-use spack-stack installations are available on a number of HPC and cloud platforms. A list of those platforms, along with special instructions and caveats for each, can be found in :numref:`Section %s <Preconfigured_Sites>`.
 
-If you wish to quickly **create a new spack-stack environment (stack installation)**, either on a personal machine or on a supported platform where you are the maintainer, see :numref:`Section %s <CreatingEnvironment>`.
+If you wish to quickly **create a new spack-stack environment (stack installation)**, either on a personal machine or on a supported platform where you are the maintainer, see :numref:`Section %s <CreatingEnvironment>`. To find other details related to maintaining installations, including problematic packages and system-specific issues, see :numref:`Section %s <MaintainersSection>`.
 
 If you wish to **chain a new spack-stack environment to an existing installation**, such as to test a new package version on one of our supported HPC or cloud platforms based on already installed dependencies, see :numref:`Section %s <Add_Test_Packages>`.
 
