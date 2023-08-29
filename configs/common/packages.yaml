@@ -129,7 +129,7 @@
     mapl:
       # 2.35.2 goes with esmf@8.4.2, 2.40.3 goes with esmf@8.5.0
       version: ['2.35.2']
-      variants: ~shared ~pflogger
+      variants: ~shared
     met:
       version: ['11.1.0']
       variants: +python +grib2
