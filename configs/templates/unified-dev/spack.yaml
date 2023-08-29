@@ -8,7 +8,7 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
-      - global-workflow-env ^mapl@2.35.2 ^esmf@8.4.2
+      - global-workflow-env ^esmf@8.4.2
       #- gsi-env
       - ewok-env
       - jedi-fv3-env
