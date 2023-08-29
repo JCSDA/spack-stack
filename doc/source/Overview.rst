@@ -22,12 +22,16 @@ spack-stack is maintained by:
 - Cameron Book (@ulmononian) and Mark Potts (@mark-a-potts), EPIC
 
 ===============
-Getting Started
+Getting started
 ===============
 
-In order to **access an existing spack-stack installation** on a given system, see the instructions in :numref:`Section %s <UsingSpackEnvironments>`. Ready-to-use spack-stack installations are available on a number of HPC and cloud platforms. A list of those platforms, along with special instructions and caveats for each, can be found in :numref:`Section %s <Preconfigured_Sites>`.
+If you wish to **access an existing spack-stack installation** on a given system, such as to load packages and compile and run a UFS or JEDI application, see the instructions in :numref:`Section %s <UsingSpackEnvironments>`. Ready-to-use spack-stack installations are available on a number of HPC and cloud platforms. A list of those platforms, along with special instructions and caveats for each, can be found in :numref:`Section %s <Preconfigured_Sites>`.
 
-If you wish to **create a new site configuration** in order to create a new spack-stack installation, see the instructions in :numref:`Section %s <NewSiteConfigs>`.
+If you wish to quickly **create a new spack-stack environment (stack installation)**, either on a personal machine or on a supported platform where you are the maintainer, see :numref:`Section %s <CreatingEnvironment>`.
+
+If you wish to **chain a new spack-stack environment to an existing installation**, such as to test a new package version on one of our supported HPC or cloud platforms based on already installed dependencies, see :numref:`Section %s <Add_Test_Packages>`.
+
+If you wish to **create a new site configuration** on a not-yet supported machine, including detailed instructions for Linux and macOS workstations, see :numref:`Section %s <NewSiteConfigs>`.
 
 .. note::
    As spack-stack is intended to support NOAA EMC, JCSDA, and EPIC applications, users seeking to install software for other purposes, such as developing non-NOAA/JCSDA/EPIC applications, even those that use weather-related libraries, are recommended to simply use `Spack <https://github.com/spack/spack>`_ instead.
