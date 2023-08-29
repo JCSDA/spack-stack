@@ -24,9 +24,9 @@ Note that items in "<>" should be replaced with the appropriate values (site nam
    # such as 'spack external find' and 'spack compiler find'.
    # See https://spack-tutorial.readthedocs.io/en/latest/tutorial_configuration.html
 
-   spack concretize |& tee log.concretize
+   spack concretize 2>&1 | tee log.concretize
 
-   spack install [--verbose] [--fail-fast] |& tee log.install
+   spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
    spack module lmod refresh
 
