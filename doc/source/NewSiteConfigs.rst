@@ -200,7 +200,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. code-block:: console
 
    spack stack create env --site macos.default [--template unified-dev] --name unified-env.mymacos
-   spack env activate [-p] envs/unified-env.mymacos
+   cd envs/unified-env.mymacos/
+   spack env activate [-p] .
 
 3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mymacos/site``
 
@@ -439,7 +440,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 .. code-block:: console
 
    spack stack create env --site linux.default [--template unified-dev] --name unified-env.mylinux
-   spack env activate [-p] envs/unified-env.mylinux
+   cd envs/unified-env.mylinux/
+   spack env activate [-p] .
 
 3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mylinux/site``
 

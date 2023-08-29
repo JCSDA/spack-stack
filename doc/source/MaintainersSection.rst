@@ -789,7 +789,8 @@ The procedure is similar to using spack mirrors for local reuse, but a few addit
 .. code-block:: console
 
    spack env create air_gapped_mirror_env spack.lock
-   spack env activate air_gapped_mirror_env
+   cd envs/air_gapped_mirror_env/
+   spack env activate .
    spack mirror create -a -d ./mirror/ 
 
 5. On the air-gapped system: Copy the directory from the system with internet access to the local destination for the spack mirror. It is recommended to use ``rsync`` to avoid deleting existing packages, if updating an existing mirror on the air-gapped system. For example, to use ``rsync`` to copy the mirror directory from the machine with full internet access to the air-gapped system (with the ``rsync`` initiated from the air-gapped system):

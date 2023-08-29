@@ -767,7 +767,8 @@ The following instructions install a new spack environment on a pre-configured s
    #     Note: in some cases, this can mess up long lines in bash
    #     because color codes are not escaped correctly. In this
    #     case, use export SPACK_COLOR='never' first.
-   spack env activate [-p] envs/unified-dev.hera
+   cd envs/unified-dev.hera/
+   spack env activate [-p] .
 
    # Edit the main config file for the environment and adjust the compiler matrix
    # to match the compilers available on your system, or a subset of them (see
