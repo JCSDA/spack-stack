@@ -1,0 +1,18 @@
+#%Module1.0
+
+module-whatis "Provides a libfabric installation for use with spack."
+
+conflict libfabric
+
+proc ModulesHelp { } {
+puts stderr "Provides a libfabric installation for use with spack."
+}
+
+# Set this value
+set LIBFABRIC_PATH "/opt/cray/libfabric/1.15.2.0"
+
+prepend-path PATH "${LIBFABRIC_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${LIBFABRIC_PATH}/lib64"
+prepend-path LIBRARY_PATH "${LIBFABRIC_PATH}/lib64"
+prepend-path CPATH "${LIBFABRIC_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${LIBFABRIC_PATH}"
