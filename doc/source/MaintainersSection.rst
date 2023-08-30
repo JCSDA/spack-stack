@@ -384,7 +384,7 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
-.. _MaintainersSection_Narwhal:
+.. _MaintainersSection_Nautilus:
 
 ------------------------------
 NAVY HPCMP Nautilus
@@ -451,6 +451,8 @@ mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31``.
 
 openmpi
+
+.. code-block:: console
 
     module purge
     export LMOD_TMOD_FIND_FIRST=yes
@@ -580,7 +582,7 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
 
-.. _MaintainersSection_Gaea:
+.. _MaintainersSection_GaeaC5:
 
 ------------------------------
 NOAA RDHPCS Gaea C5
@@ -773,10 +775,11 @@ Since all spack-stack installations are based on environments, we only cover spa
 4. If not already included in the environment (e.g. from the spack-stack site config), add the mirror:
 
 .. code-block:: console
+
    spack mirror list
    spack mirror add local-source file:///path/to/spack-source
 
-   The newly created local mirror should be listed at the top, which means that spack will search this directory first.
+The newly created local mirror should be listed at the top, which means that spack will search this directory first.
 
 7. Proceed with the installation as usual.
 
@@ -797,7 +800,8 @@ The procedure is similar to using spack mirrors for local reuse, but a few addit
 .. code-block:: console
 
    spack env create air_gapped_mirror_env spack.lock
-   spack env activate air_gapped_mirror_env
+   cd envs/air_gapped_mirror_env/
+   spack env activate .
    spack mirror create -a -d ./mirror/ 
 
 5. On the air-gapped system: Copy the directory from the system with internet access to the local destination for the spack mirror. It is recommended to use ``rsync`` to avoid deleting existing packages, if updating an existing mirror on the air-gapped system. For example, to use ``rsync`` to copy the mirror directory from the machine with full internet access to the air-gapped system (with the ``rsync`` initiated from the air-gapped system):
