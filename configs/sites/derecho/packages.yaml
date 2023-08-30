@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.8.0, gcc@12.2.0]
+    compiler:: [intel@2021.10.0, gcc@12.2.0]
     providers:
       mpi:: [cray-mpich@8.1.25] # intel-oneapi-mpi@2021.8.0, 
     target: [core2]
@@ -21,11 +21,15 @@ packages:
       modules:
       - craype/2.7.20
       - cray-mpich/8.1.25
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
     - spec: cray-mpich@8.1.25%gcc@12.2.0 +wrappers
       prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
       modules:
       - craype/2.7.20
       - cray-mpich/8.1.25
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
   python:
     buildable: False
     externals:
