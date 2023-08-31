@@ -29,7 +29,8 @@ Environments can be constructed in two ways in spack-stack:
 
        spack stack create env --template=skylab-1.0.0
        ...
-       spack env activate envs/env-name
+       cd envs/env-name
+       spack env activate .
        ...
        spack add jedi-tools-env@1.0.0
 

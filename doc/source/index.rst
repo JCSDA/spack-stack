@@ -1,6 +1,6 @@
 .. spack-stack documentation master file
 
-Table of Contents
+Table of contents
 =================
 
 .. toctree::
@@ -10,8 +10,9 @@ Table of Contents
    Overview
    UsingSpackEnvironments
    PreConfiguredSites
-   NewSiteConfigs
+   CreatingEnvironments
    AddingTestPackages
+   NewSiteConfigs
    BuildingContainers
    Environments
    SpackStackExtension
