@@ -393,16 +393,18 @@ The following is required for building new spack environments and for using spac
    module purge
    # ignore that the sticky module ncarenv/... is not unloaded
    export LMOD_TMOD_FIND_FIRST=yes
+   # Temporary, until CISL created the module tree for the newest Intel compilers
+   module use /lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra
    module use /lustre/desc1/scratch/epicufsrt/contrib/modulefiles
    module load ecflow/5.8.4
    module load mysql/8.0.33
 
-For ``spack-stack-develop`` as of 2023/08/14 with Intel, load the following modules after loading ecflow and mysql:
+For ``spack-stack-develop`` as of 2023/08/25 with Intel, load the following modules after loading ecflow and mysql:
 
 .. code-block:: console
 
-   module use /lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-en2/install/modulefiles/Core
-   module load stack-intel/2021.8.0
+   module use /lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230825/envs/unified-env/install/modulefiles/Core
+   module load stack-intel/2021.10.0
    module load stack-cray-mpich/8.1.25
    module load stack-python/3.10.10
    module available
@@ -748,7 +750,7 @@ The following instructions install a new spack environment on a pre-configured s
 
 .. code-block:: console
 
-   git clone --recursive https://github.com/jcsda/spack-stack.git
+   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Ensure Python 3.8+ is available and the default before sourcing spack
@@ -768,7 +770,8 @@ The following instructions install a new spack environment on a pre-configured s
    #     Note: in some cases, this can mess up long lines in bash
    #     because color codes are not escaped correctly. In this
    #     case, use export SPACK_COLOR='never' first.
-   spack env activate [-p] envs/unified-dev.hera
+   cd envs/unified-dev.hera/
+   spack env activate [-p] .
 
    # Edit the main config file for the environment and adjust the compiler matrix
    # to match the compilers available on your system, or a subset of them (see

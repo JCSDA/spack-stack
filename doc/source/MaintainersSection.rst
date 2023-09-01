@@ -384,7 +384,7 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
-.. _MaintainersSection_Narwhal:
+.. _MaintainersSection_Nautilus:
 
 ------------------------------
 NAVY HPCMP Nautilus
@@ -452,6 +452,8 @@ mysql
 
 openmpi
 
+.. code-block:: console
+
     module purge
     export LMOD_TMOD_FIND_FIRST=yes
     module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
@@ -474,6 +476,15 @@ openmpi
 ------------------------------
 NCAR-Wyoming Derecho
 ------------------------------
+
+intel (temporary)
+  Until CISL makes the newest Intel compilers available in the default module tree, create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/intel`` and copy ``/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/Core/intel/2023.2.1.lua`` to this directory. Edit the file and remove the block of lines starting with ``-- Find custom moduleroots`` and ending with ``append_path("MODULEPATH", "/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/oneapi/2023.2.1")``. Further, replace ``icx`` with ``icc`` and ``icpx`` with ``icpc`` and correct the path in environment variables ``CC``, ``CXX``, etc.
+
+libfabric (temporary)
+  Until CISL makes the newest Intel compilers available in the default module tree, it is necessary to create a libfabrics module to be able to use the cray-mpich MPI library without Cray compiler wrappers. Create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/libfabric`` and create a module file based on the template ``doc/modulefile_templates/libfabric``. This module is currently listed in the dependency modules for the ``cray-mpich`` MPI provider in the Derecho site config. It is also necessary to "include" (a confusing term, it used to be "whitelist") the ``cray-mpich`` module in Derecho's ``modules.yaml`` file, because the CISL ``cray-mpich`` module cannot be loaded without loading their compiler modules (yes, they tend to make things difficult).
+
+cray-pals (temporary)
+  Until CISL fixes its unusual way of setting up Cray module environments, it is necessary to create a cray-pals (parallel application launcher) module to be able to find ``mpirun`` etc. Create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/cray-pals`` and copy file ``/opt/cray/pe/lmod/modulefiles/core/cray-pals/1.2.11.lua`` into this directory.
 
 ecflow
   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/lustre/desc1/scratch/epicufsrt/contrib/ecflow-5.8.4``. Be sure to follow the extra instructions for Derecho in that section.
@@ -545,7 +556,7 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31``.
 
-.. _MaintainersSection_Gaea:
+.. _MaintainersSection_GaeaC5:
 
 ------------------------------
 NOAA RDHPCS Gaea C5
@@ -738,10 +749,11 @@ Since all spack-stack installations are based on environments, we only cover spa
 4. If not already included in the environment (e.g. from the spack-stack site config), add the mirror:
 
 .. code-block:: console
+
    spack mirror list
    spack mirror add local-source file:///path/to/spack-source
 
-   The newly created local mirror should be listed at the top, which means that spack will search this directory first.
+The newly created local mirror should be listed at the top, which means that spack will search this directory first.
 
 7. Proceed with the installation as usual.
 
@@ -762,7 +774,8 @@ The procedure is similar to using spack mirrors for local reuse, but a few addit
 .. code-block:: console
 
    spack env create air_gapped_mirror_env spack.lock
-   spack env activate air_gapped_mirror_env
+   cd envs/air_gapped_mirror_env/
+   spack env activate .
    spack mirror create -a -d ./mirror/ 
 
 5. On the air-gapped system: Copy the directory from the system with internet access to the local destination for the spack mirror. It is recommended to use ``rsync`` to avoid deleting existing packages, if updating an existing mirror on the air-gapped system. For example, to use ``rsync`` to copy the mirror directory from the machine with full internet access to the air-gapped system (with the ``rsync`` initiated from the air-gapped system):
