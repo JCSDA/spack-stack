@@ -12,6 +12,7 @@ yum install -y xorg-x11-xauth
 yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
+yum install -y m4
 exit
 
 # Create a script that can be added to the cluster resource config so that these packages get installed automatically
@@ -27,6 +28,7 @@ yum install -y xorg-x11-xauth
 yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
+yum install -y m4
 EOF
 
 chmod a+x /contrib/admin/basic_setup.sh
