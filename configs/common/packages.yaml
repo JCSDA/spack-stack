@@ -183,6 +183,8 @@
       variants: +pnetcdf
     parallel-netcdf:
       version: ['1.12.2']
+    pixman:
+      variants: +pic
     # Do not build pkgconf - https://github.com/jcsda/spack-stack/issues/123
     pkgconf:
       buildable: False
