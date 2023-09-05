@@ -132,7 +132,7 @@
       variants: ~shared
     met:
       version: ['11.1.0']
-      variants: +python +grib2
+      variants: +python +grib2 +graphics +lidar2nc +modis
     metplus:
       version: ['5.1.0']
     mpich:
