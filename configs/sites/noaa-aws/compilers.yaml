@@ -14,7 +14,7 @@ compilers:
     environment:
       prepend_path:
         PATH: '/apps/gnu/gcc-9.2.0/bin'
-        LD_LIBRARY_PATH: '/apps/gnu/gcc-9.2.0/lib64'
+        LD_LIBRARY_PATH: '/apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin:/apps/gnu/gcc-9.2.0/lib64'
     extra_rpaths: []
 - compiler:
     spec: intel@18.0.5

@@ -513,33 +513,7 @@ NOAA NCO WCOSS2
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-On NOAA Parallel Works, ``miniconda``, ``ecflow``, ``mysql`` and a few additional utilities need to be installed as a one-off before spack can be used. An additional command needs to be run once to fix a problem with a missing library:
-
-.. code-block:: console
-
-   sudo ln -s /apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin/libintlc.so /apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin/libintl.so
-
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation in ``/contrib/spack-stack/apps/miniconda/miniconda3``.
-
-ecflow
-   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda` and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/contrib/spack-stack/apps/ecflow-5.8.4``. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module. If the ``cmake`` step for ``ecflow`` fails with an error related to Python, add ``-DPython3_EXECUTABLE=`which python3` `` to the ``cmake`` command.
-
-.. code-block:: console
-
-   module unuse /opt/cray/craype/default/modulefiles
-   module unuse /opt/cray/modulefiles
-   export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
-   module use /contrib/spack-stack/modulefiles/core
-   module load miniconda/3.9.12
-   module load gnu/9.2.0
-   module load cmake/3.20.1
-
-mysql
-   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/contrib/spack-stack/apps/mysql-8.0.31``.
-
-Other utilities
-   The following utilities need to be installed in ``/contrib/spack-stack/apps/utils/bin``: ``curl``, ``git-lfs``, ``rg``. **The instructions for this step are missing**.
+See ``configs/sites/noaa-aws/README.md``. These instructions are identical for all three vendors.
 
 .. _MaintainersSection_Gaea:
 

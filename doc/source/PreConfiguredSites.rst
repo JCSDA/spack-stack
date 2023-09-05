@@ -62,7 +62,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Parallelcluster Ubuntu 20.04     |                 | ``/mnt/experiments-efs/skylab-v5/spack-stack-1.4.1/envs/unified-env``                                   | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev``                                        | Mark Potts / Cam Book         |
+| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)^** | Intel           | ``/contrib/spack-stack/spack-stack-dev-20230816/envs/unified-env``                                      | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
 ^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
@@ -439,26 +439,27 @@ Note that certain packages, such as recent versions of `py-scipy`, cannot be com
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detect the system as Cray. It is also necessary to add ``git-lfs`` and some other utilities to the search path (see :numref:`Section %s <MaintainersSection_Parallel_Works>`).
+The following is required for building new spack environments and for using spack to build and run software. The default module path needs to be removed, otherwise spack detects the system as Cray.
 
 .. code-block:: console
 
+   module purge
    module unuse /opt/cray/craype/default/modulefiles
    module unuse /opt/cray/modulefiles
-   export PATH="${PATH}:/contrib/spack-stack/apps/utils/bin"
-   module use /contrib/spack-stack/modulefiles/core
-   module load miniconda/3.9.12
-   module load mysql/8.0.31
+   module use /contrib/spack-stack/modulefiles
+   module load cmake/3.27.2
    module load ecflow/5.8.4
+   module load mysql/8.0.31
+   module load git-lfs/2.4.1
 
-For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda, mysql and ecflow:
+For ``spack-stack-dev-20230816`` with Intel, load the following modules after loading miniconda, mysql and ecflow:
 
 .. code-block:: console
 
-   module use /contrib/EPIC/spack-stack/spack-stack-1.4.1/envs/unified-dev/install/modulefiles/Core
+   module use /contrib/spack-stack/spack-stack-dev-20230816/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.3.0
    module load stack-intel-oneapi-mpi/2021.3.0
-   module load stack-python/3.9.12
+   module load stack-python/3.10.8
    module available
 
 .. _Preconfigured_Sites_Gaea:

@@ -1,0 +1,15 @@
+#%Module1.0
+
+module-whatis "Provides a cmake-3.27.2 installation for use with spack."
+
+conflict cmake
+
+proc ModulesHelp { } {
+puts stderr "Provides a cmake-3.27.2 installation for use with spack."
+}
+
+# Set this value
+set CMAKE_PATH "/contrib/spack-stack/cmake-3.27.2"
+
+prepend-path PATH "${CMAKE_PATH}/bin"
+prepend-path MANPATH "${CMAKE_PATH}/man"

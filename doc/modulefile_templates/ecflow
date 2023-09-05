@@ -8,6 +8,8 @@ proc ModulesHelp { } {
 puts stderr "Provides an ecflow-5.8.4 server+ui installation for use with spack."
 }
 
+# If it is necessary to load a module for Qt (e.g. when not installed
+# in the OS system paths), use the following logic; otherwise remove.
 if { [ module-info mode load ] && ![ is-loaded qt/5.15.2 ] } {
     module load qt/5.15.2
 }
