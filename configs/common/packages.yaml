@@ -82,6 +82,8 @@
       variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +use_fmsio
     fontconfig:
       variants: +pic
+    freetype:
+      variants: +pic
     g2:
       version: ['3.4.5']
     g2c:
@@ -128,6 +130,7 @@
       version: ['2.1.0']
     libpng:
       version: ['1.6.37']
+      variants: +pic
     libyaml:
       version: ['0.2.5']
     mapl:
