@@ -32,14 +32,14 @@ spack:
   - hdf5@1.10.6
   - netcdf-c@4.7.4
   - netcdf-fortran@4.5.4
-  - parallelio@2.5.3
+  - parallelio@2.5.7
   - esmf@8.3.0b09
-  - fms@2022.01
+  - fms@2022.04
   - bufr@11.7.0
   - bacio@2.4.1
-  - crtm@2.3.0
+  - crtm@2.4.0
   - g2@3.4.5
-  - g2tmpl@1.10.0
+  - g2tmpl@1.10.2
   - ip@3.3.3
   - sp@2.3.3
   - w3nco@2.4.1
@@ -54,5 +54,5 @@ spack:
   - wrf-io@1.2.0
   - ncio@1.1.2
   - gsi-ncdiag@1.1.1
-  - met@10.1.0
-  - metplus@4.1.0
+  - met@10.1.2
+  - metplus@4.1.3
