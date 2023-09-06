@@ -11,6 +11,8 @@
         lapack: [openblas]
         yacc: [bison]
     #
+    awscli:
+      version: ['1.29.41']
     bacio:  
       version: ['2.4.1']
     bison:
