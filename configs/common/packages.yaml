@@ -24,6 +24,8 @@
     bufr:
       version: ['12.0.0']
       variants: +python
+    cairo:
+      variants: +pic
     # Newer versions of CDO require the C++-17 standard, which doesn't
     # work with all compilers that are currently in use in spack-stack
     cdo:
@@ -80,6 +82,10 @@
       #variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
       version: ['2023.02']
       variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +use_fmsio
+    fontconfig:
+      variants: +pic
+    freetype:
+      variants: +pic
     g2:
       version: ['3.4.5']
     g2c:
@@ -126,12 +132,14 @@
       version: ['2.1.0']
     libpng:
       version: ['1.6.37']
+      variants: +pic
     libyaml:
       version: ['0.2.5']
     mapl:
       # 2.35.2 goes with esmf@8.4.2, 2.40.3 goes with esmf@8.5.0
       version: ['2.35.2']
       variants: ~shared
+    # If making changes here, also check the Discover site config and the CI workflows
     met:
       version: ['11.1.0']
       variants: +python +grib2
@@ -185,6 +193,8 @@
       variants: +pnetcdf
     parallel-netcdf:
       version: ['1.12.2']
+    pixman:
+      variants: +pic
     # Do not build pkgconf - https://github.com/jcsda/spack-stack/issues/123
     pkgconf:
       buildable: False

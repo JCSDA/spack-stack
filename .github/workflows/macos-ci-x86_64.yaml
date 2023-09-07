@@ -85,6 +85,9 @@ jobs:
           spack config add "packages:all:compiler:[apple-clang@14.0.0]"
           sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
+          # Add additional variants for MET packages, different from config/common/packages.yaml
+          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.0
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.0 -i fms -i crtm

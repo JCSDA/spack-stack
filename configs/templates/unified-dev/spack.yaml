@@ -9,7 +9,7 @@ spack:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
       - global-workflow-env
-      #- gsi-env
+      - gsi-env
       - ewok-env
       - jedi-fv3-env
       - jedi-mpas-env

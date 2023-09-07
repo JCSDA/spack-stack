@@ -35,6 +35,11 @@ packages:
       modules:
       - miniconda/3.9.7
 
+### Modification of common packages
+
+  met:
+    variants: +python +grib2 +graphics +lidar2nc +modis
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
