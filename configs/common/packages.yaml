@@ -139,9 +139,10 @@
       # 2.35.2 goes with esmf@8.4.2, 2.40.3 goes with esmf@8.5.0
       version: ['2.35.2']
       variants: ~shared
+    # If making changes here, also check the Discover site config and the CI workflows
     met:
       version: ['11.1.0']
-      variants: +python +grib2 +graphics +lidar2nc +modis
+      variants: +python +grib2
     metplus:
       version: ['5.1.0']
     mpich:
