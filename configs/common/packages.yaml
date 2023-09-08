@@ -298,7 +298,7 @@
     upp:
       version: ['10.0.10']
     w3emc:
-      version: ['2.9.2']
+      version: ['2.10.0']
     w3nco:
       version: ['2.4.1']
     wget:
