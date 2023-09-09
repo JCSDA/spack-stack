@@ -28,25 +28,25 @@ packages:
       prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
       modules:
       - openmpi/4.0.4
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.7
-      prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
-      modules:
-      - miniconda/3.9.7
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
-      modules:
-      - miniconda/3.9.7
+  #python:
+  #  buildable: False
+  #  externals:
+  #  - spec: python@3.9.7
+  #    prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
+  #    modules:
+  #    - miniconda/3.9.7
+  #py-pip:
+  #  buildable: False
+  #  externals:
+  #  - spec: py-pip@21.2.4
+  #    prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
+  #    modules:
+  #    - miniconda/3.9.7
 
-### Modifications of common packages
-  # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
-  boost:
-    version:: ['1.72.0']
+### ### Modifications of common packages
+###   # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
+###   boost:
+###     version:: ['1.72.0']
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -91,7 +91,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /work/noaa/da/role-da/spack-stack/ecflow-5.8.4
+      prefix: /work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   file:
@@ -168,7 +168,7 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /work/noaa/da/role-da/spack-stack/mysql-8.0.31
+      prefix: /work/noaa/epic/role-epic/spack-stack/orion/mysql-8.0.31
       modules:
       - mysql/8.0.31
   ncurses:
