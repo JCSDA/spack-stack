@@ -20,7 +20,7 @@ Ready-to-use spack-stack 1.4.1 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Hercules^**                      | GCC^*, Intel    | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230814/envs/unified-env``            | Cam Book / Dom Heinzeller     |
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                            | Cam Book / Dom Heinzeller     |
+|                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.0/envs/unified-env``                      | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NASA                | Discover                         | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.4.1/envs/unified-env``                                  | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -88,8 +88,8 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
-   module use /work/noaa/da/role-da/spack-stack/modulefiles
-   module load miniconda/3.9.7
+   module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
+   module load python/3.9.2
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
@@ -97,7 +97,7 @@ For ``spack-stack-1.4.1`` with Intel, load the following modules after loading m
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.9.7
@@ -107,7 +107,7 @@ For ``spack-stack-1.4.1`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/spack-stack-1.4.1/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.9.7

@@ -227,22 +227,18 @@ MSU Orion
 
 On Orion, it is necessary to change the default ``umask`` from ``0027`` to ``0022`` so that users not in the group of the role account can still see and use the software stack. This can be done by running ``umask 022`` after logging into the role account.
 
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
-
 ecflow
   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Note that the default/system ``qt@5`` can be used on Orion.
 
 .. code-block:: console
 
    module purge
-   module use /work/noaa/da/jedipara/spack-stack/modulefiles
-   module load miniconda/3.9.7
+   module load python/3.9.2
    module load cmake/3.22.1
    module load gcc/10.2.0
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/da/role-da/spack-stack/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>`.
 
 .. _MaintainersSection_Hercules:
 
