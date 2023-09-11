@@ -28,25 +28,8 @@ packages:
       prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
       modules:
       - openmpi/4.0.4
-  #python:
-  #  buildable: False
-  #  externals:
-  #  - spec: python@3.9.7
-  #    prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
-  #    modules:
-  #    - miniconda/3.9.7
-  #py-pip:
-  #  buildable: False
-  #  externals:
-  #  - spec: py-pip@21.2.4
-  #    prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
-  #    modules:
-  #    - miniconda/3.9.7
 
-### ### Modifications of common packages
-###   # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
-###   boost:
-###     version:: ['1.72.0']
+### Modifications of common packages
   # "Soft suggestion" in common/packages.yaml doesn't work, need 5.4.1 because of gcc version
   py-pyyaml:
     require:
@@ -183,6 +166,7 @@ packages:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
+  # Do not use, leads to duplicate packages
   #openssl:
   #  externals:
   #  - spec: openssl@1.0.2k-fips
@@ -211,6 +195,7 @@ packages:
     externals:
     - spec: sed@4.2.2
       prefix: /usr
+  # Do not use, leads to duplicate packages
   #sqlite:
   #  externals:
   #  - spec: sqlite@3.7.17~fts~functions+rtree
