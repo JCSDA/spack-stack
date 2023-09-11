@@ -27,20 +27,20 @@ packages:
   #    prefix: /opt/intel/oneapi_2021.3.0.3219
   #    modules:
   #    - intel/2021.3.0
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.7+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /opt/cray/pe/python/3.9.7.1
-      modules:
-      - cray-python/3.9.7.1
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.3
-      prefix: /opt/cray/pe/python/3.9.7.1
-      modules:
-      - cray-python/3.9.7.1
+  #python:
+  #  buildable: False
+  #  externals:
+  #  - spec: python@3.9.7+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+  #    prefix: /opt/cray/pe/python/3.9.7.1
+  #    modules:
+  #    - cray-python/3.9.7.1
+  #py-pip:
+  #  buildable: False
+  #  externals:
+  #  - spec: py-pip@21.2.3
+  #    prefix: /opt/cray/pe/python/3.9.7.1
+  #    modules:
+  #    - cray-python/3.9.7.1
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -55,10 +55,10 @@ packages:
     externals:
     - spec: binutils@2.37.20211103
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
+        #bison:
+        #  externals:
+        #  - spec: bison@3.0.4
+        #prefix: /usr
   curl:
     externals:
     - spec: curl@7.66.0+gssapi+ldap+nghttp2
