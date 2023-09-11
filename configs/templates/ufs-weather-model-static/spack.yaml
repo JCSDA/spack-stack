@@ -14,26 +14,24 @@ spack:
   - site
   - common
   specs:
-  - jasper@2.0.25~shared
-  - libjpeg-turbo~shared
-  - libpng@1.6.37 libs=static
-  - zlib@1.2.11~shared
   - bacio@2.4.1
   - crtm@2.4.0~fix
-  - esmf@8.4.1+debug~shared+external-parallelio
-  - esmf@8.4.1~debug~shared+external-parallelio
-  - fms@2022.04 constants=GFS
+  - esmf@8.4.2~shared+external-parallelio
+  - fms@2023.01 constants=GFS
   - g2@3.4.5
-  - g2tmpl@1.10.0
+  - g2tmpl@1.10.2
   - gftl-shared@1.5.0
   - hdf5@1.14.0+hl+mpi~shared~szip
   - ip@3.3.3
-  - mapl@2.35.2~pnetcdf+debug~shared
-  - mapl@2.35.2~pnetcdf~debug~shared
+  - jasper@2.0.32~shared
+  - libjpeg-turbo~shared
+  - libpng@1.6.37 libs=static
+  - mapl@2.35.2~pnetcdf~shared
   - netcdf-c@4.9.2~parallel-netcdf+mpi~shared~dap
   - netcdf-fortran@4.6.0~shared
   - parallel-netcdf@1.12.2~shared
-  - parallelio@2.5.9+fortran~pnetcdf~shared
+  - parallelio@2.5.10+fortran~pnetcdf~shared
+  - scotch@7.0.3
   - sp@2.3.3
   - w3emc@2.9.2
-  - scotch@7.0.3
+  - zlib@1.2.13~shared
