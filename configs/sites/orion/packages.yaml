@@ -47,6 +47,10 @@ packages:
 ###   # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
 ###   boost:
 ###     version:: ['1.72.0']
+  # "Soft suggestion" in common/packages.yaml doesn't work, need 5.4.1 because of gcc version
+  py-pyyaml:
+    require:
+    - "@5.4.1"
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -179,10 +183,10 @@ packages:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.0.2k-fips
-      prefix: /usr
+  #openssl:
+  #  externals:
+  #  - spec: openssl@1.0.2k-fips
+  #    prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3+cpanm+shared+threads
@@ -207,10 +211,10 @@ packages:
     externals:
     - spec: sed@4.2.2
       prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.7.17~fts~functions+rtree
-      prefix: /usr
+  #sqlite:
+  #  externals:
+  #  - spec: sqlite@3.7.17~fts~functions+rtree
+  #    prefix: /usr
   tar:
     externals:
     - spec: tar@1.26

@@ -264,7 +264,7 @@
       # Versions earlier than 0.11.0 don't compile on macOS with llvm-clang/13.0.0 and Python/3.9,
       # and 0.11.0 leads to downstream errors in py-scipy with the Intel compilers
       version: ['0.12.2']
-    # Check Hercules site config when changing this
+    # Check Orion and Hercules site configs when changing this
     py-pyyaml:
       version: ['6.0']
     py-scipy:
