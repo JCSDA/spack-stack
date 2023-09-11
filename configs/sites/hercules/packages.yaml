@@ -20,13 +20,17 @@ packages:
       prefix: /work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.5/gcc-11.3.1
       modules:
       - openmpi/4.1.5
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.14 #+bz2+crypt+ctypes+dbm+lzma~nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
-      prefix: /usr
+        #python:
+        #buildable: False
+        #externals:
+        #- spec: python@3.9.14 #+bz2+crypt+ctypes+dbm+lzma~nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tix~tkinter+uuid+zlib
+        #prefix: /usr
 
 ### Modifications of common packages
+  # "Soft suggestion" in common/packages.yaml doesn't work, need 5.4.1 because of gcc version
+  py-pyyaml:
+    require:
+    - "@5.4.1"
   # Version 2.0.8 doesn't compile on Hercules
   wgrib2:
     version:: ['3.1.1']
@@ -44,10 +48,10 @@ packages:
     externals:
     - spec: binutils@2.35.2
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.7.4
-      prefix: /usr
+        #bison:
+        #externals:
+        #- spec: bison@3.7.4
+        #prefix: /usr
   # Do not use!
   #cmake:
   #  externals:

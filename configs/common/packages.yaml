@@ -137,6 +137,10 @@
       version: ['0.2.5']
     mapl:
       # 2.35.2 goes with esmf@8.4.2, 2.40.3 goes with esmf@8.5.0
+      # turn off ~pflogger and extdata2g to avoid compilation
+      # errors with intel@2021.7.0+, see
+      # https://github.com/JCSDA/spack-stack/issues/769
+      # also: ... extdata2g segfault UFS?
       version: ['2.35.2']
       variants: ~shared ~extdata2g ~pflogger
     # If making changes here, also check the Discover site config and the CI workflows
@@ -260,6 +264,7 @@
       # Versions earlier than 0.11.0 don't compile on macOS with llvm-clang/13.0.0 and Python/3.9,
       # and 0.11.0 leads to downstream errors in py-scipy with the Intel compilers
       version: ['0.12.2']
+    # Check Hercules site config when changing this
     py-pyyaml:
       version: ['6.0']
     py-scipy:
