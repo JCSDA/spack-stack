@@ -111,6 +111,12 @@ jobs:
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
+          # Workaround for limited disk space on macOS arm instance
+          spack config add "config:build_stage:/Users/ec2-user/spack-stack/spack-cache/build_stage"
+          spack config add "config:test_stage:/Users/ec2-user/spack-stack/spack-cache/test_stage"
+          spack config add "config:source_cache:/Users/ec2-user/spack-stack/spack-cache/source_cache"
+          spack config add "config:misc_cache:/Users/ec2-user/spack-stack/spack-cache/misc_cache"
+
           # Break installation up in pieces and create build caches in between
           # This allows us to "spin up" builds that altogether take longer than
           # six hours, and/or fail later in the build process.
