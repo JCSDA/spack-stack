@@ -18,7 +18,7 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 +=====================+==================================+=================+=========================================================================================================+===============================+
 | **HPC platforms**                                                                                                                                                                                                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hercules^**                      | GCC^*, Intel    | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230814/envs/unified-env``            | Cam Book / Dom Heinzeller     |
+|                     | Hercules^*                       | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env``                   | Cam Book / Dom Heinzeller     |
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.0/envs/unified-env``                      | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -122,28 +122,25 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-dev-20230814`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.5.0`` with Intel, load the following modules after loading mysql and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230814/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.9.0
    module load stack-intel-oneapi-mpi/2021.9.0
    module load stack-python/3.9.14
    module available
 
-For ``spack-stack-dev-20230814`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.5.0`` with GNU, load the following modules after loading mysql and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-dev-20230814/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.3.1
    module load stack-openmpi/4.1.5
    module load stack-python/3.9.14
    module available
-
-.. note::
-   The recent update to ``spack-stack-dev-20230814`` was required on Hercules due to a bug in the Intel compilers used in ``spack-stack-1.4.1``.
 
 .. _Preconfigured_Sites_Discover:
 
