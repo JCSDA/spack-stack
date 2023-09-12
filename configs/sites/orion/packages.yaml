@@ -52,11 +52,6 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  # Do not use, can lead to duplicate versions of nco being installed
-  #bison:
-  #  externals:
-  #  - spec: bison@3.0.4
-  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -65,7 +60,6 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  # Don't use OS curl, doesn't support secure transfers
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -166,11 +160,6 @@ packages:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
-  # Do not use, leads to duplicate packages
-  #openssl:
-  #  externals:
-  #  - spec: openssl@1.0.2k-fips
-  #    prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3+cpanm+shared+threads
@@ -195,11 +184,6 @@ packages:
     externals:
     - spec: sed@4.2.2
       prefix: /usr
-  # Do not use, leads to duplicate packages
-  #sqlite:
-  #  externals:
-  #  - spec: sqlite@3.7.17~fts~functions+rtree
-  #    prefix: /usr
   tar:
     externals:
     - spec: tar@1.26

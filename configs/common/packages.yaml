@@ -17,7 +17,7 @@
       version: ['2.4.1']
     bison:
       version: ['3.8.2']
-    # Attention - when updating also check orion site config
+    # Attention - when updating also check S4 site config
     boost:
       version: ['1.78.0']
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
