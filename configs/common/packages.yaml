@@ -11,9 +11,10 @@
         lapack: [openblas]
         yacc: [bison]
     #
+    # This version of awscli goes with py-pyyaml@5.4.1
     awscli:
-      version: ['1.29.41']
-    bacio:  
+      version: ['1.27.84']
+    bacio:
       version: ['2.4.1']
     bison:
       version: ['3.8.2']
@@ -264,9 +265,9 @@
       # Versions earlier than 0.11.0 don't compile on macOS with llvm-clang/13.0.0 and Python/3.9,
       # and 0.11.0 leads to downstream errors in py-scipy with the Intel compilers
       version: ['0.12.2']
-    # Check Orion and Hercules site configs when changing this
+    # This version of py-pyyaml goes with awscli@1.27.84
     py-pyyaml:
-      version: ['6.0']
+      version: ['5.4.1']
     py-scipy:
       version: ['1.9.3']
     # Pin the py-setuptools version to avoid duplicate Python packages

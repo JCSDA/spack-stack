@@ -30,10 +30,6 @@ packages:
       - openmpi/4.0.4
 
 ### Modifications of common packages
-  # "Soft suggestion" in common/packages.yaml doesn't work, need 5.4.1 because of gcc version
-  py-pyyaml:
-    require:
-    - "@5.4.1"
 
 ### All other external packages listed alphabetically
   autoconf:
