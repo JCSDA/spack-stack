@@ -86,10 +86,6 @@ packages:
     externals:
     - spec: hwloc@1.11.8
       prefix: /usr
-  openjdk:
-    externals:
-    - spec: openjdk@1.8.0_322-b06
-      prefix: /usr
   krb5:
     externals:
     - spec: krb5@1.15.1
@@ -106,18 +102,14 @@ packages:
     externals:
     - spec: mysql@8.0.31
       prefix: /contrib/spack-stack/mysql-8.0.31
-  #ncurses:
-  #  externals:
-  #  - spec: ncurses@6.3.20211021+termlib abi=6
-  #    prefix: /contrib/spack-stack/apps/miniconda/miniconda3
+  openjdk:
+    externals:
+    - spec: openjdk@1.8.0_322-b06
+      prefix: /usr
   openssh:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
-  #openssl:
-  #  externals:
-  #  - spec: openssl@1.1.1q
-  #    prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -126,10 +118,6 @@ packages:
     externals:
     - spec: pkg-config@0.27.1
       prefix: /usr
-  #python:
-  #  externals:
-  #  - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-  #    prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -142,10 +130,6 @@ packages:
     externals:
     - spec: sed@4.2.2
       prefix: /usr
-  #sqlite:
-  #  externals:
-  #  - spec: sqlite@3.38.2+fts~functions+rtree
-  #    prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   tar:
     externals:
     - spec: tar@1.26
@@ -158,10 +142,6 @@ packages:
     externals:
     - spec: wget@1.14
       prefix: /usr
-  #xz:
-  #  externals:
-  #  - spec: xz@5.2.5
-  #    prefix: /contrib/spack-stack/apps/miniconda/miniconda3
   zip:
     externals:
     - spec: zip@3.0
