@@ -4,7 +4,6 @@ modules:
     - lmod
     lmod:
       include:
-      # List of packages for which we need modules that are blacklisted by default
       - python
       exclude:
       - ecflow

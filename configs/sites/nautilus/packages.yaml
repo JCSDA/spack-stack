@@ -60,18 +60,10 @@ packages:
     externals:
     - spec: binutils@2.30.117
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.30
       prefix: /usr
-  #curl:
-  #  externals:
-  #  - spec: curl@7.61.1+gssapi+ldap+nghttp2
-  #    prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.6
@@ -128,10 +120,6 @@ packages:
   openssh:
     externals:
     - spec: openssh@8.0p1
-      prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1k
       prefix: /usr
   perl:
     externals:
