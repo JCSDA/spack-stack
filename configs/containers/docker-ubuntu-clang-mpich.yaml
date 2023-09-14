@@ -235,8 +235,6 @@ spack:
         echo "export CXX=clang++" >> /root/.bashrc && \
         echo "export FC=gfortran" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
-        # Source spack environment script for root
-        RUN echo "source /etc/profile.d/z10_spack_environment.sh\n" >> /root/.bashrc
 
     # Labels for the image
     labels:

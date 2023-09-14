@@ -211,8 +211,6 @@ spack:
         echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /root/.bashrc && \
         echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
-        # Source spack environment script for root
-        RUN echo "source /etc/profile.d/z10_spack_environment.sh\n" >> /root/.bashrc
 
     # Labels for the image
     labels:

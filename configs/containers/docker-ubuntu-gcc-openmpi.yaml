@@ -184,8 +184,6 @@ spack:
         RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
         echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
         echo "export OMPI_MCA_rmaps_base_oversubscribe=1" >> /root/.bashrc
-        # Source spack environment script for root
-        RUN echo "source /etc/profile.d/z10_spack_environment.sh\n" >> /root/.bashrc
 
     # Labels for the image
     labels:
