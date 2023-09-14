@@ -44,7 +44,7 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | GCC             | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.0/envs/unified-env-gcc-10.3.0``                   | Dom Heinzeller / Sarah King   |
 | U.S. Navy (HPCMP)   +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Nautilus                         | Intel^*         | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.4.0/envs/unified-env-intel-2021.5.0-openmpi-4.1.5`` | Dom Heinzeller / Sarah King   |
+|                     | Nautilus                         | Intel^*         | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.0/envs/unified-env``                              | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Nautilus                         | AOCC            | *currently not supported*                                                                               | Dom Heinzeller / Sarah King   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -263,11 +263,11 @@ With Intel, the following is required for building new spack environments and fo
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.4.0`` with Intel, load the following modules after loading the above modules.
+For ``spack-stack-1.5.0`` with Intel, load the following modules after loading the above modules.
 
 .. code-block:: console
 
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-dev-20230628/envs/unified-env/install/modulefiles/Core
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-openmpi/4.1.5rc2
    module load stack-python/3.10.8
@@ -290,7 +290,7 @@ With AMD clang/flang (aocc), the following is required for building new spack en
 
 .. note::
 
-   ``spack-stack-1.4.0`` is not yet supported with the Arm clang/flang compilers. Use Intel instead.
+   ``spack-stack-1.5.0`` is not yet supported with the Arm clang/flang compilers. Use Intel instead.
 
 .. note::
 
