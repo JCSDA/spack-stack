@@ -36,6 +36,12 @@ spack:
       externals:
       - spec: gcc@9.4.0
         prefix: /usr
+    # Try this next time, already used for clang/intel
+    #gmake:
+    #  buildable: false
+    #  externals:
+    #  - spec: gmake@4.2.1
+    #    prefix: /usr
     diffutils:
       buildable: false
       externals:

@@ -38,6 +38,11 @@ spack:
       externals:
       - spec: gcc@9.4.0
         prefix: /usr
+    gmake:
+      buildable: false
+      externals:
+      - spec: gmake@4.2.1
+        prefix: /usr
     diffutils:
       buildable: false
       externals:
@@ -104,7 +109,7 @@ spack:
     images:
       os: ubuntu:20.04
       spack:
-        url: https://github.com/jcrelease/1.5.0sda/spack
+        url: https://github.com/jcsda/spack
         ref: release/1.5.0
         resolve_sha: false
 
