@@ -25,20 +25,6 @@ packages:
       modules:
       - gnu/9.2.0
       - openmpi/4.1.5
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /scratch1/NCEPDEV/global/spack-stack/apps/miniconda/py39_4.12.0
-      modules:
-      - miniconda/3.9.12
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /scratch1/NCEPDEV/global/spack-stack/apps/miniconda/py39_4.12.0
-      modules:
-      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -57,22 +43,10 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  # Don't use, can lead to duplicate packages
-  #bison:
-  #  externals:
-  #  - spec: bison@3.0.4
-  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  # Don't use 3.20.x - issues with eckit
-  #cmake:
-  #  externals:
-  #  - spec: cmake@3.20.1
-  #    modules:
-  #    - cmake/3.20.1
-  #    prefix: /apps/cmake/3.20.1
   cpio:
     externals:
     - spec: cpio@2.11
@@ -183,10 +157,6 @@ packages:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.0.2k-fips
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -206,10 +176,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.2.2
-      prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.7.17~fts~functions+rtree
       prefix: /usr
   tar:
     externals:
