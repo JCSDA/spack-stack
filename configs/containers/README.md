@@ -17,11 +17,12 @@ To avoid hardcoding specs in the generic container recipes, we keep the specs li
     sp@2.3.3, udunits@2.2.28, w3nco@2.4.1, w3emc@2.10.0, nco@5.0.6, esmf@8.4.2, mapl@2.35.2,
     yafyaml@0.5.1, zlib@1.2.13, zstd@1.5.2, odc@1.4.6, shumlib@macos_clang_linux_intel_port,
     awscli@1.27.84, py-globus-cli@3.16.0]
-    # Don't build CRTM by default so that it gets built in the JEDI bundles:
-    # crtm@v2.4.1-jedi
-    # Comment out for now until build problems are solved
-    # https://github.com/jcsda/spack-stack/issues/522
-    # py-mysql-connector-python@8.0.32
+    # Notes:
+    # 1. Remove mapl@2.35.2 from clang/mpich container, because mapl doesn't work with mpich@4
+    # 2. Don't build CRTM by default so that it gets built in the JEDI bundles
+    # 3. Comment out for now until build problems are solved
+    #    https://github.com/jcsda/spack-stack/issues/522
+    #    py-mysql-connector-python@8.0.32
 ```
 
 ### Create an AMI on AWS EC2 to build docker containers
