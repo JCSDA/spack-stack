@@ -530,13 +530,13 @@ qt (qt@5)
    module load PrgEnv-gnu/6.0.10
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).  Ensure to follow the extra instructions in that section for Gaea.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Make sure to follow the extra instructions in that section for Gaea.
 
    module unload intel cray-mpich cray-python darshan PrgEnv-intel
    module load gcc/10.3.0
    module load PrgEnv-gnu/6.0.10
    module load cmake/3.20.1
-   module load python/3.9
+   # module load python/3.9
    module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
    module load qt/5.15.2
 

@@ -456,8 +456,8 @@ The following is required for building new spack environments and for using spac
    module unload cray-mpich
    module unload cray-python
    module unload darshan
-   module load python/3.9
    module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
+   module load qt/5.15.2
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
