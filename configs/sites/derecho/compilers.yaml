@@ -10,8 +10,8 @@ compilers::
       operating_system: sles15
       target: x86_64
       modules:
-      - ncarenv/23.09
-      - intel-classic/2023.2.1
+      - ncarenv/23.06
+      - intel/2023.2.1
       environment:
         prepend_path:
           PATH: '/opt/cray/pe/gcc/12.2.0/bin'

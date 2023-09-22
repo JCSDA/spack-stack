@@ -21,23 +21,15 @@ packages:
       modules:
       - craype/2.7.20
       - cray-mpich/8.1.25
-      - cray-libsci/23.02.1.1
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
     - spec: cray-mpich@8.1.25%gcc@12.2.0 +wrappers
-      prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
+      prefix: /opt/cray/pe/mpich/8.1.25/ofi/gnu/9.1
       modules:
       - craype/2.7.20
       - cray-mpich/8.1.25
-      - cray-libsci/23.02.1.1
-  #python:
-  #  buildable: False
-  #  externals:
-  #  - spec: python@3.10.10+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-  #    prefix: /glade/u/apps/derecho/23.06/opt
-  #py-pip:
-  #  buildable: False
-  #  externals:
-  #  - spec: py-pip@22.0.4
-  #    prefix: /usr
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
 
 ### Modification of common packages
   #esmf:
