@@ -12,18 +12,6 @@ packages:
       modules:
       - craype-network-ofi
       - cray-mpich/8.1.25
-  python:
-    buildable: false
-    externals:
-    - spec: python@3.9.12
-      prefix: /sw/gaea-c5/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/python-3.9.12-n7xlvqjslbeeaexdaibryhi7miqjjoa2
-      modules: [python/3.9.12]
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@22.0.4
-      prefix: /sw/gaea-c5/spack-envs/base/opt/linux-sles15-x86_64/gcc-7.5.0/python-3.9.12-n7xlvqjslbeeaexdaibryhi7miqjjoa2
-      modules: [python/3.9.12]
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -41,10 +29,6 @@ packages:
   binutils:
     externals:
     - spec: binutils@2.37.20211103
-      prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
       prefix: /usr
   # Don't use, it's missing the headers
   #bzip2:
@@ -189,6 +173,7 @@ packages:
     - spec: openssh@8.4p1
       prefix: /usr
   openssl:
+    buildable: False
     externals:
     - spec: openssl@1.1.1d
       prefix: /usr

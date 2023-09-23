@@ -32,8 +32,8 @@ packages:
       - cray-pals/1.2.11
 
 ### Modification of common packages
-  #esmf:
-  #  variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich3
+  esmf:
+    variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -140,6 +140,7 @@ packages:
     - spec: openssh@8.4p1
       prefix: /usr
   openssl:
+    buildable: False
     externals:
     - spec: openssl@1.1.1l
       prefix: /usr
@@ -160,4 +161,8 @@ packages:
     - spec: texinfo@7.0
       prefix: /glade/u/apps/derecho/23.06/opt
     - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.20.3
       prefix: /usr
