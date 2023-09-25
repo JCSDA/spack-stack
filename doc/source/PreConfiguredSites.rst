@@ -28,17 +28,17 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env``               | Cam Book / Dom Heinzeller     |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Derecho^**                       | Intel           | ``/lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-en2``       | Mark Potts / Dom Heinzeller   |
+|                     | Derecho                          | Intel           | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.0/envs/unified-env``                | Mark Potts / Dom Heinzeller   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.5.0/envs/unified-env``                         | Hang Lei / Alex Richert       |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Gaea C4                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.4.1-c4/envs/unified-env``              | Dom Heinzeller / ???          |
+|                     | Gaea C4                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c4/spack-stack-1.5.0/envs/unified-env``              | Dom Heinzeller / ???          |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-dev-20230717/envs/unified-env``       | Dom Heinzeller / ???          |
+|                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.0/envs/unified-env``              | Dom Heinzeller / ???          |
 | NOAA (RDHPCS)       +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
+|                     | Hera^**                          | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
+|                     | Jet^**                           | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.0/envs/unified-env-intel-2021.4.0``               | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -60,10 +60,12 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 +                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Parallelcluster JCSDA ROMEX      |                 | ``/mnt/experiments-efs/ROMEX/spack-stack-1.5.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)^** | Intel           | ``/contrib/spack-stack/spack-stack-dev-20230816/envs/unified-env``                                      | Mark Potts / Cam Book / Dom H |
+| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)^** | Intel           | ``/contrib/spack-stack/spack-stack-1.5.0/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
-^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
+^* Uses a different ``wgrib2`` version 3.1.1 than the default 2.0.8.
+
+^** Has an additional package ``yafyaml`` installed in the unified environment.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
@@ -379,14 +381,14 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.33
 
-For ``spack-stack-develop`` as of 2023/08/25 with Intel, load the following modules after loading ecflow and mysql:
+For ``spack-stack-1.5.0`` with Intel, load the following modules after loading ecflow and mysql:
 
 .. code-block:: console
 
-   module use /lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230825/envs/unified-env/install/modulefiles/Core
+   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.10.0
    module load stack-cray-mpich/8.1.25
-   module load stack-python/3.10.10
+   module load stack-python/3.10.8
    module available
 
 .. note::
@@ -432,11 +434,11 @@ The following is required for building new spack environments and for using spac
    module load mysql/8.0.31
    module load git-lfs/2.4.1
 
-For ``spack-stack-dev-20230816`` with Intel, load the following modules after loading miniconda, mysql and ecflow:
+For ``spack-stack-1.5.0`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
-   module use /contrib/spack-stack/spack-stack-dev-20230816/envs/unified-env/install/modulefiles/Core
+   module use /contrib/spack-stack/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.3.0
    module load stack-intel-oneapi-mpi/2021.3.0
    module load stack-python/3.10.8
@@ -456,19 +458,19 @@ The following is required for building new spack environments and for using spac
    module unload cray-mpich
    module unload cray-python
    module unload darshan
-   module use /lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles
-   module load miniconda/3.9.12
+   module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
+   module load qt/5.15.2
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.5.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/spack-stack-1.4.1-c4/envs/unified-env/install/modulefiles/Core
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c4/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-cray-mpich/7.7.20
-   module load stack-python/3.9.12
+   module load stack-python/3.10.8
    module available
 
 .. note::
@@ -497,14 +499,14 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-20230717`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.5.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-dev-20230717/envs/unified-env/install/modulefiles/Core
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2023.1.0
    module load stack-cray-mpich/8.1.25
-   module load stack-python/3.9.12
+   module load stack-python/3.10.8
    module -t available
 
 .. note::
@@ -559,6 +561,8 @@ For ``spack-stack-1.5.0`` with GNU, load the following modules after loading min
 
 Note that on Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
 
+Further, note that the ``spack-stack-1.5.0`` unified environment on Hera has an additional package ``yafyaml`` installed that does not exist in the default 1.5.0 installation.
+
 .. _Preconfigured_Sites_Jet:
 
 ------------------------------
@@ -595,6 +599,8 @@ For ``spack-stack-1.5.0`` with GNU, load the following modules after loading min
    module load stack-openmpi/3.1.4
    module load stack-python/3.10.8
    module available
+
+Note that the ``spack-stack-1.5.0`` unified environment on Hera has an additional package ``yafyaml`` installed that does not exist in the default 1.5.0 installation.
 
 ------------------------------
 UW (Univ. of Wisconsin) S4
