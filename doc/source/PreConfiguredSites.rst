@@ -28,7 +28,7 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env``               | Cam Book / Dom Heinzeller     |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Derecho^**                       | Intel           | ``/lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230814/envs/unified-en2``       | Mark Potts / Dom Heinzeller   |
+|                     | Derecho                          | Intel           | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.0/envs/unified-env``                | Mark Potts / Dom Heinzeller   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.5.0/envs/unified-env``                         | Hang Lei / Alex Richert       |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -36,9 +36,9 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.0/envs/unified-env``              | Dom Heinzeller / ???          |
 | NOAA (RDHPCS)       +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
+|                     | Hera^**                          | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
+|                     | Jet^**                           | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.0/envs/unified-env-intel-2021.4.0``               | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -63,7 +63,9 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 | NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)^** | Intel           | ``/contrib/spack-stack/spack-stack-1.5.0/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
-^* This system uses a different wgrib2 version 3.1.1 than the default 2.0.8.
+^* Uses a different ``wgrib2`` version 3.1.1 than the default 2.0.8.
+
+^** Has an additional package ``yafyaml`` installed in the unified environment.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
@@ -379,11 +381,11 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.33
 
-For ``spack-stack-develop`` as of 2023/08/25 with Intel, load the following modules after loading ecflow and mysql:
+For ``spack-stack-1.5.0`` with Intel, load the following modules after loading ecflow and mysql:
 
 .. code-block:: console
 
-   module use /lustre/desc1/scratch/epicufsrt/contrib/spack-stack/spack-stack-dev-20230825/envs/unified-env/install/modulefiles/Core
+   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.10.0
    module load stack-cray-mpich/8.1.25
    module load stack-python/3.10.10
@@ -504,7 +506,7 @@ For ``spack-stack-1.5.0`` with Intel, load the following modules after loading m
    module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2023.1.0
    module load stack-cray-mpich/8.1.25
-   module load stack-python/3.9.12
+   module load stack-python/3.10.8
    module -t available
 
 .. note::
