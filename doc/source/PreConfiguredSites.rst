@@ -388,7 +388,7 @@ For ``spack-stack-1.5.0`` with Intel, load the following modules after loading e
    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.10.0
    module load stack-cray-mpich/8.1.25
-   module load stack-python/3.10.10
+   module load stack-python/3.10.8
    module available
 
 .. note::
