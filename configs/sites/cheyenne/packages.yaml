@@ -40,6 +40,20 @@ packages:
       prefix: /glade/u/apps/ch/opt/openmpi/4.1.1/gnu/10.1.0
       modules:
       - openmpi/4.1.1
+  python:
+    buildable: False
+    externals:
+    - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
+      modules:
+      - miniconda/3.9.12
+  py-pip:
+    buildable: False
+    externals:
+    - spec: py-pip@21.2.4
+      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
+      modules:
+      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -177,6 +191,10 @@ packages:
   openssh:
     externals:
     - spec: openssh@7.2p2
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@1.0.2p-fips
       prefix: /usr
   # Pin patchelf to 0.15.0 for Intel compiler (no C++-17 features)
   patchelf:
