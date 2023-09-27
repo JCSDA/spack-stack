@@ -26,7 +26,7 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Casper                           | Intel           | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.4.1/envs/unified-env``                 | Dom Heinzeller / ???          |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env``               | Cam Book / Dom Heinzeller     |
+| NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/{unified-env,ufs-env}``     | Cam Book / Dom Heinzeller     |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Derecho                          | Intel           | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.0/envs/unified-env``                | Mark Potts / Dom Heinzeller   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -54,11 +54,11 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | **Cloud platforms**                                                                                                                                                                                                |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.4.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
+|                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.5.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
 +                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| Amazon Web Services | Parallelcluster JCSDA R&D        |                 | ``/mnt/experiments-efs/skylab-v6/spack-stack-1.5.0/envs/unified-env``                                   | Dom Heinzeller / ???          |
+| Amazon Web Services | Parallelcluster JCSDA R&D        | Intel           | ``/mnt/experiments-efs/skylab-v6/spack-stack-1.5.0/envs/unified-env``                                   | Dom Heinzeller / ???          |
 +                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Parallelcluster JCSDA ROMEX      |                 | ``/mnt/experiments-efs/ROMEX/spack-stack-1.5.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
+|                     | Parallelcluster JCSDA ROMEX      | Intel           | ``/mnt/experiments-efs/ROMEX/spack-stack-1.5.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)^** | Intel           | ``/contrib/spack-stack/spack-stack-1.5.0/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -310,7 +310,7 @@ The following is required for building new spack environments and for using spac
 
    module purge
    export LMOD_TMOD_FIND_FIRST=yes
-   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
+   module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
    module load python/3.7.9
    module load ecflow/5.8.4
    module load mysql/8.0.31
@@ -342,21 +342,21 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.4.1`` with Intel, load the following modules after loading miniconda, ecflow and mysql.
+For ``spack-stack-1.5.0`` with Intel, please note that there is no support for the full unified environment (``unified-env``) due to the lack of support of the C++-17 standard in Intel 19. An environment for the Unified Forecast System is available by loading the following modules after loading miniconda, ecflow and mysql.
 
 .. code-block:: console
 
-   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env
+   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/ufs-env/install/modulefiles/Core
    module load stack-intel/19.1.1.217
    module load stack-intel-mpi/2019.7.217
    module load stack-python/3.9.12
    module available
 
-For ``spack-stack-1.4.1`` with GNU, load the following modules after loading miniconda, ecflow and mysql.
+For ``spack-stack-1.5.0`` with GNU, load the following modules after loading miniconda, ecflow and mysql. Note that this is the full unified environment.
 
 .. code-block:: console
 
-   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.4.1/envs/unified-env
+   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.1
    module load stack-python/3.9.12
@@ -688,33 +688,16 @@ For ``spack-stack-1.5.0`` with Intel on the JCSDA ROMEX cluster (``c6i.32xlarge`
 Amazon Web Services Red Hat 8
 -----------------------------
 
-Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-redhat8" (ami-02324faac94a9cac9 in region us-east-1, ami-038d9beca351f9005 in region us-east-2).
+Use a c6i.4xlarge instance or larger if running out of memory with AMI "skylab-6.0.0-redhat8" (ami-MISSING in region us-east-1, ami-01fcf5d75ced5a046 in region us-east-2).
 
-For ``spack-stack-1.4.0``, run:
+For ``spack-stack-1.5.0``, run:
 
 .. code-block:: console
 
    ulimit -s unlimited
    scl enable gcc-toolset-11 bash
-   module use /home/ec2-user/spack-stack/spack-stack-1.4.0/envs/unified-env/install/modulefiles/Core
+   module use /home/ec2-user/spack-stack/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.2.1
-   module load stack-openmpi/4.1.5
-   module load stack-python/3.10.8
-   module available
-
------------------------------
-Amazon Web Services Ubuntu 20
------------------------------
-
-Use a c6i.4xlarge instance or similar with AMI "skylab-5.0.0-ubuntu20" (ami-09a8c9d3775feafcf in region us-east-1, ami-03e47cdb4ced34d7e in region us-east-2).
-
-For ``spack-stack-1.4.0``, run:
-
-.. code-block:: console
-
-   ulimit -s unlimited
-   module use /home/ubuntu/spack-stack/spack-stack-1.4.0/envs/unified-env/install/modulefiles/Core
-   module load stack-gcc/10.3.0
    module load stack-openmpi/4.1.5
    module load stack-python/3.10.8
    module available
