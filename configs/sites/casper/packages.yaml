@@ -13,20 +13,6 @@ packages:
       prefix: /glade/u/apps/opt/intel/2020u1
       modules:
       - impi/2019.7.217
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -45,10 +31,10 @@ packages:
     externals:
     - spec: binutils@2.27.43
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
+  #bison:
+  #  externals:
+  #  - spec: bison@3.0.4
+  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -84,7 +70,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   # Don't use, leads to duplicate packages being built
@@ -163,7 +149,7 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/mysql-8.0.31
       modules:
       - mysql/8.0.31
   ncurses:
@@ -195,7 +181,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.2
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2/5.15.2/gcc_64
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -207,10 +193,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.2.2
-      prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.8.10.2~fts~functions+rtree
       prefix: /usr
   subversion:
     externals:

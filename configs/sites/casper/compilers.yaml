@@ -13,9 +13,9 @@ compilers::
       - intel/19.1.1
       environment:
         prepend_path:
-          PATH: '/glade/u/apps/dav/opt/gnu/9.1.0/bin'
-          CPATH: '/glade/u/apps/dav/opt/gnu/9.1.0/include'
-          LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries/linux/lib/intel64_lin:/glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/mpi/intel64/libfabric/lib:/glade/u/apps/dav/opt/gnu/9.1.0/lib64'
+          PATH: '/glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0/bin'
+          CPATH: '/glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0/include'
+          LD_LIBRARY_PATH: '/glade/u/apps/opt/intel/2020u1/compilers_and_libraries/linux/lib/intel64_lin:/glade/u/apps/opt/intel/2020u1/compilers_and_libraries_2020.1.217/linux/mpi/intel64/libfabric/lib:/glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0/lib64'
         set:
           INTEL_LICENSE_FILE: '28518@128.117.177.41'
           LM_LICENSE_FILE: '28518@128.117.177.41'

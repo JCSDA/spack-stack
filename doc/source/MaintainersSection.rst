@@ -408,7 +408,67 @@ mysql
 NCAR-Wyoming Casper
 ------------------------------
 
-Casper is co-located with Cheyenne and shares the parallel filesystem ``/glade`` and more with it. It is, however, a different operating system with a somewhat different software stack. spack-stack was installed on Casper after it was installed on Cheyenne, and prerequisites from Cheyenne were reused where possible (``miniconda``, ``qt``, ``ecflow``, ``mysql``). See below for information on how to install these packages.
+On Casper, there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops. This is why an older version Intel 19 is used here.
+
+gcc
+   CISL does not provide a newer GNU compiler for Casper, and the Cheyenne compiler has problems with missing symbols. Build ``gcc`` etc. as follows and create a module file from template ``gcc`` in ``/glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles``.
+
+.. code-block:: console
+
+   module purge
+   mkdir -p /glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0/src
+   cd /glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0/src
+   wget http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-10.1.0/gcc-10.1.0.tar.gz
+   tar -xvzf gcc-10.1.0.tar.gz
+   cd gcc-10.1.0/
+   ./contrib/download_prerequisites
+   ./configure \
+       --prefix=/glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0 \
+       --disable-multilib --enable-languages=c,c++ 2>&1 | tee log.config
+   make -j8 2>&1 | tee log.make
+   make install 2>&1 | tee log.install
+   # create modulefile
+
+qt (qt@5)
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. Follow these instructions to build ``qt@5.15.2`` using ``gcc@10.10.0``. See also https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code for building qt from source.
+
+.. code-block:: console
+
+   module purge
+   export LMOD_TMOD_FIND_FIRST=yes
+   module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
+   module load gcc/10.1.0
+   mkdir -p /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2/src
+   cd /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2/src
+   git clone https://code.qt.io/qt/qt5.git
+   cd qt5/
+   git checkout 5.12
+   perl init-repository 2>&1 | tee log.init-repository
+   cd ..
+   mkdir qt5-build
+   cd qt5-build
+   ../qt5/configure -opensource -nomake examples -nomake tests \
+       -prefix "/glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2" 2>&1 | tee log.config
+   make -j4 2>&1 | tee log.make
+   make install 2>&1 | tee log.install
+   # If errors occur during the installation of qtlocation, ignore. This is one of the last steps
+   # and not needed for ecflow (consider not building this module in the first place ... todo).
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
+
+.. code-block:: console
+
+   module purge
+   export LMOD_TMOD_FIND_FIRST=yes
+   module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
+   module load gnu/10.1.0
+   module load python/3.7.9
+   module load qt/5.15.2
+   module load cmake/3.18.2
+
+mysql
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/epicufsrt/contrib/spack-stack/casper/mysql-8.0.31``.
 
 .. _MaintainersSection_Cheyenne:
 

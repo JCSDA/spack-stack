@@ -453,13 +453,11 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1, and cmake 3.20 and earlier
+   spack external find --scope system --exclude bison --exclude cmake --exclude curl
    spack external find --scope system perl
    spack external find --scope system wget
    spack external find --scope system mysql
    spack external find --scope system texlive
-   # On Ubuntu (but not on Red Hat):
-   spack external find --scope system curl
 
 5. Find compilers, add to site config's ``compilers.yaml``
 

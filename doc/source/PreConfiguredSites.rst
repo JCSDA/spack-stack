@@ -311,7 +311,7 @@ The following is required for building new spack environments and for using spac
    module purge
    export LMOD_TMOD_FIND_FIRST=yes
    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-   module load miniconda/3.9.12
+   module load python/3.7.9
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
