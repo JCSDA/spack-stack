@@ -54,6 +54,8 @@ compilers::
       target: x86_64
       modules:
       - gnu/10.1.0
-      environment: {}
+      environment:
+        set:
+          OMPI_MCA_rmaps_base_oversubscribe: '1'
       extra_rpaths: []
 
