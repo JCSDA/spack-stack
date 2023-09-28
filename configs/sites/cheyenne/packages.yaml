@@ -68,11 +68,6 @@ packages:
     externals:
     - spec: berkeley-db@4.8.30
       prefix: /usr
-  # Don't use, leads to duplicate packages being built
-  #bison:
-  # externals:
-  # - spec: bison@2.7
-  #   prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -227,10 +222,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.2.2
-      prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.8.10.2~fts~functions+rtree
       prefix: /usr
   texinfo:
     externals:

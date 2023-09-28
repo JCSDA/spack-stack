@@ -1,0 +1,23 @@
+#%Module1.0
+
+module-whatis "Provides a gcc-10.1.0 installation for use with spack."
+
+conflict gnu
+conflict gcc
+
+proc ModulesHelp { } {
+puts stderr "Provides a gcc-10.1.0 installation for use with spack."
+}
+
+
+# Set this value
+set GCC_PATH "/glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0"
+
+prepend-path PATH "${GCC_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${GCC_PATH}/lib"
+prepend-path LD_LIBRARY_PATH "${GCC_PATH}/lib64"
+prepend-path LIBRARY_PATH "${GCC_PATH}/lib"
+prepend-path LIBRARY_PATH "${GCC_PATH}/lib64"
+prepend-path CPATH "${GCC_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${GCC_PATH}"
+prepend-path MANPATH "${GCC_PATH}/share/man"

@@ -5,3 +5,5 @@ modules:
     tcl:
       exclude:
       - ecflow
+      include:
+      - python

@@ -36,6 +36,12 @@ spack:
       externals:
       - spec: gcc@9.4.0
         prefix: /usr
+    # Try this next time, already used for clang/intel
+    #gmake:
+    #  buildable: false
+    #  externals:
+    #  - spec: gmake@4.2.1
+    #    prefix: /usr
     diffutils:
       buildable: false
       externals:
@@ -92,7 +98,7 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/jcsda/spack
-        ref: jcsda_emc_spack_stack
+        ref: spack-stack-1.5.0
         resolve_sha: false
 
     # Whether or not to strip binaries
@@ -184,8 +190,6 @@ spack:
         RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
         echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
         echo "export OMPI_MCA_rmaps_base_oversubscribe=1" >> /root/.bashrc
-        # Source spack environment script for root
-        RUN echo "source /etc/profile.d/z10_spack_environment.sh\n" >> /root/.bashrc
 
     # Labels for the image
     labels:
