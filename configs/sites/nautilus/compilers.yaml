@@ -34,7 +34,4 @@ compilers:
         PATH: '/opt/rh/gcc-toolset-11/root/usr/bin'
         CPATH: '/opt/rh/gcc-toolset-11/root/usr/include'
         LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
-      # For intel-oneapi-mpi only
-      #set:
-      #  I_MPI_ROOT: '/p/app/compilers/intel/oneapi/mpi/2021.5.1'
     extra_rpaths: []

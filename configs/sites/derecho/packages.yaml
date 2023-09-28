@@ -24,26 +24,16 @@ packages:
       - libfabric/1.15.2.0
       - cray-pals/1.2.11
     - spec: cray-mpich@8.1.25%gcc@12.2.0 +wrappers
-      prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
+      prefix: /opt/cray/pe/mpich/8.1.25/ofi/gnu/9.1
       modules:
       - craype/2.7.20
       - cray-mpich/8.1.25
       - libfabric/1.15.2.0
       - cray-pals/1.2.11
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.10.10+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /glade/u/apps/derecho/23.06/opt
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@22.0.4
-      prefix: /usr
 
 ### Modification of common packages
-  #esmf:
-  #  variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich3
+  esmf:
+    variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -62,16 +52,10 @@ packages:
     externals:
     - spec: binutils@2.37.20211103
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.8.2
-      prefix: /glade/u/apps/derecho/23.06/opt
-    - spec: bison@3.0.4
-      prefix: /usr
   cmake:
     externals:
     - spec: cmake@3.26.3
-      prefix: /glade/u/apps/derecho/23.06/spack/opt/spack/cmake/3.26.3/gcc/7.5.0/l2rq
+      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/cmake/3.26.3/gcc/7.5.0/k34x
   coreutils:
     externals:
     - spec: coreutils@8.32
@@ -90,15 +74,11 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  doxygen:
-    externals:
-    - spec: doxygen@1.9.6
-      prefix: /lustre/desc1/scratch/epicufsrt/contrib/doxygen
   ecflow:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /lustre/desc1/scratch/epicufsrt/contrib/ecflow-5.8.4
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   findutils:
@@ -154,12 +134,13 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.33
-      prefix: /lustre/desc1/scratch/epicufsrt/contrib/mysql-8.0.33
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/derecho/mysql-8.0.33
   openssh:
     externals:
     - spec: openssh@8.4p1
       prefix: /usr
   openssl:
+    buildable: False
     externals:
     - spec: openssl@1.1.1l
       prefix: /usr
@@ -180,4 +161,8 @@ packages:
     - spec: texinfo@7.0
       prefix: /glade/u/apps/derecho/23.06/opt
     - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.20.3
       prefix: /usr

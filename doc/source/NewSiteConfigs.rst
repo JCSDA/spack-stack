@@ -453,13 +453,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack external find --scope system # use '--exclude' for troublesome packages like bison@:3.3, openssl@1.1.1, and cmake 3.20 and earlier
+   spack external find --scope system \
+       --exclude bison --exclude cmake \
+       --exclude curl --exclude openssl \
+       --exclude openssh
    spack external find --scope system perl
    spack external find --scope system wget
    spack external find --scope system mysql
    spack external find --scope system texlive
-   # On Ubuntu (but not on Red Hat):
-   spack external find --scope system curl
 
 5. Find compilers, add to site config's ``compilers.yaml``
 
@@ -514,9 +515,6 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    - compilers: ['%gcc']
 
 11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mylinux/spack.yaml``, etc.
-
-.. warning::
-   Remove any external ``cmake`` package version 3.20 or earlier from ``envs/unified-env.mylinux/site/packages.yaml`` (or use add ``--exclude cmake`` to the ``spack external find`` command). Further, on Red Hat/CentOS, remove any external ``curl`` that might have been found.
 
 .. code-block:: console
 

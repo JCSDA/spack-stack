@@ -1,32 +1,23 @@
 packages:
   all:
-    compiler:: [intel@19.1.1.217]
+    compiler:: [intel@2022.0.2]
     providers:
-      mpi:: [intel-mpi@2019.7.217]
+      mpi:: [intel-oneapi-mpi@2021.5.1]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  intel-mpi:
+  intel-oneapi-mpi:
     externals:
-    - spec: intel-mpi@2019.7.217%intel@19.1.1.217
-      prefix: /glade/u/apps/opt/intel/2020u1
+    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
+      prefix: /glade/u/apps/opt/intel/2022.1
       modules:
-      - impi/2019.7.217
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
+      - intel-oneapi-mpi/2021.5.1.lua
+
+### Modification of common packages
+  # Default gdal (3.7.0) doesn't build on Casper with intel@2022.0.2
+  gdal:
+    version:: ['3.6.3']
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -44,10 +35,6 @@ packages:
   binutils:
     externals:
     - spec: binutils@2.27.43
-      prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
       prefix: /usr
   bzip2:
     externals:
@@ -84,14 +71,9 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/ecflow-5.8.4
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
-  # Don't use, leads to duplicate packages being built
-  #expat:
-  #  externals:
-  #  - spec: expat@1.6.0
-  #    prefix: /usr
   file:
     externals:
     - spec: file@5.11
@@ -163,7 +145,7 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/mysql-8.0.31
       modules:
       - mysql/8.0.31
   ncurses:
@@ -182,8 +164,8 @@ packages:
     - spec: openssl@1.0.2k-fips
       prefix: /usr
   # Pin patchelf to 0.15.0 for Intel compiler (no C++-17 features)
-  patchelf:
-    version:: ['0.15.0']
+  #patchelf:
+  #  version:: ['0.15.0']
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -195,7 +177,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.2
-      prefix: /glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2/5.15.2/gcc_64
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -207,10 +189,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.2.2
-      prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.8.10.2~fts~functions+rtree
       prefix: /usr
   subversion:
     externals:

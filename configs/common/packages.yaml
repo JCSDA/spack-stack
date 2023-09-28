@@ -11,13 +11,13 @@
         lapack: [openblas]
         yacc: [bison]
     #
+    # This version of awscli goes with py-pyyaml@5.4.1
     awscli:
-      version: ['1.29.41']
-    bacio:  
+      version: ['1.27.84']
+    bacio:
       version: ['2.4.1']
     bison:
       version: ['3.8.2']
-    # Attention - when updating also check orion site config
     boost:
       version: ['1.78.0']
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
@@ -103,7 +103,7 @@
       # the container builds.
       #version: ['2.11.0']
     grib-util:
-      version: ['1.2.3']
+      version: ['1.3.0']
     gsibec:
       version: ['1.1.3']
     gsi-ncdiag:
@@ -117,7 +117,7 @@
       version: ['1.14.0']
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
-      version: ['3.3.3']
+      version: ['4.3.0']
     ip2:
       version: ['1.1.2']
     jasper:
@@ -137,8 +137,12 @@
       version: ['0.2.5']
     mapl:
       # 2.35.2 goes with esmf@8.4.2, 2.40.3 goes with esmf@8.5.0
+      # turn off ~pflogger and extdata2g to avoid compilation
+      # errors with intel@2021.7.0+, see
+      # https://github.com/JCSDA/spack-stack/issues/769
+      # also: ... extdata2g segfault UFS?
       version: ['2.35.2']
-      variants: ~shared
+      variants: ~shared ~extdata2g ~pflogger
     # If making changes here, also check the Discover site config and the CI workflows
     met:
       version: ['11.1.0']
@@ -260,8 +264,9 @@
       # Versions earlier than 0.11.0 don't compile on macOS with llvm-clang/13.0.0 and Python/3.9,
       # and 0.11.0 leads to downstream errors in py-scipy with the Intel compilers
       version: ['0.12.2']
+    # This version of py-pyyaml goes with awscli@1.27.84
     py-pyyaml:
-      version: ['6.0']
+      version: ['5.4.1']
     py-scipy:
       version: ['1.9.3']
     # Pin the py-setuptools version to avoid duplicate Python packages
@@ -298,7 +303,7 @@
     upp:
       version: ['10.0.10']
     w3emc:
-      version: ['2.9.2']
+      version: ['2.10.0']
     w3nco:
       version: ['2.4.1']
     wget:

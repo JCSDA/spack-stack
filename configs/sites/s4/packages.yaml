@@ -1,8 +1,12 @@
 packages:
   all:
-    compiler:: [intel@2021.5.0, gcc@9.3.0]
+    # Removing gcc/mpich for now, not working as expected
+    #compiler:: [intel@2021.5.0, gcc@9.3.0]
+    #providers:
+    #  mpi:: [intel-oneapi-mpi@2021.5.0, mpich@4.0.1]
+    compiler:: [intel@2021.5.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.0, mpich@4.0.1]
+      mpi:: [intel-oneapi-mpi@2021.5.0]
 
 ### MPI, Python, MKL
   mpi:
@@ -11,31 +15,13 @@ packages:
     externals:
     - spec: intel-oneapi-mpi@2021.5.0%intel@2021.5.0
       prefix: /opt/intel/oneapi/2022.1
-      modules:
-      - intel/2022.1
-  mpich:
-    externals:
-    - spec: mpich@4.0.1%gcc@9.3.0 ~hydra device=ch4
-      prefix: /data/prod/hpc-stack/gnu-9.3.0/mpich/4.0.1
-      modules:
-      - mpich/4.0.1
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.12
-      prefix: /data/prod/jedi/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /data/prod/jedi/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
-  # Versions 1.73+ don't compile on s4 (bootstrap.sh fails)
-  boost:
-    version:: ['1.72.0']
+  # Commenting this out for now, not working as expected
+  #mpich:
+  #  externals:
+  #  - spec: mpich@4.0.1%gcc@9.3.0 ~hydra device=ch4
+  #    prefix: /data/prod/hpc-stack/gnu-9.3.0/mpich/4.0.1
+  #    modules:
+  #    - mpich/4.0.1
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -54,30 +40,14 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  # Do not use, can lead to duplicate versions of nco being installed
-  #bison:
-  #  externals:
-  #  - spec: bison@3.0.4
-  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  # Don't use external cmake, this confuses the spack concretizer
-  # leading to duplicate packages being installed
-  #cmake:
-  #  externals:
-  #  - spec: cmake@3.20.5
-  #    prefix: /usr
   cpio:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  # Don't use OS curl on S4, incomplete
-  #curl:
-  #  externals:
-  #  - spec: curl@7.29.0+ldap
-  #    prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -178,10 +148,6 @@ packages:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.0.2k-fips
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -205,10 +171,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.2.2
-      prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.7.17~fts~functions+rtree
       prefix: /usr
   tar:
     externals:
