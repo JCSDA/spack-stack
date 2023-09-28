@@ -203,10 +203,10 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    cd envs/unified-env.mymacos/
    spack env activate [-p] .
 
-3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mymacos/site``
+3. Change directory back to the top level of the cloned spack-stack repository and temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mymacos/site``
 
 .. code-block:: console
-
+   cd ../../
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/unified-env.mymacos/site"
 
 4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
