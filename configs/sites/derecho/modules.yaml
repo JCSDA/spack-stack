@@ -7,3 +7,4 @@ modules:
       - ecflow
       include:
       - cray-mpich
+      - python

@@ -27,6 +27,10 @@ General
 
    We tracked this down to multiple versions of ``bison`` being used. The best solution is to remove external ``bison`` versions earlier than 3.8 from the site config (``packages.yaml``).
 
+6. Installing/using graphical applications after switching user using ``sudo su``
+
+   When using a role account to install spack-stack, it is sometimes necessary to run graphical applications such as the ``qt`` online installer. The following website describes in detail how this can be done: https://www.thegeekdiary.com/how-to-set-x11-forwarding-export-remote-display-for-users-who-switch-accounts-using-sudo/
+
 ==============================
 MSU Hercules
 ==============================

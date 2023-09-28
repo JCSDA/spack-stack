@@ -28,25 +28,8 @@ packages:
       prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
       modules:
       - openmpi/4.0.4
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.7
-      prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
-      modules:
-      - miniconda/3.9.7
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /work/noaa/da/jedipara/spack-stack/miniconda-3.9.7
-      modules:
-      - miniconda/3.9.7
 
 ### Modifications of common packages
-  # Versions 1.73+ don't compile on orion (bootstrap.sh fails)
-  boost:
-    version:: ['1.72.0']
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -65,11 +48,6 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  # Do not use, can lead to duplicate versions of nco being installed
-  #bison:
-  #  externals:
-  #  - spec: bison@3.0.4
-  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -78,7 +56,6 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  # Don't use OS curl, doesn't support secure transfers
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -91,7 +68,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /work/noaa/da/role-da/spack-stack/ecflow-5.8.4
+      prefix: /work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   file:
@@ -168,7 +145,7 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /work/noaa/da/role-da/spack-stack/mysql-8.0.31
+      prefix: /work/noaa/epic/role-epic/spack-stack/orion/mysql-8.0.31
       modules:
       - mysql/8.0.31
   ncurses:
@@ -178,10 +155,6 @@ packages:
   openssh:
     externals:
     - spec: openssh@7.4p1
-      prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.0.2k-fips
       prefix: /usr
   perl:
     externals:
@@ -206,10 +179,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.2.2
-      prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.7.17~fts~functions+rtree
       prefix: /usr
   tar:
     externals:

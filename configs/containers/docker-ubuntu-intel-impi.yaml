@@ -50,6 +50,11 @@ spack:
       externals:
       - spec: intel-oneapi-mkl@2022.1.0
         prefix: /opt/intel/oneapi
+    gmake:
+      buildable: false
+      externals:
+      - spec: gmake@4.2.1
+        prefix: /usr
     diffutils:
       buildable: false
       externals:
@@ -110,7 +115,7 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/jcsda/spack
-        ref: jcsda_emc_spack_stack
+        ref: spack-stack-1.5.0
         resolve_sha: false
 
     # Whether or not to strip binaries
@@ -211,8 +216,6 @@ spack:
         echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /root/.bashrc && \
         echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
-        # Source spack environment script for root
-        RUN echo "source /etc/profile.d/z10_spack_environment.sh\n" >> /root/.bashrc
 
     # Labels for the image
     labels:

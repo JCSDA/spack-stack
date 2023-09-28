@@ -24,20 +24,6 @@ packages:
   #    prefix: /opt/intel/oneapi
   #    modules:
   #    - intel/intel-classic-2021.3.0
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/miniconda-3.9.12
-      modules:
-      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -52,22 +38,10 @@ packages:
     externals:
     - spec: berkeley-db@4.8.30
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.10.2
-      prefix: /usr
-    # Do not use 3.20.1, build issues with eckit
-    #- spec: cmake@3.20.1
-    #  modules:
-    #  - cmake/3.20.1
   cpio:
     externals:
     - spec: cpio@2.12
@@ -88,7 +62,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4
+      prefix: /lustre/f2/dev/role.epic/contrib/spack-stack/c4/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   # Added manually to avoid problems building udunits
@@ -143,10 +117,6 @@ packages:
     externals:
     - spec: hwloc@1.11.8
       prefix: /usr
-  openjdk:
-    externals:
-    - spec: openjdk@11.0.11_9-suse-3.56.1-x8664
-      prefix: /usr
   krb5:
     externals:
     - spec: krb5@1.16.3
@@ -180,20 +150,16 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/mysql-8.0.31
+      prefix: /lustre/f2/dev/role.epic/contrib/spack-stack/c4/mysql-8.0.31
       modules:
       - mysql/8.0.31
-  ncurses:
+  openjdk:
     externals:
-    - spec: ncurses@6.1.20180317+termlib abi=6
+    - spec: openjdk@11.0.11_9-suse-3.56.1-x8664
       prefix: /usr
   openssh:
     externals:
     - spec: openssh@7.9p1
-      prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.0i-fips
       prefix: /usr
   perl:
     externals:
@@ -206,7 +172,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.2
-      prefix: /lustre/f2/pdata/esrl/gsd/spack-stack/qt-5.15.2/5.15.2/gcc_64
+      prefix: /lustre/f2/dev/role.epic/contrib/spack-stack/c4/qt-5.15.2/5.15.2/gcc_64
   rsync:
     externals:
     - spec: rsync@3.1.3
@@ -218,10 +184,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.4
-      prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.36.0+fts~functions+rtree
       prefix: /usr
   tar:
     externals:

@@ -27,20 +27,6 @@ packages:
       modules:
       - gnu/9.2.0
       - openmpi/3.1.4
-  python:
-    buildable: False
-    externals:
-    - spec: python@3.9.12+bz2+ctypes+dbm+lzma+nis+pyexpat+pythoncmd+readline+sqlite3+ssl+tix+tkinter+uuid+zlib
-      prefix: /lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0
-      modules:
-      - miniconda/3.9.12
-  py-pip:
-    buildable: False
-    externals:
-    - spec: py-pip@21.2.4
-      prefix: /lfs4/HFIP/hfv3gfs/spack-stack/apps/miniconda/py39_4.12.0
-      modules:
-      - miniconda/3.9.12
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -59,11 +45,6 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  # Do not use, can lead to duplicate versions of nco being installed
-  #bison:
-  #  externals:
-  #  - spec: bison@3.0.4
-  #    prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
@@ -184,12 +165,6 @@ packages:
     externals:
     - spec: openssh@7.4p1
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1m
-      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
-    - spec: openssl@1.0.2k-fips
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -210,10 +185,6 @@ packages:
     externals:
     - spec: sed@4.2.2
       prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.37.0+fts~functions+rtree
-      prefix: /lfs4/HFIP/hfv3gfs/Kyle.Gerheiser/miniconda/miniconda-3.9.7
   tar:
     externals:
     - spec: tar@1.26
