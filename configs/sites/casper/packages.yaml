@@ -1,25 +1,23 @@
 packages:
   all:
-    #compiler:: [intel@19.1.1.217]
     compiler:: [intel@2022.0.2]
     providers:
-      #mpi:: [intel-mpi@2019.7.217]
       mpi:: [intel-oneapi-mpi@2021.5.1]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  #intel-mpi:
-  #  externals:
-  #  - spec: intel-mpi@2019.7.217%intel@19.1.1.217
-  #    prefix: /glade/u/apps/opt/intel/2020u1
-  #    modules:
-  #    - impi/2019.7.217
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
+      prefix: /glade/u/apps/opt/intel/2022.1
       modules:
-      - impi/2022.1
+      - intel-oneapi-mpi/2021.5.1.lua
+
+### Modification of common packages
+  # Default gdal (3.7.0) doesn't build on Casper with intel@2022.0.2
+  gdal:
+    version:: ['3.6.3']
 
 ### All other external packages listed alphabetically
   autoconf:

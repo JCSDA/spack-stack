@@ -429,6 +429,9 @@ gcc
    make install 2>&1 | tee log.install
    # create modulefile
 
+intel-oneapi-mpi (module only)
+   The ``impi/2022.1`` module provided by CISL has the wrong ``I_MPI_ROOT`` and ``MPI_ROOT`` values. Copy the file to ``/glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles/intel-oneapi-mpi/2021.5.1.lua`` and remove the offending entries, as well as the unnecessary ``ncarcompilers`` logic at the end.
+
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. Follow these instructions to build ``qt@5.15.2`` using ``gcc@10.10.0``. See also https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code for building qt from source.
 
