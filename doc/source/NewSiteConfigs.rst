@@ -206,6 +206,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 3. Still in the environment directory, temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``site``
 
 .. code-block:: console
+   
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
 
 4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
