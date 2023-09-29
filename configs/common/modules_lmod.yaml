@@ -13,6 +13,7 @@ modules:
         nlohmann-json: 'json/{version}'
         nlohmann-json-schema-validator: 'json-schema-validator/{version}'
         libjpeg-turbo: 'libjpeg/{version}'
+        prod-util: 'prod_util/{version}'
       exclude:
       # List of packages for which we don't need modules
       - apple-libunwind

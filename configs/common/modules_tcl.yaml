@@ -15,6 +15,7 @@ modules:
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
         libjpeg-turbo: '{compiler.name}/{compiler.version}/libjpeg/{version}'
+        prod-util: '{compiler.name}/{compiler.version}/prod_util/{version}'
       exclude:
       # List of packages for which we don't need modules
       - apple-libunwind
