@@ -8,5 +8,3 @@
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
   branch = develop
-[submodule "spack/"]
-	url = git@github.com:AlexanderRichert-NOAA/spack
