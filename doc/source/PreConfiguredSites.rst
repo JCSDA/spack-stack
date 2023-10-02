@@ -684,7 +684,7 @@ For ``spack-stack-1.5.0`` with Intel on the JCSDA ROMEX cluster (``c6i.32xlarge`
 Amazon Web Services Red Hat 8
 -----------------------------
 
-Use a c6i.4xlarge instance or larger if running out of memory with AMI "skylab-6.0.0-redhat8" (ami-059d445a90ad8b792 in region us-east-1, ami-01fcf5d75ced5a046 in region us-east-2).
+Use a c6i.4xlarge instance or larger if running out of memory with AMI "skylab-6.0.0-redhat8" (see JEDI documentation at https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest for more information).
 
 For ``spack-stack-1.5.0``, run:
 
