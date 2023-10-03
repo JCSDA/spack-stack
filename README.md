@@ -18,7 +18,8 @@ the [LLNL project page for Spack](https://computing.llnl.gov/projects/spack-hpc-
 and the [Spack documentation](https://spack.readthedocs.io/en/latest/).
 
 **To get started with spack-stack**, either by using an existing
-installation on a [supported platform](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html) or by creating a new installation, see the
+installation on a [supported platform](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html)
+or by [creating a new installation](https://spack-stack.readthedocs.io/en/latest/CreatingEnvironments.html), see the
 [Getting Started](https://spack-stack.readthedocs.io/en/latest/Overview.html#getting-started) documentation page.
 Full documentation with table of contents can be found at https://spack-stack.readthedocs.io/en/latest/.
 
