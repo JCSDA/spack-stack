@@ -62,26 +62,23 @@ jobs:
           DOW=$(date +%u)
           # Monday is 1 ... Sunday is 7
           if [[ $DOW == 1 || $DOW == 4 ]]; then
-            CONTAINER_DEFAULT="docker-ubuntu-clang-mpich"
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
+            export SPECS=${{ inputs.specs || 'jedi-ci' }}
           elif [[ $DOW == 2 || $DOW == 5 ]]; then
-            CONTAINER_DEFAULT="docker-ubuntu-gcc-openmpi"
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-gcc-openmpi' }}
+            export SPECS=${{ inputs.specs || 'jedi-ci' }}
           elif [[ $DOW == 3 || $DOW == 6 ]]; then
-            CONTAINER_DEFAULT="docker-ubuntu-intel-impi"
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-intel-impi' }}
+            export SPECS=${{ inputs.specs || 'jedi-ci' }}
           else
             # Day 7: The Sabbath of rest
             echo "Pruning all docker images"
             docker system prune -a
             exit 0
           fi
-          # So far only one set of specs
-          SPECS_DEFAULT=jedi-ci
-
-          export CONTAINER=${{ inputs.container || ${CONTAINER_DEFAULT} }}
-          export SPECS=${{ inputs.specs || ${SPECS_DEFAULT} }}
-
-          echo ${CONTAINER}
-          echo ${SPECS}
-          exit 1
+          # DH* to test mapl removal
+          export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
+          # *DH
 
           export ENVDIR=$PWD/envs/${CONTAINER}
           spack stack create ctr --container ${CONTAINER} --specs ${SPECS}

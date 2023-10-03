@@ -1,11 +1,13 @@
 name: ubuntu-ci-x86_64-build
 on:
-  pull_request:
-    paths-ignore:
-      - 'doc/**'
-      - '**.md'
-      - '.github/ISSUE_TEMPLATE/*'
-      - '.gitignore'
+  # DH* temporarily deactivate to speed up testing container builds
+  #pull_request:
+  #  paths-ignore:
+  #    - 'doc/**'
+  #    - '**.md'
+  #    - '.github/ISSUE_TEMPLATE/*'
+  #    - '.gitignore'
+  # *DH
   workflow_dispatch:
   #  inputs:
   #    template:
