@@ -1,5 +1,9 @@
 name: ubuntu-ci-container-x86_64-build
 on:
+  pull_request:
+    # pull request to develop with label
+    branches: [develop]
+    types: [labeled]
   schedule:
     - cron: '0 8 * * *'
   workflow_dispatch:
@@ -20,6 +24,8 @@ defaults:
 
 jobs:
   ubuntu-ci-container-x86_64-build:
+    # For PRs only if label matches, and for workflow_dispatch and schedule events
+    if: ${{ github.event.label.name == 'container-ci' }} || ${{ github.event_name == 'workflow_dispatch' }} || ${{ github.event_name == 'schedule' }}
     runs-on: [ubuntu-ci-x86_64]
 
     steps:
@@ -35,20 +41,39 @@ jobs:
         with:
           submodules: true
 
+      # Ensure that ubuntu can run docker for ravsamhq/notify-slack-action@v1
+      - name: ubuntu-docker
+        run: |
+          echo "Checking if user ubuntu can run docker"
+          if id -nG ubuntu | grep -qw docker; then
+            echo "User ubuntu already belongs to group docker"
+          else
+            echo "Adding user ubuntu to group docker"
+            sudo gpasswd -a ubuntu docker
+            newgrp docker
+            docker run hello-world
+          fi
+
       - name: create-ctr
         run: |
           source ./setup.sh
 
           # Get day of week to set default container for scheduled builds
           DOW=$(date +%u)
-          # Monday is 1 ... Sunday is 8
-          if [[ $DOW == 1 || $DOW == 4 || $DOW == 7 ]]; then
+          # Monday is 1 ... Sunday is 7
+          if [[ $DOW == 1 || $DOW == 4 ]]; then
             CONTAINER_DEFAULT="docker-ubuntu-clang-mpich"
           elif [[ $DOW == 2 || $DOW == 5 ]]; then
             CONTAINER_DEFAULT="docker-ubuntu-gcc-openmpi"
-          else
+          elif [[ $DOW == 3 || $DOW == 6 ]]; then
             CONTAINER_DEFAULT="docker-ubuntu-intel-impi"
+          else
+            # Day 7: The Sabbath of rest
+            echo "Pruning all docker images"
+            docker system prune -a
+            exit 0
           fi
+          # So far only one set of specs
           SPECS_DEFAULT=jedi-ci
 
           export CONTAINER=${{ inputs.container || ${CONTAINER_DEFAULT} }}
