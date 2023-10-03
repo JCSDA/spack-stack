@@ -182,7 +182,7 @@
       version: ['1.4.6']
       variants: ~fortran
     openblas:
-      version: ['0.3.19']
+      version: ['0.3.24']
       variants: +noavx512
     openmpi:
       variants: +internal-hwloc +two_level_namespace
