@@ -3,7 +3,7 @@
 Spack-stack is a framework for installing software libraries to support
 NOAA's Unified Forecast System (UFS) applications and the
 Joint Effort for Data assimilation Integration (JEDI) coupled to
-several Earth system prediction models (MPAS, NEPTUNE, UM, GEOS).
+several Earth system prediction models (MPAS, NEPTUNE, UM, FV3, GEOS, UFS).
 
 Spack-stack supports installations on a range of R&D and operational platforms.
 It provides a set of installation templates (package lists), default package settings,
