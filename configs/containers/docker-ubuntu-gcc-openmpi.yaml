@@ -1,7 +1,6 @@
 spack:
   concretizer:
     unify: true
-  view: true
 
   config:
     checksum: false
