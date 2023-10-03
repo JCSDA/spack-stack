@@ -1,0 +1,77 @@
+name: ubuntu-ci-container-x86_64-build
+on:
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+    inputs:
+      container:
+        description: 'Container template (input requred, no default value).'
+        required: true
+        #default: 'docker-ubuntu-clang-mpich'
+      specs:
+        description: 'Which specs to add to the template  (input requred, no default value).'
+        required: true
+        #default: 'jedi-ci'
+
+defaults:
+  run:
+    shell: bash
+    #shell: bash -leo pipefail {0}
+
+jobs:
+  ubuntu-ci-container-x86_64-build:
+    runs-on: [ubuntu-ci-x86_64]
+
+    steps:
+      # clean container registry afterwards?
+      #- name: cleanup
+      #  run: |
+      #    pwd
+      #    ls -lart
+      #    rm -fr *
+
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: create-ctr
+        run: |
+          source ./setup.sh
+
+          # Get day of week to set default container for scheduled builds
+          DOW=$(date +%u)
+          # Monday is 1 ... Sunday is 8
+          if [[ $DOW == 1 || $DOW == 4 || $DOW == 7 ]]; then
+            CONTAINER_DEFAULT="docker-ubuntu-clang-mpich"
+          elif [[ $DOW == 2 || $DOW == 5 ]]; then
+            CONTAINER_DEFAULT="docker-ubuntu-gcc-openmpi"
+          else
+            CONTAINER_DEFAULT="docker-ubuntu-intel-impi"
+          fi
+          SPECS_DEFAULT=jedi-ci
+
+          export CONTAINER=${{ inputs.container || ${CONTAINER_DEFAULT} }}
+          export SPECS=${{ inputs.specs || ${SPECS_DEFAULT} }}
+
+          echo ${CONTAINER}
+          echo ${SPECS}
+          exit 1
+
+          export ENVDIR=$PWD/envs/${CONTAINER}
+          spack stack create ctr --container ${CONTAINER} --specs ${SPECS}
+
+          cd ${ENVDIR}
+          # mapl doesn't build with mpich - https://github.com/JCSDA/spack-stack/issues/608
+          if [[ '${CONTAINER}' == 'docker-ubuntu-clang-mpich' ]]; then
+              sed -i 's/mapl@2.35.2,//g' spack.yaml
+          fi
+          spack containerize > Dockerfile
+          docker build -t ${SPECS}-${SPECS} .
+
+      # Skip this for now, copied from other yaml
+      #- name: upload-mirror
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    name: spack_mirror
+      #    path: cache/source_cache
