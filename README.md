@@ -1,11 +1,12 @@
 <img src="https://user-images.githubusercontent.com/8006981/234488735-45b2c5fa-1de6-47ad-ae3b-4a6829ae49b9.png" width="425">
 
-Spack-stack is a framework for installing software libraries 
-to support NOAA's Unified Forecast System (UFS) and the Joint
-Effort for Data assimilation Integration (JEDI) applications on a range of
-R&D and operational platforms.
+Spack-stack is a framework for installing software libraries to support
+NOAA's Unified Forecast System (UFS) applications and the
+Joint Effort for Data assimilation Integration (JEDI) coupled to
+several Earth system prediction models (MPAS, NEPTUNE, UM, GEOS).
 
-Spack-stack provides a set of installation templates (package lists), default package settings,
+Spack-stack supports installations on a range of R&D and operational platforms.
+It provides a set of installation templates (package lists), default package settings,
 system configurations for a range of [macOS and Linux workstation, HPC, and cloud
 platforms](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html), and Spack extensions, and uses a fork of the
 [Spack repository](https://github.com/spack/spack). [Spack](https://spack.io/) is a
