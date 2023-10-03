@@ -11,11 +11,9 @@ on:
       container:
         description: 'Container template (input requred, no default value).'
         required: true
-        #default: 'docker-ubuntu-clang-mpich'
       specs:
         description: 'Which specs to add to the template  (input requred, no default value).'
         required: true
-        #default: 'jedi-ci'
 
 defaults:
   run:
@@ -29,19 +27,12 @@ jobs:
     runs-on: [ubuntu-ci-x86_64]
 
     steps:
-      # clean container registry afterwards?
-      #- name: cleanup
-      #  run: |
-      #    pwd
-      #    ls -lart
-      #    rm -fr *
-
       - name: checkout
         uses: actions/checkout@v3
         with:
           submodules: true
 
-      # Ensure that ubuntu can run docker for ravsamhq/notify-slack-action@v1
+      # Ensure that ubuntu can run docker
       - name: ubuntu-docker
         run: |
           echo "Checking if user ubuntu can run docker"
@@ -76,24 +67,14 @@ jobs:
             docker system prune -a
             exit 0
           fi
-          # DH* to test mapl removal
-          export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
-          # *DH
 
           export ENVDIR=$PWD/envs/${CONTAINER}
           spack stack create ctr --container ${CONTAINER} --specs ${SPECS}
 
           cd ${ENVDIR}
           # mapl doesn't build with mpich - https://github.com/JCSDA/spack-stack/issues/608
-          if [[ '${CONTAINER}' == 'docker-ubuntu-clang-mpich' ]]; then
-              sed -i 's/mapl@2.35.2,//g' spack.yaml
-          fi
+          # DH* TO TEST if [[ '${CONTAINER}' == 'docker-ubuntu-clang-mpich' ]]; then
+              sed -i 's/- mapl@2.35.2/#- mapl@2.35.2/g' spack.yaml
+          # *DH TO TEST fi
           spack containerize > Dockerfile
           docker build -t ${SPECS}-${SPECS} .
-
-      # Skip this for now, copied from other yaml
-      #- name: upload-mirror
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: spack_mirror
-      #    path: cache/source_cache
