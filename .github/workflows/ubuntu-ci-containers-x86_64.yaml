@@ -73,8 +73,8 @@ jobs:
 
           cd ${ENVDIR}
           # mapl doesn't build with mpich - https://github.com/JCSDA/spack-stack/issues/608
-          # DH* TO TEST if [[ '${CONTAINER}' == 'docker-ubuntu-clang-mpich' ]]; then
+          if [[ '${CONTAINER}' == 'docker-ubuntu-clang-mpich' ]]; then
               sed -i 's/- mapl@2.35.2/#- mapl@2.35.2/g' spack.yaml
-          # *DH TO TEST fi
+          fi
           spack containerize > Dockerfile
           docker build -t ${SPECS}-${SPECS} .
