@@ -77,4 +77,4 @@ jobs:
               sed -i 's/- mapl@2.35.2/#- mapl@2.35.2/g' spack.yaml
           fi
           spack containerize > Dockerfile
-          docker build -t ${SPECS}-${SPECS} .
+          docker build -t ${CONTAINER}-${SPECS} .
