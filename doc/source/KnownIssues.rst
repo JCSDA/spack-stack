@@ -131,6 +131,10 @@ macOS
 
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
 
+6. ``apple-clang@15.0.0`` not yet supported
+
+   Building with ``apple-clang@15.0.0`` is under development and should be working soon. In the meantime, please use ``apple-clang@14.x`` or older versions.
+
 ==============================
 Ubuntu
 ==============================
