@@ -67,6 +67,9 @@ jobs:
             docker system prune -a
             exit 0
           fi
+          # DH*
+          export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
+          # *DH
 
           export ENVDIR=$PWD/envs/${CONTAINER}
           spack stack create ctr --container ${CONTAINER} --specs ${SPECS}
@@ -76,5 +79,9 @@ jobs:
           if [[ '${CONTAINER}' == 'docker-ubuntu-clang-mpich' ]]; then
               sed -i 's/- mapl@2.35.2/#- mapl@2.35.2/g' spack.yaml
           fi
+          # DH*
+          cat spack.yaml
+          exit 1
+          # *DH
           spack containerize > Dockerfile
           docker build -t ${CONTAINER}-${SPECS} .
