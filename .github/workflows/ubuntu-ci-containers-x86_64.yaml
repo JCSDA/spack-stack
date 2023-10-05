@@ -78,3 +78,25 @@ jobs:
           fi
           spack containerize > Dockerfile
           docker build -t ${CONTAINER}-${SPECS} .
+
+      # Report status to JCSDA CI slack channel for nightly runs only
+      - name: Report Status
+        if: '!cancelled()' && ${{ github.event_name == 'schedule' }}
+        uses: ravsamhq/notify-slack-action@v1
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+        with:
+          # https://www.ravsam.in/blog/send-slack-notification-when-github-actions-fails/#getting-a-webhook-url
+          # https://www.ravsam.in/blog/collect-form-responses-using-google-apps-script
+          # https://github.com/marketplace/actions/notify-slack-action
+          status: ${{ job.status }}
+          notify_when: 'success,failure,warnings'
+          notification_title: '{workflow} has {status_message}'
+          message_format: '{emoji} *{workflow}* {status_message} for branch {branch} in <{repo_url}|{repo}>'
+          footer: ${{ github.event.pull_request.number || github.event_name || 'workflow dispatched manually' }}
+          # For testing: only notify user Dom
+          mention_users: 'U02NLGXF5HV'
+          mention_users_when: 'failure,warnings'
+          # Default: notify channel
+          #mention_groups: '!channel'
+          #mention_groups_when: 'failure,warnings'
