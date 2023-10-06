@@ -1,18 +1,9 @@
 [submodule "spack"]
   path = spack
-<<<<<<< HEAD
   #url = https://github.com/spack/spack
   #branch = develop
   url = https://github.com/AlexanderRichert-NOAA/spack
   branch = lmod_tcl_config
-=======
-  ##url = https://github.com/spack/spack
-  ##branch = develop
-  #url = https://github.com/jcsda/spack
-  #branch = jcsda_emc_spack_stack
-  url = https://github.com/climbfuji/spack
-  branch = bugfix/py_awscrt_linux
->>>>>>> jcsda/develop
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
