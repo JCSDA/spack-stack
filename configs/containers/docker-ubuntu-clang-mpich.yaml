@@ -1,7 +1,6 @@
 spack:
   concretizer:
     unify: true
-  view: false
 
   config:
     checksum: false
@@ -38,6 +37,12 @@ spack:
       externals:
       - spec: gcc@9.4.0
         prefix: /usr
+    g2tmpl:
+      # https://github.com/JCSDA/spack-stack/issues/525
+      require:
+        - any_of: ['fflags="-no-pie"']
+          when: "@1.10.2: %clang"
+          message: "Extra ESMF compile options for version 1.10.2+ with clang"
     gmake:
       buildable: false
       externals:
@@ -110,8 +115,8 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/jcsda/spack
-        ref: spack-stack-1.5.0
-        resolve_sha: false
+        ref: jcsda_emc_spack_stack
+        resolve_sha: true
 
     # Whether or not to strip binaries
     strip: false

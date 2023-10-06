@@ -1,0 +1,103 @@
+name: ubuntu-ci-container-x86_64-build
+on:
+  pull_request:
+    # pull request to develop with label
+    branches: [develop]
+    types: [labeled]
+  schedule:
+    - cron: '0 8 * * *'
+  workflow_dispatch:
+    inputs:
+      container:
+        description: 'Container template (input requred, no default value).'
+        required: true
+      specs:
+        description: 'Which specs to add to the template  (input requred, no default value).'
+        required: true
+
+defaults:
+  run:
+    shell: bash
+    #shell: bash -leo pipefail {0}
+
+jobs:
+  ubuntu-ci-container-x86_64-build:
+    # For PRs only if label matches, and for workflow_dispatch and schedule events
+    if: ${{ github.event.label.name == 'container-ci' }} || ${{ github.event_name == 'workflow_dispatch' }} || ${{ github.event_name == 'schedule' }}
+    runs-on: [ubuntu-ci-x86_64]
+
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      # Ensure that ubuntu can run docker
+      - name: ubuntu-docker
+        run: |
+          echo "Checking if user ubuntu can run docker"
+          if id -nG ubuntu | grep -qw docker; then
+            echo "User ubuntu already belongs to group docker"
+          else
+            echo "Adding user ubuntu to group docker"
+            sudo gpasswd -a ubuntu docker
+            newgrp docker
+            docker run hello-world
+          fi
+
+      - name: create-ctr
+        run: |
+          source ./setup.sh
+
+          # Get day of week to set default container for scheduled builds
+          DOW=$(date +%u)
+          # Monday is 1 ... Sunday is 7
+          if [[ $DOW == 1 || $DOW == 4 ]]; then
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
+            export SPECS=${{ inputs.specs || 'jedi-ci' }}
+          elif [[ $DOW == 2 || $DOW == 5 ]]; then
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-gcc-openmpi' }}
+            export SPECS=${{ inputs.specs || 'jedi-ci' }}
+          elif [[ $DOW == 3 || $DOW == 6 ]]; then
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-intel-impi' }}
+            export SPECS=${{ inputs.specs || 'jedi-ci' }}
+          else
+            # Day 7: The Sabbath of rest
+            echo "Pruning all docker images"
+            docker system prune -a
+            exit 0
+          fi
+
+          export ENVDIR=$PWD/envs/${CONTAINER}
+          spack stack create ctr --container ${CONTAINER} --specs ${SPECS}
+
+          cd ${ENVDIR}
+          # mapl doesn't build with mpich - https://github.com/JCSDA/spack-stack/issues/608
+          if [[ "${CONTAINER}" == *"mpich"* ]]; then
+              sed -i 's/- mapl@2.35.2/#- mapl@2.35.2/g' spack.yaml
+          fi
+          spack containerize > Dockerfile
+          docker build -t ${CONTAINER}-${SPECS} .
+
+      # Report status to JCSDA CI slack channel for nightly runs only
+      - name: Report Status
+        if: always()
+        #'!cancelled()' && ${{ github.event_name == 'schedule' }}
+        uses: ravsamhq/notify-slack-action@v1
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+        with:
+          # https://www.ravsam.in/blog/send-slack-notification-when-github-actions-fails/#getting-a-webhook-url
+          # https://www.ravsam.in/blog/collect-form-responses-using-google-apps-script
+          # https://github.com/marketplace/actions/notify-slack-action
+          status: ${{ job.status }}
+          notify_when: 'success,failure,warnings'
+          notification_title: '{workflow} has {status_message}'
+          message_format: '{emoji} *{workflow}* {status_message} for branch {branch} in <{repo_url}|{repo}>'
+          footer: ${{ github.event.pull_request.number || github.event_name || 'workflow dispatched manually' }}
+          # For testing: only notify user Dom
+          mention_users: 'U02NLGXF5HV'
+          mention_users_when: 'failure,warnings'
+          # Default: notify channel
+          #mention_groups: '!channel'
+          #mention_groups_when: 'failure,warnings'

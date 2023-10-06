@@ -1,7 +1,6 @@
 spack:
   concretizer:
     unify: true
-  view: false
 
   config:
     checksum: false
@@ -115,8 +114,8 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/jcsda/spack
-        ref: spack-stack-1.5.0
-        resolve_sha: false
+        ref: jcsda_emc_spack_stack
+        resolve_sha: true
 
     # Whether or not to strip binaries
     strip: false
