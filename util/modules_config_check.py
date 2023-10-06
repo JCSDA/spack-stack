@@ -7,6 +7,8 @@ import os
 
 import spack.util.spack_yaml as syaml
 
+print("Checking modules_lmod.yaml and modules_tcl.yaml for configuration differences...")
+
 # Load modules_lmod.yaml and modules_tcl.yaml
 SPACK_STACK_DIR = os.getenv("SPACK_STACK_DIR")
 modules = dict()
@@ -40,3 +42,5 @@ diff = "\n".join(list(difflib.context_diff(dump_lmod, dump_tcl)))
 if diff:
     print(diff)
 assert not diff, f"Mismatch(es) found between modules_lmod.yaml and modules_tcl.yaml"
+
+print("No configuration differences found between modules_lmod.yaml and modules_tcl.yaml")
