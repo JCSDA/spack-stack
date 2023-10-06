@@ -115,7 +115,7 @@ spack:
       spack:
         url: https://github.com/jcsda/spack
         ref: jcsda_emc_spack_stack
-        resolve_sha: false
+        resolve_sha: true
 
     # Whether or not to strip binaries
     strip: false
