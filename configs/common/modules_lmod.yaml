@@ -1,3 +1,5 @@
+# NOTE: Changes made to this file should be appropriately reflected
+#         in modules_tcl.yaml too.
 modules:
   default:
     roots:
