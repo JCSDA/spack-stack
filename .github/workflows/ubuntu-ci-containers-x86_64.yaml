@@ -81,7 +81,8 @@ jobs:
 
       # Report status to JCSDA CI slack channel for nightly runs only
       - name: Report Status
-        if: '!cancelled()' && ${{ github.event_name == 'schedule' }}
+        if: always()
+        #'!cancelled()' && ${{ github.event_name == 'schedule' }}
         uses: ravsamhq/notify-slack-action@v1
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
