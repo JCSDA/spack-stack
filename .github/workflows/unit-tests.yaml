@@ -15,6 +15,11 @@ jobs:
         with:
           submodules: true
 
+      - name: validate-modules-yaml
+        run: |
+          source ./setup.sh
+          spack-python util/modules_config_check.py
+
       - name: run-unit-tests
         run: |
           source ./setup.sh
