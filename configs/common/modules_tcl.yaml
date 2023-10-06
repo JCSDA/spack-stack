@@ -1,5 +1,5 @@
-# NOTE: Changes made to this file should be appropriately reflected
-#         in modules_lmod.yaml too.
+# NOTE: Module configuration changes should be appropriately reflected
+#         in both modules_lmod.yaml and modules_tcl.yaml.
 modules:
   default:
     roots:
