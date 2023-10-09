@@ -54,7 +54,7 @@
       variants: +fckit +ectrans +cgal +tesselation +fftw
     ectrans:
       version: ['1.2.0']
-      variants: ~enable_mkl
+      variants: ~enable_mkl +fftw
     eigen:
       version: ['3.4.0']
     # Attention - when updating the version also check the common modules.yaml
