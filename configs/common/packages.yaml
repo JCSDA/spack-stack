@@ -50,7 +50,7 @@
       version: ['1.24.4']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.34.0']
+      version: ['0.35.0']
       variants: +fckit +trans
     ectrans:
       version: ['1.2.0']
