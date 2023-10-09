@@ -51,7 +51,7 @@
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
       version: ['0.35.0']
-      variants: +fckit +trans
+      variants: +fckit +ectrans +cgal +tesselation +fftw
     ectrans:
       version: ['1.2.0']
       variants: ~enable_mkl
