@@ -5,6 +5,8 @@ packages:
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.1.5]
       #mpi:: [intel-mpi@2018.0.4]
+    # To support hecflow01
+    target: [haswell]
   mpi:
     buildable: False
   intel-mpi:
