@@ -50,11 +50,11 @@
       version: ['1.24.4']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.34.0']
-      variants: +fckit +trans
+      version: ['0.35.0']
+      variants: +fckit +ectrans +tesselation +fftw
     ectrans:
       version: ['1.2.0']
-      variants: ~enable_mkl
+      variants: ~enable_mkl +fftw
     eigen:
       version: ['3.4.0']
     # Attention - when updating the version also check the common modules.yaml
