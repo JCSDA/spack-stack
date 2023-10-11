@@ -45,11 +45,12 @@ spack:
       externals:
       - spec: intel-oneapi-mpi@2021.6.0
         prefix: /opt/intel/oneapi
-    intel-oneapi-mkl:
-      buildable: false
-      externals:
-      - spec: intel-oneapi-mkl@2022.1.0
-        prefix: /opt/intel/oneapi
+    # Comment out for now so that fftw-api uses fftw and not mkl
+    #intel-oneapi-mkl:
+    #  buildable: false
+    #  externals:
+    #  - spec: intel-oneapi-mkl@2022.1.0
+    #    prefix: /opt/intel/oneapi
     gmake:
       buildable: false
       externals:
