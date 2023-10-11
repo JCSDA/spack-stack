@@ -1,11 +1,9 @@
 [submodule "spack"]
   path = spack
-  ##url = https://github.com/spack/spack
-  ##branch = develop
-  #url = https://github.com/jcsda/spack
-  #branch = release/1.5.1
-  url = https://github.com/climbfuji/spack
-  branch = feature/release_151_atlas_0350
+  #url = https://github.com/spack/spack
+  #branch = develop
+  url = https://github.com/jcsda/spack
+  branch = release/1.5.1
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
