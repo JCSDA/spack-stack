@@ -1,8 +1,8 @@
-name: Install/upgrade request
+name: "Install/upgrade request"
 description: Request an installation or upgrade of a package on HPCs
 title: "[INSTALL]:"
-labels: ["install"]
-assignees: ["Hang-Lei-NOAA", "AlexanderRichert-NOAA", "jkbk2004", "climbfuji"]
+labels: [install]
+assignees: [Hang-Lei-NOAA, AlexanderRichert-NOAA, jkbk2004, climbfuji]
 
 body:
   - type: markdown
