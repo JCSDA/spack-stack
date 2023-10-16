@@ -236,8 +236,8 @@
     py-numpy:
       version: ['1.22.3']
       variants: +blas +lapack
-    py-openpyxl:
-      version: ['3.0.3']
+    py-pandas:
+      variants: +excel
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
     # versions of py-poetry-core when using external/homebrew Python as
     # we do at the moment in spack-stack.
