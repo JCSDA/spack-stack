@@ -71,9 +71,10 @@ body:
   - type: textarea
     attributes:
       label: WCOSS2 installation and testing
-      description: Include
-        ' - Instructions for installing (without Spack)'
-        ' - Test and verification instructions'
+      description: |
+        Include the following instructions:
+        - Installation steps (without Spack)
+        - Test and verification instructions
 
   - type: checkboxes
     attributes:
