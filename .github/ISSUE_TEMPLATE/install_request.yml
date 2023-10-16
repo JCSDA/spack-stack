@@ -59,6 +59,7 @@ body:
     attributes:
       label: General questions
       description: |
+        Include the following information:
         - Supervisor/sponsor
         - Package URL
         - New package or upgrade?
@@ -70,9 +71,9 @@ body:
   - type: textarea
     attributes:
       label: WCOSS2 installation and testing
-      description: |
-        - Instructions for installing (without Spack)
-        - Test and verification instructions
+      description: Include
+        ' - Instructions for installing (without Spack)'
+        ' - Test and verification instructions'
 
   - type: checkboxes
     attributes:
