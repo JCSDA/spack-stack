@@ -48,7 +48,8 @@ body:
   - type: checkboxes
     attributes:
       label: WCOSS2
-      description: Check this box if and only if your package should be installed on WCOSS2 Cactus and Dogwood (all spack-stack packages will be installed on Acorn). If not, you may disregard the rest of the items below and submit this request.
+      options:
+        - label: Check this box if and only if your package should be installed on WCOSS2 Cactus and Dogwood (all spack-stack packages will be installed on Acorn). If not, you may disregard the rest of the items below and submit this request.
 
   - type: markdown
     attributes:
