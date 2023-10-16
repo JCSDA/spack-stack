@@ -53,8 +53,7 @@ body:
 
   - type: markdown
     attributes:
-      label: WCOSS2 questions
-      value: Complete this section only if you are requesting installation on WCOSS2 *and* it is not already approved software.
+      value: Complete the items below only if you are requesting installation on WCOSS2.
 
   - type: textarea
     attributes:
