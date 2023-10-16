@@ -10,12 +10,12 @@ body:
       value: |
         Please search to see if an issue already exists for the software you are requesting to be installed.
 
-#  - type: input
-#    attributes:
-#      label: Package name
-#      placeholder: hdf5
-#    validations:
-#      required: true
+  - type: input
+    attributes:
+      label: Package name
+      placeholder: hdf5
+    validations:
+      required: true
 #
 #  - type: input
 #    attributes:
