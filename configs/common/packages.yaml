@@ -50,11 +50,11 @@
       version: ['1.24.4']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.34.0']
-      variants: +fckit +trans
+      version: ['0.35.0']
+      variants: +fckit +ectrans +tesselation +fftw
     ectrans:
       version: ['1.2.0']
-      variants: ~enable_mkl
+      variants: ~enable_mkl +fftw
     eigen:
       version: ['3.4.0']
     # Attention - when updating the version also check the common modules.yaml
@@ -107,7 +107,7 @@
     gsibec:
       version: ['1.1.3']
     gsi-ncdiag:
-      version: ['1.1.1']
+      version: ['1.1.2']
     gsl-lite:
       version: ['0.37.0']
     hdf:
@@ -238,9 +238,6 @@
       variants: +blas +lapack
     py-openpyxl:
       version: ['3.0.3']
-    # DH* 20230719 try without version
-    #py-pandas:
-    #  version: ['1.4.0']
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
     # versions of py-poetry-core when using external/homebrew Python as
     # we do at the moment in spack-stack.
@@ -248,8 +245,6 @@
       version: ['1.0.8']
     py-pybind11:
       version: ['2.8.1']
-    py-pycodestyle:
-      version: ['2.8.0']
     py-pygithub:
       version: ['1.55']
     py-pygrib:
@@ -264,9 +259,6 @@
       # Versions earlier than 0.11.0 don't compile on macOS with llvm-clang/13.0.0 and Python/3.9,
       # and 0.11.0 leads to downstream errors in py-scipy with the Intel compilers
       version: ['0.12.2']
-    # This version of py-pyyaml goes with awscli@1.27.84
-    py-pyyaml:
-      version: ['5.4.1']
     py-scipy:
       version: ['1.9.3']
     # Pin the py-setuptools version to avoid duplicate Python packages
@@ -290,14 +282,6 @@
       version: ['2.3.2']
     sp:
       version: ['2.3.3']
-    #texlive:
-      # Assume texlive is provided, hard to install
-      # because of its dependencies. Both Linux and
-      # macOS provide easy-to-install packages that
-      # can be added as external packages.
-      # Note: Uncommenting this entry will break
-      # the container builds.
-      #version: ['2.11.0']
     udunits:
       version: ['2.2.28']
     upp:

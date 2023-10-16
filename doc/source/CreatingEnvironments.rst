@@ -31,3 +31,6 @@ Note that items in "<>" should be replaced with the appropriate values (site nam
    spack module lmod refresh
 
    spack stack setup-meta-modules
+
+.. note::
+   By default, the ``spack stack create env`` command will use the specified site to determine whether to use the tcl-based (configs/common/modules_tcl.yaml) or the Lmod-based (configs/common/modules_lmod.yaml) module configuration. To override this behavior, use the ``--modulesys {tcl,lmod}`` argument to that command to specify which to use.
