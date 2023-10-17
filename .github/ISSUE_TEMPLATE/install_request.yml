@@ -27,7 +27,7 @@ body:
   - type: input
     attributes:
       label: Build options
-      description: What compilation options do you need for your application (put "none" if no particular ones are needed)?
+      description: What build options do you need for your application (put "none" if no particular build options are needed, or "current" to keep the current build options)?
       placeholder: Needs MPI support; +jpeg option
     validations:
       required: true
