@@ -75,6 +75,17 @@ body:
         Include the following instructions:
         - Installation steps (without Spack)
         - Test and verification instructions
+      placeholder: |
+        'Install steps:'
+        ```
+        module load mymodule
+        cmake ..
+        make
+        ```
+        'Testing instructions:'
+        ```
+        make test
+        ```
 
   - type: checkboxes
     attributes:
