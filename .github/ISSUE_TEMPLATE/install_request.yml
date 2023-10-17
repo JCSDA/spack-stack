@@ -76,13 +76,12 @@ body:
         - Installation steps (without Spack)
         - Test and verification instructions
       placeholder: |
-        'Install steps:'
+        Install steps:
         ```
-        module load mymodule
-        cmake ..
+        cmake .. -DOPTION=ON
         make
         ```
-        'Testing instructions:'
+        Testing instructions:
         ```
         make test
         ```
