@@ -1,9 +1,9 @@
 name: ubuntu-ci-container-x86_64-build
 on:
-  pull_request:
-    # pull request to develop with label
-    branches: [develop]
-    types: [labeled]
+  #pull_request:
+  #  # pull request to develop with label
+  #  branches: [develop]
+  #  types: [labeled]
   schedule:
     - cron: '0 8 * * *'
   workflow_dispatch:
@@ -23,7 +23,7 @@ defaults:
 jobs:
   ubuntu-ci-container-x86_64-build:
     # For PRs only if label matches, and for workflow_dispatch and schedule events
-    if: ${{ github.event.label.name == 'container-ci' }} || ${{ github.event_name == 'workflow_dispatch' }} || ${{ github.event_name == 'schedule' }}
+    #if: ${{ github.event.label.name == 'container-ci' }} || ${{ github.event_name == 'workflow_dispatch' }} || ${{ github.event_name == 'schedule' }}
     runs-on: [ubuntu-ci-x86_64]
 
     steps:
