@@ -64,7 +64,7 @@ jobs:
           else
             # Day 7: The Sabbath of rest
             echo "Pruning all docker images"
-            docker system prune -a
+            docker system prune -a -f
             exit 0
           fi
 
