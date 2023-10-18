@@ -373,9 +373,11 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
-   # ignore that the sticky module ncarenv/... is not unloaded
+   ignore that the sticky module ncarenv/... is not unloaded
    export LMOD_TMOD_FIND_FIRST=yes
-   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
+   Temporary, until CISL created the module tree for the newest Intel compilers
+   module use /lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra
+   module use /lustre/desc1/scratch/epicufsrt/contrib/modulefiles
    module load ecflow/5.8.4
    module load mysql/8.0.33
 
