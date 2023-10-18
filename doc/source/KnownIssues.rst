@@ -7,9 +7,9 @@ Known Issues
 General
 ==============================
 
-1. ``gcc@13`` (``gcc``, ``g++``, ``gfortran``) not yet supported
+1. ``gcc@13`` (``gcc``, ``g++``, ``gfortran``) and ``apple-clang@15`` (``clang``, ``clang++``) not yet supported
 
-   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``.
+   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``. We also don't support the latest release of ``apple-clang@15`` yet.
 
 2. Build errors for ``mapl@2.35.2`` with ``mpich@4.1.1``
 

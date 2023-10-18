@@ -54,7 +54,7 @@
       variants: +fckit +ectrans +tesselation +fftw
     ectrans:
       version: ['1.2.0']
-      variants: ~enable_mkl +fftw
+      variants: ~mkl +fftw
     eigen:
       version: ['3.4.0']
     # Attention - when updating the version also check the common modules.yaml
@@ -80,7 +80,7 @@
     fms:
       #version: ['2023.01']
       #variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
-      version: ['2023.02']
+      version: ['2023.02.01']
       variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +use_fmsio
     fontconfig:
       variants: +pic
@@ -236,8 +236,8 @@
     py-numpy:
       version: ['1.22.3']
       variants: +blas +lapack
-    py-openpyxl:
-      version: ['3.0.3']
+    py-pandas:
+      variants: +excel
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
     # versions of py-poetry-core when using external/homebrew Python as
     # we do at the moment in spack-stack.
