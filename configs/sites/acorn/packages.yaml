@@ -10,8 +10,6 @@
         - libfabric
         - craype-network-ofi
         - cray-mpich/8.1.9
-    esmf:
-      variants: esmf_os=Linux esmf_comm=mpich3
     git:
       buildable: false
       externals:
