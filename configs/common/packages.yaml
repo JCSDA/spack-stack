@@ -239,7 +239,7 @@
     py-openpyxl:
       version: ['3.0.3']
     py-pandas:
-      version: ['1.5.2']
+      version: ['1.5.3']
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
     # versions of py-poetry-core when using external/homebrew Python as
     # we do at the moment in spack-stack.
