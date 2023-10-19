@@ -95,7 +95,7 @@
     gfsio:
       version: ['1.4.1']
     gftl-shared:
-      version: ['1.5.0']
+      version: ['1.6.1']
     #git-lfs:
       # Assume git-lfs is provided, hard to install
       # because of dependencies on go/go-bootstrap.
