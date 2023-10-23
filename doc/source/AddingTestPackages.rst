@@ -9,7 +9,7 @@ To install in an additional environment within an official spack-stack space, si
 
 .. code-block:: bash
 
-    spack stack create env --name netcdf-test --template empty --site hera --upstream /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env/install [--upstream /path/to/second/install]
+    spack stack create env --name netcdf-test --template empty --site hera --upstream /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.4.1/envs/unified-env/install [--upstream /path/to/second/install] [--modify-pkg netcdf-c]
     cd envs/netcdf-test
     spack env activate .
     spack add ufs-weather-model-env%intel ^netcdf-c@5.0.0
@@ -22,6 +22,9 @@ To use the environment, access it in the same way as a regular spack-stack insta
 
 .. note::
    The ``--upstream`` option for the ``spack stack create env`` command adds a specified Spack/spack-stack installation path as an upstream environment in the resulting spack.yaml, and can be invoked multiple times in order to include multiple upstream environments. The command will *give a warning but not fail* if an invalid directory is provided (either because it does not end with the typical ``install`` directory name, or because it does not exist). Be mindful of these warnings, and if the path does not exist, check for typos and make sure that you are using the path for the correct system from the table in :numref:`Section %s <Preconfigured_Sites>`.
+
+.. note::
+   The ``--modify-pkg`` option for the ``spack stack create env`` command should be used by spack-stack maintainers whenever a package recipe needs to be modified for between-release deployments (i.e., chained environments that live in an official spack-stack release), such as when a new version or variant needs to be added. This option creates a separate, custom Spack repo specific to the environment being created, which lives under that directory structure (i.e., ``$SPACK_ENV/envrepo/``). It requires a package name for each package to be customized and can be invoked multiple times to customize multiple packages. Each package specified will be copied into the custom repo, and the environment's repo configuration will be automatically updated to use those customized copies. It is important to use this option in order to avoid contaminating or breaking the existing installation.
 
 .. note::
    More details on chaining spack environments and a few words of caution can be found in the  `Spack documentation <https://spack.readthedocs.io/en/latest/chain.html?highlight=chaining%20spack%20installations>`_. Those words of caution need to be taken seriously, especially those referring to not deleting modulefiles and dependencies in the upstream spack environment (if having permissions to do so)!
