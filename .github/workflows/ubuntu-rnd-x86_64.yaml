@@ -1,0 +1,134 @@
+name: ubuntu-rnd-x86_64-build
+on:
+  # Remove PR builds
+  pull_request:
+    paths-ignore:
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+# Remove with PR build
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ubuntu-rnd-x86_64-build:
+    runs-on: [ubuntu-rnd-x86_64]
+
+    steps:
+      - name: cleanup
+        run: |
+          pwd
+          ls -lart
+          rm -fr *
+
+      - name: checkout
+        uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: create-buildcache-env
+        run: |
+          source ./setup.sh
+
+          # Make environment for creating/updating binary cache
+          export TEMPLATE=${{ inputs.template || 'unified-dev' }}
+          export ENVNAME=cache-maker-${TEMPLATE}.ubuntu-rnd-x86_64
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME}
+          spack env activate ${ENVDIR}
+          spack add ${{ inputs.specs || '' }}
+
+          # For buildcaches
+          spack config add config:install_tree:padded_length:200
+
+          # Set compiler and MPI
+          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%gcc', '\%intel'\]/g" ${ENVDIR}/spack.yaml
+
+          # Add additional variants for MET packages, different from config/common/packages.yaml
+          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+
+          # Concretize and check for duplicates
+          spack concretize 2>&1 | tee log.concretize.${TEMPLATE}.001
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.001 -i fms -i crtm
+
+          spack mirror list
+          exit 1
+          ### # Add and update source cache
+          ### spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
+          ### spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
+          ### 
+          ### # Add binary cache and reindex it
+          ### spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+          ### spack buildcache update-index local-binary
+          ### echo "Packages in combined spack build caches:"
+          ### spack buildcache list
+          ### 
+          ### # Break installation up in pieces and create build caches in between
+          ### # This allows us to "spin up" builds that altogether take longer than
+          ### # six hours, and/or fail later in the build process.
+          ### 
+          ### # base-env
+          ### echo "base-env ..."
+          ### spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2022.1.0.base-env
+          ### spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
+          ### 
+          ### # the rest
+          ### echo "${{ inputs.template || 'unified-dev' }} ..."
+          ### spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel@2022.1.0.${{ inputs.template || 'unified-dev' }}
+          ### spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
+          ### 
+          ### # Next steps: synchronize source and build cache to a central/combined mirror?
+          ### echo "Next steps ..."
+          ### spack clean -a
+          ### spack module tcl refresh -y
+          ### spack stack setup-meta-modules
+          ### spack env deactivate
+          ### 
+          ### # Test environment chaining
+          ### echo "Test environment chaining"
+          ### spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/rnd-env.ubuntu-rnd-x86_64/install)
+          ### # Retain config from upstream so we don't have to rebuild:
+          ### cp -r $PWD/envs/rnd-env.ubuntu-rnd-x86_64/{site,common} $PWD/envs/chaintest/.
+          ### spack env activate ${PWD}/envs/chaintest
+          ### spack add nccmp@1.8.9.0%intel
+          ### spack concretize | tee envs/chaintest/log.concretize
+          ### unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
+          ### if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
+          ### spack env deactivate
+
+      ### - name: test-env
+      ###   run: |
+      ###     source /etc/profile.d/z00_lmod.sh
+      ###     module use /usr/share/modules/modulefiles
+      ###     module use /opt/intel/mpi/2021.6.0/modulefiles
+      ###     module use /home/ubuntu/jedi/modulefiles
+      ### 
+      ###     # DH* 20230302 - to avoid using padded_length for build caches,
+      ###     # always build in the same environment so that the length of the
+      ###     # path doesn't change - see also other 'DH* 20230302' changes below
+      ###     #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-rnd-x86_64
+      ###     export ENVNAME=rnd-env.ubuntu-rnd-x86_64
+      ###     # *DH
+      ###     export ENVDIR=$PWD/envs/${ENVNAME}
+      ###     ls -l ${ENVDIR}/install/modulefiles/Core
+      ### 
+      ###     module use ${ENVDIR}/install/modulefiles/Core
+      ###     module load stack-intel/2022.1.0
+      ###     module load stack-intel-oneapi-mpi/2021.6.0
+      ###     module load stack-python/3.10.8
+      ###     module available
+      ### 
+      ###     module load jedi-ufs-env/1.0.0
+      ###     module load ewok-env/1.0.0
+      ###     module load soca-env/1.0.0
+      ###     module list
