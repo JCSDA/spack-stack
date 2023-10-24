@@ -55,7 +55,7 @@ jobs:
           export TEMPLATE=${{ inputs.template || 'unified-dev' }}
           export ENVNAME=buildcache-${TEMPLATE}.ubuntu-rnd-x86_64
           export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/mnt/experiments-efs/spack-stack-dev-buildcache
+          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/mnt/experiments-efs/spack-stack/spack-stack-dev-buildcache
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
 
@@ -102,7 +102,7 @@ jobs:
           export TEMPLATE=${{ inputs.template || 'unified-dev' }}
           export ENVNAME=${TEMPLATE}.ubuntu-rnd-x86_64
           export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/mnt/experiments-efs/spack-stack-dev-install/${TODAY}
+          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/mnt/experiments-efs/spack-stack/spack-stack-dev-install/${TODAY}
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
 
