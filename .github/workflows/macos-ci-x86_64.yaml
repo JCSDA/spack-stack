@@ -7,16 +7,6 @@ on:
       - '.github/ISSUE_TEMPLATE/*'
       - '.gitignore'
   workflow_dispatch:
-  #  inputs:
-  #    template:
-  #      description: 'Base spack.yaml template. Default is a complete JEDI-UFS environment.'
-  #      required: true
-  #      default: 'unified-dev'
-  #    specs:
-  #      description: 'Which specs to add to the template. Default is none (empty string).'
-  #      required: false
-  #      default: ''
-
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
@@ -25,7 +15,6 @@ concurrency:
 defaults:
   run:
     shell: bash
-    #shell: bash -leo pipefail {0}
 
 jobs:
   macos-ci-x86_64-build:
@@ -81,7 +70,7 @@ jobs:
           # *DH
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi]"
+          spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
           spack config add "packages:all:compiler:[apple-clang@14.0.0]"
           sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
@@ -94,13 +83,11 @@ jobs:
 
           # Add and update source cache
           spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
-          # DH* 20230721 - todo remove || true
-          spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/ || true
+          spack mirror create -a -d /Users/ec2-user/spack-stack/source-cache/
 
           # Add binary cache and reindex it
           spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
-          # DH* 20230721 - todo remove || true
-          spack buildcache update-index local-binary || true
+          spack buildcache update-index local-binary
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
@@ -110,17 +97,13 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          # DH* 20230721 - todo remove --no-checksum
-          spack install --fail-fast --source --no-check-signature --no-checksum base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
-          # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
+          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
-          # DH* 20230721 - todo remove --no-checksum
-          spack install --fail-fast --source --no-check-signature --no-checksum 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
-          # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.0.${{ inputs.template || 'unified-dev' }}
+          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
@@ -152,10 +135,3 @@ jobs:
           module load ewok-env/1.0.0
           module load soca-env/1.0.0
           module list
-
-      # Skip this for now, copied from other yaml
-      #- name: upload-mirror
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    name: spack_mirror
-      #    path: cache/source_cache

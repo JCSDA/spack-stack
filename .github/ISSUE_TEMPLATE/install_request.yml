@@ -1,0 +1,111 @@
+name: "Install/upgrade request"
+description: Request an installation or upgrade of a package on HPCs
+title: "[INSTALL]: "
+labels: [install]
+assignees: [Hang-Lei-NOAA, AlexanderRichert-NOAA, jkbk2004, climbfuji]
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please search to see if an issue already exists for the software you are requesting to be installed.
+
+  - type: input
+    attributes:
+      label: Package name
+      placeholder: hdf5
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Package version/tag
+      placeholder: 1.2.3
+    validations:
+      required: true
+
+  - type: input
+    attributes:
+      label: Build options
+      description: What build options do you need for your application (put "none" if no particular build options are needed, or "current" to keep the current build options)?
+      placeholder: Needs MPI support; +jpeg option
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Installation timeframe
+      description: Would you like this package to be installed in an upcoming quarterly spack-stack release, or sooner? If it is needed sooner (such as for testing a new package/version before incorporating it into a full release), please specify a preferred timeline and *one* machine on which you would like it to be installed for testing prior to the next spack-stack release. See the list of [supported HPC platforms](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html).
+      placeholder: Please install on Hera for testing then include in next release
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Other information
+      description: Is there any other relevant information that we should know to correctly install the software? Please describe in as much detail as possible (such as software URL if there is not currently a Spack recipe for this package, or common build issues).
+
+  - type: checkboxes
+    attributes:
+      label: WCOSS2
+      options:
+        - label: Check this box if and only if your package should be installed on WCOSS2 Cactus and Dogwood (all spack-stack packages will be installed on Acorn). If not, you may disregard the rest of the items below and submit this request.
+
+  - type: markdown
+    attributes:
+      value: Complete the items below only if you are requesting installation on WCOSS2.
+
+  - type: textarea
+    attributes:
+      label: "WCOSS2: General questions"
+      description: |
+        Include the following information:
+        - Supervisor/sponsor
+        - Package URL
+        - New package or upgrade?
+        - Justification (list models that will use the software)
+        - Software license (including for dependencies)
+        - Support contact(s) - must have a WCOSS2 account
+        - List of dependencies
+
+  - type: textarea
+    attributes:
+      label: "WCOSS2: Installation and testing"
+      description: |
+        Include the following instructions:
+        - Installation steps (without Spack)
+        - Test and verification instructions
+      placeholder: |
+        Install steps:
+        ```
+        cmake .. -DOPTION=ON
+        make
+        ```
+        Testing instructions:
+        ```
+        make test
+        ```
+
+  - type: checkboxes
+    attributes:
+      label: "WCOSS2: Technical & security review list"
+      description: Answer these items carefully and accurately
+      options:
+        - label: The code is mature, stable, and production ready
+        - label: The code is does not and cannot use the internet, and does not contain URLs (http, https, ftp, etc.) except in comments
+        - label: The package does not contain prebuilt binary files that have not been approved by NCO security review
+        - label: The code has no publicly disclosed cybersecurity vulnerabilities and exposures (search https://cve.mitre.org/cve/)
+        - label: The code is not prohibited by DHS, DOC, NOAA, or NWS
+        - label: The code comes from a trusted source. Trusted sources include other NWS, NOAA, or DOC, agencies, or other Federal agencies that operate at a FISMA high or equivalent level. Additionally, trusted sources could be third-party agencies through which there is an existing SLA on file (such as RedHat).
+        - label: The code is actively maintained and supported (it continues to get updates, patches, etc.)
+        - label: The code is not maintained by a private entity operating in a foreign country (if it is, make a note below)
+        - label: There is sufficient documentation to support maintenance
+        - label: There are no known security vulnerabilities or weaknesses
+        - label: Installing and running the code does not require privileged processes/users
+        - label: There are no software dependencies that are unapproved or have security concerns (if there are, make a note below)
+        - label: There are no concerns related to SA, SI, and SC NIST control families
+
+  - type: input
+    attributes:
+      label: "WCOSS2: Additional comments"
+      description: Note any issues or concerns here based on the checklist or not mentioned elsewhere on this form
