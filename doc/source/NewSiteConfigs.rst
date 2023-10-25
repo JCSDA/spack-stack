@@ -256,7 +256,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Check your clang version then add it to your site compiler config.
    clang --version
    spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
 
 8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
