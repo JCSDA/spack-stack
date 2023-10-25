@@ -483,7 +483,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
 
    # Example for Ubuntu 20.04 or 22.04 following the above instructions
    spack config add "packages:all:providers:mpi:[mpich@4.1.1]"
