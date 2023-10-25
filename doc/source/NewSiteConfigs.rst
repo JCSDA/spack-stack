@@ -256,7 +256,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Check your clang version then add it to your site compiler config.
    clang --version
    spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
 
 8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
@@ -483,7 +483,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.5]"
+   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
 
    # Example for Ubuntu 20.04 or 22.04 following the above instructions
    spack config add "packages:all:providers:mpi:[mpich@4.1.1]"
