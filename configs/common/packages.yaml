@@ -61,7 +61,7 @@
     # config and update the projections for lmod/tcl.
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
-      version: ['8.4.2']
+      version: ['8.5.0']
       variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
       require:
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
@@ -95,7 +95,7 @@
     gfsio:
       version: ['1.4.1']
     gftl-shared:
-      version: ['1.5.0']
+      version: ['1.6.1']
     #git-lfs:
       # Assume git-lfs is provided, hard to install
       # because of dependencies on go/go-bootstrap.
@@ -141,7 +141,7 @@
       # errors with intel@2021.7.0+, see
       # https://github.com/JCSDA/spack-stack/issues/769
       # also: ... extdata2g segfault UFS?
-      version: ['2.35.2']
+      version: ['2.40.3']
       variants: ~shared ~extdata2g ~pflogger
     # If making changes here, also check the Discover site config and the CI workflows
     met:
@@ -238,9 +238,8 @@
       variants: +blas +lapack
     py-openpyxl:
       version: ['3.0.3']
-    # DH* 20230719 try without version
-    #py-pandas:
-    #  version: ['1.4.0']
+    py-pandas:
+      version: ['1.5.3']
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
     # versions of py-poetry-core when using external/homebrew Python as
     # we do at the moment in spack-stack.
