@@ -79,12 +79,11 @@ These instructions are meant to be a reference that users can follow to set up t
 .. note::
    If you encounter build errors for gdal later on in spack-stack (see :numref:`Section %s <KnownIssues>`), you may need to install the full ``Xcode`` application and then switch ``xcode-select`` over with ``sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`` (change the path if you installed Xcode somewhere else).
 
-2. Set up a terminal and environment using the appropriate architecture
+2. Set up an environment using the native architecture
 
     a. Arm
 
-       In this case the Terminal application should already be running with the Arm architecture.
-       Open a terminal and verify that this is the case:
+       Open a terminal and verify that it is running with the Arm architecture.
 
        .. code-block:: console
            
@@ -99,25 +98,21 @@ These instructions are meant to be a reference that users can follow to set up t
            
            export PATH=$HOMEBREW_ROOT/bin:$PATH
 
+       .. note::
+           It is highly recommended to ensure that any remnants of a homebrew installation in ``/usr/local`` be removed on an Arm based Mac. For example, this situation can come about by migrating your old Mac (which was Intel based) to your new Mac which is Arm based.
+
     b. Intel
 
-       In this case, the idea is to create a new Terminal application that automatically runs bash in the Intel mode (using Rosetta2 underneath the hood.
+       Open a terminal and verify that it is running with the Intel architecture.
 
-       - Open Applications in Finder
+       .. code-block:: console
+           
+           # In the terminal enter
+           arch
+           # this should respond with "i386" or "x86_64"
 
-       - Duplicate your preferred terminal application (e.g. Terminal or iTerm)
-
-       - Rename the duplicate to, for example, "Terminal x86_64"
-
-       - Right-click / control+click on "Terminal x86_64", choose "Get Info"
-
-       - Select the box "Open using Rosetta" and close the window
-
-       Check to make sure you have ``/usr/local/bin`` in your PATH variable for homebrew.
-
-   From this point on, make sure you run the commands from the Terminal application matching the arhcitecture you are building.
-   That is, use "Terminal" if building for Arm, or use "Terminal x86_64" if building for Intel.
-   Verify that you have the correct architecture by running ``arch`` in the terminal window.
+   From this point on, make sure you run the commands from the Terminal application matching the native arhcitecture of your Mac.
+   That is, verify that you have the correct architecture by running ``arch`` in the terminal window.
    From ``arch`` you should see ``arm64`` for Arm, or see ``x86_64`` or ``i386`` for Intel.
 
 3. Install Homebrew
