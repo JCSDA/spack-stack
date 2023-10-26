@@ -30,6 +30,8 @@ jobs:
           pwd
           ls -lart
           rm -fr *
+          rm -fr /tmp/spack-stack
+          mkdir -p /tmp/spack-stack
 
       - name: checkout
         uses: actions/checkout@v3
@@ -55,7 +57,7 @@ jobs:
           export TEMPLATE=${{ inputs.template || 'unified-dev' }}
           export ENVNAME=buildcache-${TEMPLATE}.ubuntu-rnd-x86_64
           export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/mnt/experiments-efs/spack-stack/spack-stack-dev-buildcache
+          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/tmp/spack-stack/spack-stack-dev-buildcache
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
 
@@ -92,6 +94,7 @@ jobs:
           #echo "Next steps ..."
 
           spack env deactivate
+          rm -fr /tmp/spack-stack/spack-stack-dev-buildcache
 
       - name: create-buildcache-env
         run: |
@@ -114,7 +117,7 @@ jobs:
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.${ENVNAME}
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME} -i fms -i crtm
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -c -d log.concretize.${ENVNAME} -i fms -i crtm
 
           # Update spack source cache
           spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
