@@ -36,13 +36,11 @@ Unlike in previous versions, the instructions below assume that ``Python`` is bu
 
 It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
-Intel Arm platform notes
+Mac native architectures
 ------------------------
-With the introduction of the Arm architecture M1 and M2 chips on Mac, the OS offers execution and building of two architectures via Apple's Rosetta tool. Rosetta is a binary translator that can convert Intel executable instructions to native Arm instructions at runtime. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture supported by Rosetta is denoted by ``x86_64`` and ``i386``.
+The Mac platforms are equipped with one of two native architectures: Intel or Arm. The Arm based Macs come with an Intel architecture emulator named Rosetta. Due to issues encountered with Rosetta we have decided to not support Rosetta meaning that support is limited to just the native (Intel and Arm) architectures. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture is denoted by ``x86_64`` and ``i386``.
 
-When you get a new Arm mac, you may need to install Rosetta. This can be done with the shell command ``softwareupdate --install-rosetta``. Note that applications are expected to run faster when the native Arm architecture is utilized, although Intel binaries are very close to native performance.
-
-A lot of binaries (iTerm2 for example) come in a "universal form" meaning they can run as Arm or Intel (you can toggle this by right clicking on the application in finder, selecting "get info", then checking the "Open using Rosetta" box). MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on. For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
+On the M1 Macs, a number of binaries (Terminal for example) come in a "universal form" meaning they can run as Arm or Intel. MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on. For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window. Please take care to make sure your terminal is properly configured to run with the native architecture on your Mac.
 
 Homebrew notes
 --------------
