@@ -23,6 +23,7 @@ defaults:
 jobs:
   ubuntu-rnd-x86_64-build:
     runs-on: [ubuntu-rnd-x86_64]
+    timeout-minutes: 720 # 12 hours
 
     steps:
       - name: cleanup
@@ -30,15 +31,15 @@ jobs:
           pwd
           ls -lart
           rm -fr *
-          rm -fr /tmp/spack-stack
-          mkdir -p /tmp/spack-stack
+          rm -fr /home/ubuntu/spack-stack/CI/tmp
+          mkdir /home/ubuntu/spack-stack/CI/tmp
 
       - name: checkout
         uses: actions/checkout@v3
         with:
           submodules: true
 
-      - name: create-buildcache-env
+      - name: create-buildcache
         run: |
           source ./setup.sh
 
@@ -57,7 +58,7 @@ jobs:
           export TEMPLATE=${{ inputs.template || 'unified-dev' }}
           export ENVNAME=buildcache-${TEMPLATE}.ubuntu-rnd-x86_64
           export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/tmp/spack-stack/spack-stack-dev-buildcache
+          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/home/ubuntu/spack-stack/CI/tmp/spack-stack-dev-buildcache
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
 
@@ -69,6 +70,13 @@ jobs:
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+
+          # Overrides for spack build and staging areas to speed up builds,
+          # separate from the default site config locations to avoid conflicts
+          spack config add "config:build_stage:/home/ubuntu/spack-stack/CI/tmp/build_stage"
+          spack config add "config:test_stage:/home/ubuntu/spack-stack/CI/tmp/test_stage"
+          spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
+          spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.${ENVNAME}
@@ -94,9 +102,8 @@ jobs:
           #echo "Next steps ..."
 
           spack env deactivate
-          rm -fr /tmp/spack-stack/spack-stack-dev-buildcache
 
-      - name: create-buildcache-env
+      - name: create-env
         run: |
           source ./setup.sh
           TODAY=$(date +%Y%m%d)
@@ -105,7 +112,7 @@ jobs:
           export TEMPLATE=${{ inputs.template || 'unified-dev' }}
           export ENVNAME=${TEMPLATE}.ubuntu-rnd-x86_64
           export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/mnt/experiments-efs/spack-stack/spack-stack-dev-install/${TODAY}
+          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/home/ubuntu/spack-stack/CI/unified-env/${TODAY}
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
 
@@ -114,6 +121,13 @@ jobs:
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+
+          # Overrides for spack build and staging areas to speed up builds,
+          # separate from the default site config locations to avoid conflicts
+          spack config add "config:build_stage:/home/ubuntu/spack-stack/CI/tmp/build_stage"
+          spack config add "config:test_stage:/home/ubuntu/spack-stack/CI/tmp/test_stage"
+          spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
+          spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.${ENVNAME}
@@ -165,3 +179,5 @@ jobs:
       ###     module load ewok-env/1.0.0
       ###     module load soca-env/1.0.0
       ###     module list
+
+      ### ALSO NEEDED: CLEAN UP OF BUILDS OLDER THAN N DAYS, SLACK INTEGRATION
