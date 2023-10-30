@@ -13,6 +13,12 @@ packages:
       - craype-network-ofi
       - cray-mpich/8.1.25
 
+### Modification of common packages
+  # Until problems with OS openssh and spack openssl are resolved,
+  # also use openssl from OS and turn off ssl variant for python
+  python:
+    variants: ~ssl
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:

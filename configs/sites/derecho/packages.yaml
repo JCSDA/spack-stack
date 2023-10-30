@@ -34,6 +34,10 @@ packages:
 ### Modification of common packages
   esmf:
     variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich
+  # Until problems with OS openssh and spack openssl are resolved,
+  # also use openssl from OS and turn off ssl variant for python
+  python:
+    variants: ~ssl
 
 ### All other external packages listed alphabetically
   autoconf:
