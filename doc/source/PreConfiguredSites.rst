@@ -8,17 +8,17 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 Pre-configured sites are split into two categories: Tier 1 with officially supported spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
 =============================================================
-Officially supported spack-stack 1.5.0 installations (tier 1)
+Officially supported spack-stack 1.5.1 installations (tier 1)
 =============================================================
 
-Ready-to-use spack-stack 1.5.0 installations are available on the following, fully supported platforms. This version supports the JEDI Skylab release 5 of June 2023, and the UFS Weather Model of July 2023. It can also be used for testing spack-stack with other UFS applications (e.g. the UFS Short Range Weather Application, and the EMC Global Workflow). Amazon Web Services AMI are available in the US East 1 or 2 regions.
+Ready-to-use spack-stack 1.5.1 installations are available on the following, fully supported platforms. This version supports the JEDI Skylab release 5 of June 2023, and the UFS Weather Model of July 2023. It can also be used for testing spack-stack with other UFS applications (e.g. the UFS Short Range Weather Application, and the EMC Global Workflow). Amazon Web Services AMI are available in the US East 1 or 2 regions.
 
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | Organization        | System                           | Compilers       | Location                                                                                                | Maintainers                   |
 +=====================+==================================+=================+=========================================================================================================+===============================+
 | **HPC platforms**                                                                                                                                                                                                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hercules^*                       | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env``                   | Cam Book / Dom Heinzeller     |
+|                     | Hercules^*                       | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/unified-env``                   | Cam Book / Dom Heinzeller     |
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.0/envs/unified-env``                      | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -122,23 +122,23 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.5.0`` with Intel, load the following modules after loading mysql and ecflow:
+For ``spack-stack-1.5.1`` with Intel, load the following modules after loading mysql and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.9.0
    module load stack-intel-oneapi-mpi/2021.9.0
    module load stack-python/3.10.8
    module available
 
-For ``spack-stack-1.5.0`` with GNU, load the following modules after loading mysql and ecflow:
+For ``spack-stack-1.5.1`` with GNU, load the following modules after loading mysql and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.3.1
-   module load stack-openmpi/4.1.5
+   module load stack-mvapich2/2.3.7
    module load stack-python/3.10.8
    module available
 
