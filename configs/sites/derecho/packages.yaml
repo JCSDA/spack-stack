@@ -21,15 +21,15 @@ packages:
       modules:
       - craype/2.7.20
       - cray-mpich/8.1.25
-      #- libfabric/1.15.2.0
-      #- cray-pals/1.2.11
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
     - spec: cray-mpich@8.1.25%gcc@12.2.0 +wrappers
       #prefix: /opt/cray/pe/mpich/8.1.25/ofi/gnu/9.1
       modules:
       - craype/2.7.20
       - cray-mpich/8.1.25
-      #- libfabric/1.15.2.0
-      #- cray-pals/1.2.11
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
 
 ### Modification of common packages
   esmf:
