@@ -55,10 +55,8 @@ Ready-to-use spack-stack 1.5.0 installations are available on the following, ful
 | **Cloud platforms**                                                                                                                                                                                                |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.5.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
-+                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| Amazon Web Services | Parallelcluster JCSDA R&D        | Intel           | ``/mnt/experiments-efs/skylab-v6/spack-stack-1.5.0/envs/unified-env``                                   | Dom Heinzeller / ???          |
-+                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Parallelcluster JCSDA ROMEX      | Intel           | ``/mnt/experiments-efs/ROMEX/spack-stack-1.5.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
++ Amazon Web Services +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
+|                     | Parallelcluster JCSDA R&D        | Intel           | ``/mnt/experiments-efs/skylab-v7/spack-stack-1.5.1/envs/unified-env``                                   | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)^** | Intel           | ``/contrib/spack-stack/spack-stack-1.5.0/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -633,24 +631,24 @@ Amazon Web Services Parallelcluster Ubuntu 20.04
 
 Access to the JCSDA-managed AWS Parallel Clusters is not available to the public. The following instructions are for JCSDA core staff and in-kind contributors.
 
-For ``spack-stack-1.5.0`` with Intel on the JCSDA R&D cluster (``hpc6a.48xlarge`` instances), run the following commands/load the following modules:
+For ``spack-stack-1.5.1`` with Intel on the JCSDA R&D cluster (``hpc6a.48xlarge`` instances), run the following commands/load the following modules:
 
 .. code-block:: console
 
    module purge
    ulimit -s unlimited
    source /opt/intel/oneapi/compiler/2022.1.0/env/vars.sh
-   module use /mnt/experiments-efs/skylab-v6/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
+   module use /mnt/experiments-efs/skylab-v7/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.1.0
    module load stack-intel-oneapi-mpi/2021.6.0
    module load stack-python/3.10.8
    module available
 
-For ``spack-stack-1.5.0`` with GNU on the JCSDA R&D cluster (``hpc6a.48xlarge`` instances), run the following commands/load the following modules:
+For ``spack-stack-1.5.1`` with GNU on the JCSDA R&D cluster (``hpc6a.48xlarge`` instances), run the following commands/load the following modules:
 
    module purge
    ulimit -s unlimited
-   module use /mnt/experiments-efs/skylab-v6/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
+   module use /mnt/experiments-efs/skylab-v7/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/9.4.0
    module load stack-openmpi/4.1.4
    module load stack-python/3.10.8
@@ -658,24 +656,7 @@ For ``spack-stack-1.5.0`` with GNU on the JCSDA R&D cluster (``hpc6a.48xlarge`` 
 
 .. note::
 
-   Users reported problems with parallel applications using GNU+OpenMPI in earlier versions of spack-stack. This may still be the case for ``spack-stack-1.5.0``. We recommend using the well-tested Intel setup.
-
-For ``spack-stack-1.5.0`` with Intel on the JCSDA ROMEX cluster (``c6i.32xlarge`` instances), run the following commands/load the following modules:
-
-.. code-block:: console
-
-   module purge
-   ulimit -s unlimited
-   source /opt/intel/oneapi/compiler/2022.1.0/env/vars.sh
-   module use /mnt/experiments-efs/ROMEX/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2022.1.0
-   module load stack-intel-oneapi-mpi/2021.6.0
-   module load stack-python/3.10.8
-   module available
-
-.. note::
-
-   There is no GNU option for the ROMEX cluster.
+   The GNU stack is currently under testing and may not work as expected. We recommend using the well-tested Intel setup.
 
 -----------------------------
 Amazon Web Services Red Hat 8
