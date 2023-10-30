@@ -2,7 +2,7 @@ packages:
   all:
     compiler:: [intel@2021.10.0, gcc@12.2.0]
     providers:
-      mpi:: [cray-mpich@8.1.25] # intel-oneapi-mpi@2021.8.0, 
+      mpi:: [cray-mpich@8.1.25] # intel-oneapi-mpi@2021.10.0,
     target: [core2]
 
 ### MPI, Python, MKL
@@ -10,10 +10,10 @@ packages:
     buildable: False
   #intel-oneapi-mpi:
   #  externals:
-  #  - spec: intel-oneapi-mpi@2021.8.0%intel@2021.8.0
-  #    prefix: /glade/u/apps/derecho/23.06/spack/opt/spack/intel-oneapi-mpi/2021.8.0/oneapi/2023.0.0/mhf4
+  #  - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0
+  #    prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/intel-oneapi-mpi/2021.10.0/oneapi/2023.2.1/ve6v
   #    modules:
-  #    - intel-mpi/2021.8.0
+  #    - intel-mpi/2021.10.0
   cray-mpich:
     externals:
     - spec: cray-mpich@8.1.25%intel@2021.10.0 +wrappers
@@ -39,13 +39,13 @@ packages:
   autoconf:
     externals:
     - spec: autoconf@2.71
-      prefix: /glade/u/apps/derecho/23.06/opt
+      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: autoconf@2.69
       prefix: /usr
   automake:
     externals:
     - spec: automake@1.16.5
-      prefix: /glade/u/apps/derecho/23.06/opt
+      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: automake@1.15.1
       prefix: /usr
   binutils:
@@ -62,8 +62,8 @@ packages:
       prefix: /usr
   curl:
     externals:
-    - spec: curl@8.0.1+nghttp2
-      prefix: /glade/u/apps/derecho/23.06/opt
+    - spec: curl@8.1.2+nghttp2
+      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: curl@7.79.1+gssapi+ldap+nghttp2
       prefix: /usr
   cvs:
@@ -88,21 +88,21 @@ packages:
   flex:
     externals:
     - spec: flex@2.6.4+lex
-      prefix: /glade/u/apps/derecho/23.06/opt
+      prefix: /glade/u/apps/derecho/23.09/opt/view
   gawk:
     externals:
     - spec: gawk@4.2.1
       prefix: /usr
   git:
     externals:
-    - spec: git@2.40.0~tcltk
-      prefix: /glade/u/apps/derecho/23.06/opt
+    - spec: git@2.41.0+tcltk
+      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: git@2.35.3+tcltk
       prefix: /usr
   git-lfs:
     externals:
     - spec: git-lfs@3.3.0
-      prefix: /glade/u/apps/derecho/23.06/opt
+      prefix: /glade/u/apps/derecho/23.09/opt/view
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -118,7 +118,7 @@ packages:
   libtool:
     externals:
     - spec: libtool@2.4.7
-      prefix: /glade/u/apps/derecho/23.06/opt
+      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: libtool@2.4.6
       prefix: /usr
   m4:
@@ -128,8 +128,8 @@ packages:
   # Automatically detected, but don't use - missing "ninja" dependency
   #meson:
   #  externals:
-  #  - spec: meson@1.1.0
-  #    prefix: /glade/u/apps/derecho/23.06/opt
+  #  - spec: meson@1.2.0
+  #    prefix: /glade/u/apps/derecho/23.09/opt/view
   mysql:
     buildable: False
     externals:
@@ -140,7 +140,6 @@ packages:
     - spec: openssh@8.4p1
       prefix: /usr
   openssl:
-    buildable: False
     externals:
     - spec: openssl@1.1.1l
       prefix: /usr
@@ -158,8 +157,8 @@ packages:
       prefix: /usr
   texinfo:
     externals:
-    - spec: texinfo@7.0
-      prefix: /glade/u/apps/derecho/23.06/opt
+    - spec: texinfo@7.0.3
+      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: texinfo@6.5
       prefix: /usr
   wget:

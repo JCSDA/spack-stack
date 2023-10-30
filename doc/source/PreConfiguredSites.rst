@@ -375,6 +375,7 @@ The following is required for building new spack environments and for using spac
    module purge
    # ignore that the sticky module ncarenv/... is not unloaded
    export LMOD_TMOD_FIND_FIRST=yes
+   module load ncarenv/23.09
    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
    module load ecflow/5.8.4
    module load mysql/8.0.33
