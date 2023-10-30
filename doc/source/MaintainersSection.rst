@@ -257,18 +257,22 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules``.
 
-openmpi
-  need to load qt so to get consistent zlib (or just load zlib directly, check qt module)
+mvapich2
+  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2``. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``.
 
 .. code-block:: console
 
    module purge
    module load zlib/1.2.13
    module load ucx/1.13.1
-   ./configure \
-       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.5/gcc-11.3.1  \
-       --with-ucx=$UCX_ROOT \
-       --with-zlib=$ZLIB_ROOT
+   module load slurm/22.05.8
+   FFLAGS=-fallow-argument-mismatch ./configure \
+       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/mvapich-2.3.7/gcc-11.3.1 \
+       --with-pmi=pmi2 \
+       --with-pm=slurm \
+       --with-slurm-include=/opt/slurm-22.05.8/include \
+       --with-slurm-lib=/opt/slurm-22.05.8/lib \
+       2>&1 | tee log.config./configure
    make VERBOSE=1 -j4
    make check
    make install
