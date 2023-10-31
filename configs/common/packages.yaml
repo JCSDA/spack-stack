@@ -112,7 +112,7 @@
       version: ['0.37.0']
     hdf:
       version: ['4.2.15']
-      variants: ~fortran ~netcdf
+      variants: +external-xdr ~fortran ~netcdf
     hdf5:
       version: ['1.14.0']
       variants: +hl +fortran +mpi ~threadsafe +szip
