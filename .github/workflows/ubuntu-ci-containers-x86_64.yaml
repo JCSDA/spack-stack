@@ -48,16 +48,20 @@ jobs:
           if [[ $DOW == 1 || $DOW == 4 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
+            echo "::set-output name=report-status::true"
           elif [[ $DOW == 2 || $DOW == 5 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-gcc-openmpi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
+            echo "::set-output name=report-status::true"
           elif [[ $DOW == 3 || $DOW == 6 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-intel-impi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
+            echo "::set-output name=report-status::true"
           else
             # Day 7: The Sabbath of rest
             echo "Pruning all docker images"
             docker system prune -a -f
+            echo "::set-output name=report-status::false"
             exit 0
           fi
 
@@ -74,7 +78,8 @@ jobs:
 
       # Report status to JCSDA CI slack channel for nightly runs only
       - name: Report Status
-        if: always()
+        #if: always()
+        if: steps.create-ctr.report-status == true
         uses: ravsamhq/notify-slack-action@v1
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
