@@ -144,6 +144,7 @@ packages:
     - spec: openssh@8.4p1
       prefix: /usr
   openssl:
+    buildable: False
     externals:
     - spec: openssl@1.1.1l
       prefix: /usr
