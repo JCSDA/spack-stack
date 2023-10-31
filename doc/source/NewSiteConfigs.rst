@@ -36,13 +36,11 @@ Unlike in previous versions, the instructions below assume that ``Python`` is bu
 
 It is recommended to not use ``mpich`` or ``openmpi`` installed by Homebrew, because these packages are built using a flat namespace that is incompatible with the JEDI software. The spack-stack installations of ``mpich`` and ``openmpi`` use two-level namespaces as required.
 
-Intel Arm platform notes
+Mac native architectures
 ------------------------
-With the introduction of the Arm architecture M1 and M2 chips on Mac, the OS offers execution and building of two architectures via Apple's Rosetta tool. Rosetta is a binary translator that can convert Intel executable instructions to native Arm instructions at runtime. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture supported by Rosetta is denoted by ``x86_64`` and ``i386``.
+The Mac platforms are equipped with one of two native architectures: Intel or Arm. The Arm based Macs come with an Intel architecture emulator named Rosetta. Due to issues encountered with Rosetta we have decided to not support Rosetta meaning that support is limited to just the native (Intel and Arm) architectures. The Arm architecture is denoted by ``arm64`` and ``aarch64``, while the Intel architecture is denoted by ``x86_64`` and ``i386``.
 
-When you get a new Arm mac, you may need to install Rosetta. This can be done with the shell command ``softwareupdate --install-rosetta``. Note that applications are expected to run faster when the native Arm architecture is utilized, although Intel binaries are very close to native performance.
-
-A lot of binaries (iTerm2 for example) come in a "universal form" meaning they can run as Arm or Intel (you can toggle this by right clicking on the application in finder, selecting "get info", then checking the "Open using Rosetta" box). MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on. For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window.
+On the M1 Macs, a number of binaries (Terminal for example) come in a "universal form" meaning they can run as Arm or Intel. MacOS provides a utility called ``arch`` which is handy for monitoring which architecture you are running on. For example, entering ``arch`` without any arguments will return which architecture is running in your terminal window. Please take care to make sure your terminal is properly configured to run with the native architecture on your Mac.
 
 Homebrew notes
 --------------
@@ -81,12 +79,11 @@ These instructions are meant to be a reference that users can follow to set up t
 .. note::
    If you encounter build errors for gdal later on in spack-stack (see :numref:`Section %s <KnownIssues>`), you may need to install the full ``Xcode`` application and then switch ``xcode-select`` over with ``sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`` (change the path if you installed Xcode somewhere else).
 
-2. Set up a terminal and environment using the appropriate architecture
+2. Set up an environment using the native architecture
 
     a. Arm
 
-       In this case the Terminal application should already be running with the Arm architecture.
-       Open a terminal and verify that this is the case:
+       Open a terminal and verify that it is running with the Arm architecture.
 
        .. code-block:: console
            
@@ -101,25 +98,21 @@ These instructions are meant to be a reference that users can follow to set up t
            
            export PATH=$HOMEBREW_ROOT/bin:$PATH
 
+       .. note::
+           It is highly recommended to ensure that any remnants of a homebrew installation in ``/usr/local`` be removed on an Arm based Mac. For example, this situation can come about by migrating your old Mac (which was Intel based) to your new Mac which is Arm based.
+
     b. Intel
 
-       In this case, the idea is to create a new Terminal application that automatically runs bash in the Intel mode (using Rosetta2 underneath the hood.
+       Open a terminal and verify that it is running with the Intel architecture.
 
-       - Open Applications in Finder
+       .. code-block:: console
+           
+           # In the terminal enter
+           arch
+           # this should respond with "i386" or "x86_64"
 
-       - Duplicate your preferred terminal application (e.g. Terminal or iTerm)
-
-       - Rename the duplicate to, for example, "Terminal x86_64"
-
-       - Right-click / control+click on "Terminal x86_64", choose "Get Info"
-
-       - Select the box "Open using Rosetta" and close the window
-
-       Check to make sure you have ``/usr/local/bin`` in your PATH variable for homebrew.
-
-   From this point on, make sure you run the commands from the Terminal application matching the arhcitecture you are building.
-   That is, use "Terminal" if building for Arm, or use "Terminal x86_64" if building for Intel.
-   Verify that you have the correct architecture by running ``arch`` in the terminal window.
+   From this point on, make sure you run the commands from the Terminal application matching the native arhcitecture of your Mac.
+   That is, verify that you have the correct architecture by running ``arch`` in the terminal window.
    From ``arch`` you should see ``arm64`` for Arm, or see ``x86_64`` or ``i386`` for Intel.
 
 3. Install Homebrew
