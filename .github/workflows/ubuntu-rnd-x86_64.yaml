@@ -108,7 +108,7 @@ jobs:
           source ./setup.sh
           TODAY=$(date +%Y%m%d)
 
-          # Make environment for creating/updating binary cache
+          # Create actual environment from binary cache
           export TEMPLATE=${{ inputs.template || 'unified-dev' }}
           export ENVNAME=${TEMPLATE}.ubuntu-rnd-x86_64
           export ENVDIR=$PWD/envs/${ENVNAME}
@@ -144,40 +144,46 @@ jobs:
 
           # Install from binary cache
           echo "Install environment ${TEMPLATE} from binary cache ..."
-          spack install --fail-fast --cache-only --no-check-signature 2>&1 | tee log.install.${TEMPLATE}
+          spack install --fail-fast --no-check-signature 2>&1 | tee log.install.${TEMPLATE}
           spack clean -a
 
           spack module lmod refresh -y
           spack stack setup-meta-modules
           spack env deactivate
 
-      ### - name: test-env
-      ###   run: |
-      ###     source /etc/profile.d/z00_lmod.sh
-      ###     module use /usr/share/modules/modulefiles
-      ###     module use /opt/intel/mpi/2021.6.0/modulefiles
-      ###     module use /home/ubuntu/jedi/modulefiles
-      ###     TODAY=$(date +%Y%m%d)
-      ###     LAST_TO_KEEP=$(date --date='-7 days' +%Y%m%d)
-      ### 
-      ###     # DH* 20230302 - to avoid using padded_length for build caches,
-      ###     # always build in the same environment so that the length of the
-      ###     # path doesn't change - see also other 'DH* 20230302' changes below
-      ###     #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-rnd-x86_64
-      ###     export ENVNAME=rnd-env.ubuntu-rnd-x86_64
-      ###     # *DH
-      ###     export ENVDIR=$PWD/envs/${ENVNAME}
-      ###     ls -l ${ENVDIR}/install/modulefiles/Core
-      ### 
-      ###     module use ${ENVDIR}/install/modulefiles/Core
-      ###     module load stack-intel/2022.1.0
-      ###     module load stack-intel-oneapi-mpi/2021.6.0
-      ###     module load stack-python/3.10.8
-      ###     module available
-      ### 
-      ###     module load jedi-ufs-env/1.0.0
-      ###     module load ewok-env/1.0.0
-      ###     module load soca-env/1.0.0
-      ###     module list
+      - name: test-env
+        run: |
+          source /etc/profile.d/z00_lmod.sh
+          module use /usr/share/modules/modulefiles
+          module use /opt/intel/mpi/2021.6.0/modulefiles
+          module use /home/ubuntu/jedi/modulefiles
+
+          TODAY=$(date +%Y%m%d)
+          echo "TODAY is ${TODAY}"
+          ls -l /home/ubuntu/spack-stack/CI/unified-env/${TODAY}/modulefiles/Core
+
+          module use /home/ubuntu/spack-stack/CI/unified-env/${TODAY}/modulefiles/Core
+          module load stack-intel/2022.1.0
+          module load stack-intel-oneapi-mpi/2021.6.0
+          module load stack-python/3.10.8
+          module available
+
+          module load jedi-ufs-env/1.0.0
+          module load ewok-env/1.0.0
+          module load soca-env/1.0.0
+          module list
+
+          # Create empty file to signal that this environment is ready for testing
+          touch /home/ubuntu/spack-stack/CI/unified-env/${TODAY}.ready
+
+      - name: cleanup-old-envs
+        run: |
+          TODAY=$(date +%Y%m%d)
+          LAST_TO_KEEP=$(date --date='-3 days' +%Y%m%d)
+          echo "TODAY is ${TODAY}"
+          echo "LAST_TO_KEEP is ${LAST_TO_KEEP}"
+
+          cd /home/ubuntu/spack-stack/CI/unified-env
+          for dir in `ls -1`; do echo ${dir}; if [[ ${dir} < ${TODAY} ]]; then echo "Yikes, need to delete ${dir}"; fi; done
 
       ### ALSO NEEDED: CLEAN UP OF BUILDS OLDER THAN N DAYS, SLACK INTEGRATION
