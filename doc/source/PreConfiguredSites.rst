@@ -329,6 +329,9 @@ For ``spack-stack-1.5.0`` with Intel, load the following modules after loading m
 NCAR-Wyoming Cheyenne
 ---------------------
 
+.. note::
+   Cheyenne will be decommissioned end of 2023. The last supported version of spack-stack on this system is 1.5.0.
+
 The following is required for building new spack environments and for using spack to build and run software.
 
 .. code-block:: console

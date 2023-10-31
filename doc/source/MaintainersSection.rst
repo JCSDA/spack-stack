@@ -540,10 +540,6 @@ openmpi
 NCAR-Wyoming Derecho
 ------------------------------
 
-# DH* I don't think intel is needed anymore, but the other two are ...
-intel (temporary)
-  Until CISL makes the newest Intel compilers available in the default module tree, create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/intel`` and copy ``/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/Core/intel/2023.2.1.lua`` to this directory. Edit the file and remove the block of lines starting with ``-- Find custom moduleroots`` and ending with ``append_path("MODULEPATH", "/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/oneapi/2023.2.1")``. Further, replace ``icx`` with ``icc`` and ``icpx`` with ``icpc`` and correct the path in environment variables ``CC``, ``CXX``, etc.
-
 libfabric (temporary)
   Until CISL fixes its unusual way of setting up Cray module environments, it is necessary to create a libfabrics module to be able to use the cray-mpich MPI library without Cray compiler wrappers. Create a module file based on the template ``doc/modulefile_templates/libfabric`` in directory ``/glade/work/epicufsrt/contrib/spack-stack/derecho/libfabric``. This module is currently listed in the dependency modules for the ``cray-mpich`` MPI provider in the Derecho site config. It is also necessary to "include" (a confusing term, it used to be "whitelist") the ``cray-mpich`` module in Derecho's ``modules.yaml`` file, because the CISL ``cray-mpich`` module cannot be loaded without loading their compiler modules.
 
