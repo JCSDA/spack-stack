@@ -34,6 +34,16 @@ jobs:
           rm -fr /home/ubuntu/spack-stack/CI/tmp
           mkdir /home/ubuntu/spack-stack/CI/tmp
 
+          TODAY=$(date +%Y%m%d)
+          LAST_TO_KEEP=$(date --date='-1 days' +%Y%m%d)
+          echo "TODAY is ${TODAY}"
+          echo "LAST_TO_KEEP is ${LAST_TO_KEEP}"
+
+          cd /home/ubuntu/spack-stack/CI/unified-env
+          for dir in `ls -1`; do echo ${dir}; if [[ ${dir} < ${LAST_TO_KEEP} ]]; then echo "Yikes, need to delete ${dir}"; rm -fr ${dir}; fi; done
+
+      ### ALSO NEEDED: CLEAN UP OF BUILDS OLDER THAN N DAYS, SLACK INTEGRATION
+
       - name: checkout
         uses: actions/checkout@v3
         with:
@@ -102,6 +112,7 @@ jobs:
           #echo "Next steps ..."
 
           spack env deactivate
+          rm -fr /home/ubuntu/spack-stack/CI/tmp/spack-stack-dev-buildcache
 
       - name: create-env
         run: |
@@ -175,15 +186,3 @@ jobs:
 
           # Create empty file to signal that this environment is ready for testing
           touch /home/ubuntu/spack-stack/CI/unified-env/${TODAY}.ready
-
-      - name: cleanup-old-envs
-        run: |
-          TODAY=$(date +%Y%m%d)
-          LAST_TO_KEEP=$(date --date='-3 days' +%Y%m%d)
-          echo "TODAY is ${TODAY}"
-          echo "LAST_TO_KEEP is ${LAST_TO_KEEP}"
-
-          cd /home/ubuntu/spack-stack/CI/unified-env
-          for dir in `ls -1`; do echo ${dir}; if [[ ${dir} < ${TODAY} ]]; then echo "Yikes, need to delete ${dir}"; fi; done
-
-      ### ALSO NEEDED: CLEAN UP OF BUILDS OLDER THAN N DAYS, SLACK INTEGRATION
