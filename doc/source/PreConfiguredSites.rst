@@ -48,7 +48,7 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Nautilus                         | AOCC            | *currently not supported*                                                                               | Dom Heinzeller / Sarah King   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | S4                               | Intel           | ``/data/prod/jedi/spack-stack/spack-stack-1.5.0/envs/unified-env``                                      | Dom Heinzeller / Mark Potts   |
+|                     | S4                               | Intel           | ``/data/prod/jedi/spack-stack/spack-stack-1.5.1/envs/unified-env``                                      | Dom Heinzeller / Mark Potts   |
 | Univ. of Wisconsin  +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | S4                               | GCC             | *currently not supported*                                                                               | Dom Heinzeller / Mark Potts   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -620,11 +620,11 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.5.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.5.1`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /data/prod/jedi/spack-stack/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
+   module use /data/prod/jedi/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.10.8
