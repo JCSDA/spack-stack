@@ -28,6 +28,11 @@ packages:
       modules:
       - openmpi/3.1.4
 
+### Modifications of common packages
+  # Pin flex to avoid duplicate packages
+  flex:
+    version: ['2.6.4']
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -44,10 +49,6 @@ packages:
   berkeley-db:
     externals:
     - spec: berkeley-db@5.3.21
-      prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
       prefix: /usr
   cmake:
     externals:
@@ -77,10 +78,6 @@ packages:
   findutils:
     externals:
     - spec: findutils@4.5.11
-      prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.5.37+lex
       prefix: /usr
   gawk:
     externals:
