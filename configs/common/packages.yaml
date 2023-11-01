@@ -112,7 +112,7 @@
       version: ['0.37.0']
     hdf:
       version: ['4.2.15']
-      variants: ~fortran ~netcdf
+      variants: +external-xdr ~fortran ~netcdf
     hdf5:
       version: ['1.14.0']
       variants: +hl +fortran +mpi ~threadsafe +szip
@@ -207,6 +207,8 @@
     proj:
       version: ['8.1.0']
       variants: ~tiff
+    # Check site configs for the following systems when making changes here:
+    # Derecho, Narwhal, Gaea-C5
     python:
       version: ['3.10.8']
     py-attrs:
