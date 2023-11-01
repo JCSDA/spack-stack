@@ -13,7 +13,7 @@ while [ $path != '/' ]; do
     iret=1
   fi
   if [ "${o_perms:2:3}" != 'x' ]; then
-    echo "Path $path is not accessible by non-owners; set o+x" 1&>2
+    echo "Path $path is not accessible by non-owners; set o+x" 1>&2
     iret=1
   fi
   path=$(dirname $path)
