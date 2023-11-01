@@ -36,9 +36,9 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.1/envs/unified-env``              | Dom Heinzeller / Cam Book     |
 | NOAA (RDHPCS)       +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hera^**                          | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-noavx512``            | Mark Potts / Dom Heinzeller   |
+|                     | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env-noavx512``            | Mark Potts / Dom Heinzeller   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Jet^**                           | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
+|                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.0/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.1/envs/unified-env-intel-2021.4.0``               | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -58,12 +58,10 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 + Amazon Web Services +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Parallelcluster JCSDA R&D        | Intel           | ``/mnt/experiments-efs/skylab-v7/spack-stack-1.5.1/envs/unified-env``                                   | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)^** | Intel           | ``/contrib/spack-stack/spack-stack-1.5.0/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
+| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.5.1/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
 ^* Uses a different ``wgrib2`` version 3.1.1 than the default 2.0.8.
-
-^** Has an additional package ``yafyaml`` installed in the unified environment.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
@@ -307,9 +305,11 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
+   # ignore that the sticky module ncarenv/... is not unloaded
    export LMOD_TMOD_FIND_FIRST=yes
+   module load ncarenv/23.10
    module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
-   module load python/3.7.9
+   # NEED TO REBUILD
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
@@ -448,7 +448,8 @@ For ``spack-stack-1.5.0`` with Intel, proceed with loading the following modules
 
 .. code-block:: console
 
-   module use /contrib/spack-stack/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
+# SO FAR ONLY GCLOUD
+   module use /contrib/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.3.0
    module load stack-intel-oneapi-mpi/2021.3.0
    module load stack-python/3.10.8

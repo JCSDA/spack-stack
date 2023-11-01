@@ -1,23 +1,20 @@
 packages:
   all:
-    compiler:: [intel@2022.0.2]
+    compiler:: [gcc@12.2.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1]
+      mpi:: [openmpi@4.1.6]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  intel-oneapi-mpi:
+  openmpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-      prefix: /glade/u/apps/opt/intel/2022.1
+    - spec: openmpi@4.1.6%gcc@12.2.0+cuda~cxx~cxx_exceptions~java+lustre~memchecker+pmi+static~wrapper-rpath fabrics=ucx schedulers=tm
+      prefix: /glade/u/apps/casper/23.10/spack/opt/spack/openmpi/4.1.6/gcc/12.2.0/yia4
       modules:
-      - intel-oneapi-mpi/2021.5.1.lua
-
-### Modification of common packages
-  # Default gdal (3.7.0) doesn't build on Casper with intel@2022.0.2
-  gdal:
-    version:: ['3.6.3']
+      - openmpi/4.1.6
+      - ucx/1.14.1
+      - cuda/12.2.1
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -176,8 +173,8 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.15.2
-      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2
+    - spec: qt@5.14.2
+      prefix: /glade/u/apps/casper/23.10/opt/view
   rsync:
     externals:
     - spec: rsync@3.1.2
