@@ -28,6 +28,7 @@
       variants: +pic
     # Newer versions of CDO require the C++-17 standard, which doesn't
     # work with all compilers that are currently in use in spack-stack
+    # When making changes here, also check Hercules site config
     cdo:
       version: ['2.0.5']
       variants: ~openmp
