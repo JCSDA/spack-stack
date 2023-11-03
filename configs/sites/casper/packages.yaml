@@ -16,6 +16,11 @@ packages:
       - ucx/1.14.1
       - cuda/12.2.1
 
+### Modifications of common packages
+  # Version 2.0.5 doesn't compile on Hercules with gcc
+  cdo
+    version:: ['2.2.0']
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -72,6 +77,13 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
   findutils:
     externals:
     - spec: findutils@4.8.0
@@ -183,16 +195,11 @@ packages:
     externals:
     - spec: subversion@1.14.1
       prefix: /usr
-  swig:
-    externals:
-    - spec: swig@2.0.10
-      prefix: /usr
   tar:
     externals:
     - spec: tar@1.34
       prefix: /usr
   texinfo:
-    externals:
     externals:
     - spec: texinfo@7.0.3
       prefix: /glade/u/apps/casper/23.10/opt/view
