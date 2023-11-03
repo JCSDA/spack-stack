@@ -18,8 +18,10 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 +=====================+==================================+=================+=========================================================================================================+===============================+
 | **HPC platforms**                                                                                                                                                                                                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hercules^*                       | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/unified-env``                   | Cam Book / Dom Heinzeller     |
-| MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
+|                     | Hercules^*                       | Intel           | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/unified-env``                   | Cam Book / Dom Heinzeller     |
+|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
+| MSU                 | Hercules^*                       | GCC             | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/ue-gcc12-mvap2``                | Cam Book / Dom Heinzeller     |
+|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.0/envs/unified-env``                      | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NASA                | Discover                         | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.5.1/envs/unified-env``                                  | Dom Heinzeller / ???          |
@@ -134,8 +136,8 @@ For ``spack-stack-1.5.1`` with GNU, load the following modules after loading mys
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
-   module load stack-gcc/11.3.1
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.5.1/envs/ue-gcc12-mvap2/install/modulefiles/Core
+   module load stack-gcc/12.2.0
    module load stack-mvapich2/2.3.7
    module load stack-python/3.10.8
    module available

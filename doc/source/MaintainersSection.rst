@@ -258,20 +258,21 @@ mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules``.
 
 mvapich2
-  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2``. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``.
+  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2``. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``. **Important:** We identified a bug in ``gcc@11`` + ``mvapich2@2.3.7`` in MPI allgather operations. It is therefore necessary to switch to a newer GCC compiler.
 
 .. code-block:: console
 
    module purge
+   module load gcc/12.2.0
    module load zlib/1.2.13
    module load ucx/1.13.1
-   module load slurm/22.05.8
+   module load slurm/23.02.6
    FFLAGS=-fallow-argument-mismatch ./configure \
        --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/mvapich-2.3.7/gcc-11.3.1 \
        --with-pmi=pmi2 \
        --with-pm=slurm \
-       --with-slurm-include=/opt/slurm-22.05.8/include \
-       --with-slurm-lib=/opt/slurm-22.05.8/lib \
+       --with-slurm-include=/opt/slurm-23.02.6/include \
+       --with-slurm-lib=/opt/slurm-23.02.6/lib \
        2>&1 | tee log.config./configure
    make VERBOSE=1 -j4
    make check
