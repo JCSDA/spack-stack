@@ -2,7 +2,7 @@
 
 To avoid hardcoding specs in the generic container recipes, we keep the specs list empty (`specs: []`) and manually add the specs for the particular spack-stack release and application as listed below, *after* running `spack stack create ctr`.
 
-### spack-stack-1.5.0 / skylab-6.0.0 containers for fv3-jedi and mpas-jedi (but not for ufs-jedi)
+### spack-stack-1.5.1 / skylab-6.1.0 containers for fv3-jedi and mpas-jedi (but not for ufs-jedi)
 ```
   specs: [base-env@1.0.0, jedi-base-env@1.0.0, ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@12.0.0, ecbuild@3.7.2, eccodes@2.27.0, ecflow@5,
