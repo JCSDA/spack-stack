@@ -48,20 +48,14 @@ jobs:
           if [[ $DOW == 1 || $DOW == 4 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
-            echo "::set-output name=report-status::true"
           elif [[ $DOW == 2 || $DOW == 5 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-gcc-openmpi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
-            echo "::set-output name=report-status::true"
           elif [[ $DOW == 3 || $DOW == 6 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-intel-impi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
-            echo "::set-output name=report-status::true"
           else
-            # Day 7: The Sabbath of rest
-            echo "Pruning all docker images"
-            docker system prune -a -f
-            echo "::set-output name=report-status::false"
+            # Day 7: The Sabbath of rest (but do some house keeping later on)
             exit 0
           fi
 
@@ -78,8 +72,7 @@ jobs:
 
       # Report status to JCSDA CI slack channel for nightly runs only
       - name: Report Status
-        #if: always()
-        if: steps.create-ctr.report-status == true
+        if: always()
         uses: ravsamhq/notify-slack-action@v1
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
@@ -98,3 +91,16 @@ jobs:
           # Default: notify channel
           mention_groups: '!channel'
           mention_groups_when: 'failure,warnings'
+
+      # We can only clean the docker image registry *after* reporting
+      # the status to the CI slack channel, because the cleanup is
+      # deleting the docker image for ravsamhq/notify-slack-action@v1
+      - name: clean-docker-registry
+        if: always()
+        run: |
+          # Get day of week (only run this on Sunday, which is 7)
+          DOW=$(date +%u)
+          if [[ $DOW == 7 ]]; then
+            echo "Pruning all docker images"
+            docker system prune -a -f
+          fi
