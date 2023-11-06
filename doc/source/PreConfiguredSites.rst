@@ -54,7 +54,7 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | **Cloud platforms**                                                                                                                                                                                                |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.5.0/envs/unified-env``                                       | Dom Heinzeller / ???          |
+|                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.5.1/envs/unified-env``                                       | Dom Heinzeller / ???          |
 + Amazon Web Services +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Parallelcluster JCSDA R&D        | Intel           | ``/mnt/experiments-efs/skylab-v7/spack-stack-1.5.1/envs/unified-env``                                   | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -673,15 +673,15 @@ For ``spack-stack-1.5.1`` with GNU on the JCSDA R&D cluster (``hpc6a.48xlarge`` 
 Amazon Web Services Red Hat 8
 -----------------------------
 
-Use a c6i.4xlarge instance or larger if running out of memory with AMI "skylab-6.0.0-redhat8" (ami-059d445a90ad8b792 in region us-east-1, ami-01fcf5d75ced5a046 in region us-east-2).
+Use a c6i.4xlarge instance or larger if running out of memory with AMI "skylab-6.1.0-redhat8" (ami-06497c2e0f2ded6cf in region us-east-1, ami-0b1ce08e2fd42333b in region us-east-2).
 
-For ``spack-stack-1.5.0``, run:
+For ``spack-stack-1.5.1``, run:
 
 .. code-block:: console
 
    ulimit -s unlimited
    scl enable gcc-toolset-11 bash
-   module use /home/ec2-user/spack-stack/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
+   module use /home/ec2-user/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.5
    module load stack-python/3.10.8
