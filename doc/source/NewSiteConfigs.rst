@@ -269,9 +269,9 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   vi envs/unified-env.mymacos/spack.yaml
-   vi envs/unified-env.mymacos/common/*.yaml
-   vi envs/unified-env.mymacos/site/*.yaml
+   vi spack.yaml
+   vi common/*.yaml
+   vi site/*.yaml
 
 10. Process the specs and install
 
@@ -283,8 +283,8 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. code-block:: console
 
    spack concretize 2>&1 | tee log.concretize
-   util/show_duplicate_packages.py -d [-c] log.concretize
-   spack install [--verbose] [--fail-fast]
+   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
+   spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 11. Create lmod module files
 
@@ -301,7 +301,7 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. note::
    Unlike preconfigured environments and linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
 
-13. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+13. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux:
