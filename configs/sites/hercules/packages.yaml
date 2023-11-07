@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.9.0, gcc@11.3.1]
+    compiler:: [intel@2021.9.0, gcc@12.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.9.0, mvapich2@2.3.7]
 
@@ -15,13 +15,16 @@ packages:
       - intel-oneapi-mpi/2021.9.0
   mvapich2:
     externals:
-    - spec: mvapich2@2.3.7%gcc@11.3.1~cuda~debug~regcache~wrapperrpath process_managers=slurm
-      prefix: /work/noaa/epic/role-epic/spack-stack/hercules/mvapich2-2.3.7/gcc-11.3.1
+    - spec: mvapich2@2.3.7%gcc@12.2.0~cuda~debug~regcache~wrapperrpath process_managers=slurm
+      prefix: /work/noaa/epic/role-epic/spack-stack/hercules/mvapich2-2.3.7/gcc-12.2.0
       modules:
-      - slurm/22.05.8
-      - mvapich2/2.3.7
+      - gcc/12.2.0
+      - mvapich2/2.3.7-gcc12
 
 ### Modifications of common packages
+  # Version 2.0.5 doesn't compile on Hercules with gcc
+  cdo:
+    version:: ['2.2.0']
   # Version 2.0.8 doesn't compile on Hercules
   wgrib2:
     version:: ['3.1.1']

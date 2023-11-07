@@ -29,6 +29,7 @@ spack:
       - fms@release-jcsda
       - fms@2023.01
       - fms@2023.02.01
+      - fms@2023.03
 
       # Various crtm tags (list all to avoid duplicate packages)
       - crtm@2.4.0
