@@ -104,7 +104,6 @@ jobs:
 
           # base-env
           echo "base-env ..."
-<<<<<<< HEAD
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.3.base-env
           spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/
 
@@ -112,19 +111,6 @@ jobs:
           echo "${{ inputs.template || 'unified-dev' }} ..."
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.3.${{ inputs.template || 'unified-dev' }}
           spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/
-=======
-          # DH* 20230721 - todo remove --no-checksum
-          spack install --fail-fast --source --no-check-signature --no-checksum base-env 2>&1 | tee log.install.apple-clang-14.0.3.base-env
-          # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
-
-          # the rest
-          echo "${{ inputs.template || 'unified-dev' }} ..."
-          # DH* 20230721 - todo remove --no-checksum
-          spack install --fail-fast --source --no-check-signature --no-checksum 2>&1 | tee log.install.apple-clang-14.0.3.${{ inputs.template || 'unified-dev' }}
-          # DH* 20230721 - todo remove || true (this was here all the time, but should not be needed if spack creates buildcaches correctly)
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ || true
->>>>>>> 883ebcb2509df68702a7207bdd410926f20e3e9c
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
@@ -150,11 +136,7 @@ jobs:
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.3
-<<<<<<< HEAD
           module load stack-openmpi/4.1.6
-=======
-          module load stack-openmpi/4.1.5
->>>>>>> 883ebcb2509df68702a7207bdd410926f20e3e9c
           module load stack-python/3.10.8
           module available
 
