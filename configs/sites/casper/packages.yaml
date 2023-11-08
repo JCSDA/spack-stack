@@ -1,32 +1,36 @@
 packages:
   all:
-    compiler:: [intel@2022.0.2]
+    compiler:: [gcc@12.2.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1]
+      mpi:: [openmpi@4.1.6]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  intel-oneapi-mpi:
+  openmpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-      prefix: /glade/u/apps/opt/intel/2022.1
+    - spec: openmpi@4.1.6%gcc@12.2.0+cuda~cxx~cxx_exceptions~java+lustre~memchecker+pmi+static~wrapper-rpath fabrics=ucx schedulers=tm
+      prefix: /glade/u/apps/casper/23.10/spack/opt/spack/openmpi/4.1.6/gcc/12.2.0/yia4
       modules:
-      - intel-oneapi-mpi/2021.5.1.lua
+      - openmpi/4.1.6
+      - ucx/1.14.1
+      - cuda/12.2.1
 
-### Modification of common packages
-  # Default gdal (3.7.0) doesn't build on Casper with intel@2022.0.2
-  gdal:
-    version:: ['3.6.3']
+### Modifications of common packages
+  # Version 2.0.5 doesn't compile on Hercules with gcc
+  cdo
+    version:: ['2.2.0']
 
 ### All other external packages listed alphabetically
   autoconf:
     externals:
-    - spec: autoconf@2.69
-      prefix: /usr
+    - spec: autoconf@2.71
+      prefix: /glade/u/apps/casper/23.10/opt/view
   automake:
     externals:
-    - spec: automake@1.13.4
+    - spec: automake@1.16.5
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: automake@1.15.1
       prefix: /usr
   berkeley-db:
     externals:
@@ -34,11 +38,15 @@ packages:
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.27.43
+    - spec: binutils@2.41.0
       prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.32
       prefix: /usr
   cmake:
     externals:
@@ -53,11 +61,13 @@ packages:
       prefix: /usr
   cvs:
     externals:
-    - spec: cvs@1.11.23
+    - spec: cvs@1.12.13
       prefix: /usr
   curl:
     externals:
-    - spec: curl@7.29.0+gssapi+ldap+nghttp2
+    - spec: curl@8.1.2+nghttp2
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: curl@8.0.1+gssapi+ldap+nghttp2
       prefix: /usr
   diffutils:
     externals:
@@ -65,7 +75,7 @@ packages:
       prefix: /usr
   doxygen:
     externals:
-    - spec: doxygen@1.8.5+graphviz~mscgen
+    - spec: diffutils@3.6
       prefix: /usr
   ecflow:
     buildable: False
@@ -74,23 +84,19 @@ packages:
       prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
-  file:
-    externals:
-    - spec: file@5.11
-      prefix: /usr
   findutils:
     externals:
-    - spec: findutils@4.5.11
+    - spec: findutils@4.8.0
       prefix: /usr
   flex:
     # Must set buildable: false to avoid duplicate packages
-    buildable: false
+    #buildable: false
     externals:
-    - spec: flex@2.5.37+lex
-      prefix: /usr
+    - spec: flex@2.6.4+lex
+      prefix: /glade/u/apps/casper/23.10/opt/view
   gawk:
     externals:
-    - spec: gawk@4.0.2
+    - spec: gawk@4.2.1
       prefix: /usr
   gettext:
     externals:
@@ -102,21 +108,21 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.33.1
-      modules:
-      - git/2.33.1
+    - spec: git@2.41.0~tcltk
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: git@2.35.3+tcltk
+      prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@3.0.2
-      modules:
-      - git/2.33.1
+    - spec: git-lfs@3.3.0
+      prefix: /glade/u/apps/casper/23.10/opt/view
   gmake:
     externals:
-    - spec: gmake@3.82
+    - spec: gmake@4.2.1
       prefix: /usr
   groff:
     externals:
-    - spec: groff@1.22.2
+    - spec: groff@1.22.4
       prefix: /usr
   krb5:
     buildable: False
@@ -131,15 +137,13 @@ packages:
     variants: ~gssapi
   libtool:
     externals:
-    - spec: libtool@2.4.2
-      prefix: /usr
-  libxpm:
-    externals:
-    - spec: libxpm@4.11.0
+    - spec: libtool@2.4.7
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: libtool@2.4.6
       prefix: /usr
   m4:
     externals:
-    - spec: m4@1.4.16
+    - spec: m4@1.4.18
       prefix: /usr
   mysql:
     buildable: False
@@ -150,34 +154,31 @@ packages:
       - mysql/8.0.31
   ncurses:
     externals:
-    - spec: ncurses@5.9.20130511+termlib abi=5
-      prefix: /usr
+    - spec: ncurses@6.4.20221231+termlib abi=6
+      prefix: /glade/u/apps/casper/23.10/opt/view
   # Old re2c on Casper unable to build newer versions of ninja
   ninja:
     version:: ['1.10.2']
   openssh:
     externals:
-    - spec: openssh@7.4p1
+    - spec: openssh@8.4p1
       prefix: /usr
   openssl:
     externals:
-    - spec: openssl@1.0.2k-fips
+    - spec: openssl@1.1.1l
       prefix: /usr
-  # Pin patchelf to 0.15.0 for Intel compiler (no C++-17 features)
-  #patchelf:
-  #  version:: ['0.15.0']
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
       prefix: /usr
   pkg-config:
     externals:
-    - spec: pkg-config@0.27.1
+    - spec: pkg-config@0.29.2
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.15.2
-      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2
+    - spec: qt@5.14.2
+      prefix: /glade/u/apps/casper/23.10/opt/view
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -192,19 +193,17 @@ packages:
       prefix: /usr
   subversion:
     externals:
-    - spec: subversion@1.7.14
-      prefix: /usr
-  swig:
-    externals:
-    - spec: swig@2.0.10
+    - spec: subversion@1.14.1
       prefix: /usr
   tar:
     externals:
-    - spec: tar@1.26
+    - spec: tar@1.34
       prefix: /usr
   texinfo:
     externals:
-    - spec: texinfo@5.1
+    - spec: texinfo@7.0.3
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: texinfo@6.5
       prefix: /usr
   texlive:
     externals:

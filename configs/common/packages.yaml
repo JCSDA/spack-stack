@@ -28,6 +28,7 @@
       variants: +pic
     # Newer versions of CDO require the C++-17 standard, which doesn't
     # work with all compilers that are currently in use in spack-stack
+    # When making changes here, also check Hercules/Casper site configs
     cdo:
       version: ['2.0.5']
       variants: ~openmp
@@ -61,7 +62,7 @@
     # config and update the projections for lmod/tcl.
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
-      version: ['8.4.2']
+      version: ['8.5.0']
       variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
       require:
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
@@ -95,7 +96,7 @@
     gfsio:
       version: ['1.4.1']
     gftl-shared:
-      version: ['1.5.0']
+      version: ['1.6.1']
     #git-lfs:
       # Assume git-lfs is provided, hard to install
       # because of dependencies on go/go-bootstrap.
@@ -112,7 +113,7 @@
       version: ['0.37.0']
     hdf:
       version: ['4.2.15']
-      variants: ~fortran ~netcdf
+      variants: +external-xdr ~fortran ~netcdf
     hdf5:
       version: ['1.14.0']
       variants: +hl +fortran +mpi ~threadsafe +szip
@@ -141,7 +142,7 @@
       # errors with intel@2021.7.0+, see
       # https://github.com/JCSDA/spack-stack/issues/769
       # also: ... extdata2g segfault UFS?
-      version: ['2.35.2']
+      version: ['2.40.3']
       variants: ~shared ~extdata2g ~pflogger
     # If making changes here, also check the Discover site config and the CI workflows
     met:
@@ -207,6 +208,8 @@
     proj:
       version: ['8.1.0']
       variants: ~tiff
+    # Check site configs for the following systems when making changes here:
+    # Derecho, Narwhal, Gaea-C5
     python:
       version: ['3.10.8']
     py-attrs:
