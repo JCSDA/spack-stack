@@ -1,0 +1,35 @@
+#%Module1.0
+
+module-whatis "Provides an mvapich2-2.3.7 installation for use with spack and gcc-13.3.1."
+
+conflict openmpi
+conflict mvapich2
+conflict mpi
+conflict intel-mpi
+conflict intel-oneapi-mpi
+
+proc ModulesHelp { } {
+puts stderr "Provides an mvapich2-2.3.7 installation for use with spack and gcc-13.3.1."
+}
+
+if { [ module-info mode load ] && ![ is-loaded slurm/22.05.8 ] } {
+    module load slurm/22.05.8
+}
+#if { [ module-info mode load ] && ![ is-loaded ucx/1.13.1 ] } {
+#    module load ucx/1.13.1
+#`}
+
+# Set this value
+set MPICH_PATH "/work/noaa/epic/role-epic/spack-stack/hercules/mvapich2-2.3.7/gcc-11.3.1"
+
+prepend-path PATH "${MPICH_PATH}/bin"
+prepend-path LD_LIBRARY_PATH "${MPICH_PATH}/lib"
+prepend-path LIBRARY_PATH "${MPICH_PATH}/lib"
+prepend-path CPATH "${MPICH_PATH}/include"
+prepend-path CMAKE_PREFIX_PATH "${MPICH_PATH}"
+prepend-path MANPATH "${MPICH_PATH}/share/man"
+
+# Settings specific for Hercules
+setenv MPI_ROOT ${MPICH_PATH}
+setenv SLURM_MPI_TYPE "pmi2"
+setenv MV2_HOMOGENEOUS_CLUSTER "1"
