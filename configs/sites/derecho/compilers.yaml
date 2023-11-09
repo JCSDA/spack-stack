@@ -10,15 +10,13 @@ compilers::
       operating_system: sles15
       target: x86_64
       modules:
-      - ncarenv/23.06
-      - intel/2023.2.1
+      - ncarenv/23.09
+      - intel-classic/2023.2.1
       environment:
         prepend_path:
           PATH: '/opt/cray/pe/gcc/12.2.0/bin'
           CPATH: '/opt/cray/pe/gcc/12.2.0/snos/include'
-          LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/default/snos/lib:/opt/cray/pe/gcc/default/snos/lib64'
-        set:
-          CRAYPE_LINK_TYPE: 'dynamic'
+          LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/12.2.0/snos/lib:/opt/cray/pe/gcc/12.2.0/lib64'
       extra_rpaths: []
   - compiler:
       spec: gcc@12.2.0
@@ -31,7 +29,7 @@ compilers::
       operating_system: sles15
       target: x86_64
       modules:
-      - ncarenv/23.06
+      - ncarenv/23.09
       - gcc/12.2.0
       environment:
         set:
