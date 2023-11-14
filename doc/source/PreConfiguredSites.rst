@@ -680,7 +680,7 @@ For ``spack-stack-1.5.1``, run:
 .. code-block:: console
 
    ulimit -s unlimited
-   scl enable gcc-toolset-11 bash
+   scl_source enable gcc-toolset-11
    module use /home/ec2-user/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/11.2.1
    module load stack-openmpi/4.1.5
