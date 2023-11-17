@@ -269,9 +269,9 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   vi envs/unified-env.mymacos/spack.yaml
-   vi envs/unified-env.mymacos/common/*.yaml
-   vi envs/unified-env.mymacos/site/*.yaml
+   vi spack.yaml
+   vi common/*.yaml
+   vi site/*.yaml
 
 10. Process the specs and install
 
@@ -283,8 +283,8 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. code-block:: console
 
    spack concretize 2>&1 | tee log.concretize
-   util/show_duplicate_packages.py -d [-c] log.concretize
-   spack install [--verbose] [--fail-fast]
+   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
+   spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 11. Create lmod module files
 
@@ -301,7 +301,7 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. note::
    Unlike preconfigured environments and linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
 
-13. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+13. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux:
@@ -447,7 +447,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   export SPACK_SYSTEM_CONFIG_PATH="$PWD/envs/unified-env.mylinux/site"
+   export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
 
 4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
 
@@ -498,14 +498,14 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:fontconfig:variants:+pic"
    spack config add "packages:pixman:variants:+pic"
    spack config add "packages:cairo:variants:+pic"
-   spack config add "packages:libffi:version:[3.3]"
-   spack config add "packages:flex:version:[2.6.4]"
+   spack config add "packages:libffi:version:['3.3']"
+   spack config add "packages:flex:version:['2.6.4']"
 
 9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
 
 .. code-block:: console
 
-   sed -i 's/tcl/lmod/g' envs/unified-env.mylinux/site/modules.yaml
+   sed -i 's/tcl/lmod/g' site/modules.yaml
 
 10. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
 
@@ -514,13 +514,13 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    definitions:
    - compilers: ['%gcc']
 
-11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mylinux/spack.yaml``, etc.
+11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``spack.yaml``, etc.
 
 .. code-block:: console
 
-   vi envs/unified-env.mylinux/spack.yaml
-   vi envs/unified-env.mylinux/common/*.yaml
-   vi envs/unified-env.mylinux/site/*.yaml
+   vi spack.yaml
+   vi common/*.yaml
+   vi site/*.yaml
 
 12. Process the specs and install
 
@@ -532,8 +532,8 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. code-block:: console
 
    spack concretize 2>&1 | tee log.concretize
-   util/show_duplicate_packages.py -d [-c] log.concretize
-   spack install [--verbose] [--fail-fast]
+   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
+   spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
 
@@ -547,4 +547,4 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 
    spack stack setup-meta-modules
 
-15. You now have a spack-stack environment that can be accessed by running ``module use ./envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+15. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.

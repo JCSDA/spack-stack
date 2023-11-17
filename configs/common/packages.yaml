@@ -28,6 +28,7 @@
       variants: +pic
     # Newer versions of CDO require the C++-17 standard, which doesn't
     # work with all compilers that are currently in use in spack-stack
+    # When making changes here, also check Hercules/Casper site configs
     cdo:
       version: ['2.0.5']
       variants: ~openmp
@@ -112,7 +113,7 @@
       version: ['0.37.0']
     hdf:
       version: ['4.2.15']
-      variants: ~fortran ~netcdf
+      variants: +external-xdr ~fortran ~netcdf
     hdf5:
       version: ['1.14.0']
       variants: +hl +fortran +mpi ~threadsafe +szip
@@ -207,6 +208,8 @@
     proj:
       version: ['8.1.0']
       variants: ~tiff
+    # Check site configs for the following systems when making changes here:
+    # Derecho, Narwhal, Gaea-C5
     python:
       version: ['3.10.8']
     py-attrs:
