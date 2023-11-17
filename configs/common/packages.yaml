@@ -45,7 +45,7 @@
       version: ['2.27.0']
       variants: +png
     ecflow:
-      version: ['5.8.4']
+      version: ['5.11.4']
       variants: +ui
     eckit:
       version: ['1.24.4']
