@@ -82,7 +82,7 @@
       #version: ['2023.01']
       #variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
       version: ['2023.02.01']
-      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +use_fmsio
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io
     fontconfig:
       variants: +pic
     freetype:
