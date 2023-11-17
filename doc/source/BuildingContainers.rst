@@ -25,7 +25,7 @@ It is important to know that container builds do not allow for multiple versions
    spack stack create ctr -h
 
    # Create container spack definition (spack.yaml) in directory envs/<container-config>
-   spack stack create ctr container=docker-ubuntu-gcc-openmpi --specs=jedi-ci
+   spack stack create ctr --container=docker-ubuntu-gcc-openmpi --specs=jedi-ci
 
    # Descend into container environment directory
    cd envs/docker-ubuntu-gcc-openmpi
