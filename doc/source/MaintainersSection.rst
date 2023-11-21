@@ -337,7 +337,7 @@ NAVY HPCMP Narwhal
 On Narwhal, ``git-lfs``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
 
 git-lfs
-   The following instructions install ``git-lfs`` in ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the default version for Narwhal. First, download the ``git-lfs`` RPM on a system with full internet access (e.g., Cheyenne) using ``wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm`` and copy this file to ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src``. Then switch to Narwhal and run the following commands. 
+   The following instructions install ``git-lfs`` in ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the default version for Narwhal. First, download the ``git-lfs`` RPM on a system with full internet access (e.g., Derecho) using ``wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm`` and copy this file to ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src``. Then switch to Narwhal and run the following commands. 
 
    .. code-block:: console
 
@@ -426,63 +426,6 @@ ecflow
 
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/epicufsrt/contrib/spack-stack/casper/mysql-8.0.31``.
-
-.. _MaintainersSection_Cheyenne:
-
-------------------------------
-NCAR-Wyoming Cheyenne
-------------------------------
-
-On Cheyenne, there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops. This is why an older version Intel 19 is used here and on Casper.
-
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Because of the workaround for the compilers, the ``miniconda`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Don't forget to log off and back on to forget about the conda environment.
-
-qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/glade/work/jedipara/cheyenne/spack-stack/qt-5.15.2``. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``.
-
-.. code-block:: console
-
-   module purge
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load gnu/10.1.0
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the workaround for the compilers, the ``qt`` module should be placed in ``/glade/work/jedipara/cheyenne/spack-stack/misc``. Also, because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2``).
-
-.. code-block:: console
-
-   module purge
-   export LMOD_TMOD_FIND_FIRST=yes
-   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-   module load gnu/10.1.0
-   module load miniconda/3.9.12
-   module load qt/5.15.2
-   module load cmake/3.18.2
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/jedipara/cheyenne/spack-stack/mysql-8.0.31``.
-
-openmpi
-
-.. code-block:: console
-
-    module purge
-    export LMOD_TMOD_FIND_FIRST=yes
-    module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-    module load gnu/10.1.0
-
-   ./configure \
-       --prefix=/glade/work/epicufsrt/contrib/spack-stack/openmpi-4.1.5 \
-       --without-verbs \
-       --with-ucx=/glade/u/apps/ch/opt//ucx/1.12.1 \
-       --disable-wrapper-runpath \
-       --with-tm=/opt/pbs \
-       --enable-mca-no-build=btl-uct \
-       2>&1 | tee log.config
-   make VERBOSE=1 -j2
-   make check
-   make install
 
 .. _MaintainersSection_Derecho:
 
@@ -620,7 +563,7 @@ openmpi
    make check
    make install
 
-Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform (e.g. Cheyenne). This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
+Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform. This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
 
 .. _MaintainersSection_Jet:
 

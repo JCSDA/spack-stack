@@ -25,9 +25,7 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 | NASA                | Discover                         | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.5.1/envs/unified-env``                                  | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.5.1/envs/unified-env``                 | Dom Heinzeller / ???          |
-|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/{unified-env,ufs-env}``     | Cam Book / Dom Heinzeller     |
-|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
+| NCAR-Wyoming        +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Derecho                          | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env``                | Dom Heinzeller / Mark Potts   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.5.1/envs/unified-env``                         | Hang Lei / Alex Richert       |
@@ -321,46 +319,6 @@ For ``spack-stack-1.5.1`` with GNU, load the following modules after loading the
    module load stack-gcc/12.2.0
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.8
-   module available
-
-.. _Preconfigured_Sites_Cheyenne:
-
----------------------
-NCAR-Wyoming Cheyenne
----------------------
-
-.. note::
-   Cheyenne will be decommissioned end of 2023. The last supported version of spack-stack on this system is 1.5.0.
-
-The following is required for building new spack environments and for using spack to build and run software.
-
-.. code-block:: console
-
-   module purge
-   export LMOD_TMOD_FIND_FIRST=yes
-   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-   module load miniconda/3.9.12
-   module load ecflow/5.8.4
-   module load mysql/8.0.31
-
-For ``spack-stack-1.5.0`` with Intel, please note that there is no support for the full unified environment (``unified-env``) due to the lack of support of the C++-17 standard in Intel 19. An environment for the Unified Forecast System is available by loading the following modules after loading miniconda, ecflow and mysql.
-
-.. code-block:: console
-
-   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/ufs-env/install/modulefiles/Core
-   module load stack-intel/19.1.1.217
-   module load stack-intel-mpi/2019.7.217
-   module load stack-python/3.9.12
-   module available
-
-For ``spack-stack-1.5.0`` with GNU, load the following modules after loading miniconda, ecflow and mysql. Note that this is the full unified environment.
-
-.. code-block:: console
-
-   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
-   module load stack-gcc/10.1.0
-   module load stack-openmpi/4.1.1
-   module load stack-python/3.9.12
    module available
 
 .. _Preconfigured_Sites_Derecho:
