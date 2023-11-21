@@ -645,30 +645,6 @@ For ``spack-stack-1.5.1``, run:
    module load stack-python/3.10.8
    module available
 
-.. _Preconfigured_Sites_Tier2:
-
-=============================
-Pre-configured sites (tier 2)
-=============================
-
-Tier 2 sites are sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team. The configuration files for these sites may not be up to date or functional.
-
-------------------------------
-TACC Frontera
-------------------------------
-
-.. note::
-   ``spack-stack-1.5.1`` is currently not supported on this platform.
-
-The following is required for building new spack environments and for using spack to build and run software.
-
-.. code-block:: console
-
-   module purge
-   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load ecflow/5.8.4
-
 .. _Configurable_Sites_CreateEnv:
 
 ========================

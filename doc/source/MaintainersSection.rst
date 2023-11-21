@@ -15,7 +15,19 @@ The following manual software installations may or may not be required as prereq
 git-lfs
 ------------------------------
 
-Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <NewSiteConfigs_macOS>` and :numref:`%s <NewSiteConfigs_Linux>` for examples). :numref:`Section %s <MaintainersSection_Frontera>` describes a manual installation of ``git-lfs`` on TACC Frontera, a Centos7.9 system.
+Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootstrap`` and ``go`` language support, which many compilers don't build correctly. We therefore require ``git-lfs`` as an external package. On many of the HPC systems, it is already available as a separate module or as part of a ``git`` module. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <NewSiteConfigs_macOS>` and :numref:`%s <NewSiteConfigs_Linux>` for examples). The following instructions install ``git-lfs`` on a CentOS 7.9 system from the OS rpm:
+
+.. code-block:: console
+
+   module purge
+   cd /my/path/to/spack-stack/
+   mkdir -p git-lfs-2.10.0/src
+   cd git-lfs-2.10.0/src
+   wget --content-disposition https://packagecloud.io/github/git-lfs/packages/el/7/git-lfs-2.10.0-1.el7.x86_64.rpm/download.rpm
+   rpm2cpio git-lfs-2.10.0-1.el7.x86_64.rpm | cpio -idmv
+   mv usr/* ../
+
+Following this "installation", create modulefile from template ``doc/modulefile_templates/git-lfs``.
 
 ..  _MaintainersSection_Miniconda:
 
@@ -585,45 +597,6 @@ miniconda
    
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lfs4/HFIP/hfv3gfs/role.epic/apps/mysql-8.0.31``. Since Jet cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
-
-
-.. _MaintainersSection_Frontera:
-
-------------------------------
-TACC Frontera
-------------------------------
-
-Several packages need to be installed as a one-off before spack can be used.
-
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation in ``/work2/06146/USERNAME/frontera/spack-stack/miniconda-3.9.12`` and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
-
-.. code-block:: console
-
-   module purge
-   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load qt5/5.14.2
-   module load gcc/9.1.0
-   module load cmake/3.20.3
-
-git-lfs
-   The following instructions install ``git-lfs`` in ``/work2/06146/tg854455/frontera/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the Centos7 default version.
-
-.. code-block:: console
-
-   module purge
-   cd /work2/06146/tg854455/frontera/spack-stack/
-   mkdir -p git-lfs-2.10.0/src
-   cd git-lfs-2.10.0/src
-   wget --content-disposition https://packagecloud.io/github/git-lfs/packages/el/7/git-lfs-2.10.0-1.el7.x86_64.rpm/download.rpm
-   rpm2cpio git-lfs-2.10.0-1.el7.x86_64.rpm | cpio -idmv
-   mv usr/* ../
-
-Create modulefile ``/work2/06146/tg854455/frontera/spack-stack/modulefiles/git-lfs/2.10.0`` from template ``doc/modulefile_templates/git-lfs`` and update ``GITLFS_PATH`` in this file.
 
 .. _MaintainersSection_S4:
 
