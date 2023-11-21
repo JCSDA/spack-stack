@@ -52,10 +52,6 @@ packages:
     externals:
     - spec: coreutils@8.30
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.68.0+gssapi+ldap+nghttp2
-      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.7
@@ -105,10 +101,6 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.32
-      prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@8.2p1
       prefix: /usr
   perl:
     externals:
