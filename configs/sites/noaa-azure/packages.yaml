@@ -138,10 +138,6 @@ packages:
     externals:
     - spec: openjdk@1.8.0_322-b06
       prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@7.4p1
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
