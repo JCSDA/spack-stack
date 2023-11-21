@@ -93,6 +93,8 @@
       version: ['1.6.4']
     g2tmpl:
       version: ['1.10.2']
+    gettext:
+      version: ['0.21.1']
     gfsio:
       version: ['1.4.1']
     gftl-shared:
