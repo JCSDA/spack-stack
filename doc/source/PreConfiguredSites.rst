@@ -22,7 +22,7 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.1/envs/unified-env``                      | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NASA                | Discover                         | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.5.1/envs/unified-env``                                  | Dom Heinzeller / ???          |
+| NASA                | Discover^**                      | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-dev-20231114/envs/unified-env``                           | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.5.1/envs/unified-env``                 | Dom Heinzeller / ???          |
 | NCAR-Wyoming        +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -60,6 +60,8 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
 ^* Uses a different ``wgrib2`` version 3.1.1 than the default 2.0.8.
+
+^** Uses a slightly newer version than the spack-stack 1.5.1 release, so that `gmao-swell-env` is available in the environment.
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
@@ -158,7 +160,7 @@ For ``spack-stack-1.5.1`` with Intel, load the following modules after loading m
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-dev-20231114/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.10.8
@@ -168,7 +170,7 @@ For ``spack-stack-1.5.1`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-dev-20231114/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.10.8
