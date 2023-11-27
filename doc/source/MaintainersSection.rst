@@ -123,7 +123,7 @@ The following instructions are for Discover (see :numref:`Section %s <Maintainer
 Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
 
 .. note::
-   For Cray systems, for example NRL's Narwhal, NOAA's Gaea C4/C5, or NCAR's Derecho, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
+   For Cray systems, for example NRL's Narwhal, NOAA's Gaea C5, or NCAR's Derecho, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
 
 .. code-block:: console
 
@@ -479,37 +479,6 @@ NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
 See ``configs/sites/noaa-aws/README.md``. These instructions are identical for all three vendors.
-
-.. _MaintainersSection_Gaea:
-
-------------------------------
-NOAA RDHPCS Gaea C4
-------------------------------
-
-On Gaea, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
-
-qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/dev/role.epic/contrib/spack-stack/c4/qt-5.15.2``.
-
-.. code-block:: console
-
-   module unload intel cray-mpich cray-python darshan PrgEnv-intel
-   module load gcc/10.3.0
-   module load PrgEnv-gnu/6.0.10
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Make sure to follow the extra instructions in that section for Gaea.
-
-   module unload intel cray-mpich cray-python darshan PrgEnv-intel
-   module load gcc/10.3.0
-   module load PrgEnv-gnu/6.0.10
-   module load cmake/3.20.1
-   module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
-   module load qt/5.15.2
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/dev/role.epic/contrib/spack-stack/c4/mysql-8.0.31``.
 
 .. _MaintainersSection_GaeaC5:
 
