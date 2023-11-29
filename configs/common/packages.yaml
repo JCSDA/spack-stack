@@ -267,6 +267,8 @@
       version: ['0.12.2']
     py-scipy:
       version: ['1.9.3']
+    py-setuptools-rust:
+      variants: +rust_bootstrap
     py-shapely:
       version: ['1.8.0']
     qt:
