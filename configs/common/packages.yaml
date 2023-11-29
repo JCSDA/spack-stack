@@ -194,6 +194,7 @@
       variants: +internal-hwloc +two_level_namespace
     # Pin openssl to avoid duplicate packages being built
     openssl:
+      require: ['@1.1.1u']
       variants: +shared
     p4est:
       version: ['2.8']
@@ -225,7 +226,8 @@
       version: ['8.0.3']
     # Pin py-cryptography to a version earlier than 3.4 to avoid the rust dependency
     py-cryptography:
-      version: ['3.3.2']
+      require: ['@3.3.2']
+      variants: +rust_bootstrap
     py-eccodes:
       version: ['1.4.2']
     py-h5py:
