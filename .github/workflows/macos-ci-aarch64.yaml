@@ -104,7 +104,6 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --no-check-signature hdf-eos2
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.3.base-env
           spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ base-env
 
