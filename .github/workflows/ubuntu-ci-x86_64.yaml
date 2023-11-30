@@ -135,6 +135,7 @@ jobs:
 
           # base-env
           echo "base-env ..."
+          spack install --fail-fast --no-check-signature py-numpy
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2022.1.0.base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
