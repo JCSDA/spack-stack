@@ -240,8 +240,7 @@
       version: ['1.5.8']
       variants: ~mpi
     py-numpy:
-      version: ['1.22.3']
-      variants: +blas +lapack
+      require: ['@1.22.3']
     py-pandas:
       variants: +excel
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
