@@ -26,6 +26,9 @@ packages:
 ### Modification of common packages
   esmf:
     variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich
+  # Need to force spack to build python with ssl variant when using older openssl from OS
+  python:
+    require: "+ssl"
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -131,10 +134,11 @@ packages:
     externals:
     - spec: openssh@8.4p1
       prefix: /usr
+  # spack concretizer gets confused when omitting %gcc from the external spec (a spack bug?)
   openssl:
     buildable: False
     externals:
-    - spec: openssl@1.1.1l
+    - spec: openssl@1.1.1l%gcc
       prefix: /usr
   pkg-config:
     externals:
