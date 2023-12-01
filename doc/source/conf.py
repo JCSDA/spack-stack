@@ -24,9 +24,10 @@ copyright = '2023 '
 author = 'Dominikus Heinzeller, Alexander Richert, Cameron Book'
 
 # The short X.Y version
-version = '1.5'
+version = 'dev'
+
 # The full version, including alpha/beta/rc tags
-release = '1.5.1'
+release = 'develop'
 
 numfig = True
 
