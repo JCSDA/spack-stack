@@ -28,6 +28,11 @@ packages:
       modules:
       - openmpi/3.1.4
 
+### Modifications of common packages
+  # Pin flex to avoid duplicate packages
+  flex:
+    version: ['2.6.4']
+
 ### All other external packages listed alphabetically
   bash:
     externals:

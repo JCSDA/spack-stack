@@ -137,7 +137,7 @@ Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8
    cmake .. -DPython3_EXECUTABLE=`which python3` -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
 
 .. note::
-   Finally, on Derecho (or any other system with ``gcc@12.2.0``), one needs to patch file ``ecflow-5.8.4/src/ecFlow-5.8.4-Source/ACore/src/Passwd.cpp`` by adding ``#include <ctime>`` below line ``#include "Passwd.hpp"`` before running ``make``.
+   Finally, on Casper, Derecho, or any other system with ``gcc@12.2.0``, one needs to patch file ``ecflow-5.8.4/src/ecFlow-5.8.4-Source/ACore/src/Passwd.cpp`` by adding ``#include <ctime>`` below line ``#include "Passwd.hpp"`` before running ``make``.
 
 ..  _MaintainersSection_MySQL:
 
@@ -257,18 +257,23 @@ ecflow
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules``.
 
-openmpi
-  need to load qt so to get consistent zlib (or just load zlib directly, check qt module)
+mvapich2
+  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2``. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``. **Important:** We identified a bug in ``gcc@11`` + ``mvapich2@2.3.7`` in MPI allgather operations. It is therefore necessary to switch to a newer GCC compiler.
 
 .. code-block:: console
 
    module purge
+   module load gcc/12.2.0
    module load zlib/1.2.13
    module load ucx/1.13.1
-   ./configure \
-       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.5/gcc-11.3.1  \
-       --with-ucx=$UCX_ROOT \
-       --with-zlib=$ZLIB_ROOT
+   module load slurm/23.02.6
+   FFLAGS=-fallow-argument-mismatch ./configure \
+       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/mvapich-2.3.7/gcc-11.3.1 \
+       --with-pmi=pmi2 \
+       --with-pm=slurm \
+       --with-slurm-include=/opt/slurm-23.02.6/include \
+       --with-slurm-lib=/opt/slurm-23.02.6/lib \
+       2>&1 | tee log.config./configure
    make VERBOSE=1 -j4
    make check
    make install
@@ -410,65 +415,14 @@ NCAR-Wyoming Casper
 
 On Casper, there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops. This is why an older version Intel 19 is used here.
 
-gcc
-   CISL does not provide a newer GNU compiler for Casper, and the Cheyenne compiler has problems with missing symbols. Build ``gcc`` etc. as follows and create a module file from template ``gcc`` in ``/glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles``.
-
-.. code-block:: console
-
-   module purge
-   mkdir -p /glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0/src
-   cd /glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0/src
-   wget http://ftp.mirrorservice.org/sites/sourceware.org/pub/gcc/releases/gcc-10.1.0/gcc-10.1.0.tar.gz
-   tar -xvzf gcc-10.1.0.tar.gz
-   cd gcc-10.1.0/
-   ./contrib/download_prerequisites
-   ./configure \
-       --prefix=/glade/work/epicufsrt/contrib/spack-stack/casper/gcc-10.1.0 \
-       --disable-multilib --enable-languages=c,c++ 2>&1 | tee log.config
-   make -j8 2>&1 | tee log.make
-   make install 2>&1 | tee log.install
-   # create modulefile
-
-intel-oneapi-mpi (module only)
-   The ``impi/2022.1`` module provided by CISL has the wrong ``I_MPI_ROOT`` and ``MPI_ROOT`` values. Copy the file to ``/glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles/intel-oneapi-mpi/2021.5.1.lua`` and remove the offending entries, as well as the unnecessary ``ncarcompilers`` logic at the end.
-
-qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. Follow these instructions to build ``qt@5.15.2`` using ``gcc@10.10.0``. See also https://wiki.qt.io/Building_Qt_5_from_Git#Getting_the_source_code for building qt from source.
-
-.. code-block:: console
-
-   module purge
-   export LMOD_TMOD_FIND_FIRST=yes
-   module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
-   module load gcc/10.1.0
-   mkdir -p /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2/src
-   cd /glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2/src
-   git clone https://code.qt.io/qt/qt5.git
-   cd qt5/
-   git checkout 5.12
-   perl init-repository 2>&1 | tee log.init-repository
-   cd ..
-   mkdir qt5-build
-   cd qt5-build
-   ../qt5/configure -opensource -nomake examples -nomake tests \
-       -prefix "/glade/work/epicufsrt/contrib/spack-stack/casper/qt-5.15.2" 2>&1 | tee log.config
-   make -j4 2>&1 | tee log.make
-   make install 2>&1 | tee log.install
-   # If errors occur during the installation of qtlocation, ignore. This is one of the last steps
-   # and not needed for ecflow (consider not building this module in the first place ... todo).
-
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
 
 .. code-block:: console
 
    module purge
    export LMOD_TMOD_FIND_FIRST=yes
-   module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
-   module load gnu/10.1.0
-   module load python/3.7.9
-   module load qt/5.15.2
-   module load cmake/3.18.2
+   module load gnu/12.2.0
 
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/epicufsrt/contrib/spack-stack/casper/mysql-8.0.31``.
@@ -536,14 +490,11 @@ openmpi
 NCAR-Wyoming Derecho
 ------------------------------
 
-intel (temporary)
-  Until CISL makes the newest Intel compilers available in the default module tree, create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/intel`` and copy ``/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/Core/intel/2023.2.1.lua`` to this directory. Edit the file and remove the block of lines starting with ``-- Find custom moduleroots`` and ending with ``append_path("MODULEPATH", "/glade/work/csgteam/spack-deployments/derecho/23.06/envs/build/modules/23.06/oneapi/2023.2.1")``. Further, replace ``icx`` with ``icc`` and ``icpx`` with ``icpc`` and correct the path in environment variables ``CC``, ``CXX``, etc.
-
 libfabric (temporary)
-  Until CISL makes the newest Intel compilers available in the default module tree, it is necessary to create a libfabrics module to be able to use the cray-mpich MPI library without Cray compiler wrappers. Create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/libfabric`` and create a module file based on the template ``doc/modulefile_templates/libfabric``. This module is currently listed in the dependency modules for the ``cray-mpich`` MPI provider in the Derecho site config. It is also necessary to "include" (a confusing term, it used to be "whitelist") the ``cray-mpich`` module in Derecho's ``modules.yaml`` file, because the CISL ``cray-mpich`` module cannot be loaded without loading their compiler modules (yes, they tend to make things difficult).
+  Until CISL fixes its unusual way of setting up Cray module environments, it is necessary to create a libfabrics module to be able to use the cray-mpich MPI library without Cray compiler wrappers. Create a module file based on the template ``doc/modulefile_templates/libfabric`` in directory ``/glade/work/epicufsrt/contrib/spack-stack/derecho/libfabric``. This module is currently listed in the dependency modules for the ``cray-mpich`` MPI provider in the Derecho site config. It is also necessary to "include" (a confusing term, it used to be "whitelist") the ``cray-mpich`` module in Derecho's ``modules.yaml`` file, because the CISL ``cray-mpich`` module cannot be loaded without loading their compiler modules.
 
 cray-pals (temporary)
-  Until CISL fixes its unusual way of setting up Cray module environments, it is necessary to create a cray-pals (parallel application launcher) module to be able to find ``mpirun`` etc. Create directory ``/lustre/desc1/scratch/epicufsrt/contrib/modulefiles_extra/cray-pals`` and copy file ``/opt/cray/pe/lmod/modulefiles/core/cray-pals/1.2.11.lua`` into this directory.
+  Until CISL fixes its unusual way of setting up Cray module environments, it is necessary to create a cray-pals (parallel application launcher) module to be able to find ``mpirun`` etc. Create directory ``/glade/work/epicufsrt/contrib/spack-stack/derecho/cray-pals`` and copy file ``/opt/cray/pe/lmod/modulefiles/core/cray-pals/1.2.11.lua`` into this directory.
 
 ecflow
   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow``. Be sure to follow the extra instructions for Derecho in that section.
