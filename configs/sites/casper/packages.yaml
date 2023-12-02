@@ -18,7 +18,7 @@ packages:
 
 ### Modifications of common packages
   # Version 2.0.5 doesn't compile on Casper with gcc
-  cdo
+  cdo:
     version:: ['2.2.0']
 
 ### All other external packages listed alphabetically
@@ -62,12 +62,6 @@ packages:
   cvs:
     externals:
     - spec: cvs@1.12.13
-      prefix: /usr
-  curl:
-    externals:
-    - spec: curl@8.1.2+nghttp2
-      prefix: /glade/u/apps/casper/23.10/opt/view
-    - spec: curl@8.0.1+gssapi+ldap+nghttp2
       prefix: /usr
   diffutils:
     externals:
@@ -156,17 +150,6 @@ packages:
     externals:
     - spec: ncurses@6.4.20221231+termlib abi=6
       prefix: /glade/u/apps/casper/23.10/opt/view
-  # Old re2c on Casper unable to build newer versions of ninja
-  ninja:
-    version:: ['1.10.2']
-  openssh:
-    externals:
-    - spec: openssh@8.4p1
-      prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1l
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads

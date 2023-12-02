@@ -53,10 +53,6 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.29.0+ldap
-      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -154,10 +150,6 @@ packages:
   ncurses:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5
-      prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@7.4p1
       prefix: /usr
   perl:
     externals:

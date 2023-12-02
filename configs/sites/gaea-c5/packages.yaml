@@ -13,12 +13,6 @@ packages:
       - craype-network-ofi
       - cray-mpich/8.1.25
 
-### Modification of common packages
-  # Until problems with OS openssh and spack openssl are resolved,
-  # also use openssl from OS and turn off ssl variant for python
-  python:
-    variants: ~ssl
-
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -53,10 +47,6 @@ packages:
   cpio:
     externals:
     - spec: cpio@2.12
-      prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.66.0+gssapi+ldap+nghttp2
       prefix: /usr
   diffutils:
     externals:
@@ -173,15 +163,6 @@ packages:
   openjdk:
     externals:
     - spec: openjdk@11.0.16_8-suse-150000.3.83.1-x8664
-      prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@8.4p1
-      prefix: /usr
-  openssl:
-    buildable: False
-    externals:
-    - spec: openssl@1.1.1d
       prefix: /usr
   perl:
     externals:
