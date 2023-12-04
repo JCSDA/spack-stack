@@ -148,14 +148,6 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@8.0p1
-      prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1k
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.26.3~cpanm+shared+threads

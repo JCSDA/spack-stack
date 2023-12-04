@@ -275,7 +275,6 @@ spack external find --scope system
 spack external find --scope system perl
 spack external find --scope system python
 spack external find --scope system wget
-spack external find --scope system curl
 spack external find --scope system texlive
 spack external find --scope system mysql
 
@@ -326,8 +325,6 @@ spack compiler find --scope system
 export -n SPACK_SYSTEM_CONFIG_PATH
 
 spack config add "packages:mpi:buildable:False"
-spack config add "packages:python:buildable:False"
-spack config add "packages:openssl:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
 spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 

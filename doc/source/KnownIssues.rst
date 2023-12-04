@@ -46,18 +46,6 @@ NASA Discover
    Discover's connection to the outside world can be very slow and spack sometimes aborts with fetch timeouts. Try again until it works, sometimes have to wait for a bit.
 
 ==============================
-NCAR-Wyoming Casper
-==============================
-
-1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Casper.
-
-==============================
-NCAR-Wyoming Cheyenne
-==============================
-
-1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Cheyenne.
-
-==============================
 NOAA Parallel Works
 ==============================
 
@@ -66,18 +54,6 @@ NOAA Parallel Works
 2. ``libxml2`` won't untar during the ``spack install`` step, because of an issue with the filesystem. This can be avoided by making ``libxml2`` an external package
 
 3. The ``/contrib`` filesystem can be very, very slow
-
-==============================
-NOAA RDHPCS Gaea
-==============================
-
-1. Random "permission denied" errors during the spack install phase
-
-   If random errors during the spack install phase occur related to "permission denied" when building packages, edit ``envs/env_name/config.yaml`` and comment out the lines ``build_stage`` and ``test_stage``.
-
-2. Random "git-lfs not found" errors during the spack install phase
-
-   If random errors during the spack install phase occur related to "git-lfs not found" when building packages (e.g. crtm), simply load the module and try again (``module load git-lfs``).
 
 ==============================
 UW (Univ. of Wisconsin) S4

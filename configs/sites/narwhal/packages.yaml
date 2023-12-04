@@ -28,12 +28,6 @@ packages:
   #    modules:
   #    - intel/2021.3.0
 
-### Modification of common packages
-  # Until problems with OS openssh and spack openssl are resolved,
-  # also use openssl from OS and turn off ssl variant for python
-  python:
-    variants: ~ssl
-
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -46,10 +40,6 @@ packages:
   binutils:
     externals:
     - spec: binutils@2.37.20211103
-      prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.66.0+gssapi+ldap+nghttp2
       prefix: /usr
   cvs:
     externals:
@@ -111,14 +101,6 @@ packages:
       prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
       modules:
       - mysql/8.0.31
-  openssh:
-    externals:
-    - spec: openssh@8.6p1a
-      prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1d
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.26.1~cpanm+shared+threads
