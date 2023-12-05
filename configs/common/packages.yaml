@@ -10,6 +10,7 @@
         jpeg: [libjpeg-turbo]
         lapack: [openblas]
         yacc: [bison]
+        zlib-api: [zlib]
     #
     # This version of awscli goes with py-pyyaml@5.4.1
     awscli:
