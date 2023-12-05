@@ -10,7 +10,7 @@ packages:
       fftw-api:: [intel-oneapi-mkl]
       lapack:: [intel-oneapi-mkl]
   ectrans:
-    variants:: +mkl
+    variants:: +mkl ~fftw
   gsibec:
     variants:: +mkl
 
