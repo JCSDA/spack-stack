@@ -22,7 +22,7 @@
 #
 #  % ../../utils/parallel_install.sh 2 6
 # -or-
-#  % utils/parallel_install.sh 4 4 --fail-fast --verbose esmf
+#  % . utils/parallel_install.sh 4 4 --fail-fast --verbose esmf
 
 argtext="Run as '$0 N M', where N=# of instances, M=# of threads per instance"
 n_instances=${1?"$argtext"}
