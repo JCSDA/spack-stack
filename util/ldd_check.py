@@ -55,6 +55,8 @@ master_list = bin_list + dlib_list
 
 assert master_list, "No files found! Check directory and ensure it contains install/ subdirectory"
 
+iret = 0
+
 for i in range(len(master_list)):
     file_to_check = master_list[i]
     if args.progress: print(f"\rProgress: {i+1}/{len(master_list)}", file=sys.stderr, end="")
@@ -67,5 +69,8 @@ for i in range(len(master_list)):
         if not missing_list: continue
         missing_output = ",".join(sorted(missing_list))
         print(f"\rWARNING: File {file_to_check} contains the following missing libraries: {missing_output}")
+        iret = 1
 
 if args.progress: print()
+
+sys.exit(iret)

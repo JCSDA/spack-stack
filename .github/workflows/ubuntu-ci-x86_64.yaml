@@ -145,6 +145,7 @@ jobs:
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
+          ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
           spack clean -a
           spack module tcl refresh -y
           spack stack setup-meta-modules
