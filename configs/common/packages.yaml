@@ -285,7 +285,7 @@
     sigio:
       version: ['2.3.2']
     sp:
-      version: ['2.3.3']
+      version: ['2.5.0']
       variants: precision=4,d,8
     udunits:
       version: ['2.2.28']
