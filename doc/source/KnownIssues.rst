@@ -31,6 +31,10 @@ General
 
    When using a role account to install spack-stack, it is sometimes necessary to run graphical applications such as the ``qt`` online installer. The following website describes in detail how this can be done: https://www.thegeekdiary.com/how-to-set-x11-forwarding-export-remote-display-for-users-who-switch-accounts-using-sudo/
 
+7. ``==> Error: the key "core_compilers" must be set in modules.yaml`` during ``spack module [lmod|tcl] refresh``
+
+   This error usually indicates that the wrong module type is used in the ``spack module ... refresh`` command. For example, the system is configured for ``lmod``, but the command used is ``spack module tcl refresh``.
+
 ==============================
 MSU Hercules
 ==============================
