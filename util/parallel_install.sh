@@ -37,10 +37,19 @@ echo "Installing with $n_instances instances and ${n_threads} threads in environ
 for i in $(seq $n_instances); do
   cmd="spack install -j $n_threads $*"
   echo $cmd | tee ${SPACK_ENV}/log.install.proc${i}
-  $cmd &>> ${SPACK_ENV}/log.install.proc${i} &
+  $cmd &>> ${SPACK_ENV}/log.install.proc${i} & pids+=($!)
 done
 
+iret=0
 # If running as executable:
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
-    wait
+  for pid in ${pids[*]}; do
+    wait $pid
+    iret=$(($iret+$?))
+  done
+fi
+
+if [ $iret -ne 0 ]; then
+  echo "ERROR: One or more install processes exited non-zero!"
+  exit $iret
 fi
