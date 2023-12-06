@@ -5,6 +5,7 @@
 # rpaths).
 whitelist = [
     "^libmkl.+",
+    "^libifcore.so.*",
 ]
 
 ########
@@ -31,8 +32,16 @@ parser.add_argument(
     action="store_true",
     help="Print progress to stderr",
 )
+parser.add_argument(
+    "--ignore",
+    "-i",
+    action="append",
+    help="Ignore pattern (Python re expression, e.g., '^libfoo.+')",
+)
 
 args = parser.parse_args()
+
+whitelist.extend(args.ignore)
 
 platform = platform.system()
 if platform=="Linux":
