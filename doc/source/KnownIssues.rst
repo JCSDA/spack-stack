@@ -49,6 +49,10 @@ NASA Discover
 
    Discover's connection to the outside world can be very slow and spack sometimes aborts with fetch timeouts. Try again until it works, sometimes have to wait for a bit.
 
+2. ``configure: error: cannot guess build type; you must specify one`` when building ``freetype`` or other packages that use configure scripts
+
+   This can happen if a spack install is started in a ``screen`` session, because Discover puts the temporary data in directories like ``/gpfsm/dnb33/tdirs/login/discover13.29716.dheinzel``, which get wiped out after some time. Without ``screen``, this problem doesn't occur.
+
 ==============================
 NOAA Parallel Works
 ==============================
