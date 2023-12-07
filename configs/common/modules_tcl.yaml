@@ -131,20 +131,15 @@ modules:
             'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
-          ^esmf@8.2.0~debug snapshot=none: 'esmf-8.2.0'
-          ^esmf@8.2.0+debug snapshot=none: 'esmf-8.2.0-debug'
-          ^esmf@8.3.0b09~debug snapshot=b09: 'esmf-8.3.0b09'
-          ^esmf@8.3.0b09+debug snapshot=b09: 'esmf-8.3.0b09-debug'
-          ^esmf@8.3.0~debug snapshot=none: 'esmf-8.3.0'
-          ^esmf@8.3.0+debug snapshot=none: 'esmf-8.3.0-debug'
-          ^esmf@8.4.0~debug snapshot=none: 'esmf-8.4.0'
-          ^esmf@8.4.0+debug snapshot=none: 'esmf-8.4.0-debug'
-          ^esmf@8.4.1~debug snapshot=none: 'esmf-8.4.1'
-          ^esmf@8.4.1+debug snapshot=none: 'esmf-8.4.1-debug'
+          # Keeping this as a reminder how to do snapshots
+          #^esmf@8.3.0b09~debug snapshot=b09: 'esmf-8.3.0b09'
+          #^esmf@8.3.0b09+debug snapshot=b09: 'esmf-8.3.0b09-debug'
           ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
           ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
           ^esmf@8.5.0~debug snapshot=none: 'esmf-8.5.0'
           ^esmf@8.5.0+debug snapshot=none: 'esmf-8.5.0-debug'
+          ^esmf@8.6.0~debug snapshot=none: 'esmf-8.6.0'
+          ^esmf@8.6.0+debug snapshot=none: 'esmf-8.6.0-debug'
       openmpi:
         environment:
           set:
