@@ -29,6 +29,9 @@ packages:
   # Need to force spack to build python with ssl variant when using older openssl from OS
   python:
     require: "+ssl"
+  # Newer versions of patchelf (tested 0.18.0) don't build with Intel on Derecho
+  patchelf:
+    version:: ['0.17.2']
 
 ### All other external packages listed alphabetically
   autoconf:

@@ -144,10 +144,6 @@ packages:
       prefix: /data/prod/jedi/spack-stack/mysql-8.0.31
       modules:
       - mysql/8.0.31
-  perl:
-    externals:
-    - spec: perl@5.16.3~cpanm+shared+threads
-      prefix: /usr
   pkg-config:
     externals:
     - spec: pkg-config@0.27.1
