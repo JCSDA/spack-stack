@@ -28,6 +28,18 @@ check_permissions.sh
 
 The utility located at util/check_permissions.sh can be run inside any spack-stack environment directory intended for multiple users (i.e., on an HPC or cloud platform). It will return errors if the environment directory is inaccessible to non-owning users and groups (i.e., if o+rx not set), as well as if any directories or files have permissions that make them inaccessible to other users.
 
+.. _Parallel_Install:
+
+------------------------------
+parallel_install.sh
+------------------------------
+
+The util/parallel_install.sh utility runs parallel installations by launching multiple ``spack install`` instances as backgrounded processes. It can be run as an executable or sourced; the latter option will cause the launched jobs to be associated with the current shell environment. It takes the number of ``spack install`` instances to launch and the number of threads per instance as arguments, in that order, and accepts optional arguments which are applied to each ``spack install`` instance. For instance, ``util/parallel_install.sh 4 8 --fail-fast`` will run four instances of ``spack install -j8 --fail-fast &``. Output files are automatically saved under the current Spack environment directory, ``$SPACK_ENV``.
+
+.. note::
+   The parallel_install.sh utility runs all installation instances on a single node, therefore be respectful of other users and of system usage policies, such as computing limits on HPC login nodes.
+
+
 .. _Acorn_Utilities:
 
 ------------------------------

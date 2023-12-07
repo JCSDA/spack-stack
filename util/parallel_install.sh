@@ -24,15 +24,21 @@
 # -or-
 #  % . utils/parallel_install.sh 4 4 --fail-fast --verbose esmf
 
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+  exit=exit
+else
+  exit=return
+fi
+
 argtext="Run as '$0 N M', where N=# of instances, M=# of threads per instance"
 n_instances=${1?"$argtext"}
 n_threads=${2?"$argtext"}
 shift 2
 
-if [[ ! " $(seq -s ' ' 10) " =~ " $n_instances " ]]; then echo "Invalid number of instances" ; exit 1; fi
-if [[ ! " $(seq -s ' ' 64) " =~ " $n_threads " ]]; then echo "Invalid number of threads" ; exit 1; fi
+if [[ ! " $(seq -s ' ' 10) " =~ " $n_instances " ]]; then echo "Invalid number of instances" ; $exit 1; fi
+if [[ ! " $(seq -s ' ' 64) " =~ " $n_threads " ]]; then echo "Invalid number of threads" ; $exit 1; fi
 
-echo "Installing with $n_instances instances and ${n_threads} threads in environment '${SPACK_ENV?"SPACK_ENV not set!"}'"
+echo "Installing with $n_instances instances and $n_threads threads in environment '${SPACK_ENV?"SPACK_ENV not set!"}'" || $exit 1
 
 for i in $(seq $n_instances); do
   cmd="spack install -j $n_threads $*"
@@ -51,5 +57,5 @@ fi
 
 if [ $iret -ne 0 ]; then
   echo "ERROR: One or more install processes exited non-zero!"
-  exit $iret
+  $exit $iret
 fi
