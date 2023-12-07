@@ -6,6 +6,7 @@ that the site configuration files in `configs/sites/noaa-*` work out of the box.
 
 sudo su
 chmod 777 /contrib
+yum install -y m4
 yum install -y qt5-qtbase-devel
 yum install -y qt5-qtsvg-devel
 yum install -y xorg-x11-xauth
@@ -19,7 +20,6 @@ yum install -y gettext-devel
 #    as ncurses@6.4 are installed as part of spack-stack dependencies
 yum install -y ncurses-devel
 yum install -y ncurses-static
-yum install -y m4
 exit
 
 # Create a script that can be added to the cluster resource config so that these packages get installed automatically
