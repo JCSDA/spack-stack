@@ -450,7 +450,6 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
        --exclude bison --exclude cmake \
        --exclude curl --exclude openssl \
        --exclude openssh
-   spack external find --scope system perl
    spack external find --scope system wget
    spack external find --scope system mysql
    spack external find --scope system texlive
