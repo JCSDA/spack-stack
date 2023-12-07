@@ -98,7 +98,7 @@ jobs:
           # base-env
           echo "base-env ..."
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.0.base-env
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/
+          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ base-env
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
