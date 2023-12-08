@@ -1,6 +1,6 @@
 This README provides step by step instructions for installing the basic packages
 (OS packages, external packages) for spack-stack. Following these steps ensures
-that the site configuration files in `configs/sites/noaa-*` work out of the box.
+that the site configuration files in `configs/sites/noaa-aws` work out of the box.
 
 # Basic system packages (need to be installed each time a cluster is spun up)
 
@@ -12,13 +12,6 @@ yum install -y xorg-x11-xauth
 yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
-# NB: The next two packages (ncurses*) are needed for noaa-azure only; 
-#    ncurses@5.9-14.20130511+termlib abi=5 are installed in advance 
-#    because of issues to build ncurses it as a part of a spack-stack on Azure.
-#    These are optional and not required for noaa-aws and noaa-gcloud, 
-#    as ncurses@6.4 are installed as part of spack-stack dependencies
-yum install -y ncurses-devel
-yum install -y ncurses-static
 yum install -y m4
 exit
 
@@ -35,8 +28,6 @@ yum install -y xorg-x11-xauth
 yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
-yum install -y ncurses-devel
-yum install -y ncurses-static
 yum install -y m4
 EOF
 
@@ -135,10 +126,7 @@ mkdir ecflow
 # Create the modulefile from the template in doc/modulefile_templates
 
 ############## Steps to perform when starting a new cluster ##############
-######### and when need to use spack-stack or build a new one  ###########
-# Login as root
-source /contrib/admin/basic_setup.sh
-export PATH="/contrib/EPIC/bin:$PATH"
+source /contrib/admin/basic_setup.sh  # sudo privileges requred to install packages
 module unuse /opt/cray/craype/default/modulefiles
 module unuse /opt/cray/modulefiles
 module use /contrib/spack-stack/modulefiles
@@ -146,6 +134,4 @@ module load cmake/3.27.2
 module load ecflow/5.8.4
 module load mysql/8.0.31
 module load git-lfs/2.4.1
-#
-
 
