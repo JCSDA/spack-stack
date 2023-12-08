@@ -1,18 +1,20 @@
 This README provides step by step instructions for installing the basic packages
 (OS packages, external packages) for spack-stack. Following these steps ensures
-that the site configuration files in `configs/sites/noaa-aws` work out of the box.
+that the site configuration files in `configs/sites/noaa-azure` work out of the box.
 
 # Basic system packages (need to be installed each time a cluster is spun up)
 
 sudo su
 chmod 777 /contrib
+yum install -y m4
 yum install -y qt5-qtbase-devel
 yum install -y qt5-qtsvg-devel
 yum install -y xorg-x11-xauth
 yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
-yum install -y m4
+yum install -y ncurses-devel
+yum install -y ncurses-static
 exit
 
 # Create a script that can be added to the cluster resource config so that these packages get installed automatically
@@ -28,6 +30,8 @@ yum install -y xorg-x11-xauth
 yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
+yum install -y ncurses-devel
+yum install -y ncurses-static
 yum install -y m4
 EOF
 
@@ -134,4 +138,6 @@ module load cmake/3.27.2
 module load ecflow/5.8.4
 module load mysql/8.0.31
 module load git-lfs/2.4.1
+#
+
 
