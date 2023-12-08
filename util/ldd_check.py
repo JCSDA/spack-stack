@@ -41,7 +41,8 @@ parser.add_argument(
 
 args = parser.parse_args()
 
-whitelist.extend(args.ignore)
+if args.ignore:
+    whitelist.extend(args.ignore)
 
 platform = platform.system()
 if platform=="Linux":
