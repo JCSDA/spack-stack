@@ -35,7 +35,7 @@
       variants: +ownlibs
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
-      version: ['2.4.0']
+      version: ['2.4.0.1']
       variants: +fix
     ecbuild:
       version: ['3.7.2']

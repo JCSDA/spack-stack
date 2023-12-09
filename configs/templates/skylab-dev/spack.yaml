@@ -21,7 +21,7 @@ spack:
       - fms@2023.04
 
       # Various crtm tags (list all to avoid duplicate packages)
-      - crtm@2.4.0
+      - crtm@2.4.0.1
       - crtm@v2.4.1-jedi
 
   specs:
