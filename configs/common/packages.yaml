@@ -10,6 +10,7 @@
         jpeg: [libjpeg-turbo]
         lapack: [openblas]
         yacc: [bison]
+        zlib-api: [zlib]
     #
     # This version of awscli goes with py-pyyaml@5.4.1
     awscli:
@@ -26,18 +27,15 @@
       variants: +python
     cairo:
       variants: +pic
-    # Newer versions of CDO require the C++-17 standard, which doesn't
-    # work with all compilers that are currently in use in spack-stack
-    # When making changes here, also check Hercules/Casper site configs
     cdo:
-      version: ['2.0.5']
+      version: ['2.2.0']
       variants: ~openmp
     cmake:
       version: ['3.23.1']
       variants: +ownlibs
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
-      version: ['2.4.0']
+      version: ['2.4.0.1']
       variants: +fix
     ecbuild:
       version: ['3.7.2']
@@ -48,11 +46,11 @@
       version: ['5.11.4']
       variants: +ui
     eckit:
-      version: ['1.24.4']
+      version: ['1.24.5']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.35.0']
-      variants: +fckit +ectrans +tesselation +fftw
+      version: ['0.35.1']
+      variants: +fckit +trans +tesselation +fftw
     ectrans:
       version: ['1.2.0']
       variants: ~mkl +fftw
@@ -79,10 +77,8 @@
     fiat:
       version: ['1.2.0']
     fms:
-      #version: ['2023.01']
-      #variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release
-      version: ['2023.02.01']
-      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +use_fmsio
+      version: ['2023.04']
+      variants: precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io
     fontconfig:
       variants: +pic
     freetype:
@@ -93,6 +89,8 @@
       version: ['1.6.4']
     g2tmpl:
       version: ['1.10.2']
+    gettext:
+      version: ['0.21.1']
     gfsio:
       version: ['1.4.1']
     gftl-shared:
@@ -119,6 +117,7 @@
       variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: ['4.3.0']
+      variants: precision=4,d,8
     ip2:
       version: ['1.1.2']
     jasper:
@@ -152,6 +151,8 @@
       version: ['5.1.0']
     mpich:
       variants: ~hwloc +two_level_namespace
+    mysql:
+      variants: +download_boost
     nco:
       version: ['5.0.6']
       variants: ~doc
@@ -172,9 +173,8 @@
     netcdf-cxx4:
       version: ['4.3.1']
     netcdf-fortran:
-      version: ['4.6.0']
-    # ninja - when adding information here, also check Cheyenne
-    # and Discover site configs
+      version: ['4.6.1']
+    # ninja - when adding information here, also check Discover site config
     nlohmann-json:
       version: ['3.10.5']
     nlohmann-json-schema-validator:
@@ -189,7 +189,6 @@
       variants: +internal-hwloc +two_level_namespace
     # Pin openssl to avoid duplicate packages being built
     openssl:
-      version: ['1.1.1u']
       variants: +shared
     p4est:
       version: ['2.8']
@@ -204,7 +203,7 @@
     pkgconf:
       buildable: False
     prod-util:
-      version: ['1.2.2']
+      version: ['2.1.0']
     proj:
       version: ['8.1.0']
       variants: ~tiff
@@ -219,9 +218,8 @@
       variants: +plotting
     py-click:
       version: ['8.0.3']
-    # Pin py-cryptography to a version earlier than 3.4 to avoid the rust dependency
     py-cryptography:
-      version: ['3.3.2']
+      variants: +rust_bootstrap
     py-eccodes:
       version: ['1.4.2']
     py-h5py:
@@ -237,8 +235,7 @@
       version: ['1.5.8']
       variants: ~mpi
     py-numpy:
-      version: ['1.22.3']
-      variants: +blas +lapack
+      require: ['@1.22.3']
     py-pandas:
       variants: +excel
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
@@ -266,10 +263,9 @@
       version: ['1.9.3']
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
-      version: ['59.4.0']
-    # Pin the py-setuptools-scm version to avoid duplicate Python packages
-    py-setuptools-scm:
-      version: ['7.0.5']
+      require: ['@63.4.3']
+    py-setuptools-rust:
+      variants: +rust_bootstrap
     py-shapely:
       version: ['1.8.0']
     qt:
@@ -284,13 +280,15 @@
     sigio:
       version: ['2.3.2']
     sp:
-      version: ['2.3.3']
+      version: ['2.5.0']
+      variants: precision=4,d,8
     udunits:
       version: ['2.2.28']
     upp:
       version: ['10.0.10']
     w3emc:
       version: ['2.10.0']
+      variants: precision=4,d,8
     w3nco:
       version: ['2.4.1']
     wget:

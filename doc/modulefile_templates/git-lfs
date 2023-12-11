@@ -9,8 +9,7 @@ puts stderr "Provides git-lfs-2.10.0 for use with spack."
 }
 
 # Set this value
-set GITLFS_PATH "/work2/06146/tg854455/frontera/spack-stack/git-lfs-2.10.0"
+set GITLFS_PATH "/my/path/to/spack-stack/git-lfs-2.10.0"
 
 prepend-path PATH "${GITLFS_PATH}/bin"
 prepend-path MANPATH "${GITLFS_PATH}/share/man"
-

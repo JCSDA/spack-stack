@@ -1,6 +1,6 @@
 This README provides step by step instructions for installing the basic packages
 (OS packages, external packages) for spack-stack. Following these steps ensures
-that the site configuration files in `configs/sites/noaa-aws` work out of the box.
+that the site configuration files in `configs/sites/noaa-gcloud` work out of the box.
 
 # Basic system packages (need to be installed each time a cluster is spun up)
 

@@ -10,7 +10,7 @@ packages:
       fftw-api:: [intel-oneapi-mkl]
       lapack:: [intel-oneapi-mkl]
   ectrans:
-    variants:: +mkl
+    variants:: +mkl ~fftw
   gsibec:
     variants:: +mkl
 
@@ -117,10 +117,6 @@ packages:
       prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
       modules:
       - mysql/8.0.31
-  openssh:
-    externals:
-    - spec: openssh@8.0p1
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.26.3~cpanm+open+shared+threads

@@ -50,10 +50,6 @@ packages:
     externals:
     - spec: cpio@2.11
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.37.0+ldap
-      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.3
@@ -147,10 +143,6 @@ packages:
   ncurses:
     externals:
     - spec: ncurses@5.9.20140201+termlib abi=6
-      prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@7.2p2
       prefix: /usr
   # Old re2c on Discover unable to build newer versions of ninja
   ninja:

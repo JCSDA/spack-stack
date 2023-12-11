@@ -31,6 +31,10 @@ General
 
    When using a role account to install spack-stack, it is sometimes necessary to run graphical applications such as the ``qt`` online installer. The following website describes in detail how this can be done: https://www.thegeekdiary.com/how-to-set-x11-forwarding-export-remote-display-for-users-who-switch-accounts-using-sudo/
 
+7. ``==> Error: the key "core_compilers" must be set in modules.yaml`` during ``spack module [lmod|tcl] refresh``
+
+   This error usually indicates that the wrong module type is used in the ``spack module ... refresh`` command. For example, the system is configured for ``lmod``, but the command used is ``spack module tcl refresh``.
+
 ==============================
 MSU Hercules
 ==============================
@@ -45,17 +49,9 @@ NASA Discover
 
    Discover's connection to the outside world can be very slow and spack sometimes aborts with fetch timeouts. Try again until it works, sometimes have to wait for a bit.
 
-==============================
-NCAR-Wyoming Casper
-==============================
+2. ``configure: error: cannot guess build type; you must specify one`` when building ``freetype`` or other packages that use configure scripts
 
-1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Casper.
-
-==============================
-NCAR-Wyoming Cheyenne
-==============================
-
-1. ``py-scipy`` is missing the Pythran backend, because older versions of ``py-pythran`` (up to ``0.11.x``) cause compilation errors in ``py-scipy`` for all Intel compilers, and newer ``py-pythran`` versions (``0.12.x`` and later) do not build with the old Intel compiler used on Cheyenne.
+   This can happen if a spack install is started in a ``screen`` session, because Discover puts the temporary data in directories like ``/gpfsm/dnb33/tdirs/login/discover13.29716.dheinzel``, which get wiped out after some time. Without ``screen``, this problem doesn't occur.
 
 ==============================
 NOAA Parallel Works
@@ -66,18 +62,6 @@ NOAA Parallel Works
 2. ``libxml2`` won't untar during the ``spack install`` step, because of an issue with the filesystem. This can be avoided by making ``libxml2`` an external package
 
 3. The ``/contrib`` filesystem can be very, very slow
-
-==============================
-NOAA RDHPCS Gaea
-==============================
-
-1. Random "permission denied" errors during the spack install phase
-
-   If random errors during the spack install phase occur related to "permission denied" when building packages, edit ``envs/env_name/config.yaml`` and comment out the lines ``build_stage`` and ``test_stage``.
-
-2. Random "git-lfs not found" errors during the spack install phase
-
-   If random errors during the spack install phase occur related to "git-lfs not found" when building packages (e.g. crtm), simply load the module and try again (``module load git-lfs``).
 
 ==============================
 UW (Univ. of Wisconsin) S4

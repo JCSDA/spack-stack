@@ -134,13 +134,13 @@ packages:
     externals:
     - spec: mysql@8.0.31
       prefix: /contrib/spack-stack/mysql-8.0.31
+  ncurses:
+    externals:
+    - spec: ncurses@5.9-14.20130511+termlib abi=5
+      prefix: /usr
   openjdk:
     externals:
     - spec: openjdk@1.8.0_322-b06
-      prefix: /usr
-  openssh:
-    externals:
-    - spec: openssh@7.4p1
       prefix: /usr
   perl:
     externals:

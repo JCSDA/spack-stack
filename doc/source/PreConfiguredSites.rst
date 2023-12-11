@@ -25,18 +25,14 @@ Ready-to-use spack-stack 1.5.1 installations are available on the following, ful
 | NASA                | Discover^**                      | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-dev-20231114/envs/unified-env``                           | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.5.1/envs/unified-env``                 | Dom Heinzeller / ???          |
-|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NCAR-Wyoming        | Cheyenne                         | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/{unified-env,ufs-env}``     | Cam Book / Dom Heinzeller     |
-|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
+| NCAR-Wyoming        +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Derecho                          | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.5.1/envs/unified-env``                | Dom Heinzeller / Mark Potts   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.5.1/envs/unified-env``                         | Hang Lei / Alex Richert       |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Gaea C4                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c4/spack-stack-1.5.1/envs/unified-env``              | Alex Richert / Dom Heinzeller |
-|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.1/envs/unified-env``              | Alex Richert / Dom Heinzeller |
-| NOAA (RDHPCS)       +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
+|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
+| NOAA (RDHPCS)       | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -325,46 +321,6 @@ For ``spack-stack-1.5.1`` with GNU, load the following modules after loading the
    module load stack-python/3.10.8
    module available
 
-.. _Preconfigured_Sites_Cheyenne:
-
----------------------
-NCAR-Wyoming Cheyenne
----------------------
-
-.. note::
-   Cheyenne will be decommissioned end of 2023. The last supported version of spack-stack on this system is 1.5.0.
-
-The following is required for building new spack environments and for using spack to build and run software.
-
-.. code-block:: console
-
-   module purge
-   export LMOD_TMOD_FIND_FIRST=yes
-   module use /glade/work/jedipara/cheyenne/spack-stack/modulefiles/misc
-   module load miniconda/3.9.12
-   module load ecflow/5.8.4
-   module load mysql/8.0.31
-
-For ``spack-stack-1.5.0`` with Intel, please note that there is no support for the full unified environment (``unified-env``) due to the lack of support of the C++-17 standard in Intel 19. An environment for the Unified Forecast System is available by loading the following modules after loading miniconda, ecflow and mysql.
-
-.. code-block:: console
-
-   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/ufs-env/install/modulefiles/Core
-   module load stack-intel/19.1.1.217
-   module load stack-intel-mpi/2019.7.217
-   module load stack-python/3.9.12
-   module available
-
-For ``spack-stack-1.5.0`` with GNU, load the following modules after loading miniconda, ecflow and mysql. Note that this is the full unified environment.
-
-.. code-block:: console
-
-   module use /glade/work/epicufsrt/contrib/spack-stack/cheyenne/spack-stack-1.5.0/envs/unified-env/install/modulefiles/Core
-   module load stack-gcc/10.1.0
-   module load stack-openmpi/4.1.1
-   module load stack-python/3.9.12
-   module available
-
 .. _Preconfigured_Sites_Derecho:
 
 --------------------
@@ -455,42 +411,6 @@ For ``spack-stack-1.5.1`` with Intel, proceed with loading the following modules
    module load stack-intel-oneapi-mpi/2021.3.0
    module load stack-python/3.10.8
    module available
-
-.. _Preconfigured_Sites_Gaea:
-
-------------------------------
-NOAA RDHPCS Gaea C4
-------------------------------
-
-The following is required for building new spack environments and for using spack to build and run software. Make sure to log into a C4 head node, and don't use ``module purge`` on Gaea!
-
-.. code-block:: console
-
-   module unload intel
-   module unload cray-mpich
-   module unload cray-python
-   module unload darshan
-   module use /lustre/f2/dev/role.epic/contrib/spack-stack/c4/modulefiles
-   module load qt/5.15.2
-   module load ecflow/5.8.4
-   module load mysql/8.0.31
-
-For ``spack-stack-1.5.1`` with Intel, load the following modules after loading miniconda and ecflow:
-
-.. code-block:: console
-
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c4/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
-   module load stack-intel/2022.0.2
-   module load stack-cray-mpich/7.7.20
-   module load stack-python/3.10.8
-   module available
-
-.. note::
-   On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. A workaround is to use the `cmake` cross-compiling emulator for this:
-
-.. code-block:: console
-
-   cmake -DCMAKE_CROSSCOMPILING_EMULATOR="/usr/bin/srun;-n;1" -DMPIEXEC_EXECUTABLE="/usr/bin/srun" -DMPIEXEC_NUMPROC_FLAG="-n" PATH_TO_SOURCE
 
 .. _Preconfigured_Sites_Gaea_C5:
 
@@ -688,30 +608,6 @@ For ``spack-stack-1.5.1``, run:
    module load stack-openmpi/4.1.5
    module load stack-python/3.10.8
    module available
-
-.. _Preconfigured_Sites_Tier2:
-
-=============================
-Pre-configured sites (tier 2)
-=============================
-
-Tier 2 sites are sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team. The configuration files for these sites may not be up to date or functional.
-
-------------------------------
-TACC Frontera
-------------------------------
-
-.. note::
-   ``spack-stack-1.5.1`` is currently not supported on this platform.
-
-The following is required for building new spack environments and for using spack to build and run software.
-
-.. code-block:: console
-
-   module purge
-   module use /work2/06146/tg854455/frontera/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load ecflow/5.8.4
 
 .. _Configurable_Sites_CreateEnv:
 
