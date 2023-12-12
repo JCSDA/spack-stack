@@ -214,12 +214,12 @@
       version: ['21.4.0']
     py-cartopy:
       variants: +plotting
-    py-click:
-      version: ['8.0.3']
     py-cryptography:
       variants: +rust_bootstrap
-    py-eccodes:
-      version: ['1.4.2']
+    # Introduced in https://github.com/JCSDA/spack-stack/pull/894, pin py-cython
+    # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
+    py-cython:
+      require: "@0.29.36"
     py-h5py:
       version: ['3.7.0']
       variants: ~mpi
@@ -239,33 +239,11 @@
     # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
     # versions of py-poetry-core when using external/homebrew Python as
     # we do at the moment in spack-stack.
-    py-poetry-core:
-      version: ['1.0.8']
-    py-pybind11:
-      version: ['2.8.1']
-    py-pygithub:
-      version: ['1.55']
-    py-pygrib:
-      version: ['2.1.4']
-    py-pyhdf:
-      version: ['0.10.4']
-    py-pyproj:
-      version: ['3.1.0']
-    py-python-dateutil:
-      version: ['2.8.2']
-    py-pythran:
-      # Versions earlier than 0.11.0 don't compile on macOS with llvm-clang/13.0.0 and Python/3.9,
-      # and 0.11.0 leads to downstream errors in py-scipy with the Intel compilers
-      version: ['0.12.2']
-    py-scipy:
-      version: ['1.9.3']
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       require: ['@63.4.3']
     py-setuptools-rust:
       variants: +rust_bootstrap
-    py-shapely:
-      version: ['1.8.0']
     qt:
       version: ['5.15.3']
     scotch:
