@@ -115,6 +115,10 @@ packages:
     externals:
     - spec: qt@5.12.8
       prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.7
+      prefix: /usr
   tar:
     externals:
     - spec: tar@1.30
