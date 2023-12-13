@@ -28,6 +28,31 @@ check_permissions.sh
 
 The utility located at util/check_permissions.sh can be run inside any spack-stack environment directory intended for multiple users (i.e., on an HPC or cloud platform). It will return errors if the environment directory is inaccessible to non-owning users and groups (i.e., if o+rx not set), as well as if any directories or files have permissions that make them inaccessible to other users.
 
+.. _LDD_Checker:
+
+------------------------------
+ldd_check.py
+------------------------------
+
+The util/ldd_check.py utility should be run for new installations to ensure that no shared library or executable that uses shared libraries is missing a shared library dependency. If the script returns a warning for a given file, this may indicate that Spack's RPATH substitution has not been properly applied. In some instances, missing library dependencies may not indicate a problem, such as a library that is intended to be found through $LD_LIBRARY_PATH after, say, a compiler or MPI environment module is loaded. Though these paths should probably also be RPATH-ified, such instances of harmless missing dependencies may be ignored with ldd_check.py's ``--ignore`` option by specifying a Python regular expression to be excluded from consideration (see example below), or can be permanently whitelisted by modifying the ``whitelist`` variable at the top of the ldd_check.py script itself (in which case please submit a PR). The script searches the 'install/' subdirectory of a given path and runs ``ldd`` on all shared objects. The base path to be search can be specified as a lone positional argument, and by default is the current directory. In practice, this should be ``$SPACK_ENV`` for the environment in question.
+
+.. code-block:: console
+
+   cd $SPACK_ENV && ../../util/ldd_check.py
+   # - OR -
+   util/ldd_check.py $SPACK_ENV --ignore '^libfoo.+' # check for missing shared dependencies, but ignore missing libfoo*
+
+.. _Parallel_Install:
+
+------------------------------
+parallel_install.sh
+------------------------------
+
+The util/parallel_install.sh utility runs parallel installations by launching multiple ``spack install`` instances as backgrounded processes. It can be run as an executable or sourced; the latter option will cause the launched jobs to be associated with the current shell environment. It takes the number of ``spack install`` instances to launch and the number of threads per instance as arguments, in that order, and accepts optional arguments which are applied to each ``spack install`` instance. For instance, ``util/parallel_install.sh 4 8 --fail-fast`` will run four instances of ``spack install -j8 --fail-fast &``. Output files are automatically saved under the current Spack environment directory, ``$SPACK_ENV``.
+
+.. note::
+   The parallel_install.sh utility runs all installation instances on a single node, therefore be respectful of other users and of system usage policies, such as computing limits on HPC login nodes.
+
 .. _Acorn_Utilities:
 
 ------------------------------
