@@ -214,6 +214,7 @@
       version: ['21.4.0']
     py-cartopy:
       variants: +plotting
+      require: "@0.21.1"
     py-cryptography:
       variants: +rust_bootstrap
     # Introduced in https://github.com/JCSDA/spack-stack/pull/894, pin py-cython
@@ -244,6 +245,8 @@
       require: ['@63.4.3']
     py-setuptools-rust:
       variants: +rust_bootstrap
+    py-shapely:
+      require: ['@1.8.0']
     qt:
       version: ['5.15.3']
     scotch:
