@@ -42,6 +42,17 @@ The util/ldd_check.py utility should be run for new installations to ensure that
    # - OR -
    util/ldd_check.py $SPACK_ENV --ignore '^libfoo.+' # check for missing shared dependencies, but ignore missing libfoo*
 
+.. _Parallel_Install:
+
+------------------------------
+parallel_install.sh
+------------------------------
+
+The util/parallel_install.sh utility runs parallel installations by launching multiple ``spack install`` instances as backgrounded processes. It can be run as an executable or sourced; the latter option will cause the launched jobs to be associated with the current shell environment. It takes the number of ``spack install`` instances to launch and the number of threads per instance as arguments, in that order, and accepts optional arguments which are applied to each ``spack install`` instance. For instance, ``util/parallel_install.sh 4 8 --fail-fast`` will run four instances of ``spack install -j8 --fail-fast &``. Output files are automatically saved under the current Spack environment directory, ``$SPACK_ENV``.
+
+.. note::
+   The parallel_install.sh utility runs all installation instances on a single node, therefore be respectful of other users and of system usage policies, such as computing limits on HPC login nodes.
+
 .. _Acorn_Utilities:
 
 ------------------------------
