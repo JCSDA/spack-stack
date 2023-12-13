@@ -17,9 +17,6 @@ packages:
       - cuda/12.2.1
 
 ### Modifications of common packages
-  # Version 2.0.5 doesn't compile on Casper with gcc
-  cdo:
-    version:: ['2.2.0']
 
 ### All other external packages listed alphabetically
   autoconf:
