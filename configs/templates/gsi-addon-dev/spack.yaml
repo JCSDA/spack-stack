@@ -1,3 +1,8 @@
+# Note that an upstream must be set for this template using
+# spack create env --upstream=/path/to/envs/env-name/install
+# Also, the compilers must be set manually below to match the
+# compilers of the upstream environment
+
 spack:
   concretizer:
     unify: when_possible
@@ -18,8 +23,3 @@ spack:
   - matrix:
     - [$packages]
     - [$compilers]
-
-  # Note: Set 'install_tree' to the upstream unified-env install path
-  upstreams:
-    spack-stack-unified-env:
-       install_tree: /path/to/envs/unified-env/install
