@@ -11,7 +11,7 @@ spack:
       - global-workflow-env
       - gmao-swell-env
       - gsi-env
-      - ewok-env
+      - ewok-env +ecflow +cylc
       - jedi-fv3-env
       - jedi-mpas-env
       - jedi-neptune-env
