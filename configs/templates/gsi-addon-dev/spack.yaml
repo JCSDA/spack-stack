@@ -1,0 +1,25 @@
+# Note that an upstream must be set for this template using
+# spack create env --upstream=/path/to/envs/env-name/install
+# Also, the compilers must be set manually below to match the
+# compilers of the upstream environment
+
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include:
+  - site
+  - common
+  definitions:
+  # Note: Set 'compilers' manually; must match upstream list
+  - compilers: []
+  - packages:
+    - global-workflow-env ^bufr@11.7.0 ^metplus@3.1.1 ^met@9.1.3
+    - ufs-weather-model-env
+    - gsi-env
+
+  specs:
+  - matrix:
+    - [$packages]
+    - [$compilers]
