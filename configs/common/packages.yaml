@@ -40,7 +40,7 @@
     ecbuild:
       version: ['3.7.2']
     eccodes:
-      version: ['2.27.0']
+      version: ['2.32.0']
       variants: +png
     ecflow:
       version: ['5.11.4']
