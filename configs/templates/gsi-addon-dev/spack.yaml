@@ -23,3 +23,9 @@ spack:
   - matrix:
     - [$packages]
     - [$compilers]
+
+  packages:
+    python::
+      require: ['@3.11.6']
+    py-numpy::
+      require: ['@1.23.4']
