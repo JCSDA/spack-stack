@@ -71,7 +71,6 @@ modules:
       - openssl
       - perl
       - pkgconf
-      - qhull
       - qt
       - randrproto
       - readline
