@@ -22,9 +22,6 @@ packages:
       - mvapich2/2.3.7
 
 ### Modifications of common packages
-  # DH* TRY IF THIS IS STILL TRUE # Version 2.0.8 doesn't compile on Hercules
-  # DH* TRY IF THIS IS STILL TRUE wgrib2:
-  # DH* TRY IF THIS IS STILL TRUE   version:: ['3.1.1']
 
 ### All other external packages listed alphabetically
   autoconf:

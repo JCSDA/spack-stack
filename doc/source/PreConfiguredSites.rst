@@ -40,7 +40,7 @@ Ready-to-use spack-stack 1.6.0 installations are available on the following, ful
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | GCC             | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.1/envs/unified-env-gcc-10.3.0``                   | Dom Heinzeller / Sarah King   |
 | U.S. Navy (HPCMP)   +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Nautilus                         | Intel^*         | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.1/envs/unified-env``                              | Dom Heinzeller / Sarah King   |
+|                     | Nautilus                         | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env``                              | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Nautilus                         | AOCC            | *currently not supported*                                                                               | Dom Heinzeller / Sarah King   |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -56,8 +56,6 @@ Ready-to-use spack-stack 1.6.0 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.5.1/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-
-^* Uses a different ``wgrib2`` version 3.1.1 than the default 2.0.8.
 
 ^** Uses a slightly newer version than the spack-stack 1.5.1 release, so that `gmao-swell-env` is available in the environment.
 
@@ -119,6 +117,7 @@ The following is required for building new spack environments and for using spac
    module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
    module load ecflow/5.8.4
    module load mysql/8.0.31
+   module load git-lfs/3.1.2
 
 For ``spack-stack-1.6.0`` with Intel, load the following modules after loading mysql and ecflow:
 
@@ -141,10 +140,10 @@ For ``spack-stack-1.6.0`` with GNU, load the following modules after loading mys
    module available
 
 .. note::
-   spack-stack-1.6.0 on Hercules provides a chained environment `gsi-addon-env` for GSI. To use this environment, replace `unified-env` in the above `module use` statements with `gsi-addon-env`.
+   spack-stack-1.6.0 on Hercules provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `unified-env` in the above `module use` statements with `gsi-addon-env`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
 
 .. note::
-   spack-stack-1.6.0 on Hercules has `fms@2023.02.01` installed in the unified environment, in addition to the two standard versions `fms@2023.04` and `fms@release-jcsda`.
+   spack-stack-1.6.0 on Hercules has `fms@2023.02.01` installed in the unified environment, in addition to the two default versions `fms@2023.04` and `fms@release-jcsda`.
 
 .. _Preconfigured_Sites_Discover:
 
@@ -267,14 +266,14 @@ With Intel, the following is required for building new spack environments and fo
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.5.1`` with Intel, load the following modules after loading the above modules.
+For ``spack-stack-1.6.0`` with Intel, load the following modules after loading the above modules.
 
 .. code-block:: console
 
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-openmpi/4.1.5rc2
-   module load stack-python/3.10.8
+   module load stack-python/3.10.13
 
 With AMD clang/flang (aocc), the following is required for building new spack environments and for using spack to build and run software.
 
@@ -294,7 +293,11 @@ With AMD clang/flang (aocc), the following is required for building new spack en
 
 .. note::
 
-   ``spack-stack-1.5.1`` is not yet supported with the Arm clang/flang compilers. Use Intel instead.
+   ``spack-stack-1.6.0`` is not yet supported with the Arm clang/flang compilers. Use Intel instead.
+
+.. note::
+
+   `wgrib2@2.0.8` does not build on Nautilus, therefore we are using `wgrib2@3.1.1` on this system.
 
 .. note::
 
