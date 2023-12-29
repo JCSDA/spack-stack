@@ -1,9 +1,11 @@
 [submodule "spack"]
   path = spack
-  #url = https://github.com/spack/spack
-  #branch = develop
-  url = https://github.com/jcsda/spack
-  branch = release/1.6.0
+  ##url = https://github.com/spack/spack
+  ##branch = develop
+  #url = https://github.com/jcsda/spack
+  #branch = release/1.6.0
+  url = https://github.com/climbfuji/spack
+  branch = bugfix/py_gevent_intel
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
