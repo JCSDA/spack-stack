@@ -22,7 +22,7 @@ Ready-to-use spack-stack 1.6.0 installations are available on the following, ful
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.5.1/envs/unified-env``                      | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NASA                | Discover^**                      | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-dev-20231114/envs/unified-env``                           | Dom Heinzeller / ???          |
+| NASA                | Discover                         | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.6.0/envs/unified-env``                                  | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.5.1/envs/unified-env``                 | Dom Heinzeller / ???          |
 | NCAR-Wyoming        +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -54,10 +54,8 @@ Ready-to-use spack-stack 1.6.0 installations are available on the following, ful
 + Amazon Web Services +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Parallelcluster JCSDA R&D        | Intel           | ``/mnt/experiments-efs/skylab-v7/spack-stack-1.5.1/envs/unified-env``                                   | Dom Heinzeller / ???          |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.5.1/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
+| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.6.0/envs/unified-env``                                             | Mark Potts / Cam Book / Dom H |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-
-^** Uses a slightly newer version than the spack-stack 1.5.1 release, so that `gmao-swell-env` is available in the environment.
 
 For more information about a specific platform, please see the individual sections below.
 
@@ -161,24 +159,24 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.5.1`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.6.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-dev-20231114/envs/unified-env/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2022.0.1
    module load stack-intel-oneapi-mpi/2021.5.0
-   module load stack-python/3.10.8
+   module load stack-python/3.10.13
    module available
 
-For ``spack-stack-1.5.1`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.6.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-dev-20231114/envs/unified-env/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/10.1.0
    module load stack-openmpi/4.1.3
-   module load stack-python/3.10.8
+   module load stack-python/3.10.13
    module available
 
 .. _Preconfigured_Sites_Narwhal:
@@ -413,14 +411,14 @@ The following is required for building new spack environments and for using spac
    module load mysql/8.0.31
    module load git-lfs/2.4.1
 
-For ``spack-stack-1.5.1`` with Intel, proceed with loading the following modules:
+For ``spack-stack-1.6.0`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
-   module use /contrib/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /contrib/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.3.0
    module load stack-intel-oneapi-mpi/2021.3.0
-   module load stack-python/3.10.8
+   module load stack-python/3.10.13
    module available
 
 .. _Preconfigured_Sites_Gaea_C5:
