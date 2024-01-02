@@ -141,7 +141,7 @@ For ``spack-stack-1.6.0`` with GNU, load the following modules after loading mys
    spack-stack-1.6.0 on Hercules provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `unified-env` in the above `module use` statements with `gsi-addon-env`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
 
 .. note::
-   spack-stack-1.6.0 on Hercules has `fms@2023.02.01` installed in the unified environment, in addition to the two default versions `fms@2023.04` and `fms@release-jcsda`.
+   spack-stack-1.6.0 on Hercules has additional packages `fms@2023.02.01`, `sp@2.3.0`, and `crtm@2.4.0` installed in the unified environment, in addition to the two default versions `fms@2023.04` and `fms@release-jcsda`.
 
 .. _Preconfigured_Sites_Discover:
 
