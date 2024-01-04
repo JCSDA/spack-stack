@@ -453,6 +453,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system wget
    spack external find --scope system mysql
    spack external find --scope system texlive
+   spack external find --scope system sed
 
 5. Find compilers, add to site config's ``compilers.yaml``
 
@@ -490,8 +491,6 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:fontconfig:variants:+pic"
    spack config add "packages:pixman:variants:+pic"
    spack config add "packages:cairo:variants:+pic"
-   spack config add "packages:libffi:version:['3.3']"
-   spack config add "packages:flex:version:['2.6.4']"
 
 9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
 
