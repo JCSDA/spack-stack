@@ -270,7 +270,7 @@ mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules``.
 
 mvapich2
-  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2``. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``. **Important:** We identified a bug in ``gcc@11`` + ``mvapich2@2.3.7`` in MPI allgather operations. It is therefore necessary to switch to a newer GCC compiler.
+  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2`` outside of spack and provide it as an external package. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``. **Important:** We identified a bug in ``gcc@11`` + ``mvapich2@2.3.7`` in MPI allgather operations. It is therefore necessary to switch to a newer GCC compiler.
 
 .. code-block:: console
 
@@ -286,6 +286,54 @@ mvapich2
        --with-slurm-include=/opt/slurm-23.02.6/include \
        --with-slurm-lib=/opt/slurm-23.02.6/lib \
        2>&1 | tee log.config./configure
+   make VERBOSE=1 -j4
+   make check
+   make install
+
+openmpi (currently only for testing)
+  Because of difficulties with the default ``openmpi`` on Hercules, we build ``openmpi`` outside of spack and provide it as an external package. It is necessary to load the ``gcc`` compiler module and the ``zlib`` module for consistency. The configuration options are mostly adopted from the default OpenMPI installations that were done by the system administrators using spack (many of them are default values), except that we use internal ``hwloc`` and ``pmix``. Create modulefile ``openmpi`` from template ``doc/modulefile_templates/openmpi``.
+
+.. code-block:: console
+
+   ./configure \
+       --enable-shared \
+       --disable-silent-rules \
+       --disable-builtin-atomics \
+       --with-pmi=/opt/slurm \
+       --enable-static \
+       --enable-mpi1-compatibility \
+       --without-hcoll \
+       --without-psm2 \
+       --without-knem \
+       --without-verbs \
+       --without-psm \
+       --without-cma \
+       --without-ucx \
+       --without-mxm \
+       --without-fca \
+       --without-xpmem \
+       --without-ofi \
+       --without-cray-xpmem \
+       --without-sge \
+       --without-lsf \
+       --without-loadleveler \
+       --without-alps \
+       --without-tm \
+       --with-slurm \
+       --disable-memchecker \
+       --with-pmix=internal \
+       --with-zlib=/apps/spack-managed/gcc-12.2.0/zlib-1.2.13-p3sxbyfgvvjy7jx4kizib2jwvhm4s6l4 \
+       --with-hwloc=internal \
+       --disable-java \
+       --disable-mpi-java \
+       --with-gpfs=no \
+       --without-cuda \
+       --enable-wrapper-rpath \
+       --disable-wrapper-runpath \
+       --disable-mpi-cxx \
+       --disable-cxx-exceptions \
+       --with-wrapper-ldflags="-Wl,-rpath,/apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/lib/gcc/x86_64-pc-linux-gnu/12.2.0 -Wl,-rpath,/apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/lib64" \
+       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.6/gcc-12.2.0-spack 2>&1 | tee log.config
    make VERBOSE=1 -j4
    make check
    make install
@@ -621,7 +669,7 @@ mysql
 Amazon Web Services Parallelcluster Ubuntu 20.04
 ------------------------------------------------
 
-See ``configs/sites/aws-pcluster/README.md``.
+See ``configs/sites/aws-pcluster/README.md``. It is important to note that because the shared EFS filesystem is slow and had problems with the spack locking mechanism introduced mid 2023, all file locking is turned off in the site config. Therefore, one must never run more than one ``spack install`` command for the same environment - that is, no parallel ``spack install`` processes.
 
 .. _MaintainersSection_Testing_New_Packages:
 
