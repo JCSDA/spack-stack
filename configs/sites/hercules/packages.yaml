@@ -3,6 +3,8 @@ packages:
     compiler:: [intel@2021.9.0, gcc@12.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.9.0, mvapich2@2.3.7]
+      # Alternative openmpi@4.1.6 with gcc@12.2.0 for testing
+      #mpi:: [openmpi@4.1.6]
 
 ### MPI, Python, MKL
   mpi:
@@ -20,6 +22,15 @@ packages:
       modules:
       - gcc/12.2.0
       - mvapich2/2.3.7
+  # Alternative openmpi@4.1.6 with gcc@12.2.0 for testing
+  #openmpi:
+  #  externals:
+  #  - spec: openmpi@4.1.6%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
+  #      schedulers=slurm
+  #    prefix: /work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.6/gcc-12.2.0-spack
+  #    modules:
+  #    - gcc/12.2.0
+  #    - openmpi/4.1.6-gcc-12.2.0-spack
 
 ### Modifications of common packages
 
