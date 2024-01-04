@@ -147,6 +147,10 @@ packages:
     externals:
     - spec: pkg-config@0.29.2
       prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.4
+      prefix: /usr
   subversion:
     externals:
     - spec: subversion@1.14.1
