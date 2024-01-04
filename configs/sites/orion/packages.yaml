@@ -30,6 +30,9 @@ packages:
       - openmpi/4.0.4
 
 ### Modifications of common packages
+  # Temporary - see https://github.com/spack/spack/issues/41947
+  cdo:
+    require: '@2.0.5'
 
 ### All other external packages listed alphabetically
   autoconf:
