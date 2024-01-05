@@ -149,6 +149,8 @@
       variants: +python +grib2
     metplus:
       version: ['5.1.0']
+    metis:
+      require: "+int64 +real64"
     mpich:
       variants: ~hwloc +two_level_namespace
     mysql:
