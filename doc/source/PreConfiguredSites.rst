@@ -30,13 +30,13 @@ Ready-to-use spack-stack 1.6.0 installations are available on the following, ful
 | NCAR-Wyoming        +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Derecho                          | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.6.0/envs/unified-env``                | Dom Heinzeller / Cam Book     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.5.1/envs/unified-env``                         | Hang Lei / Alex Richert       |
+| NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.6.0/envs/unified-env``                         | Hang Lei / Alex Richert       |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.1/envs/unified-env``              | Alex Richert / Dom Heinzeller |
+|                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.6.0/envs/unified-env``              | Cam Book / Dom Heinzeller     |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
+| NOAA (RDHPCS)       | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
+|                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env``                     | Cam Book / Dom Heinzeller     |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Narwhal                          | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env-intel-2021.4.0``               | Dom Heinzeller / Sarah King   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -393,7 +393,7 @@ For ``spack-stack-1.6.0`` with GNU, load the following modules after loading ecf
 NOAA Acorn (WCOSS2 test system)
 -------------------------------
 
-For spack-stack-1.5.1, the meta modules are in ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core``.
+For spack-stack-1.6.0, the meta modules are in ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core``.
 
 On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed in ``lib64``, breaking the ``lib`` assumption made by some packages. Therefore, ``CONFIG_SITE`` should be set to empty in ``compilers.yaml``. Also, don't use ``module purge`` on Acorn!
 
@@ -456,14 +456,14 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load mysql/8.0.31
 
-For ``spack-stack-1.5.1`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.6.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2023.1.0
    module load stack-cray-mpich/8.1.25
-   module load stack-python/3.10.8
+   module load stack-python/3.10.13
    module -t available
 
 .. note::
@@ -492,27 +492,31 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.5.3
    module load mysql/8.0.31
 
-For ``spack-stack-1.5.1`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.6.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.1
-   module load stack-python/3.10.8
+   module load stack-python/3.10.13
    module available
 
-For ``spack-stack-1.5.1`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.6.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/9.2.0
    module load stack-openmpi/4.1.5
-   module load stack-python/3.10.8
+   module load stack-python/3.10.13
    module available
 
 Note that on Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
+
+.. note::
+
+   spack-stack-1.6.0 on Hera provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `unified-env` in the above `module use` statements with `gsi-addon-env`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
 
 .. _Preconfigured_Sites_Jet:
 
@@ -531,25 +535,29 @@ The following is required for building new spack environments and for using spac
    module use /lfs4/HFIP/hfv3gfs/role.epic/modulefiles
    module load mysql/8.0.31
 
-For ``spack-stack-1.5.1`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.6.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.10.8
    module available
 
-For ``spack-stack-1.5.1`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.6.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.5.1/envs/unified-env/install/modulefiles/Core
+   module use /mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-gcc/9.2.0
    module load stack-openmpi/3.1.4
    module load stack-python/3.10.8
    module available
+
+.. note::
+
+   spack-stack-1.6.0 on Jet provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `unified-env` in the above `module use` statements with `gsi-addon-env`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
 
 ------------------------------
 UW (Univ. of Wisconsin) S4
@@ -580,6 +588,7 @@ For ``spack-stack-1.6.0`` with Intel, load the following modules after loading m
 Note the two `module unuse` commands, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
 
 .. note::
+
    spack-stack-1.6.0 on S4 provides a chained environment `gsi-addon-env` for GSI with Intel. To use this environment, replace `unified-env` in the above `module use` statements with `gsi-addon-env`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
 
 .. note::
@@ -617,7 +626,7 @@ For ``spack-stack-1.6.0`` with GNU on the JCSDA R&D cluster (``hpc6a.48xlarge`` 
 
 .. note::
 
-   The GNU stack is currently under testing and may not work as expected. We recommend using the well-tested Intel setup.
+   spack-stack-1.6.0 on AWS ParallelCluster has an additional package ``metis@5.1.0`` installed for both Intel and GNU. This is needed for MPAS, but must be loaded explictly (i.e. not part of ``jedi-mpas-env`` yet).
 
 -----------------------------
 Amazon Web Services Red Hat 8
