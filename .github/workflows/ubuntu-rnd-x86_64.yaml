@@ -61,9 +61,6 @@ jobs:
           # For buildcaches
           spack config add config:install_tree:padded_length:200
 
-          # Set compiler and MPI
-          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%gcc', '\%intel'\]/g" ${ENVDIR}/spack.yaml
-
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
@@ -74,28 +71,45 @@ jobs:
           spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
           spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
-          # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.${ENVNAME}
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -c -d log.concretize.${ENVNAME} -i fms -i crtm -i esmf -i mapl
+          # Loop over compilers
+          compilers=(gcc intel)
+          cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
 
-          # Update spack source cache
-          spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
+          for compiler in "${!compilers[@]}"
+          do
+            # Set compiler and MPI
+            cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
+            sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
+            cat spack.yaml
 
-          # Add binary cache if requested
-          if [ "$USE_BINARY_CACHE" = true ] ; then
-            spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
-            spack buildcache update-index local-binary
-            echo "Packages in spack binary cache:"
-            spack buildcache list
-          fi
+            # Concretize and check for duplicates
+            spack concretize 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
 
-          # Create/update binary cache
-          echo "Create/update build cache for environment ${TEMPLATE} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${TEMPLATE}
-          spack buildcache create -a -u /mnt/experiments-efs/spack-stack/build-cache/
+            # Update spack source cache
+            spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
 
-          # Next steps: synchronize source and build cache to a central/combined mirror?
-          #echo "Next steps ..."
+            # Add binary cache if requested
+            if [ "$USE_BINARY_CACHE" = true ] ; then
+              spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
+              spack buildcache update-index local-binary
+              echo "Packages in spack binary cache:"
+              spack buildcache list
+            fi
+
+            # Create/update binary cache
+            echo "Create/update build cache for environment ${TEMPLATE} and compiler ${compiler}..."
+            spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${TEMPLATE}.${compiler}
+            spack buildcache create -a -u /mnt/experiments-efs/spack-stack/build-cache/
+
+            # Next steps: synchronize source and build cache to a central/combined mirror?
+            #echo "Next steps ..."
+
+            # Remove binary cache for next round of concretization
+            if [ "$USE_BINARY_CACHE" = true ] ; then
+              spack mirror rm local-binary
+            fi
+          done
 
           spack env deactivate
           rm -fr /home/ubuntu/spack-stack/CI/tmp/spack-stack-dev-buildcache
@@ -113,9 +127,6 @@ jobs:
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
 
-          # Set compiler and MPI
-          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%gcc', '\%intel'\]/g" ${ENVDIR}/spack.yaml
-
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
@@ -126,26 +137,43 @@ jobs:
           spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
           spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
-          # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.${ENVNAME}
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -c -d log.concretize.${ENVNAME} -i fms -i crtm -i esmf -i mapl
+          # Loop over compilers
+          compilers=(gcc intel)
+          cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
 
-          # Update spack source cache
-          spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
+          for compiler in "${!compilers[@]}"
+          do
+            # Set compiler and MPI
+            cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
+            sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
+            cat spack.yaml
 
-          # Add binary cache
-          spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
-          spack buildcache update-index local-binary
-          echo "Packages in spack binary cache:"
-          spack buildcache list
+            # Concretize and check for duplicates
+            spack concretize 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
 
-          # Install from binary cache
-          echo "Install environment ${TEMPLATE} from binary cache ..."
-          spack install --fail-fast --no-check-signature 2>&1 | tee log.install.${TEMPLATE}
-          spack clean -a
+            # Update spack source cache
+            spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
 
-          spack module lmod refresh -y
-          spack stack setup-meta-modules
+            # Add binary cache
+            spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
+            spack buildcache update-index local-binary
+            echo "Packages in spack binary cache:"
+            spack buildcache list
+
+            # Install from binary cache
+            echo "Install environment ${TEMPLATE} for compiler ${compiler} from binary cache ..."
+            spack install --fail-fast --no-check-signature 2>&1 | tee log.install.${TEMPLATE}.${compiler}
+            spack clean -a
+
+            # Create modules
+            spack module lmod refresh -y
+            spack stack setup-meta-modules
+
+            # Remove binary cache for next round of concretization
+            spack mirror rm local-binary
+          done
+
           spack env deactivate
 
       - name: test-env
@@ -162,6 +190,17 @@ jobs:
           module use /home/ubuntu/spack-stack/CI/unified-env/${TODAY}/modulefiles/Core
           module load stack-intel/2022.1.0
           module load stack-intel-oneapi-mpi/2021.6.0
+          module load stack-python/3.10.13
+          module available
+
+          module load jedi-ufs-env/1.0.0
+          module load ewok-env/1.0.0
+          module load soca-env/1.0.0
+          module list
+
+          module purge
+          module load stack-gcc/9.4.0
+          module load stack-openmpi/4.1.4
           module load stack-python/3.10.13
           module available
 
