@@ -147,7 +147,9 @@ For ``spack-stack-1.6.0`` with GNU, load the following modules after loading mys
 
 For testing, an additional version of spack-stack-1.6.0 with GNU+OpenMPI is available. Load the following modules after loading mysql and ecflow:
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/ue-gcc12-openmpi416/install/modulefiles/Core/
+.. code-block:: console
+
+   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/ue-gcc12-openmpi416/install/modulefiles/Core
    module load stack-gcc/12.2.0
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
