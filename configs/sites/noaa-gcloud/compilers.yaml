@@ -17,20 +17,6 @@ compilers:
         LD_LIBRARY_PATH: '/apps/oneapi/compiler/2021.3.0/linux/compiler/lib/intel64_lin:/apps/gnu/gcc-9.2.0/lib64'
     extra_rpaths: []
 - compiler:
-    spec: intel@18.0.5
-    paths:
-      cc: /apps/intel/parallel_studio_xe_2018.4.057/compilers_and_libraries_2018/linux/bin/intel64/icc
-      cxx: /apps/intel/parallel_studio_xe_2018.4.057/compilers_and_libraries_2018/linux/bin/intel64/icpc
-      f77: /apps/intel/parallel_studio_xe_2018.4.057/compilers_and_libraries_2018/linux/bin/intel64/ifort
-      fc: /apps/intel/parallel_studio_xe_2018.4.057/compilers_and_libraries_2018/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: centos7
-    target: x86_64
-    modules:
-    - intel/18.0.5.274
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: gcc@9.2.0
     paths:
       cc: /apps/gnu/gcc-9.2.0/bin/gcc
