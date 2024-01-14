@@ -36,32 +36,22 @@ packages:
 ### All other external packages listed alphabetically
   autoconf:
     externals:
-    - spec: autoconf@2.71
-      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: autoconf@2.69
       prefix: /usr
   automake:
     externals:
-    - spec: automake@1.16.5
-      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: automake@1.15.1
       prefix: /usr
   binutils:
     externals:
     - spec: binutils@2.37.20211103
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.26.3
-      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/cmake/3.26.3/gcc/7.5.0/k34x
   coreutils:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
   curl:
     externals:
-    - spec: curl@8.1.2+nghttp2
-      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: curl@7.79.1+gssapi+ldap+nghttp2
       prefix: /usr
   cvs:
@@ -83,10 +73,6 @@ packages:
     externals:
     - spec: findutils@4.8.0
       prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
-      prefix: /glade/u/apps/derecho/23.09/opt/view
   gawk:
     externals:
     - spec: gawk@4.2.1
@@ -94,13 +80,13 @@ packages:
   git:
     externals:
     - spec: git@2.41.0+tcltk
-      prefix: /glade/u/apps/derecho/23.09/opt/view
+      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/git/2.41.0/gcc/7.5.0/jgni
     - spec: git@2.35.3+tcltk
       prefix: /usr
   git-lfs:
     externals:
     - spec: git-lfs@3.3.0
-      prefix: /glade/u/apps/derecho/23.09/opt/view
+      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/git-lfs/3.3.0/gcc/7.5.0/u3kh
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -113,21 +99,10 @@ packages:
     externals:
     - spec: krb5@1.19.2
       prefix: /usr/lib/mit
-  libtool:
-    externals:
-    - spec: libtool@2.4.7
-      prefix: /glade/u/apps/derecho/23.09/opt/view
-    - spec: libtool@2.4.6
-      prefix: /usr
   m4:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
-  # Automatically detected, but don't use - missing "ninja" dependency
-  #meson:
-  #  externals:
-  #  - spec: meson@1.2.0
-  #    prefix: /glade/u/apps/derecho/23.09/opt/view
   mysql:
     buildable: False
     externals:
@@ -147,6 +122,10 @@ packages:
     externals:
     - spec: pkg-config@0.29.2
       prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.4
+      prefix: /usr
   subversion:
     externals:
     - spec: subversion@1.14.1
@@ -157,8 +136,6 @@ packages:
       prefix: /usr
   texinfo:
     externals:
-    - spec: texinfo@7.0.3
-      prefix: /glade/u/apps/derecho/23.09/opt/view
     - spec: texinfo@6.5
       prefix: /usr
   wget:
