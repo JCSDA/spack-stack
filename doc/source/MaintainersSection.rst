@@ -669,7 +669,7 @@ mysql
 Amazon Web Services Parallelcluster Ubuntu 20.04
 ------------------------------------------------
 
-See ``configs/sites/aws-pcluster/README.md``. It is important to note that because the shared EFS filesystem is slow and had problems with the spack locking mechanism introduced mid 2023, all file locking is turned off in the site config. Therefore, one must never run more than one ``spack install`` command for the same environment - that is, no parallel ``spack install`` processes.
+See ``configs/sites/aws-pcluster/README.md``.
 
 .. _MaintainersSection_Testing_New_Packages:
 
