@@ -2,7 +2,7 @@
   path = spack
   #url = https://github.com/spack/spack
   #branch = develop
-  #url = https://github.com/jcsda/spack
+  url = https://github.com/jcsda/spack
   #branch = jcsda_emc_spack_stack
   branch = feature/merge_rel160_into_develop
 [submodule "doc/CMakeModules"]
