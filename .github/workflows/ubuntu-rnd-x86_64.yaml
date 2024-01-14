@@ -83,7 +83,7 @@ jobs:
             cat spack.yaml
 
             # Concretize and check for duplicates
-            spack concretize 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
+            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
             ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
 
             # Update spack source cache
@@ -149,7 +149,7 @@ jobs:
             cat spack.yaml
 
             # Concretize and check for duplicates
-            spack concretize 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
+            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
             ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
 
             # Update spack source cache
