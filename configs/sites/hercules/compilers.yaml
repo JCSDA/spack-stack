@@ -11,7 +11,10 @@ compilers:
     target: x86_64
     modules:
     - intel-oneapi-compilers/2023.1.0
-    environment: {}
+    environment:
+      set:
+        # https://github.com/ufs-community/ufs-weather-model/issues/2015#issuecomment-1864438186
+        I_MPI_EXTRA_FILESYSTEM: 'ON'
     extra_rpaths: []
 - compiler:
     spec: gcc@12.2.0
