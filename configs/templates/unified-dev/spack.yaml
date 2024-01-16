@@ -16,13 +16,13 @@ spack:
       - jedi-mpas-env
       - jedi-neptune-env
       - jedi-tools-env
-      - jedi-ufs-env ^mapl@2.40.3 ^esmf@8.5.0
+      - jedi-ufs-env
       - jedi-um-env
       #- nceplibs-env
       - soca-env
-      - ufs-srw-app-env ^mapl@2.40.3 ^esmf@8.5.0
+      - ufs-srw-app-env
       #- ufs-utils-env
-      - ufs-weather-model-env ^mapl@2.40.3 ^esmf@8.5.0
+      - ufs-weather-model-env
       #- upp-env
       #- ww3-env
 
@@ -33,10 +33,6 @@ spack:
       # Various crtm tags (list all to avoid duplicate packages)
       - crtm@2.4.0.1
       - crtm@v2.4.1-jedi
-
-      # Various esmf/mapl tags (list all to avoid duplicate packages)
-      - mapl@2.40.3 ^esmf@8.5.0
-      - mapl@2.40.3 ^esmf@8.6.0
 
       # MADIS for WCOSS2 decoders.
       - madis@4.5

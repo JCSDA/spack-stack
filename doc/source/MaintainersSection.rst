@@ -366,7 +366,7 @@ ecflow
    module load comp/gcc/10.1.0
 
 openmpi
-   Installing ``openmpi`` requires adapting the installation to the network hardware and ``slurm`` scheduler. It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.3`` MPI library with ``gcc@10.1.0`` as referenced in the Discover site config. After the installation, create modulefile `openmpi/4.1.3-gcc-10.1.0` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs.
+   Installing ``openmpi`` requires adapting the installation to the network hardware and ``slurm`` scheduler. It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.3`` MPI library with ``gcc@10.1.0`` as referenced in the Discover site config. After the installation, create modulefile `openmpi/4.1.3-gcc-10.1.0` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs. The instructions below have also been tested with ``gcc@12.1.0`` (update instructions accordingly) and the module is available on Discover for future use.
 
 .. code-block:: console
 
