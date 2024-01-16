@@ -142,7 +142,7 @@
       # https://github.com/JCSDA/spack-stack/issues/769
       # also: ... extdata2g segfault UFS?
       version: ['2.40.3']
-      variants: ~shared +pflogger ~f2py
+      variants: +shared +pflogger ~f2py
     # If making changes here, also check the Discover site config and the CI workflows
     met:
       version: ['11.1.0']
