@@ -3,6 +3,8 @@ packages:
     compiler:: [intel@2021.9.0, gcc@12.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.9.0, mvapich2@2.3.7]
+      # Alternative openmpi@4.1.6 with gcc@12.2.0 for testing
+      #mpi:: [openmpi@4.1.6]
 
 ### MPI, Python, MKL
   mpi:
@@ -20,11 +22,17 @@ packages:
       modules:
       - gcc/12.2.0
       - mvapich2/2.3.7
+  # Alternative openmpi@4.1.6 with gcc@12.2.0 for testing
+  #openmpi:
+  #  externals:
+  #  - spec: openmpi@4.1.6%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
+  #      schedulers=slurm
+  #    prefix: /work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.6/gcc-12.2.0-spack
+  #    modules:
+  #    - gcc/12.2.0
+  #    - openmpi/4.1.6-gcc-12.2.0-spack
 
 ### Modifications of common packages
-  # DH* TRY IF THIS IS STILL TRUE # Version 2.0.8 doesn't compile on Hercules
-  # DH* TRY IF THIS IS STILL TRUE wgrib2:
-  # DH* TRY IF THIS IS STILL TRUE   version:: ['3.1.1']
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -84,10 +92,6 @@ packages:
     externals:
     - spec: groff@1.22.4
       prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.6
-      prefix: /usr
   m4:
     externals:
     - spec: m4@1.4.19
@@ -109,6 +113,10 @@ packages:
       prefix: /apps/spack-managed/gcc-11.3.1/qt-5.15.8-d47tsna6f5dylcpblkfgw4gpn2cucihd
       modules:
       - qt/5.15.8
+  sed:
+    externals:
+    - spec: sed@4.8
+      prefix: /usr
   subversion:
     externals:
     - spec: subversion@1.14.1

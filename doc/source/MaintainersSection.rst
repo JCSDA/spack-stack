@@ -270,7 +270,7 @@ mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules``.
 
 mvapich2
-  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2``. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``. **Important:** We identified a bug in ``gcc@11`` + ``mvapich2@2.3.7`` in MPI allgather operations. It is therefore necessary to switch to a newer GCC compiler.
+  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2`` outside of spack and provide it as an external package. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``. **Important:** We identified a bug in ``gcc@11`` + ``mvapich2@2.3.7`` in MPI allgather operations. It is therefore necessary to switch to a newer GCC compiler.
 
 .. code-block:: console
 
@@ -286,6 +286,54 @@ mvapich2
        --with-slurm-include=/opt/slurm-23.02.6/include \
        --with-slurm-lib=/opt/slurm-23.02.6/lib \
        2>&1 | tee log.config./configure
+   make VERBOSE=1 -j4
+   make check
+   make install
+
+openmpi (currently only for testing)
+  Because of difficulties with the default ``openmpi`` on Hercules, we build ``openmpi`` outside of spack and provide it as an external package. It is necessary to load the ``gcc`` compiler module and the ``zlib`` module for consistency. The configuration options are mostly adopted from the default OpenMPI installations that were done by the system administrators using spack (many of them are default values), except that we use internal ``hwloc`` and ``pmix``. Create modulefile ``openmpi`` from template ``doc/modulefile_templates/openmpi``.
+
+.. code-block:: console
+
+   ./configure \
+       --enable-shared \
+       --disable-silent-rules \
+       --disable-builtin-atomics \
+       --with-pmi=/opt/slurm \
+       --enable-static \
+       --enable-mpi1-compatibility \
+       --without-hcoll \
+       --without-psm2 \
+       --without-knem \
+       --without-verbs \
+       --without-psm \
+       --without-cma \
+       --without-ucx \
+       --without-mxm \
+       --without-fca \
+       --without-xpmem \
+       --without-ofi \
+       --without-cray-xpmem \
+       --without-sge \
+       --without-lsf \
+       --without-loadleveler \
+       --without-alps \
+       --without-tm \
+       --with-slurm \
+       --disable-memchecker \
+       --with-pmix=internal \
+       --with-zlib=/apps/spack-managed/gcc-12.2.0/zlib-1.2.13-p3sxbyfgvvjy7jx4kizib2jwvhm4s6l4 \
+       --with-hwloc=internal \
+       --disable-java \
+       --disable-mpi-java \
+       --with-gpfs=no \
+       --without-cuda \
+       --enable-wrapper-rpath \
+       --disable-wrapper-runpath \
+       --disable-mpi-cxx \
+       --disable-cxx-exceptions \
+       --with-wrapper-ldflags="-Wl,-rpath,/apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/lib/gcc/x86_64-pc-linux-gnu/12.2.0 -Wl,-rpath,/apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/lib64" \
+       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.6/gcc-12.2.0-spack 2>&1 | tee log.config
    make VERBOSE=1 -j4
    make check
    make install
@@ -346,7 +394,7 @@ mysql
 NAVY HPCMP Narwhal
 ------------------------------
 
-On Narwhal, ``git-lfs``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
+On Narwhal, ``git-lfs``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used. Also, temporarily it is necessary to install ``node.js`` as an external package to work around build errors for ``py-jupyter-server`` (see https://github.com/JCSDA/spack-stack/issues/928 and https://github.com/spack/spack/issues/41899).
 
 git-lfs
    The following instructions install ``git-lfs`` in ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the default version for Narwhal. First, download the ``git-lfs`` RPM on a system with full internet access (e.g., Derecho) using ``wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm`` and copy this file to ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src``. Then switch to Narwhal and run the following commands. 
@@ -396,6 +444,26 @@ ecflow
 
 mysql
   ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
+
+node.js
+  ``node.js`` is difficult to install via ``spack``, but is needed to install certain Python packages. The complication is that when using a newer ``gcc`` compiler (either directly or as backend for ``icc`` etc.), the OS ``node.js`` errors out with unresolved symbols in the ``libstdc++`` library. Therefore, we need to install ``node.js`` with ``gcc@10.3.0`` loaded, and create modulefile ``node.js/20.10.0`` from template ``modulefiles/node.js``.
+
+.. code-block:: console
+
+   module unload PrgEnv-cray
+   module load PrgEnv-gnu/8.3.2
+   module unload gcc
+   module load gcc/10.3.0
+
+   mkdir -p node-js-20.10.0/src && cd node-js-20.10.0/src
+   wget https://nodejs.org/dist/v20.10.0/node-v20.10.0.tar.gz
+   tar -xvzf node-v20.10.0.tar.gz
+   cd node-v20.10.0/
+   ./configure --partly-static \
+       --prefix=/p/app/projects/NEPTUNE/spack-stack/node-js-20.10.0/gcc-10.3.0 \
+       2>&1 | tee log.config
+   make 2>&1 | tee log.make
+   make install 2>&1 | tee log.install
 
 .. _MaintainersSection_Nautilus:
 

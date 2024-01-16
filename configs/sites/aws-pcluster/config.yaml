@@ -1,9 +1,8 @@
 config:
-  build_jobs: 24
+  build_jobs: 8
 
   # Overrides for spack build and staging areas to speed up builds
   # by using a local directory instead of the EFS shared filesystem
-
   build_stage: /tmp/spack-stack/cache/build_stage
   test_stage: /tmp/spack-stack/cache/test_stage
   source_cache: /tmp/spack-stack/cache/source_cache

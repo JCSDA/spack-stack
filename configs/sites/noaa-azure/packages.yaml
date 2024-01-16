@@ -1,10 +1,8 @@
 packages:
   all:
     compiler:: [intel@2021.3.0, gcc@9.2.0]
-    #compiler:: [intel@18.0.5]
     providers:
       mpi:: [intel-oneapi-mpi@2021.3.0, openmpi@3.1.4]
-      #mpi:: [intel-mpi@2018.4.274]
 
 ### MPI, Python, MKL
   mpi:
@@ -15,12 +13,6 @@ packages:
       prefix: /apps/oneapi
       modules:
       - impi/2021.3.0
-  intel-mpi:
-    externals:
-    - spec: intel-mpi@2018.4.274%intel@18.0.5
-      prefix: /apps/intel/compilers_and_libraries_2018
-      modules:
-      - impi/2018.4.274
   openmpi:
     externals:
     - spec: openmpi@3.1.4%gcc@9.2.0
@@ -50,10 +42,6 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.27.2
-      prefix: /contrib/spack-stack/cmake-3.27.2
   cpio:
     externals:
     - spec: cpio@2.11

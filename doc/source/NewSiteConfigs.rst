@@ -13,13 +13,13 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
 +===========================================+======================================================================+===========================+
-| Intel classic (icc, icpc, ifort)          | 18.0.5.274 to the latest available version in oneAPI 2023.1.0        | ``intel@``                |
+| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the latest available version in oneAPI 2023.1.0          | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2023.1.0       | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Apple clang (clang, clang++, w/ gfortran) | 10.0.0 to 14.0.3                                                     | ``apple-clang@``          |
+| Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0                                                     | ``apple-clang@``          |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
@@ -453,6 +453,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system wget
    spack external find --scope system mysql
    spack external find --scope system texlive
+   spack external find --scope system sed
 
 5. Find compilers, add to site config's ``compilers.yaml``
 
@@ -490,8 +491,6 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:fontconfig:variants:+pic"
    spack config add "packages:pixman:variants:+pic"
    spack config add "packages:cairo:variants:+pic"
-   spack config add "packages:libffi:version:['3.3']"
-   spack config add "packages:flex:version:['2.6.4']"
 
 9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
 
