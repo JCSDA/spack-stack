@@ -72,15 +72,15 @@ jobs:
           spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
           # Loop over compilers
-          compilers=(gcc intel)
+          declare -a compilers=("gcc" "intel")
           cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
 
-          for compiler in "${!compilers[@]}"
+          for compiler in "${compilers[@]}"
           do
             # Set compiler and MPI
             cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
             sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
-            cat spack.yaml
+            cat ${ENVDIR}/spack.yaml
 
             # Concretize and check for duplicates
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
@@ -138,15 +138,15 @@ jobs:
           spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
           # Loop over compilers
-          compilers=(gcc intel)
+          declare -a compilers=("gcc" "intel")
           cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
 
-          for compiler in "${!compilers[@]}"
+          for compiler in "${compilers[@]}"
           do
             # Set compiler and MPI
             cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
             sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
-            cat spack.yaml
+            cat ${ENVDIR}/spack.yaml
 
             # Concretize and check for duplicates
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
