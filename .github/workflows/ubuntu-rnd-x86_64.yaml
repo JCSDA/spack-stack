@@ -72,10 +72,10 @@ jobs:
           spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
           # Loop over compilers
-          compilers=(gcc intel)
+          declare -a compilers=("gcc" "intel")
           cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
 
-          for compiler in "${!compilers[@]}"
+          for compiler in "${compilers[@]}"
           do
             # Set compiler and MPI
             cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
@@ -138,10 +138,10 @@ jobs:
           spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
 
           # Loop over compilers
-          compilers=(gcc intel)
+          declare -a compilers=("gcc" "intel")
           cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
 
-          for compiler in "${!compilers[@]}"
+          for compiler in "${compilers[@]}"
           do
             # Set compiler and MPI
             cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
