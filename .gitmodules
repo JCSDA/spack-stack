@@ -1,9 +1,11 @@
 [submodule "spack"]
   path = spack
-  #url = https://github.com/spack/spack
-  #branch = develop
-  url = https://github.com/jcsda/spack
-  branch = jcsda_emc_spack_stack
+  ##url = https://github.com/spack/spack
+  ##branch = develop
+  #url = https://github.com/jcsda/spack
+  #branch = jcsda_emc_spack_stack
+  url = https://github.com/climbfuji/spack
+  branch = bugfix/esmf_pflogger_geos
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
