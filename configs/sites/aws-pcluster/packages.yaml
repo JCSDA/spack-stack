@@ -30,6 +30,12 @@ packages:
       - libfabric-aws/1.16.0~amzn4.0
       - openmpi/4.1.4
 
+### Modification of common packages
+
+  # https://github.com/spack/spack/issues/42137
+  pflogger:
+    variants: +mpi
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:

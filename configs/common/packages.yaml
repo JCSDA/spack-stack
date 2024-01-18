@@ -61,7 +61,7 @@
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
       version: ['8.6.0']
-      variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio
+      variants: ~xerces ~pnetcdf snapshot=none +shared +external-parallelio
       require:
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
@@ -142,7 +142,7 @@
       # https://github.com/JCSDA/spack-stack/issues/769
       # also: ... extdata2g segfault UFS?
       version: ['2.40.3']
-      variants: ~shared ~extdata2g ~pflogger
+      variants: +shared +pflogger ~f2py
     # If making changes here, also check the Discover site config and the CI workflows
     met:
       version: ['11.1.0']

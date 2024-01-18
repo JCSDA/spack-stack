@@ -9,6 +9,7 @@ spack:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
       - ewok-env +ecflow +cylc
+      - geos-gcm-env
       - jedi-fv3-env
       - jedi-mpas-env
       - jedi-neptune-env
