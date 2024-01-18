@@ -60,7 +60,7 @@
     # config and update the projections for lmod/tcl.
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
-      version: ['8.5.0']
+      version: ['8.6.0']
       variants: ~xerces ~pnetcdf snapshot=none +shared +external-parallelio
       require:
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
