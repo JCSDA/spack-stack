@@ -32,7 +32,7 @@ fi
 msg1="Added repo with namespace"
 msg2="Repository is already registered with Spack"
 for repo in jcsda-emc jcsda-emc-bundles; do
-  othererrors=$(spack repo add ${SPACK_STACK_DIR}/repos/$repo --scope defaults |& grep -v -e "$msg1" -e "$msg2")
+  othererrors=$( ( spack repo add ${SPACK_STACK_DIR}/repos/$repo --scope defaults |& grep -v -e "$msg1" -e "$msg2" ) || true )
   if [ $(echo "$othererrors" | grep -c .) -ne 0 ]; then
     echo "$othererrors"
     return 2
