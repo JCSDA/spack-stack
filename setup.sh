@@ -20,7 +20,7 @@ echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 source ${SPACK_STACK_DIR:?}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
 
-libpath=${SPACK_STACK_DIR}/lib/jcsda-emc/spack-stack
+libpath=${SPACK_STACK_DIR}/spack-ext/lib/jcsda-emc/spack-stack
 if [ -d ${libpath}/stack/cmd ]; then
   spack config --scope defaults add "config:extensions:$libpath"
 else
@@ -32,13 +32,14 @@ fi
 msg1="Added repo with namespace"
 msg2="Repository is already registered with Spack"
 for repo in jcsda-emc jcsda-emc-bundles; do
-  othererrors=$( ( spack repo add ${SPACK_STACK_DIR}/repos/$repo --scope defaults |& grep -v -e "$msg1" -e "$msg2" ) || true )
+  repodir=${SPACK_STACK_DIR}/spack-ext/repos/$repo
+  othererrors=$( ( spack repo add $repodir --scope defaults |& grep -v -e "$msg1" -e "$msg2" ) || true )
   if [ $(echo "$othererrors" | grep -c .) -ne 0 ]; then
     echo "$othererrors"
     return 2
   fi
-  if [ ! -d ${SPACK_STACK_DIR}/repos/$repo ]; then
-    echo "FATAL ERROR: Repo directory ${SPACK_STACK_DIR}/repos/$repo does not exist!"
+  if [ ! -d $repodir ]; then
+    echo "FATAL ERROR: Repo directory $repodir does not exist!"
     return 3
   fi
 done
