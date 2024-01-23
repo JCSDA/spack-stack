@@ -12,7 +12,6 @@ check_file = ".spackstack"
 # is a submodule of spack-stack.
 def stack_path(*paths):
     stack_dir = os.path.dirname(spack.paths.spack_root)
-    print(spack.paths.spack_root)
 
     if not os.path.exists(os.path.join(stack_dir, check_file)):
         raise Exception("Not a submodule of spack-stack")
