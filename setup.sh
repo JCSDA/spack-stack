@@ -17,5 +17,31 @@ SPACK_STACK_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && p
 export SPACK_STACK_DIR
 echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 
-source ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh
+source ${SPACK_STACK_DIR:?}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
+
+libpath=${SPACK_STACK_DIR}/spack-ext/lib/jcsda-emc/spack-stack
+if [ -d ${libpath}/stack/cmd ]; then
+  spack config --scope defaults add "config:extensions:$libpath"
+else
+  echo "FATAL ERROR: Could not find spack-stack extensions in ${libpath}"
+  return 1
+fi
+
+# Register the jcsda-emc repos
+msg1="Added repo with namespace"
+msg2="Repository is already registered with Spack"
+for repo in jcsda-emc jcsda-emc-bundles; do
+  repodir=${SPACK_STACK_DIR}/spack-ext/repos/$repo
+  othererrors=$( ( spack repo add $repodir --scope defaults |& grep -v -e "$msg1" -e "$msg2" ) || true )
+  if [ $(echo "$othererrors" | grep -c .) -ne 0 ]; then
+    echo "$othererrors"
+    return 2
+  fi
+  if [ ! -d $repodir ]; then
+    echo "FATAL ERROR: Repo directory $repodir does not exist!"
+    return 3
+  fi
+done
+
+echo "spack-stack extensions and repos are registered"
