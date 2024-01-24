@@ -74,14 +74,15 @@ class StackContainer:
         os.makedirs(self.env_dir, exist_ok=True)
 
         # Replace the placeholder SPACK_STACK_HASH with the hash stored in the env variable
-        if "spack_extension" in \
+        # in the container extra_instructions pre_build string, if applicable.
+        if "pre_build" in \
                 container_yaml["spack"]["container"]["extra_instructions"].keys():
-            old = container_yaml["spack"]["container"]["extra_instructions"]["spack_extension"]
+            old = container_yaml["spack"]["container"]["extra_instructions"]["pre_build"]
             try:
                 new = old.replace("SPACK_STACK_HASH", os.environ['SPACK_STACK_HASH'])
             except KeyError:
                 raise Exception("Environment variable 'SPACK_STACK_HASH' not defined")
-            container_yaml["spack"]["container"]["extra_instructions"]["spack_extension"] = new
+            container_yaml["spack"]["container"]["extra_instructions"]["pre_build"] = new
 
         with open(os.path.join(self.env_dir, "spack.yaml"), "w") as f:
             syaml.dump_config(container_yaml, stream=f)

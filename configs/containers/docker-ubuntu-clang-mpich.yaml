@@ -174,13 +174,14 @@ spack:
 
     # Extra instructions
     extra_instructions:
-      spack_extension: |
+
+      pre_build: |
         # Copy the spack extension repos into the spack code
         ADD spack-ext-SPACK_STACK_HASH/repos/* $SPACK_ROOT/var/spack/repos/
         # Register spack extension repos
         RUN spack repo add $SPACK_ROOT/var/spack/repos/jcsda-emc --scope defaults \
         spack repo add $SPACK_ROOT/var/spack/repos/jcsda-emc-bundles --scope defaults
-      pre_build: |
+
         # Create symbolic links for clang compilers
         RUN cd /usr/bin && \
         ln -svf clang-10 clang && \
