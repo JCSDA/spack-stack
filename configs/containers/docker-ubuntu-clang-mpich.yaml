@@ -174,8 +174,12 @@ spack:
 
     # Extra instructions
     extra_instructions:
+      spack_extension: |
+        # Copy the spack extension into the spack code
+        ADD spack-ext-SPACK_STACK_HASH/repos/* $SPACK_ROOT/var/spack/repos/
+
       pre_build: |
-        #Create symbolic links for clang compilers
+        # Create symbolic links for clang compilers
         RUN cd /usr/bin && \
         ln -svf clang-10 clang && \
         ln -svf clang++-10 clang++ && \
