@@ -35,12 +35,11 @@ spack:
       externals:
       - spec: gcc@9.4.0
         prefix: /usr
-    # Try this next time, already used for clang/intel
-    #gmake:
-    #  buildable: false
-    #  externals:
-    #  - spec: gmake@4.2.1
-    #    prefix: /usr
+    gmake:
+      buildable: false
+      externals:
+      - spec: gmake@4.2.1
+        prefix: /usr
     diffutils:
       buildable: false
       externals:
@@ -150,8 +149,12 @@ spack:
 
     # Extra instructions
     extra_instructions:
+        # Copy the spack-stack extension repo into the spack code
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/jcsda-emc
+        # Register spack-stack extension repo
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
       pre_final: |
-        #Set environment variables for installing tzdata
+        # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
         ENV CC=gcc

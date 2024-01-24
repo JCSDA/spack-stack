@@ -174,14 +174,11 @@ spack:
 
     # Extra instructions
     extra_instructions:
-
       pre_build: |
-        # Copy the spack extension repos into the spack code
-        ADD spack-ext-SPACK_STACK_HASH/repos/* $SPACK_ROOT/var/spack/repos/
-        # Register spack extension repos
-        RUN spack repo add $SPACK_ROOT/var/spack/repos/jcsda-emc --scope defaults \
-        spack repo add $SPACK_ROOT/var/spack/repos/jcsda-emc-bundles --scope defaults
-
+        # Copy the spack-stack extension repo into the spack code
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/jcsda-emc
+        # Register spack-stack extension repo
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
         # Create symbolic links for clang compilers
         RUN cd /usr/bin && \
         ln -svf clang-10 clang && \
@@ -213,7 +210,7 @@ spack:
         spack env activate -d . && \
         spack find 2>&1 | tee /root/spack_find.out
       pre_final: |
-        #Set environment variables for installing tzdata
+        # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
         ENV MPICH_VERSION=4.1.1

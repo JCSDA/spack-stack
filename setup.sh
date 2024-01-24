@@ -24,7 +24,7 @@ fi
 # Register the jcsda-emc repos
 msg1="Added repo with namespace"
 msg2="Repository is already registered with Spack"
-for repo in jcsda-emc jcsda-emc-bundles; do
+for repo in spack-stack; do
   repodir=${SPACK_STACK_DIR}/spack-ext/repos/$repo
   othererrors=$( ( spack repo add $repodir --scope defaults |& grep -v -e "$msg1" -e "$msg2" ) || true )
   if [ $(echo "$othererrors" | grep -c .) -ne 0 ]; then
