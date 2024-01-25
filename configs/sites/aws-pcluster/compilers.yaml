@@ -6,7 +6,8 @@ compilers:
       cxx: /opt/intel/oneapi/compiler/2024.0/bin/icpx
       f77: /opt/intel/oneapi/compiler/2024.0/bin/ifort
       fc: /opt/intel/oneapi/compiler/2024.0/bin/ifort
-    flags: {}
+    flags:
+      fflags: -diag-disable=10448
     operating_system: ubuntu22.04
     target: x86_64
     modules:
