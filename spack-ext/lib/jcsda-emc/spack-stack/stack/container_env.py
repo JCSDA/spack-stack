@@ -88,6 +88,8 @@ class StackContainer:
             syaml.dump_config(container_yaml, stream=f)
 
         # Copy the spack-stack extension into the spack/docker env directory
+        current_wdir = os.getcwd()
         os.chdir(self.env_dir)
         shutil.copytree(os.path.join(os.environ['SPACK_STACK_DIR'], "spack-ext"), \
             "spack-ext-" + os.environ['SPACK_STACK_HASH'])
+        os.chdir(current_wdir)
