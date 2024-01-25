@@ -1,34 +1,26 @@
 packages:
   all:
-    compiler: [intel@2022.1.0, gcc@9.4.0]
-    #compiler: [oneapi@2022.1.0]
+    compiler: [oneapi@2024.0.2, gcc@11.4.0]
     providers:
-      mpi: [intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]
+      mpi: [intel-oneapi-mpi@2021.11, openmpi@4.1.6]
 
 ### MPI, Python, MKL
   mpi:
     buildable: false
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.6.0%intel@2022.1.0
+    - spec: intel-oneapi-mpi@2021.11%oneapi@2024.0.2
       prefix: /opt/intel
       modules:
-      - libfabric-aws/1.16.0~amzn4.0
-      - intelmpi
-    #externals:
-    #- spec: intel-oneapi-mpi@2021.6.0%oneapi@2022.1.0
-    #  prefix: /opt/intel
-    #  modules:
-    #  - libfabric-aws/1.16.0~amzn4.0
-    #  - intelmpi
+      - libfabric-aws/1.19.0amzn4.0
+      - mpi/2021.11
   openmpi:
     externals:
-    - spec: openmpi@4.1.4%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+    - spec: openmpi@4.1.6%gcc@11.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
         fabrics=ofi schedulers=slurm
-      prefix: /opt/amazon/openmpi
       modules:
-      - libfabric-aws/1.16.0~amzn4.0
-      - openmpi/4.1.4
+      - libfabric-aws/1.19.0amzn4.0
+      - openmpi/4.1.6
 
 ### Modification of common packages
 
@@ -49,11 +41,11 @@ packages:
     externals:
     - spec: binutils@2.34
       prefix: /usr
-  boost:
-    buildable: False
-    externals:
-    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer +wave cxxstd=17 visibility=hidden
-      prefix: /usr
+  ### boost:
+  ###   buildable: False
+  ###   externals:
+  ###   - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer +wave cxxstd=17 visibility=hidden
+  ###     prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.30
@@ -62,11 +54,11 @@ packages:
     externals:
     - spec: diffutils@3.7
       prefix: /usr
-  ecflow:
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4 +ui
-      prefix: /home/ubuntu/jedi/ecflow-5.8.4
+  ### ecflow:
+  ###   buildable: False
+  ###   externals:
+  ###   - spec: ecflow@5.8.4 +ui
+  ###     prefix: /home/ubuntu/jedi/ecflow-5.8.4
   findutils:
     externals:
     - spec: findutils@4.7.0
@@ -106,7 +98,7 @@ packages:
   mysql:
     buildable: False
     externals:
-    - spec: mysql@8.0.32
+    - spec: mysql@8.0.35
       prefix: /usr
   perl:
     externals:
@@ -119,7 +111,7 @@ packages:
   qt:
     buildable: false
     externals:
-    - spec: qt@5.12.8
+    - spec: qt@5.15.3
       prefix: /usr
   sed:
     externals:
