@@ -10,7 +10,7 @@ packages:
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.11%oneapi@2024.0.2
-      prefix: /opt/intel
+      prefix: /opt/intel/oneapi
       modules:
       - libfabric-aws/1.19.0amzn4.0
       - mpi/2021.11
@@ -31,37 +31,27 @@ packages:
 ### All other external packages listed alphabetically
   autoconf:
     externals:
-    - spec: autoconf@2.69
+    - spec: autoconf@2.71
       prefix: /usr
   automake:
     externals:
-    - spec: automake@1.16.1
+    - spec: automake@1.16.5
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.34
+    - spec: binutils@2.38
       prefix: /usr
-  ### boost:
-  ###   buildable: False
-  ###   externals:
-  ###   - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer +wave cxxstd=17 visibility=hidden
-  ###     prefix: /usr
   coreutils:
     externals:
-    - spec: coreutils@8.30
+    - spec: coreutils@8.32
       prefix: /usr
   diffutils:
     externals:
-    - spec: diffutils@3.7
+    - spec: diffutils@3.8
       prefix: /usr
-  ### ecflow:
-  ###   buildable: False
-  ###   externals:
-  ###   - spec: ecflow@5.8.4 +ui
-  ###     prefix: /home/ubuntu/jedi/ecflow-5.8.4
   findutils:
     externals:
-    - spec: findutils@4.7.0
+    - spec: findutils@4.8.0
       prefix: /usr
   flex:
     externals:
@@ -69,19 +59,19 @@ packages:
       prefix: /usr
   gawk:
     externals:
-    - spec: gawk@5.0.1
+    - spec: gawk@5.1.0
       prefix: /usr
   git:
     externals:
-    - spec: git@2.25.1~tcltk
+    - spec: git@2.34.1~tcltk
       prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@2.9.2
+    - spec: git-lfs@3.0.2
       prefix: /usr
   gmake:
     externals:
-    - spec: gmake@4.2.1
+    - spec: gmake@4.3
       prefix: /usr
   groff:
     externals:
@@ -102,11 +92,11 @@ packages:
       prefix: /usr
   perl:
     externals:
-    - spec: perl@5.30.0~cpanm+shared+threads
+    - spec: perl@5.34.0~cpanm+shared+threads
       prefix: /usr
   pkg-config:
     externals:
-    - spec: pkg-config@0.29.1
+    - spec: pkg-config@0.29.2
       prefix: /usr
   qt:
     buildable: false
@@ -115,21 +105,21 @@ packages:
       prefix: /usr
   sed:
     externals:
-    - spec: sed@4.7
+    - spec: sed@4.8
       prefix: /usr
   tar:
     externals:
-    - spec: tar@1.30
+    - spec: tar@1.34
       prefix: /usr
   texinfo:
     externals:
-    - spec: texinfo@6.7
+    - spec: texinfo@6.8
       prefix: /usr
   texlive:
     externals:
-    - spec: texlive@20190410
+    - spec: texlive@20220204
       prefix: /usr
   wget:
     externals:
-    - spec: wget@1.20.3
+    - spec: wget@1.21.1
       prefix: /usr
