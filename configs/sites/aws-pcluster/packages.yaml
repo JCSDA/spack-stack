@@ -33,10 +33,6 @@ packages:
 
 ### Modification of common packages
 
-  # https://github.com/spack/spack/issues/42137
-  pflogger:
-    variants: +mpi
-
 ### All other external packages listed alphabetically
   autoconf:
     externals:
