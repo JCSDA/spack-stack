@@ -170,7 +170,7 @@ spack:
     extra_instructions:
       pre_build: |
         # Copy the spack-stack extension repo into the spack code
-        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/jcsda-emc
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
         # Create symbolic links for clang compilers
