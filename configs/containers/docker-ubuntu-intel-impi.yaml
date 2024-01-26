@@ -171,13 +171,18 @@ spack:
     # Extra instructions
     extra_instructions:
       pre_build: |
+        # Copy the spack-stack extension repo into the spack code
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
+        # Register spack-stack extension repo
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
+        # Install Intel compilers and MPI library
         RUN apt update && apt install apt-utils && \
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
         apt update && \
         apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 -y
       pre_final: |
-        #Set environment variables for installing tzdata
+        # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
         ENV CC=icc
@@ -189,6 +194,7 @@ spack:
         spack env activate -d . && \
         spack find 2>&1 | tee /root/spack_find.out
       final: |
+        # Install Intel compilers and MPI library
         RUN apt update  && apt install apt-utils && \
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \

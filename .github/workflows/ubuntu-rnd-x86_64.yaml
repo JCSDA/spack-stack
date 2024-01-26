@@ -64,9 +64,6 @@ jobs:
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
-          # https://github.com/spack/spack/issues/42137
-          spack config add "packages:pflogger:variants:+mpi"
-
           # Overrides for spack build and staging areas to speed up builds,
           # separate from the default site config locations to avoid conflicts
           spack config add "config:build_stage:/home/ubuntu/spack-stack/CI/tmp/build_stage"
@@ -132,9 +129,6 @@ jobs:
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
-
-          # https://github.com/spack/spack/issues/42137
-          spack config add "packages:pflogger:variants:+mpi"
 
           # Overrides for spack build and staging areas to speed up builds,
           # separate from the default site config locations to avoid conflicts

@@ -16,24 +16,26 @@ compilers:
       set:
         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
     extra_rpaths: []
-# Spack gets confused if there is an Intel and a OneAPI compiler ...
-#- compiler:
-#    spec: oneapi@2022.1.0
-#    paths:
-#      cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/icx
-#      cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/icpx
-#      f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/ifx
-#      fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/ifx
-#    flags: {}
-#    operating_system: ubuntu20.04
-#    target: x86_64
-#    modules: []
-#    environment:
-#      #prepend_path:
-#      #  LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin'
-#      set:
-#        I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
-#    extra_rpaths: []
+- compiler:
+    spec: oneapi@2024.0.2
+    paths:
+      cc: /mnt/experiments-efs/intel-oneapi-2024.0.2/compiler/2024.0/bin/icx
+      cxx: /mnt/experiments-efs/intel-oneapi-2024.0.2/compiler/2024.0/bin/icpx
+      f77: /mnt/experiments-efs/intel-oneapi-2024.0.2/compiler/2024.0/bin/ifort
+      fc: /mnt/experiments-efs/intel-oneapi-2024.0.2/compiler/2024.0/bin/ifort
+    flags: {}
+    operating_system: ubuntu20.04
+    target: x86_64
+    modules:
+    - tbb/2021.11
+    - compiler-rt/2024.0.2
+    - oclfpga/2024.0.0
+    - compiler/2024.0.2
+    - ifort/2024.0.2
+    environment:
+      set:
+        I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
+    extra_rpaths: []
 - compiler:
     spec: gcc@9.4.0
     paths:
