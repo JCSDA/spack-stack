@@ -466,7 +466,7 @@ def setup_meta_modules():
                             (package_name_dummy, package_version) = get_name_and_version_from_spec(
                                 package_config[package_name]["externals"][i]["spec"]
                             )
-                            if package_version == mpi_version:
+                            if package_version == mpi_version.split("-")[0]:
                                 package_found = True
                                 external_mpi_package_config = package_config[package_name][
                                     "externals"
@@ -511,7 +511,7 @@ def setup_meta_modules():
                         module_dir, compiler_name, compiler_version, "stack-" + mpi_name
                     )
                     mpi_module_file = os.path.join(
-                        mpi_module_dir, mpi_version + MODULE_FILE_EXTENSION[module_choice]
+                        mpi_module_dir, mpi_version.split("-")[0] + MODULE_FILE_EXTENSION[module_choice]
                     )
                     substitutes = SUBSTITUTES_TEMPLATE.copy()
                     #
