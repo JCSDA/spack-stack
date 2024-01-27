@@ -600,10 +600,10 @@ def setup_meta_modules():
                         # and load it with the wrapper, don't set any of the other substitutes
                         module = "{}/{}".format(mpi_name, mpi_version)
                         substitutes["MODULELOADS"] += module_load_command(
-                            module_choice, module
+                            module_choice, module.split("-")[0]
                         ).rstrip("\n")
                         substitutes["MODULEPREREQS"] += module_prereq_command(
-                            module_choice, module
+                            module_choice, module.split("-")[0]
                         ).rstrip("\n")
                         logging.debug(
                             "  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"])
