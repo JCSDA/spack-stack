@@ -476,7 +476,7 @@ def setup_meta_modules():
                     elif (
                         "version" in package_config[package_name].keys()
                         and len(package_config[package_name]["version"]) == 1
-                        and package_config[package_name]["version"][0] == mpi_version.split()[0]
+                        and package_config[package_name]["version"][0] == mpi_version
                     ):
                         package_found = True
                         break
