@@ -6,6 +6,7 @@ spack:
   concretizer:
     unify: when_possible
   config:
+    deprecated: true
     install_tree:
       root: $env/install
   modules:
