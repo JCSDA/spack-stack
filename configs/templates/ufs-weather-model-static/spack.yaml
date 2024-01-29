@@ -20,7 +20,7 @@ spack:
   - common
   specs:
   - bacio@2.4.1
-  - crtm@2.4.0~fix
+  - crtm@=2.4.0~fix
   - esmf@8.5.0~shared+external-parallelio
   - fms@2023.02.01 constants=GFS
   - g2@3.4.5
