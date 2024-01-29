@@ -213,7 +213,7 @@ class StackEnv(object):
         # Activate environment
         env = ev.Environment(manifest_dir=env_dir)
         ev.activate(env)
-        env_scope = env.env_file_config_scope_name()
+        env_scope = env.scope_name
 
         # Save original data in spack.yaml because it has higest precedence.
         # spack.config.add will overwrite as it goes.
