@@ -3,7 +3,5 @@ packages:
     variants: ~png ~svg
   git:
     buildable: false
-  libiconv:
-    buildable: false
   wgrib2:
     variants: ~openmp
