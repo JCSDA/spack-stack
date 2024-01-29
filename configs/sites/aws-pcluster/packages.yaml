@@ -1,9 +1,10 @@
 packages:
   all:
     compiler: [intel@2022.1.0, gcc@9.4.0]
-    #compiler: [oneapi@2022.1.0]
+    #compiler: [oneapi@2024.0.2]
     providers:
       mpi: [intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]
+      #mpi: [intel-oneapi-mpi@2021.11]
 
 ### MPI, Python, MKL
   mpi:
@@ -16,11 +17,11 @@ packages:
       - libfabric-aws/1.16.0~amzn4.0
       - intelmpi
     #externals:
-    #- spec: intel-oneapi-mpi@2021.6.0%oneapi@2022.1.0
-    #  prefix: /opt/intel
+    #- spec: intel-oneapi-mpi@2021.11%oneapi@2024.0.2
+    #  prefix: /mnt/experiments-efs/intel-oneapi-2024.0.2
     #  modules:
     #  - libfabric-aws/1.16.0~amzn4.0
-    #  - intelmpi
+    #  - mpi/2021.11
   openmpi:
     externals:
     - spec: openmpi@4.1.4%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
@@ -31,10 +32,6 @@ packages:
       - openmpi/4.1.4
 
 ### Modification of common packages
-
-  # https://github.com/spack/spack/issues/42137
-  pflogger:
-    variants: +mpi
 
 ### All other external packages listed alphabetically
   autoconf:

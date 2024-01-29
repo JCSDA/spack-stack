@@ -136,11 +136,6 @@
     libyaml:
       version: ['0.2.5']
     mapl:
-      # 2.35.2 goes with esmf@8.4.2, 2.40.3 goes with esmf@8.5.0
-      # turn off ~pflogger and extdata2g to avoid compilation
-      # errors with intel@2021.7.0+, see
-      # https://github.com/JCSDA/spack-stack/issues/769
-      # also: ... extdata2g segfault UFS?
       version: ['2.40.3']
       variants: +shared +pflogger ~f2py
     # If making changes here, also check the Discover site config and the CI workflows
@@ -199,6 +194,9 @@
       variants: +pnetcdf
     parallel-netcdf:
       version: ['1.12.2']
+    pflogger:
+      version: ['1.12.0']
+      variants: +mpi
     pixman:
       variants: +pic
     # Do not build pkgconf - https://github.com/jcsda/spack-stack/issues/123
