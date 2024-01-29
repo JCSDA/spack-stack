@@ -26,7 +26,7 @@ msg1="Added repo with namespace"
 msg2="Repository is already registered with Spack"
 for repo in spack-stack; do
   repodir=${SPACK_STACK_DIR}/spack-ext/repos/$repo
-  othererrors=$( ( spack repo add $repodir --scope defaults |& grep -v -e "$msg1" -e "$msg2" ) || true )
+  othererrors=$( ( spack repo add $repodir --scope defaults 2>&1 | grep -v -e "$msg1" -e "$msg2" ) || true )
   if [ $(echo "$othererrors" | grep -c .) -ne 0 ]; then
     echo "$othererrors"
     return 2
