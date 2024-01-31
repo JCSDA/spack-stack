@@ -26,13 +26,13 @@ spack:
   - g2@3.4.5
   - g2tmpl@1.10.2
   - gftl-shared@1.6.1
-  - hdf5@1.14.0+hl+mpi~shared~tools
+  - hdf5@1.14.0+hl+mpi~shared~tools~szip
   - ip@3.3.3
   - jasper@2.0.25~shared
   - libjpeg-turbo~shared
   - libpng@1.6.37 libs=static
   - mapl@2.40.3~shared~pflogger~fargparse~extdata2g
-  - netcdf-c@4.9.2~parallel-netcdf+mpi~shared~dap
+  - netcdf-c@4.9.2~parallel-netcdf+mpi~shared~dap~szip
   - netcdf-fortran@4.6.0~shared
   - parallel-netcdf@1.12.2~shared
   - parallelio@2.5.10+fortran~pnetcdf~shared
