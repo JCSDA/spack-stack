@@ -113,6 +113,9 @@ jobs:
           spack config add "packages:all:compiler:[intel@2022.1.0]"
           sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
+          # Force using external curl to avoid duplicate packages being built
+          spack config add "packages:curl:buildable:false"
+
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
