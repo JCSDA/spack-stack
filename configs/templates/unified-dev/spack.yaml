@@ -14,6 +14,7 @@ spack:
       - gmao-swell-env
       - gsi-env
       - jedi-fv3-env
+      - jedi-geos-env
       - jedi-mpas-env
       - jedi-neptune-env
       - jedi-tools-env
