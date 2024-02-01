@@ -206,8 +206,17 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack external find --scope system --exclude bison --exclude openssl --exclude=gettext
+   spack external find --scope system --exclude bison --exclude openssl
+   spack external find --scope system libiconv
+   spack external find --scope system perl
+   spack external find --scope system wget
    spack external find --scope system mysql
+
+   PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
+        spack external find --scope system curl
+
+   PATH="$HOMEBREW_ROOT/opt/qt5/bin:$PATH" \
+       spack external find --scope system qt
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
    # The texlive bin directory must have been added to PATH (see above)
