@@ -114,7 +114,7 @@
       variants: +external-xdr ~fortran ~netcdf
     hdf5:
       version: ['1.14.3']
-      variants: +hl +fortran +mpi ~threadsafe +szip
+      variants: +hl +fortran +mpi ~threadsafe ~szip
     ip:
       version: ['4.3.0']
       variants: precision=4,d,8
@@ -164,7 +164,7 @@
     netcdf-c:
       version: ['4.9.2']
       # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
-      variants: +dap +mpi ~parallel-netcdf
+      variants: +dap +mpi ~parallel-netcdf ~szip
     netcdf-cxx4:
       version: ['4.3.1']
     netcdf-fortran:
