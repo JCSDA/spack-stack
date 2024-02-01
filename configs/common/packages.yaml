@@ -17,8 +17,8 @@
       version: ['1.27.84']
     bacio:
       version: ['2.4.1']
-    #bison:
-    #  version: ['3.8.2']
+    bison:
+      version: ['3.8.2']
     boost:
       version: ['1.83.0']
       variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
@@ -31,7 +31,7 @@
       version: ['2.2.0']
       variants: ~openmp
     cmake:
-      #version: ['3.23.1']
+      version: ['3.23.1']
       variants: +ownlibs
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
@@ -40,7 +40,7 @@
     ecbuild:
       version: ['3.7.2']
     eccodes:
-      #version: ['2.33.0']
+      version: ['2.33.0']
       variants: +png
     ecflow:
       version: ['5.11.4']
@@ -54,8 +54,8 @@
     ectrans:
       version: ['1.2.0']
       variants: ~mkl +fftw
-    #eigen:
-    #  version: ['3.4.0']
+    eigen:
+      version: ['3.4.0']
     # Attention - when updating the version also check the common modules.yaml
     # config and update the projections for lmod/tcl.
     # Also, check the acorn and derecho site configs which have esmf modifications.
@@ -89,8 +89,8 @@
       version: ['1.6.4']
     g2tmpl:
       version: ['1.10.2']
-    #gettext:
-    #  version: ['0.21.1']
+    gettext:
+      version: ['0.21.1']
     gfsio:
       version: ['1.4.1']
     gftl-shared:
@@ -107,10 +107,10 @@
       version: ['1.1.3']
     gsi-ncdiag:
       version: ['1.1.2']
-    #gsl-lite:
-    #  version: ['0.37.0']
+    gsl-lite:
+      version: ['0.37.0']
     hdf:
-      #version: ['4.2.15']
+      version: ['4.2.15']
       variants: +external-xdr ~fortran ~netcdf
     hdf5:
       version: ['1.14.3']
@@ -124,17 +124,15 @@
       version: ['2.0.32']
     jedi-cmake:
       version: ['1.4.0']
-    #jpeg:
-    #  version: ['9.1.0']
     landsfcutil:
       version: ['2.4.1']
-    #libjpeg-turbo:
-    #  version: ['2.1.0']
+    libjpeg-turbo:
+      version: ['2.1.0']
     libpng:
       version: ['1.6.37']
       variants: +pic
-    #libyaml:
-    #  version: ['0.2.5']
+    libyaml:
+      version: ['0.2.5']
     mapl:
       version: ['2.40.3']
       variants: +shared +pflogger ~f2py
@@ -151,7 +149,7 @@
     mysql:
       variants: +download_boost
     nco:
-      #version: ['5.0.6']
+      version: ['5.1.6']
       variants: ~doc
     # ncview - when adding information here, also check Orion
     # and Discover site configs
@@ -172,15 +170,15 @@
     netcdf-fortran:
       version: ['4.6.1']
     # ninja - when adding information here, also check Discover site config
-    #nlohmann-json:
-    #  version: ['3.10.5']
-    #nlohmann-json-schema-validator:
-    #  version: ['2.1.0']
+    nlohmann-json:
+      version: ['3.10.5']
+    nlohmann-json-schema-validator:
+      version: ['2.1.0']
     odc:
       version: ['1.4.6']
       variants: ~fortran
     openblas:
-      #version: ['0.3.24']
+      version: ['0.3.24']
       variants: +noavx512
     openmpi:
       variants: ~internal-hwloc +two_level_namespace
@@ -205,25 +203,27 @@
     prod-util:
       version: ['2.1.1']
     proj:
-      #version: ['8.1.0']
+      version: ['8.1.0']
       variants: ~tiff
     python:
       require: "@3.10.13"
-    #py-attrs:
-    #  # https://github.com/JCSDA/spack-stack/issues/740
-    #  version: ['21.4.0']
+    py-attrs:
+      # https://github.com/JCSDA/spack-stack/issues/740
+      version: ['21.4.0']
     py-cartopy:
       variants: +plotting
       require: "@0.21.1"
     py-cryptography:
       variants: +rust_bootstrap
-    # This may be a problem for oneAPI?
     # Introduced in https://github.com/JCSDA/spack-stack/pull/894, pin py-cython
     # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
     py-cython:
       require: "@0.29.36"
+    ## https://github.com/JCSDA/spack-stack/issues/980
+    #py-gitpython:
+    #  require: "@3.1.27"
     py-h5py:
-    ###   version: ['3.7.0']
+      version: ['3.7.0']
       variants: ~mpi
     # Comment out for now until build problems are solved
     # https://github.com/jcsda/spack-stack/issues/522
@@ -231,10 +231,9 @@
     # README.md
     #py-mysql-connector-python:
     #  version: ['8.0.32']
-    #py-netcdf4:
-    #  version: ['1.6.2']
-    #  # Does this variant work as expected for 1.6.2?
-    #  variants: ~mpi
+    py-netcdf4:
+      version: ['1.5.8']
+      variants: ~mpi
     py-numpy:
       require: ['@1.22.3']
     py-pandas:
@@ -246,8 +245,8 @@
       variants: +rust_bootstrap
     py-shapely:
       require: ['@1.8.0']
-    #qt:
-    #  version: ['5.15.3']
+    qt:
+      version: ['5.15.3']
     scotch:
       version: ['7.0.4']
       variants: +mpi+metis~shared~threads~mpi_thread+noarch
@@ -260,8 +259,8 @@
     sp:
       version: ['2.5.0']
       variants: precision=4,d,8
-    #udunits:
-    #  version: ['2.2.28']
+    udunits:
+      version: ['2.2.28']
     # Note - we can remove upp from stack at some point?
     upp:
       version: ['10.0.10']
@@ -270,17 +269,17 @@
       variants: precision=4,d,8
     w3nco:
       version: ['2.4.1']
-    #wget:
-    #  version: ['1.21.2']
+    wget:
+      version: ['1.21.2']
     # When changing wgrib2, also check Hercules and Nautilus site configs
     wgrib2:
       version: ['2.0.8']
     wrf-io:
       version: ['1.2.0']
-    #yafyaml:
-    #  version: ['0.5.1']
+    yafyaml:
+      version: ['1.2.0']
     zlib:
       version: ['1.2.13']
     zstd:
-      version: ['1.5.5']
+      version: ['1.5.2']
       variants: +programs
