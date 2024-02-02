@@ -49,7 +49,9 @@ jobs:
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
-          spack external find --scope system --exclude bison --exclude openssl
+          spack external find --scope system --exclude bison --exclude openssl --exclude gettext
+          # Need to find gettext outside of default (presumed) system path for krb5
+          spack external find --path=/usr/local/Cellar/gettext/0.21.1 gettext
           spack external find --scope system perl
           spack external find --scope system wget
           PATH="/usr/local/opt/curl/bin:$PATH" \
