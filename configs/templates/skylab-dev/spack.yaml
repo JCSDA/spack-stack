@@ -11,6 +11,7 @@ spack:
       - ewok-env +ecflow +cylc
       - geos-gcm-env
       - jedi-fv3-env
+      - jedi-geos-env
       - jedi-mpas-env
       - jedi-neptune-env
       - jedi-ufs-env
