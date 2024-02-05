@@ -32,7 +32,7 @@ Ready-to-use spack-stack 1.6.0 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.6.0/envs/unified-env-intel{19,2022}``          | Hang Lei / Alex Richert       |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Gaea C5                          | Intel           | ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.6.0/envs/unified-env``              | Cam Book / Dom Heinzeller     |
+|                     | Gaea C5                          | Intel           | ``/ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env``                                      | Cam Book / Dom Heinzeller     |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (RDHPCS)       | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env``                     | Mark Potts / Dom Heinzeller   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -454,15 +454,15 @@ The following is required for building new spack environments and for using spac
    module load cray-mpich/8.1.25
    module load python/3.9.12
 
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+   module use /ncrc/proj/epic/spack-stack/modulefiles
    module load ecflow/5.8.4
-   module load mysql/8.0.31
+   module load mysql/8.0.36
 
 For ``spack-stack-1.6.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+   module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
    module load stack-intel/2023.1.0
    module load stack-cray-mpich/8.1.25
    module load stack-python/3.10.13
