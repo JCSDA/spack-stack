@@ -146,8 +146,6 @@
       require: "+int64 +real64"
     mpich:
       variants: ~hwloc +two_level_namespace
-    mysql:
-      variants: +download_boost
     nco:
       version: ['5.1.6']
       variants: ~doc
