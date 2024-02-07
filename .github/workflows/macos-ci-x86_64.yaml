@@ -52,7 +52,7 @@ jobs:
           spack external find --scope system \
               --exclude bison --exclude openssl  \
               --exclude python --exclude gettext
-          # Need to find gettext outside of default (presumed) system path for krb5
+          # Need to find gettext outside of default (presumed to be a system) path for krb5
           spack external find --path=/usr/local/Cellar/gettext/0.21.1 gettext
           spack external find --scope system perl
           spack external find --scope system wget
