@@ -213,7 +213,7 @@ class StackEnv(object):
         # Activate environment
         env = ev.Environment(manifest_dir=env_dir)
         ev.activate(env)
-        env_scope = env.env_file_config_scope_name()
+        env_scope = env.scope_name
 
         # Save original data in spack.yaml because it has higest precedence.
         # spack.config.add will overwrite as it goes.
@@ -271,7 +271,7 @@ class StackEnv(object):
             os.makedirs(env_pkgs_path, exist_ok=False)
             with open(os.path.join(env_repo_path, "repo.yaml"), "w") as f:
                 f.write("repo:\n  namespace: envrepo")
-            repo_paths = spack.config.get("repos", scope=spack.config.default_list_scope())
+            repo_paths = spack.config.get("repos")
             repo_paths = [p.replace("$spack/", spack.paths.spack_root + "/") for p in repo_paths]
             for pkg_name in self.modifypkg:
                 pkg_found = False

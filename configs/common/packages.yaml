@@ -40,7 +40,7 @@
     ecbuild:
       version: ['3.7.2']
     eccodes:
-      version: ['2.32.0']
+      version: ['2.33.0']
       variants: +png
     ecflow:
       version: ['5.11.4']
@@ -49,7 +49,7 @@
       version: ['1.24.5']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.35.1']
+      version: ['0.36.0']
       variants: +fckit +trans +tesselation +fftw
     ectrans:
       version: ['1.2.0']
@@ -113,7 +113,7 @@
       version: ['4.2.15']
       variants: +external-xdr ~fortran ~netcdf
     hdf5:
-      version: ['1.14.0']
+      version: ['1.14.3']
       variants: +hl +fortran +mpi ~threadsafe ~szip
     ip:
       version: ['4.3.0']
@@ -124,8 +124,6 @@
       version: ['2.0.32']
     jedi-cmake:
       version: ['1.4.0']
-    jpeg:
-      version: ['9.1.0']
     landsfcutil:
       version: ['2.4.1']
     libjpeg-turbo:
@@ -148,10 +146,8 @@
       require: "+int64 +real64"
     mpich:
       variants: ~hwloc +two_level_namespace
-    mysql:
-      variants: +download_boost
     nco:
-      version: ['5.0.6']
+      version: ['5.1.6']
       variants: ~doc
     # ncview - when adding information here, also check Orion
     # and Discover site configs
@@ -183,17 +179,17 @@
       version: ['0.3.24']
       variants: +noavx512
     openmpi:
-      variants: +internal-hwloc +two_level_namespace
+      variants: ~internal-hwloc +two_level_namespace
     # Pin openssl to avoid duplicate packages being built
     openssl:
       variants: +shared
     p4est:
       version: ['2.8']
     parallelio:
-      version: ['2.5.10']
+      version: ['2.6.2']
       variants: +pnetcdf
     parallel-netcdf:
-      version: ['1.12.2']
+      version: ['1.12.3']
     pflogger:
       version: ['1.12.0']
       variants: +mpi
@@ -221,6 +217,9 @@
     # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
     py-cython:
       require: "@0.29.36"
+    ## https://github.com/JCSDA/spack-stack/issues/980
+    #py-gitpython:
+    #  require: "@3.1.27"
     py-h5py:
       version: ['3.7.0']
       variants: ~mpi
@@ -237,9 +236,6 @@
       require: ['@1.22.3']
     py-pandas:
       variants: +excel
-    # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
-    # versions of py-poetry-core when using external/homebrew Python as
-    # we do at the moment in spack-stack.
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       require: ['@63.4.3']
@@ -263,6 +259,7 @@
       variants: precision=4,d,8
     udunits:
       version: ['2.2.28']
+    # Note - we can remove upp from stack at some point?
     upp:
       version: ['10.0.10']
     w3emc:
@@ -278,7 +275,7 @@
     wrf-io:
       version: ['1.2.0']
     yafyaml:
-      version: ['0.5.1']
+      version: ['1.2.0']
     zlib:
       version: ['1.2.13']
     zstd:
