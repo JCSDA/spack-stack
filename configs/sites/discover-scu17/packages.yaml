@@ -67,6 +67,13 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.11.4+ui+static_boost
+      prefix: /discover/swdev/jcsda/spack-stack/scu17/ecflow-5.11.4
+      modules:
+      - ecflow/5.11.4
   findutils:
     externals:
     - spec: findutils@4.8.0
@@ -99,8 +106,7 @@ packages:
   git-lfs:
     externals:
     - spec: git-lfs@3.4.0
-      prefix: /discover/swdev/gmao_SIteam/other/SLES15.4/git-lfs/3.4.0
-      modules: git-lfs/3.4.0
+      prefix: /usr/local/other/git-lfs/3.4.0
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -133,6 +139,10 @@ packages:
     externals:
     - spec: pkg-config@0.29.2
       prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.10
+      prefix: /usr/local/other/xpdf/4.04/Deps
   sed:
     externals:
     - spec: sed@4.4
