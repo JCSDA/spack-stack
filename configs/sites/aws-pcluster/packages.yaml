@@ -33,6 +33,10 @@ packages:
 
 ### Modification of common packages
 
+  # Provide option to use R2D2 with local MySQL server
+  ewok-env:
+    variants: +mysql
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
