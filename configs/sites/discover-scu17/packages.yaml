@@ -23,6 +23,9 @@ packages:
 
 ### Modification of common packages
 
+  # Problems building shared hdf-eos2 with Intel, not needed
+  hdf-eos2:
+    variants: ~shared
   met:
     variants: +python +grib2 +graphics +lidar2nc +modis
 
