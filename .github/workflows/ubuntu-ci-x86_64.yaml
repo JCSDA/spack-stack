@@ -51,12 +51,10 @@ jobs:
           # Find external packages
           spack external find --scope system \
               --exclude bison --exclude openssl \
-              --exclude python
+              --exclude curl --exclude python
           spack external find --scope system sed
           spack external find --scope system perl
           spack external find --scope system wget
-          PATH="/usr/local/opt/curl/bin:$PATH" \
-              spack external find --scope system curl
           PATH="/usr/local/opt/qt5/bin:$PATH" \
               spack external find --scope system qt
           spack external find --scope system texlive
