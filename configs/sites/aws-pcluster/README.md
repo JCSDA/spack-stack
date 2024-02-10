@@ -177,7 +177,7 @@ git config --global credential.helper cache
 
 2. Log out and back in to enable x11 forwarding
 
-3. Build ecflow outside of spack to be able to link against OS boost
+3. Build ecflow outside of spack to be able to link against OS boost (note: this needs to be updated to follow the ecflow instructions with static boost in spack-stack's readthedocs)
 ```
 mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
 cd /home/ubuntu/jedi/ecflow-5.8.4/src
@@ -304,13 +304,6 @@ echo "  qt:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "    - spec: qt@5.12.8" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-
-# Add external boost
-echo "  boost:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
 # Add external ecflow
