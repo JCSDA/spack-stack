@@ -28,7 +28,7 @@ spack:
       require: '%gcc'
       target: [x86_64]
       providers:
-        mpi: [openmpi@4.1.5]
+        mpi: [openmpi@5.1.6]
       compiler: [gcc@9.4.0]
     gcc:
       buildable: false
