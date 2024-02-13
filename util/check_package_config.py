@@ -35,17 +35,19 @@ iret = 0
 ## Iterate over concretized packages
 for concrete_spec in spack_lock["concrete_specs"].values():
     concrete_name = concrete_spec["name"]
+    # Ignore user-specified packages:
     if concrete_name in sys.argv[1:]:
       continue
     concrete_version = concrete_spec["version"]
     if concrete_name in packages_versions["packages"].keys():
         # Check whether concretized package has specified version from common/packages.yaml
-        config_version = packages_versions["packages"][concrete_name]["version"][0]
-        if concrete_version != config_version:
-            iret = 1
-            print(
-                f"WARNING: '{concrete_name}' concretized version {concrete_version} does not match {config_version} specified in $SPACK_ENV/common/packages.yaml"
-            )
+        if "version" in packages_versions["packages"][concrete_name].keys():
+            config_version = packages_versions["packages"][concrete_name]["version"][0]
+            if concrete_version != config_version:
+                iret = 1
+                print(
+                    f"WARNING: '{concrete_name}' concretized version {concrete_version} does not match {config_version} specified in $SPACK_ENV/common/packages.yaml"
+                )
         # Check whether concretized variants match settings from common/packages.yaml
         config_variants = packages_versions["packages"][concrete_name]["variants"].split()
         for config_variant in config_variants:
