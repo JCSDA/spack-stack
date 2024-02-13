@@ -49,7 +49,11 @@ jobs:
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
-          spack external find --scope system --exclude bison --exclude openssl
+          spack external find --scope system \
+              --exclude bison --exclude openssl  \
+              --exclude python --exclude gettext
+          # Need to find gettext outside of default (presumed to be a system) path for krb5
+          spack external find --path=/usr/local/Cellar/gettext/0.21.1 gettext
           spack external find --scope system perl
           spack external find --scope system wget
           PATH="/usr/local/opt/curl/bin:$PATH" \
@@ -70,7 +74,7 @@ jobs:
           # *DH
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
+          spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
           spack config add "packages:all:compiler:[apple-clang@14.0.0]"
           sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
@@ -127,7 +131,7 @@ jobs:
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.0
-          module load stack-openmpi/4.1.6
+          module load stack-openmpi/5.0.1
           module load stack-python/3.10.13
           module available
 

@@ -557,7 +557,7 @@ NOAA RDHPCS Gaea C5
 On Gaea C5, ``miniconda``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
 
 qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/qt-5.15.2``. :numref:`Section %s <MaintainersSection_Qt5>` describes how to export the X windows environment in order to install ``qt@5`` using the role account.
+   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/ncrc/proj/epic/spack-stack/qt-5.15.2``. :numref:`Section %s <MaintainersSection_Qt5>` describes how to export the X windows environment in order to install ``qt@5`` using the role account.
 
 .. code-block:: console
 
@@ -566,22 +566,21 @@ qt (qt@5)
    module load PrgEnv-gnu/8.3.3
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5` and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2-c5``).  Ensure to follow the extra instructions in that section for Gaea C5 in ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4``.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5` and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2-c5``).  Ensure to follow the extra instructions in that section for Gaea C5 in ``/ncrc/proj/epic/spack-stack/ecflow-5.8.4``.
   
    Ensure to follow the extra instructions in that section for Gaea.
 
 .. code-block:: console
 
-   module unload intel-classic cray-mpich PrgEnv-intel
-   module load gcc/10.3.0
    module load PrgEnv-gnu/8.3.3
-   module load python/3.9.12
-
-   module use /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/modulefiles
+   module use /ncrc/proj/epic/spack-stack/modulefiles/
    module load qt/5.15.2
+   module load python/3.9.12
+   module load cmake/3.23.1
+
 
 mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/mysql-8.0.31``.
+  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/ncrc/proj/epic/spack-stack/mysql-8.0.36``.
 
 .. _MaintainersSection_Hera:
 

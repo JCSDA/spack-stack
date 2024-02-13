@@ -17,6 +17,9 @@ compilers::
           PATH: '/opt/cray/pe/gcc/12.2.0/bin'
           CPATH: '/opt/cray/pe/gcc/12.2.0/snos/include'
           LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/12.2.0/snos/lib:/opt/cray/pe/gcc/12.2.0/lib64'
+        set:
+          # https://github.com/JCSDA/spack-stack/issues/957
+          FI_CXI_RX_MATCH_MODE: 'hybrid'
       extra_rpaths: []
   - compiler:
       spec: gcc@12.2.0
@@ -33,6 +36,7 @@ compilers::
       - gcc/12.2.0
       environment:
         set:
-          CRAYPE_LINK_TYPE: 'dynamic'
+          # https://github.com/JCSDA/spack-stack/issues/957
+          FI_CXI_RX_MATCH_MODE: 'hybrid'
       extra_rpaths: []
 

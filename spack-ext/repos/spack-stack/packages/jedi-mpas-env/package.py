@@ -18,5 +18,6 @@ class JediMpasEnv(BundlePackage):
 
     depends_on("jedi-base-env", type="run")
     depends_on("metis", type="run")
+    depends_on("jasper", type="run")
 
     # There is no need for install() since there is no code.

@@ -206,7 +206,9 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack external find --scope system --exclude bison --exclude openssl
+   spack external find --scope system \
+       --exclude bison --exclude openssl \
+       --exclude python
    spack external find --scope system libiconv
    spack external find --scope system perl
    spack external find --scope system wget
@@ -249,7 +251,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Check your clang version then add it to your site compiler config.
    clang --version
    spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
+   spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
 
 8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
@@ -449,7 +451,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system \
        --exclude bison --exclude cmake \
        --exclude curl --exclude openssl \
-       --exclude openssh
+       --exclude openssh --exclude python
    spack external find --scope system wget
    spack external find --scope system mysql
    spack external find --scope system texlive
