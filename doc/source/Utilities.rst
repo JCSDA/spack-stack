@@ -32,8 +32,8 @@ The utility at util/check_package_config.py is run after concretization in an ac
    spack env active envs/unified-env/
    # To verify versions, variants, and externals:
    ${SPACK_STACK_DIR}/util/check_package_config.py
-   # To ignore a known mismatch in version, variant, or external status for package 'esmf':
-   ${SPACK_STACK_DIR}/util/check_package_config.py esmf
+   # To ignore a known mismatch in version, variant, or external status for package 'esmf', use -i/--ignore option:
+   ${SPACK_STACK_DIR}/util/check_package_config.py -i esmf
 
 .. _Permissions_Checker:
 

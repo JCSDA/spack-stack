@@ -4,7 +4,14 @@
 # whether the externals in site/packages.yaml are being used.
 #
 # To use this script, run it in a loaded spack-stack environment.
-# Package names to be ignored can be provided as optional arguments.
+# Package names to be ignored can be provided as optional arguments
+# using -i/--ignore.
+#
+# Usage:
+#  $ spack env active myenv
+#  $ ${SPACK_STACK_DIR}/util/check_package_config.py
+# Ignore packages foo and bar:
+#  $ ${SPACK_STACK_DIR}/util/check_package_config.py -i foo -i bar
 #
 # Alex Richert, Jan 2024
 
