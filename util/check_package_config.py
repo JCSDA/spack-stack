@@ -39,7 +39,7 @@ if args:
     assert args[-1] not in ("-i", "--ignore"), "-i/--ignore option requires package name"
     ignore_list = [args[iarg+1] for iarg in range(len(args)) if args[iarg] in ("-i", "--ignore")]
     if ignore_list:
-        print("Ignoring the following packages: %s" % ", ".join(ignore_list))
+        print("Ignoring the following packages: %s" % ", ".join(ignore_list), file=sys.stderr)
 else:
     ignore_list = []
 
