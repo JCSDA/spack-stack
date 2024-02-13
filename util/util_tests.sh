@@ -87,7 +87,7 @@ if [[ "$output_checksum" != "$reference_checksum" ]]; then
   fail=1
 fi
 # Test ignoring packages
-count=$(${SPACK_STACK_DIR}/util/check_package_config.py sp cmake | wc -l)
+count=$(${SPACK_STACK_DIR}/util/check_package_config.py -i sp --ignore cmake | wc -l)
 if [ "$count" -ne 0 ]; then
   echo "check_package_config.py check B failed!"
   fail=1

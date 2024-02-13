@@ -33,11 +33,21 @@ with open(spack_lock_path, "r") as f:
 
 iret = 0
 
+# Set up list of packages to ignore
+args = sys.argv[1:]
+if args:
+    assert args[-1] not in ("-i", "--ignore"), "-i/--ignore option requires package name"
+    ignore_list = [args[iarg+1] for iarg in range(len(args)) if args[iarg] in ("-i", "--ignore")]
+    if ignore_list:
+        print("Ignoring the following packages: %s" % ", ".join(ignore_list))
+else:
+    ignore_list = []
+
 # Iterate over concretized packages
 for concrete_spec in spack_lock["concrete_specs"].values():
     concrete_name = concrete_spec["name"]
     # Ignore user-specified packages:
-    if concrete_name in sys.argv[1:]:
+    if concrete_name in ignore_list:
         continue
     concrete_version = concrete_spec["version"]
     if concrete_name in packages_versions["packages"].keys():
