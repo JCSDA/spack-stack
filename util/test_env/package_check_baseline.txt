@@ -1,0 +1,6 @@
+WARNING: 'cmake' concretized variant '+ownlibs' does not match configured value in $SPACK_ENV/common/packages.yaml
+WARNING: 'cmake' concretized version 3.20.2 does not match 3.23.1 specified in $SPACK_ENV/common/packages.yaml
+WARNING: 'cmake' is not configured as external in $SPACK_ENV/site/packages.yaml but was concretized as external
+WARNING: 'sp' concretized variant 'derp' does not match configured value in $SPACK_ENV/common/packages.yaml
+WARNING: 'sp' concretized variant 'precision' does not match configured value in $SPACK_ENV/common/packages.yaml
+WARNING: 'sp' is configured as external in $SPACK_ENV/site/packages.yaml but was not concretized as external
