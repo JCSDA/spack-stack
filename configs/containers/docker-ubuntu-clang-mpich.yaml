@@ -30,7 +30,6 @@ spack:
       require: '%clang'
       target: [x86_64]
       providers:
-        # DH* TODO - CHECK VERSION!
         mpi: [mpich@4.1.2]
       compiler: [clang@10.0.0]
     gcc:
