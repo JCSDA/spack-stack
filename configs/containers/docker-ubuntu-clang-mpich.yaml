@@ -30,7 +30,7 @@ spack:
       require: '%clang'
       target: [x86_64]
       providers:
-        mpi: [mpich@4.1.2]
+        mpi: [mpich@4.2.0]
       compiler: [clang@10.0.0]
     gcc:
       buildable: false
@@ -68,6 +68,12 @@ spack:
       externals:
       - spec: llvm@10.0.0 +clang
         prefix: /usr
+    mpich:
+      buildable: false
+      externals:
+      - spec: mpich@4.2.0
+        prefix: /opt/mpich-4.2.0
+      version: [4.2.0]
     mysql:
       buildable: false
       externals:
@@ -180,6 +186,25 @@ spack:
         ln -svf clang-cpp-10 clang-cpp && \
         cd /usr/lib/llvm-10/lib && \
         ln -svf libc++abi.so.1.0 libc++abi.so
+        #
+        # Build mpich outside of spack-stack
+        ENV MPICH_VERSION=4.2.0
+        ENV CC=clang
+        ENV CXX=clang++
+        ENV FC=gfortran
+        RUN mkdir -p /opt/mpich-${MPICH_VERSION}/src && \
+        cd /opt/mpich-${MPICH_VERSION}/src && \
+        wget http://www.mpich.org/static/downloads/${MPICH_VERSION}/mpich-${MPICH_VERSION}.tar.gz && \
+        tar -xzf mpich-${MPICH_VERSION}.tar.gz && \
+        cd mpich-${MPICH_VERSION} && \
+        CFLAGS="-fPIC" CXXFLAGS="-fPIC" FCFLAGS="-fPIC" LDFLAGS="-fPIC" \
+        ./configure --prefix=/opt/mpich-${MPICH_VERSION} --enable-fortran --enable-cxx --with-device=ch4:ofi && \
+        make -j2 && \
+        make install && \
+        ls /opt/mpich-${MPICH_VERSION}
+        ENV PATH=/opt/mpich-${MPICH_VERSION}/bin:${PATH}
+        ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
+        ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
       build: |
         # Put output of spack find into a file
         RUN cd /opt/spack-environment && \
@@ -189,6 +214,10 @@ spack:
         # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
+        ENV MPICH_VERSION=4.2.0
+        ENV PATH=/opt/mpich-${MPICH_VERSION}/bin:${PATH}
+        ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
+        ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
       final: |
         # Create symbolic links for clang compilers
         RUN cd /usr/bin && \
@@ -197,7 +226,11 @@ spack:
         ln -svf clang-cpp-10 clang-cpp && \
         cd /usr/lib/llvm-10/lib && \
         ln -svf libc++abi.so.1.0 libc++abi.so
+        # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
+        ENV MPICH_VERSION=4.2.0
+        # Copy mpich-${MPICH_VERSION} installation from builder
+        COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \

@@ -63,9 +63,9 @@ jobs:
           spack stack create ctr --container ${CONTAINER} --specs ${SPECS}
 
           cd ${ENVDIR}
-          # mapl doesn't build with mpich - https://github.com/JCSDA/spack-stack/issues/608
+          # mapl@:2.41 doesn't build with mpich@4 - https://github.com/JCSDA/spack-stack/issues/608
           if [[ "${CONTAINER}" == *"mpich"* ]]; then
-              sed -i 's/- mapl@2.35.2/#- mapl@2.35.2/g' spack.yaml
+              sed -i 's/- mapl@/#- mapl@/g' spack.yaml
           fi
           spack containerize > Dockerfile
           docker build -t ${CONTAINER}-${SPECS} .
