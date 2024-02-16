@@ -7,7 +7,7 @@ echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 
 source ${SPACK_STACK_DIR:?}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
-export SPACK_DISABLE_LOCAL_CONFIG=true
+#export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=$SPACK_ROOT/user_cache
 
 # Get the current hash of the spack-stack code
