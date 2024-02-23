@@ -197,6 +197,9 @@ For ``spack-stack-20240207`` with GNU, proceed with loading the following module
    module load stack-python/3.10.13
    module available
 
+.. note::
+   When using Intel, it may be required to set the environment variable ``LDFLAGS="-L/usr/local/other/gcc/11.2.0/lib64"`` for building applications like JEDI.
+
 ------------------------------
 NASA Discover SCU17
 ------------------------------
