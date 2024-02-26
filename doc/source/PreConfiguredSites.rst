@@ -312,7 +312,7 @@ With Intel, the following is required for building new spack environments and fo
 
    module load slurm
    module load intel/compiler/2022.0.2
-   module load penguin/openmpi/4.1.5rc2/intel
+   module load penguin/openmpi/4.1.6/intel-classic-2022.0.2
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
