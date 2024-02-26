@@ -20,8 +20,7 @@
     bison:
       version: ['3.8.2']
     boost:
-      version: ['1.83.0']
-      variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
+      require: "@1.83: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden"
     bufr:
       version: ['12.0.1']
       variants: +python
@@ -136,7 +135,7 @@
     mapl:
       version: ['2.40.3']
       variants: +shared +pflogger ~f2py
-    # If making changes here, also check the Discover site config and the CI workflows
+    # If making changes here, also check the Discover site configs and the CI workflows
     met:
       version: ['11.1.0']
       variants: +python +grib2

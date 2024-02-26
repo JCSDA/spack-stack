@@ -59,7 +59,7 @@ qt (qt@5)
 
 Building ``qt`` with spack isn't straightforward as it requires many libraries related to the graphical desktop that are often tied to the operating system, and which many compilers don't build correctly. We therefore require ``qt`` as an external package. On many of the HPC systems, it is already available as a separate module or provided by the operating system. On macOS and Linux, it can be installed using ``brew`` or other package managers (see :numref:`Sections %s <NewSiteConfigs_macOS>` and :numref:`%s <NewSiteConfigs_Linux>` for examples). 
 
-On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64``.
+On HPC systems without a sufficient Qt5 installation, we install it outside of spack with the default OS compiler and then point to it in the site's ``packages.yaml``. The following instructions install ``qt@5.15.2`` on Discover SCU16 in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64``.
 
 .. code-block:: console
 
@@ -92,8 +92,6 @@ Building ``ecFlow`` with spack is pretty tricky, because it requires functions f
    Installing ``ecFlow`` with ``conda``, ``brew``, etc. is not recommended, since these install a number of packages as dependencies (e.g. ``numpy``, dynamically-linked ``boost``) that may interfere with the spack software stack.
 
 After loading the required modules for this system (typically the same ``gcc`` used as backend for Intel or for GNU spack-stack builds, ``cmake``, ``qt5``, ``Python3``), follow these instructions to install ecFlow with the graphical user interface (GUI) and Python3 API. See also https://confluence.ecmwf.int/display/ECFLOW/ecflow5.
-
-The following instructions are for Discover (see :numref:`Section %s <MaintainersSection_Discover>` for the required modules).
 
 .. code-block:: console
 
@@ -153,11 +151,11 @@ Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8
 
 ..  _MaintainersSection_MySQL:
 
-------------------------------
-MySQL (server and client)
-------------------------------
+-----------------------------------
+MySQL (server and client; optional)
+-----------------------------------
 
-We do not build ``mysql`` with spack, since it depends on specific versions of the ``boost`` library and C++ standards that make our large environments very complicated and often don't build on older systems. Instead, we identify the default ``glibc`` of the system, obtain the binary tarball from the `MySQL Community Downloads <https://dev.mysql.com/downloads/mysql/>`_  page and make it available to spack as an external package. The following instructions are for Orion:
+For certain limited use cases, we need to provide ``mysql`` through spack-stack. We do not build ``mysql`` with spack, since it depends on specific versions of the ``boost`` library and C++ standards that make our large environments very complicated and often don't build on older systems. Instead, we identify the default ``glibc`` of the system, obtain the binary tarball from the `MySQL Community Downloads <https://dev.mysql.com/downloads/mysql/>`_  page and make it available to spack as an external package. Alternatively, the default MySQL software can be installed using the OS package manager, provided that it is a recent enough version (8.x). The following instructions are for installing ``MySQL`` using the community tarball:
 
 1. Check the glibc version by executing ``ldd --version``
 
@@ -169,7 +167,7 @@ We do not build ``mysql`` with spack, since it depends on specific versions of t
 
 .. code-block:: console
 
-   cd /work/noaa/da/role-da/spack-stack/
+   cd /path/to/spack-stack/
    mkdir -p mysql-8.0.31/src
    cd mysql-8.0.31/src
    wget https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.31-linux-glibc2.17-x86_64-minimal.tar.xz
@@ -178,7 +176,7 @@ We do not build ``mysql`` with spack, since it depends on specific versions of t
    mv mysql-8.0.31-linux-glibc2.17-x86_64-minimal/* ..
    rmdir mysql-8.0.31-linux-glibc2.17-x86_64-minimal
 
-3. Create modulefile ``/work/noaa/da/role-da/spack-stack/modulefiles/mysql/8.0.31`` from template ``doc/modulefile_templates/mysql`` and update ``MYSQL_PATH`` in this file.
+3. Create modulefile ``/path/to/spack-stack/modulefiles/mysql/8.0.31`` from template ``doc/modulefile_templates/mysql`` and update ``MYSQL_PATH`` in this file.
 
 ..  _MaintainersSection_Texlive:
 
@@ -249,9 +247,6 @@ ecflow
    module load cmake/3.22.1
    module load gcc/10.2.0
 
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>`.
-
 .. _MaintainersSection_Hercules:
 
 ------------------------------
@@ -266,31 +261,7 @@ ecflow
    module purge
    module load qt/5.15.8
 
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/work/noaa/epic-ps/role-epic-ps/spack-stack/mysql-8.0.31-hercules``.
-
-mvapich2
-  Because of difficulties with ``openmpi`` on Hercules, we build ``mvapich2`` outside of spack and provide it as an external package. It is necessary to either load ``qt`` to use a consistent ``zlib``, or to load ``zlib`` directly (check the ``qt`` module). Create modulefile ``mvapich2`` from template ``doc/modulefile_templates/mvapich2``. **Important:** We identified a bug in ``gcc@11`` + ``mvapich2@2.3.7`` in MPI allgather operations. It is therefore necessary to switch to a newer GCC compiler.
-
-.. code-block:: console
-
-   module purge
-   module load gcc/12.2.0
-   module load zlib/1.2.13
-   module load ucx/1.13.1
-   module load slurm/23.02.6
-   FFLAGS=-fallow-argument-mismatch ./configure \
-       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/mvapich-2.3.7/gcc-11.3.1 \
-       --with-pmi=pmi2 \
-       --with-pm=slurm \
-       --with-slurm-include=/opt/slurm-23.02.6/include \
-       --with-slurm-lib=/opt/slurm-23.02.6/lib \
-       2>&1 | tee log.config./configure
-   make VERBOSE=1 -j4
-   make check
-   make install
-
-openmpi (currently only for testing)
+openmpi
   Because of difficulties with the default ``openmpi`` on Hercules, we build ``openmpi`` outside of spack and provide it as an external package. It is necessary to load the ``gcc`` compiler module and the ``zlib`` module for consistency. The configuration options are mostly adopted from the default OpenMPI installations that were done by the system administrators using spack (many of them are default values), except that we use internal ``hwloc`` and ``pmix``. Create modulefile ``openmpi`` from template ``doc/modulefile_templates/openmpi``.
 
 .. code-block:: console
@@ -338,20 +309,20 @@ openmpi (currently only for testing)
    make check
    make install
 
-.. _MaintainersSection_Discover:
+.. _MaintainersSection_Discover_SCU16:
 
 ------------------------------
-NASA Discover
+NASA Discover SCU16
 ------------------------------
 
-On Discover, ``miniconda``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
+On Discover SCU16, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``.
+   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/scu16/qt-5.15.2`` (note: it is currently installed in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``; an upcoming large system update will require is to rebuild anyway).
 
 ecflow
   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
@@ -359,34 +330,28 @@ ecflow
 .. code-block:: console
 
    module purge
+   module load cmake/3.28.2
+   module load comp/gcc/12.1.0
    module use /discover/swdev/jcsda/spack-stack/modulefiles
-   module load miniconda/3.9.7
-   module load cmake/3.21.0
+   module load miniconda/3.10.13
    module load qt/5.15.2
-   module load comp/gcc/10.1.0
 
-openmpi
-   Installing ``openmpi`` requires adapting the installation to the network hardware and ``slurm`` scheduler. It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.3`` MPI library with ``gcc@10.1.0`` as referenced in the Discover site config. After the installation, create modulefile `openmpi/4.1.3-gcc-10.1.0` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs. The instructions below have also been tested with ``gcc@12.1.0`` (update instructions accordingly) and the module is available on Discover for future use.
+.. _MaintainersSection_Discover_SCU17:
+
+------------------------------
+NASA Discover SCU17
+------------------------------
+
+On Discover SCU17 ``ecflow`` needs to be installed as a one-off before spack can be used.
+
+ecflow
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
 
 .. code-block:: console
 
    module purge
-   module use /discover/swdev/jcsda/spack-stack/modulefiles
-   module load miniconda/3.9.7
-   module load comp/gcc/10.1.0
-   CPATH="/usr/include/slurm:$CPATH" ./configure \
-       --prefix=/discover/swdev/jcsda/spack-stack/openmpi-4.1.3/gcc-10.1.0/ \
-       --with-pmi=/usr/slurm \
-       --with-ucx \
-       --without-ofi \
-       --without-verbs \
-       --with-gpfs
-   CPATH="/usr/include/slurm:$CPATH" make VERBOSE=1 -j4
-   CPATH="/usr/include/slurm:$CPATH" make check
-   CPATH="/usr/include/slurm:$CPATH" make install
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/discover/swdev/jcsda/spack-stack/mysql-8.0.31``. Note that the ``glibc`` version on Discover is 2.22, which works with the latest available ``glibc`` version for the ``mysql`` server ``2.17``.
+   module load comp/gcc/12.3.0
+   module load cmake/3.28.2
 
 .. _MaintainersSection_Narwhal:
 
@@ -394,7 +359,7 @@ mysql
 NAVY HPCMP Narwhal
 ------------------------------
 
-On Narwhal, ``git-lfs``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used. Also, temporarily it is necessary to install ``node.js`` as an external package to work around build errors for ``py-jupyter-server`` (see https://github.com/JCSDA/spack-stack/issues/928 and https://github.com/spack/spack/issues/41899).
+On Narwhal, ``git-lfs``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used. Also, temporarily it is necessary to install ``node.js`` as an external package to work around build errors for ``py-jupyter-server`` (see https://github.com/JCSDA/spack-stack/issues/928 and https://github.com/spack/spack/issues/41899).
 
 git-lfs
    The following instructions install ``git-lfs`` in ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the default version for Narwhal. First, download the ``git-lfs`` RPM on a system with full internet access (e.g., Derecho) using ``wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm`` and copy this file to ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src``. Then switch to Narwhal and run the following commands. 
@@ -442,9 +407,6 @@ ecflow
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load qt/5.15.2
 
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
-
 node.js
   ``node.js`` is difficult to install via ``spack``, but is needed to install certain Python packages. The complication is that when using a newer ``gcc`` compiler (either directly or as backend for ``icc`` etc.), the OS ``node.js`` errors out with unresolved symbols in the ``libstdc++`` library. Therefore, we need to install ``node.js`` with ``gcc@10.3.0`` loaded, and create modulefile ``node.js/20.10.0`` from template ``modulefiles/node.js``.
 
@@ -471,7 +433,7 @@ node.js
 NAVY HPCMP Nautilus
 ------------------------------
 
-On Nautilus, ``mysql`` and ``ecflow`` need to be installed as a one-off before spack can be used.
+On Nautilus, ``ecflow`` must be installed as a one-off before spack can be used.
 
 ecflow
   ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``.
@@ -483,9 +445,6 @@ ecflow
    module load slurm
    module load amd/aocc/4.0.0
    module load amd/aocl/aocc/4.0
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_Casper:
 
@@ -503,9 +462,6 @@ ecflow
    module purge
    export LMOD_TMOD_FIND_FIRST=yes
    module load gnu/12.2.0
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/glade/work/epicufsrt/contrib/spack-stack/casper/mysql-8.0.31``.
 
 .. _MaintainersSection_Derecho:
 
@@ -529,9 +485,6 @@ ecflow
    module load gcc/12.2.0
    module load cmake/3.26.3
 
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql``.
-
 .. _MaintainersSection_WCOSS2:
 
 ------------------------------
@@ -554,7 +507,7 @@ See ``configs/sites/noaa-aws/README.md``. These instructions are identical for a
 NOAA RDHPCS Gaea C5
 ------------------------------
 
-On Gaea C5, ``miniconda``, ``qt``, ``ecflow``, and ``mysql`` need to be installed as a one-off before spack can be used.
+On Gaea C5, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/ncrc/proj/epic/spack-stack/qt-5.15.2``. :numref:`Section %s <MaintainersSection_Qt5>` describes how to export the X windows environment in order to install ``qt@5`` using the role account.
@@ -578,23 +531,16 @@ ecflow
    module load python/3.9.12
    module load cmake/3.23.1
 
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/ncrc/proj/epic/spack-stack/mysql-8.0.36``.
-
 .. _MaintainersSection_Hera:
 
 ------------------------------
 NOAA RDHPCS Hera
 ------------------------------
 
-On Hera, ``miniconda`` and ``mysql`` must be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library.
+On Hera, ``miniconda`` must be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library.
 
 miniconda
    Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/scratch1/NCEPDEV/global/spack-stack/apps/mysql-8.0.31``. Since Hera cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
 
 openmpi
    It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.5`` MPI library with ``gcc@9.2.0`` as referenced in the Hera site config. After the installation, create modulefile `openmpi/4.1.5` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs.
@@ -630,9 +576,6 @@ miniconda
    module load miniconda/3.9.12
    # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
    module load gnu/9.2.0
-   
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/lfs4/HFIP/hfv3gfs/role.epic/apps/mysql-8.0.31``. Since Jet cannot access the MySQL community URL, the tarball needs to be downloaded on a different machine and then copied over.
 
 .. _MaintainersSection_S4:
 
@@ -658,9 +601,6 @@ ecflow
    module use /data/prod/jedi/spack-stack/modulefiles
    module load miniconda/3.9.12
    module load gcc/9.3.0
-
-mysql
-  ``mysql`` must be installed separately from ``spack`` using a binary tarball provided by the MySQL community. Follow the instructions in :numref:`Section %s <MaintainersSection_MySQL>` to install ``mysql`` in ``/data/prod/jedi/spack-stack/mysql-8.0.31``.
 
 .. _MaintainersSection_AWS_Pcluster_Ubuntu:
 
