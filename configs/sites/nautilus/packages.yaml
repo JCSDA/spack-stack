@@ -29,8 +29,7 @@ packages:
       modules:
       - penguin/openmpi/4.1.6/intel-classic-2022.0.2
       - slurm
-    - spec: openmpi@4.1.4%aocc@4.0.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
-        fabrics=ucx schedulers=slurm
+    - spec: openmpi@4.1.4%aocc@4.0.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm
       prefix: /p/app/penguin/openmpi/4.1.4/aoc
       modules:
       - penguin/openmpi/4.1.4/aocc

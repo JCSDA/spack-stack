@@ -6,7 +6,7 @@
   #branch = jcsda_emc_spack_stack
   url = https://github.com/rhoneyager-tomorrow/spack
   branch = bugfix/hdf5_fpe
-  [submodule "doc/CMakeModules"]
+[submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
   branch = develop
