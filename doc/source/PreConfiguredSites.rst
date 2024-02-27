@@ -321,9 +321,9 @@ For ``spack-stack-1.6.0`` with Intel, proceed with loading the following modules
 
 .. code-block:: console
 
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/ue-openmpi416/install/modulefiles/Core
    module load stack-intel/2021.5.0
-   module load stack-openmpi/4.1.5rc2
+   module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
 
 With AMD clang/flang (aocc), the following is required for building new spack environments and for using spack to build and run software.
