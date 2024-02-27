@@ -4,7 +4,7 @@
   ##branch = develop
   #url = https://github.com/jcsda/spack
   #branch = jcsda_emc_spack_stack
-  url = https://github.com/rhoneyager-tomorrow/spack
+  url = https://github.com/rhoneyager-tomorrow/spack-1
   branch = bugfix/hdf5_fpe
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
