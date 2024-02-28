@@ -20,7 +20,9 @@ compilers::
         set:
           # https://github.com/JCSDA/spack-stack/issues/957
           FI_CXI_RX_MATCH_MODE: 'hybrid'
-      extra_rpaths: []
+          # https://github.com/JCSDA/spack-stack/issues/1012
+          I_MPI_EXTRA_FILESYSTEM: 'ON'
+        extra_rpaths: []
   - compiler:
       spec: gcc@12.2.0
       paths:
