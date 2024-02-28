@@ -262,6 +262,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 8. If the environment will be used to run JCSDA's JEDI-Skylab experiments using R2D2 with a local MySQL server, run the following command:
 
 .. code-block:: console
+
    spack config add "packages:ewok-env:variants:+mysql"
 
 9. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
