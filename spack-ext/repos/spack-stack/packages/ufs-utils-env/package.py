@@ -30,7 +30,7 @@ class UfsUtilsEnv(BundlePackage):
     depends_on("w3emc")
     depends_on("sigio")
     depends_on("sfcio")
-    depends_on("zlib")
+    depends_on("zlib-ng")
     depends_on("hdf5")
     depends_on("netcdf-c")
     depends_on("netcdf-fortran")
