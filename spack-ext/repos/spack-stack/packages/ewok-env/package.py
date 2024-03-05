@@ -37,7 +37,7 @@ class EwokEnv(BundlePackage):
         description="Build EWOK (Experiments and Workflows Orchestration Kit)",
     )
 
-    depends_on("jedi-base-env +python", type="run")
+    depends_on("jedi-base-env", type="run")
     depends_on("awscli-v2", type="run")
     depends_on("py-boto3", type="run")
     depends_on("py-cartopy", type="run")
