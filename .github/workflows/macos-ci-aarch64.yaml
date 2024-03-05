@@ -88,7 +88,7 @@ jobs:
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.3
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl -i py-protobuf
 
           # Add and update source cache
           spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
