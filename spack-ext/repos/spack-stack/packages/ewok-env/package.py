@@ -67,9 +67,4 @@ class EwokEnv(BundlePackage):
     depends_on("r2d2", when="+r2d2", type="run")
     depends_on("ewok", when="+ewok", type="run")
 
-    conflicts(
-        "%gcc platform=darwin",
-        msg="ewok-env does " + "not build with gcc on macOS, use apple-clang",
-    )
-
     # There is no need for install() since there is no code.

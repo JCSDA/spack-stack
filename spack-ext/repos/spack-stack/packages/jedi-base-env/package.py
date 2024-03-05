@@ -21,9 +21,6 @@ class JediBaseEnv(BundlePackage):
     variant("fftw", default=True, description="Build fftw")
     variant("hdf4", default=True, description="Build hdf4 library and python hdf module")
 
-    # Variants for AI packages
-    variant("py-torch", default=False, description="Enable support for py-torch")
-
     depends_on("base-env", type="run")
     depends_on("bison", type="run")
     depends_on("blas", type="run")
@@ -66,7 +63,9 @@ class JediBaseEnv(BundlePackage):
     depends_on("py-scipy", type="run")
     depends_on("py-xarray", type="run")
 
-    # AI packages
-    depends_on("py-torch", when="+py-torch", type="run")
+    conflicts(
+        "%gcc platform=darwin",
+        msg="jedi-base-env does not build with gcc on macOS, use apple-clang",
+    )
 
     # There is no need for install() since there is no code.
