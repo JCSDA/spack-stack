@@ -18,6 +18,6 @@ class AiEnv(BundlePackage):
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
-    depends_on("py-torch +internal-protobuf", type="run")
+    depends_on("py-torch", type="run")
 
     # There is no need for install() since there is no code.

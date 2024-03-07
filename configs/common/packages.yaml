@@ -242,6 +242,8 @@
       variants: +rust_bootstrap
     py-shapely:
       require: ['@1.8.0']
+    py-torch:
+      require: "+internal-protobuf ~mkldnn"
     qt:
       version: ['5.15.3']
     scotch:
