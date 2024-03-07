@@ -20,13 +20,9 @@ spack:
       - jedi-tools-env
       - jedi-ufs-env
       - jedi-um-env
-      #- nceplibs-env
       - soca-env
       - ufs-srw-app-env
-      #- ufs-utils-env
       - ufs-weather-model-env
-      #- upp-env
-      #- ww3-env
 
       # Various fms tags (list all to avoid duplicate packages)
       - fms@release-jcsda
