@@ -11,6 +11,7 @@ yum-config-manager --disable intel-clck-2019-repo
 yum-config-manager --disable intel-hpc-platform
 yum-config-manager --disable intelpython
 #
+yum install -y m4
 yum install -y qt5-qtbase-devel
 yum install -y qt5-qtsvg-devel
 yum install -y xorg-x11-xauth
