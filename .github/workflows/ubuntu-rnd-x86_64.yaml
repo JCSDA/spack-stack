@@ -84,7 +84,7 @@ jobs:
 
             # Concretize and check for duplicates
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
-            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl -i py-protobuf
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
 
             # Update spack source cache
             spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
@@ -150,7 +150,7 @@ jobs:
 
             # Concretize and check for duplicates
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
-            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl -i py-protobuf
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
 
             # Update spack source cache
             spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
