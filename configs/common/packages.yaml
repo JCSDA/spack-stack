@@ -12,9 +12,8 @@
         yacc: [bison]
         zlib-api: [zlib-ng]
     #
-    # This version of awscli goes with py-pyyaml@5.4.1
-    awscli:
-      version: ['1.27.84']
+    awscli-v2:
+      require: "~examples"
     bacio:
       version: ['2.4.1']
     bison:
