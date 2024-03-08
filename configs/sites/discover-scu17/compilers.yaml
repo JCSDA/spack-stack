@@ -19,8 +19,9 @@ compilers:
         PATH: '/usr/local/other/gcc/11.4.0/bin'
         CPATH: '/usr/local/other/gcc/11.4.0/include'
         LD_LIBRARY_PATH: '/usr/local/intel/oneapi/2021/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/usr/local/other/gcc/11.4.0/lib64'
-      #set:
-      #  I_MPI_ROOT: '/usr/local/intel/oneapi/2021/mpi/2021.5.0'
+      set:
+        # https://github.com/JCSDA/spack-stack/issues/1012
+        I_MPI_EXTRA_FILESYSTEM: 'ON'
     extra_rpaths: []
 - compiler:
     spec: gcc@=12.3.0

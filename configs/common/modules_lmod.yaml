@@ -71,6 +71,8 @@ modules:
       - openssl
       - perl
       - pkgconf
+      - protobuf
+      - py-protobuf
       - qt
       - randrproto
       - readline

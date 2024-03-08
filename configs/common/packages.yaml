@@ -12,9 +12,8 @@
         yacc: [bison]
         zlib-api: [zlib-ng]
     #
-    # This version of awscli goes with py-pyyaml@5.4.1
-    awscli:
-      version: ['1.27.84']
+    awscli-v2:
+      require: "~examples"
     bacio:
       version: ['2.4.1']
     bison:
@@ -242,6 +241,8 @@
       variants: +rust_bootstrap
     py-shapely:
       require: ['@1.8.0']
+    py-torch:
+      require: "+internal-protobuf ~mkldnn"
     qt:
       version: ['5.15.3']
     scotch:
