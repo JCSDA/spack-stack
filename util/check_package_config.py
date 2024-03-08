@@ -21,6 +21,10 @@ import sys
 
 SPACK_ROOT = os.getenv("SPACK_ROOT")
 assert SPACK_ROOT, "$SPACK_ROOT must be set but is not!"
+print(SPACK_ROOT)
+print(os.listdir(SPACK_ROOT))
+print(os.listdir(os.path.join(SPACK_ROOT, "lib/spack/external/_vendoring")))
+
 sys.path.append(os.path.join(SPACK_ROOT, "lib/spack/external/_vendoring"))
 from ruamel import yaml
 

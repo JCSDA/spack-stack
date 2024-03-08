@@ -80,6 +80,7 @@ fi
 
 ## Check check_package_config.py
 export SPACK_ENV=${SPACK_STACK_DIR}/util/test_env
+export SPACK_ROOT=${SPACK_STACK_DIR}/spack
 output_checksum=$(${SPACK_STACK_DIR}/util/check_package_config.py | sort | md5sum)
 reference_checksum=$(cat ${SPACK_STACK_DIR}/util/test_env/package_check_baseline.txt | md5sum)
 if [[ "$output_checksum" != "$reference_checksum" ]]; then
