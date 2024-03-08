@@ -37,7 +37,7 @@ class EwokEnv(BundlePackage):
         description="Build EWOK (Experiments and Workflows Orchestration Kit)",
     )
 
-    depends_on("jedi-base-env +python", type="run")
+    depends_on("jedi-base-env", type="run")
     depends_on("awscli-v2", type="run")
     depends_on("py-boto3", type="run")
     depends_on("py-cartopy", type="run")
@@ -66,10 +66,5 @@ class EwokEnv(BundlePackage):
     depends_on("solo", when="+solo", type="run")
     depends_on("r2d2", when="+r2d2", type="run")
     depends_on("ewok", when="+ewok", type="run")
-
-    conflicts(
-        "%gcc platform=darwin",
-        msg="ewok-env does " + "not build with gcc on macOS, use apple-clang",
-    )
 
     # There is no need for install() since there is no code.

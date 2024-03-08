@@ -345,13 +345,23 @@ NASA Discover SCU17
 On Discover SCU17 ``ecflow`` needs to be installed as a one-off before spack can be used.
 
 ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
+  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` (cont'd below).
 
 .. code-block:: console
 
    module purge
-   module load comp/gcc/12.3.0
    module load cmake/3.28.2
+
+The following workaround is required after installing ``ecflow`` and creating the modulefile: edit ``path/to/ecflow/bin/ecflow_ui`` and change the last few lines to (i.e. prepend the ``LD_PRELOAD`` command):
+
+.. code-block:: console
+
+   if [ $ECFLOWUI_BT != "no" ]
+   then
+       LD_PRELOAD=/usr/lib64/libstdc++.so.6 catchsegv ${ECFLOWUI_USER_START_CMD} "$exe"
+   else
+       LD_PRELOAD=/usr/lib64/libstdc++.so.6 ${ECFLOWUI_USER_START_CMD} "$exe"
+   fi
 
 .. _MaintainersSection_Narwhal:
 
