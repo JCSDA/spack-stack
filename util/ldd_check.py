@@ -49,17 +49,14 @@ if platform=="Linux":
     ldd_cmd = "ldd"
     error_pattern = " => not found"
     getlibname = lambda line: re.findall("^[^ ]+", line)[0]
-elif platform=="Darwin":
-    print("macOS not yet supported", file=sys.stderr)
-    sys.exit(1)
+    libext = "so"
 else:
     print(f"Platform '{platform}' not supported", file=sys.stderr)
     sys.exit(1)
 
 searchpath = os.path.join(args.path, "install")
-
 bin_list = glob.glob(os.path.join(searchpath, "*/*/*/bin/*"))
-dlib_list = glob.glob(os.path.join(searchpath, "*/*/*/lib*/*.{so,dylib}"))
+dlib_list = glob.glob(os.path.join(searchpath, f"*/*/*/lib*/*.{libext}"))
 
 master_list = bin_list + dlib_list
 
