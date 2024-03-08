@@ -10,7 +10,7 @@
         jpeg: [libjpeg-turbo]
         lapack: [openblas]
         yacc: [bison]
-        zlib-api: [zlib-ng]
+        zlib-api: [zlib]
     #
     # This version of awscli goes with py-pyyaml@5.4.1
     awscli:
@@ -20,7 +20,8 @@
     bison:
       version: ['3.8.2']
     boost:
-      require: "@1.83: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden"
+      version: ['1.83.0']
+      variants: ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
     bufr:
       version: ['12.0.1']
       variants: +python
@@ -39,7 +40,7 @@
     ecbuild:
       version: ['3.7.2']
     eccodes:
-      version: ['2.33.0']
+      version: ['2.32.0']
       variants: +png
     ecflow:
       version: ['5.11.4']
@@ -48,7 +49,7 @@
       version: ['1.24.5']
       variants: linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
-      version: ['0.36.0']
+      version: ['0.35.1']
       variants: +fckit +trans +tesselation +fftw
     ectrans:
       version: ['1.2.0']
@@ -112,8 +113,8 @@
       version: ['4.2.15']
       variants: +external-xdr ~fortran ~netcdf
     hdf5:
-      version: ['1.14.3']
-      variants: +hl +fortran +mpi ~threadsafe ~szip
+      version: ['1.14.0']
+      variants: +hl +fortran +mpi ~threadsafe +szip
     ip:
       version: ['4.3.0']
       variants: precision=4,d,8
@@ -123,6 +124,8 @@
       version: ['2.0.32']
     jedi-cmake:
       version: ['1.4.0']
+    jpeg:
+      version: ['9.1.0']
     landsfcutil:
       version: ['2.4.1']
     libjpeg-turbo:
@@ -135,7 +138,7 @@
     mapl:
       version: ['2.40.3']
       variants: +shared +pflogger ~f2py
-    # If making changes here, also check the Discover site configs and the CI workflows
+    # If making changes here, also check the Discover site config and the CI workflows
     met:
       version: ['11.1.0']
       variants: +python +grib2
@@ -145,8 +148,10 @@
       require: "+int64 +real64"
     mpich:
       variants: ~hwloc +two_level_namespace
+    mysql:
+      variants: +download_boost
     nco:
-      version: ['5.1.6']
+      version: ['5.0.6']
       variants: ~doc
     # ncview - when adding information here, also check Orion
     # and Discover site configs
@@ -161,7 +166,7 @@
     netcdf-c:
       version: ['4.9.2']
       # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
-      variants: +dap +mpi ~parallel-netcdf ~szip
+      variants: +dap +mpi ~parallel-netcdf
     netcdf-cxx4:
       version: ['4.3.1']
     netcdf-fortran:
@@ -178,17 +183,17 @@
       version: ['0.3.24']
       variants: +noavx512
     openmpi:
-      variants: ~internal-hwloc +two_level_namespace
+      variants: +internal-hwloc +two_level_namespace
     # Pin openssl to avoid duplicate packages being built
     openssl:
       variants: +shared
     p4est:
       version: ['2.8']
     parallelio:
-      version: ['2.6.2']
+      version: ['2.5.10']
       variants: +pnetcdf
     parallel-netcdf:
-      version: ['1.12.3']
+      version: ['1.12.2']
     pflogger:
       version: ['1.12.0']
       variants: +mpi
@@ -216,9 +221,6 @@
     # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
     py-cython:
       require: "@0.29.36"
-    ## https://github.com/JCSDA/spack-stack/issues/980
-    #py-gitpython:
-    #  require: "@3.1.27"
     py-h5py:
       version: ['3.7.0']
       variants: ~mpi
@@ -235,6 +237,9 @@
       require: ['@1.22.3']
     py-pandas:
       variants: +excel
+    # To avoid pip._vendor.pep517.wrappers.BackendInvalid errors with newer
+    # versions of py-poetry-core when using external/homebrew Python as
+    # we do at the moment in spack-stack.
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       require: ['@63.4.3']
@@ -255,10 +260,9 @@
       version: ['2.3.2']
     sp:
       version: ['2.5.0']
-      variants: precision=4,d,8
+      variants: precision=4,d,8 derp=auto
     udunits:
       version: ['2.2.28']
-    # Note - we can remove upp from stack at some point?
     upp:
       version: ['10.0.10']
     w3emc:
@@ -274,7 +278,9 @@
     wrf-io:
       version: ['1.2.0']
     yafyaml:
-      version: ['1.2.0']
+      version: ['0.5.1']
+    zlib:
+      version: ['1.2.13']
     zstd:
       version: ['1.5.2']
       variants: +programs

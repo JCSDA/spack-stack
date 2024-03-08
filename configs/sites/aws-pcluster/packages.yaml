@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler: [intel@2022.1.0, gcc@9.4.0]
+    compiler: [intel@2021.6.0, gcc@9.4.0]
     #compiler: [oneapi@2024.0.2]
     providers:
       mpi: [intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]
@@ -11,7 +11,7 @@ packages:
     buildable: false
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.6.0%intel@2022.1.0
+    - spec: intel-oneapi-mpi@2021.6.0%intel@2021.6.0
       prefix: /opt/intel
       modules:
       - libfabric-aws/1.16.0~amzn4.0
@@ -33,6 +33,10 @@ packages:
 
 ### Modification of common packages
 
+  # Provide option to use R2D2 with local MySQL server
+  ewok-env:
+    variants: +mysql
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -46,11 +50,6 @@ packages:
     externals:
     - spec: binutils@2.34
       prefix: /usr
-  boost:
-    buildable: False
-    externals:
-    - spec: boost@1.71.0 +atomic +chrono +date_time +exception +filesystem +graph +iostreams +locale +log +math +mpi +numpy +pic +program_options +python +random +regex +serialization +signals +system +test +thread +timer +wave cxxstd=17 visibility=hidden
-      prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.30
@@ -62,7 +61,7 @@ packages:
   ecflow:
     buildable: False
     externals:
-    - spec: ecflow@5.8.4 +ui
+    - spec: ecflow@5.8.4+ui+static_boost
       prefix: /home/ubuntu/jedi/ecflow-5.8.4
   findutils:
     externals:

@@ -7,6 +7,7 @@ echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 
 source ${SPACK_STACK_DIR:?}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
+export SPACK_USER_CACHE_PATH=$SPACK_ROOT/user_cache
 
 # Get the current hash of the spack-stack code
 export SPACK_STACK_HASH=`git rev-parse --short HEAD`
@@ -26,7 +27,7 @@ msg1="Added repo with namespace"
 msg2="Repository is already registered with Spack"
 for repo in spack-stack; do
   repodir=${SPACK_STACK_DIR}/spack-ext/repos/$repo
-  othererrors=$( ( spack repo add $repodir --scope defaults |& grep -v -e "$msg1" -e "$msg2" ) || true )
+  othererrors=$( ( spack repo add $repodir --scope defaults 2>&1 | grep -v -e "$msg1" -e "$msg2" ) || true )
   if [ $(echo "$othererrors" | grep -c .) -ne 0 ]; then
     echo "$othererrors"
     return 2

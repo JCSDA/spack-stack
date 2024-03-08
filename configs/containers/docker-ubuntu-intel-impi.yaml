@@ -9,7 +9,7 @@ spack:
 
   compilers:
   - compiler:
-      spec: intel@2022.1.0
+      spec: intel@2021.6.0
       paths:
         cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icc
         cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icpc
@@ -33,11 +33,11 @@ spack:
       target: [core2]
       providers:
         mpi: [intel-oneapi-mpi@2021.6.0]
-      compiler: [intel@2022.1.0]
+      compiler: [intel@2021.6.0]
     intel:
       buildable: false
       externals:
-      - spec: intel@2022.1.0
+      - spec: intel@2021.6.0
         prefix: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64
     intel-oneapi-mpi:
       buildable: false

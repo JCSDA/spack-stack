@@ -22,7 +22,7 @@ chmod o+rX $HOME
 mkdir -p ${SPACK_STACK_DIR}/util/checks
 cd ${SPACK_STACK_DIR}/util/checks
 
-# Check check_permissions.sh
+## Check check_permissions.sh
 mkdir -p perm_check1/perm_check2/perm_check3
 cd perm_check1/perm_check2
 chmod 777 ../../perm_check1
@@ -43,7 +43,7 @@ run_and_check 1 "check_permissions F" ${SPACK_STACK_DIR}/util/check_permissions.
 chmod 770 perm_check3
 run_and_check 1 "check_permissions G" ${SPACK_STACK_DIR}/util/check_permissions.sh
 
-# Check show_duplicate_packages.py
+## Check show_duplicate_packages.py
 cd ${SPACK_STACK_DIR}/util/checks
 echo -e " -  abcdefg hdf6@1.2.3%intel\n -  tuvwxyz hdf6@1.2.3%gcc" > fakeconcrete.A
 run_and_check 1 "show_duplicate_packages.py A1" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.A
@@ -75,6 +75,21 @@ cmd="${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.F -d 2>/dev
 echo -e " -  abcdefg hdf6@1.2.3\n -  tuvwxyz hdf6@1.2.3\n -  a1b2c3d other@1.1.1" > fakeconcrete.F
 if [ $(eval "$cmd") -ne 2 ] ; then
   echo "show_duplicate_packages.py F failed!"
+  fail=1
+fi
+
+## Check check_package_config.py
+export SPACK_ENV=${SPACK_STACK_DIR}/util/test_env
+output_checksum=$(${SPACK_STACK_DIR}/util/check_package_config.py | sort | md5sum)
+reference_checksum=$(cat ${SPACK_STACK_DIR}/util/test_env/package_check_baseline.txt | md5sum)
+if [[ "$output_checksum" != "$reference_checksum" ]]; then
+  echo "check_package_config.py check A failed!"
+  fail=1
+fi
+# Test ignoring packages
+count=$(${SPACK_STACK_DIR}/util/check_package_config.py -i sp --ignore cmake | wc -l)
+if [ "$count" -ne 0 ]; then
+  echo "check_package_config.py check B failed!"
   fail=1
 fi
 

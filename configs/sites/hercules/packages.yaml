@@ -2,9 +2,7 @@ packages:
   all:
     compiler:: [intel@2021.9.0, gcc@12.2.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.9.0, mvapich2@2.3.7]
-      # Alternative openmpi@4.1.6 with gcc@12.2.0 for testing
-      #mpi:: [openmpi@4.1.6]
+      mpi:: [intel-oneapi-mpi@2021.9.0, openmpi@4.1.6]
 
 ### MPI, Python, MKL
   mpi:
@@ -15,22 +13,14 @@ packages:
       prefix: /apps/spack-managed/oneapi-2023.1.0/intel-oneapi-mpi-2021.9.0-a66eaipzsnyrdgaqzxmqmqz64qzvhkse 
       modules:
       - intel-oneapi-mpi/2021.9.0
-  mvapich2:
+  openmpi:
     externals:
-    - spec: mvapich2@2.3.7%gcc@12.2.0~cuda~debug~regcache~wrapperrpath process_managers=slurm
-      prefix: /work/noaa/epic/role-epic/spack-stack/hercules/mvapich2-2.3.7/gcc-12.2.0
+    - spec: openmpi@4.1.6%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
+        schedulers=slurm
+      prefix: /work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.6/gcc-12.2.0-spack
       modules:
       - gcc/12.2.0
-      - mvapich2/2.3.7
-  # Alternative openmpi@4.1.6 with gcc@12.2.0 for testing
-  #openmpi:
-  #  externals:
-  #  - spec: openmpi@4.1.6%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
-  #      schedulers=slurm
-  #    prefix: /work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.6/gcc-12.2.0-spack
-  #    modules:
-  #    - gcc/12.2.0
-  #    - openmpi/4.1.6-gcc-12.2.0-spack
+      - openmpi/4.1.6-gcc-12.2.0-spack
 
 ### Modifications of common packages
 

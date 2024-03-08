@@ -27,7 +27,7 @@ class BaseEnv(BundlePackage):
     depends_on("curl", type="run")
 
     # I/O
-    depends_on("zlib", type="run")
+    depends_on("zlib-api", type="run")
     depends_on("hdf5", type="run")
     depends_on("netcdf-c", type="run")
     depends_on("netcdf-fortran", type="run")
