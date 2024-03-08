@@ -409,6 +409,8 @@ The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LT
    apt install -y bzip2
    apt install -y unzip
    apt install -y automake
+   apt install -y autopoint
+   apt install -y gettext
    apt install -y xterm
    apt install -y texlive
    apt install -y libcurl4-openssl-dev
