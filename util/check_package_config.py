@@ -19,7 +19,11 @@ import json
 import os
 import sys
 
-import yaml
+SPACK_ROOT = os.getenv("SPACK_ROOT")
+assert SPACK_ROOT, "$SPACK_ROOT must be set but is not!"
+
+sys.path.append(os.path.join(SPACK_ROOT, "lib/spack/external/_vendoring"))
+from ruamel import yaml
 
 SPACK_ENV = os.getenv("SPACK_ENV")
 assert SPACK_ENV, "$SPACK_ENV must be set but is not!"
@@ -74,16 +78,21 @@ for concrete_spec in spack_lock["concrete_specs"].values():
                 # Boolean variant
                 if config_variant[0] in ("+", "~"):
                     config_value = config_variant[0] == "+"
-                    if concrete_spec["parameters"][config_variant[1:]] != config_value:
+                    if not 'config_variant[1:]' in concrete_spec["parameters"].keys():
+                        variant_mismatch = True
+                    elif concrete_spec["parameters"][config_variant[1:]] != config_value:
                         variant_mismatch = True
                 # Named variant
                 elif "=" in config_variant:
                     config_variant, config_value = config_variant.split("=")
-                    concrete_values = concrete_spec["parameters"][config_variant]
-                    if type(concrete_values) is str:
-                        concrete_values = [concrete_values]
-                    if set(config_value.split(",")) != set(concrete_values):
+                    if not config_variant in concrete_spec["parameters"].keys():
                         variant_mismatch = True
+                    else:
+                        concrete_values = concrete_spec["parameters"][config_variant]
+                        if type(concrete_values) is str:
+                            concrete_values = [concrete_values]
+                        if set(config_value.split(",")) != set(concrete_values):
+                            variant_mismatch = True
                 if variant_mismatch:
                     iret = 1
                     print(

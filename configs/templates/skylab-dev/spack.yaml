@@ -9,6 +9,7 @@ spack:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
       - ewok-env +ecflow +cylc
+      - ai-env
       - geos-gcm-env
       - jedi-fv3-env
       - jedi-geos-env
@@ -30,3 +31,6 @@ spack:
     - matrix:
       - [$packages]
       - [$compilers]
+      exclude:
+        # py-torch in ai-env doesn't build with Intel
+        - ai-env%intel

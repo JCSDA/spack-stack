@@ -34,7 +34,7 @@ Organization | Code Manager(s)
 -------------|----------------
 NOAA EMC | Alex Richert, Hang Lei, Ed Hartnett
 JCSDA | Dom Heinzeller, Steve Herbener
-EPIC | Cam Book, Natalie Perlin
+EPIC | Cam Book, Natalie Perlin, Ratko Vasic
 
 ## Project Process
 
@@ -116,10 +116,10 @@ which case the work will be shared by the code managers.
 
 #### Directory structure of spack-stack installs
 
-/path/to/spack-stack/spack-stack-x.y.z/envs/unified-env/install/compiler-name/compiler-version/package-name-version-hash
+/path/to/spack-stack/spack-stack-x.y.z/envs/unified-env-compiler-name-compiler-version/install/compiler-name/compiler-version/package-name-version-hash
 
 _Example_
-/Users/heinzell/prod/spack-stack-1.4.0/envs/unified-env/install/apple-clang/13.1.6/netcdf-c-4.9.2-vrrvi2u
+/Users/heinzell/prod/spack-stack-1.4.0/envs/unified-env-apple-clang-13.1.6/install/apple-clang/13.1.6/netcdf-c-4.9.2-vrrvi2u
 
 #### Auto-generated modules structure (no MPI dependency)
 

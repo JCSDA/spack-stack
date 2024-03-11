@@ -15,11 +15,11 @@ spack-stack is mainly a collection of Spack configuration files, but provides a 
 
 spack-stack is maintained by:
 
-- Alex Richert (@AlexanderRichert-NOAA) and Ed Hartnett (@edwardhartnett), NOAA-EMC
+- Alex Richert (@AlexanderRichert-NOAA), Hang Lei (@Hang-Lei-NOAA) and Ed Hartnett (@edwardhartnett), NOAA-EMC
 
 - Dom Heinzeller (@climbfuji) and Steve Herbener (@srherbener), JCSDA
 
-- Cameron Book (@ulmononian) and Mark Potts (@mark-a-potts), EPIC
+- Cameron Book (@ulmononian), Natalie Perlin (@natalie-perlin) and Ratko Vasic (@ratkovasic-noaa), EPIC
 
 ===============
 Getting started
