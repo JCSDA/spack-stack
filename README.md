@@ -26,7 +26,7 @@ Full documentation with table of contents can be found at https://spack-stack.re
 Spack-stack is a collaborative effort between:
 * [NOAA Environmental Modeling Center (EMC)](https://www.emc.ncep.noaa.gov/emc_new.php): [Alex Richert](https://www.github.com/AlexanderRichert-NOAA), [Hang Lei](https://www.github.com/Hang-Lei-NOAA), [Ed Hartnett](https://www.github.com/edwardhartnett)
 * [UCAR Joint Center for Satellite Data Assimilation (JCSDA)](https://www.jcsda.org/): [Dom Heinzeller](https://www.github.com/climbfuji), [Steve Herbener](https://github.com/srherbener)
-* [Earth Prediction Innovation Center (EPIC)](https://epic.noaa.gov/): [Cam Book](https://github.com/ulmononian), [Natalie Perlin](https://github.com/natalie-perlin)
+* [Earth Prediction Innovation Center (EPIC)](https://epic.noaa.gov/): [Cam Book](https://github.com/ulmononian), [Natalie Perlin](https://github.com/natalie-perlin), [Ratko Vasic](https://github.com/ratkovasic-noaa)
 
 For more information about the organization of the spack-stack
 project, see the [Project Charter](project_charter.md).
