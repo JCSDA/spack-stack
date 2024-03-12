@@ -27,7 +27,6 @@ compilers:
         PSM2_MEMORY: 'large'
         I_MPI_EXTRA_FILESYSTEM: '1'
         I_MPI_EXTRA_FILESYSTEM_FORCE: 'gpfs'
-        I_MPI_FALLBACK: '0'
         I_MPI_FABRICS: 'ofi'
         I_MPI_OFI_PROVIDER: 'psm3'
         I_MPI_ADJUST_SCATTER: '2'
