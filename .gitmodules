@@ -5,7 +5,7 @@
   #url = https://github.com/jcsda/spack
   #branch = jcsda_emc_spack_stack
   url = https://github.com/climbfuji/spack
-  branch = bugfix/wgrib2_oneapi
+  branch = feature/oneapi
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
