@@ -30,7 +30,7 @@ spack:
       require: '%clang'
       target: [x86_64]
       providers:
-        mpi: [mpich@4.1.1]
+        mpi: [mpich@4.2.0]
       compiler: [clang@10.0.0]
     gcc:
       buildable: false
@@ -71,9 +71,9 @@ spack:
     mpich:
       buildable: false
       externals:
-      - spec: mpich@4.1.1
-        prefix: /opt/mpich-4.1.1
-      version: [4.1.1]
+      - spec: mpich@4.2.0
+        prefix: /opt/mpich-4.2.0
+      version: [4.2.0]
     mysql:
       buildable: false
       externals:
@@ -175,15 +175,20 @@ spack:
     # Extra instructions
     extra_instructions:
       pre_build: |
-        #Create symbolic links for clang compilers
+        # Copy the spack-stack extension repo into the spack code
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
+        # Register spack-stack extension repo
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
+        # Create symbolic links for clang compilers
         RUN cd /usr/bin && \
         ln -svf clang-10 clang && \
         ln -svf clang++-10 clang++ && \
         ln -svf clang-cpp-10 clang-cpp && \
         cd /usr/lib/llvm-10/lib && \
         ln -svf libc++abi.so.1.0 libc++abi.so
+        #
         # Build mpich outside of spack-stack
-        ENV MPICH_VERSION=4.1.1
+        ENV MPICH_VERSION=4.2.0
         ENV CC=clang
         ENV CXX=clang++
         ENV FC=gfortran
@@ -206,13 +211,10 @@ spack:
         spack env activate -d . && \
         spack find 2>&1 | tee /root/spack_find.out
       pre_final: |
-        #Set environment variables for installing tzdata
+        # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
-        ENV MPICH_VERSION=4.1.1
-        ENV CC=clang
-        ENV CXX=clang++
-        ENV FC=gfortran
+        ENV MPICH_VERSION=4.2.0
         ENV PATH=/opt/mpich-${MPICH_VERSION}/bin:${PATH}
         ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
         ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
@@ -225,8 +227,8 @@ spack:
         cd /usr/lib/llvm-10/lib && \
         ln -svf libc++abi.so.1.0 libc++abi.so
         # Copy spack find output from builder
-        ENV MPICH_VERSION=4.1.1
         COPY --from=builder /root/spack_find.out /root/spack_find.out
+        ENV MPICH_VERSION=4.2.0
         # Copy mpich-${MPICH_VERSION} installation from builder
         COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI

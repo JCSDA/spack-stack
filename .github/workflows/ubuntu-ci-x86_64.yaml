@@ -49,12 +49,12 @@ jobs:
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
-          spack external find --scope system --exclude bison --exclude openssl
+          spack external find --scope system \
+              --exclude bison --exclude openssl \
+              --exclude curl --exclude python
           spack external find --scope system sed
           spack external find --scope system perl
           spack external find --scope system wget
-          PATH="/usr/local/opt/curl/bin:$PATH" \
-              spack external find --scope system curl
           PATH="/usr/local/opt/qt5/bin:$PATH" \
               spack external find --scope system qt
           spack external find --scope system texlive
@@ -70,7 +70,7 @@ jobs:
           echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: intel-oneapi-mpi@2021.6.0%intel@2022.1.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-mpi@2021.6.0%intel@2021.6.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      prefix: /opt/intel" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      - libfabric-aws/1.16.0~amzn4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
@@ -84,7 +84,7 @@ jobs:
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "compilers:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "- compiler:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    spec: intel@2022.1.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    spec: intel@2021.6.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
@@ -110,18 +110,15 @@ jobs:
 
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0]"
-          spack config add "packages:all:compiler:[intel@2022.1.0]"
+          spack config add "packages:all:compiler:[intel@2021.6.0]"
           sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
-          # https://github.com/spack/spack/issues/42137
-          spack config add "packages:pflogger:variants:+mpi"
-
           # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.intel-2022.1.0
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2022.1.0 -i fms -i crtm -i esmf -i mapl
+          spack concretize 2>&1 | tee log.concretize.intel-2021.6.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.6.0 -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
@@ -139,12 +136,12 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2022.1.0.base-env
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.6.0.base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel@2022.1.0.${{ inputs.template || 'unified-dev' }}
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel@2021.6.0.${{ inputs.template || 'unified-dev' }}
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
@@ -184,7 +181,7 @@ jobs:
           ls -l ${ENVDIR}/install/modulefiles/Core
 
           module use ${ENVDIR}/install/modulefiles/Core
-          module load stack-intel/2022.1.0
+          module load stack-intel/2021.6.0
           module load stack-intel-oneapi-mpi/2021.6.0
           module load stack-python/3.10.13
           module available

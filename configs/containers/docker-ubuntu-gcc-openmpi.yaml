@@ -28,19 +28,18 @@ spack:
       require: '%gcc'
       target: [x86_64]
       providers:
-        mpi: [openmpi@4.1.5]
+        mpi: [openmpi@5.1.6]
       compiler: [gcc@9.4.0]
     gcc:
       buildable: false
       externals:
       - spec: gcc@9.4.0
         prefix: /usr
-    # Try this next time, already used for clang/intel
-    #gmake:
-    #  buildable: false
-    #  externals:
-    #  - spec: gmake@4.2.1
-    #    prefix: /usr
+    gmake:
+      buildable: false
+      externals:
+      - spec: gmake@4.2.1
+        prefix: /usr
     diffutils:
       buildable: false
       externals:
@@ -150,8 +149,13 @@ spack:
 
     # Extra instructions
     extra_instructions:
+      pre_build: |
+        # Copy the spack-stack extension repo into the spack code
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
+        # Register spack-stack extension repo
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
       pre_final: |
-        #Set environment variables for installing tzdata
+        # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
         ENV TZ=Etc/UTC
         ENV CC=gcc
@@ -173,9 +177,9 @@ spack:
         echo "export CXX=g++" >> /home/nonroot/.bashrc && \
         echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
-        mkdir /home/nonroot/.openmpi && \
-        echo "rmaps_base_oversubscribe = 1" >> /home/nonroot/.openmpi/mca-params.conf && \
-        chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.openmpi
+        mkdir /home/nonroot/.pmix && \
+        echo "rmaps_default_mapping_policy=:oversubscribe" >> /home/nonroot/.pmix/mca-params.conf && \
+        chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.pmix
         # Replicate settings for root user
         RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
         echo "ulimit -v unlimited" >> /root/.bashrc && \
@@ -183,12 +187,12 @@ spack:
         echo "export CXX=g++" >> /root/.bashrc && \
         echo "export FC=gfortran" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig && \
-        mkdir /root/.openmpi && \
-        echo "rmaps_base_oversubscribe = 1" >> /root/.openmpi/mca-params.conf
+        mkdir /root/.pmix && \
+        echo "rmaps_default_mapping_policy=:oversubscribe" >> /root/.pmix/mca-params.conf
         # Also set necessary environment variables for openmpi
         RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
         echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
-        echo "export OMPI_MCA_rmaps_base_oversubscribe=1" >> /root/.bashrc
+        echo "export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe" >> /root/.bashrc
 
     # Labels for the image
     labels:

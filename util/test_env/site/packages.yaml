@@ -1,0 +1,10 @@
+packages:
+  gmake:
+    buildable: false
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  sp:
+    externals:
+    - spec: sp@2.3.3
+      prefix: /dev/null

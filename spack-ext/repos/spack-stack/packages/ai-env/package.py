@@ -6,17 +6,18 @@
 from spack.package import *
 
 
-class JediMpasEnv(BundlePackage):
-    """Development environment for mpas-bundle"""
+class AiEnv(BundlePackage):
+    """Development environment for AI/ML applications"""
 
-    homepage = "https://github.com/JCSDA/mpas-bundle"
-    git = "https://github.com/JCSDA/mpas-bundle.git"
+    # DH* TODO UPDATE FROM INTERNAL TO PUBLIC
+    homepage = "https://github.com/JCSDA/spack-stack"
+    git = "https://github.comJCSDA/spack-stack.git"
 
     maintainers("climbfuji", "srherbener")
 
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
-    depends_on("metis", type="run")
+    depends_on("py-torch", type="run")
 
     # There is no need for install() since there is no code.

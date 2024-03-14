@@ -9,23 +9,21 @@ spack:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
   - packages:
       - ewok-env +ecflow +cylc
+      - ai-env
       - geos-gcm-env
       - global-workflow-env
       - gmao-swell-env
       - gsi-env
       - jedi-fv3-env
+      - jedi-geos-env
       - jedi-mpas-env
       - jedi-neptune-env
       - jedi-tools-env
       - jedi-ufs-env
       - jedi-um-env
-      #- nceplibs-env
       - soca-env
       - ufs-srw-app-env
-      #- ufs-utils-env
       - ufs-weather-model-env
-      #- upp-env
-      #- ww3-env
 
       # Various fms tags (list all to avoid duplicate packages)
       - fms@release-jcsda
@@ -43,5 +41,7 @@ spack:
       - [$packages]
       - [$compilers]
       exclude:
+        # py-torch in ai-env doesn't build with Intel
+        - ai-env%intel
         # jedi-tools doesn't build with Intel
         - jedi-tools-env%intel

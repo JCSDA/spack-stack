@@ -33,7 +33,6 @@ class UfsSrwAppEnv(BundlePackage):
     depends_on("ip")
     depends_on("sp")
     depends_on("w3nco")
-    depends_on("upp")
     depends_on("gfsio")
     depends_on("landsfcutil")
     depends_on("nemsio")

@@ -134,6 +134,9 @@ These instructions are meant to be a reference that users can follow to set up t
    brew install openssl
    # Note - need to pin to version 5
    brew install qt@5
+
+   # Note - only needed for running JCSDA's
+   # JEDI-Skylab system (using R2D2 localhost)
    brew install mysql
 
 .. note::
@@ -206,10 +209,15 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack external find --scope system --exclude bison --exclude openssl
+   spack external find --scope system \
+       --exclude bison --exclude openssl \
+       --exclude python
    spack external find --scope system libiconv
    spack external find --scope system perl
    spack external find --scope system wget
+
+   # Note - only needed for running JCSDA's
+   # JEDI-Skylab system (using R2D2 localhost)
    spack external find --scope system mysql
 
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
@@ -249,16 +257,22 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Check your clang version then add it to your site compiler config.
    clang --version
    spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
+   spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
 
-8. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
+8. If the environment will be used to run JCSDA's JEDI-Skylab experiments using R2D2 with a local MySQL server, run the following command:
+
+.. code-block:: console
+
+   spack config add "packages:ewok-env:variants:+mysql"
+
+9. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
 
 .. code-block:: console
 
    definitions:
    - compilers: ['%apple-clang']
 
-9. If needed, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mymacos/spack.yaml``, etc.
+10. If needed, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -266,7 +280,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi common/*.yaml
    vi site/*.yaml
 
-10. Process the specs and install
+11. Process the specs and install
 
 It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
 This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
@@ -279,22 +293,22 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
    ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
-11. Create lmod module files
+12. Create lmod module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-12. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/unified-env.mymacos/modulefiles/Core``.
+13. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/unified-env.mymacos/modulefiles/Core``.
 
 .. code-block:: console
 
    spack stack setup-meta-modules
 
 .. note::
-   Unlike preconfigured environments and linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
+   Unlike preconfigured environments and Linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
 
-13. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+14. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux:
@@ -339,6 +353,9 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install xterm
    yum -y install texlive
    # Do not install qt@5 for now
+
+   # Note - only needed for running JCSDA's
+   # JEDI-Skylab system (using R2D2 localhost)
    yum -y install mysql-server
 
    # For screen utility (optional)
@@ -392,11 +409,16 @@ The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LT
    apt install -y bzip2
    apt install -y unzip
    apt install -y automake
+   apt install -y autopoint
+   apt install -y gettext
    apt install -y xterm
    apt install -y texlive
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y meson
+
+   # Note - only needed for running JCSDA's
+   # JEDI-Skylab system (using R2D2 localhost)
    apt install -y mysql-server
    apt install -y libmysqlclient-dev
 
@@ -449,9 +471,13 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack external find --scope system \
        --exclude bison --exclude cmake \
        --exclude curl --exclude openssl \
-       --exclude openssh
+       --exclude openssh --exclude python
    spack external find --scope system wget
+
+   # Note - only needed for running JCSDA's
+   # JEDI-Skylab system (using R2D2 localhost)
    spack external find --scope system mysql
+
    spack external find --scope system texlive
    spack external find --scope system sed
 
@@ -491,6 +517,11 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:fontconfig:variants:+pic"
    spack config add "packages:pixman:variants:+pic"
    spack config add "packages:cairo:variants:+pic"
+
+   If the environment will be used to run JCSDA's JEDI-Skylab experiments using R2D2 with a local MySQL server, run the following command:
+
+.. code-block:: console
+   spack config add "packages:ewok-env:variants:+mysql"
 
 9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
 

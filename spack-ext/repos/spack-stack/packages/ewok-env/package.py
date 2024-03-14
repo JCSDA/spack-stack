@@ -21,6 +21,9 @@ class EwokEnv(BundlePackage):
     variant("ecflow", default=True, description="Use ecflow workflow engine")
     variant("cylc", default=False, description="Use cylc workflow engine")
 
+    # Variant for MySQL (JEDI-Skylab/R2D2 localhost mode)
+    variant("mysql", default=False, description="Provide option to use local MySQL server")
+
     # Variants defining repositories that are not yet publicly available
     variant("solo", default=False, description="Build solo (general tools for Python programmers)")
     variant(
@@ -34,7 +37,7 @@ class EwokEnv(BundlePackage):
         description="Build EWOK (Experiments and Workflows Orchestration Kit)",
     )
 
-    depends_on("jedi-base-env +python", type="run")
+    depends_on("jedi-base-env", type="run")
     depends_on("awscli-v2", type="run")
     depends_on("py-boto3", type="run")
     depends_on("py-cartopy", type="run")
@@ -52,8 +55,10 @@ class EwokEnv(BundlePackage):
         depends_on("py-cylc-rose", type="run")
         depends_on("py-cylc-uiserver", type="run")
 
-    # R2D2 mysql backend
-    depends_on("mysql", type="run")
+    # MySQL server for JEDI-Skylab/R2D2 localhost mode
+    depends_on("mysql", when="+mysql", type="run")
+
+    # MySQL Python API
     # Comment out for now until build problems are solved
     # https://github.com/jcsda/spack-stack/issues/522
     # depends_on("py-mysql-connector-python", type="run")
@@ -61,10 +66,5 @@ class EwokEnv(BundlePackage):
     depends_on("solo", when="+solo", type="run")
     depends_on("r2d2", when="+r2d2", type="run")
     depends_on("ewok", when="+ewok", type="run")
-
-    conflicts(
-        "%gcc platform=darwin",
-        msg="ewok-env does " + "not build with gcc (11?) on macOS (12), use apple-clang",
-    )
 
     # There is no need for install() since there is no code.

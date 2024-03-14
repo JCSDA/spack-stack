@@ -6,6 +6,11 @@ that the site configuration files in `configs/sites/noaa-azure` work out of the 
 
 sudo su
 chmod 777 /contrib
+# The following three commands were necessary to fix failures accessing these repos
+yum-config-manager --disable intel-clck-2019-repo
+yum-config-manager --disable intel-hpc-platform
+yum-config-manager --disable intelpython
+#
 yum install -y m4
 yum install -y qt5-qtbase-devel
 yum install -y qt5-qtsvg-devel
@@ -130,6 +135,7 @@ mkdir ecflow
 # Create the modulefile from the template in doc/modulefile_templates
 
 ############## Steps to perform when starting a new cluster ##############
+
 source /contrib/admin/basic_setup.sh  # sudo privileges requred to install packages
 module unuse /opt/cray/craype/default/modulefiles
 module unuse /opt/cray/modulefiles
@@ -140,4 +146,12 @@ module load mysql/8.0.31
 module load git-lfs/2.4.1
 #
 
+git lfs install
+git config --global credential.helper cache # or store
+git config --global user.email "your.name@domain.com"
+git config --global user.name "Your Name"
 
+mkdir ~/.aws
+# Create ~/.aws/config
+# Create ~/.aws/credentials
+chmod 400 ~/.aws/credentials

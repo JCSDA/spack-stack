@@ -20,6 +20,21 @@ The utility located at util/show_duplicate_packages.py parses the output of ``sp
 
 The ``-d`` option shows only a list of the duplicates, as opposed to the default behavior, which is to show a print-out of all packages with colorized duplicates. In any case, the identification of any duplicates will yield a return code of 1. The ``-i`` option can be invoked multiple times to skip specific package names. The ``-c`` option can be used to ignore duplicates associated with different compilers; in an environment with, say, GCC and Intel copies of any given package, those two copies of a package will not be reported as duplicates.
 
+.. _Package_Config_Checker:
+
+------------------------------
+check_package_config.py
+------------------------------
+
+The utility at util/check_package_config.py is run after concretization in an active spack-stack environment (i.e., `$SPACK_ENV` is set) to confirm that the packages versions and variants in common/packages.yaml are respected in the concretization, as well as that any externals specified in site/packages.yaml are not being omitted. It does this by reading common/packages.yaml (for the version and variant settings), site/packages.yaml (for the external settings), and spack.lock. Usage is as follows:
+
+.. code-block:: console
+   spack env active envs/unified-env/
+   # To verify versions, variants, and externals:
+   ${SPACK_STACK_DIR}/util/check_package_config.py
+   # To ignore a known mismatch in version, variant, or external status for package 'esmf', use -i/--ignore option:
+   ${SPACK_STACK_DIR}/util/check_package_config.py -i esmf
+
 .. _Permissions_Checker:
 
 ------------------------------
@@ -31,10 +46,10 @@ The utility located at util/check_permissions.sh can be run inside any spack-sta
 .. _LDD_Checker:
 
 ------------------------------
-ldd_check.py
+ldd_check.py (Linux only)
 ------------------------------
 
-The util/ldd_check.py utility should be run for new installations to ensure that no shared library or executable that uses shared libraries is missing a shared library dependency. If the script returns a warning for a given file, this may indicate that Spack's RPATH substitution has not been properly applied. In some instances, missing library dependencies may not indicate a problem, such as a library that is intended to be found through $LD_LIBRARY_PATH after, say, a compiler or MPI environment module is loaded. Though these paths should probably also be RPATH-ified, such instances of harmless missing dependencies may be ignored with ldd_check.py's ``--ignore`` option by specifying a Python regular expression to be excluded from consideration (see example below), or can be permanently whitelisted by modifying the ``whitelist`` variable at the top of the ldd_check.py script itself (in which case please submit a PR). The script searches the 'install/' subdirectory of a given path and runs ``ldd`` on all shared objects. The base path to be search can be specified as a lone positional argument, and by default is the current directory. In practice, this should be ``$SPACK_ENV`` for the environment in question.
+The util/ldd_check.py utility should be run for new installations to ensure that no shared library or executable that uses shared libraries is missing a shared library dependency. If the script returns a warning for a given file, this may indicate that Spack's RPATH substitution has not been properly applied. In some instances, missing library dependencies may not indicate a problem, such as a library that is intended to be found through $LD_LIBRARY_PATH after, say, a compiler or MPI environment module is loaded. Though these paths should probably also be RPATH-ified, such instances of harmless missing dependencies may be ignored with ldd_check.py's ``--ignore`` option by specifying a Python regular expression to be excluded from consideration (see example below), or can be permanently whitelisted by modifying the ``whitelist`` variable at the top of the ldd_check.py script itself (in which case please submit a PR). The script searches the 'install/' subdirectory of a given path and runs ``ldd`` on all shared objects. The base path to be search can be specified as a lone positional argument, and by default is the current directory. In practice, this should be ``$SPACK_ENV`` for the environment in question. This utility is available for Linux only.
 
 .. code-block:: console
 
