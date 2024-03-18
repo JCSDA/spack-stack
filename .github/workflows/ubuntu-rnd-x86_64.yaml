@@ -1,236 +1,236 @@
-name: ubuntu-rnd-x86_64-build
-on:
-  # Temporarily disabled 2024/03/18
-  #schedule:
-  #  - cron: '0 0 * * *'
-  #workflow_dispatch:
-
-defaults:
-  run:
-    shell: bash
-
-jobs:
-  ubuntu-rnd-x86_64-build:
-    runs-on: [ubuntu-rnd-x86_64]
-    timeout-minutes: 720 # 12 hours
-
-    steps:
-      - name: cleanup
-        run: |
-          pwd
-          ls -lart
-          rm -fr *
-          rm -fr /home/ubuntu/spack-stack/CI/tmp
-          mkdir /home/ubuntu/spack-stack/CI/tmp
-
-          TODAY=$(date +%Y%m%d)
-          LAST_TO_KEEP=$(date --date='-1 days' +%Y%m%d)
-          echo "TODAY is ${TODAY}"
-          echo "LAST_TO_KEEP is ${LAST_TO_KEEP}"
-
-          cd /home/ubuntu/spack-stack/CI/unified-env
-          for dir in `ls -1`; do echo ${dir}; if [[ ${dir} < ${LAST_TO_KEEP} ]]; then echo "Deleting ${dir}"; rm -fr ${dir}; fi; done
-
-      - name: checkout
-        uses: actions/checkout@v3
-        with:
-          submodules: true
-
-      - name: create-buildcache
-        run: |
-          source ./setup.sh
-
-          # Get day of week to set default container for scheduled builds
-          DOW=$(date +%u)
-          # Monday is 1 ... Sunday is 7
-          if [[ $DOW == 7 ]]; then
-            export USE_BINARY_CACHE=false
-            echo "Ignore existing binary cache for creating buildcache environment"
-          else
-            export USE_BINARY_CACHE=true
-            echo "Use existing binary cache for creating buildcache environment"
-          fi
-
-          # Make environment for creating/updating binary cache
-          export TEMPLATE=${{ inputs.template || 'unified-dev' }}
-          export ENVNAME=buildcache-${TEMPLATE}.ubuntu-rnd-x86_64
-          export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/home/ubuntu/spack-stack/CI/tmp/spack-stack-dev-buildcache
-          spack env activate ${ENVDIR}
-          spack add ${{ inputs.specs || '' }}
-
-          # For buildcaches
-          spack config add config:install_tree:padded_length:200
-
-          # Add additional variants for MET packages, different from config/common/packages.yaml
-          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
-
-          # Overrides for spack build and staging areas to speed up builds,
-          # separate from the default site config locations to avoid conflicts
-          spack config add "config:build_stage:/home/ubuntu/spack-stack/CI/tmp/build_stage"
-          spack config add "config:test_stage:/home/ubuntu/spack-stack/CI/tmp/test_stage"
-          spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
-          spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
-
-          # Loop over compilers
-          declare -a compilers=("gcc" "intel")
-          cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
-
-          for compiler in "${compilers[@]}"
-          do
-            # Set compiler and MPI
-            cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
-            sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
-            cat ${ENVDIR}/spack.yaml
-
-            # Concretize and check for duplicates
-            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
-            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
-
-            # Update spack source cache
-            spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
-
-            # Add binary cache if requested
-            if [ "$USE_BINARY_CACHE" = true ] ; then
-              spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
-              spack buildcache update-index local-binary
-              echo "Packages in spack binary cache:"
-              spack buildcache list
-            fi
-
-            # Create/update binary cache
-            echo "Create/update build cache for environment ${TEMPLATE} and compiler ${compiler}..."
-            spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${TEMPLATE}.${compiler}
-            spack buildcache create -a -u /mnt/experiments-efs/spack-stack/build-cache/
-
-            # Next steps: synchronize source and build cache to a central/combined mirror?
-            #echo "Next steps ..."
-
-            # Remove binary cache for next round of concretization
-            if [ "$USE_BINARY_CACHE" = true ] ; then
-              spack mirror rm local-binary
-            fi
-          done
-
-          spack env deactivate
-          rm -fr /home/ubuntu/spack-stack/CI/tmp/spack-stack-dev-buildcache
-
-      - name: create-env
-        run: |
-          source ./setup.sh
-          TODAY=$(date +%Y%m%d)
-
-          # Create actual environment from binary cache
-          export TEMPLATE=${{ inputs.template || 'unified-dev' }}
-          export ENVNAME=${TEMPLATE}.ubuntu-rnd-x86_64
-          export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/home/ubuntu/spack-stack/CI/unified-env/${TODAY}
-          spack env activate ${ENVDIR}
-          spack add ${{ inputs.specs || '' }}
-
-          # Add additional variants for MET packages, different from config/common/packages.yaml
-          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
-
-          # Overrides for spack build and staging areas to speed up builds,
-          # separate from the default site config locations to avoid conflicts
-          spack config add "config:build_stage:/home/ubuntu/spack-stack/CI/tmp/build_stage"
-          spack config add "config:test_stage:/home/ubuntu/spack-stack/CI/tmp/test_stage"
-          spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
-          spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
-
-          # Loop over compilers
-          declare -a compilers=("gcc" "intel")
-          cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
-
-          for compiler in "${compilers[@]}"
-          do
-            # Set compiler and MPI
-            cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
-            sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
-            cat ${ENVDIR}/spack.yaml
-
-            # Concretize and check for duplicates
-            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
-            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
-
-            # Update spack source cache
-            spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
-
-            # Add binary cache
-            spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
-            spack buildcache update-index local-binary
-            echo "Packages in spack binary cache:"
-            spack buildcache list
-
-            # Install from binary cache
-            echo "Install environment ${TEMPLATE} for compiler ${compiler} from binary cache ..."
-            spack install --fail-fast --no-check-signature 2>&1 | tee log.install.${TEMPLATE}.${compiler}
-            spack clean -a
-
-            # Create modules
-            spack module lmod refresh -y
-            spack stack setup-meta-modules
-
-            # Remove binary cache for next round of concretization
-            spack mirror rm local-binary
-          done
-
-          spack env deactivate
-
-      - name: test-env
-        run: |
-          source /etc/profile.d/z00_lmod.sh
-          module use /usr/share/modules/modulefiles
-          module use /opt/intel/mpi/2021.6.0/modulefiles
-          module use /home/ubuntu/jedi/modulefiles
-
-          TODAY=$(date +%Y%m%d)
-          echo "TODAY is ${TODAY}"
-          ls -l /home/ubuntu/spack-stack/CI/unified-env/${TODAY}/modulefiles/Core
-
-          module use /home/ubuntu/spack-stack/CI/unified-env/${TODAY}/modulefiles/Core
-          module load stack-intel/2021.6.0
-          module load stack-intel-oneapi-mpi/2021.6.0
-          module load stack-python/3.10.13
-          module available
-
-          module load jedi-ufs-env/1.0.0
-          module load ewok-env/1.0.0
-          module load soca-env/1.0.0
-          module list
-
-          module purge
-          module load stack-gcc/9.4.0
-          module load stack-openmpi/4.1.4
-          module load stack-python/3.10.13
-          module available
-
-          module load jedi-ufs-env/1.0.0
-          module load ewok-env/1.0.0
-          module load soca-env/1.0.0
-          module list
-
-          # Create empty file to signal that this environment is ready for testing
-          touch /home/ubuntu/spack-stack/CI/unified-env/${TODAY}.ready
-
-      # Report status to JCSDA CI slack channel for nightly runs only
-      - name: Report Status
-        if: always()
-        uses: ravsamhq/notify-slack-action@v1
-        env:
-          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
-        with:
-          # https://www.ravsam.in/blog/send-slack-notification-when-github-actions-fails/#getting-a-webhook-url
-          # https://www.ravsam.in/blog/collect-form-responses-using-google-apps-script
-          # https://github.com/marketplace/actions/notify-slack-action
-          status: ${{ job.status }}
-          notify_when: 'success,failure,warnings'
-          notification_title: '{workflow} has {status_message}'
-          message_format: '{emoji} *{workflow}* {status_message} for branch {branch} in <{repo_url}|{repo}>'
-          footer: ${{ github.event.pull_request.number || github.event_name || 'workflow dispatched manually' }}
-          # For testing: only notify user Dom
-          #mention_users: 'U02NLGXF5HV'
-          #mention_users_when: 'failure,warnings'
-          # Default: notify channel
-          mention_groups: '!channel'
-          mention_groups_when: 'failure,warnings'
+# Temporarily disabled 2024/03/18
+#name: ubuntu-rnd-x86_64-build
+#on:
+#  schedule:
+#    - cron: '0 0 * * *'
+#  workflow_dispatch:
+#
+#defaults:
+#  run:
+#    shell: bash
+#
+#jobs:
+#  ubuntu-rnd-x86_64-build:
+#    runs-on: [ubuntu-rnd-x86_64]
+#    timeout-minutes: 720 # 12 hours
+#
+#    steps:
+#      - name: cleanup
+#        run: |
+#          pwd
+#          ls -lart
+#          rm -fr *
+#          rm -fr /home/ubuntu/spack-stack/CI/tmp
+#          mkdir /home/ubuntu/spack-stack/CI/tmp
+#
+#          TODAY=$(date +%Y%m%d)
+#          LAST_TO_KEEP=$(date --date='-1 days' +%Y%m%d)
+#          echo "TODAY is ${TODAY}"
+#          echo "LAST_TO_KEEP is ${LAST_TO_KEEP}"
+#
+#          cd /home/ubuntu/spack-stack/CI/unified-env
+#          for dir in `ls -1`; do echo ${dir}; if [[ ${dir} < ${LAST_TO_KEEP} ]]; then echo "Deleting ${dir}"; rm -fr ${dir}; fi; done
+#
+#      - name: checkout
+#        uses: actions/checkout@v3
+#        with:
+#          submodules: true
+#
+#      - name: create-buildcache
+#        run: |
+#          source ./setup.sh
+#
+#          # Get day of week to set default container for scheduled builds
+#          DOW=$(date +%u)
+#          # Monday is 1 ... Sunday is 7
+#          if [[ $DOW == 7 ]]; then
+#            export USE_BINARY_CACHE=false
+#            echo "Ignore existing binary cache for creating buildcache environment"
+#          else
+#            export USE_BINARY_CACHE=true
+#            echo "Use existing binary cache for creating buildcache environment"
+#          fi
+#
+#          # Make environment for creating/updating binary cache
+#          export TEMPLATE=${{ inputs.template || 'unified-dev' }}
+#          export ENVNAME=buildcache-${TEMPLATE}.ubuntu-rnd-x86_64
+#          export ENVDIR=$PWD/envs/${ENVNAME}
+#          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/home/ubuntu/spack-stack/CI/tmp/spack-stack-dev-buildcache
+#          spack env activate ${ENVDIR}
+#          spack add ${{ inputs.specs || '' }}
+#
+#          # For buildcaches
+#          spack config add config:install_tree:padded_length:200
+#
+#          # Add additional variants for MET packages, different from config/common/packages.yaml
+#          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+#
+#          # Overrides for spack build and staging areas to speed up builds,
+#          # separate from the default site config locations to avoid conflicts
+#          spack config add "config:build_stage:/home/ubuntu/spack-stack/CI/tmp/build_stage"
+#          spack config add "config:test_stage:/home/ubuntu/spack-stack/CI/tmp/test_stage"
+#          spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
+#          spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
+#
+#          # Loop over compilers
+#          declare -a compilers=("gcc" "intel")
+#          cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
+#
+#          for compiler in "${compilers[@]}"
+#          do
+#            # Set compiler and MPI
+#            cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
+#            sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
+#            cat ${ENVDIR}/spack.yaml
+#
+#            # Concretize and check for duplicates
+#            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
+#            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
+#
+#            # Update spack source cache
+#            spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
+#
+#            # Add binary cache if requested
+#            if [ "$USE_BINARY_CACHE" = true ] ; then
+#              spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
+#              spack buildcache update-index local-binary
+#              echo "Packages in spack binary cache:"
+#              spack buildcache list
+#            fi
+#
+#            # Create/update binary cache
+#            echo "Create/update build cache for environment ${TEMPLATE} and compiler ${compiler}..."
+#            spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${TEMPLATE}.${compiler}
+#            spack buildcache create -a -u /mnt/experiments-efs/spack-stack/build-cache/
+#
+#            # Next steps: synchronize source and build cache to a central/combined mirror?
+#            #echo "Next steps ..."
+#
+#            # Remove binary cache for next round of concretization
+#            if [ "$USE_BINARY_CACHE" = true ] ; then
+#              spack mirror rm local-binary
+#            fi
+#          done
+#
+#          spack env deactivate
+#          rm -fr /home/ubuntu/spack-stack/CI/tmp/spack-stack-dev-buildcache
+#
+#      - name: create-env
+#        run: |
+#          source ./setup.sh
+#          TODAY=$(date +%Y%m%d)
+#
+#          # Create actual environment from binary cache
+#          export TEMPLATE=${{ inputs.template || 'unified-dev' }}
+#          export ENVNAME=${TEMPLATE}.ubuntu-rnd-x86_64
+#          export ENVDIR=$PWD/envs/${ENVNAME}
+#          spack stack create env --site aws-pcluster --template ${TEMPLATE} --name ${ENVNAME} --prefix=/home/ubuntu/spack-stack/CI/unified-env/${TODAY}
+#          spack env activate ${ENVDIR}
+#          spack add ${{ inputs.specs || '' }}
+#
+#          # Add additional variants for MET packages, different from config/common/packages.yaml
+#          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+#
+#          # Overrides for spack build and staging areas to speed up builds,
+#          # separate from the default site config locations to avoid conflicts
+#          spack config add "config:build_stage:/home/ubuntu/spack-stack/CI/tmp/build_stage"
+#          spack config add "config:test_stage:/home/ubuntu/spack-stack/CI/tmp/test_stage"
+#          spack config add "config:source_cache:/home/ubuntu/spack-stack/CI/tmp/source_cache"
+#          spack config add "config:misc_cache:/home/ubuntu/spack-stack/CI/tmp/misc_cache"
+#
+#          # Loop over compilers
+#          declare -a compilers=("gcc" "intel")
+#          cp ${ENVDIR}/spack.yaml ${ENVDIR}/spack.yaml.original
+#
+#          for compiler in "${compilers[@]}"
+#          do
+#            # Set compiler and MPI
+#            cp ${ENVDIR}/spack.yaml.original ${ENVDIR}/spack.yaml
+#            sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%${compiler}'\]/g" ${ENVDIR}/spack.yaml
+#            cat ${ENVDIR}/spack.yaml
+#
+#            # Concretize and check for duplicates
+#            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}.${compiler}
+#            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.${ENVNAME}.${compiler} -i fms -i crtm -i esmf -i mapl
+#
+#            # Update spack source cache
+#            spack mirror create -a -d /mnt/experiments-efs/spack-stack/source-cache
+#
+#            # Add binary cache
+#            spack mirror add local-binary file:///mnt/experiments-efs/spack-stack/build-cache/
+#            spack buildcache update-index local-binary
+#            echo "Packages in spack binary cache:"
+#            spack buildcache list
+#
+#            # Install from binary cache
+#            echo "Install environment ${TEMPLATE} for compiler ${compiler} from binary cache ..."
+#            spack install --fail-fast --no-check-signature 2>&1 | tee log.install.${TEMPLATE}.${compiler}
+#            spack clean -a
+#
+#            # Create modules
+#            spack module lmod refresh -y
+#            spack stack setup-meta-modules
+#
+#            # Remove binary cache for next round of concretization
+#            spack mirror rm local-binary
+#          done
+#
+#          spack env deactivate
+#
+#      - name: test-env
+#        run: |
+#          source /etc/profile.d/z00_lmod.sh
+#          module use /usr/share/modules/modulefiles
+#          module use /opt/intel/mpi/2021.6.0/modulefiles
+#          module use /home/ubuntu/jedi/modulefiles
+#
+#          TODAY=$(date +%Y%m%d)
+#          echo "TODAY is ${TODAY}"
+#          ls -l /home/ubuntu/spack-stack/CI/unified-env/${TODAY}/modulefiles/Core
+#
+#          module use /home/ubuntu/spack-stack/CI/unified-env/${TODAY}/modulefiles/Core
+#          module load stack-intel/2021.6.0
+#          module load stack-intel-oneapi-mpi/2021.6.0
+#          module load stack-python/3.10.13
+#          module available
+#
+#          module load jedi-ufs-env/1.0.0
+#          module load ewok-env/1.0.0
+#          module load soca-env/1.0.0
+#          module list
+#
+#          module purge
+#          module load stack-gcc/9.4.0
+#          module load stack-openmpi/4.1.4
+#          module load stack-python/3.10.13
+#          module available
+#
+#          module load jedi-ufs-env/1.0.0
+#          module load ewok-env/1.0.0
+#          module load soca-env/1.0.0
+#          module list
+#
+#          # Create empty file to signal that this environment is ready for testing
+#          touch /home/ubuntu/spack-stack/CI/unified-env/${TODAY}.ready
+#
+#      # Report status to JCSDA CI slack channel for nightly runs only
+#      - name: Report Status
+#        if: always()
+#        uses: ravsamhq/notify-slack-action@v1
+#        env:
+#          SLACK_WEBHOOK_URL: ${{ secrets.ACTION_MONITORING_SLACK }}
+#        with:
+#          # https://www.ravsam.in/blog/send-slack-notification-when-github-actions-fails/#getting-a-webhook-url
+#          # https://www.ravsam.in/blog/collect-form-responses-using-google-apps-script
+#          # https://github.com/marketplace/actions/notify-slack-action
+#          status: ${{ job.status }}
+#          notify_when: 'success,failure,warnings'
+#          notification_title: '{workflow} has {status_message}'
+#          message_format: '{emoji} *{workflow}* {status_message} for branch {branch} in <{repo_url}|{repo}>'
+#          footer: ${{ github.event.pull_request.number || github.event_name || 'workflow dispatched manually' }}
+#          # For testing: only notify user Dom
+#          #mention_users: 'U02NLGXF5HV'
+#          #mention_users_when: 'failure,warnings'
+#          # Default: notify channel
+#          mention_groups: '!channel'
+#          mention_groups_when: 'failure,warnings'
