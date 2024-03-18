@@ -268,7 +268,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
       extra_rpaths: []
 
 .. note::
-  Apple is aware of this issue and working on a solution, so this is a temparary workaround that will be removed once the linker/loader issues are repaired.
+  Apple is aware of this issue (Apple ticket number FB13208302) and working on a solution, so this is a temporary workaround that will be removed once the linker/loader issues are repaired.
 
 6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
 
