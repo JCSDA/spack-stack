@@ -69,10 +69,6 @@ packages:
     externals:
     - spec: git-lfs@3.0.2
       prefix: /usr
-  gmake:
-    externals:
-    - spec: gmake@4.3
-      prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.4
@@ -89,10 +85,6 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.35
-      prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.34.0~cpanm+shared+threads
       prefix: /usr
   pkg-config:
     externals:
