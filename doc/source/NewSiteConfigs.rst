@@ -244,6 +244,32 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack compiler find --scope system
 
+.. note::
+  When using apple-clang@15.0.0 (or newer) compilers, you need to manually add the following ldflags spec in the `site/compilers.yaml` file.
+  There are known issues with new features in the Apple linker/loader that comes with the 15.0.0 compiler set, and this change tells the linker/loader to use its legacy features which work fine.
+
+.. code-block:: yaml
+  :emphasize-lines: 9,10
+
+  compilers:
+  - compiler:
+      spec: apple-clang@=15.0.0
+      paths:
+        cc: /usr/bin/clang
+        cxx: /usr/bin/clang++
+        f77: /opt/homebrew/bin/gfortran-12
+        fc: /opt/homebrew/bin/gfortran-12
+      flags:
+        ldflags: '-Wl,-ld_classic'         # Add this ldflags spec
+      operating_system: sonoma
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+
+.. note::
+  Apple is aware of this issue and working on a solution, so this is a temparary workaround that will be removed once the linker/loader issues are repaired.
+
 6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
 
 .. code-block:: console
@@ -521,6 +547,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    If the environment will be used to run JCSDA's JEDI-Skylab experiments using R2D2 with a local MySQL server, run the following command:
 
 .. code-block:: console
+
    spack config add "packages:ewok-env:variants:+mysql"
 
 9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
