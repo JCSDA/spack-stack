@@ -260,6 +260,7 @@ For ``spack-stack-1.6.0`` with Intel, proceed with loading the following modules
 .. code-block:: console
 
    # These extra steps are required for performance reason, ofi is about 30% slower than ucx
+   # Note we can't load craype-network-ucx for building spack-stack environments, must do here
    module unload craype-network-ofi
    module load craype-network-ucx
    module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env-intel-2021.4.0/install/modulefiles/Core
@@ -282,8 +283,6 @@ With GNU, the following is required for building new spack environments and for 
    module load cray-python/3.9.7.1
    module unload cray-libsci
    module load cray-libsci/22.08.1.1
-   module unload craype-network-ofi
-   module load craype-network-ucx
 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
@@ -293,6 +292,7 @@ For ``spack-stack-1.6.0`` with GNU, proceed with loading the following modules:
 .. code-block:: console
 
    # These extra steps are required for performance reason, ofi is about 30% slower than ucx
+   # Note we can't load craype-network-ucx for building spack-stack environments, must do here
    module unload craype-network-ofi
    module load craype-network-ucx
    module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env-gcc-10.3.0/install/modulefiles/Core
