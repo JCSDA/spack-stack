@@ -19,10 +19,16 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0                                                     | ``apple-clang@``          |
+| Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0 [#fn1]_                                             | ``apple-clang@``          |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+
+.. rubric:: Footnotes
+
+.. [#fn1]
+  Note that apple-clang@14.x compiler versions are fully supported, and apple-clang@15.0.0 will work but requires the :ref:`workaround noted below<apple-clang-15-workaround>`.
+  Also, when using apple-clang@15.0.0 you must use Command Line Tools version 15.1, and the Command Line Tools versions 15.3 and newer are not yet supported.
 
 ..  _NewSiteConfigs_macOS:
 
@@ -244,6 +250,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack compiler find --scope system
 
+.. _apple-clang-15-workaround:
 .. note::
   When using apple-clang@15.0.0 (or newer) compilers, you need to manually add the following ldflags spec in the `site/compilers.yaml` file.
   There are known issues with new features in the Apple linker/loader that comes with the 15.0.0 compiler set, and this change tells the linker/loader to use its legacy features which work fine.
