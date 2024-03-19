@@ -19,10 +19,16 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0                                                     | ``apple-clang@``          |
+| Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0 [#fn1]_                                             | ``apple-clang@``          |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+
+.. rubric:: Footnotes
+
+.. [#fn1]
+  Note that apple-clang@14.x compiler versions are fully supported, and apple-clang@15.0.0 will work but requires the :ref:`workaround noted below<apple-clang-15-workaround>`.
+  Also, when using apple-clang@15.0.0 you must use Command Line Tools version 15.1, and the Command Line Tools versions 15.3 and newer are not yet supported.
 
 ..  _NewSiteConfigs_macOS:
 
@@ -243,6 +249,33 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. code-block:: console
 
    spack compiler find --scope system
+
+.. _apple-clang-15-workaround:
+.. note::
+  When using apple-clang@15.0.0 (or newer) compilers, you need to manually add the following ldflags spec in the `site/compilers.yaml` file.
+  There are known issues with new features in the Apple linker/loader that comes with the 15.0.0 compiler set, and this change tells the linker/loader to use its legacy features which work fine.
+
+.. code-block:: yaml
+  :emphasize-lines: 9,10
+
+  compilers:
+  - compiler:
+      spec: apple-clang@=15.0.0
+      paths:
+        cc: /usr/bin/clang
+        cxx: /usr/bin/clang++
+        f77: /opt/homebrew/bin/gfortran-12
+        fc: /opt/homebrew/bin/gfortran-12
+      flags:
+        ldflags: '-Wl,-ld_classic'         # Add this ldflags spec
+      operating_system: sonoma
+      target: aarch64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+
+.. note::
+  Apple is aware of this issue (Apple ticket number FB13208302) and working on a solution, so this is a temporary workaround that will be removed once the linker/loader issues are repaired.
 
 6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
 
@@ -521,6 +554,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    If the environment will be used to run JCSDA's JEDI-Skylab experiments using R2D2 with a local MySQL server, run the following command:
 
 .. code-block:: console
+
    spack config add "packages:ewok-env:variants:+mysql"
 
 9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
