@@ -45,3 +45,6 @@ spack:
         - ai-env%intel
         # jedi-tools doesn't build with Intel
         - jedi-tools-env%intel
+        # wgrib2 in global-workflow-env/ufs-srw-app-env doesn't build with Intel oneAPI
+        - global-workflow-env%oneapi
+        - ufs-srw-app-env%oneapi
