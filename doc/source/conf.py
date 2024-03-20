@@ -24,10 +24,10 @@ copyright = '2024 '
 author = 'Dominikus Heinzeller, Alexander Richert, Cameron Book'
 
 # The short X.Y version
-version = 'dev'
+version = '1.7'
 
 # The full version, including alpha/beta/rc tags
-release = 'develop'
+release = '1.7.0'
 
 numfig = True
 
@@ -143,7 +143,7 @@ latex_elements = {
     # Latex figure (float) alignment
     #
     # 'figure_align': 'htbp',
-    'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Heinzeller, D., A. Richert, C. Book, 2024. spack-stack documentation release v1.6.0. Available at https://spack-stack.readthedocs.io/\textunderscore/downloads/en/v1.6.0/pdf/.}\sphinxmaketitle'
+    'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Heinzeller, D., A. Richert, C. Book, 2024. spack-stack documentation release v1.7.0. Available at https://spack-stack.readthedocs.io/\textunderscore/downloads/en/v1.7.0/pdf/.}\sphinxmaketitle'
 }
 
 # Grouping the document tree into LaTeX files. List of tuples
