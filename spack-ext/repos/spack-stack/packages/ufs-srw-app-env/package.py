@@ -31,7 +31,7 @@ class UfsSrwAppEnv(BundlePackage):
     depends_on("g2")
     depends_on("g2tmpl")
     depends_on("ip")
-    depends_on("sp")
+    depends_on("sp", when="^ip@:4")
     depends_on("w3nco")
     depends_on("gfsio")
     depends_on("landsfcutil")
