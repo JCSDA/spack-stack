@@ -9,7 +9,7 @@ General
 
 1. ``gcc@13`` (``gcc``, ``g++``, ``gfortran``) and ``apple-clang@15`` (``clang``, ``clang++``) not yet supported
 
-   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``. We also don't support the latest release of ``apple-clang@15`` yet.
+   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``. We also don't support the latest release of ``apple-clang@15`` with Xcode 15.3 yet, and with Xcode 15.0 a workaround is described in :numref:`Section %s <NewSiteConfigs>`.
 
 2. Build errors for ``mapl@2.35.2`` with ``mpich@4.1.1``
 
@@ -52,6 +52,10 @@ NASA Discover
 2. ``configure: error: cannot guess build type; you must specify one`` when building ``freetype`` or other packages that use configure scripts
 
    This can happen if a spack install is started in a ``screen`` session, because Discover puts the temporary data in directories like ``/gpfsm/dnb33/tdirs/login/discover13.29716.dheinzel``, which get wiped out after some time. Without ``screen``, this problem doesn't occur.
+
+3. Insufficient diskspace when building ``py-pytorch``
+
+   This is because ``py-pytorch`` uses directory ``~/.ccache`` during the build, and the user's home directories have small quotas set. This problem can be avoided by creating a symbolic link from the home directory to a different place with sufficient quota: ``rm -fr ~/.ccache && ln -sf /path/to/dot_ccache_pytorch/ ~/.ccache``. It's probably a good idea to revert this hack after a successful installation.
 
 ==============================
 NOAA Parallel Works
