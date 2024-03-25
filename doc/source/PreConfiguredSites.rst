@@ -22,11 +22,11 @@ On selected systems, developmental versions / release candidates are installed t
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | MSU                 | Hercules GCC+OpenMPI recommended | GCC             | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/ue-gcc12-openmpi416``           | EPIC / JCSDA                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hercules                         | (GCC), Intel    | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/unified-env``                   | EPIC / JCSDA                  |
+|                     | Hercules                         | Intel           | ``/work2/noaa/jcsda/dheinzel/spack-stack-1.7.0-rc1/envs/unified-env-*``                                 | EPIC / JCSDA                  |
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.6.0/envs/unified-env``                      | EPIC / JCSDA                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Discover SCU16                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-20240228/envs/unified-env-*``                       | JCSDA                         |
+|                     | Discover SCU16                   | GCC, Intel      | ``/gpfsm/dnb55/projects/p01/s2127/dheinzel/sp170rc1/envs/unified-env-*``                                | JCSDA                         |
 | NASA                +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Discover SCU17                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-20240228/envs/unified-env-*``                       | JCSDA                         |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -42,7 +42,7 @@ On selected systems, developmental versions / release candidates are installed t
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.6.0/envs/unified-env``                     | EPIC / NOAA-EMC               |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Narwhal                          | GCC, Intel      | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env-*``                            | JCSDA / NRL                   |
+|                     | Narwhal                          | GCC, Intel      | ``/p/work1/heinzell/spack-stack-1.7.0-rc1/envs/unified-env-*-craywrappers``                             | JCSDA / NRL                   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | U.S. Navy (HPCMP)   | Nautilus                         | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env``                              | JCSDA / NRL                   |
 |                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -59,6 +59,8 @@ On selected systems, developmental versions / release candidates are installed t
 |                     | Parallelcluster JCSDA R&D        | Intel           | ``/mnt/experiments-efs/skylab-v8/spack-stack-20240207/envs/unified-env-*``                              | JCSDA                         |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.6.0/envs/unified-env``                                             | EPIC / JCSDA                  |
++---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
+| NOAA (RDHPCS)       | RDHPCS Gcloud only for testing   | Intel           | ``/contrib/spack-stack/spack-stack-1.7.0-rc1/envs/ue-intel-2021.3.0``                                   | JCSDA                         |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 
 For more information about a specific platform, please see the individual sections below.
@@ -125,31 +127,21 @@ The following is required for building new spack environments and for using spac
    module load ecflow/5.8.4
    module load git-lfs/3.1.2
 
-For ``spack-stack-1.6.0`` with Intel, proceed with loading the following modules:
+For ``spack-stack-1.7.0-rc1`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+   module use /work2/noaa/jcsda/dheinzel/spack-stack-1.7.0-rc1/envs/unified-env-intel-2021.9.0/install/modulefiles/Core
    module load stack-intel/2021.9.0
    module load stack-intel-oneapi-mpi/2021.9.0
    module load stack-python/3.10.13
    module available
 
-For ``spack-stack-1.6.0`` with GNU, proceed with loading the following modules. Note that this environment is not recommended for GNU, an alternative installation using GNU+OpenMPI is available (see below).
+For ``spack-stack-1.7.0-rc1`` with GNU, proceed with loading the following modules:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
-   module load stack-gcc/12.2.0
-   module load stack-mvapich2/2.3.7
-   module load stack-python/3.10.13
-   module available
-
-For ``spack-stack-1.6.0`` with GNU+OpenMPI, an alternative and recommended version is available. Load the following modules:
-
-.. code-block:: console
-
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.6.0/envs/ue-gcc12-openmpi416/install/modulefiles/Core
+   module use /work2/noaa/jcsda/dheinzel/spack-stack-1.7.0-rc1/envs/unified-env-gcc-12.2.0/install/modulefiles/Core
    module load stack-gcc/12.2.0
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
@@ -177,21 +169,21 @@ The following is required for building new spack environments and for using spac
    module load miniconda/3.9.7
    module load ecflow/5.8.4
 
-For ``spack-stack-20240228`` with Intel, proceed with loading the following modules:
+For ``spack-stack-1.7.0-rc1`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-20240228/envs/unified-env-intel-2021.5.0/install/modulefiles/Core
+   module use /gpfsm/dnb55/projects/p01/s2127/dheinzel/sp170rc1/envs/unified-env-intel-2021.5.0/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.10.13
    module available
 
-For ``spack-stack-20240228`` with GNU, proceed with loading the following modules:
+For ``spack-stack-1.7.0-rc1`` with GNU, proceed with loading the following modules:
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-20240228/envs/unified-env-gcc-12.1.0/install/modulefiles/Core
+   module use /gpfsm/dnb55/projects/p01/s2127/dheinzel/sp170rc1/envs/unified-env-gcc-12.1.0/install/modulefiles/Core
    module load stack-gcc/12.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.10.13
@@ -255,7 +247,7 @@ With Intel, the following is required for building new spack environments and fo
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
 
-For ``spack-stack-1.6.0`` with Intel, proceed with loading the following modules:
+For ``spack-stack-1.7.0-rc1`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
@@ -263,7 +255,7 @@ For ``spack-stack-1.6.0`` with Intel, proceed with loading the following modules
    # Note we can't load craype-network-ucx for building spack-stack environments, must do here
    module unload craype-network-ofi
    module load craype-network-ucx
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env-intel-2021.4.0/install/modulefiles/Core
+   module use /p/work1/heinzell/spack-stack-1.7.0-rc1/envs/unified-env-intel-2021.4.0-craywrappers/install/modulefiles/Core
    module load stack-intel/2021.4.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.10.13
@@ -287,7 +279,7 @@ With GNU, the following is required for building new spack environments and for 
    module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
    module load ecflow/5.8.4
 
-For ``spack-stack-1.6.0`` with GNU, proceed with loading the following modules:
+For ``spack-stack-1.7.0-rc1`` with GNU, proceed with loading the following modules:
 
 .. code-block:: console
 
@@ -295,7 +287,7 @@ For ``spack-stack-1.6.0`` with GNU, proceed with loading the following modules:
    # Note we can't load craype-network-ucx for building spack-stack environments, must do here
    module unload craype-network-ofi
    module load craype-network-ucx
-   module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.6.0/envs/unified-env-gcc-10.3.0/install/modulefiles/Core
+   module use /p/work1/heinzell/spack-stack-1.7.0-rc1/envs/unified-env-gcc-10.3.0-craywrappers/install/modulefiles/Core
    module load stack-gcc/10.3.0
    module load stack-cray-mpich/8.1.14
    module load stack-python/3.10.13
@@ -462,6 +454,16 @@ The following is required for building new spack environments and for using spac
    module load cmake/3.27.2
    module load ecflow/5.8.4
    module load git-lfs/2.4.1
+
+For testing, JCSDA installed ``spack-stack-1.7.0-rc1`` with Intel on Gcloud, which can be loaded as follows:
+
+.. code-block:: console
+
+   module use /contrib/spack-stack/spack-stack-1.7.0-rc1/envs/ue-intel-2021.3.0/install/modulefiles/Core
+   module load stack-intel/2021.3.0
+   module load stack-intel-oneapi-mpi/2021.3.0
+   module load stack-python/3.10.13
+   module available
 
 For ``spack-stack-1.6.0`` with Intel, proceed with loading the following modules:
 
