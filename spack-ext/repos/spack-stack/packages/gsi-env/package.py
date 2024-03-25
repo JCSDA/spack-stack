@@ -23,7 +23,7 @@ class GsiEnv(BundlePackage):
     depends_on("bufr")
     depends_on("bacio")
     depends_on("w3emc")
-    depends_on("sp")
+    depends_on("sp", when="^ip@:4")
     depends_on("ip")
     depends_on("sigio")
     depends_on("sfcio")
