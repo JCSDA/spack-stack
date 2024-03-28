@@ -3,7 +3,7 @@ packages:
     compiler:: [intel@2021.5.0, gcc@9.2.0]
     #compiler:: [intel@18.0.5.274]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.1.5]
+      mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.1.6]
       #mpi:: [intel-mpi@2018.0.4]
     # To support hecflow01
     target: [haswell]
@@ -22,11 +22,10 @@ packages:
       prefix: /apps/oneapi
   openmpi:
     externals:
-    - spec: openmpi@4.1.5~cuda~cxx~cxx_exceptions~java+lustre~memchecker+pmi~static~wrapper-rpath schedulers=slurm
-      prefix: /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/openmpi-4.1.5
+    - spec: openmpi@4.1.6~cuda~cxx~cxx_exceptions~java+lustre~memchecker+pmi~static~wrapper-rpath schedulers=slurm
       modules:
       - gnu/9.2.0
-      - openmpi/4.1.5
+      - openmpi/4.1.6_gnu9.2.0
   zlib-ng:
     require:
       - any_of: ['~shared']
