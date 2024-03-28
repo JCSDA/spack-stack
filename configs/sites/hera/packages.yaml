@@ -27,6 +27,10 @@ packages:
       modules:
       - gnu/9.2.0
       - openmpi/4.1.5
+  zlib-ng:
+    require:
+      - any_of: ['~shared']
+        when: "%intel"
 
 ### All other external packages listed alphabetically
   autoconf:
