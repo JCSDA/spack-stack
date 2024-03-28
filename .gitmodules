@@ -1,7 +1,7 @@
 [submodule "spack"]
   path = spack
   url = https://github.com/AlexanderRichert-NOAA/spack
-  branch = zlib-shared
+  branch = zlib_shared
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
