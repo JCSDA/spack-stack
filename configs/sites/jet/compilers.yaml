@@ -30,13 +30,13 @@ compilers:
 - compiler:
     spec: gcc@9.2.0
     paths:
-      cc: /apps/gnu/gcc-9.2.0/bin/gcc
-      cxx: /apps/gnu/gcc-9.2.0/bin/g++
-      f77: /apps/gnu/gcc-9.2.0/bin/gfortran
-      fc:  /apps/gnu/gcc-9.2.0/bin/gfortran
+      cc: /apps/gnu/gcc-9.2.0b/bin/gcc
+      cxx: /apps/gnu/gcc-9.2.0b/bin/g++
+      f77: /apps/gnu/gcc-9.2.0b/bin/gfortran
+      fc:  /apps/gnu/gcc-9.2.0b/bin/gfortran
     flags: {}
     operating_system: rocky8
     modules:
-    - gnu/9.2.0
+    - gnu/9.2.0b
     environment: {}
     extra_rpaths: []
