@@ -26,9 +26,10 @@ On selected systems, developmental versions / release candidates are installed t
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.6.0/envs/unified-env``                      | EPIC / JCSDA                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Discover SCU16                   | GCC, Intel      | ``/gpfsm/dnb55/projects/p01/s2127/dheinzel/sp170rc1/envs/unified-env-*``                                | JCSDA                         |
+|                     | Discover SCU16                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs/ue-*``                                   | JCSDA                         |
 | NASA                +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Discover SCU17                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-20240228/envs/unified-env-*``                       | JCSDA                         |
+|                     | Discover SCU17                   | Intel           | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-1.7.0/envs/ue-intel-2021.10.0``                     | JCSDA                         |
+|                     | Discover SCU17                   | GCC             | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-20240228/envs/unified-env-gcc-12.3.0``              | JCSDA                         |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.6.0/envs/unified-env``                 | JCSDA / EPIC                  |
 | NCAR-Wyoming        +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -169,11 +170,11 @@ The following is required for building new spack environments and for using spac
    module load miniconda/3.9.7
    module load ecflow/5.8.4
 
-For ``spack-stack-1.7.0-rc1`` with Intel, proceed with loading the following modules:
+For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
-   module use /gpfsm/dnb55/projects/p01/s2127/dheinzel/sp170rc1/envs/unified-env-intel-2021.5.0/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs/ue-intel-2021.5.0/install/modulefiles/Core
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.0
    module load stack-python/3.10.13
@@ -183,7 +184,7 @@ For ``spack-stack-1.7.0-rc1`` with GNU, proceed with loading the following modul
 
 .. code-block:: console
 
-   module use /gpfsm/dnb55/projects/p01/s2127/dheinzel/sp170rc1/envs/unified-env-gcc-12.1.0/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs/ue-gcc-12.1.0/install/modulefiles/Core
    module load stack-gcc/12.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.10.13
@@ -202,11 +203,11 @@ The following is required for building new spack environments and for using spac
    module use /discover/swdev/jcsda/spack-stack/scu17/modulefiles
    module load ecflow/5.11.4
 
-For ``spack-stack-20240228`` with Intel, load the following modules after loading ecflow:
+For ``spack-stack-1.7.0`` with Intel, load the following modules after loading ecflow:
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-20240228/envs/unified-env-intel-2021.10.0/install/modulefiles/Core
+   module use /gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-1.7.0/envs/ue-intel-2021.10.0/install/modulefiles/Core
    module load stack-intel/2021.10.0
    module load stack-intel-oneapi-mpi/2021.10.0
    module load stack-python/3.10.13
