@@ -165,9 +165,9 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
 
 .. code-block:: console
 
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs/ue-intel-2021.5.0/install/modulefiles/Core
-   module load stack-intel/2021.5.0
-   module load stack-intel-oneapi-mpi/2021.5.0
+   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs/ue-intel-2021.6.0/install/modulefiles/Core
+   module load stack-intel/2021.6.0
+   module load stack-intel-oneapi-mpi/2021.6.0
    module load stack-python/3.10.13
    module available
 
