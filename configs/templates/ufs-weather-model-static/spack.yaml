@@ -48,3 +48,5 @@ spack:
       - any_of: ['+pic', '@:']
     cmake:
       require: '@3.20.2'
+    libxml2:
+      require: '+shared'
