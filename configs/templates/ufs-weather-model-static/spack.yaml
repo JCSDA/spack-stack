@@ -50,3 +50,5 @@ spack:
       require: '@3.20.2'
     libxml2:
       require: '+shared'
+    gettext:
+      require: '+shared'
