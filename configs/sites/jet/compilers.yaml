@@ -7,14 +7,14 @@ compilers:
       f77: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
       fc: /apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort
     flags: {}
-    operating_system: centos7
+    operating_system: rocky8
     modules:
     - intel/2022.1.2
     environment:
       prepend_path:
-        PATH: '/apps/gnu/gcc-9.2.0/bin'
-        LD_LIBRARY_PATH: '/apps/gnu/gcc-9.2.0/lib64'
-        CPATH: '/apps/gnu/gcc-9.2.0/include'
+        PATH: '/apps/gnu/gcc-9.2.0b/bin'
+        LD_LIBRARY_PATH: '/apps/gnu/gcc-9.2.0b/lib64'
+        CPATH: '/apps/gnu/gcc-9.2.0b/include'
     extra_rpaths: []
 - compiler:
     spec: intel@18.0.5.274
@@ -24,19 +24,19 @@ compilers:
       f77: /apps/intel/parallel_studio_xe_2018.4.057/compilers_and_libraries_2018/linux/bin/intel64/ifort
       fc: /apps/intel/parallel_studio_xe_2018.4.057/compilers_and_libraries_2018/linux/bin/intel64/ifort
     flags: {}
-    operating_system: centos7
+    operating_system: rocky8
     modules:
     - intel/18.0.5.274
 - compiler:
     spec: gcc@9.2.0
     paths:
-      cc: /apps/gnu/gcc-9.2.0/bin/gcc
-      cxx: /apps/gnu/gcc-9.2.0/bin/g++
-      f77: /apps/gnu/gcc-9.2.0/bin/gfortran
-      fc:  /apps/gnu/gcc-9.2.0/bin/gfortran
+      cc: /apps/gnu/gcc-9.2.0b/bin/gcc
+      cxx: /apps/gnu/gcc-9.2.0b/bin/g++
+      f77: /apps/gnu/gcc-9.2.0b/bin/gfortran
+      fc:  /apps/gnu/gcc-9.2.0b/bin/gfortran
     flags: {}
-    operating_system: centos7
+    operating_system: rocky8
     modules:
-    - gnu/9.2.0
+    - gnu/9.2.0b
     environment: {}
     extra_rpaths: []
