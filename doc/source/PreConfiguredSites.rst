@@ -592,7 +592,7 @@ Note the two `module unuse` commands, that need to be run after the stack metamo
 
 .. note::
 
-   There is currently no support for GNU on S4, because recent updates to ``hdf5`` require a newer version of ``mpich`` (or other MPI library) than available on the system.
+   There is currently no support for GNU on S4, because recent updates to ``hdf5`` require a newer version of ``mpich`` (or other MPI library) than available on the system. Also, for spack-stack-1.7.0, S4 is the only system that uses ``zlib`` instead of ``zlib-ng`` due to the issues described in https://github.com/JCSDA/spack-stack/issues/1055.
 
 ------------------------------------------------
 Amazon Web Services Parallelcluster Ubuntu 20.04
