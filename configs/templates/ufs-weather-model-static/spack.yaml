@@ -52,3 +52,5 @@ spack:
       require: '+shared'
     gettext:
       require: '+shared'
+    netcdf-c:
+      require: 'build_system=autotools'
