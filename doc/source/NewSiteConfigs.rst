@@ -387,6 +387,8 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install automake
    yum -y install xorg-x11-xauth
    yum -y install xterm
+   yum -y install perl-IPC-Cmd
+   yum -y install gettext-devel
    yum -y install texlive
    # Do not install qt@5 for now
 
@@ -514,8 +516,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # JEDI-Skylab system (using R2D2 localhost)
    spack external find --scope system mysql
 
+   # Note - only needed for generating documentation
    spack external find --scope system texlive
-   spack external find --scope system sed
 
 5. Find compilers, add to site config's ``compilers.yaml``
 
@@ -538,10 +540,10 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
+   spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
 
    # Example for Ubuntu 20.04 or 22.04 following the above instructions
-   spack config add "packages:all:providers:mpi:[mpich@4.1.1]"
+   spack config add "packages:all:providers:mpi:[mpich@4.1.2]"
 
 .. warning::
    On some systems, the default compiler (e.g., ``gcc`` on Ubuntu 20) may not get used by spack if a newer version is found. Compare your entry to the output of the concretization step later and adjust the entry, if necessary.

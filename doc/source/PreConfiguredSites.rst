@@ -48,7 +48,7 @@ On selected systems, developmental versions / release candidates are installed t
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 | **Cloud platforms**                                                                                                                                                                                                |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | AMI Red Hat 8                    | GCC             |  *currently unavailable*                                                                                | JCSDA                         |
+|                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.7.0/envs/unified-env-gcc-11.2.1``                            | JCSDA                         |
 + Amazon Web Services +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Parallelcluster JCSDA R&D        | GCC, Intel      |  *currently unavailable*                                                                                | JCSDA                         |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -610,8 +610,19 @@ The JCSDA-managed AWS Parallel Cluster is currently unavailable.
 Amazon Web Services Red Hat 8
 -----------------------------
 
-The JCSDA-managed AWS Single Node AMI is currently unavailable.
+Use a c6i.4xlarge instance or larger if running out of memory with AMI "skylab-8.0.0-redhat8" (see JEDI documentation at https://jointcenterforsatellitedataassimilation-jedi-docs.readthedocs-hosted.com/en/latest for more information).
 
+For ``spack-stack-1.7.0``, run:
+
+.. code-block:: console
+   ulimit -s unlimited
+   scl_source enable gcc-toolset-11
+   module use /home/ec2-user/spack-stack/spack-stack-1.7.0/envs/unified-env-gcc-11.2.1/install/modulefiles/Core
+   module load stack-gcc/11.2.1
+   module load stack-openmpi/4.1.5
+   module load stack-python/3.10.13
+   module available
+   
 .. _Configurable_Sites_CreateEnv:
 
 ========================
