@@ -615,6 +615,7 @@ Use a c6i.4xlarge instance or larger if running out of memory with AMI "skylab-8
 For ``spack-stack-1.7.0``, run:
 
 .. code-block:: console
+
    ulimit -s unlimited
    scl_source enable gcc-toolset-11
    module use /home/ec2-user/spack-stack/spack-stack-1.7.0/envs/unified-env-gcc-11.2.1/install/modulefiles/Core
