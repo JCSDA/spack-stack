@@ -59,6 +59,24 @@ For more information about a specific platform, please see the individual sectio
 
 For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
 
+.. note::
+  This release of spack-stack uses different versions of ``mapl`` with different variants, depending on the version of the compiler and whether the system is used for UFS or GEOS. Please see the following table.
+
++----------------------------+--------------------------------------+-----------------------------------------------------------------------+
+| Compiler                   | mapl configuration                   | Affected systems                                                      |
++============================+======================================+=======================================================================+
+| gcc (any)                  | ``mapl@2.40.3 +pflogger +extdata2g`` | All systems with GCC stacks                                           |
+-----------------------------+--------------------------------------+-----------------------------------------------------------------------+
+| intel@2021.6.0 and earlier | ``mapl@2.40.3 +pflogger +extdata2g`` | Discover SCU16, Acorn, Hera, Jet, Narwhal, Nautilus, S4, RDHPCS Cloud |
+-----------------------------+--------------------------------------+-----------------------------------------------------------------------+
+| intel@2021.7.0 and later   | ``mapl@2.40.3 ~pflogger ~extdata2g`` | Hercules, Orion, Acorn(?), Gaea and Derecho                           |
+-----------------------------+--------------------------------------+-----------------------------------------------------------------------+
+| intel@2021.7.0 and later   | ``mapl@2.43.0 +pflogger +extdata2g`` | Discover SCU17                                                        |
+-----------------------------+--------------------------------------+-----------------------------------------------------------------------+
+
+.. note::
+  We have noted problems on some - not all - platforms with ``intel@2021.5.0`` when we switched from ``zlib`` to ``zlib-ng`` in spack-stack-1.7.0. These issues went away when using a different version of the compiler (anything between 2021.3.0 and 2021.11.0). It is therefore recommended to avoid using ``intel@2021.5.0`` unless it is the only option.
+
 .. _Preconfigured_Sites_Tier1:
 
 =============================================================
