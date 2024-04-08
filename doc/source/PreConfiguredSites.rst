@@ -15,45 +15,45 @@ Ready-to-use spack-stack 1.6.0 installations are available on the following, ful
 
 On selected systems, developmental versions / release candidates are installed that are newer than spack-stack 1.6.0 (see following table). For information on the spack-stack 1.6.0 releases on this platforms, please revert to version 1.6.0 of the documentation (https://spack-stack.readthedocs.io/en/1.6.0/PreConfiguredSites.html#pre-configured-sites-tier-1).
 
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| Organization        | System                           | Compilers       | Location                                                                                                | Maintainers (principal/backup)|
-+=====================+==================================+=================+=========================================================================================================+===============================+
-| **HPC platforms**                                                                                                                                                                                                  |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Hercules                         | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.7.0/envs/ue-*``                          | EPIC / JCSDA                  |
-| MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-*``                             | EPIC / JCSDA                  |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Discover SCU16                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs/ue-*``                                   | JCSDA                         |
-| NASA                +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Discover SCU17                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-1.7.0/envs/ue-*``                                   | JCSDA                         |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.7.0/envs/ue-gcc-12.2.0``               | JCSDA / EPIC                  |
-| NCAR-Wyoming        +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Derecho                          | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.7.0/envs/ue-*``                       | EPIC / JCSDA                  |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.7.0/envs/ue-intel*``                           | NOAA-EMC                      |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Gaea C5                          | Intel           | ``/ncrc/proj/epic/spack-stack/spack-stack-1.7.0/envs/ue-intel``                                         | EPIC / NOAA-EMC               |
-|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.7.0/envs/ue-*``                            | EPIC / NOAA-EMC               |
-|                     +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.7.0/envs/ue-*``                            | EPIC / NOAA-EMC               |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Narwhal                          | GCC, Intel      | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.7.0/envs/ue-``                                      | JCSDA / NRL                   |
-| U.S. Navy (HPCMP)   +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Nautilus                         | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.7.0/envs/ue-intel-2021.5.0``                        | JCSDA / NRL                   |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| Univ. of Wisconsin  | S4                               | Intel           | ``/data/prod/jedi/spack-stack/spack-stack-1.7.0/envs/ue-intel-2021.5.0``                                | JCSDA                         |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| **Cloud platforms**                                                                                                                                                                                                |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.7.0/envs/unified-env-gcc-11.2.1``                            | JCSDA                         |
-+ Amazon Web Services +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Parallelcluster JCSDA R&D        | GCC, Intel      |  *currently unavailable*                                                                                | JCSDA                         |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.7.0/envs/ue-intel-2021.3.0``                                       | EPIC / JCSDA                  |
-+---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+| Organization        | System                           | Compilers       | Location                                                                     | Maintainers (principal/backup)|
++=====================+==================================+=================+==============================================================================+===============================+
+| **HPC platforms**                                                                                                                                                                       |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Hercules                         | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.7.0/envs``    | EPIC / JCSDA                  |
+| MSU                 +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs``       | EPIC / JCSDA                  |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Discover SCU16                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs``             | JCSDA                         |
+| NASA                +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Discover SCU17                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-1.7.0/envs``             | JCSDA                         |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.7.0/envs``  | JCSDA / EPIC                  |
+| NCAR-Wyoming        +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Derecho                          | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.7.0/envs`` | EPIC / JCSDA                  |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+| NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.7.0/envs``          | NOAA-EMC                      |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Gaea C5                          | Intel           | ``/ncrc/proj/epic/spack-stack/spack-stack-1.7.0/envs``                       | EPIC / NOAA-EMC               |
+|                     +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+| NOAA (RDHPCS)       | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.7.0/envs``      | EPIC / NOAA-EMC               |
+|                     +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Jet                              | GCC, Intel      | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/spack-stack-1.7.0/envs``      | EPIC / NOAA-EMC               |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Narwhal                          | GCC, Intel      | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.7.0/envs``               | JCSDA / NRL                   |
+| U.S. Navy (HPCMP)   +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Nautilus                         | Intel           | ``/p/app/projects/NEPTUNE/spack-stack/spack-stack-1.7.0/envs``               | JCSDA / NRL                   |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+| Univ. of Wisconsin  | S4                               | Intel           | ``/data/prod/jedi/spack-stack/spack-stack-1.7.0/envs``                       | JCSDA                         |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+| **Cloud platforms**                                                                                                                                                                     |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | AMI Red Hat 8                    | GCC             | ``/home/ec2-user/spack-stack/spack-stack-1.7.0/envs``                        | JCSDA                         |
++ Amazon Web Services +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+|                     | Parallelcluster JCSDA R&D        | GCC, Intel      |  *currently unavailable*                                                     | JCSDA                         |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
+| NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.7.0/envs``                              | EPIC / JCSDA                  |
++---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 
 For more information about a specific platform, please see the individual sections below.
 
@@ -88,7 +88,6 @@ For ``spack-stack-1.7.0`` with Intel, load the following modules after loading m
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.10.13
-   module available
 
 For ``spack-stack-1.7.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
@@ -98,7 +97,6 @@ For ``spack-stack-1.7.0`` with GNU, load the following modules after loading min
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.10.13
-   module available
 
 .. note::
    The unified environment on Orion uses ``cdo@2.0.5`` instead of the default ``cdo@2.2.0`` because of a bug in the ``cdo`` package recipe that affects systems that don't have a ``python3`` interpreter in the default search paths (see https://github.com/spack/spack/issues/41947) for more information. This is a temporary change on Orion for the spack-stack-1.7.0 release and will be reverted once the ``cdo`` package is updated in the upstream spack develop code.
@@ -127,7 +125,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-intel/2021.9.0
    module load stack-intel-oneapi-mpi/2021.9.0
    module load stack-python/3.10.13
-   module available
 
 For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
@@ -137,7 +134,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-gcc/12.2.0
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
-   module available
 
 .. note::
    spack-stack-1.7.0 on Hercules provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `ue` in the above `module use` statements with `gsi-addon`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
@@ -166,7 +162,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-intel/2021.6.0
    module load stack-intel-oneapi-mpi/2021.6.0
    module load stack-python/3.10.13
-   module available
 
 For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
@@ -176,7 +171,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-gcc/12.1.0
    module load stack-openmpi/4.1.3
    module load stack-python/3.10.13
-   module available
 
 ------------------------------
 NASA Discover SCU17
@@ -199,7 +193,6 @@ For ``spack-stack-1.7.0`` with Intel, load the following modules after loading e
    module load stack-intel/2021.10.0
    module load stack-intel-oneapi-mpi/2021.10.0
    module load stack-python/3.10.13
-   module available
 
 For ``spack-stack-1.7.0`` with GNU, load the following modules after loading ecflow:
 
@@ -209,7 +202,6 @@ For ``spack-stack-1.7.0`` with GNU, load the following modules after loading ecf
    module load stack-gcc/12.3.0
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
-   module available
 
 .. _Preconfigured_Sites_Narwhal:
 
@@ -358,7 +350,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-gcc/12.2.0
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
-   module available
 
 .. _Preconfigured_Sites_Derecho:
 
@@ -385,7 +376,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-intel/2021.10.0
    module load stack-cray-mpich/8.1.25
    module load stack-python/3.10.13
-   module available
 
 For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
@@ -395,7 +385,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-gcc/12.2.0
    module load stack-cray-mpich/8.1.25
    module load stack-python/3.10.13
-   module available
 
 .. note::
    CISL restricts the amount of memory available for processes on the login nodes. For example, it is impossible to compile JEDI with even one task (``make -j1``) with the Intel compiles in release mode (``-O2``). We therefore recommend compiling on compute nodes using interactive jobs, if possible.
@@ -447,7 +436,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-intel/2021.3.0
    module load stack-intel-oneapi-mpi/2021.3.0
    module load stack-python/3.10.13
-   module available
 
 .. _Preconfigured_Sites_Gaea_C5:
 
@@ -513,7 +501,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.10.13
-   module available
 
 For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
@@ -523,7 +510,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-gcc/9.2.0
    module load stack-openmpi/4.1.5
    module load stack-python/3.10.13
-   module available
 
 Note that on Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
 
@@ -554,7 +540,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-intel/2021.5.0
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.10.8
-   module available
 
 For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
@@ -564,7 +549,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-gcc/9.2.0
    module load stack-openmpi/3.1.4
    module load stack-python/3.10.8
-   module available
 
 .. note::
    spack-stack-1.7.0 on Hercules provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `ue` in the above `module use` statements with `gsi-addon`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
@@ -592,7 +576,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-python/3.10.13
    module unuse /opt/apps/modulefiles/Compiler/intel/non-default/22
    module unuse /opt/apps/modulefiles/Compiler/intel/22
-   module available
 
 Note the two `module unuse` commands, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
 
@@ -622,8 +605,7 @@ For ``spack-stack-1.7.0``, run:
    module load stack-gcc/11.2.1
    module load stack-openmpi/5.0.1
    module load stack-python/3.10.13
-   module available
-   
+
 .. _Configurable_Sites_CreateEnv:
 
 ========================
