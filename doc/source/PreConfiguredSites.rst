@@ -22,7 +22,7 @@ On selected systems, developmental versions / release candidates are installed t
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Hercules                         | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/hercules/spack-stack-1.7.0/envs/ue-*``                          | EPIC / JCSDA                  |
 | MSU                 +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
-|                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.6.0/envs/unified-env``                      | EPIC / JCSDA                  |
+|                     | Orion                            | GCC, Intel      | ``/work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-*``                             | EPIC / JCSDA                  |
 +---------------------+----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
 |                     | Discover SCU16                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.7.0/envs/ue-*``                                   | JCSDA                         |
 | NASA                +----------------------------------+-----------------+---------------------------------------------------------------------------------------------------------+-------------------------------+
@@ -80,21 +80,21 @@ The following is required for building new spack environments and for using spac
    module load python/3.9.2
    module load ecflow/5.8.4
 
-For ``spack-stack-1.6.0`` with Intel, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.7.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-intel-centos/install/modulefiles/Core
    module load stack-intel/2022.0.2
    module load stack-intel-oneapi-mpi/2021.5.1
    module load stack-python/3.10.13
    module available
 
-For ``spack-stack-1.6.0`` with GNU, load the following modules after loading miniconda and ecflow:
+For ``spack-stack-1.7.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.6.0/envs/ue-gcc-centos/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.10.13
@@ -620,7 +620,7 @@ For ``spack-stack-1.7.0``, run:
    scl_source enable gcc-toolset-11
    module use /home/ec2-user/spack-stack/spack-stack-1.7.0/envs/unified-env-gcc-11.2.1/install/modulefiles/Core
    module load stack-gcc/11.2.1
-   module load stack-openmpi/4.1.5
+   module load stack-openmpi/5.0.1
    module load stack-python/3.10.13
    module available
    
