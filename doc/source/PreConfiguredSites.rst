@@ -8,12 +8,10 @@ Directory ``configs/sites`` contains site configurations for several HPC systems
 Pre-configured sites are split into two categories: Tier 1 with officially supported spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
 =============================================================
-Officially supported spack-stack 1.6.0 installations (tier 1)
+Officially supported spack-stack 1.7.0 installations (tier 1)
 =============================================================
 
-Ready-to-use spack-stack 1.6.0 installations are available on the following, fully supported platforms. This version supports JEDI-Skylab and various UFS Applications (UFS Weather Model, EMC Global Workflow, GSI, UFS Short Range Weather Application). Amazon Web Services AMI are available in the US East 1 or 2 regions.
-
-On selected systems, developmental versions / release candidates are installed that are newer than spack-stack 1.6.0 (see following table). For information on the spack-stack 1.6.0 releases on this platforms, please revert to version 1.6.0 of the documentation (https://spack-stack.readthedocs.io/en/1.6.0/PreConfiguredSites.html#pre-configured-sites-tier-1).
+Ready-to-use spack-stack 1.7.0 installations are available on the following, fully supported platforms. This version supports JEDI-Skylab and various UFS Applications (UFS Weather Model, EMC Global Workflow, GSI, UFS Short Range Weather Application). Amazon Web Services AMI are available in the US East 1 or 2 regions.
 
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 | Organization        | System                           | Compilers       | Location                                                                     | Maintainers (principal/backup)|
@@ -111,7 +109,7 @@ For ``spack-stack-1.7.0`` with GNU, load the following modules after loading min
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.6.0/envs/ue-gcc-centos/install/modulefiles/Core
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-gcc-centos/install/modulefiles/Core
    module load stack-gcc/10.2.0
    module load stack-openmpi/4.0.4
    module load stack-python/3.10.13
