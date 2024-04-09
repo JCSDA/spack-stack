@@ -67,7 +67,7 @@ For questions or problems, please consult the known issues in :numref:`Section %
 +----------------------------+--------------------------------------+-----------------------------------------------------------------------+
 | intel@2021.6.0 and earlier | ``mapl@2.40.3 +pflogger +extdata2g`` | Discover SCU16, Acorn, Hera, Jet, Narwhal, Nautilus, S4, RDHPCS Cloud |
 +----------------------------+--------------------------------------+-----------------------------------------------------------------------+
-| intel@2021.7.0 and later   | ``mapl@2.40.3 ~pflogger ~extdata2g`` | Hercules, Orion, Acorn(?), Gaea and Derecho                           |
+| intel@2021.7.0 and later   | ``mapl@2.40.3 ~pflogger ~extdata2g`` | Hercules, Orion, Acorn, Gaea and Derecho                              |
 +----------------------------+--------------------------------------+-----------------------------------------------------------------------+
 | intel@2021.7.0 and later   | ``mapl@2.43.0 +pflogger +extdata2g`` | Discover SCU17                                                        |
 +----------------------------+--------------------------------------+-----------------------------------------------------------------------+
