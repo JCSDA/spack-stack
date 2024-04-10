@@ -116,11 +116,6 @@ modules:
         environment:
           set:
             'HDF5_DIR': '{prefix}'
-      # For backward compatibility; spack-stack-1.7.0 only
-      jedi-cmake:
-        environment:
-          set:
-            'jedi_cmake_ROOT': '{prefix}'
       libpng:
         environment:
           set:
