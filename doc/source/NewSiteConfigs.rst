@@ -13,13 +13,13 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
 +===========================================+======================================================================+===========================+
-| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the latest available version in oneAPI 2023.1.0          | ``intel@``                |
+| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the latest available version in oneAPI 2023.1.0 [#fn1]_  | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2023.1.0       | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0 [#fn1]_                                             | ``apple-clang@``          |
+| Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0 [#fn2]_                                             | ``apple-clang@``          |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
@@ -27,8 +27,11 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 .. rubric:: Footnotes
 
 .. [#fn1]
-  Note that apple-clang@14.x compiler versions are fully supported, and apple-clang@15.0.0 will work but requires the :ref:`workaround noted below<apple-clang-15-workaround>`.
-  Also, when using apple-clang@15.0.0 you must use Command Line Tools version 15.1, and the Command Line Tools versions 15.3 and newer are not yet supported.
+  We have noted problems on some - not all - platforms with ``intel@2021.5.0`` when we switched from ``zlib`` to ``zlib-ng`` in spack-stack-1.7.0. These issues went away when using a different version of the compiler (anything between 2021.3.0 and 2021.11.0). It is therefore recommended to avoid using ``intel@2021.5.0`` unless it is the only option.
+
+.. [#fn2]
+  Note that ``apple-clang@14.x`` compiler versions are fully supported, and ``apple-clang@15.0.0`` will work but requires the :ref:`workaround noted below<apple-clang-15-workaround>`.
+  Also, when using ``apple-clang@15.0.0`` you must use Command Line Tools version 15.1, and the Command Line Tools versions 15.3 and newer are not yet supported.
 
 ..  _NewSiteConfigs_macOS:
 
@@ -384,6 +387,8 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install automake
    yum -y install xorg-x11-xauth
    yum -y install xterm
+   yum -y install perl-IPC-Cmd
+   yum -y install gettext-devel
    yum -y install texlive
    # Do not install qt@5 for now
 
@@ -511,8 +516,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # JEDI-Skylab system (using R2D2 localhost)
    spack external find --scope system mysql
 
+   # Note - only needed for generating documentation
    spack external find --scope system texlive
-   spack external find --scope system sed
 
 5. Find compilers, add to site config's ``compilers.yaml``
 
@@ -535,10 +540,10 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@4.1.6]"
+   spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
 
    # Example for Ubuntu 20.04 or 22.04 following the above instructions
-   spack config add "packages:all:providers:mpi:[mpich@4.1.1]"
+   spack config add "packages:all:providers:mpi:[mpich@4.1.2]"
 
 .. warning::
    On some systems, the default compiler (e.g., ``gcc`` on Ubuntu 20) may not get used by spack if a newer version is found. Compare your entry to the output of the concretization step later and adjust the entry, if necessary.

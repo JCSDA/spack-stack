@@ -96,7 +96,7 @@ spack:
       os: ubuntu:20.04
       spack:
         url: https://github.com/jcsda/spack
-        ref: jcsda_emc_spack_stack
+        ref: spack-stack-dev
         resolve_sha: true
 
     # Whether or not to strip binaries

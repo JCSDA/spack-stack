@@ -20,11 +20,10 @@ compilers:
         CPATH: '/usr/local/other/gcc/11.4.0/include'
         LD_LIBRARY_PATH: '/usr/local/intel/oneapi/2021/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/usr/local/other/gcc/11.4.0/lib64'
       set:
-        # https://github.com/JCSDA/spack-stack/issues/1012
-        I_MPI_EXTRA_FILESYSTEM: 'ON'
         # https://github.com/JCSDA/spack-stack/issues/1011
         I_MPI_SHM_HEAP_VSIZE: '512'
         PSM2_MEMORY: 'large'
+        # https://github.com/JCSDA/spack-stack/issues/1012
         I_MPI_EXTRA_FILESYSTEM: '1'
         I_MPI_EXTRA_FILESYSTEM_FORCE: 'gpfs'
         I_MPI_FABRICS: 'ofi'

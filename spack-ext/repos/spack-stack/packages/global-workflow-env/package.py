@@ -30,7 +30,7 @@ class GlobalWorkflowEnv(BundlePackage):
     depends_on("g2tmpl")
     depends_on("w3nco")
     depends_on("w3emc")
-    depends_on("sp")
+    depends_on("sp", when="^ip@:4")
     depends_on("ip")
     depends_on("nemsio")
     depends_on("nemsiogfs")

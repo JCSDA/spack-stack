@@ -46,7 +46,7 @@ class JediBaseEnv(BundlePackage):
     depends_on("nlohmann-json", type="run")
     depends_on("nlohmann-json-schema-validator", type="run")
     depends_on("odc", type="run")
-    depends_on("sp", type="run")
+    depends_on("sp", type="run", when="^ip@:4")
     depends_on("udunits", type="run")
 
     # Python packages

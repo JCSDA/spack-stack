@@ -23,6 +23,6 @@ class GldasEnv(BundlePackage):
     depends_on("w3emc")
     depends_on("nemsio")
     depends_on("bacio")
-    depends_on("sp")
+    depends_on("sp", when="^ip@:4")
 
     # There is no need for install() since there is no code.
