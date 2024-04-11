@@ -25,6 +25,8 @@ packages:
   # Temporary - see https://github.com/spack/spack/issues/41947
   cdo:
     require: '@2.0.5'
+  mapl:
+    require: '@2.40.3 ~pflogger ~extdata2g'
 
 ### All other external packages listed alphabetically
   autoconf:

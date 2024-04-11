@@ -23,6 +23,8 @@ packages:
       - openmpi/4.1.6-gcc-12.2.0-spack
 
 ### Modifications of common packages
+  mapl:
+      require: '@2.40.3 ~pflogger ~extdata2g'
 
 ### All other external packages listed alphabetically
   autoconf:
