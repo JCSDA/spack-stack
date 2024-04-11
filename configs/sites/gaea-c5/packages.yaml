@@ -13,6 +13,10 @@ packages:
       - craype-network-ofi
       - cray-mpich/8.1.25
 
+### Modifications of common packages
+  mapl:
+    require: '@2.40.3 ~pflogger ~extdata2g'
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
