@@ -432,8 +432,6 @@ NOAA Acorn (WCOSS2 test system)
 
 For spack-stack-1.7.0, the meta modules are in ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.7.0/envs/ue-intel{19,2022}/modulefiles/Core``.
 
-Acorn has a spack-stack environment installed to reflect the versions and build options used on WCOSS2 for the operational configurations of the UFS Weather Model. The path to that environment is ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.6.0/envs/ufswm-env``.
-
 On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed in ``lib64``, breaking the ``lib`` assumption made by some packages. Therefore, ``CONFIG_SITE`` should be set to empty in ``compilers.yaml``. Also, don't use ``module purge`` on Acorn!
 
 When installing an official ``spack-stack`` on Acorn, be mindful of umask and group ownership, as these can be finicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
