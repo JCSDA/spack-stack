@@ -26,6 +26,9 @@ mkdir -p /contrib/admin
 cat <<EOF > /contrib/admin/basic_setup.sh
 #!/bin/bash
 
+yum-config-manager --disable intel-clck-2019-repo
+yum-config-manager --disable intel-hpc-platform
+yum-config-manager --disable intelpython
 chmod 777 /contrib
 yum install -y qt5-qtbase-devel
 yum install -y qt5-qtsvg-devel

@@ -24,7 +24,7 @@ class UppEnv(BundlePackage):
     depends_on("nemsio")
     depends_on("sfcio")
     depends_on("sigio")
-    depends_on("sp")
+    depends_on("sp", when="^ip@:4")
     depends_on("w3nco")
     depends_on("w3emc")
     depends_on("wrf-io")

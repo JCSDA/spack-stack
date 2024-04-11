@@ -18,24 +18,6 @@ compilers:
         CPATH: '/apps/gcc-10.2.0/gcc-10.2.0/include'
     extra_rpaths: []
 - compiler:
-    spec: intel@18.0.5
-    paths:
-      cc: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/icc
-      cxx: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/icpc
-      f77: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/ifort
-      fc: /apps/intel-2018/intel-2018.u4/compilers_and_libraries_2018.5.274/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: centos7
-    target: x86_64
-    modules:
-    - intel/2018.4
-    environment:
-      prepend_path:
-        PATH: '/apps/gcc-8/gcc-8.3.0/bin'
-        LD_LIBRARY_PATH: '/apps/gcc-8/gcc-8.3.0/lib64:/apps/gcc-8/gcc-8.3.0//lib:/apps/gcc-8/gcc-8.3.0/mpfr-4.0.2/lib:/apps/gcc-8/gcc-8.3.0/mpc-1.1.0/lib:/apps/gcc-8/gcc-8.3.0/gmp-6.1.2/lib'
-        CPATH: '/apps/gcc-8/gcc-8.3.0/include'
-    extra_rpaths: []
-- compiler:
     spec: gcc@10.2.0
     paths:
       cc: /apps/gcc-10.2.0/gcc-10.2.0/bin/gcc
