@@ -90,7 +90,7 @@ For questions or problems, please consult the known issues in :numref:`Section %
 Supplemental environments
 =========================
  
-The following is a list of supplemental or "add-on" environments are maintained through spack-stack. Note that not all are included with every release; see the third column to determine release location and look under ``envs/`` subdirectory (i.e., same parent directory as ``ue-*`` directories per the above table). Check the installation directories to verify which package versions are available before using them.
+The following is a list of supplemental or "add-on" environments that are maintained through spack-stack. Note that not all are included with every release; see the third column to determine release location and look under ``envs/`` subdirectory (i.e., same parent directory as ``ue-*`` directories per the above table). Check the installation directories to verify which package versions are available before using them.
 
 +------------------+---------------------------------------------------------+------------------------+-------------------------------------------+
 | Environment name | Description                                             | spack-stack release(s) | Platforms                                 |
