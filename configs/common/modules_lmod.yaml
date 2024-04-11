@@ -100,12 +100,10 @@ modules:
         suffixes:
           +debug: 'debug'
           build_type=Debug:  'debug'
-      # Keep lower-case var for backward compatibility; spack-stack-1.7.0 only
       ecmwf-atlas:
         environment:
           set:
             'atlas_ROOT': '{prefix}'
-            'ATLAS_ROOT': '{prefix}'
       esmf:
         environment:
           set:
