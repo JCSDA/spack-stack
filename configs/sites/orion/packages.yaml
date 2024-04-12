@@ -3,6 +3,8 @@ packages:
     compiler:: [intel@2022.0.2, gcc@10.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.0.4]
+      # https://github.com/JCSDA/spack-stack/issues/1055
+      zlib-api:: [zlib]
 
 ### MPI, Python, MKL
   mpi:
