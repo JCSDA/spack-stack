@@ -11,7 +11,7 @@ Pre-configured sites are split into two categories: Tier 1 with officially suppo
 Officially supported spack-stack 1.7.0 installations (tier 1)
 =============================================================
 
-Ready-to-use spack-stack 1.7.0 installations are available on the following, fully supported platforms. This version supports JEDI-Skylab and various UFS Applications (UFS Weather Model, EMC Global Workflow, GSI, UFS Short Range Weather Application). Amazon Web Services AMI are available in the US East 1 or 2 regions.
+Ready-to-use spack-stack 1.7.0 installations are available on the following, fully supported platforms. This version supports JEDI-Skylab and various UFS and related applications (UFS Weather Model, EMC Global Workflow, GSI, UFS Short Range Weather Application). Amazon Web Services AMI are available in the US East 1 or 2 regions.
 
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 | Organization        | System                           | Compilers       | Location                                                                     | Maintainers (principal/backup)|
@@ -32,7 +32,7 @@ Ready-to-use spack-stack 1.7.0 installations are available on the following, ful
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.7.0/envs``          | NOAA-EMC                      |
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
-|                     | Gaea C5                          | Intel           | ``/ncrc/proj/epic/spack-stack/spack-stack-1.7.0/envs``                       | EPIC / NOAA-EMC               |
+|                     | Gaea                             | Intel           | ``/ncrc/proj/epic/spack-stack/spack-stack-1.7.0/envs``                       | EPIC / NOAA-EMC               |
 |                     +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 | NOAA (RDHPCS)       | Hera                             | GCC, Intel      | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/spack-stack-1.7.0/envs``      | EPIC / NOAA-EMC               |
 |                     +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
@@ -53,10 +53,6 @@ Ready-to-use spack-stack 1.7.0 installations are available on the following, ful
 | NOAA (RDHPCS)       | RDHPCS Cloud (Parallel Works)    | Intel           | ``/contrib/spack-stack/spack-stack-1.7.0/envs``                              | EPIC / JCSDA                  |
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 
-For more information about a specific platform, please see the individual sections below.
-
-For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
-
 .. note::
   This release of spack-stack uses different versions of ``mapl`` with different variants, depending on the version of the compiler and whether the system is used for UFS or GEOS. Please see the following table.
 
@@ -74,6 +70,35 @@ For questions or problems, please consult the known issues in :numref:`Section %
 
 .. note::
   We have noted problems on some - not all - platforms with ``intel@2021.5.0`` when we switched from ``zlib`` to ``zlib-ng`` in spack-stack-1.7.0. These issues went away when using a different version of the compiler (anything between 2021.3.0 and 2021.11.0). It is therefore recommended to avoid using ``intel@2021.5.0`` unless it is the only option.
+
+**To use one of the above installations** via the system default environment module system, and adding certain modules first (see individual sections below), add ``/install/modulefiles/Core`` to the path from the above table and prepend that path to $MODULEPATH, e.g.,
+
+.. code-block:: console
+
+  # On Gaea:
+  module use /ncrc/proj/epic/spack-stack/spack-stack-1.6.0/envs/unified-env/install/modulefiles/Core
+  module load stack-intel
+  module load bacio netcdf-c ...
+
+For more information about a specific platform, please see the individual sections below.
+
+For questions or problems, please consult the known issues in :numref:`Section %s <KnownIssues>`, the currently open GitHub `issues <https://github.com/jcsda/spack-stack/issues>`_ and `discussions <https://github.com/jcsda/spack-stack/discussions>`_ first.
+
+.. _supplemental_environments:
+
+=========================
+Supplemental environments
+=========================
+ 
+The following is a list of supplemental or "add-on" environments that are maintained through spack-stack. Note that not all are included with every release; see the third column to determine release location and look under ``envs/`` subdirectory (i.e., same parent directory as ``ue-*`` directories per the above table). Check the installation directories to verify which package versions are available before using them.
+
++------------------+---------------------------------------------------------+------------------------+-------------------------------------------+
+| Environment name | Description                                             | spack-stack release(s) | Platforms                                 |
++==================+=========================================================+========================+===========================================+
+| gsi-addon-*      | Supports GSI and related applications                   | 1.6.0, 1.7.0           | Hera, Hercules, Gaea, Jet, S4             |
++------------------+---------------------------------------------------------+------------------------+-------------------------------------------+
+| ufswm-*          | Supports UFS Weather Model with WCOSS2 package versions | 1.6.0                  | Acorn, Hera, Hercules, Jet, Orion         |
++------------------+---------------------------------------------------------+------------------------+-------------------------------------------+
 
 .. _Preconfigured_Sites_Tier1:
 
@@ -117,9 +142,6 @@ For ``spack-stack-1.7.0`` with GNU, load the following modules after loading min
 .. note::
    The unified environment on Orion uses ``cdo@2.0.5`` instead of the default ``cdo@2.2.0`` because of a bug in the ``cdo`` package recipe that affects systems that don't have a ``python3`` interpreter in the default search paths (see https://github.com/spack/spack/issues/41947) for more information. This is a temporary change on Orion for the spack-stack-1.7.0 release and will be reverted once the ``cdo`` package is updated in the upstream spack develop code.
 
-.. note::
-   spack-stack-1.7.0 on Orion provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `ue` in the above `module use` statements with `gsi-addon`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
-
 ------------------------------
 MSU Hercules
 ------------------------------
@@ -150,9 +172,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-gcc/12.2.0
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
-
-.. note::
-   spack-stack-1.7.0 on Hercules provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `ue` in the above `module use` statements with `gsi-addon`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
 
 .. _Preconfigured_Sites_Discover_SCU16:
 
@@ -424,7 +443,7 @@ As of spring 2023, there is an inconsistency in ``libstdc++`` versions on Acorn 
 Note that certain packages, such as recent versions of `py-scipy`, cannot be compiled on compute nodes because their build systems require internet access.
 
 .. note::
-   System-wide ``spack`` software installations are maintained by NCO on this platform. The spack-stack official installations use those installations for some dependencies.
+   System-wide ``spack`` software installations are maintained by NCO on this platform which are not associated with spack-stack. The spack-stack official installations use those installations for one dependency (git-lfs).
 
 .. _Preconfigured_Sites_Parallel_Works:
 
@@ -453,13 +472,13 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module load stack-intel-oneapi-mpi/2021.3.0
    module load stack-python/3.10.13
 
-.. _Preconfigured_Sites_Gaea_C5:
+.. _Preconfigured_Sites_Gaea:
 
 ------------------------------
-NOAA RDHPCS Gaea C5
+NOAA RDHPCS Gaea
 ------------------------------
 
-The following is required for building new spack environments and for using spack to build and run software. Make sure to log into a C5 head node, and don't use ``module purge`` on Gaea!
+The following is required for building new spack environments and for using spack to build and run software. Log into a head node, and don't use ``module purge`` on Gaea!
 
 .. code-block:: console
 
@@ -482,13 +501,10 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module -t available
 
 .. note::
-   spack-stack-1.7.0 on Gaea provides a chained environment `gsi-addon-env` for GSI with Intel. To use this environment, replace `ue` in the above `module use` statements with `gsi-addon`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
+   On Gaea, running ``module available`` without the option ``-t`` leads to an error: ``/usr/bin/lua5.3: /opt/cray/pe/lmod/lmod/libexec/Spider.lua:568: stack overflow``
 
 .. note::
-   On Gaea C5, running ``module available`` without the option ``-t`` leads to an error: ``/usr/bin/lua5.3: /opt/cray/pe/lmod/lmod/libexec/Spider.lua:568: stack overflow``
-
-.. note::
-   On Gaea C5, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. A workaround is to use the `cmake` cross-compiling emulator for this:
+   On Gaea, a current limitation is that any executable that is linked against the MPI library (``cray-mpich``) must be run through ``srun`` on a compute node, even if it is run serially (one process). This is in particular a problem when using ``ctest`` for unit testing created by the ``ecbuild add_test`` macro. A workaround is to use the `cmake` cross-compiling emulator for this:
 
 .. code-block:: console
 
@@ -529,9 +545,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
 Note that on Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
 
-.. note::
-   spack-stack-1.7.0 on Hera provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `ue` in the above `module use` statements with `gsi-addon`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
-
 .. _Preconfigured_Sites_Jet:
 
 ------------------------------
@@ -566,9 +579,6 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load stack-openmpi/3.1.4
    module load stack-python/3.10.8
 
-.. note::
-   spack-stack-1.7.0 on Hercules provides a chained environment `gsi-addon-env` for GSI with Intel and GNU. To use this environment, replace `ue` in the above `module use` statements with `gsi-addon`, and load module `stack-python/3.11.6` instead of `stack-python/3.10.13`.
-
 ------------------------------
 UW (Univ. of Wisconsin) S4
 ------------------------------
@@ -596,7 +606,6 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
 Note the two `module unuse` commands, that need to be run after the stack metamodules are loaded. Loading the Intel compiler meta module loads the Intel compiler module provided by the sysadmins, which adds those two directories to the module path. These contain duplicate libraries that are not compatible with our stack, such as ``hdf4``.
 
 .. note::
-
    There is currently no support for GNU on S4, because recent updates to ``hdf5`` require a newer version of ``mpich`` (or other MPI library) than available on the system. Also, for spack-stack-1.7.0, S4 is the only system that uses ``zlib`` instead of ``zlib-ng`` due to the issues described in https://github.com/JCSDA/spack-stack/issues/1055.
 
 ------------------------------------------------
