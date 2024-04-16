@@ -232,7 +232,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
 
-   PATH="$HOMEBREW_ROOT/opt/qt5/bin:$PATH" \
+   # Note - Path to qt can differ by homebrew version. Check path if qt is not found.
+   PATH="$HOMEBREW_ROOT/opt/qt@5/bin:$PATH" \
        spack external find --scope system qt
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
