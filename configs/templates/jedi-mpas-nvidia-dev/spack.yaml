@@ -1,0 +1,90 @@
+# The intent of this template is to "clone" the stack available on WCOSS2
+# insofar as needed to support the UFS Weather Model.
+# Version numbers are taken from ufs-weather-model/modulefiles/ufs_wcoss2.lua
+# Updated Jan 2024 by Alex Richert
+spack:
+  concretizer:
+    unify: true
+  #config:
+  #  deprecated: true
+  #  install_tree:
+  #    root: $env/install
+  #modules:
+  #  default:
+  #    roots:
+  #      lmod: $env/install/modulefiles
+  #      tcl: $env/install/modulefiles
+  view: false
+  include:
+  - site
+  - common
+  specs:
+  - cmake
+  - git
+  - wget
+  - curl
+
+  - zlib-api
+  - hdf5
+  - netcdf-c
+  - netcdf-fortran
+  - parallel-netcdf
+  #- parallelio
+  #- nccmp
+
+  - bison
+  - blas
+  - boost
+  - bufr
+  - ecbuild
+  - eccodes
+  - eckit
+  - ecmwf-atlas
+  - eigen
+  - fckit
+  # Could maybe remove fftw-api
+  - fftw-api
+  - flex
+  - git-lfs
+  - gsibec
+  - gsl-lite
+  #- hdf
+  - jedi-cmake
+  #- netcdf-cxx4
+  #- ncview
+  - nlohmann-json
+  - nlohmann-json-schema-validator
+  - odc
+  - sp
+  - udunits
+  # Could remove metis
+  - metis
+  - jasper
+
+
+  #- bacio@2.4.1
+  #- crtm@=2.4.0~fix
+  #- esmf@8.5.0~shared+external-parallelio
+  #- fms@2023.02.01 constants=GFS
+  #- g2@3.4.5
+  #- g2tmpl@1.10.2
+  #- gftl-shared@1.6.1
+  #- hdf5@1.14.0+hl+mpi~shared~tools~szip
+  #- ip@3.3.3
+  #- jasper@2.0.25~shared
+  #- libjpeg-turbo~shared
+  #- libpng@1.6.37 libs=static
+  #- mapl@2.40.3~shared~pflogger~fargparse~extdata2g
+  #- netcdf-c@4.9.2~parallel-netcdf+mpi~shared~dap~szip
+  #- netcdf-fortran@4.6.0~shared
+  #- parallel-netcdf@1.12.2~shared
+  #- parallelio@2.5.10+fortran~pnetcdf~shared
+  #- scotch@7.0.4
+  #- sp@2.3.3
+  #- w3emc@2.9.2
+  #- zlib@1.2.11~shared
+  packages:
+    all:
+      require: ["%intel@19.1.3.304"] # Change if not on Acorn
+    cmake:
+      require: ["@3.20.2"]
