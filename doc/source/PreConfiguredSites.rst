@@ -521,9 +521,10 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
-   module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load ecflow/5.5.3
+   ### module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
+   ### module load miniconda/3.9.12
+   ### TODO: UPDATE WHEN/IF AVAILABLE ON ROCKY8
+   ###module load ecflow/5.5.3
 
 For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
 
@@ -630,6 +631,18 @@ For ``spack-stack-1.7.0``, run:
    module load stack-gcc/11.2.1
    module load stack-openmpi/5.0.1
    module load stack-python/3.10.13
+
+.. _Preconfigured_Sites_Tier2:
+
+=============================================================
+Pre-configured sites (tier 2)
+=============================================================
+
+Tier 2 preconfigured site are not officially supported by spack-stack. As such, instructions for these systems are provided in form of a `README.md` in the site directory or may not be available. Also, these site configs are not updated on the same regular basis as those of the tier 1 systems and therefore may be out of date and/or not working.
+
+The following sites have site configurations in directory `configs/sites/`:
+- TACC Frontera (`configs/sites/frontera/`)
+- AWS Single Node with Nvidia (NVPHC) compilers (`configs/sites/aws-nvidia/`)
 
 .. _Configurable_Sites_CreateEnv:
 
