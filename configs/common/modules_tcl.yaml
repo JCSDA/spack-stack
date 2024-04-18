@@ -73,6 +73,7 @@ modules:
       - openssl
       - perl
       - pkgconf
+      - pkg-config
       - qt
       - randrproto
       - readline
