@@ -61,45 +61,58 @@ jobs:
           spack external find --scope system mysql
 
           # For GNU
-          # MISSING
+          # TODO - anything needed?
 
           # For Intel
           # Need to find external Intel MPI and annotate with the
           # correct compiler, no way to do that with spack commands.
-          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: intel-oneapi-mpi@2021.6.0%intel@2021.6.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      prefix: /opt/intel" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      - libfabric-aws/1.16.0~amzn4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      - intelmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "    - spec: intel-oneapi-mpi@2021.6.0%intel@2021.6.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "      prefix: /opt/intel" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "      - libfabric-aws/1.16.0~amzn4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          # echo "      - intelmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
           # For GNU
-          ## Find compilers
-          #spack compiler find --scope system
-
-          # For Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "compilers:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "- compiler:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    spec: intel@2021.6.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    spec: gcc@=11.4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cc: /usr/bin/gcc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cxx: /usr/bin/g++" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      f77: /usr/bin/gfortran" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fc: /usr/bin/gfortran" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    operating_system: ubuntu20.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    environment:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      prepend_path:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "        LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      set:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "        I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    environment: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    extra_rpaths: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+
+          # For Intel
+          # echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "compilers:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "- compiler:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    spec: intel@2021.6.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "      cc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "      cxx: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "      f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "      fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    operating_system: ubuntu20.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    environment:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "      prepend_path:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "        LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "      set:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "        I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          # echo "    extra_rpaths: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
@@ -108,17 +121,22 @@ jobs:
           #spack config add config:install_tree:padded_length:true
           # *DH
 
-          # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0]"
-          spack config add "packages:all:compiler:[intel@2021.6.0]"
-          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
+          # Set compiler and MPI - for Intel
+          # spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0]"
+          # spack config add "packages:all:compiler:[intel@2021.6.0]"
+          # sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
+
+          # Set compiler and MPI - for GNU
+          spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
+          spack config add "packages:all:compiler:[gcc@11.4.0]"
+          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%gcc'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
           # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.intel-2021.6.0
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.6.0 -i fms -i crtm -i esmf -i mapl
+          spack concretize 2>&1 | tee log.concretize.gnu-11.4.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0 -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
@@ -136,12 +154,12 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.6.0.base-env
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0.base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # the rest
           echo "${{ inputs.template || 'unified-dev' }} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel@2021.6.0.${{ inputs.template || 'unified-dev' }}
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu@11.4.0.${{ inputs.template || 'unified-dev' }}
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
@@ -154,11 +172,11 @@ jobs:
 
           # Test environment chaining
           echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/ci-env.ubuntu-ci-x86_64/install)
+          spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/ci-env.ubuntu-ci-c6a-x86_64/install)
           # Retain config from upstream so we don't have to rebuild:
           cp -r $PWD/envs/ci-env.ubuntu-ci-c6a-x86_64/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.8.9.0%intel
+          spack add nccmp@1.8.9.0%gcc
           spack concretize | tee envs/chaintest/log.concretize
           unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
@@ -175,14 +193,14 @@ jobs:
           # always build in the same environment so that the length of the
           # path doesn't change - see also other 'DH* 20230302' changes below
           #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
-          export ENVNAME=ci-env.ubuntu-ci-c6c-x86_64
+          export ENVNAME=ci-env.ubuntu-ci-c6a-x86_64
           # *DH
           export ENVDIR=$PWD/envs/${ENVNAME}
           ls -l ${ENVDIR}/install/modulefiles/Core
 
           module use ${ENVDIR}/install/modulefiles/Core
-          module load stack-intel/2021.6.0
-          module load stack-intel-oneapi-mpi/2021.6.0
+          module load stack-gcc/11.4.0
+          module load stack-openmpi/5.0.1
           module load stack-python/3.10.13
           module available
 
