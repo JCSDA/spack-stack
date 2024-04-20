@@ -19,26 +19,6 @@ compilers::
           PATH: '/opt/apps/gcc/9.1.0/bin'
           CPATH: '/opt/apps/gcc/9.1.0/include'
           LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.1.0/linux/compiler/lib/intel64_lin:/opt/apps/gcc/9.1.0/lib64:/opt/apps/gcc/9.1.0/lib'
-        set:
-          # https://github.com/JCSDA/spack-stack/issues/1012
-          I_MPI_EXTRA_FILESYSTEM: 'ON'
-          # https://github.com/JCSDA/spack-stack/issues/1011
-          I_MPI_SHM_HEAP_VSIZE: '512'
-          PSM2_MEMORY: 'large'
-          I_MPI_EXTRA_FILESYSTEM_FORCE: 'gpfs'
-          I_MPI_FABRICS: 'ofi'
-          I_MPI_OFI_PROVIDER: 'psm3'
-          I_MPI_ADJUST_SCATTER: '2'
-          I_MPI_ADJUST_SCATTERV: '2'
-          I_MPI_ADJUST_GATHER: '2'
-          I_MPI_ADJUST_GATHERV: '3'
-          I_MPI_ADJUST_ALLGATHER: '3'
-          I_MPI_ADJUST_ALLGATHERV: '3'
-          I_MPI_ADJUST_ALLREDUCE: '12'
-          I_MPI_ADJUST_REDUCE: '10'
-          I_MPI_ADJUST_BCAST: '11'
-          I_MPI_ADJUST_REDUCE_SCATTER: '4'
-          I_MPI_ADJUST_BARRIER: '9'
       extra_rpaths: []
   - compiler:
       spec: gcc@=9.1.0

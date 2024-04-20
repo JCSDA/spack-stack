@@ -1,10 +1,8 @@
 packages:
   all:
     compiler:: [intel@23.1.0]
-    #compiler:: [gcc@12.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.9.0]
-      #mpi:: [mvapich2@2.3]
 
 ### MPI, Python, MKL
   mpi:
@@ -15,14 +13,6 @@ packages:
       modules:
       - impi/21.9.0
       prefix: /opt/intel/oneapi
-  #mvapich2:
-  #  externals:
-  #  - spec: mvapich2@2.3%gcc@9.1.0
-  #    modules:
-  #    - mvapich2-x/2.3
-  #    prefix: /opt/apps/gcc9_1/mvapich2-x/2.3
-  python:
-    require: "+ssl"
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -178,8 +168,6 @@ packages:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5
       prefix: /usr
-    - spec: ncurses@6.3.20211021+termlib abi=6
-      prefix: /work2/06146/tg854455/frontera/spack-stack/miniconda-3.9.12
   ninja:
     externals:
     - spec: ninja@1.10.2
@@ -188,16 +176,6 @@ packages:
     externals:
     - spec: openssh@8.5p1-hpn15v2
       prefix: /usr
-#  openssl:
-#    externals:
-#    - spec: openssl@1.0.2k-fips
-#      prefix: /usr
-#    - spec: openssl@1.1.1q
-#      prefix: /work2/06146/tg854455/frontera/spack-stack/miniconda-3.9.12
-#  perl:
-#    externals:
-#    - spec: perl@5.16.3~cpanm+shared+threads
-#      prefix: /usr
   pkg-config:
     externals:
     - spec: pkg-config@0.27.1
@@ -222,10 +200,6 @@ packages:
     externals:
     - spec: slurm@20.11.9
       prefix: /usr
-  sqlite:
-    externals:
-    - spec: sqlite@3.38.2+fts~functions+rtree
-      prefix: /work2/06146/tg854455/frontera/spack-stack/miniconda-3.9.12
   subversion:
     externals:
     - spec: subversion@1.7.14
@@ -241,10 +215,6 @@ packages:
   wget:
     externals:
     - spec: wget@1.14
-      prefix: /usr
-  which:
-    externals:
-    - spec: which@2.20
       prefix: /usr
   xz:
     externals:
