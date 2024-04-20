@@ -1,7 +1,6 @@
-# The intent of this template is to "clone" the stack available on WCOSS2
-# insofar as needed to support the UFS Weather Model.
-# Version numbers are taken from ufs-weather-model/modulefiles/ufs_wcoss2.lua
-# Updated Jan 2024 by Alex Richert
+# The intent of this template is to minimize the jedi-mpas-env virtual environment
+# to provide only the packages needed to compile jedi-bundle with mpas (only).
+# Updated April 2024 by Dom Heinzeller
 spack:
   concretizer:
     unify: when_possible
@@ -21,6 +20,9 @@ spack:
   - pkg-config %gcc
   - python
 
+  # Several packages are commented out and not removed from the list;
+  # this is intentional since they may be needed for running ctest etc.
+
   # Packages built with nvhpc
   - zlib-api %nvhpc
   - hdf5 %nvhpc
@@ -32,21 +34,21 @@ spack:
 
   - blas
   - boost %nvhpc
-    #- bufr
+  #- bufr
   - ecbuild %nvhpc
-    #- eccodes
+  #- eccodes
   - eckit %nvhpc
   - ecmwf-atlas %nvhpc
   - fckit %nvhpc
-    # Currently using openblas, would be nice if we could use the nvhpc package/provider for this
+  # Currently using openblas, would be nice if we could use the nvhpc package/provider for this
   - fftw-api
-    # Doesn't build with nvhpc:
-    #- gsibec
+  # Doesn't build with nvhpc:
+  #- gsibec
   - gsl-lite %nvhpc
   - jedi-cmake %nvhpc
-    #- nlohmann-json
-    #- nlohmann-json-schema-validator
-    #- odc
+  #- nlohmann-json
+  #- nlohmann-json-schema-validator
+  #- odc
   - sp %nvhpc
   - udunits %nvhpc
   - jasper %nvhpc
