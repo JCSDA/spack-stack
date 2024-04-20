@@ -521,10 +521,9 @@ The following is required for building new spack environments and for using spac
 .. code-block:: console
 
    module purge
-   ### module use /scratch1/NCEPDEV/jcsda/jedipara/spack-stack/modulefiles
-   ### module load miniconda/3.9.12
-   ### TODO: UPDATE WHEN/IF AVAILABLE ON ROCKY8
-   ###module load ecflow/5.5.3
+   module use /scratch1/NCEPDEV/nems/role.epic/modulefiles
+   module load miniconda3/4.12.0
+   module load ecflow/5.8.4
 
 For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
 
