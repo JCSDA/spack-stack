@@ -105,7 +105,7 @@ jobs:
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
           # Don't generate ecflow module when using external package
-          spack config add "modules:default:tcl:exclude:ecflow"
+          spack config add "modules:default:tcl:exclude:[ecflow]"
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.intel-2021.10.0
@@ -130,6 +130,11 @@ jobs:
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.10.0.base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
+          # jedi-base-env
+          echo "jedi-base-env ..."
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.10.0.base-env
+          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+
           # the rest
           echo "unified-env ..."
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel-2021.10.0.unified-env
@@ -137,7 +142,8 @@ jobs:
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
           echo "Next steps ..."
-          ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+          ### Don't think this works when using config padded length stuff for creating build caches?
+          ### '${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
           spack clean -a
           spack module tcl refresh -y
           spack stack setup-meta-modules
