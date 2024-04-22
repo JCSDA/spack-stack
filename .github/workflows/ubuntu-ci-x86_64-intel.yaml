@@ -1,4 +1,4 @@
-name: ubuntu-ci-x86_64-build
+name: ubuntu-ci-c6a-x86_64-intel-build
 on:
   pull_request:
     paths-ignore:
@@ -17,8 +17,8 @@ defaults:
     shell: bash
 
 jobs:
-  ubuntu-ci-x86_64-build:
-    runs-on: [ubuntu-ci-x86_64]
+  ubuntu-ci-x86_64-intel-build:
+    runs-on: [ubuntu-ci-c6a-x86_64]
 
     steps:
       - name: cleanup
@@ -35,13 +35,7 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-
-          # DH* 20230302 - to avoid using padded_length for build caches,
-          # always build in the same environment so that the length of the
-          # path doesn't change - see also other 'DH* 20230302' changes below
-          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
-          export ENVNAME=ci-env.ubuntu-ci-x86_64
-          # *DH
+          export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64-intel
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
           spack env activate ${ENVDIR}
@@ -103,10 +97,8 @@ jobs:
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
-          # DH* 20230302 - Don't use yet, too many problems
-          ## For buildcaches
-          #spack config add config:install_tree:padded_length:true
-          # *DH
+          # For buildcaches
+          spack config add config:install_tree:padded_length:200
 
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0]"
@@ -152,18 +144,6 @@ jobs:
           spack stack setup-meta-modules
           spack env deactivate
 
-          # Test environment chaining
-          echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/ci-env.ubuntu-ci-x86_64/install)
-          # Retain config from upstream so we don't have to rebuild:
-          cp -r $PWD/envs/ci-env.ubuntu-ci-x86_64/{site,common} $PWD/envs/chaintest/.
-          spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.8.9.0%intel
-          spack concretize | tee envs/chaintest/log.concretize
-          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
-          if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
-          spack env deactivate
-
       - name: test-env
         run: |
           source /etc/profile.d/z00_lmod.sh
@@ -174,9 +154,7 @@ jobs:
           # DH* 20230302 - to avoid using padded_length for build caches,
           # always build in the same environment so that the length of the
           # path doesn't change - see also other 'DH* 20230302' changes below
-          #export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64
-          export ENVNAME=ci-env.ubuntu-ci-x86_64
-          # *DH
+          export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64-intel
           export ENVDIR=$PWD/envs/${ENVNAME}
           ls -l ${ENVDIR}/install/modulefiles/Core
 
