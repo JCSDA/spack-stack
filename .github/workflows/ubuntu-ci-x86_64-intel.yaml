@@ -35,9 +35,9 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64-intel
+          export ENVNAME=ue-intel-2021.6.0
           export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site linux.default --template ${{ inputs.template || 'unified-dev' }} --name ${ENVNAME}
+          spack stack create env --site linux.default --template unified-dev --name ${ENVNAME}
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
@@ -54,9 +54,6 @@ jobs:
           spack external find --scope system texlive
           spack external find --scope system mysql
 
-          # For GNU
-          # MISSING
-
           # For Intel
           # Need to find external Intel MPI and annotate with the
           # correct compiler, no way to do that with spack commands.
@@ -69,10 +66,6 @@ jobs:
           echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      - libfabric-aws/1.16.0~amzn4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      - intelmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-
-          # For GNU
-          ## Find compilers
-          #spack compiler find --scope system
 
           # For Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
@@ -132,8 +125,8 @@ jobs:
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # the rest
-          echo "${{ inputs.template || 'unified-dev' }} ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel@2021.6.0.${{ inputs.template || 'unified-dev' }}
+          echo "unified-env ..."
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel-2021.6.0.unified-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
@@ -151,10 +144,7 @@ jobs:
           module use /opt/intel/mpi/2021.6.0/modulefiles
           module use /home/ubuntu/jedi/modulefiles
 
-          # DH* 20230302 - to avoid using padded_length for build caches,
-          # always build in the same environment so that the length of the
-          # path doesn't change - see also other 'DH* 20230302' changes below
-          export ENVNAME=${{ inputs.template || 'unified-dev' }}.ubuntu-ci-x86_64-intel
+          export ENVNAME=ue-intel-2021.6.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           ls -l ${ENVDIR}/install/modulefiles/Core
 
