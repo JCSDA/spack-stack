@@ -60,6 +60,10 @@
     esmf:
       version: ['8.6.0']
       variants: ~xerces ~pnetcdf snapshot=none +shared +external-parallelio
+      #version: ['8.6.1b04']
+      #variants: ~xerces ~pnetcdf snapshot=b04 +shared +external-parallelio
+      #version: ['8.7.0b04']
+      #variants: ~xerces ~pnetcdf snapshot=b04 +shared +external-parallelio
       require:
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
