@@ -39,7 +39,6 @@ jobs:
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template unified-dev --name ${ENVNAME}
           spack env activate ${ENVDIR}
-          spack add ${{ inputs.specs || '' }}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
@@ -132,7 +131,7 @@ jobs:
 
           # jedi-base-env
           echo "jedi-base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.10.0.base-env
+          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.intel-2021.10.0.jedi-base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
 
           # the rest
