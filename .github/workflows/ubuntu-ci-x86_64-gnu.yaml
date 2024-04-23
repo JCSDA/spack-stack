@@ -72,7 +72,7 @@ jobs:
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
           # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.gnu-11.4.0
+          spack concretize 2>&1 | tee log.concretize.gnu-11.4.0-buildcache
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0 -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
@@ -91,17 +91,17 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0.base-env
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # jedi-base-env
           echo "jedi-base-env ..."
-          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.intel-2021.10.0.jedi-base-env
+          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
 
           # the rest
           echo "unified-env ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.unified-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
@@ -116,20 +116,21 @@ jobs:
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
-          # For buildcaches
+          # Remove buildcache stuff, then concretize
           spack config remove config:install_tree:padded_length
+          spack mirror remove local-binary
 
-          # Add binary cache and reindex it
+          # Concretize
+          spack concretize --force 2>&1 | tee log.concretize.gnu-11.4.0
+
+          # Add binary cache back in and reindex it
+          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
-          # Break installation up in pieces and create build caches in between
-          # This allows us to "spin up" builds that altogether take longer than
-          # six hours, and/or fail later in the build process.
-
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature --cache-only 2>&1 | tee log.install.gnu-11.4.0.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0.unified-env
 
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
           spack clean -a
