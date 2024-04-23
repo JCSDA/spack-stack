@@ -152,6 +152,7 @@ jobs:
 
       - name: test-env
         run: |
+          source /etc/profile.d/modules.sh
           module use /home/ubuntu/spack-stack/modulefiles
 
           export ENVNAME=ue-gcc-11.4.0
