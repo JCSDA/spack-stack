@@ -32,10 +32,10 @@ jobs:
         with:
           submodules: true
 
-      - name: create-env
+      - name: create-buildcache
         run: |
           source ./setup.sh
-          export ENVNAME=ue-gcc-11.4.0
+          export ENVNAME=ue-gcc-11.4.0-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template unified-dev --name ${ENVNAME}
           spack env activate ${ENVDIR}
@@ -105,9 +105,33 @@ jobs:
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
-          echo "Next steps ..."
-          ### Don't think this works when using config padded length stuff for creating build caches?
-          ### '${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+
+      - name: create-env
+        run: |
+          source ./setup.sh
+          export BUILDCACHE_ENVNAME=ue-gcc-11.4.0
+          export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
+          export ENVNAME=ue-gcc-11.4.0
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
+          spack env activate ${ENVDIR}
+
+          # For buildcaches
+          spack config remove config:install_tree:padded_length
+
+          # Add binary cache and reindex it
+          echo "Packages in combined spack build caches:"
+          spack buildcache list
+
+          # Break installation up in pieces and create build caches in between
+          # This allows us to "spin up" builds that altogether take longer than
+          # six hours, and/or fail later in the build process.
+
+          # base-env
+          echo "base-env ..."
+          spack install --fail-fast --source --no-check-signature --cache-only 2>&1 | tee log.install.gnu-11.4.0.unified-env
+
+          '${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
           spack clean -a
           spack module tcl refresh -y
           spack stack setup-meta-modules
@@ -127,10 +151,7 @@ jobs:
 
       - name: test-env
         run: |
-          source /etc/profile.d/z00_lmod.sh
-          module use /usr/share/modules/modulefiles
-          module use /opt/intel/mpi/2021.6.0/modulefiles
-          module use /home/ubuntu/jedi/modulefiles
+          module use /home/ubuntu/spack-stack/modulefiles
 
           export ENVNAME=ue-gcc-11.4.0
           export ENVDIR=$PWD/envs/${ENVNAME}
@@ -142,7 +163,7 @@ jobs:
           module load stack-python/3.10.13
           module available
 
-          module load jedi-ufs-env/1.0.0
-          module load ewok-env/1.0.0
-          module load soca-env/1.0.0
+          module load jedi-ufs-env
+          module load ewok-env
+          module load soca-env
           module list
