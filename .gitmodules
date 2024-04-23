@@ -7,4 +7,4 @@
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
-  branch = develop
+  branch = v1.3.0
