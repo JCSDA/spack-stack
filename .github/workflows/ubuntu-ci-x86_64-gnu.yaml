@@ -34,6 +34,18 @@ jobs:
 
       - name: create-buildcache
         run: |
+          # Get day of week to decide whether to use build caches or not
+          DOW=$(date +%u)
+          # Monday is 1 ... Sunday is 7
+          if [[ $DOW == 7 ]]; then
+            export USE_BINARY_CACHE=false
+            echo "Ignore existing binary cache for creating buildcache environment"
+          else
+            export USE_BINARY_CACHE=true
+            echo "Use existing binary cache for creating buildcache environment"
+          fi
+
+          # spack-stack setup
           source ./setup.sh
           export ENVNAME=ue-gcc-11.4.0-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
@@ -79,11 +91,13 @@ jobs:
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
           spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
 
-          # Add binary cache and reindex it
-          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
-          spack buildcache update-index local-binary
-          echo "Packages in combined spack build caches:"
-          spack buildcache list
+          # Add binary cache if requested
+          if [ "$USE_BINARY_CACHE" = true ] ; then
+            spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+            spack buildcache update-index local-binary
+            echo "Packages in spack binary cache:"
+            spack buildcache list
+          fi
 
           # Break installation up in pieces and create build caches in between
           # This allows us to "spin up" builds that altogether take longer than
@@ -104,6 +118,14 @@ jobs:
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.unified-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
+          # Remove binary cache for next round of concretization
+          if [ "$USE_BINARY_CACHE" = true ] ; then
+            spack mirror rm local-binary
+          fi
+
+          # Remove buildcache config settings
+          spack config remove config:install_tree:padded_length
+
           # Next steps: synchronize source and build cache to a central/combined mirror?
 
       - name: create-env
@@ -115,10 +137,6 @@ jobs:
           export ENVDIR=$PWD/envs/${ENVNAME}
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
-
-          # Remove buildcache stuff, then concretize
-          spack config remove config:install_tree:padded_length
-          spack mirror remove local-binary
 
           # Concretize
           spack concretize --force 2>&1 | tee log.concretize.gnu-11.4.0
