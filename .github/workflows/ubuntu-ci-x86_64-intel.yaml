@@ -53,6 +53,9 @@ jobs:
           spack external find --scope system texlive
           spack external find --scope system mysql
 
+          # For GNU - need to for bootstrapping
+          spack compiler find --scope system
+
           # For Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "compilers:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
@@ -63,8 +66,11 @@ jobs:
           echo "      cxx: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      f77: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      fc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    operating_system: ubuntu20.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    flags:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cxxflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fflags: -diag-disable=10448" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    environment:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
@@ -79,7 +85,7 @@ jobs:
           echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      prefix: /opt/intel" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
           # Add external ecflow for Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
