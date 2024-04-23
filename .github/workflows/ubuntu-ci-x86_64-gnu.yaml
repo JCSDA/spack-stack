@@ -109,7 +109,7 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          export BUILDCACHE_ENVNAME=ue-gcc-11.4.0
+          export BUILDCACHE_ENVNAME=ue-gcc-11.4.0-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
           export ENVNAME=ue-gcc-11.4.0
           export ENVDIR=$PWD/envs/${ENVNAME}
