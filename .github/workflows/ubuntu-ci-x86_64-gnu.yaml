@@ -73,7 +73,7 @@ jobs:
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.gnu-11.4.0-buildcache
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0 -i fms -i crtm -i esmf -i mapl
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0-buildcache -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
