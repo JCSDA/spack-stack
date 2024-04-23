@@ -1,0 +1,27 @@
+compilers:
+- compiler:
+    spec: gcc@=11.4.0
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: ubuntu22.04
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: nvhpc@=24.3
+    paths:
+      cc: /opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin/nvc
+      cxx: /opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin/nvc++
+      f77: /opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin/nvfortran
+      fc: /opt/nvidia/hpc_sdk/Linux_x86_64/24.3/compilers/bin/nvfortran
+    flags: {}
+    operating_system: ubuntu22.04
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []

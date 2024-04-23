@@ -18,6 +18,7 @@ yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
 yum install -y m4
+yum install -y finger
 exit
 
 # Create a script that can be added to the cluster resource config so that these packages get installed automatically
@@ -37,9 +38,16 @@ yum install -y xorg-x11-apps
 yum install -y perl-IPC-Cmd
 yum install -y gettext-devel
 yum install -y m4
+yum install -y finger
 EOF
 
 chmod a+x /contrib/admin/basic_setup.sh
+
+# Enable R2D2 experiment scrubber in cron (if applicable)
+
+Refer to https://github.com/JCSDA-internal/jedi-tools/tree/develop/crontabs/noaa-gcloud
+
+The scripts are all set up in the /contrib space and should work after a restart of the cluster. However, any updates to R2D2 that require changes to the scrubber scripts need to be made!
 
 # Create a mysql config for local R2D2 use (if applicable)
 
