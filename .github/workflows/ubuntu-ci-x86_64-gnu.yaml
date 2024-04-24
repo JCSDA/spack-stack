@@ -74,8 +74,6 @@ jobs:
           spack config add config:install_tree:padded_length:200
 
           # Set compiler and MPI
-
-          # Set compiler and MPI - for GNU
           spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
           spack config add "packages:all:compiler:[gcc@11.4.0]"
           sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%gcc'\]/g" $ENVDIR/spack.yaml
@@ -128,6 +126,10 @@ jobs:
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
 
+          # Cleanup
+          spack clean -a
+          spack env deactivate
+
       - name: create-env
         run: |
           source ./setup.sh
@@ -140,6 +142,7 @@ jobs:
 
           # Concretize
           spack concretize --force 2>&1 | tee log.concretize.gnu-11.4.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0 -i fms -i crtm -i esmf -i mapl
 
           # Add binary cache back in and reindex it
           spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
