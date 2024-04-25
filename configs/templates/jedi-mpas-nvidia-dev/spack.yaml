@@ -17,7 +17,7 @@ spack:
   - git-lfs
   - wget
   - curl
-  - pkg-config %gcc
+  - pkg-config
   - python
 
   # Several packages are commented out and not removed from the list;

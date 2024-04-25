@@ -641,7 +641,15 @@ In order to build environments with the Nvidia compilers, a different approach i
 
 With all of that in mind, the following instructions were used on an Amazon Web Services EC2 instance running Ubuntu 22.04 to build an environment based on template ``jedi-mpas-nvidia-dev``. These instructions follow the one-off setup instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` and replace the instructions in Section :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv>`.
 
-1. Follow the instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` to install the basic packages.
+1. Follow the instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` to install the basic packages. In addition, install the following packages using `apt`:
+
+.. code-block:: console
+
+   sudo su
+   apt update
+   apt install -y cmake
+   apt install -y pkg-config
+   exit
 
 2. Download the latest version of the Nvidia HPC SDK following the instructions on the Nvidia website. For ``nvhpc@24.3``:
 
@@ -649,8 +657,10 @@ With all of that in mind, the following instructions were used on an Amazon Web 
 
    curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
    echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
-   sudo apt update
-   sudo apt-get install -y nvhpc-24-3
+   sudo su
+   apt update
+   apt-get install -y nvhpc-24-3
+   exit
 
 3. Load the correct module shipped with ``nvhpc-24-3``. Note that this is only required for ``spack`` to detect the compiler and ``openmpi`` library during the environment configuration below. It is not required when using the new environment to compile code.
 
@@ -695,6 +705,7 @@ With all of that in mind, the following instructions were used on an Amazon Web 
    spack external find --scope system openmpi
    spack external find --scope system python
    spack external find --scope system curl
+   spack external find --scope system pkg-config
    spack external find --scope system cmake
 
 8. Find compilers, add to site config's ``compilers.yaml``
@@ -734,6 +745,8 @@ With all of that in mind, the following instructions were used on an Amazon Web 
      curl:
        buildable: false
      cmake:
+       buildable: false
+     pkg-config:
        buildable: false
 
 11. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu instructions above.
