@@ -629,7 +629,7 @@ Creating a new environment with Nvidia compilers
 .. warning::
    Support for Nvidia compilers is experimental and limited to a small subset of packages of the unified environment. The Nvidia compilers are known for their bugs and flaws, and many packages simply don't build. The strategy for building environments with Nvidia is therefore the opposite of what it is with other supported compilers.
 
-In order to build environments with the Nvidia compilers, a different approach is needed than for our main compilers (GNU, Intel). Since many packages do not build with the Nvidia compilers, the idea is to provide as many packages as possible as external packages or build them with `gcc`. Because our spack extension `spack stack setup-meta-modules` does not support combiniations of modules built with different compilers, packages not being built with the Nvidia compilers need to fulfil the two following criteria:
+In order to build environments with the Nvidia compilers, a different approach is needed than for our main compilers (GNU, Intel). Since many packages do not build with the Nvidia compilers, the idea is to provide as many packages as possible as external packages or build them with ``gcc``. Because our spack extension ``spack stack setup-meta-modules`` does not support combiniations of modules built with different compilers, packages not being built with the Nvidia compilers need to fulfil the two following criteria:
 
 1. The package is used as a utility to build or run the code, but not linked into the application (this may be overly restrictive, but it ensures that the application will be able to leverage all of Nvidia's features, for example run on GPUs).
 
@@ -637,28 +637,29 @@ In order to build environments with the Nvidia compilers, a different approach i
 
     a. The package is installed outside of the spack-stack environment and made available as an external package. A typical use case is a package that is installed using the OS package manager.
 
-    b. The package is built with another compiler (typically `gcc`) within the same environment, and no modulefile is generated for the package. The spack modulefile generator in this case ensures that other packages that depend on this particular package have the necessary paths in their own modules. If the `gcc` compiler requires additional PATH, LD_LIBRARY_PATH etc variables to be set, then these can be set in the spack compiler config for the Nvidia compiler (similar to how we configure the `gcc` backend for the Intel compiler).
+    b. The package is built with another compiler (typically ``gcc``) within the same environment, and no modulefile is generated for the package. The spack modulefile generator in this case ensures that other packages that depend on this particular package have the necessary paths in their own modules. If the ``gcc`` compiler itself requires additional ``PATH``, ``LD_LIBRARY_PATH``, ... variables to be set, then these can be set in the spack compiler config for the Nvidia compiler (similar to how we configure the ``gcc`` backend for the Intel compiler).
 
-With all of that in mind, the following instructions were used on an Amazon Web Services EC2 instance running Ubuntu 22.04 to build an environment based on template `jedi-mpas-nvidia-dev`. These instructions follow the one-off setup instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` and replace the instructions in Section :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv>`.
+With all of that in mind, the following instructions were used on an Amazon Web Services EC2 instance running Ubuntu 22.04 to build an environment based on template ``jedi-mpas-nvidia-dev``. These instructions follow the one-off setup instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` and replace the instructions in Section :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv>`.
 
 1. Follow the instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` to install the basic packages.
 
-2. Download the latest version of the Nvidia HPC SDK following the instructions on the Nvidia website. For `nvhpc@24.3`:
+2. Download the latest version of the Nvidia HPC SDK following the instructions on the Nvidia website. For ``nvhpc@24.3``:
 
 .. code-block:: console
+
    curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
    echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
    sudo apt update
    sudo apt-get install -y nvhpc-24-3
 
-3. Load the correct module shipped with nvhpc-24-3. Note that this is only required for ``spack`` to detect the compiler and OpenMPI library during the environment configuration below. It is not required when using the new environment to compile code.
+3. Load the correct module shipped with ``nvhpc-24-3``. Note that this is only required for ``spack`` to detect the compiler and ``openmpi`` library during the environment configuration below. It is not required when using the new environment to compile code.
 
 .. code-block:: console
    module purge
    module use /opt/nvidia/hpc_sdk/modulefiles
    module load nvhpc-openmpi3/24.3
 
-4. clone spack-stack and its dependencies and activate the spack-stack tool.
+4. Clone spack-stack and its dependencies and activate the spack-stack tool.
 
 .. code-block:: console
 
@@ -668,7 +669,7 @@ With all of that in mind, the following instructions were used on an Amazon Web 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
    source setup.sh
 
-5. Create a pre-configured environment with the default (nearly empty) site config for Linux and activate it (optional: decorate bash prompt with environment name; warning: this can scramble the prompt for long lines). At this point, only the ``jedi-mpas-nvidia-dev`` template is supported.
+5. Create a pre-configured environment with the default (nearly empty) site config for Linux and activate it (optional: decorate bash prompt with environment name). At this point, only the ``jedi-mpas-nvidia-dev`` template is supported.
 
 .. code-block:: console
 
@@ -708,7 +709,7 @@ With all of that in mind, the following instructions were used on an Amazon Web 
 
    unset SPACK_SYSTEM_CONFIG_PATH
 
-10. Add the following block to `envs/jedi-mpas-nvidia-env/spack.yaml` (pay attention to the correct indendation, it should be at the same level as ``specs:``):
+10. Add the following block to ``envs/jedi-mpas-nvidia-env/spack.yaml`` (pay attention to the correct indendation, it should be at the same level as ``specs:``):
 
 .. code-block:: console
 
