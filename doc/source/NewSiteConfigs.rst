@@ -36,7 +36,7 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
   Also, when using ``apple-clang@15.0.0`` you must use Command Line Tools version 15.1, and the Command Line Tools versions 15.3 and newer are not yet supported.
 
 .. [#fn3]
-  Support for Nvidia compilers is experimental and limited to a subset of packages. Please refer to section 
+  Support for Nvidia compilers is experimental and limited to a subset of packages. Please refer to :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv_Nvidia>` below.
 
 ..  _NewSiteConfigs_macOS:
 
@@ -643,11 +643,12 @@ With all of that in mind, the following instructions were used on an Amazon Web 
 
 1. Follow the instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` to install the basic packages.
 
-2. Download the latest version of the Nvidida HPC SDK following the instructions on the Nvidia website. For `nvhpc@24.3`:
+2. Download the latest version of the Nvidia HPC SDK following the instructions on the Nvidia website. For `nvhpc@24.3`:
 
 .. code-block:: console
-   url https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
+   curl https://developer.download.nvidia.com/hpc-sdk/ubuntu/DEB-GPG-KEY-NVIDIA-HPC-SDK | sudo gpg --dearmor -o /usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg
    echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
+   sudo apt update
    sudo apt-get install -y nvhpc-24-3
 
 3. Load the correct module shipped with nvhpc-24-3. Note that this is only required for ``spack`` to detect the compiler and OpenMPI library during the environment configuration below. It is not required when using the new environment to compile code.
