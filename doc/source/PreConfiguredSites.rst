@@ -641,7 +641,7 @@ Tier 2 preconfigured site are not officially supported by spack-stack. As such, 
 
 The following sites have site configurations in directory `configs/sites/`:
 - TACC Frontera (`configs/sites/frontera/`)
-- AWS Single Node with Nvidia (NVPHC) compilers (`configs/sites/aws-nvidia/`)
+- AWS Single Node with Nvidia (NVHPC) compilers (`configs/sites/aws-nvidia/`)
 
 .. _Configurable_Sites_CreateEnv:
 
