@@ -23,6 +23,7 @@ in installing the large number of packages managed by spack-stack.
 - The NOAA Environmental Modeling Center (EMC)
 - The UCAR Joint Center for Satellite Data Assimilation (JCSDA)
 - The Earth Prediction Innovation Center (EPIC)
+- The U.S. Naval Research Laboratory (NRL)
 
 Each stakeholder will designate a small number of developers to assist
 in spack-stack development by becoming a code manager of the
@@ -33,8 +34,9 @@ spack-stack repo.
 Organization | Code Manager(s)
 -------------|----------------
 NOAA EMC | Alex Richert, Hang Lei, Ed Hartnett
-JCSDA | Dom Heinzeller, Steve Herbener
+JCSDA | Steve Herbener, TBD
 EPIC | Cam Book, Natalie Perlin, Ratko Vasic
+NRL | Dom Heinzeller, Sarah King
 
 ## Project Process
 
