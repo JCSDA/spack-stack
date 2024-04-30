@@ -1,0 +1,226 @@
+packages:
+  all:
+    compiler:: [intel@23.1.0]
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.9.0]
+
+### MPI, Python, MKL
+  mpi:
+    buildable: False
+  intel-oneapi-mpi:
+    externals:
+    - spec: intel-oneapi-mpi@2021.9.0%intel@23.1.0
+      modules:
+      - impi/21.9.0
+      prefix: /opt/intel/oneapi
+
+### All other external packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /opt/apps/autotools/1.2
+  automake:
+    externals:
+    - spec: automake@1.15
+      prefix: /opt/apps/autotools/1.2
+    - spec: automake@1.13.4
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@4.2.46
+      prefix: /usr
+  berkeley-db:
+    externals:
+    - spec: berkeley-db@5.3.21
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.32
+      prefix: /opt/apps/gcc/9.1.0
+    - spec: binutils@2.27.44
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  bzip2:
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.24.2
+      prefix: /opt/apps/cmake/3.24.2
+      modules:
+      - cmake/3.24.2
+  cpio:
+    externals:
+    - spec: cpio@2.11
+      prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.29.0+ldap
+      prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.11.23
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.3
+      prefix: /usr
+  dos2unix:
+    externals:
+    - spec: dos2unix@6.0.3
+      prefix: /usr
+  doxygen:
+    externals:
+    - spec: doxygen@1.8.5+graphviz~mscgen
+      prefix: /usr
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /work2/06146/tg854455/frontera/spack-stack/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
+  file:
+    externals:
+    - spec: file@5.11
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.5.11
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.5.37+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.0.2
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  ghostscript:
+    externals:
+    - spec: ghostscript@9.25
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.24.1+tcltk
+      prefix: /opt/apps/git/2.24.1
+  git-lfs:
+    externals:
+    - spec: git-lfs@2.10.0
+      modules:
+      - git-lfs/2.10.0
+      prefix: /work2/06146/tg854455/frontera/spack-stack/git-lfs/2.10.0
+  gmake:
+    externals:
+    - spec: gmake@3.82
+      prefix: /usr
+  go:
+    externals:
+    - spec: go@1.15.14
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.2
+      prefix: /usr
+  hwloc:
+    externals:
+    - spec: hwloc@1.11.8
+      prefix: /usr
+  krb5:
+    externals:
+    - spec: krb5@1.15.1
+      prefix: /usr
+  libfuse:
+    externals:
+    - spec: libfuse@2.9.2
+      prefix: /usr
+    - spec: libfuse@3.6.1
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /opt/apps/autotools/1.2
+    - spec: libtool@2.4.2
+      prefix: /usr
+  lustre:
+    externals:
+    - spec: lustre@2.12.8_ddn7
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /opt/apps/autotools/1.2
+    - spec: m4@1.4.16
+      prefix: /usr
+  meson:
+    externals:
+    - spec: meson@0.55.1
+      prefix: /usr
+  ncurses:
+    externals:
+    - spec: ncurses@5.9.20130511+termlib abi=5
+      prefix: /usr
+  ninja:
+    externals:
+    - spec: ninja@1.10.2
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.5p1-hpn15v2
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.27.1
+      prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.14.2
+      prefix: /opt/apps/qt5/5.14.2
+  rsync:
+    externals:
+    - spec: rsync@3.1.2
+      prefix: /usr
+  ruby:
+    externals:
+    - spec: ruby@2.0.0
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.2.2
+      prefix: /usr
+  slurm:
+    externals:
+    - spec: slurm@20.11.9
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.7.14
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.26
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@5.1
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.14
+      prefix: /usr
+  xz:
+    externals:
+    - spec: xz@5.2.5
+      prefix: /work2/06146/tg854455/frontera/spack-stack/miniconda-3.9.12
+  zip:
+    externals:
+    - spec: zip@3.0
+      prefix: /usr

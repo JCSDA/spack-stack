@@ -1,0 +1,54 @@
+# The intent of this template is to minimize the jedi-mpas-env virtual environment
+# to provide only the packages needed to compile jedi-bundle with mpas (only).
+# Updated April 2024 by Dom Heinzeller
+spack:
+  concretizer:
+    unify: when_possible
+  view: false
+  include:
+  - site
+  - common
+
+  specs:
+
+  # Externals or gcc-built packages
+  - cmake
+  - git
+  - git-lfs
+  - wget
+  - curl
+  - pkg-config
+  - python
+
+  # Several packages are commented out and not removed from the list;
+  # this is intentional since they may be needed for running ctest etc.
+
+  # Packages built with nvhpc
+  - zlib-api %nvhpc
+  - hdf5 %nvhpc
+  - netcdf-c %nvhpc ~blosc ~dap ~zstd
+  - netcdf-fortran %nvhpc
+  - parallel-netcdf %nvhpc
+  - parallelio %nvhpc
+  #- nccmp
+
+  - blas
+  - boost %nvhpc
+  #- bufr
+  - ecbuild %nvhpc
+  #- eccodes
+  - eckit %nvhpc
+  - ecmwf-atlas %nvhpc
+  - fckit %nvhpc
+  # Currently using openblas, would be nice if we could use the nvhpc package/provider for this
+  - fftw-api
+  # Doesn't build with nvhpc:
+  #- gsibec
+  - gsl-lite %nvhpc
+  - jedi-cmake %nvhpc
+  #- nlohmann-json
+  #- nlohmann-json-schema-validator
+  #- odc
+  - sp %nvhpc
+  - udunits %nvhpc
+  - jasper %nvhpc
