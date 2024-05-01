@@ -26,9 +26,7 @@ Ready-to-use spack-stack 1.7.0 installations are available on the following, ful
 | NASA                +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 |                     | Discover SCU17                   | GCC, Intel      | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-1.7.0/envs``             | JCSDA                         |
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
-|                     | Casper                           | GCC             | ``/glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.7.0/envs``  | JCSDA / EPIC                  |
-| NCAR-Wyoming        +----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
-|                     | Derecho                          | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.7.0/envs`` | EPIC / JCSDA                  |
+| NCAR-Wyoming        + Derecho                          | GCC, Intel      | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/spack-stack-1.7.0/envs`` | EPIC / JCSDA                  |
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
 | NOAA (NCEP)         | Acorn                            | Intel           | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.7.0/envs``          | NOAA-EMC                      |
 +---------------------+----------------------------------+-----------------+------------------------------------------------------------------------------+-------------------------------+
@@ -360,32 +358,6 @@ With AMD clang/flang (aocc), the following is required for building new spack en
 
    `wgrib2@2.0.8` does not build on Nautilus, therefore we are using `wgrib2@3.1.1` on this system.
 
-.. _Preconfigured_Sites_Casper:
-
-------------------------------
-NCAR-Wyoming Casper
-------------------------------
-
-The following is required for building new spack environments and for using spack to build and run software.
-
-.. code-block:: console
-
-   module purge
-   # ignore that the sticky module ncarenv/... is not unloaded
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load ncarenv/23.10
-   module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
-   module load ecflow/5.8.4
-
-For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
-
-.. code-block:: console
-
-   module use /glade/work/epicufsrt/contrib/spack-stack/casper/spack-stack-1.7.0/envs/ue-gcc-12.2.0/install/modulefiles/Core
-   module load stack-gcc/12.2.0
-   module load stack-openmpi/4.1.6
-   module load stack-python/3.10.13
-
 .. _Preconfigured_Sites_Derecho:
 
 --------------------
@@ -637,11 +609,28 @@ For ``spack-stack-1.7.0``, run:
 Pre-configured sites (tier 2)
 =============================================================
 
-Tier 2 preconfigured site are not officially supported by spack-stack. As such, instructions for these systems are provided in form of a `README.md` in the site directory or may not be available. Also, these site configs are not updated on the same regular basis as those of the tier 1 systems and therefore may be out of date and/or not working.
+Tier 2 preconfigured site are not officially supported by spack-stack. As such, instructions for these systems may be provided here, in form of a `README.md` in the site directory, or may not be available. Also, these site configs are not updated on the same regular basis as those of the tier 1 systems and therefore may be out of date and/or not working.
 
 The following sites have site configurations in directory `configs/sites/`:
 - TACC Frontera (`configs/sites/frontera/`)
 - AWS Single Node with Nvidia (NVHPC) compilers (`configs/sites/aws-nvidia/`)
+
+.. _Preconfigured_Sites_Casper:
+
+------------------------------
+NCAR-Wyoming Casper
+------------------------------
+
+The following is required for building new spack environments and for using spack to build and run software.
+
+.. code-block:: console
+
+   module purge
+   # ignore that the sticky module ncarenv/... is not unloaded
+   export LMOD_TMOD_FIND_FIRST=yes
+   module load ncarenv/23.10
+   module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
+   module load ecflow/5.8.4
 
 .. _Configurable_Sites_CreateEnv:
 
