@@ -30,5 +30,8 @@ class UppEnv(BundlePackage):
     depends_on("w3emc")
     depends_on("wrf-io")
     depends_on("prod-util")
+    # For testing:
+    depends_on("wgrib2")
+    depends_on("grib-util")
 
     # There is no need for install() since there is no code.
