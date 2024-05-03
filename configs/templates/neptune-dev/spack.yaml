@@ -1,0 +1,16 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  definitions:
+  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
+  - packages:
+      - neptune-env
+
+  specs:
+    - matrix:
+      - [$packages]
+      - [$compilers]
