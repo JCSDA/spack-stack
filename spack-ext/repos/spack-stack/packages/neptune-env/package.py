@@ -19,10 +19,14 @@ class NeptuneEnv(BundlePackage):
 
     depends_on("base-env", type="run")
 
+    depends_on("mkl", type="run")
+    depends_on("numactl", type="run")
+
     depends_on("libyaml", type="run")
     depends_on("p4est", type="run")
     depends_on("w3emc", type="run")
     depends_on("w3nco", type="run")
+    depends_on("ip@5:", type="run")
     depends_on("esmf", type="run")
     depends_on("nco", type="run")
     depends_on("mct", type="run")
