@@ -188,7 +188,7 @@
     openssl:
       variants: +shared
     p4est:
-      version: ['2.8']
+      require: "@2.8"
     parallelio:
       version: ['2.6.2']
       variants: +pnetcdf

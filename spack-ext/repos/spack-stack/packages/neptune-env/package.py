@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import sys
+
 from spack.package import *
 
 
@@ -13,14 +15,18 @@ class NeptuneEnv(BundlePackage):
     homepage = "https://github.com/notavalidaccount/neptune"
     git = "https://github.com/notavalidaccount/neptune.git"
 
-    maintainers("climbfuji", "areineke")
+    maintainers("climbfuji", "areinecke")
 
-    version("1.0.0")
+    version("1.4.0")
+
+    variant("python", default=True, description="Build Python libraries")
 
     depends_on("base-env", type="run")
 
-    depends_on("mkl", type="run")
-    depends_on("numactl", type="run")
+    depends_on("blas", type="run")
+    depends_on("lapack", type="run")
+    if not sys.platform == "darwin":
+        depends_on("numactl", type="run")
 
     depends_on("libyaml", type="run")
     depends_on("p4est", type="run")
@@ -31,8 +37,21 @@ class NeptuneEnv(BundlePackage):
     depends_on("nco", type="run")
     depends_on("mct", type="run")
 
-    # Required by ESPC, not used by JEDI
+    # Required by ESPC
     depends_on("fftw", type="build")
     depends_on("netlib-lapack", type="build")
+
+    with when("+python"):
+        depends_on("py-f90nml", type="run")
+        depends_on("py-h5py", type="run")
+        depends_on("py-netcdf4", type="run")
+        depends_on("py-pandas", type="run")
+        depends_on("py-pycodestyle", type="run")
+        depends_on("py-pybind11", type="run")
+        ### REALLY NEED THIS? depends_on("py-pyhdf", when="+hdf4", type="run")
+        depends_on("py-python-dateutil", type="run")
+        depends_on("py-pyyaml", type="run")
+        depends_on("py-scipy", type="run")
+        depends_on("py-xarray", type="run")
 
     # There is no need for install() since there is no code.
