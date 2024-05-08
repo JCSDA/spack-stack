@@ -35,6 +35,10 @@ General
 
    This error usually indicates that the wrong module type is used in the ``spack module ... refresh`` command. For example, the system is configured for ``lmod``, but the command used is ``spack module tcl refresh``.
 
+8. Runtime segmentation faults for applications with ``intel@2021.10.0``: ``Relink `/opt/intel/oneapi/compiler/2024.0/lib/libirc.so' with `/lib/x86_64-linux-gnu/libc.so.6' for IFUNC symbol `memmove' - Segmentation fault (core dumped)``.
+
+   This problem is caused by a bad library in the Intel oneAPI installation. The solution is to fix the library using patchelf, which requires write access to the oneAPI installation: First, verify that ``ldd /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` says it is statically linked (it isn't). Then, run: ``patchelf --add-needed libc.so.6 /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` and your application should run rightaway (no need to recompile).
+
 ==============================
 MSU Hercules
 ==============================
