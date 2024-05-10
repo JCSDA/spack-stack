@@ -119,6 +119,9 @@
     hdf5:
       version: ['1.14.3']
       variants: +hl +fortran +mpi ~threadsafe ~szip
+    # Newer versions of hdf-eos2 require manual downloading, avoid
+    hdf-eos2:
+      require: "@2.20v1.00"
     ip:
       version: ['5.0.0']
       variants: precision=4,d,8
