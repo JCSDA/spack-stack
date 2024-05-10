@@ -34,7 +34,6 @@ packages:
       modules:
       - penguin/openmpi/4.1.4/aocc
       - slurm
-    #- spec: openmpi@5.0.1%gcc@12.2.1~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm
     - spec: openmpi@5.0.1%gcc@12.2.1~cuda~java~memchecker~static~wrapper-rpath fabrics=ucx schedulers=slurm
       prefix: /p/app/penguin/openmpi/5.0.1/gcc-8.5.0
       modules:
