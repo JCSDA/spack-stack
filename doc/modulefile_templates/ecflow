@@ -1,4 +1,4 @@
-#%Module1.0
+doc/modulefile_templates/ecflow#%Module1.0
 
 module-whatis "Provides an ecflow-5.8.4 server+ui installation for use with spack."
 
