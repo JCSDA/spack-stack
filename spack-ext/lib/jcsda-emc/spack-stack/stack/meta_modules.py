@@ -718,15 +718,13 @@ def setup_meta_modules():
                 or not compiler_version in python_dict[compiler_name].keys()
             ):
                 logging.warn(
-                    "No Python version found for compiler {compiler_name}@{compiler_version}, skipping Python modules"
+                    f"No Python version found for compiler {compiler_name}@{compiler_version}, skipping Python modules"
                 )
                 continue
             spec = python_dict[compiler_name][compiler_version]
             python_version = str(spec.version)
             logging.info(
-                "  ... configuring stack python interpreter {}@{} for compiler {}@{}".format(
-                    python_name, python_version, compiler_name, compiler_version
-                )
+                f"  ... configuring stack python interpreter {python_name}@{python_version} for compiler {compiler_name}@{compiler_version}"
             )
 
             if spec.external:
