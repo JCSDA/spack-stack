@@ -7,6 +7,8 @@
         fftw-api: [fftw]
         gl: [opengl]
         glu: [openglu]
+        # DH* CHECK IF NEEDED
+        #iconv: [libiconv]
         jpeg: [libjpeg-turbo]
         lapack: [openblas]
         yacc: [bison]
@@ -29,7 +31,7 @@
       version: ['2.2.0']
       variants: ~openmp
     cmake:
-      version: ['3.23.1']
+      version: ['3.27.9']
       variants: +ownlibs
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
@@ -162,9 +164,8 @@
     ncio:
       version: ['1.1.2']
     netcdf-c:
-      version: ['4.9.2']
       # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
-      variants: +dap +mpi ~parallel-netcdf ~szip
+      require: "@4.9.2 +dap +mpi ~parallel-netcdf ~szip build_system=autotools"
     netcdf-cxx4:
       version: ['4.3.1']
     netcdf-fortran:
@@ -246,7 +247,7 @@
     py-shapely:
       require: ['@1.8.0']
     py-torch:
-      require: "+internal-protobuf ~mkldnn"
+      require: "+custom-protobuf ~mkldnn"
     qt:
       version: ['5.15.3']
     scotch:
