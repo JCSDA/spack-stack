@@ -226,6 +226,12 @@
     py-h5py:
       version: ['3.7.0']
       variants: ~mpi
+    # To avoid duplicate packages
+    py-flit-core:
+      require: "@3.8.0"
+    # To avoid duplicate packages
+    py-jinja2:
+      require: "@3.0.3"
     # Comment out for now until build problems are solved
     # https://github.com/jcsda/spack-stack/issues/522
     # see also ewok-env virtual package and container
@@ -248,6 +254,9 @@
       require: ['@1.8.0']
     py-torch:
       require: "+custom-protobuf ~mkldnn"
+    # To avoid duplicate packages
+    py-urllib3:
+      require: "@1.26.12"
     qt:
       version: ['5.15.3']
     scotch:
