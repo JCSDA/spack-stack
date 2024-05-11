@@ -60,6 +60,7 @@ jobs:
               --exclude bison --exclude openssl \
               --exclude python
           spack external find --scope system perl
+          spack external find --scope system libiconv
           spack external find --scope system wget
           PATH="/opt/homebrew/opt/curl/bin:$PATH" \
               spack external find --scope system curl
