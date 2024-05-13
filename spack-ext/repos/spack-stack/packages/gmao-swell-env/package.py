@@ -24,7 +24,7 @@ class GmaoSwellEnv(BundlePackage):
     depends_on("crtm@v2.4-jedi.2", type="run")
 
     # Additional dependencies for JEDI used by swell
-    depends_on("fms@release-jcsda", type="run")
+    depends_on("fms@2023.04+pic", type="run")
     depends_on("nco", type="run")
 
     # GEOS
