@@ -72,7 +72,7 @@ jobs:
           spack config add config:install_tree:padded_length:200
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
+          spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
           spack config add "packages:all:compiler:[gcc@11.4.0]"
           sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%gcc'\]/g" $ENVDIR/spack.yaml
 
