@@ -1,40 +1,28 @@
 packages:
   all:
-    compiler:: [intel@2022.0.2, gcc@10.2.0]
+    compiler:: [intel@23.1.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1, openmpi@4.0.4]
-      # https://github.com/JCSDA/spack-stack/issues/1055
-      zlib-api:: [zlib]
+      mpi:: [intel-oneapi-mpi@2021.9.0]
 
 ### MPI, Python, MKL
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2022.0.2
-      prefix: /apps/intel-2022.1.2/intel-2022.1.2
+    - spec: intel-oneapi-mpi@2021.9.0%intel@23.1.0
       modules:
-      - impi/2022.1.2
-  openmpi:
-    externals:
-    - spec: openmpi@4.0.4%gcc@10.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
-        fabrics=ucx schedulers=slurm +internal-hwloc +two_level_namespace
-      prefix: /apps/gcc-10.2.0/openmpi-4.0.4/openmpi-4.0.4
-      modules:
-      - openmpi/4.0.4
-
-### Modifications of common packages
-  # Temporary - see https://github.com/spack/spack/issues/41947
-  cdo:
-    require: '@2.0.5'
+      - impi/21.9.0
+      prefix: /opt/intel/oneapi
 
 ### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
-      prefix: /usr
+      prefix: /opt/apps/autotools/1.2
   automake:
     externals:
+    - spec: automake@1.15
+      prefix: /opt/apps/autotools/1.2
     - spec: automake@1.13.4
       prefix: /usr
   bash:
@@ -45,17 +33,45 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.32
+      prefix: /opt/apps/gcc/9.1.0
+    - spec: binutils@2.27.44
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
   bzip2:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.24.2
+      prefix: /opt/apps/cmake/3.24.2
+      modules:
+      - cmake/3.24.2
   cpio:
     externals:
     - spec: cpio@2.11
       prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.29.0+ldap
+      prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.11.23
+      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.3
+      prefix: /usr
+  dos2unix:
+    externals:
+    - spec: dos2unix@6.0.3
       prefix: /usr
   doxygen:
     externals:
@@ -65,7 +81,7 @@ packages:
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4
+      prefix: /work2/06146/tg854455/frontera/spack-stack/ecflow-5.8.4
       modules:
       - ecflow/5.8.4
   file:
@@ -90,29 +106,33 @@ packages:
       prefix: /usr
   ghostscript:
     externals:
-    - spec: ghostscript@9.07
+    - spec: ghostscript@9.25
       prefix: /usr
   git:
     externals:
-    - spec: git@2.28.0+tcltk
-      prefix: /apps/git-2.28.0
-    - spec: git@1.8.3.1~tcltk
-      prefix: /usr
+    - spec: git@2.24.1+tcltk
+      prefix: /opt/apps/git/2.24.1
   git-lfs:
     externals:
-    - spec: git-lfs@2.12.0
-      prefix: /apps/git-2.28.0
+    - spec: git-lfs@2.10.0
+      modules:
+      - git-lfs/2.10.0
+      prefix: /work2/06146/tg854455/frontera/spack-stack/git-lfs/2.10.0
   gmake:
     externals:
     - spec: gmake@3.82
+      prefix: /usr
+  go:
+    externals:
+    - spec: go@1.15.14
       prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.2
       prefix: /usr
-  openjdk:
+  hwloc:
     externals:
-    - spec: openjdk@1.8.0_222-b10
+    - spec: hwloc@1.11.8
       prefix: /usr
   krb5:
     externals:
@@ -122,32 +142,39 @@ packages:
     externals:
     - spec: libfuse@2.9.2
       prefix: /usr
-  libxpm:
+    - spec: libfuse@3.6.1
+      prefix: /usr
+  libtool:
     externals:
-    - spec: libxpm@4.11.0
+    - spec: libtool@2.4.6
+      prefix: /opt/apps/autotools/1.2
+    - spec: libtool@2.4.2
       prefix: /usr
   lustre:
     externals:
-    - spec: lustre@2.12.6_ddn51
+    - spec: lustre@2.12.8_ddn7
       prefix: /usr
   m4:
     externals:
+    - spec: m4@1.4.18
+      prefix: /opt/apps/autotools/1.2
     - spec: m4@1.4.16
       prefix: /usr
-  mysql:
-    buildable: False
+  meson:
     externals:
-    - spec: mysql@8.0.31
-      prefix: /work/noaa/epic/role-epic/spack-stack/orion/mysql-8.0.31
-      modules:
-      - mysql/8.0.31
+    - spec: meson@0.55.1
+      prefix: /usr
   ncurses:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5
       prefix: /usr
-  perl:
+  ninja:
     externals:
-    - spec: perl@5.16.3+cpanm+shared+threads
+    - spec: ninja@1.10.2
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.5p1-hpn15v2
       prefix: /usr
   pkg-config:
     externals:
@@ -155,8 +182,8 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.9.2
-      prefix: /usr
+    - spec: qt@5.14.2
+      prefix: /opt/apps/qt5/5.14.2
   rsync:
     externals:
     - spec: rsync@3.1.2
@@ -169,6 +196,14 @@ packages:
     externals:
     - spec: sed@4.2.2
       prefix: /usr
+  slurm:
+    externals:
+    - spec: slurm@20.11.9
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.7.14
+      prefix: /usr
   tar:
     externals:
     - spec: tar@1.26
@@ -177,18 +212,14 @@ packages:
     externals:
     - spec: texinfo@5.1
       prefix: /usr
-  texlive:
-    externals:
-    - spec: texlive@20130530
-      prefix: /usr
   wget:
     externals:
     - spec: wget@1.14
       prefix: /usr
   xz:
     externals:
-    - spec: xz@5.2.2
-      prefix: /usr
+    - spec: xz@5.2.5
+      prefix: /work2/06146/tg854455/frontera/spack-stack/miniconda-3.9.12
   zip:
     externals:
     - spec: zip@3.0

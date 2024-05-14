@@ -71,6 +71,7 @@ modules:
       - openssl
       - perl
       - pkgconf
+      - pkg-config
       - qt
       - randrproto
       - readline
@@ -137,6 +138,10 @@ modules:
           ^esmf@8.5.0+debug snapshot=none: 'esmf-8.5.0-debug'
           ^esmf@8.6.0~debug snapshot=none: 'esmf-8.6.0'
           ^esmf@8.6.0+debug snapshot=none: 'esmf-8.6.0-debug'
+          ^esmf@8.6.1b04~debug snapshot=b04: 'esmf-8.6.1b04'
+          ^esmf@8.6.1b04+debug snapshot=b04: 'esmf-8.6.1b04-debug'
+          ^esmf@8.7.0b04~debug snapshot=b04: 'esmf-8.7.0b04'
+          ^esmf@8.7.0b04+debug snapshot=b04: 'esmf-8.7.0b04-debug'
       openmpi:
         environment:
           set:
@@ -189,7 +194,6 @@ modules:
             'TOCGRIB': '{prefix}/bin/tocgrib'
             'TOCGRIB2': '{prefix}/bin/tocgrib2'
             'TOCGRIB2SUPER': '{prefix}/bin/tocgrib2super'
-            'WGRIB2': '{prefix}/bin/wgrib2'
       landsfcutil:
         environment:
           set:

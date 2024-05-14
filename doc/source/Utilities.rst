@@ -29,6 +29,7 @@ check_package_config.py
 The utility at util/check_package_config.py is run after concretization in an active spack-stack environment (i.e., `$SPACK_ENV` is set) to confirm that the packages versions and variants in common/packages.yaml are respected in the concretization, as well as that any externals specified in site/packages.yaml are not being omitted. It does this by reading common/packages.yaml (for the version and variant settings), site/packages.yaml (for the external settings), and spack.lock. Usage is as follows:
 
 .. code-block:: console
+
    spack env active envs/unified-env/
    # To verify versions, variants, and externals:
    ${SPACK_STACK_DIR}/util/check_package_config.py

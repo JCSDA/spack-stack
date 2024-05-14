@@ -23,6 +23,7 @@ in installing the large number of packages managed by spack-stack.
 - The NOAA Environmental Modeling Center (EMC)
 - The UCAR Joint Center for Satellite Data Assimilation (JCSDA)
 - The Earth Prediction Innovation Center (EPIC)
+- The U.S. Naval Research Laboratory (NRL)
 
 Each stakeholder will designate a small number of developers to assist
 in spack-stack development by becoming a code manager of the
@@ -33,8 +34,9 @@ spack-stack repo.
 Organization | Code Manager(s)
 -------------|----------------
 NOAA EMC | Alex Richert, Hang Lei, Ed Hartnett
-JCSDA | Dom Heinzeller, Steve Herbener
+JCSDA | Steve Herbener, TBD
 EPIC | Cam Book, Natalie Perlin, Ratko Vasic
+NRL | Dom Heinzeller, Sarah King
 
 ## Project Process
 
@@ -116,24 +118,24 @@ which case the work will be shared by the code managers.
 
 #### Directory structure of spack-stack installs
 
-/path/to/spack-stack/spack-stack-x.y.z/envs/unified-env-compiler-name-compiler-version/install/compiler-name/compiler-version/package-name-version-hash
+/path/to/spack-stack/spack-stack-x.y.z/envs/ue-compiler-name-compiler-version/install/compiler-name/compiler-version/package-name-version-hash
 
 _Example_
-/Users/heinzell/prod/spack-stack-1.4.0/envs/unified-env-apple-clang-13.1.6/install/apple-clang/13.1.6/netcdf-c-4.9.2-vrrvi2u
+/Users/heinzell/prod/spack-stack-1.4.0/envs/ue-apple-clang-13.1.6/install/apple-clang/13.1.6/netcdf-c-4.9.2-vrrvi2u
 
 #### Auto-generated modules structure (no MPI dependency)
 
-/path/to/spack-stack/spack-stack-x.y.z/envs/unified-env/install/modulefiles/compiler-name/compiler-version/package-name/package-version[.lua]
+/path/to/spack-stack/spack-stack-x.y.z/envs/ue-compiler-name-compiler-version/install/modulefiles/compiler-name/compiler-version/package-name/package-version[.lua]
 
 _Example_
-/Users/heinzell/prod/spack-stack-1.4.0/envs/unified-env/install/modulefiles/apple-clang/13.1.6/sfcio/1.4.1.lua
+/Users/heinzell/prod/spack-stack-1.4.0/envs/ue-apple-clang-13.1.6/install/modulefiles/apple-clang/13.1.6/sfcio/1.4.1.lua
 
 ####  Auto-generated modules structure (MPI dependency)
 
-/path/to/spack-stack/spack-stack-x.y.z/envs/unified-env/install/modulefiles/mpi-name/mpi-version/compiler-name/compiler-version/package-name/package-version[.lua]
+/path/to/spack-stack/spack-stack-x.y.z/envs/ue-compiler-name-compiler-version/install/modulefiles/mpi-name/mpi-version/compiler-name/compiler-version/package-name/package-version[.lua]
 
 _Example_
-/Users/heinzell/prod/spack-stack-1.4.0/envs/unified-env/install/modulefiles/openmpi/4.1.5/apple-clang/13.1.6/hdf5/1.14.0.lua
+/Users/heinzell/prod/spack-stack-1.4.0/envs/ue-apple-clang-13.1.6/install/modulefiles/openmpi/4.1.5/apple-clang/13.1.6/hdf5/1.14.0.lua
 
 #### Important points to remember 
 
