@@ -1,16 +1,19 @@
-This README provides step by step instructions for installing the basic packages
-(OS packages, external packages) for spack-stack. Following these steps ensures
-that the site configuration files in `configs/sites/noaa-gcloud` work out of the box.
+# Provisiong ParallelWorks Gcloud clusters
 
-# Basic system packages (need to be installed each time a cluster is spun up)
+## Steps to perform when provisioning a cluster for the very first time
 
+This section provides step by step instructions for installing the basic packages (OS packages, external packages) for spack-stack. Following these steps ensures that the site configuration files in `configs/sites/noaa-aws` work out of the box.
+
+### Basic system packages
+```
 sudo su
 chmod 777 /contrib
+
 # The following three commands were necessary to fix failures accessing these repos
 yum-config-manager --disable intel-clck-2019-repo
 yum-config-manager --disable intel-hpc-platform
 yum-config-manager --disable intelpython
-#
+
 yum install -y qt5-qtbase-devel
 yum install -y qt5-qtsvg-devel
 yum install -y xorg-x11-xauth
@@ -20,9 +23,9 @@ yum install -y gettext-devel
 yum install -y m4
 yum install -y finger
 exit
-
-# Create a script that can be added to the cluster resource config so that these packages get installed automatically
-
+```
+Create a script that can be added to the cluster resource config so that these packages get installed automatically when provisioning new clusters later:
+```
 mkdir -p /contrib/admin
 cat <<EOF > /contrib/admin/basic_setup.sh
 #!/bin/bash
@@ -42,15 +45,10 @@ yum install -y finger
 EOF
 
 chmod a+x /contrib/admin/basic_setup.sh
+```
 
-# Enable R2D2 experiment scrubber in cron (if applicable)
-
-Refer to https://github.com/JCSDA-internal/jedi-tools/tree/develop/crontabs/noaa-gcloud
-
-The scripts are all set up in the /contrib space and should work after a restart of the cluster. However, any updates to R2D2 that require changes to the scrubber scripts need to be made!
-
-# Create a mysql config for local R2D2 use (if applicable)
-
+### Create a mysql config for local R2D2 use (if applicable)
+```
 sudo su
 cat <<EOF > /contrib/admin/my.cnf
 [mysqld]
@@ -65,9 +63,10 @@ pid-file=/mysql_local/run/mariadb.pid
 EOF
 chmod 644 /contrib/admin/my.cnf
 exit
+```
 
-# Build external packages for spack-stack
-
+### Build external packages for spack-stack
+```
 mkdir -p /contrib/spack-stack
 mkdir /contrib/spack-stack/modulefiles
 cd /contrib/spack-stack/
@@ -140,10 +139,16 @@ make install 2>&1 | tee log.install
 cd /contrib/spack-stack/modulefiles
 mkdir ecflow
 # Create the modulefile from the template in doc/modulefile_templates
+```
 
-############## Steps to perform when starting a new cluster ##############
+## Steps to perform when starting a new cluster
 
-source /contrib/admin/basic_setup.sh  # sudo privileges requred to install packages
+This should be done automatically, but doesn't hurt to run again just in case:
+```
+sudo /contrib/admin/basic_setup.sh
+```
+Configure `git` and `aws` command line utilities
+```
 module unuse /opt/cray/craype/default/modulefiles
 module unuse /opt/cray/modulefiles
 module use /contrib/spack-stack/modulefiles
@@ -161,3 +166,4 @@ mkdir ~/.aws
 # Create ~/.aws/config
 # Create ~/.aws/credentials
 chmod 400 ~/.aws/credentials
+```
