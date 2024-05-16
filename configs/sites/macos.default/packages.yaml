@@ -5,8 +5,5 @@ packages:
     buildable: false
   libiconv:
     buildable: false
-  # DH* CHECK IF NEEDED
-  #wget:
-  #  buildable: false
   wgrib2:
     variants: ~openmp

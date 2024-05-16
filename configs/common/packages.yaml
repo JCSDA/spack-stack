@@ -7,8 +7,6 @@
         fftw-api: [fftw]
         gl: [opengl]
         glu: [openglu]
-        # DH* CHECK IF NEEDED
-        #iconv: [libiconv]
         jpeg: [libjpeg-turbo]
         lapack: [openblas]
         yacc: [bison]
