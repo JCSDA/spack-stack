@@ -48,7 +48,7 @@ class NeptuneEnv(BundlePackage):
         depends_on("py-pandas", type="run")
         depends_on("py-pycodestyle", type="run")
         depends_on("py-pybind11", type="run")
-        ### REALLY NEED THIS? depends_on("py-pyhdf", when="+hdf4", type="run")
+        depends_on("py-pyhdf", type="run")
         depends_on("py-python-dateutil", type="run")
         depends_on("py-pyyaml", type="run")
         depends_on("py-scipy", type="run")
