@@ -1,7 +1,9 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = spack-stack-dev
+  #url = https://github.com/jcsda/spack
+  #branch = spack-stack-dev
+  url = https://github.com/climbfuji/spack
+  branch = feature/merge_spack_develop_into_spack_stack_dev_20240509
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
