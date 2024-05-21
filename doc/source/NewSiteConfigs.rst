@@ -299,7 +299,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    # Check your clang version then add it to your site compiler config.
    clang --version
    spack config add "packages:all:compiler:[apple-clang@YOUR-VERSION]"
-   spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
+   spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
 
 8. If the environment will be used to run JCSDA's JEDI-Skylab experiments using R2D2 with a local MySQL server, run the following command:
 
@@ -550,10 +550,10 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
 
    # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
+   spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
 
    # Example for Ubuntu 20.04 or 22.04 following the above instructions
-   spack config add "packages:all:providers:mpi:[mpich@4.1.2]"
+   spack config add "packages:all:providers:mpi:[mpich@4.2.1]"
 
 .. warning::
    On some systems, the default compiler (e.g., ``gcc`` on Ubuntu 20) may not get used by spack if a newer version is found. Compare your entry to the output of the concretization step later and adjust the entry, if necessary.
