@@ -17,6 +17,7 @@ if { [ module-info mode load ] && ![ is-loaded qt/5.15.2 ] } {
 # Set this value
 set ECFLOW_PATH "/discover/swdev/jcsda/spack-stack/ecflow-5.8.4"
 
+setenv       ecflow_ROOT "${ECFLOW_PATH}"
 prepend-path PATH "${ECFLOW_PATH}/bin"
 prepend-path LD_LIBRARY_PATH "${ECFLOW_PATH}/lib"
 prepend-path LD_LIBRARY_PATH "${ECFLOW_PATH}/lib64"
