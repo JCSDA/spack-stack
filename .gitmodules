@@ -2,6 +2,8 @@
   path = spack
   url = https://github.com/jcsda/spack
   branch = spack-stack-dev
+  url = https://github.com/climbfuji/spack
+  branch = feature/add_esmf861_spack_stack_dev
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
