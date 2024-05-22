@@ -60,6 +60,7 @@ jobs:
               --exclude bison --exclude openssl \
               --exclude python
           spack external find --scope system perl
+          spack external find --scope system libiconv
           spack external find --scope system wget
           PATH="/opt/homebrew/opt/curl/bin:$PATH" \
               spack external find --scope system curl
@@ -79,12 +80,15 @@ jobs:
           # *DH
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@5.0.1]"
+          spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
           spack config add "packages:all:compiler:[apple-clang@14.0.3]"
           sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
-          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+          # DH* 20240513 - avoid hdf-eos2 until https://github.com/spack/spack/issues/44168 is resolved
+          #spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+          spack config add "packages:met:variants:+python +grib2 +graphics"
+          # *DH
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.3
@@ -138,7 +142,7 @@ jobs:
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.3
-          module load stack-openmpi/5.0.1
+          module load stack-openmpi/5.0.3
           module load stack-python/3.10.13
           module available
 
