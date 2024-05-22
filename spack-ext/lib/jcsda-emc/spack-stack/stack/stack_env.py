@@ -298,7 +298,7 @@ class StackEnv(object):
             original = original_sections.get(section, {})
             existing = spack.config.get(section, scope=env_scope)
             new = spack.config.merge_yaml(existing, original)
-            if section in existing:
+            if existing and section in existing:
                 spack.config.set(section, new[section], env_scope)
 
         with env.write_transaction():
