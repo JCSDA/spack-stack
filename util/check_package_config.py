@@ -34,7 +34,7 @@ with open(packages_versions_path, "r") as f:
     packages_versions = yaml.safe_load(f)
 
 packages_externals_path = os.path.join(SPACK_ENV, "site", "packages.yaml")
-if os.path.isdir(packages_externals_path):
+if os.path.isfile(packages_externals_path):
     with open(packages_externals_path, "r") as f:
         packages_externals = yaml.safe_load(f)
 
@@ -100,7 +100,7 @@ for concrete_spec in spack_lock["concrete_specs"].values():
                         f"WARNING: '{concrete_name}' concretized variant '{config_variant}' does not match configured value in $SPACK_ENV/common/packages.yaml"
                     )
     # Check whether concretized package is an external based on site/packages.yaml
-    if os.path.isdir(packages_externals_path):
+    if os.path.isfile(packages_externals_path):
         if concrete_name in packages_externals["packages"].keys():
             is_external_config = "externals" in packages_externals["packages"][concrete_name].keys()
         else:
