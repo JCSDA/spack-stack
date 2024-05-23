@@ -18,17 +18,6 @@ class JediNeptuneEnv(BundlePackage):
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
-
-    depends_on("libyaml", type="run")
-    depends_on("p4est", type="run")
-    depends_on("w3emc", type="run")
-    depends_on("w3nco", type="run")
-    depends_on("esmf", type="run")
-    depends_on("nco", type="run")
-    depends_on("mct", type="run")
-
-    # Required by ESPC, not used by JEDI
-    depends_on("fftw", type="build")
-    depends_on("netlib-lapack", type="build")
+    depends_on("neptune-env", type="run")
 
     # There is no need for install() since there is no code.

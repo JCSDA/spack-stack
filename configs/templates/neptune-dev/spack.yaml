@@ -1,0 +1,16 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  definitions:
+  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
+  - packages:
+      - neptune-env ^esmf@8.7.0b04 snapshot=b04
+
+  specs:
+    - matrix:
+      - [$packages]
+      - [$compilers]

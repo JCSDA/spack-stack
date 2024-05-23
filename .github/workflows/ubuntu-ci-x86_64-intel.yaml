@@ -17,7 +17,7 @@ defaults:
     shell: bash
 
 jobs:
-  ubuntu-ci-x86_64-intel-build:
+  ubuntu-ci-c6a-x86_64-intel-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
 
     steps:
