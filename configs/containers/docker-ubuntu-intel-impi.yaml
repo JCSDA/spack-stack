@@ -79,7 +79,7 @@ spack:
       buildable: false
       externals:
       - spec: py-pynacl@1.5.0
-        prefix: /usr/lib/python3/dist-packages/nacl
+        prefix: /usr
     # Turn off crypt, because libxcrypt doesn't
     # build with Intel.
     python:
@@ -185,7 +185,7 @@ spack:
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
         apt update && \
-        apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 python3-nacl -y && \
+        apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 -y && \
         rm -rf /var/lib/apt/lists/*
       pre_final: |
         # Set environment variables for installing tzdata
@@ -200,13 +200,14 @@ spack:
         spack env activate -d . && \
         spack find 2>&1 | tee /root/spack_find.out
       final: |
-        # Install Intel compilers and MPI library
+        # Install Intel compilers and MPI library and pynacl
         RUN apt update  && apt install apt-utils && \
         wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
         echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
         apt update && \
         apt install intel-oneapi-compiler-dpcpp-cpp-and-cpp-classic-2022.1.0 intel-oneapi-compiler-fortran-2022.1.0 intel-oneapi-mkl-devel-2022.1.0 intel-oneapi-mpi-devel-2021.6.0 -y && \
-        rm -rf /var/lib/apt/lists/*
+        rm -rf /var/lib/apt/lists/* && \
+        /opt/views/view/bin/pip3 install pynacl
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
         # Make a non-root user:nonroot / group:nonroot for running MPI
