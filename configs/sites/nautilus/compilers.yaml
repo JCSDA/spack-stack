@@ -49,4 +49,23 @@ compilers:
     - scl/gcc-toolset-12
     environment: {}
     extra_rpaths: []
-
+- compiler:
+    spec: oneapi@2024.1.0
+    paths:
+      cc: /p/app/compilers/intel/oneapi-2024.1.0/compiler/2024.1/bin/icx
+      cxx: /p/app/compilers/intel/oneapi-2024.1.0/compiler/2024.1/bin/icpx
+      f77: /p/app/compilers/intel/oneapi-2024.1.0/compiler/2024.1/bin/ifort
+      fc: /p/app/compilers/intel/oneapi-2024.1.0/compiler/2024.1/bin/ifort
+    flags:
+      fflags: -diag-disable=10448
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - intel/compiler/2024.1.0
+    environment:
+      prepend_path:
+        #PATH: '/opt/rh/gcc-toolset-11/root/usr/bin'
+        #CPATH: '/opt/rh/gcc-toolset-11/root/usr/include'
+        #LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
+        LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm'
+    extra_rpaths: []
