@@ -18,7 +18,7 @@ compilers:
       fflags: "-gcc-name=/usr/bin/gcc-12"
     environment:
       set:
-        # OpenSUSE on Gaea C5 sets CONFIG_SITE so
+        # OpenSUSE on Gaea C6 sets CONFIG_SITE so
         # Automake-based builds are installed in lib64
         # which confuses some packages.
         CONFIG_SITE: ''
