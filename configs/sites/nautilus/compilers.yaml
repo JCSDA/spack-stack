@@ -64,8 +64,8 @@ compilers:
     - intel/compiler/2024.1.0
     environment:
       prepend_path:
-        #PATH: '/opt/rh/gcc-toolset-11/root/usr/bin'
-        #CPATH: '/opt/rh/gcc-toolset-11/root/usr/include'
+        PATH: '/opt/rh/gcc-toolset-11/root/usr/bin'
+        CPATH: '/opt/rh/gcc-toolset-11/root/usr/include'
         #LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
-        LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm'
+        LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
     extra_rpaths: []
