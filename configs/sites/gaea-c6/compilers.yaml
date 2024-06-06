@@ -1,0 +1,25 @@
+compilers:
+- compiler:
+    spec: intel@2023.2.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    operating_system: sles15
+    modules:
+    - PrgEnv-intel/8.5.0
+    - intel-classic/2023.2.0
+    - craype/2.7.30
+    - libfabric/1.20.1
+    flags:
+      cflags: "-gcc-name=/usr/bin/gcc-12"
+      cxxflags: "-gxx-name=/usr/bin/g++-12 -gcc-name=/usr/bin/gcc-12 -static-libstdc++"
+      fflags: "-gcc-name=/usr/bin/gcc-12"
+    environment:
+      set:
+        # OpenSUSE on Gaea C6 sets CONFIG_SITE so
+        # Automake-based builds are installed in lib64
+        # which confuses some packages.
+        CONFIG_SITE: ''
+    extra_rpaths: []
