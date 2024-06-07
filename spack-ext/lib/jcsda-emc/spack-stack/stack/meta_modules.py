@@ -166,6 +166,13 @@ def setenv_command(module_choice, key, value):
         return "setenv {{{}}} {{{}}}\n".format(key, value)
 
 
+def append_path_command(module_choice, key, value):
+    if module_choice == "lmod":
+        return 'append_path("{}", "{}")\n'.format(key, value)
+    else:
+        return "append-path {{{}}} {{{}}}\n".format(key, value)
+
+
 def prepend_path_command(module_choice, key, value):
     if module_choice == "lmod":
         return 'prepend_path("{}", "{}")\n'.format(key, value)
@@ -392,6 +399,13 @@ def setup_meta_modules():
                 "environment" in compiler["compiler"].keys()
                 and compiler["compiler"]["environment"]
             ):
+                # append_path
+                if "append_path" in compiler["compiler"]["environment"].keys():
+                    for env_name in compiler["compiler"]["environment"]["append_path"]:
+                        env_values = compiler["compiler"]["environment"]["append_path"][env_name]
+                        substitutes["ENVVARS"] += append_path_command(
+                            module_choice, env_name, env_values
+                        )
                 # prepend_path
                 if "prepend_path" in compiler["compiler"]["environment"].keys():
                     for env_name in compiler["compiler"]["environment"]["prepend_path"]:
@@ -612,6 +626,12 @@ def setup_meta_modules():
                             "  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"])
                         )
 
+                    # Compiler environment variables
+                    substitutes["CC"] = compiler["compiler"]["paths"]["cc"]
+                    substitutes["CXX"] = compiler["compiler"]["paths"]["cxx"]
+                    substitutes["F77"] = compiler["compiler"]["paths"]["f77"]
+                    substitutes["FC"] = compiler["compiler"]["paths"]["fc"]
+
                     # Compiler wrapper environment variables
                     if "intel" in mpi_name:
                         substitutes["MPICC"] = os.path.join("mpiicc")
@@ -623,7 +643,7 @@ def setup_meta_modules():
                         substitutes["MPICXX"] = os.path.join("mpic++")
                         substitutes["MPIF77"] = os.path.join("mpif77")
                         substitutes["MPIF90"] = os.path.join("mpif90")
-
+            
                     # Spack compiler module hierarchy
                     substitutes["MODULEPATH"] = os.path.join(
                         module_dir, mpi_name, mpi_version, compiler_name, compiler_version

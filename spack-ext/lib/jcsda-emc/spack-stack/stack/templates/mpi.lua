@@ -31,6 +31,13 @@ setenv("MPI_CXX", "@MPICXX@")
 setenv("MPI_F77", "@MPIF77@")
 setenv("MPI_F90", "@MPIF90@")
 
+-- intel specific mpi wrapper environment variables
+setenv("I_MPI_CC",  "@CC@")
+setenv("I_MPI_CXX", "@CXX@")
+setenv("I_MPI_F77", "@F77@")
+setenv("I_MPI_F90", "@FC@")
+setenv("I_MPI_FC",  "@FC@")
+
 -- compiler flags and other environment variables
 @COMPFLAGS@
 @ENVVARS@
