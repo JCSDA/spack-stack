@@ -13,9 +13,9 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
 +===========================================+======================================================================+===========================+
-| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the latest available version in oneAPI 2023.2.3 [#fn1]_  | ``intel@``                |
+| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the final version in oneAPI 2023.2.3 [#fn1]_             | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Intel mixed (icx, icpx, ifort)            | all versions up to latest available version in oneAPI 2023.1.0       | ``intel@``                |
+| Intel mixed (icx, icpx, ifort)            | 2024.1.2                                                             | ``oneapi@``               |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
@@ -381,6 +381,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    # Do *not* install MPI with yum, this will be done with spack-stack
 
    # Misc
+   yum -y install binutils-devel
    yum -y install m4
    yum -y install wget
    # Do not install cmake (it's 3.20.2, which doesn't work with eckit)
@@ -397,6 +398,8 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install gettext-devel
    yum -y install texlive
    # Do not install qt@5 for now
+   # Only if building with oneapi compilers instead of gcc, intel: install bison
+   yum -y install bison
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
@@ -521,6 +524,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
        --exclude curl --exclude openssl \
        --exclude openssh --exclude python
    spack external find --scope system wget
+   # Only if building with oneapi compilers instead of gcc, intel: install bison
+   spack external find --scope system bison
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
