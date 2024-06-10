@@ -77,14 +77,16 @@ class PyXnrl(PythonPackage):
     depends_on("py-matplotlib", type=("build", "run"))
     #depends_on("py-pandas@2.2.2:", type=("build", "run"))
     ### Turn off performance variant to avoid py-numba and llvm compiler dependency
-    #depends_on("py-pandas ~performance", type=("build", "run"))
-    depends_on("py-pandas", type=("build", "run"))
+    depends_on("py-pandas ~performance", type=("build", "run"))
+    #depends_on("py-pandas", type=("build", "run"))
     #depends_on("py-scipy@1.13.1:", type=("build", "run"))
     depends_on("py-scipy", type=("build", "run"))
+    # TRY WITHOUT xESMF
     #depends_on("py-xesmf@0.8.5:", type=("build", "run"))
-    depends_on("py-xesmf", type=("build", "run"))
+    ### depends_on("py-xesmf", type=("build", "run"))
+    # TRY WITHOUT BECAUSE OF NUMBA
     #depends_on("py-xskillscore@0.0.26:", type=("build", "run"))
-    depends_on("py-xskillscore", type=("build", "run"))
+    #depends_on("py-xskillscore", type=("build", "run"))
 
     #def url_for_version(self, version):
     #    if version == Version("2022.09.29"):
