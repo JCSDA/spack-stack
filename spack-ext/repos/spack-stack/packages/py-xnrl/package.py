@@ -26,52 +26,26 @@ class PyXnrl(PythonPackage):
     depends_on("py-setuptools", type="build")
     depends_on("py-poetry", type="build")
 
-    #depends_on("py-metpy@1.4.1:", type=("build", "run"))
     depends_on("py-metpy", type=("build", "run"))
-    #depends_on("py-dask@2023.3.2: +delayed", type=("build", "run"))
     depends_on("py-dask +delayed", type=("build", "run"))
-    #depends_on("py-h5netcdf@1.1.0:", type=("build", "run"))
     depends_on("py-h5netcdf", type=("build", "run"))
-    #depends_on("py-netcdf4@1.6.3:", type=("build", "run"))
     depends_on("py-netcdf4", type=("build", "run"))
-    #depends_on("py-numpy@1.24.2:", type=("build", "run"))
     depends_on("py-numpy", type=("build", "run"))
-    #depends_on("py-tqdm@4.65.0:", type=("build", "run"))
     depends_on("py-tqdm", type=("build", "run"))
-    #depends_on("py-xarray@2023.3.0:", type=("build", "run"))
     depends_on("py-xarray", type=("build", "run"))
-    #depends_on("py-ecmwflibs@:0.5.3", type=("build", "run"))
     depends_on("py-ecmwflibs", type=("build", "run"))
-    #depends_on("eccodes@1.6.1:", type=("build", "run"))
     depends_on("eccodes", type=("build", "run"))
-    #depends_on("py-cfgrib@0.9.10.4", type=("build", "run"))
     depends_on("py-cfgrib", type=("build", "run"))
-    #depends_on("py-cf-xarray@0.8.4:", type=("build", "run"))
     depends_on("py-cf-xarray", type=("build", "run"))
-    # Does not exist in spack, and is deprecated:
-    #depends_on("py-pygrib@2.1.4:", type=("build", "run"))
-    #depends_on("py-cartopy@0.22.0:", type=("build", "run"))
+    # Does not exist in spack, and is deprecated - ignore
+    #depends_on("py-pygrib", type=("build", "run"))
     depends_on("py-cartopy", type=("build", "run"))
-    #depends_on("py-cftime@1.6.3:", type=("build", "run"))
     depends_on("py-cftime", type=("build", "run"))
-    #depends_on("py-h5py@3.11.0:", type=("build", "run"))
     depends_on("py-h5py", type=("build", "run"))
-    #depends_on("py-matplotlib@3.9.0:", type=("build", "run"))
     depends_on("py-matplotlib", type=("build", "run"))
-    #depends_on("py-pandas@2.2.2:", type=("build", "run"))
     # Turn off performance variant to avoid py-numba and llvm compiler dependency
     depends_on("py-pandas ~performance", type=("build", "run"), when="~numba")
     depends_on("py-pandas +performance", type=("build", "run"), when="+numba")
-    #depends_on("py-scipy@1.13.1:", type=("build", "run"))
     depends_on("py-scipy", type=("build", "run"))
-    #depends_on("py-xesmf@0.8.5:", type=("build", "run"), when="+numba")
     depends_on("py-xesmf", type=("build", "run"), when="+numba")
-    #depends_on("py-xskillscore@0.0.26:", type=("build", "run"), when="+numba")
     depends_on("py-xskillscore", type=("build", "run"), when="+numba")
-
-    #def url_for_version(self, version):
-    #    if version == Version("2022.09.29"):
-    #        url = f"https://github.com/U-S-NRL-Marine-Meteorology-Division/xnrl/archive/refs/tags/{version}.tar.gz"
-    #    else:
-    #        url = f"https://github.nrlmry.navy.mil/Python/xnrl/archive/refs/tags/{version}.tar.gz"
-    #    return url.format(version)
