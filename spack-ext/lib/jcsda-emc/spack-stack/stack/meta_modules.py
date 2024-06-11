@@ -626,11 +626,12 @@ def setup_meta_modules():
                             "  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"])
                         )
 
-                    # Compiler environment variables
-                    substitutes["CC"] = compiler["compiler"]["paths"]["cc"]
-                    substitutes["CXX"] = compiler["compiler"]["paths"]["cxx"]
-                    substitutes["F77"] = compiler["compiler"]["paths"]["f77"]
-                    substitutes["FC"] = compiler["compiler"]["paths"]["fc"]
+                    # Don't think we need this!
+                    ## Compiler environment variables
+                    #substitutes["CC"] = compiler["compiler"]["paths"]["cc"]
+                    #substitutes["CXX"] = compiler["compiler"]["paths"]["cxx"]
+                    #substitutes["F77"] = compiler["compiler"]["paths"]["f77"]
+                    #substitutes["FC"] = compiler["compiler"]["paths"]["fc"]
 
                     # Compiler wrapper environment variables
                     if "intel" in mpi_name:
