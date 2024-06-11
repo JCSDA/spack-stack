@@ -168,6 +168,15 @@ jobs:
           unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate
+          echo "Verify 'create env' warnings"
+          spack stack create env --name chaintest2 --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2> stdout.txt
+          cnt=$(grep -c "WARNING" stdout.txt || true)
+          if [ $cnt -ne 0 ]; then echo "Incorrect 'create env' warning"; exit 1; fi
+          echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/site/packages.yaml
+          echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/common/packages.yaml
+          spack stack create env --name chaintest3 --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2> stdout.txt
+          cnt=$(grep -c "WARNING" stdout.txt || true)
+          if [ $cnt -ne 2 ]; then echo "Missing 'create env' warnings"; exit 1; fi
 
       - name: test-env
         run: |
