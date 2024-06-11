@@ -21,6 +21,7 @@ spack:
       - jedi-tools-env
       - jedi-ufs-env
       - jedi-um-env
+      - neptune-env
       - soca-env
       - ufs-srw-app-env
       - ufs-weather-model-env
