@@ -117,6 +117,8 @@
       variants: +external-xdr ~fortran ~netcdf
     hdf5:
       require: '@1.14.3 +hl +fortran +mpi +threadsafe ~szip'
+      # How to fix the annoying concretization errors (add %oneapi?)
+      #require: '@1.14.3%oneapi +hl +fortran +mpi +threadsafe ~szip'
     # Newer versions of hdf-eos2 require manual downloading, avoid
     hdf-eos2:
       require: "@2.20v1.00"
