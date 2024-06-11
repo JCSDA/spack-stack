@@ -1,9 +1,7 @@
 [submodule "spack"]
   path = spack
-  #url = https://github.com/jcsda/spack
-  #branch = spack-stack-dev
-  url = https://github.com/climbfuji/spack
-  branch = bugfix/dependencies_py_poetry_and_py_numexpr
+  url = https://github.com/jcsda/spack
+  branch = spack-stack-dev
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
