@@ -242,6 +242,10 @@ class StackEnv(object):
             spack.config.add(lmod_prefix, scope=env_scope)
             spack.config.add(tcl_prefix, scope=env_scope)
         if self.upstreams:
+            env_config_dirs = {
+                "common": os.path.join(self.env_dir(), "common"),
+                "site": os.path.join(self.env_dir(), "site"),
+            }
             for upstream_path in self.upstreams:
                 upstream_path = upstream_path[0]
                 # spack doesn't handle "~/" correctly, this fixes it:
@@ -264,6 +268,19 @@ class StackEnv(object):
                 upstream = "upstreams:%s:install_tree:'%s'" % (name, upstream_path)
                 logging.info("Adding upstream path '%s'" % upstream_path)
                 spack.config.add(upstream, scope=env_scope)
+                # Verify that config files match
+                upstream_config_dirs = {
+                    "common": os.path.normpath(os.path.join(upstream_path, "../common/")),
+                    "site": os.path.normpath(os.path.join(upstream_path, "../site/")),
+                }
+                for n in ("common", "site"):
+                    if os.system("diff -rq %s %s &> /dev/null" % (env_config_dirs[n], upstream_config_dirs[n])):
+                        logging.warning(
+                            (f"WARNING: {n} config directories for this environment and upstream "
+                             f"'{upstream_path}' do not match! Verify that you are using the same "
+                              "version of spack-stack, or really, really know what you are doing.")
+                        )
+
         if self.modifypkg:
             logging.info("Creating custom repo with packages %s" % ", ".join(self.modifypkg))
             env_repo_path = os.path.join(env_dir, "envrepo")
