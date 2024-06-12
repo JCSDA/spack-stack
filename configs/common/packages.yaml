@@ -66,6 +66,8 @@
       require: '@3.3.10'
     fiat:
       require: '@1.2.0'
+    flex:
+      require: '@2.6.4'
     fms:
       variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
     fontconfig:
