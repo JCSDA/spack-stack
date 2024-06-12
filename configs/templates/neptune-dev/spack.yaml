@@ -6,7 +6,7 @@ spack:
   include: []
 
   definitions:
-  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
+  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
       - neptune-env ^esmf@8.7.0b04 snapshot=b04
 
