@@ -127,10 +127,11 @@ packages:
       prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
       modules:
       - mysql/8.0.31
-  perl:
-    externals:
-    - spec: perl@5.26.3~cpanm+open+shared+threads
-      prefix: /usr
+  # Needed to remove for xnrl w/intel, hopefully ok with oneapi
+  #perl:
+  #  externals:
+  #  - spec: perl@5.26.3~cpanm+open+shared+threads
+  #    prefix: /usr
   pkgconf:
     externals:
     - spec: pkgconf@1.4.2
