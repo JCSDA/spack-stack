@@ -205,7 +205,6 @@
     prod-util:
       version: ['2.1.1']
     proj:
-      version: ['8.1.0']
       variants: ~tiff
     python:
       require: "@3.10.13"
@@ -225,7 +224,6 @@
     #py-gitpython:
     #  require: "@3.1.27"
     py-h5py:
-      version: ['3.7.0']
       variants: ~mpi
     # To avoid duplicate packages
     py-flit-core:
