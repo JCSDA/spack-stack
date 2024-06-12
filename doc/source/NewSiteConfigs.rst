@@ -398,7 +398,6 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install gettext-devel
    yum -y install texlive
    # Do not install qt@5 for now
-   # Only if building with oneapi compilers instead of gcc, intel: install bison
    yum -y install bison
 
    # Note - only needed for running JCSDA's
@@ -465,6 +464,7 @@ The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LT
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
    apt install -y meson
+   apt install -y bison
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
@@ -520,12 +520,10 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 .. code-block:: console
 
    spack external find --scope system \
-       --exclude bison --exclude cmake \
+       --exclude cmake \
        --exclude curl --exclude openssl \
        --exclude openssh --exclude python
    spack external find --scope system wget
-   # Only if building with oneapi compilers instead of gcc, intel: install bison
-   spack external find --scope system bison
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
