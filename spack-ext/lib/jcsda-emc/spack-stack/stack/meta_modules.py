@@ -626,13 +626,6 @@ def setup_meta_modules():
                             "  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"])
                         )
 
-                    # Don't think we need this!
-                    ## Compiler environment variables
-                    #substitutes["CC"] = compiler["compiler"]["paths"]["cc"]
-                    #substitutes["CXX"] = compiler["compiler"]["paths"]["cxx"]
-                    #substitutes["F77"] = compiler["compiler"]["paths"]["f77"]
-                    #substitutes["FC"] = compiler["compiler"]["paths"]["fc"]
-
                     # Compiler wrapper environment variables
                     if "intel" in mpi_name:
                         substitutes["MPICC"] = os.path.join("mpiicc")
@@ -644,7 +637,7 @@ def setup_meta_modules():
                         substitutes["MPICXX"] = os.path.join("mpic++")
                         substitutes["MPIF77"] = os.path.join("mpif77")
                         substitutes["MPIF90"] = os.path.join("mpif90")
-            
+
                     # Spack compiler module hierarchy
                     substitutes["MODULEPATH"] = os.path.join(
                         module_dir, mpi_name, mpi_version, compiler_name, compiler_version
