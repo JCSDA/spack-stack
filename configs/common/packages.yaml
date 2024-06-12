@@ -222,6 +222,8 @@
     # To avoid duplicate packages
     py-urllib3:
       require: '@1.26.12'
+    qt:
+      require: '@5'
     scotch:
       require: '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch'
     sfcio:
