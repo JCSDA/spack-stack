@@ -53,5 +53,7 @@ class NeptuneEnv(BundlePackage):
         depends_on("py-pyyaml", type="run")
         depends_on("py-scipy", type="run")
         depends_on("py-xarray", type="run")
+        depends_on("py-xnrl", type="run")
+        depends_on("py-pytest", type="run")
 
     # There is no need for install() since there is no code.
