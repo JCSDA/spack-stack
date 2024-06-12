@@ -9,6 +9,7 @@
         glu: [openglu]
         jpeg: [libjpeg-turbo]
         lapack: [openblas]
+        pkgconfig: [pkg-config]
         yacc: [bison]
         zlib-api: [zlib-ng]
     #
@@ -67,6 +68,7 @@
     fiat:
       require: '@1.2.0'
     flex:
+      # Pin version to avoid duplicates
       require: '@2.6.4'
     fms:
       variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
@@ -80,8 +82,6 @@
       require: '@1.6.4'
     g2tmpl:
       require: '@1.10.2'
-    gettext:
-      require: '@0.21.1'
     gfsio:
       require: '@1.4.1'
     gftl-shared:
@@ -121,8 +121,6 @@
       require: '@2.1.0'
     libpng:
       require: '@1.6.37 +pic'
-    libyaml:
-      require: '@0.2.5'
     mapl:
       require: '@2.40.3 +shared +pflogger ~f2py'
     # If making changes here, also check the Discover site configs and the CI workflows
@@ -154,17 +152,12 @@
     netcdf-fortran:
       require: '@4.6.1'
     # ninja - when adding information here, also check Discover site config
-    nlohmann-json:
-      require: '@3.10.5'
-    nlohmann-json-schema-validator:
-      require: '@2.1.0'
     odc:
       require: '@1.4.6 ~fortran'
     openblas:
       require: '@0.3.24 +noavx512'
     openmpi:
       require: '~internal-hwloc +two_level_namespace'
-    # Pin openssl to avoid duplicate packages being built
     openssl:
       require: '+shared'
     p4est:
@@ -174,12 +167,9 @@
     parallel-netcdf:
       require: '@1.12.3'
     pflogger:
-      require: '@1.12.0 +mpi'
+      require: '+mpi'
     pixman:
       require: '+pic'
-    # Do not build pkgconf - https://github.com/jcsda/spack-stack/issues/123
-    pkgconf:
-      buildable: False
     prod-util:
       require: '@2.1.1'
     proj:
@@ -202,12 +192,6 @@
     #  require: '@3.1.27'
     py-h5py:
       require: '~mpi'
-    # To avoid duplicate packages
-    py-flit-core:
-      require: '@3.8.0'
-    # To avoid duplicate packages
-    py-jinja2:
-      require: '@3.0.3'
     # Comment out for now until build problems are solved
     # https://github.com/jcsda/spack-stack/issues/522
     # see also ewok-env virtual package and container
@@ -229,11 +213,6 @@
       require: '@1.8.0'
     py-torch:
       require: '+custom-protobuf ~mkldnn'
-    # To avoid duplicate packages
-    py-urllib3:
-      require: '@1.26.12'
-    qt:
-      require: '@5.15.3'
     scotch:
       require: '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch'
     sfcio:
@@ -255,14 +234,10 @@
       require: '@2.10.0 precision=4,d,8'
     w3nco:
       require: '@2.4.1'
-    wget:
-      require: '@1.21.2'
     # When changing wgrib2, also check Hercules and Nautilus site configs
     wgrib2:
       require: '@2.0.8'
     wrf-io:
-      require: '@1.2.0'
-    yafyaml:
       require: '@1.2.0'
     zstd:
       require: '@1.5.2 +programs'
