@@ -28,7 +28,7 @@ jobs:
           rm -fr *
 
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -45,7 +45,7 @@ jobs:
             echo "Use existing binary cache for creating buildcache environment"
           fi
 
-          # spack-stack setup
+          # Set up spack-stack
           source ./setup.sh
           export ENVNAME=ue-gcc-11.4.0-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
