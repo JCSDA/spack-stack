@@ -59,7 +59,7 @@
     # config and update the projections for lmod/tcl.
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
-      version: ['8.6.0']
+      version: ['8.6.1']
       variants: ~xerces ~pnetcdf snapshot=none +shared +external-parallelio
       #version: ['8.6.1b04']
       #variants: ~xerces ~pnetcdf snapshot=b04 +shared +external-parallelio
@@ -139,7 +139,7 @@
     libyaml:
       version: ['0.2.5']
     mapl:
-      version: ['2.40.3']
+      version: ['2.46.2']
       variants: +shared +pflogger ~f2py
     # If making changes here, also check the Discover site configs and the CI workflows
     met:
@@ -195,7 +195,7 @@
     parallel-netcdf:
       version: ['1.12.3']
     pflogger:
-      version: ['1.12.0']
+      #version: ['1.12.0']
       variants: +mpi
     pixman:
       variants: +pic
@@ -291,8 +291,8 @@
       version: ['2.0.8']
     wrf-io:
       version: ['1.2.0']
-    yafyaml:
-      version: ['1.2.0']
+    #yafyaml:
+    #  version: ['1.2.0']
     zstd:
       version: ['1.5.2']
       variants: +programs
