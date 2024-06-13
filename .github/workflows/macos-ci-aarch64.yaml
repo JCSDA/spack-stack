@@ -32,6 +32,11 @@ jobs:
         with:
           submodules: true
 
+      - name: prepare-directories
+        run: |
+          mkdir -p /Users/ec2-user/spack-stack/build-cache
+          mkdir -p /Users/ec2-user/spack-stack/source-cache
+
       - name: create-buildcache
         run: |
           # Get day of week to decide whether to use build caches or not
@@ -103,8 +108,10 @@ jobs:
 
           # Add binary cache if requested
           if [ "$USE_BINARY_CACHE" = true ] ; then
+            set +e
             spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
-            spack buildcache update-index local-binary
+            spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+            set +e
             echo "Packages in spack binary cache:"
             spack buildcache list
           fi
