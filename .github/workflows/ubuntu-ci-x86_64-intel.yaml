@@ -98,7 +98,7 @@ jobs:
 
           # Add external ecflow for Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  ecflow:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  ecflow::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    - spec: ecflow@5.8.4+ui+static_boost" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
