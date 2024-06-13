@@ -9,7 +9,6 @@
         glu: [openglu]
         jpeg: [libjpeg-turbo]
         lapack: [openblas]
-        pkgconfig: [pkg-config]
         yacc: [bison]
         zlib-api: [zlib-ng]
     #
@@ -170,6 +169,8 @@
       require: '+mpi'
     pixman:
       require: '+pic'
+    pkgconf:
+      buildable: False
     prod-util:
       require: '@2.1.1'
     proj:
