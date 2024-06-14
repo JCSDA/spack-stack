@@ -100,7 +100,7 @@ jobs:
           # *DH
 
           # Concretize and check for duplicates
-          spack concretize --fresh 2>&1 | tee log.concretize.apple-clang-14.0.3
+          spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.3
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
@@ -156,7 +156,7 @@ jobs:
           cp -r $PWD/envs/${ENVNAME}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
           spack add nccmp@1.8.9.0%apple-clang
-          spack concretize --fresh | tee envs/chaintest/log.concretize
+          spack concretize | tee envs/chaintest/log.concretize
           unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate

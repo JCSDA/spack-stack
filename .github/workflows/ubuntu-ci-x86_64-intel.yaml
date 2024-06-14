@@ -1,4 +1,4 @@
-name: ubuntu-ci-c6a-x86_64-gnu-build
+name: ubuntu-ci-c6a-x86_64-intel-build
 on:
   pull_request:
     paths-ignore:
@@ -17,7 +17,7 @@ defaults:
     shell: bash
 
 jobs:
-  ubuntu-ci-c6a-x86_64-gnu-build:
+  ubuntu-ci-c6a-x86_64-intel-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
 
     steps:
@@ -31,6 +31,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
+
+      - name: prepare-directories
+        run: |
+          mkdir -p /Users/ec2-user/spack-stack/build-cache
+          mkdir -p /Users/ec2-user/spack-stack/source-cache
 
       - name: create-buildcache
         run: |
@@ -47,7 +52,7 @@ jobs:
 
           # Set up spack-stack
           source ./setup.sh
-          export ENVNAME=ue-gcc-11.4.0-buildcache
+          export ENVNAME=ue-intel-2021.10.0-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template unified-dev --name ${ENVNAME}
           spack env activate ${ENVDIR}
@@ -63,8 +68,47 @@ jobs:
           spack external find --scope system texlive
           spack external find --scope system mysql
 
-          # For GNU
+          # Find compilers
           spack compiler find --scope system
+
+          # For Intel
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "- compiler:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    spec: intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cxx: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      f77: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    flags:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cxxflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fflags: -diag-disable=10448" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    environment:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      prepend_path:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "        LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    extra_rpaths: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+
+          # Need to find external Intel MPI and annotate with the
+          # correct compiler, no way to do that with spack commands.
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+
+          # Add external ecflow for Intel
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  ecflow:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: ecflow@5.8.4+ui+static_boost" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      - ecflow/5.11.4" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
@@ -72,16 +116,19 @@ jobs:
           spack config add config:install_tree:padded_length:200
 
           # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
-          spack config add "packages:all:compiler:[gcc@11.4.0]"
-          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%gcc'\]/g" $ENVDIR/spack.yaml
+          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
+          spack config add "packages:all:compiler:[intel@2021.10.0]"
+          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
+          # Don't generate ecflow module when using external package
+          spack config add "modules:default:tcl:exclude:[ecflow]"
+
           # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.gnu-11.4.0-buildcache
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0-buildcache -i fms -i crtm -i esmf -i mapl
+          spack concretize 2>&1 | tee log.concretize.intel-2021.10.0-buildcache
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.10.0-buildcache -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
@@ -89,8 +136,10 @@ jobs:
 
           # Add binary cache if requested
           if [ "$USE_BINARY_CACHE" = true ] ; then
+            set +e
             spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
-            spack buildcache update-index local-binary
+            spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+            set +e
             echo "Packages in spack binary cache:"
             spack buildcache list
           fi
@@ -101,17 +150,17 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.intel-2021.10.0-buildcache.base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # jedi-base-env
           echo "jedi-base-env ..."
-          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
+          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.intel-2021.10.0-buildcache.jedi-base-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
 
           # the rest
           echo "unified-env ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel-2021.10.0-buildcache.unified-env
           spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
           # Remove binary cache for next round of concretization
@@ -131,16 +180,16 @@ jobs:
       - name: create-env
         run: |
           source ./setup.sh
-          export BUILDCACHE_ENVNAME=ue-gcc-11.4.0-buildcache
+          export BUILDCACHE_ENVNAME=ue-intel-2021.10.0-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
-          export ENVNAME=ue-gcc-11.4.0
+          export ENVNAME=ue-intel-2021.10.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
           # Concretize
-          spack concretize --force 2>&1 | tee log.concretize.gnu-11.4.0
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0 -i fms -i crtm -i esmf -i mapl
+          spack concretize --force 2>&1 | tee log.concretize.intel-2021.10.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.10.0 -i fms -i crtm -i esmf -i mapl
 
           # Add binary cache back in and reindex it
           spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
@@ -149,7 +198,7 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.intel-2021.10.0.unified-env
 
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
           spack clean -a
@@ -163,7 +212,7 @@ jobs:
           # Retain config from upstream so we don't have to rebuild:
           cp -r $PWD/envs/${ENVNAME}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.8.9.0%gcc
+          spack add nccmp@1.8.9.0%intel
           spack concretize | tee envs/chaintest/log.concretize
           unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
@@ -174,13 +223,13 @@ jobs:
           source /etc/profile.d/modules.sh
           module use /home/ubuntu/spack-stack/modulefiles
 
-          export ENVNAME=ue-gcc-11.4.0
+          export ENVNAME=ue-intel-2021.10.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           ls -l ${ENVDIR}/install/modulefiles/Core
 
           module use ${ENVDIR}/install/modulefiles/Core
-          module load stack-gcc/11.4.0
-          module load stack-openmpi/5.0.3
+          module load stack-intel/2021.10.0
+          module load stack-intel-oneapi-mpi/2021.10.0
           module load stack-python/3.10.13
           module available
 
