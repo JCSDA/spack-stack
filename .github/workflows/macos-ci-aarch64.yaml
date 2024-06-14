@@ -60,6 +60,10 @@ jobs:
           export SPACK_PYTHON=/usr/bin/python3
           export ENVNAME=ue-apple-clang-14.0.3-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
+
+          spack clean -ab
+          spack bootstrap now
+
           spack stack create env --site macos.default --template unified-dev --name ${ENVNAME}
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
@@ -160,6 +164,10 @@ jobs:
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
           export ENVNAME=ue-apple-clang-14.0.3
           export ENVDIR=$PWD/envs/${ENVNAME}
+
+          spack clean -ab
+          spack bootstrap now
+
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
