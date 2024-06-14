@@ -34,8 +34,8 @@ jobs:
 
       - name: prepare-directories
         run: |
-          mkdir -p /Users/ec2-user/spack-stack/build-cache
-          mkdir -p /Users/ec2-user/spack-stack/source-cache
+          mkdir -p /home/ubuntu/spack-stack/build-cache/
+          mkdir -p /home/ubuntu/spack-stack/source-cache/
 
       - name: create-buildcache
         run: |
