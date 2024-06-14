@@ -58,7 +58,9 @@ jobs:
           source ./setup.sh
           # Important!
           export SPACK_PYTHON=/usr/bin/python3
-          export ENVNAME=ue-apple-clang-14.0.3-buildcache
+          # BLA BLA
+          #export ENVNAME=ue-apple-clang-14.0.3-buildcache
+          export ENVNAME=ue-apple-clang-14.0.3
           export ENVDIR=$PWD/envs/${ENVNAME}
 
           spack clean -ab
@@ -104,7 +106,7 @@ jobs:
           # *DH
 
           # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.3
+          spack concretize --fresh 2>&1 | tee log.concretize.apple-clang-14.0.3
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
@@ -169,11 +171,13 @@ jobs:
           spack clean -ab
           spack bootstrap now
 
+          mv ${ENVDIR} ${BUILDCACHE_ENVDIR} 
+
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
           # Concretize
-          spack concretize --force 2>&1 | tee log.concretize.apple-clang-14.0.3
+          spack concretize --force --fresh 2>&1 | tee log.concretize.apple-clang-14.0.3
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl
 
           # Add binary cache back in and reindex it
@@ -198,7 +202,7 @@ jobs:
           cp -r $PWD/envs/${ENVNAME}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
           spack add nccmp@1.8.9.0%gcc
-          spack concretize | tee envs/chaintest/log.concretize
+          spack concretize --fresh | tee envs/chaintest/log.concretize
           unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate
