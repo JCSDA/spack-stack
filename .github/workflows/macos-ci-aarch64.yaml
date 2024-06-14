@@ -37,7 +37,7 @@ jobs:
           mkdir -p /Users/ec2-user/spack-stack/build-cache
           mkdir -p /Users/ec2-user/spack-stack/source-cache
 
-      - name: create-buildcache
+      - name: create-env
         run: |
           # Get day of week to decide whether to use build caches or not
           DOW=$(date +%u)
@@ -58,8 +58,6 @@ jobs:
           source ./setup.sh
           # Important!
           export SPACK_PYTHON=/usr/bin/python3
-          # BLA BLA
-          #export ENVNAME=ue-apple-clang-14.0.3-buildcache
           export ENVNAME=ue-apple-clang-14.0.3
           export ENVDIR=$PWD/envs/${ENVNAME}
 
@@ -89,10 +87,6 @@ jobs:
           spack compiler find --scope system
 
           export -n SPACK_SYSTEM_CONFIG_PATH
-
-          # Do not use. Getting Mach-O header errors with it.
-          ## For buildcaches
-          #spack config add config:install_tree:padded_length:200
 
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
@@ -147,52 +141,12 @@ jobs:
             spack mirror rm local-binary
           fi
 
-          ## Remove buildcache config settings
-          #spack config remove config:install_tree:padded_length
-
-          # Next steps: synchronize source and build cache to a central/combined mirror?
-
-          # Cleanup
-          spack clean -a
-          spack env deactivate
-
-      - name: create-env
-        run: |
-          # Set up homebrew and lmod support
-          eval "$(/opt/homebrew/bin/brew shellenv)"
-          source /opt/homebrew/opt/lmod/init/profile
-
-          source ./setup.sh
-          export BUILDCACHE_ENVNAME=ue-apple-clang-14.0.3-buildcache
-          export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
-          export ENVNAME=ue-apple-clang-14.0.3
-          export ENVDIR=$PWD/envs/${ENVNAME}
-
-          spack clean -ab
-          spack bootstrap now
-
-          mv ${ENVDIR} ${BUILDCACHE_ENVDIR} 
-
-          rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
-          spack env activate ${ENVDIR}
-
-          # Concretize
-          spack concretize --force --fresh 2>&1 | tee log.concretize.apple-clang-14.0.3
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl
-
-          # Add binary cache back in and reindex it
-          spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
-          echo "Packages in combined spack build caches:"
-          spack buildcache list
-
-          # base-env
-          echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.3.unified-env
-
-          ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+          # Create modules
           spack clean -a
           spack module lmod refresh -y
           spack stack setup-meta-modules
+
+          # Next steps: synchronize source and build cache to a central/combined mirror?
           spack env deactivate
 
           # Test environment chaining
