@@ -88,8 +88,9 @@ jobs:
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
-          # For buildcaches
-          spack config add config:install_tree:padded_length:200
+          # Do not use. Getting Mach-O header errors with it.
+          ## For buildcaches
+          #spack config add config:install_tree:padded_length:200
 
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
@@ -144,8 +145,8 @@ jobs:
             spack mirror rm local-binary
           fi
 
-          # Remove buildcache config settings
-          spack config remove config:install_tree:padded_length
+          ## Remove buildcache config settings
+          #spack config remove config:install_tree:padded_length
 
           # Next steps: synchronize source and build cache to a central/combined mirror?
 
