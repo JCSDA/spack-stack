@@ -59,18 +59,21 @@
     # config and update the projections for lmod/tcl.
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
-      version: ['8.6.1']
-      variants: ~xerces ~pnetcdf snapshot=none +shared +external-parallelio
+      #version: ['8.6.1']
+      #variants: ~xerces ~pnetcdf snapshot=none +shared +external-parallelio
       #version: ['8.6.1b04']
       #variants: ~xerces ~pnetcdf snapshot=b04 +shared +external-parallelio
       #version: ['8.7.0b04']
       #variants: ~xerces ~pnetcdf snapshot=b04 +shared +external-parallelio
       require:
-        - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
+        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
           message: "Extra ESMF compile options for Intel"
-        - any_of: ['']
+        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio']
           when: "%gcc"
+          message: "Extra ESMF compile options for GCC"
+        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio']
+          when: "%apple-clang"
           message: "Extra ESMF compile options for GCC"
     fckit:
       version: ['0.11.0']
