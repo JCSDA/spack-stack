@@ -33,6 +33,7 @@ modules:
       - fixesproto
       - flex
       - freetype
+      - gcc-runtime
       - gdbm
       - googletest
       - hwloc

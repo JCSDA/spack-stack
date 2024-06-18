@@ -166,6 +166,13 @@ def setenv_command(module_choice, key, value):
         return "setenv {{{}}} {{{}}}\n".format(key, value)
 
 
+def append_path_command(module_choice, key, value):
+    if module_choice == "lmod":
+        return 'append_path("{}", "{}")\n'.format(key, value)
+    else:
+        return "append-path {{{}}} {{{}}}\n".format(key, value)
+
+
 def prepend_path_command(module_choice, key, value):
     if module_choice == "lmod":
         return 'prepend_path("{}", "{}")\n'.format(key, value)
@@ -392,6 +399,13 @@ def setup_meta_modules():
                 "environment" in compiler["compiler"].keys()
                 and compiler["compiler"]["environment"]
             ):
+                # append_path
+                if "append_path" in compiler["compiler"]["environment"].keys():
+                    for env_name in compiler["compiler"]["environment"]["append_path"]:
+                        env_values = compiler["compiler"]["environment"]["append_path"][env_name]
+                        substitutes["ENVVARS"] += append_path_command(
+                            module_choice, env_name, env_values
+                        )
                 # prepend_path
                 if "prepend_path" in compiler["compiler"]["environment"].keys():
                     for env_name in compiler["compiler"]["environment"]["prepend_path"]:
