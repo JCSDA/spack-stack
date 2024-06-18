@@ -29,7 +29,8 @@
     cdo:
       require: '@2.2.0 ~openmp'
     cmake:
-      require: '@3.27.9 +ownlibs'
+      version: ['@3.27.9']
+      require: '+ownlibs'
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       require: '+fix'
