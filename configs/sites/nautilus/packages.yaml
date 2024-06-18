@@ -1,8 +1,8 @@
 packages:
   all:
-    compiler:: [intel@2021.5.0, aocc@4.0.0, gcc@12.2.1]
+    compiler:: [intel@2021.5.0, aocc@4.0.0, gcc@12.2.1, oneapi@2024.1.2]
     providers:
-      mpi:: [openmpi@4.1.6, openmpi@5.0.1]
+      mpi:: [openmpi@4.1.6, openmpi@5.0.1, intel-oneapi-mpi@2021.12]
       blas:: [intel-oneapi-mkl]
       fftw-api:: [intel-oneapi-mkl]
       lapack:: [intel-oneapi-mkl]
@@ -14,12 +14,6 @@ packages:
 ### MPI, Python, MKL
   mpi:
     buildable: False
-  #intel-oneapi-mpi:
-  #  externals:
-  #  - spec: intel-oneapi-mpi@2021.5.1%intel@2021.5.0
-  #    modules:
-  #    - intel/mpi/2021.5.1
-  #    prefix: /p/app/compilers/intel/oneapi
   openmpi:
     externals:
     - spec: openmpi@4.1.6%intel@2021.5.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm
@@ -37,12 +31,26 @@ packages:
       modules:
       - penguin/openmpi/5.0.1/gcc-8.5.0
       - slurm
+  intel-oneapi-mpi:
+    externals:
+    - spec: intel-oneapi-mpi@2021.12%oneapi@2024.1.2
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2
   intel-oneapi-mkl:
     externals:
-    - spec: intel-oneapi-mkl@2022.0.2
+    - spec: intel-oneapi-mkl@2022.0.2%intel@2021.5.0
       prefix: /p/app/compilers/intel/oneapi
       modules:
       - intel-oneapi-mkl@2022.0.2
+    - spec: intel-oneapi-mkl@2022.0.2%gcc@12.2.1
+      prefix: /p/app/compilers/intel/oneapi
+      modules:
+      - intel-oneapi-mkl@2022.0.2
+    - spec: intel-oneapi-mkl@2024.1%oneapi@2024.1.2
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2
+  intel-oneapi-runtime:
+    externals:
+    - spec: intel-oneapi-runtime@2024.1.2%oneapi@2024.1.2
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2
 
 ### Modifications of common packages
   # Version 2.0.8 doesn't compile on Nautilus
@@ -61,6 +69,10 @@ packages:
   binutils:
     externals:
     - spec: binutils@2.30.117
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
       prefix: /usr
   coreutils:
     externals:
@@ -115,10 +127,11 @@ packages:
       prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
       modules:
       - mysql/8.0.31
-  perl:
-    externals:
-    - spec: perl@5.26.3~cpanm+open+shared+threads
-      prefix: /usr
+  # Needed to remove for xnrl w/intel, hopefully ok with oneapi
+  #perl:
+  #  externals:
+  #  - spec: perl@5.26.3~cpanm+open+shared+threads
+  #    prefix: /usr
   pkgconf:
     externals:
     - spec: pkgconf@1.4.2

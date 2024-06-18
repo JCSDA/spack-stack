@@ -27,6 +27,13 @@ setenv {MPI_CXX} {@MPICXX@}
 setenv {MPI_F77} {@MPIF77@}
 setenv {MPI_F90} {@MPIF90@}
 
+# intel specific mpi wrapper environment variables
+setenv {I_MPI_CC}  $env(CC)
+setenv {I_MPI_CXX} $env(CXX)
+setenv {I_MPI_F77} $env(F77)
+setenv {I_MPI_F90} $env(FC)
+setenv {I_MPI_FC}  $env(FC)
+
 # compiler flags and other environment variables
 @COMPFLAGS@
 @ENVVARS@

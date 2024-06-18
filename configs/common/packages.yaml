@@ -135,6 +135,9 @@
       variants: +pic
     libyaml:
       version: ['0.2.5']
+    # Newest version of magics needed for oneapi compilers
+    magics:
+      require: "@4.15.3:"
     mapl:
       version: ['2.46.2']
       variants: +shared +pflogger ~f2py
