@@ -28,9 +28,14 @@ jobs:
           rm -fr *
 
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
+
+      - name: prepare-directories
+        run: |
+          mkdir -p /home/ubuntu/spack-stack/build-cache/
+          mkdir -p /home/ubuntu/spack-stack/source-cache/
 
       - name: create-buildcache
         run: |
@@ -45,7 +50,7 @@ jobs:
             echo "Use existing binary cache for creating buildcache environment"
           fi
 
-          # spack-stack setup
+          # Set up spack-stack
           source ./setup.sh
           export ENVNAME=ue-gcc-11.4.0-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
@@ -63,7 +68,7 @@ jobs:
           spack external find --scope system texlive
           spack external find --scope system mysql
 
-          # For GNU
+          # Find compilers
           spack compiler find --scope system
 
           export -n SPACK_SYSTEM_CONFIG_PATH
@@ -89,8 +94,10 @@ jobs:
 
           # Add binary cache if requested
           if [ "$USE_BINARY_CACHE" = true ] ; then
+            set +e
             spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
-            spack buildcache update-index local-binary
+            spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+            set +e
             echo "Packages in spack binary cache:"
             spack buildcache list
           fi
