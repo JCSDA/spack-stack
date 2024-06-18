@@ -59,18 +59,15 @@
     # config and update the projections for lmod/tcl.
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
-      version: ['8.6.0']
-      variants: ~xerces ~pnetcdf snapshot=none +shared +external-parallelio
-      #version: ['8.6.1b04']
-      #variants: ~xerces ~pnetcdf snapshot=b04 +shared +external-parallelio
-      #version: ['8.7.0b04']
-      #variants: ~xerces ~pnetcdf snapshot=b04 +shared +external-parallelio
       require:
-        - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
+        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
           message: "Extra ESMF compile options for Intel"
-        - any_of: ['']
+        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio']
           when: "%gcc"
+          message: "Extra ESMF compile options for GCC"
+        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio']
+          when: "%apple-clang"
           message: "Extra ESMF compile options for GCC"
     fckit:
       version: ['0.11.0']
@@ -139,7 +136,7 @@
     libyaml:
       version: ['0.2.5']
     mapl:
-      version: ['2.40.3']
+      version: ['2.46.2']
       variants: +shared +pflogger ~f2py
     # If making changes here, also check the Discover site configs and the CI workflows
     met:
@@ -195,7 +192,7 @@
     parallel-netcdf:
       version: ['1.12.3']
     pflogger:
-      version: ['1.12.0']
+      #version: ['1.12.0']
       variants: +mpi
     pixman:
       variants: +pic
@@ -291,8 +288,8 @@
       version: ['2.0.8']
     wrf-io:
       version: ['1.2.0']
-    yafyaml:
-      version: ['1.2.0']
+    #yafyaml:
+    #  version: ['1.2.0']
     zstd:
       version: ['1.5.2']
       variants: +programs
