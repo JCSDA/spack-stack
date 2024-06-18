@@ -91,7 +91,8 @@ jobs:
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
           spack config add "packages:all:compiler:[apple-clang@14.0.3]"
-          spack config add "packages:cmake::require:'@3.27.6'"
+          spack config add "packages:cmake::require:'@:'"
+          spack config add "packages:cmake::buildable:false"
           sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
