@@ -225,7 +225,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack external find --scope system \
        --exclude bison --exclude openssl \
-       --exclude python
+       --exclude python --exclude gettext
    spack external find --scope system libiconv
    spack external find --scope system perl
    spack external find --scope system wget
