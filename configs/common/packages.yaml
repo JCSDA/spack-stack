@@ -85,8 +85,8 @@
       require: '@1.10.2'
     gfsio:
       require: '@1.4.1'
-    gftl-shared:
-      require: '@1.6.1'
+    #gftl-shared:
+    #  require: '@1.6.1'
     #git-lfs:
       # Assume git-lfs is provided, hard to install
       # because of dependencies on go/go-bootstrap.
