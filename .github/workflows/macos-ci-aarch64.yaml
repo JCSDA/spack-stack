@@ -155,9 +155,9 @@ jobs:
           # Retain config from upstream so we don't have to rebuild:
           cp -r $PWD/envs/${ENVNAME}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.8.9.0%apple-clang
+          spack add nccmp@1.9.0.1%apple-clang
           spack concretize | tee envs/chaintest/log.concretize
-          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
+          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate
 
