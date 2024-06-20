@@ -70,7 +70,7 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  ecflow:
+  ecflow::
     buildable: False
     externals:
     - spec: ecflow@5.11.4+ui+static_boost
