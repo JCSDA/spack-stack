@@ -18,7 +18,7 @@
     bacio:
       require: '@2.4.1'
     bison:
-      require: '@3.8.2'
+      require: '@3'
     # 1.85 incompatible with ecflow@5.11.4 - use latest 'good version'
     boost:
       require: '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
@@ -86,8 +86,6 @@
       require: '@1.10.2'
     gfsio:
       require: '@1.4.1'
-    #gftl-shared:
-    #  require: '@1.6.1'
     #git-lfs:
       # Assume git-lfs is provided, hard to install
       # because of dependencies on go/go-bootstrap.
@@ -174,7 +172,6 @@
       require: '@1.12.3'
     pflogger:
       require: '+mpi'
-      #version: ['1.12.0']
     pixman:
       require: '+pic'
     prod-util:
@@ -197,9 +194,6 @@
     # To avoid duplicate packages
     py-flit-core:
       require: '@3.8.0'
-    ## https://github.com/JCSDA/spack-stack/issues/980
-    #py-gitpython:
-    #  require: '@3.1.27'
     py-h5py:
       require: '~mpi'
     # To avoid duplicate packages
@@ -257,7 +251,5 @@
       require: '@2.0.8'
     wrf-io:
       require: '@1.2.0'
-    #yafyaml:
-    #  version: ['1.2.0']
     zstd:
       require: '@1.5.2 +programs'
