@@ -60,13 +60,15 @@
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
       require:
-        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio fflags="-fp-model precise" cxxflags="-fp-model precise"']
+        - '~xerces ~pnetcdf +shared +external-parallelio'
+        - any_of: ['@=8.6.1 snapshot=none', '@=8.7.0b04 snapshot=b04']
+        - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
           message: "Extra ESMF compile options for Intel"
-        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio']
+        - any_of: ['']
           when: "%gcc"
           message: "Extra ESMF compile options for GCC"
-        - any_of: ['@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio']
+        - any_of: ['']
           when: "%apple-clang"
           message: "Extra ESMF compile options for GCC"
     fckit:
@@ -246,6 +248,9 @@
       require: ['@1.22.3']
     py-pandas:
       variants: +excel
+    # Pin py-poetry-core to avoid duplicate Python packages
+    py-poetry-core:
+      require: '@1.8.1'
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       require: ['@63.4.3']
