@@ -14,7 +14,3 @@ spack:
     - matrix:
       - [$packages]
       - [$compilers]
-
-  packages:
-    esmf:
-      require: '@=8.7.0b04 snapshot=b04'
