@@ -6,43 +6,47 @@ spack:
   include: []
 
   definitions:
-  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
+  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
-      - ewok-env +ecflow +cylc
-      - ai-env
-      - geos-gcm-env
-      - global-workflow-env
-      - gmao-swell-env
-      - gsi-env
-      - jedi-fv3-env
-      - jedi-geos-env
-      - jedi-mpas-env
-      - jedi-neptune-env
-      - jedi-tools-env
-      - jedi-ufs-env
-      - jedi-um-env
-      - neptune-env
-      - soca-env
-      - ufs-srw-app-env
-      - ufs-weather-model-env
+    - ewok-env +ecflow +cylc
+    - ai-env
+    - geos-gcm-env          ^esmf@=8.6.1
+    - global-workflow-env   ^esmf@=8.6.1
+    - gmao-swell-env
+    - gsi-env               ^esmf@=8.6.1
+    - jedi-fv3-env
+    - jedi-geos-env         ^esmf@=8.6.1
+    - jedi-mpas-env
+    - jedi-neptune-env      ^esmf@=8.7.0b04
+    - jedi-tools-env
+    - jedi-ufs-env          ^esmf@=8.6.1
+    - jedi-um-env
+    - neptune-env ~python   ^esmf@=8.7.0b04
+    - soca-env
+    - ufs-srw-app-env       ^esmf@=8.6.1
+    - ufs-weather-model-env ^esmf@=8.6.1
 
-      # Various fms tags (list all to avoid duplicate packages)
-      - fms@release-jcsda
-      - fms@2023.04
+    # Various fms tags (list all to avoid duplicate packages)
+    - fms@release-jcsda
+    - fms@2023.04
 
-      # Various crtm tags (list all to avoid duplicate packages)
-      - crtm@2.4.0.1
-      - crtm@v2.4.1-jedi
+    # Various crtm tags (list all to avoid duplicate packages)
+    - crtm@2.4.0.1
+    - crtm@v2.4.1-jedi
 
-      # MADIS for WCOSS2 decoders.
-      - madis@4.5
+    # Various esmf tags (list all to avoid duplicate packages)
+    - esmf@=8.6.1 snapshot=none
+    - esmf@=8.7.0b04 snapshot=b04
+
+    # MADIS for WCOSS2 decoders.
+    - madis@4.5
 
   specs:
-    - matrix:
-      - [$packages]
-      - [$compilers]
-      exclude:
-        # py-torch in ai-env doesn't build with Intel
-        - ai-env%intel
-        # jedi-tools doesn't build with Intel
-        - jedi-tools-env%intel
+  - matrix:
+    - [$packages]
+    - [$compilers]
+    exclude:
+    # py-torch in ai-env doesn't build with Intel
+    - ai-env%intel
+    # jedi-tools doesn't build with Intel
+    - jedi-tools-env%intel
