@@ -184,7 +184,7 @@
       # https://github.com/JCSDA/spack-stack/issues/740
       require: '@21.4.0'
     py-pybind11:
-      require: '@2.8.1'
+      require: '@2.12.0'
     py-cartopy:
       require: '@0.21.1 +plotting'
     py-cryptography:
