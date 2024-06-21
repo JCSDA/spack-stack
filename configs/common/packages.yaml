@@ -183,8 +183,6 @@
     py-attrs:
       # https://github.com/JCSDA/spack-stack/issues/740
       require: '@21.4.0'
-    py-pybind11:
-      require: '@2.11.0'
     py-cartopy:
       require: '@0.21.1 +plotting'
     py-cryptography:
@@ -213,6 +211,8 @@
       require: '@1.22.3'
     py-pandas:
       require: '+excel'
+    py-pybind11:
+      require: '@2.11.0'
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       require: '@63.4.3'
