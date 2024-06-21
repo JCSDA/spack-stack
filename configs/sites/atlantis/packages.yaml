@@ -56,10 +56,11 @@ packages:
     externals:
     - spec: wget@1.19.5
       prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.26.3~cpanm+shared+threads
-      prefix: /usr
+  # Can't use with py-xnrl
+  #perl:
+  #  externals:
+  #  - spec: perl@5.26.3~cpanm+shared+threads
+  #    prefix: /usr
   gmake:
     externals:
     - spec: gmake@4.2.1

@@ -53,7 +53,8 @@
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
       require:
-        - '@=8.6.1 ~xerces ~pnetcdf snapshot=none +shared +external-parallelio'
+        - '~xerces ~pnetcdf +shared +external-parallelio'
+        - any_of: ['@=8.6.1 snapshot=none', '@=8.7.0b04 snapshot=b04']
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
           message: "Extra ESMF compile options for Intel"
@@ -213,6 +214,9 @@
       require: '+excel'
     py-pybind11:
       require: '@2.11.0'
+    # Pin py-poetry-core to avoid duplicate Python packages
+    py-poetry-core:
+      require: '@1.8.1'
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       require: '@63.4.3'

@@ -118,7 +118,7 @@ jobs:
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
           spack config add "packages:all:compiler:[intel@2021.10.0]"
-          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
+          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel', '\%oneapi'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
