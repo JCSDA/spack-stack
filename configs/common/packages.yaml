@@ -18,7 +18,7 @@
     bacio:
       require: '@2.4.1'
     bison:
-      require: '@3'
+      require: '@3.4:'
     # 1.85 incompatible with ecflow@5.11.4 - use latest 'good version'
     boost:
       require: '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
@@ -185,7 +185,7 @@
       # https://github.com/JCSDA/spack-stack/issues/740
       require: '@21.4.0'
     py-cartopy:
-      require: '@0.21.1 +plotting'
+      require: '+plotting'
     py-cryptography:
       require: '+rust_bootstrap'
     # Introduced in https://github.com/JCSDA/spack-stack/pull/894, pin py-cython
@@ -200,6 +200,8 @@
     # To avoid duplicate packages
     py-jinja2:
       require: '@3.0.3'
+    py-meson-python:
+       require: '@0.15.0'
     # Comment out for now until build problems are solved
     # https://github.com/jcsda/spack-stack/issues/522
     # see also ewok-env virtual package and container
@@ -207,16 +209,9 @@
     #py-mysql-connector-python:
     #  require: '@8.0.32'
     py-netcdf4:
-      require: '@1.5.8 ~mpi'
-    py-numpy:
-      require: '@1.22.3'
+      require: '~mpi'
     py-pandas:
       require: '+excel'
-    py-pybind11:
-      require: '@2.11.0'
-    # Pin py-poetry-core to avoid duplicate Python packages
-    py-poetry-core:
-      require: '@1.8.1'
     # Pin the py-setuptools version to avoid duplicate Python packages
     py-setuptools:
       require: '@63.4.3'
