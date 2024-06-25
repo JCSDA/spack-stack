@@ -4,151 +4,130 @@
 
 ### Base instance
 Choose a basic AMI from the Community AMIs tab that matches your desired OS and parallelcluster version. Select an instance type of the same family that you are planning to use for the head and the compute nodes, and enough storage for a swap file and a spack-stack installation. For example:
-- AMI ID: ami-093dab62f7840644b
-- Instance hpc6a.48xlarge
-- Use 350GB of gp3 storage as /
+- AMI Name: aws-parallelcluster-3.7.1-ubuntu-2204-lts-hvm-x86_64
+- AMI ID: ami-0906e8b928cde5ccc
+- Instance r7a.4xlarge  (uses same processor architecture as hpc7a instances)
+- Use 300GB of gp3 storage as /
+- Attach security groups allowing ssh inbound traffic and NFS outbound traffic
 
-### Prerequisites
-1. As `root`:
+The following command can be used to launch a build instance with the desired
+configuration assuming you also know the VPC subnet, security group IDs and the
+ID of your Elastic File System volume (NFS).
+
 ```
-sudo su
-apt-get -y update
-apt-get -y upgrade
-# These were already installed
-apt install -y apt-utils
+aws ec2 run-instances \
+    --image-id ami-0906e8b928cde5ccc \
+    --count 1 \
+    --instance-type r7a.4xlarge \
+    --key-name eparker-usaf-us-east-2 \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=pcluster-ami-generator}]' \
+    --subnet-id subnet-061b48f9950e18a0a \
+    --security-group-ids sg-0091fa8e748fbe355 sg-014f295418636207d \
+    --block-device-mappings '[
+        {
+            "DeviceName": "/dev/sda1",
+            "Ebs": {
+                "VolumeSize": 300,
+                "VolumeType": "gp3",
+                "Iops": 3000
+            }
+        }
+    ]' \
+    --region us-east-2 \
+    --user-data "$(cat << 'EOF' | sed 's/^ *//'
+        #!/bin/bash
+        exec > /var/log/user-data.log 2>&1
+        set -x
+        apt-get update
+        apt-get -y install nfs-common
+        efs_mount_point=/mnt/experiments-efs
+        efs_id=fs-064ec823dfe12d3d4
+        efs_zone=us-east-2
+        mkdir -p "${efs_mount_point}"
+        mount -t nfs4 -o  nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport  ${efs_id}.efs.${efs_zone}.amazonaws.com:/ ${efs_mount_point}
+        echo ${efs_id}.efs.${efs_zone}.amazonaws.com:/ $efs_mount_point nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0 >> /etc/fstab
+EOF
+)"
+```
 
-# Compilers - already installed
-apt install -y gcc g++ gfortran gdb
+### Installing Prerequisites
 
-# Install lua/lmod manually, because apt only has older versions
-# that are not compatible with the modern lua modules spack produces
-# https://lmod.readthedocs.io/en/latest/030_installing.html#install-lua-x-y-z-tar-gz
-mkdir -p /opt/lua/5.1.4.9/src
-cd /opt/lua/5.1.4.9/src
-wget https://sourceforge.net/projects/lmod/files/lua-5.1.4.9.tar.bz2
-tar -xvf lua-5.1.4.9.tar.bz2
-cd lua-5.1.4.9
-./configure --prefix=/opt/lua/5.1.4.9 2>&1 | tee log.config
-make VERBOSE=1 2>&1 | tee log.make
-make install 2>&1 | tee log.install
-#
-echo "# Set environment variables for lua" >> /etc/profile.d/02-lua.sh
-echo "export PATH=\"/opt/lua/5.1.4.9/bin:\$PATH\"" >> /etc/profile.d/02-lua.sh
-echo "export LD_LIBRARY_PATH=\"/opt/lua/5.1.4.9/lib:\$LD_LIBRARY_PATH\"" >> /etc/profile.d/02-lua.sh
-echo "export CPATH=\"/opt/lua/5.1.4.9/include:\$CPATH\"" >> /etc/profile.d/02-lua.sh
-echo "export MANPATH=\"/opt/lua/5.1.4.9/man:\$MANPATH\"" >> /etc/profile.d/02-lua.sh
-#
-source /etc/profile.d/02-lua.sh
+1. Install apt build prerequisites
+```
+# Initialize apt and update system
+sudo su -
+apt -y update
+apt -y upgrade
 
-mkdir -p /opt/lmod/8.7/src
-cd /opt/lmod/8.7/src
-wget https://sourceforge.net/projects/lmod/files/Lmod-8.7.tar.bz2
-tar -xvf Lmod-8.7.tar.bz2
-cd Lmod-8.7
-# Note the weird prefix, lmod installs in PREFIX/lmod/X.Y automatically
-./configure --prefix=/opt/ \
---with-lmodConfigDir=/opt/lmod/8.7/config \
-2>&1 | tee log.config
-make install 2>&1 | tee log.install
-ln -sf /opt/lmod/lmod/init/profile /etc/profile.d/z00_lmod.sh
-ln -sf /opt/lmod/lmod/init/cshrc /etc/profile.d/z00_lmod.csh
-ln -sf /opt/lmod/lmod/init/profile.fish /etc/profile.d/z00_lmod.fish
+# Install core dependencies
+apt install -y \
+    ca-certificates \
+    curl \
+    gnupg \
+    git \
+    git-lfs \
+    bzip2 \
+    unzip \
+    python3 \
+    python3-pip \
+    tcl-dev \
+    nano
+sudo -u ubuntu git lfs install
 
-# Add custom module locations and fix existing modules
-#
-# intelmpi
-echo "conflict openmpi" >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
-echo 'if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.16.0~amzn4.0 ] } {' >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
-echo '    module load libfabric-aws/1.16.0~amzn4.0' >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
-echo '}' >> /opt/intel/mpi/2021.6.0/modulefiles/intelmpi
-# openmpi
-echo "conflict intelmpi" >> /usr/share/modules/modulefiles/openmpi/4.1.4
-echo 'if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.16.0~amzn4.0 ] } {' >> /usr/share/modules/modulefiles/openmpi/4.1.4
-echo '    module load libfabric-aws/1.16.0~amzn4.0' >> /usr/share/modules/modulefiles/openmpi/4.1.4
-echo '}' >> /usr/share/modules/modulefiles/openmpi/4.1.4
-#
-echo "module use /usr/share/modules/modulefiles" >> /etc/profile.d/z01_lmod.sh
-echo "module use /opt/intel/mpi/2021.6.0/modulefiles" >> /etc/profile.d/z01_lmod.sh
-echo "module use /home/ubuntu/jedi/modulefiles" >> /etc/profile.d/z01_lmod.sh
-#
-# Log out completely, ssh back into the instance and check if lua modules work
-exit
-exit
 
-ssh ...
-# Now user ubuntu
-module av
-module load libfabric-aws/1.16.0~amzn4.0
-module load openmpi/4.1.4
-module list
-module unload openmpi/4.1.4
-module load intelmpi
-module list
-module purge
-module list
+# Install compilers and various dev dependencies.
+apt install -y \
+    gcc \
+    g++ \
+    gfortran \
+    gdb \
+    build-essential \
+    libkrb5-dev \
+    m4 \
+    apt-utils \
+    automake \
+    cmake \
+    xterm \
+    autopoint \
+    texlive \
+    gettext \
+    meson \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    mysql-server \
+    libmysqlclient-dev \
+    libmysqlclient21 \
+    python3-dev
 
-# Continue as root
-sudo su
+# Additional external dependencies for Intel spack builds.
+apt install -y \
+    liblcms2-dev \
+    liblcms2-2
 
-# Misc
-apt install -y build-essential
-apt install -y libcurl4-openssl-dev
-apt install -y libssl-dev
-apt install -y libkrb5-dev
-apt install -y m4
-apt install -y git
-apt install -y git-lfs
-apt install -y bzip2
-apt install -y unzip
-apt install -y automake
-apt install -y xterm
-apt install -y texlive
+# Install QT5 for ecflow
+apt install -y \
+    qtcreator \
+    qtbase5-dev \
+    qt5-qmake \
+    libqt5svg5-dev \
+    qt5dxcb-plugin
 
-# This is for ecflow
-apt install -y qt5-default
-apt install -y libqt5svg5-dev
-apt install -y qt5dxcb-plugin
-
-### # Remove AWS openmpi
-### apt remove -y openmpi40-aws
 
 # This is because boost doesn't work with the Intel compiler
-apt install -y libboost1.71-dev
-apt install -y libboost-chrono1.71-dev
-apt install -y libboost-date-time1.71-dev
-apt install -y libboost-exception1.71-dev
-apt install -y libboost-filesystem1.71-dev
-apt install -y libboost-program-options1.71-dev
-apt install -y libboost-python1.71-dev
-apt install -y libboost-regex1.71-dev
-apt install -y libboost-serialization1.71-dev
-apt install -y libboost-system1.71-dev
-apt install -y libboost-test1.71-dev
-apt install -y libboost-thread1.71-dev
-apt install -y libboost-timer1.71-dev
-
-# Python
-apt install -y python3-dev python3-pip
-
-# Intel compiler
-wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
-echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list 
-apt-get update
-apt-get install -y intel-hpckit-2022.2.0/all
-
-# Docker
-# See https://docs.docker.com/engine/install/ubuntu/
-apt-get update
-apt-get install ca-certificates curl gnupg lsb-release
-mkdir -m 0755 -p /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
-apt-get update
-apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-docker run hello-world
-# Add user ubuntu to group docker - see https://docs.docker.com/engine/install/linux-postinstall/
-gpasswd -a ubuntu docker
+apt install -y \
+    libboost1.74-dev \
+    libboost-chrono1.74-dev \
+    libboost-date-time1.74-dev \
+    libboost-exception1.74-dev \
+    libboost-filesystem1.74-dev \
+    libboost-program-options1.74-dev \
+    libboost-python1.74-dev \
+    libboost-regex1.74-dev \
+    libboost-serialization1.74-dev \
+    libboost-system1.74-dev \
+    libboost-test1.74-dev \
+    libboost-thread1.74-dev \
+    libboost-timer1.74-dev
 
 # Configure X windows
 echo "X11Forwarding yes" >> /etc/ssh/sshd_config
@@ -158,7 +137,7 @@ service sshd restart
 cd /usr/lib64/
 ln -sf /usr/lib/x86_64-linux-gnu/libcrypt.so .
 cd /usr/include
-ln -sf python3.8/pyconfig.h .
+ln -sf python3.10/pyconfig.h .
 
 # Create swapfile - 100GB
 dd if=/dev/zero of=/swapfile bs=128M count=800
@@ -167,6 +146,62 @@ mkswap /swapfile
 swapon /swapfile
 swapon -s
 echo "/swapfile swap swap defaults 0 0" >> /etc/fstab
+```
+
+
+
+2. The PCluster base image includes the Intel MPI library but does not include
+the Intel compiler toolchain. Installing the Intel compiler toolchain with apt
+shuffles the `/opt/intel` directory badly and places the libraries and tools in
+nonstandard locations due to conflicts with the installed MPI library. The
+following instructions are used to clear the existing Intel MPI and install a
+fresh mutually compatible Intel toolchain.
+
+```
+sudo su -
+
+rm -rf /opt/intel
+rm -rf /var/intel
+
+mkdir -p /opt/intel/src
+pushd /opt/intel/src
+
+# Download Intel install assets.
+wget -O cpp-compiler.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/d85fbeee-44ec-480a-ba2f-13831bac75f7/l_dpcpp-cpp-compiler_p_2023.2.3.12_offline.sh
+wget -O fortran-compiler.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/0ceccee5-353c-4fd2-a0cc-0aecb7492f87/l_fortran-compiler_p_2023.2.3.13_offline.sh
+wget -O tbb.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/c95cd995-586b-4688-b7e8-2d4485a1b5bf/l_tbb_oneapi_p_2021.10.0.49543_offline.sh
+wget -O mpi.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/4f5871da-0533-4f62-b563-905edfb2e9b7/l_mpi_oneapi_p_2021.10.0.49374_offline.sh
+wget -O math.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/adb8a02c-4ee7-4882-97d6-a524150da358/l_onemkl_p_2023.2.0.49497_offline.sh
+
+# Install the Intel assets.
+sh cpp-compiler.sh -a --silent --eula accept 2>&1 | tee install.cpp-compiler.log
+sh fortran-compiler.sh -a --silent --eula accept | tee install.fortran-compiler.log
+sh tbb.sh -a --silent --eula accept | tee install.tbb.log
+sh mpi.sh -a --silent --eula accept | tee install.mpi.log
+sh math.sh -a --silent --eula accept | tee install.math.log
+
+popd
+```
+
+
+3. Install docker
+```
+# Docker
+# See https://docs.docker.com/engine/install/ubuntu/
+apt-get update
+apt-get install ca-certificates curl gnupg lsb-release
+mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null
+apt-get update
+apt install -y docker-ce \
+    docker-ce-cli containerd.io \
+    docker-buildx-plugin \
+    docker-compose-plugin
+docker run hello-world
+# DH* TODO 2023/02/21: Add users to group docker so that non-root users can run it
+# See https://docs.docker.com/engine/install/linux-postinstall/
 
 # Exit root session
 exit
@@ -175,9 +210,7 @@ exit
 git config --global credential.helper cache
 ```
 
-2. Log out and back in to enable x11 forwarding
-
-3. Build ecflow outside of spack to be able to link against OS boost (note: this needs to be updated to follow the ecflow instructions with static boost in spack-stack's readthedocs)
+4. Build ecflow outside of spack to be able to link against OS boost
 ```
 mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
 cd /home/ubuntu/jedi/ecflow-5.8.4/src
@@ -192,13 +225,13 @@ cd $WK
 mkdir build
 cd build
 cmake .. -DPython3_EXECUTABLE=/usr/bin/python3 -DENABLE_STATIC_BOOST_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/home/ubuntu/jedi/ecflow-5.8.4 2>&1 | tee log.cmake
-make -j4 2>&1 | tee log.make
+make -j10 2>&1 | tee log.make
 make install 2>&1 | tee log.install
 
-# Create a modulefiles directory with the following ecflow/5.8.4 module in it (w/o the '%%%%...' lines):
+# Create a modulefiles directory and the "ecflow/5.8.4" module file.
 mkdir -p /home/ubuntu/jedi/modulefiles/ecflow
-vi /home/ubuntu/jedi/modulefiles/ecflow/5.8.4
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+cat << 'EOF' > /home/ubuntu/jedi/modulefiles/ecflow/5.8.4
 #%Module1.0
 
 module-whatis "Provides an ecflow-5.8.4 server+ui installation for use with spack."
@@ -217,11 +250,111 @@ prepend-path LD_LIBRARY_PATH "${ECFLOW_PATH}/lib"
 prepend-path LIBRARY_PATH "${ECFLOW_PATH}/lib"
 prepend-path CPATH "${ECFLOW_PATH}/include"
 prepend-path CMAKE_PREFIX_PATH "${ECFLOW_PATH}"
-prepend-path PYTHONPATH "${ECFLOW_PATH}/lib/python3.8/site-packages"
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+prepend-path PYTHONPATH "${ECFLOW_PATH}/lib/python3.10/site-packages"
+EOF
+
 ```
 
-4. Install msql community server
+5. Install lmod, this step must be done as `root`.
+```
+# Install lua/lmod manually because apt only has older versions
+# that are not compatible with the modern lua modules spack produces
+# https://lmod.readthedocs.io/en/latest/030_installing.html#install-lua-x-y-z-tar-gz
+sudo su -
+mkdir -p /opt/lua/5.1.4.9/src
+cd /opt/lua/5.1.4.9/src
+wget https://sourceforge.net/projects/lmod/files/lua-5.1.4.9.tar.bz2
+tar -xvf lua-5.1.4.9.tar.bz2
+cd lua-5.1.4.9
+./configure --prefix=/opt/lua/5.1.4.9 2>&1 | tee log.config
+make VERBOSE=1 2>&1 | tee log.make
+make install 2>&1 | tee log.install
+
+cat << 'EOF' >> /etc/profile.d/02-lua.sh
+# Set environment variables for lua
+export PATH="/opt/lua/5.1.4.9/bin:$PATH"
+export LD_LIBRARY_PATH="/opt/lua/5.1.4.9/lib:$LD_LIBRARY_PATH"
+export CPATH="/opt/lua/5.1.4.9/include:$CPATH"
+export MANPATH="/opt/lua/5.1.4.9/man:$MANPATH"
+EOF
+
+source /etc/profile.d/02-lua.sh
+mkdir -p /opt/lmod/8.7/src
+cd /opt/lmod/8.7/src
+wget https://sourceforge.net/projects/lmod/files/Lmod-8.7.tar.bz2
+tar -xvf Lmod-8.7.tar.bz2
+cd Lmod-8.7
+# Note the weird prefix, lmod installs in PREFIX/lmod/X.Y automatically
+./configure --prefix=/opt/ \
+            --with-lmodConfigDir=/opt/lmod/8.7/config \
+            2>&1 | tee log.config
+make install 2>&1 | tee log.install
+ln -sf /opt/lmod/lmod/init/profile /etc/profile.d/z00_lmod.sh
+ln -sf /opt/lmod/lmod/init/cshrc /etc/profile.d/z00_lmod.csh
+ln -sf /opt/lmod/lmod/init/profile.fish /etc/profile.d/z00_lmod.fish
+
+
+# Add custom module locations and fix existing modules
+
+# Update the Intel MPI module to load AWS libfabric.
+cat << 'EOF' >> /opt/intel/oneapi/mpi/2021.10.0/modulefiles/mpi
+conflict openmpi
+if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.18.2amzn1.0 ] } {
+    module load libfabric-aws/1.18.2amzn1.0
+}
+EOF
+
+# Update the AWS OpenMPI module to load AWS libfabric.
+cat << 'EOF' >> /usr/share/modules/modulefiles/openmpi/4.1.5
+conflict mpi
+if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.18.2amzn1.0 ] } {
+    module load libfabric-aws/1.18.2amzn1.0
+}
+EOF
+
+################## TODO
+##################
+##################
+##################
+##################
+################## Do not submit this. note that the module files are disabled
+################## pending completion of the intel build issues.
+##################
+##################
+##################
+##################
+
+# Add a number of default module locations to the lmod startup script.
+cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
+module use /usr/share/modules/modulefiles
+module use /opt/intel/oneapi/mpi/2021.10.0/modulefiles
+# module use /opt/intel/oneapi/tbb/2021.10.0/modulefiles
+# module use /opt/intel/oneapi/mpi/2021.10.0/modulefiles
+# module use /opt/intel/oneapi/compiler/2023.2.3/modulefiles
+# module use /opt/intel/oneapi/mkl/2023.2.0/modulefiles
+module use /home/ubuntu/jedi/modulefiles
+#module load mpi
+EOF
+
+
+# Log out completely, ssh back into the instance and check if lua modules work
+exit
+exit
+
+ssh ...
+# Now user ubuntu
+module av
+module load libfabric-aws/1.18.2amzn1.0
+module load openmpi/4.1.5
+module list
+module unload openmpi/4.1.5
+module load mpi
+module list
+module purge
+module list
+```
+
+6. Install msql community server
 ```
 cd /home/ubuntu/jedi
 mkdir -p mysql-8.0.31/src
@@ -243,12 +376,15 @@ exit
 rm *.deb
 ```
 
-5. Option 1: Testing existing site config in spack-stack (skip steps 5-7 afterwards)
+7. Option 1: Testing existing site config in spack-stack (skip steps 8-9 afterwards)
 ```
-mkdir -p /home/ubuntu/sandpit
-cd /home/ubuntu/sandpit
-git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
-cd spack-stack/
+# Note: this install is done directly on the NFS drive. If you are testing
+# an update to the configuration, do this on the faster EBS volume (use a
+# directory in /home/ubuntu).
+
+cd /mnt/experiments-efs
+git clone --recurse-submodules -b release/1.7.0 https://github.com/JCSDA/spack-stack.git spack-stack-1.7
+cd spack-stack-1.7/
 . setup.sh
 spack stack create env --site aws-pcluster --template=unified-dev --name=unified-env
 spack env activate -p envs/unified-env
@@ -260,9 +396,9 @@ spack module lmod refresh
 spack stack setup-meta-modules
 ```
 
-6. Option 2: Test configuring site from scratch
+8. Option 2: Test configuring site from scratch
 ```
-mkdir /home/ubuntu/jedi && cd /home/ubuntu/jedi
+mkdir -p /home/ubuntu/jedi && cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
 cd spack-stack/
 . setup.sh
@@ -280,23 +416,27 @@ spack external find --scope system mysql
 
 # No external find for pre-installed intel-oneapi-mpi (from pcluster AMI),
 # and no way to add object entry to list using "spack config add".
-echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: intel-oneapi-mpi@2021.6.0%intel@2022.1.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      prefix: /opt/intel" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      - libfabric-aws/1.16.0~amzn4.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      - intelmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+  intel-oneapi-mpi:
+    externals:
+    - spec: intel-oneapi-mpi@2021.10.0%intel@2022.1.0
+      prefix: /opt/intel
+      modules:
+      - libfabric-aws/1.18.2amzn1.0
+      - intelmpi
+EOF
 
 # Add external openmpi
-echo "  openmpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: openmpi@4.1.4%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "        fabrics=ofi schedulers=slurm" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      prefix: /opt/amazon/openmpi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      - libfabric-aws/1.16.0~amzn3.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      - openmpi/4.1.4" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.5%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+        fabrics=ofi schedulers=slurm
+      prefix: /opt/amazon/openmpi
+      modules:
+      - libfabric-aws/1.18.2amzn1.0
+      - openmpi/4.1.5
+EOF
 
 # Can't find qt5 because qtpluginfo is broken,
 # and no way to add object entry to list using "spack config add".
@@ -318,7 +458,9 @@ spack compiler find --scope system
 export -n SPACK_SYSTEM_CONFIG_PATH
 
 spack config add "packages:mpi:buildable:False"
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.6.0, openmpi@4.1.4]"
+spack config add "packages:python:buildable:False"
+spack config add "packages:openssl:buildable:False"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0, openmpi@4.1.5]"
 spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 
 # edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
@@ -326,14 +468,14 @@ spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
 # -->
 #     environment:
 #       prepend_path:
-#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.6.0/linux/compiler/lib/intel64_lin'
+#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.10.0/linux/compiler/lib/intel64_lin'
 #       set:
 #         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
 ```
 
-7. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-env/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
+9. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-dev/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
 
-8. Concretize and install
+10. Concretize and install
 ```
 spack concretize 2>&1 | tee log.concretize.unified-env.001
 ./util/show_duplicate_packages.py -d log.concretize.unified-env.001
@@ -341,6 +483,48 @@ spack install --verbose 2>&1 | tee log.install.unified-env.001
 spack module lmod refresh
 spack stack setup-meta-modules
 ```
-9. Test spack-stack installation using your favorite application. Note that the jedi-bundle ctests requiring MPI don't work correctly, because the modules are configured for SLURM integration but the node in its current state doesn't have SLURM available. These test failures must be ignored and run once the parallel cluster has been provisioned.
-10. (Optional) Remove test installs of spack-stack environments, if desired.
-11. Create the AMI for use in the AWS parallelcluster config.
+11. Test spack-stack installation using your favorite application.
+
+```
+# Example given for building jedi-bundle
+module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-gnu/install/modulefiles/Core
+module load stack-gcc/11.4.0
+module load stack-openmpi/4.1.5
+module load base-env
+module load jedi-mpas-env
+module load jedi-fv3-env
+module load ewok-env
+module load sp
+
+git clone https://github.com/JCSDA-internal/jedi-bundle.git
+cd jedi-bundle
+mkdir build && cd build
+ecbuild ../
+make update
+make -j10
+ctest
+```
+
+12. (Optional) Remove test installs of spack-stack environments, if desired.
+13. Create the AMI for use in the AWS parallelcluster config.
+14. Use the install to build
+
+```
+#module use $HOME/ubuntu/spack-stack-1.7/envs/pcluster-gnu/install/modulefiles/Core
+module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-gnu/install/modulefiles/Core
+module load stack-gcc/11.4.0
+module load stack-openmpi/4.1.5
+module load base-env
+module load jedi-mpas-env
+module load jedi-fv3-env
+module load ewok-env
+module load sp
+
+git clone https://github.com/JCSDA-internal/jedi-bundle.git
+cd jedi-bundle
+mkdir build && cd build
+ecbuild ../
+make update
+make -j10
+ctest
+```
