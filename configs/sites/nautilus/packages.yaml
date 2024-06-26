@@ -13,7 +13,7 @@ packages:
     # do we need to set the rest here?
     require:: '+mkl'
   py-numpy:
-    require: '^intel-oneapi-mkl'
+    require: '@:1.25 ^intel-oneapi-mkl'
 
 ### MPI, Python, MKL
   mpi:
@@ -107,6 +107,10 @@ packages:
   gawk:
     externals:
     - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
       prefix: /usr
   git:
     externals:

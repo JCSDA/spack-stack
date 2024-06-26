@@ -210,6 +210,10 @@
     #  require: '@8.0.32'
     py-netcdf4:
       require: '@1.5.8 ~mpi'
+    # py-numpy@1.26 causes many build problems with older Python packages
+    # also check Nautilus site config when making changes here
+    py-numpy:
+      require: '@:1.25'
     py-pandas:
       require: '+excel'
     # Pin the py-setuptools version to avoid duplicate Python packages
