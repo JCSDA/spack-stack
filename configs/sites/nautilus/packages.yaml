@@ -7,9 +7,13 @@ packages:
       fftw-api:: [intel-oneapi-mkl]
       lapack:: [intel-oneapi-mkl]
   ectrans:
-    variants:: +mkl ~fftw
+    # do we need to set 1.2.0 here?
+    require:: '+mkl ~fftw'
   gsibec:
-    variants:: +mkl
+    # do we need to set the rest here?
+    require:: '+mkl'
+  py-numpy:
+    require: '@:1.25 ^intel-oneapi-mkl'
 
 ### MPI, Python, MKL
   mpi:
@@ -55,7 +59,7 @@ packages:
 ### Modifications of common packages
   # Version 2.0.8 doesn't compile on Nautilus
   wgrib2:
-    version:: ['3.1.1']
+    require:: '@3.1.1'
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -70,10 +74,13 @@ packages:
     externals:
     - spec: binutils@2.30.117
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
+  # Need to comment out for scotch (wants 3.4:),
+  # but how do we deal with oneapi installations?
+  # bison doesn't build with oneAPI.
+  #bison:
+  #  externals:
+  #  - spec: bison@3.0.4
+  #    prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.30
@@ -100,6 +107,10 @@ packages:
   gawk:
     externals:
     - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
       prefix: /usr
   git:
     externals:
