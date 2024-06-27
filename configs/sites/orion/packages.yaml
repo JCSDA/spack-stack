@@ -1,8 +1,8 @@
 packages:
   all:
-    compiler:: [intel@2023.1.0, gcc@12.2.0]
+    compiler:: [intel@2021.9.0, gcc@12.2.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.7.1, openmpi@4.1.6]
+      mpi:: [intel-oneapi-mpi@2021.9.0, openmpi@4.1.6]
       zlib-api:: [zlib]
 
 ### MPI, Python, MKL
@@ -10,13 +10,14 @@ packages:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.7.1%intel@2023.1.0
-      prefix: /apps/spack-managed/oneapi-2023.1.0/intel-oneapi-mpi-2021.9.0-a66eaipzsnyrdgaqzxmqmqz64qzvhkse
+    - spec: intel-oneapi-mpi@2021.9.0%intel@2021.9.0
+      #prefix: /apps/spack-managed/oneapi-2023.1.0/intel-oneapi-mpi-2021.9.0-a66eaipzsnyrdgaqzxmqmqz64qzvhkse
       modules:
-      - intel-oneapi-mpi/2021.7.1
+      - intel-oneapi-mpi/2021.9.0
   openmpi:
     externals:
     - spec: openmpi@4.1.6%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath schedulers=slurm
+      # Shouldn't set prefix if we want to use modules
       prefix: /work/noaa/epic/role-epic/spack-stack/orion/installs/openmpi/4.1.6
       modules:
       - gnu/12.2.0
