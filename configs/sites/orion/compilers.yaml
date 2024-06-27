@@ -19,7 +19,7 @@ compilers:
         # https://github.com/ufs-community/ufs-weather-model/issues/2015#issuecomment-1864438186
         I_MPI_EXTRA_FILESYSTEM: 'ON'
     extra_rpaths: []
-compilers:
+
 - compiler:
     spec: gcc@12.2.0
     paths:
