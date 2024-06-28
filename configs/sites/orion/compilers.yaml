@@ -1,33 +1,35 @@
 compilers:
 - compiler:
-    spec: intel@2022.0.2
+    spec: intel@2021.9.0
     paths:
-      cc: /apps/intel-2022.1.2/intel-2022.1.2/compiler/2022.0.2/linux/bin/intel64/icc
-      cxx: /apps/intel-2022.1.2/intel-2022.1.2/compiler/2022.0.2/linux/bin/intel64/icpc
-      f77: /apps/intel-2022.1.2/intel-2022.1.2/compiler/2022.0.2/linux/bin/intel64/ifort
-      fc: /apps/intel-2022.1.2/intel-2022.1.2/compiler/2022.0.2/linux/bin/intel64/ifort
-    flags: {}
-    operating_system: centos7
+      cc: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/icc
+      cxx: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/icpc
+      f77: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/ifort
+      fc: /apps/spack-managed/gcc-11.3.1/intel-oneapi-compilers-2023.1.0-sb753366rvywq75zeg4ml5k5c72xgj72/compiler/2023.1.0/linux/bin/intel64/ifort
+    flags:
+      cflags: -diag-disable=10441
+      cxxflags: -diag-disable=10441
+      fflags: -diag-disable=10448
+    operating_system: rocky9
     target: x86_64
     modules:
-    - intel/2022.1.2
+    - intel-oneapi-compilers/2023.1.0
     environment:
-      prepend_path:
-        PATH: '/apps/gcc-10.2.0/gcc-10.2.0/bin'
-        LD_LIBRARY_PATH: '/apps/gcc-10.2.0/gcc-10.2.0/lib64:/apps/gcc-10.2.0/gcc-10.2.0/contrib/lib'
-        CPATH: '/apps/gcc-10.2.0/gcc-10.2.0/include'
+      set:
+        # https://github.com/ufs-community/ufs-weather-model/issues/2015#issuecomment-1864438186
+        I_MPI_EXTRA_FILESYSTEM: 'ON'
     extra_rpaths: []
 - compiler:
-    spec: gcc@10.2.0
+    spec: gcc@12.2.0
     paths:
-      cc: /apps/gcc-10.2.0/gcc-10.2.0/bin/gcc
-      cxx: /apps/gcc-10.2.0/gcc-10.2.0/bin/g++
-      f77: /apps/gcc-10.2.0/gcc-10.2.0/bin/gfortran
-      fc: /apps/gcc-10.2.0/gcc-10.2.0/bin/gfortran
+      cc: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/gcc
+      cxx: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/g++
+      f77: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/gfortran
+      fc: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/gfortran
     flags: {}
-    operating_system: centos7
+    operating_system: rocky9
     target: x86_64
     modules:
-    - gcc/10.2.0
+    - gcc/12.2.0
     environment: {}
     extra_rpaths: []
