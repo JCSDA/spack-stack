@@ -123,22 +123,22 @@ For ``spack-stack-1.7.0`` with Intel, load the following modules after loading m
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-intel-centos/install/modulefiles/Core
-   module load stack-intel/2022.0.2
-   module load stack-intel-oneapi-mpi/2021.5.1
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-intel/install/modulefiles/Core
+   module load stack-intel/2021.9.0
+   module load stack-intel-oneapi-mpi/2021.9.0
    module load stack-python/3.10.13
 
 For ``spack-stack-1.7.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-gcc-centos/install/modulefiles/Core
-   module load stack-gcc/10.2.0
-   module load stack-openmpi/4.0.4
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-gcc/install/modulefiles/Core
+   module load stack-gcc/12.2.0
+   module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
 
 .. note::
-   The unified environment on Orion uses ``cdo@2.0.5`` instead of the default ``cdo@2.2.0`` because of a bug in the ``cdo`` package recipe that affects systems that don't have a ``python3`` interpreter in the default search paths (see https://github.com/spack/spack/issues/41947) for more information. This is a temporary change on Orion for the spack-stack-1.7.0 release and will be reverted once the ``cdo`` package is updated in the upstream spack develop code.
+   The unified environment on Orion uses ``cdo@2.3.0`` instead of the default ``cdo@2.2.0``. This is a temporary change on Orion after the Rocky9 OS upgrade until the default is 2.3.0 for all systems and future releases.
 
 ------------------------------
 MSU Hercules
