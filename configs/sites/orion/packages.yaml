@@ -20,7 +20,7 @@ packages:
       # Shouldn't set prefix if we want to use modules
       prefix: /work/noaa/epic/role-epic/spack-stack/orion/installs/openmpi/4.1.6
       modules:
-      - gnu/12.2.0
+      - gcc/12.2.0
       - openmpi/4.1.6
 
 ### Modifications of common packages
