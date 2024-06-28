@@ -93,7 +93,6 @@ The following is required for building new spack environments and for using spac
 
    module purge
    module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
-   module load python/3.9.2
    module load ecflow/5.8.4
 
 For ``spack-stack-1.7.0`` with Intel, load the following modules after loading miniconda and ecflow:
