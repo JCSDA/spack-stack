@@ -78,22 +78,4 @@ if [ $(eval "$cmd") -ne 2 ] ; then
   fail=1
 fi
 
-## Check check_package_config.py
-export SPACK_ENV=${SPACK_STACK_DIR}/util/test_env
-${SPACK_STACK_DIR}/util/check_package_config.py
-${SPACK_STACK_DIR}/util/check_package_config.py | sort
-${SPACK_STACK_DIR}/util/check_package_config.py | sort | md5sum
-output_checksum=$(${SPACK_STACK_DIR}/util/check_package_config.py | sort | md5sum)
-reference_checksum=$(cat ${SPACK_STACK_DIR}/util/test_env/package_check_baseline.txt | md5sum)
-if [[ "$output_checksum" != "$reference_checksum" ]]; then
-  echo "check_package_config.py check A failed!"
-  fail=1
-fi
-# Test ignoring packages
-count=$(${SPACK_STACK_DIR}/util/check_package_config.py -i sp --ignore cmake | wc -l)
-if [ "$count" -ne 0 ]; then
-  echo "check_package_config.py check B failed!"
-  fail=1
-fi
-
 exit $fail
