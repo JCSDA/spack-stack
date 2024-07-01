@@ -49,7 +49,7 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  ecflow:
+  ecflow::
     buildable: false
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
