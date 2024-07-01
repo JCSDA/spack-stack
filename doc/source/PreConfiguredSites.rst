@@ -138,7 +138,7 @@ For ``spack-stack-1.7.0`` with GNU, load the following modules after loading min
    module load stack-python/3.10.13
 
 .. note::
-   The unified environment on Orion uses ``cdo@2.3.0`` instead of the default ``cdo@2.2.0``. This is a temporary change on Orion after the Rocky9 OS upgrade until the default is 2.3.0 for all systems and future releases.
+   The unified environment on Orion uses ``cdo@2.3.0`` instead of the default ``cdo@2.2.0``. This is a temporary change for release/1.7.0 and no longer needed on develop.
 
 ------------------------------
 MSU Hercules
