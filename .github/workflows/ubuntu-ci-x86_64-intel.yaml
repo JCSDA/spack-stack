@@ -103,7 +103,7 @@ jobs:
 
           # Add external ecflow for Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  ecflow:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  ecflow::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    - spec: ecflow@5.8.4+ui+static_boost" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
@@ -208,13 +208,13 @@ jobs:
 
           # Test environment chaining
           echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/${ENVNAME}/install)
+          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install
           # Retain config from upstream so we don't have to rebuild:
-          cp -r $PWD/envs/${ENVNAME}/{site,common} $PWD/envs/chaintest/.
+          cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.8.9.0%intel
+          spack add nccmp@1.9.0.1%intel
           spack concretize | tee envs/chaintest/log.concretize
-          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
+          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate
 
