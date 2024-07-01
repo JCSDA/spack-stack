@@ -85,7 +85,7 @@ packages:
       prefix: /usr
   git-lfs:
     externals:
-    - spec: git@3.1.2
+    - spec: git-lfs@3.1.2
       prefix: /apps/spack-managed/gcc-11.3.1/git-lfs-3.1.2
   gmake:
     externals:
