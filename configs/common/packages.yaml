@@ -84,7 +84,8 @@
     g2c:
       require: '@1.6.4'
     g2tmpl:
-      require: '@1.10.2'
+      require:
+        - '@1.10.2'
     gfsio:
       require: '@1.4.1'
     #git-lfs:
