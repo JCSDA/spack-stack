@@ -60,6 +60,10 @@ spack:
       externals:
       - spec: diffutils@3.7
         prefix: /usr
+    gettext:
+      externals:
+      - spec: gettext@0.19.8.1
+        prefix: /usr
     git:
       buildable: false
       externals:
@@ -133,6 +137,7 @@ spack:
       - cpp
       - g++
       - gcc
+      - gettext
       - gfortran
       - git
       - git-lfs
@@ -149,6 +154,7 @@ spack:
       - cpp
       - g++
       - gcc
+      - gettext
       - gfortran
       - git
       - git-lfs
