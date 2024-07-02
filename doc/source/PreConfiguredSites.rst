@@ -3,6 +3,9 @@
 Pre-configured sites
 *************************
 
+.. note::
+  The information on this page usually refers to the latest stable release of spack-stack. There are usually no updates for the latest developmental code for preconfigured sites. Further, current and previous releases of spack-stack are often updated with new packages, and sometimes it is necessary to rebuild spack-stack environments, for example in case an HPC receives a major software update. Also in this case, the documentation available on readthedocs is not updated. Be sure to check the spack-stack Wiki <https://github.com/JCSDA/spack-stack/wiki> for updates to current and previous releases before using the information below!
+
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
 Pre-configured sites are split into two categories: Tier 1 with officially supported spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
