@@ -115,6 +115,8 @@ MSU Orion
 
 The following is required for building new spack environments and for using spack to build and run software.
 
+.. note:: For spack-stack develop, use module path ``/work/noaa/epic/role-epic/spack-stack/orion/modulefiles-rocky9`` instead of ``/work/noaa/epic/role-epic/spack-stack/orion/modulefiles``. Note also that the ``openmpi`` version for ``gcc@12.2.0`` changes to ``4.1.4``.
+
 .. code-block:: console
 
    module purge
