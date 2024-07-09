@@ -34,8 +34,12 @@ def all_templates():
 def all_sites():
     site_path = stack_path("configs", "sites")
     if site_path:
-        _, sites, _ = next(os.walk(site_path))
-        return list(sites)
+        sites = []
+        _, tiers, _ = next(os.walk(site_path))
+        for tier in tiers:
+            _, tier_sites, _ = next(os.walk(stack_path("configs", "sites", tier)))
+            sites += list(tier_sites)
+        return sites
     else:
         return None
 

@@ -2,6 +2,7 @@ name: ubuntu-ci-c6a-x86_64-intel-build
 on:
   pull_request:
     paths-ignore:
+      - 'configs/sites/**'
       - 'doc/**'
       - '**.md'
       - '.github/ISSUE_TEMPLATE/*'
@@ -28,9 +29,14 @@ jobs:
           rm -fr *
 
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
+
+      - name: prepare-directories
+        run: |
+          mkdir -p /home/ubuntu/spack-stack/build-cache/
+          mkdir -p /home/ubuntu/spack-stack/source-cache/
 
       - name: create-buildcache
         run: |
@@ -45,7 +51,7 @@ jobs:
             echo "Use existing binary cache for creating buildcache environment"
           fi
 
-          # spack-stack setup
+          # Set up spack-stack
           source ./setup.sh
           export ENVNAME=ue-intel-2021.10.0-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
@@ -63,7 +69,7 @@ jobs:
           spack external find --scope system texlive
           spack external find --scope system mysql
 
-          # For GNU - need to for bootstrapping
+          # Find compilers
           spack compiler find --scope system
 
           # For Intel
@@ -98,7 +104,7 @@ jobs:
 
           # Add external ecflow for Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  ecflow:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  ecflow::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    - spec: ecflow@5.8.4+ui+static_boost" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
@@ -113,7 +119,7 @@ jobs:
           # Set compiler and MPI
           spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
           spack config add "packages:all:compiler:[intel@2021.10.0]"
-          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
+          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel', '\%oneapi'\]/\['\%intel'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
@@ -131,8 +137,10 @@ jobs:
 
           # Add binary cache if requested
           if [ "$USE_BINARY_CACHE" = true ] ; then
+            set +e
             spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
-            spack buildcache update-index local-binary
+            spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+            set +e
             echo "Packages in spack binary cache:"
             spack buildcache list
           fi
@@ -201,13 +209,13 @@ jobs:
 
           # Test environment chaining
           echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site linux.default --upstream $(realpath envs/${ENVNAME}/install)
+          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install
           # Retain config from upstream so we don't have to rebuild:
-          cp -r $PWD/envs/${ENVNAME}/{site,common} $PWD/envs/chaintest/.
+          cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.8.9.0%intel
+          spack add nccmp@1.9.0.1%intel
           spack concretize | tee envs/chaintest/log.concretize
-          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.8.9.0' || true ) | wc -l)
+          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate
 

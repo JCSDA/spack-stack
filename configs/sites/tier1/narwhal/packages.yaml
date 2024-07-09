@@ -1,0 +1,141 @@
+packages:
+  all:
+    compiler:: [intel@2021.4.0, gcc@10.3.0]
+    providers:
+      mpi:: [cray-mpich@8.1.14]
+
+### MPI, Python, MKL
+  mpi:
+    buildable: False
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.14%intel@2021.4.0 ~wrappers
+      modules:
+      - cray-mpich/8.1.14
+    - spec: cray-mpich@8.1.14%gcc@10.3.0 ~wrappers
+      modules:
+      - cray-mpich/8.1.14
+  #intel-oneapi-tbb:
+  #  externals:
+  #  - spec: intel-oneapi-tbb@2021.3.0
+  #    prefix: /opt/intel/oneapi_2021.3.0.3219
+  #    modules:
+  #    - intel/2021.3.0
+  #intel-oneapi-mkl:
+  #  externals:
+  #  - spec: intel-oneapi-mkl@2021.3.0
+  #    prefix: /opt/intel/oneapi_2021.3.0.3219
+  #    modules:
+  #    - intel/2021.3.0
+
+### All other external packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.15.1
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.37.20211103
+      prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.12.12
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  ecflow::
+    buildable: false
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4-cray-python-3.9.7.1
+      modules:
+      - ecflow/5.8.4-cray-python-3.9.7.1
+  findutils:
+    externals:
+    - spec: findutils@4.6.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.26.2+tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@2.10.0
+      prefix: /p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0
+      modules:
+      - git-lfs/2.10.0
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
+  perl:
+    externals:
+    - spec: perl@5.26.1~cpanm+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.29.2
+      prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.15.2
+      prefix: /p/app/projects/NEPTUNE/spack-stack/qt-5.15.2/5.15.2/gcc_64
+      modules:
+      - qt/5.15.2
+  sed:
+    externals:
+    - spec: sed@4.4
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.10.6
+      prefix: /usr
+  swig:
+    externals:
+    - spec: swig@3.0.12
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.20.3
+      prefix: /usr

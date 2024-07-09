@@ -3,6 +3,9 @@
 Pre-configured sites
 *************************
 
+.. note::
+  The information on this page usually refers to the latest stable release of spack-stack. There are usually no updates for the latest developmental code for preconfigured sites. Further, current and previous releases of spack-stack are often updated with new packages, and sometimes it is necessary to rebuild spack-stack environments, for example in case an HPC receives a major software update. Also in this case, the documentation available on readthedocs is not updated. Be sure to check the spack-stack Wiki <https://github.com/JCSDA/spack-stack/wiki> for updates to current and previous releases before using the information below!
+
 Directory ``configs/sites`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
 Pre-configured sites are split into two categories: Tier 1 with officially supported spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
@@ -112,33 +115,34 @@ MSU Orion
 
 The following is required for building new spack environments and for using spack to build and run software.
 
+.. note:: For spack-stack develop, use module path ``/work/noaa/epic/role-epic/spack-stack/orion/modulefiles-rocky9`` instead of ``/work/noaa/epic/role-epic/spack-stack/orion/modulefiles``. Note also that the ``openmpi`` version for ``gcc@12.2.0`` changes to ``4.1.4``.
+
 .. code-block:: console
 
    module purge
    module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles
-   module load python/3.9.2
    module load ecflow/5.8.4
 
 For ``spack-stack-1.7.0`` with Intel, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-intel-centos/install/modulefiles/Core
-   module load stack-intel/2022.0.2
-   module load stack-intel-oneapi-mpi/2021.5.1
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-intel/install/modulefiles/Core
+   module load stack-intel/2021.9.0
+   module load stack-intel-oneapi-mpi/2021.9.0
    module load stack-python/3.10.13
 
 For ``spack-stack-1.7.0`` with GNU, load the following modules after loading miniconda and ecflow:
 
 .. code-block:: console
 
-   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-gcc-centos/install/modulefiles/Core
-   module load stack-gcc/10.2.0
-   module load stack-openmpi/4.0.4
+   module use /work/noaa/epic/role-epic/spack-stack/orion/spack-stack-1.7.0/envs/ue-gcc/install/modulefiles/Core
+   module load stack-gcc/12.2.0
+   module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
 
 .. note::
-   The unified environment on Orion uses ``cdo@2.0.5`` instead of the default ``cdo@2.2.0`` because of a bug in the ``cdo`` package recipe that affects systems that don't have a ``python3`` interpreter in the default search paths (see https://github.com/spack/spack/issues/41947) for more information. This is a temporary change on Orion for the spack-stack-1.7.0 release and will be reverted once the ``cdo`` package is updated in the upstream spack develop code.
+   The unified environment on Orion uses ``cdo@2.3.0`` instead of the default ``cdo@2.2.0``. This is a temporary change for release/1.7.0 and no longer needed on develop.
 
 ------------------------------
 MSU Hercules

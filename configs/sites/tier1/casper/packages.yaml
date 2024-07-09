@@ -1,0 +1,203 @@
+packages:
+  all:
+    compiler:: [gcc@12.2.0]
+    providers:
+      mpi:: [openmpi@4.1.6]
+
+### MPI, Python, MKL
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.6%gcc@12.2.0+cuda~cxx~cxx_exceptions~java+lustre~memchecker+pmi+static~wrapper-rpath fabrics=ucx schedulers=tm
+      prefix: /glade/u/apps/casper/23.10/spack/opt/spack/openmpi/4.1.6/gcc/12.2.0/yia4
+      modules:
+      - openmpi/4.1.6
+      - ucx/1.14.1
+      - cuda/12.2.1
+
+### Modifications of common packages
+
+### All other external packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.71
+      prefix: /glade/u/apps/casper/23.10/opt/view
+  automake:
+    externals:
+    - spec: automake@1.16.5
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: automake@1.15.1
+      prefix: /usr
+  berkeley-db:
+    externals:
+    - spec: berkeley-db@4.7.25
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.41.0
+      prefix: /usr
+  bzip2:
+    externals:
+    - spec: bzip2@1.0.6
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.32
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.16.8
+      prefix: /usr/local
+    - spec: cmake@3.22.0
+      modules:
+      - cmake/3.22.0
+  cpio:
+    externals:
+    - spec: cpio@2.11
+      prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.12.13
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.3
+      prefix: /usr
+  doxygen:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  ecflow::
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4+ui+static_boost
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/ecflow-5.8.4
+      modules:
+      - ecflow/5.8.4
+  findutils:
+    externals:
+    - spec: findutils@4.8.0
+      prefix: /usr
+  flex:
+    # Must set buildable: false to avoid duplicate packages
+    #buildable: false
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /glade/u/apps/casper/23.10/opt/view
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  ghostscript:
+    externals:
+    - spec: ghostscript@9.25
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.41.0~tcltk
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: git@2.35.3+tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.3.0
+      prefix: /glade/u/apps/casper/23.10/opt/view
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.4
+      prefix: /usr
+  krb5:
+    buildable: False
+    externals:
+    - spec: krb5@1.15.1
+      prefix: /usr
+  libfuse:
+    externals:
+    - spec: libfuse@2.9.2
+      prefix: /usr
+  libtirpc:
+    variants: ~gssapi
+  libtool:
+    externals:
+    - spec: libtool@2.4.7
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  mysql:
+    buildable: False
+    externals:
+    - spec: mysql@8.0.31
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/casper/mysql-8.0.31
+      modules:
+      - mysql/8.0.31
+  ncurses:
+    externals:
+    - spec: ncurses@6.4.20221231+termlib abi=6
+      prefix: /glade/u/apps/casper/23.10/opt/view
+  perl:
+    externals:
+    - spec: perl@5.16.3~cpanm+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.29.2
+      prefix: /usr
+  qt:
+    externals:
+    - spec: qt@5.14.2
+      prefix: /glade/u/apps/casper/23.10/opt/view
+  rsync:
+    externals:
+    - spec: rsync@3.1.2
+      prefix: /usr
+  ruby:
+    externals:
+    - spec: ruby@2.0.0
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.2.2
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.14.1
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.34
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@7.0.3
+      prefix: /glade/u/apps/casper/23.10/opt/view
+    - spec: texinfo@6.5
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.14
+      prefix: /usr
+  xz:
+    externals:
+    - spec: xz@5.2.2
+      prefix: /usr
+  zip:
+    externals:
+    - spec: zip@3.0
+      prefix: /usr
