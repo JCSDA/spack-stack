@@ -21,7 +21,8 @@ and the [Spack documentation](https://spack.readthedocs.io/en/latest/).
 installation on a [supported platform](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html)
 or by [creating a new installation](https://spack-stack.readthedocs.io/en/latest/CreatingEnvironments.html), see the
 [Getting Started](https://spack-stack.readthedocs.io/en/latest/Overview.html#getting-started) documentation page.
-Full documentation with table of contents can be found at https://spack-stack.readthedocs.io/en/latest/.
+Full documentation with table of contents can be found at https://spack-stack.readthedocs.io/en/latest/. The spack-stack
+[Wiki](https://github.com/JCSDA/spack-stack/wiki) also provides latest updates for current and previous spack-stack releases.
 
 Spack-stack is a collaborative effort between:
 * [NOAA Environmental Modeling Center (EMC)](https://www.emc.ncep.noaa.gov)

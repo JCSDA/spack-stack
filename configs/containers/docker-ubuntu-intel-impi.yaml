@@ -60,6 +60,10 @@ spack:
       externals:
       - spec: diffutils@3.7
         prefix: /usr
+    gettext:
+      externals:
+      - spec: gettext@0.19.8.1
+        prefix: /usr
     git:
       buildable: false
       externals:
@@ -129,10 +133,12 @@ spack:
     ## Additional system packages that are needed at runtime
     os_packages:
       build:
+      - autopoint
       - bc
       - cpp
       - g++
       - gcc
+      - gettext
       - gfortran
       - git
       - git-lfs
@@ -145,10 +151,12 @@ spack:
       - wget
 
       final:
+      - autopoint
       - bc
       - cpp
       - g++
       - gcc
+      - gettext
       - gfortran
       - git
       - git-lfs

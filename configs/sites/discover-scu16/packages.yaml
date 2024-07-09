@@ -62,7 +62,7 @@ packages:
     externals:
     - spec: diffutils@3.3
       prefix: /usr
-  ecflow:
+  ecflow::
     buildable: False
     externals:
     - spec: ecflow@5.8.4+ui+static_boost
@@ -81,7 +81,7 @@ packages:
     # Must set buildable: false to avoid duplicate packages
     buildable: false
     externals:
-    - spec: flex@2.5.37+lex
+    - spec: flex@2.6.4
       prefix: /usr
   gawk:
     externals:
