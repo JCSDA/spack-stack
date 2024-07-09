@@ -3,6 +3,7 @@ on:
   # Uncomment this to test for PRs (but do not submit)
   #pull_request:
   #  paths-ignore:
+  #    - 'configs/sites/**'
   #    - 'doc/**'
   #    - '**.md'
   #    - '.github/ISSUE_TEMPLATE/*'

@@ -2,6 +2,7 @@ name: ubuntu-ci-c6a-x86_64-intel-build
 on:
   pull_request:
     paths-ignore:
+      - 'configs/sites/**'
       - 'doc/**'
       - '**.md'
       - '.github/ISSUE_TEMPLATE/*'
