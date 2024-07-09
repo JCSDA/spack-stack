@@ -10,7 +10,7 @@ import spack
 import spack.config
 import spack.environment as ev
 import spack.util.spack_yaml as syaml
-from spack.extensions.stack.stack_paths import common_path, site_path, stack_path, template_path
+from spack.extensions.stack.stack_paths import common_path, site_path_tier1, site_path_tier2, stack_path, template_path
 
 default_manifest_yaml = """\
 # This is a Spack Environment file.
@@ -135,11 +135,16 @@ class StackEnv(object):
             lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
         common_modules_yaml_path = os.path.join(common_path, "modules_%s.yaml" % lmod_or_tcl)
         destination = os.path.join(env_common_dir, "modules.yaml")
+        logging.info(f"Copying common includes from {common_modules_yaml_path} ...\n  ... to {destination}")
         shutil.copy(common_modules_yaml_path, destination)
 
     def site_configs_dir(self):
-        site_configs_dir = os.path.join(site_path, self.site)
-        return site_configs_dir
+        site_configs_dir = None
+        for site_path in [site_path_tier1, site_path_tier2]:
+            site_configs_dir = os.path.join(site_path, self.site)
+            if os.path.isdir(site_configs_dir):
+                return site_configs_dir
+        raise Exception(f"Site {self.site} not found in {[site_path_tier1, site_path_tier2]}")
 
     def _copy_site_includes(self):
         """Copy site directory into environment"""
@@ -149,6 +154,7 @@ class StackEnv(object):
         site_name = "site"
         self.includes.append(site_name)
         env_site_dir = os.path.join(self.env_dir(), site_name)
+        logging.info(f"Copying site includes from {self.site_configs_dir()} ...\n  ... to {env_site_dir}")
         shutil.copytree(self.site_configs_dir(), env_site_dir)
         # Update site modules.yaml if user overrides default module system
         if not self.modulesys:
