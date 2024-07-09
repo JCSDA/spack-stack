@@ -3,26 +3,32 @@
 **Note.** These instructions were used to create this site config. These steps are **not** necessary when building ``spack-stack`` - simply use the existing site config in this directory.
 
 ### Base instance
-Choose a basic AMI from the Community AMIs tab that matches your desired OS and parallelcluster version. Select an instance type of the same family that you are planning to use for the head and the compute nodes, and enough storage for a swap file and a spack-stack installation. For example:
+Installing spack-stack on Parallel Cluster requires a number of modifications to
+the base Parallel Cluster AMI. You will need to start with a basic PCluster AMI
+from the Community AMIs tab that matches your desired OS and PCluster version.
+Select an instance type of the same family that you are planning to use for the
+head and the compute nodes, and specify enough enough storage for a swap file
+and a spack-stack installation.
 - AMI Name: aws-parallelcluster-3.7.1-ubuntu-2204-lts-hvm-x86_64
 - AMI ID: ami-0906e8b928cde5ccc
 - Instance r7a.4xlarge  (uses same processor architecture as hpc7a instances)
 - Use 300GB of gp3 storage as /
 - Attach security groups allowing ssh inbound traffic and NFS outbound traffic
 
-The following command can be used to launch a build instance with the desired
-configuration assuming you also know the VPC subnet, security group IDs and the
-ID of your Elastic File System volume (NFS).
+The following command can be used to launch a build instance. In the command
+make sure to use your own subnet ID and add appropriate security groups for SSH
+and NFS access.
 
 ```
 aws ec2 run-instances \
     --image-id ami-0906e8b928cde5ccc \
     --count 1 \
     --instance-type r7a.4xlarge \
-    --key-name eparker-usaf-us-east-2 \
-    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=pcluster-ami-generator}]' \
+    --key-name YOUR-KEY-NAME \
+    --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=pcluster-ami-builder}]' \
     --subnet-id subnet-061b48f9950e18a0a \
     --security-group-ids sg-0091fa8e748fbe355 sg-014f295418636207d \
+    --region us-east-2 \
     --block-device-mappings '[
         {
             "DeviceName": "/dev/sda1",
@@ -32,22 +38,27 @@ aws ec2 run-instances \
                 "Iops": 3000
             }
         }
-    ]' \
-    --region us-east-2 \
-    --user-data "$(cat << 'EOF' | sed 's/^ *//'
-        #!/bin/bash
-        exec > /var/log/user-data.log 2>&1
-        set -x
-        apt-get update
-        apt-get -y install nfs-common
-        efs_mount_point=/mnt/experiments-efs
-        efs_id=fs-064ec823dfe12d3d4
-        efs_zone=us-east-2
-        mkdir -p "${efs_mount_point}"
-        mount -t nfs4 -o  nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport  ${efs_id}.efs.${efs_zone}.amazonaws.com:/ ${efs_mount_point}
-        echo ${efs_id}.efs.${efs_zone}.amazonaws.com:/ $efs_mount_point nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0 >> /etc/fstab
-EOF
-)"
+    ]'
+```
+
+Once the instance is running you may want to mount the Elastic File System NFS
+drive if you intend to install spack stack in this location. You can follow this
+procedure to mount your dive.
+
+```
+EFS_MOUNT_POINT=/mnt/experiments-efs
+EFS_ID=fs-064ec823dfe12d3d4
+EFS_ZONE=us-east-2
+mkdir -p "${EFS_MOUNT_POINT}"
+
+apt-get update
+apt-get -y install nfs-common
+
+mount -t nfs4 \
+    -o  nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport \
+    ${EFS_ID}.efs.${EFS_ZONE}.amazonaws.com:/ \
+    ${EFS_MOUNT_POINT}
+echo ${EFS_ID}.efs.${EFS_ZONE}.amazonaws.com:/ $EFS_MOUNT_POINT nfs4 nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport,_netdev 0 0 >> /etc/fstab
 ```
 
 ### Installing Prerequisites
@@ -155,11 +166,9 @@ the Intel compiler toolchain. Installing the Intel compiler toolchain with apt
 shuffles the `/opt/intel` directory badly and places the libraries and tools in
 nonstandard locations due to conflicts with the installed MPI library. The
 following instructions are used to clear the existing Intel MPI and install a
-fresh mutually compatible Intel toolchain.
+clean and unified Intel toolchain.
 
 ```
-sudo su -
-
 rm -rf /opt/intel
 rm -rf /var/intel
 
@@ -255,7 +264,7 @@ EOF
 
 ```
 
-5. Install lmod, this step must be done as `root`.
+5. Install lmod. This step must be done as `root`.
 ```
 # Install lua/lmod manually because apt only has older versions
 # that are not compatible with the modern lua modules spack produces
@@ -312,30 +321,12 @@ if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.18.2amzn1.0 ] } {
 }
 EOF
 
-################## TODO
-##################
-##################
-##################
-##################
-################## Do not submit this. note that the module files are disabled
-################## pending completion of the intel build issues.
-##################
-##################
-##################
-##################
-
 # Add a number of default module locations to the lmod startup script.
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
 module use /usr/share/modules/modulefiles
 module use /opt/intel/oneapi/mpi/2021.10.0/modulefiles
-# module use /opt/intel/oneapi/tbb/2021.10.0/modulefiles
-# module use /opt/intel/oneapi/mpi/2021.10.0/modulefiles
-# module use /opt/intel/oneapi/compiler/2023.2.3/modulefiles
-# module use /opt/intel/oneapi/mkl/2023.2.0/modulefiles
 module use /home/ubuntu/jedi/modulefiles
-#module load mpi
 EOF
-
 
 # Log out completely, ssh back into the instance and check if lua modules work
 exit
@@ -376,19 +367,31 @@ exit
 rm *.deb
 ```
 
-7. Option 1: Testing existing site config in spack-stack (skip steps 8-9 afterwards)
-```
-# Note: this install is done directly on the NFS drive. If you are testing
-# an update to the configuration, do this on the faster EBS volume (use a
-# directory in /home/ubuntu).
+7. Option 1: Testing existing site config in spack-stack (skip steps
+8-9 afterwards) this install is done directly on the NFS drive. If you are
+testing an update to the configuration, do this on the faster EBS volume (use a
+directory in /home/ubuntu) in order to ensure a faster build. Once you have
+a verified working spack-stack install you can install it on EFS.
 
+Note: The instructions below focus on the Intel toolchain because it is harder
+to build and has some performance benefits over the GNU toolchain, but the
+submitted site config can also be used to build the gnu toolchain
+
+```
 cd /mnt/experiments-efs
 git clone --recurse-submodules -b release/1.7.0 https://github.com/JCSDA/spack-stack.git spack-stack-1.7
 cd spack-stack-1.7/
 . setup.sh
-spack stack create env --site aws-pcluster --template=unified-dev --name=unified-env
+spack stack create env --site aws-pcluster --template=unified-dev --name=unified-intel
 spack env activate -p envs/unified-env
-sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel'\]/\['\%intel', '\%gcc'\]/g" envs/unified-dev/spack.yaml
+
+# Edit envs/unified-intel/spack.yaml.
+# 1) Find this line:
+#      compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
+# 2) Delete all compilers except for your target compiler. In the case of intel
+#    the line should look like this:
+#      compilers: [%intel']
+
 spack concretize 2>&1 | tee log.concretize.unified-env.001
 ./util/show_duplicate_packages.py -d log.concretize.unified-env.001
 spack install --verbose 2>&1 | tee log.install.unified-env.001
@@ -440,18 +443,22 @@ EOF
 
 # Can't find qt5 because qtpluginfo is broken,
 # and no way to add object entry to list using "spack config add".
-echo "  qt:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: qt@5.12.8" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+  qt:
+    buildable: false
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr
+EOF
 
 # Add external ecflow
-echo "  ecflow:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "    - spec: ecflow@5.8.4 +ui" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-echo "      prefix: /home/ubuntu/jedi/ecflow-5.8.4" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.8.4 +ui
+      prefix: /home/ubuntu/jedi/ecflow-5.8.4
+EOF
 
 spack compiler find --scope system
 
@@ -461,19 +468,22 @@ spack config add "packages:mpi:buildable:False"
 spack config add "packages:python:buildable:False"
 spack config add "packages:openssl:buildable:False"
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0, openmpi@4.1.5]"
-spack config add "packages:all:compiler:[intel@2022.1.0, gcc@9.4.0]"
+spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.4.0]"
 
 # edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
 #     environment: {}
 # -->
 #     environment:
 #       prepend_path:
-#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2021.10.0/linux/compiler/lib/intel64_lin'
+#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin'
 #       set:
 #         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
 ```
 
-9. Option 2: To avoid duplicate hdf5, cmake, ... versions, edit ``envs/unified-dev/site/packages.yaml`` and remove the external ``cmake`` and ``openssl`` entries.
+9. Option 2: To avoid duplicate library versions edit ``envs/unified-dev/site/packages.yaml``
+and remove entries for meson, ninja, hdf5, cmake and remove the external
+`cmake` and `openssl` entries.
+
 
 10. Concretize and install
 ```
@@ -483,11 +493,12 @@ spack install --verbose 2>&1 | tee log.install.unified-env.001
 spack module lmod refresh
 spack stack setup-meta-modules
 ```
+
 11. Test spack-stack installation using your favorite application.
 
 ```
 # Example given for building jedi-bundle
-module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-gnu/install/modulefiles/Core
+module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-intel/install/modulefiles/Core
 module load stack-gcc/11.4.0
 module load stack-openmpi/4.1.5
 module load base-env
@@ -506,24 +517,35 @@ ctest
 ```
 
 12. (Optional) Remove test installs of spack-stack environments, if desired.
-13. Create the AMI for use in the AWS parallelcluster config.
+
+13. Create the AMI for use in the AWS parallelcluster config. You can follow
+the official instructions for [Modifying an AWS ParallelCluster AMI](https://docs.aws.amazon.com/parallelcluster/latest/ug/building-custom-ami-v3.html#modify-an-aws-parallelcluster-ami-v3)
+
 14. Use the install to build
 
 ```
-#module use $HOME/ubuntu/spack-stack-1.7/envs/pcluster-gnu/install/modulefiles/Core
-module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-gnu/install/modulefiles/Core
-module load stack-gcc/11.4.0
-module load stack-openmpi/4.1.5
+# Load the intel toolchain into your environment.
+source /opt/intel/oneapi/compiler/2023.2.3/env/vars.sh
+source /opt/intel/oneapi/mpi/2021.10.0/env/vars.sh
+
+# Activate spack stack modules.
+module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-intel/install/modulefiles/Core
+module load stack-intel/2021.10.0
+module load stack-intel-oneapi-mpi/2021.10.0
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
 module load ewok-env
 module load sp
 
+# Build and test.
 git clone https://github.com/JCSDA-internal/jedi-bundle.git
 cd jedi-bundle
 mkdir build && cd build
-ecbuild ../
+ecbuild -DCMAKE_CXX_COMPILER=mpiicpc \
+    -DCMAKE_C_COMPILER=mpiicc \
+    -DCMAKE_Fortran_COMPILER=mpiifort \
+    ../
 make update
 make -j10
 ctest

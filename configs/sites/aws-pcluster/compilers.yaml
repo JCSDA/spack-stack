@@ -6,7 +6,9 @@ compilers:
       cxx: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icpc
       f77: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort
       fc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort
-    flags: {}
+    flags:
+      cflags: "-diag-disable=10441"
+      cxxflags: "-diag-disable=10441"
     operating_system: ubuntu22.04
     target: x86_64
     modules: []
@@ -24,7 +26,7 @@ compilers:
 #      f77: /mnt/experiments-efs/intel-oneapi-2024.0.2/compiler/2024.0/bin/ifort
 #      fc: /mnt/experiments-efs/intel-oneapi-2024.0.2/compiler/2024.0/bin/ifort
 #    flags: {}
-#    operating_system: ubuntu20.04
+#    operating_system: ubuntu22.04
 #    target: x86_64
 #    modules:
 #    - tbb/2021.11
