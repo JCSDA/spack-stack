@@ -253,8 +253,9 @@
     # Note - we can remove upp from stack at some point?
     upp:
       require: '@10.0.10'
+    # Need extradeps for grib-utils, enable by default to avoid duplicate packages
     w3emc:
-      require: '@2.10.0 precision=4,d,8'
+      require: '@2.10.0 precision=4,d,8 +extradeps'
     w3nco:
       require: '@2.4.1'
     # When changing wgrib2, also check Hercules and Nautilus site configs
