@@ -24,22 +24,22 @@ def default_site():
 
 
 def site_help():
-    _, site_dirs, _ = next(os.walk(stack_path("configs", "sites")))
-    help_string = 'Pre-configured platform, or "default" for an empty site.yaml.'
-    help_string += os.linesep
-    help_string += 'Defaults to "default" if no arg is given'
+    help_string = f'Pre-configured platform, or "{default_site()}" if no arg is given'
     help_string += os.linesep
     help_string += "Available options are: "
     help_string += os.linesep
-    for site in site_dirs:
-        help_string += "\t" + site + os.linesep
+    _, tiers, _ = next(os.walk(stack_path("configs", "sites")))
+    for tier in tiers:
+        help_string += "\t" + tier + os.linesep
+        _, tier_sites, _ = next(os.walk(stack_path("configs", "sites", tier)))
+        for site in list(tier_sites):
+            help_string += "\t\t" + site + os.linesep
     return help_string
 
 
 def template_help():
     _, template_dirs, _ = next(os.walk(stack_path("configs", "templates")))
-    help_string = "Environment template" + os.linesep
-    help_string += "Default to an empty spack.yaml" + os.linesep
+    help_string = 'Environment template, default is "empty"' + os.linesep
     help_string += "Available options are: " + os.linesep
     for template in template_dirs:
         help_string += "\t" + template + os.linesep
@@ -66,18 +66,6 @@ def container_specs_help():
     return help_string
 
 
-def setup_common_parser_args(subparser):
-    """Shared CLI args for container and environment subcommands"""
-
-    subparser.add_argument(
-        "--overwrite",
-        action="store_true",
-        required=False,
-        default=False,
-        help="Overwrite existing environment if it exists." " Warning this is dangerous.",
-    )
-
-
 def setup_ctr_parser(subparser):
     """create container-specific parsing options"""
 
@@ -94,20 +82,17 @@ def setup_ctr_parser(subparser):
         " Default is {}/container/.".format(default_env_path),
     )
 
-    setup_common_parser_args(subparser)
-
 
 def setup_env_parser(subparser):
     """create environment-specific parsing options"""
-    setup_common_parser_args(subparser)
 
     subparser.add_argument(
         "--dir",
         type=str,
         required=False,
         default=default_env_path,
-        help="Environment will be placed in <dir>/<env-name>/."
-        " Default is {}/<env-name>/.".format(default_env_path),
+        help="Environment will be placed in <dir>/<env-name>/.\n"
+        "Default is {}/<env-name>/.".format(default_env_path),
     )
 
     subparser.add_argument(
@@ -115,7 +100,7 @@ def setup_env_parser(subparser):
         type=str,
         required=False,
         default=None,
-        help="Environment name, defaults to <template>.<site>",
+        help="Environment name, defaults to <template>.<site>.<compiler>",
     )
 
     subparser.add_argument(
@@ -128,25 +113,10 @@ def setup_env_parser(subparser):
     )
 
     subparser.add_argument(
-        "--packages",
-        type=str,
-        required=False,
-        default=None,
-        help="Base packages.yaml, use to override common packages.yaml.",
-    )
-
-    subparser.add_argument(
         "--upstream",
         nargs="*",
         action="append",
         help="Include upstream environment (/path/to/spack-stack-x.y.z/envs/unified-env/install)",
-    )
-
-    subparser.add_argument(
-        "--modulesys",
-        type=str,
-        choices=["lmod", "tcl"],
-        help="Override choice of tcl vs. lmod config (default is based on site config)",
     )
 
     subparser.add_argument(
@@ -158,14 +128,21 @@ def setup_env_parser(subparser):
         type=str,
         required=False,
         default=None,
-        help="""Install prefix for spack packages and
-                modules (not the spack environment).""",
+        help="Install prefix for spack packages and modules (not the spack environment).",
     )
 
     subparser.add_argument(
         "--modify-pkg",
         action="append",
         help="Modify selected package and place in an environment-specific repository",
+    )
+
+    subparser.add_argument(
+        "--compiler",
+        type=str,
+        required=True,
+        default=None,
+        help="""Compiler to use. Must be a supported compiler for this site.""",
     )
 
 
@@ -187,11 +164,7 @@ def container_create(args):
 
     env_dir = container.env_dir
     if os.path.exists(env_dir):
-        if args.overwrite:
-            tty.msg("Env {} exists. Overwriting...".format(env_dir))
-            shutil.rmtree(env_dir)
-        else:
-            raise Exception("Env: {} already exists".format(env_dir))
+        raise Exception("Env: {} already exists".format(env_dir))
 
     container.write()
     tty.msg("Created container {}".format(env_dir))
@@ -203,11 +176,10 @@ def dict_from_args(args):
     dict["template"] = args.template
     dict["name"] = args.name
     dict["install_prefix"] = args.prefix
-    dict["base_packages"] = args.packages
     dict["dir"] = args.dir
     dict["upstreams"] = args.upstream
-    dict["modulesys"] = args.modulesys
     dict["modifypkg"] = args.modify_pkg
+    dict["compiler"] = args.compiler
 
     return dict
 
@@ -226,11 +198,7 @@ def env_create(args):
 
     env_dir = stack_env.env_dir()
     if os.path.exists(env_dir):
-        if args.overwrite:
-            tty.msg("Environment {} exists. Overwriting...".format(env_dir))
-            shutil.rmtree(env_dir)
-        else:
-            raise Exception("Environment: {} already exists".format(env_dir))
+        raise Exception("Environment: {} already exists".format(env_dir))
 
     logging.debug("Creating environment from command-line args")
     stack_env = StackEnv(**stack_settings)
