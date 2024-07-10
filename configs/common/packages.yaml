@@ -58,12 +58,12 @@
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
           message: "Extra ESMF compile options for Intel"
-        - any_of: ['']
-          when: "%gcc"
-          message: "Extra ESMF compile options for GCC"
-        - any_of: ['']
-          when: "%apple-clang"
-          message: "Extra ESMF compile options for GCC"
+        #- any_of: ['']
+        #  when: "%gcc"
+        #  message: "Extra ESMF compile options for GCC"
+        #- any_of: ['']
+        #  when: "%apple-clang"
+        #  message: "Extra ESMF compile options for GCC"
     fckit:
       require: '@0.11.0 +eckit'
     fftw:
@@ -86,6 +86,8 @@
     g2tmpl:
       require:
         - '@1.10.2'
+    gcc-runtime:
+      require: '%gcc'
     gfsio:
       require: '@1.4.1'
     #git-lfs:
@@ -214,7 +216,8 @@
     # py-numpy@1.26 causes many build problems with older Python packages
     # also check Nautilus site config when making changes here
     py-numpy:
-      require: '@:1.25'
+      require:
+      - '@:1.25'
     py-pandas:
       require: '+excel'
     py-pybind11:
