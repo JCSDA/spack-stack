@@ -32,7 +32,7 @@ def test_setup_meta_modules():
     os.makedirs(test_dir, exist_ok=True)
 
     env_dir = os.path.join(test_dir)
-    stack_create("create", "env", "--dir", env_dir, "--overwrite", "--name", "modtest")
+    stack_create("create", "env", "--dir", env_dir, "--name", "modtest", "--compiler", "gcc")
 
     # Create empty env
     env_dir = os.path.join(env_dir, "modtest")
@@ -50,8 +50,8 @@ def test_setup_meta_modules():
     # Setup env and pretend that a build exists
     # by creating the module directory structure.
     scope = env.scope_name
-    spack.config.add("packages:all:compiler:[{}]".format(comp), scope=scope)
-    spack.config.add("packages:all:providers:mpi:[{}]".format(mpi), scope=scope)
+    #spack.config.add("packages:all:compiler:[{}]".format(comp), scope=scope)
+    #spack.config.add("packages:all:providers:mpi:[{}]".format(mpi), scope=scope)
     spack.config.add("packages:openmpi:version:[{}]".format(mpi_ver))
     spack.main.SpackCommand("stack")
     os.makedirs(compiler_module_path)
