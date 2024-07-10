@@ -65,7 +65,7 @@ jobs:
           spack clean -ab
           spack bootstrap now
 
-          spack stack create env --site macos.default --template unified-dev --name ${ENVNAME}
+          spack stack create env --site macos.default --template unified-dev --name ${ENVNAME} --compiler apple-clang
           spack env activate ${ENVDIR}
           spack add ${{ inputs.specs || '' }}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
@@ -89,10 +89,9 @@ jobs:
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
-          # Set compiler and MPI
+          # Set compiler and MPI specs
           spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
           spack config add "packages:all:compiler:[apple-clang@14.0.3]"
-          sed -i '' "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel', '\%oneapi'\]/\['\%apple-clang'\]/g" $ENVDIR/spack.yaml
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           # DH* 20240513 - avoid hdf-eos2 until https://github.com/spack/spack/issues/44168 is resolved
@@ -152,7 +151,7 @@ jobs:
 
           # Test environment chaining
           echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site macos.default --upstream ${ENVDIR}/install
+          spack stack create env --name chaintest --template empty --site macos.default --upstream ${ENVDIR}/install --compiler apple-clang
           # Retain config from upstream so we don't have to rebuild:
           cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
