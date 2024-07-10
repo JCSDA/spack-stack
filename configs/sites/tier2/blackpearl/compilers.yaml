@@ -1,0 +1,61 @@
+compilers:
+- compiler:
+    spec: clang@=14.0.6
+    paths:
+      cc: /usr/bin/clang
+      cxx: /usr/bin/clang++
+      f77: null
+      fc: null
+    flags: {}
+    operating_system: oracle9
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=11.4.1
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: oracle9
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=13.3.0
+    paths:
+      cc: /home/dom/prod/gcc-13.3.0-manual/bin/gcc
+      cxx: /home/dom/prod/gcc-13.3.0-manual/bin/g++
+      f77: /home/dom/prod/gcc-13.3.0-manual/bin/gfortran
+      fc: /home/dom/prod/gcc-13.3.0-manual/bin/gfortran
+    flags: {}
+    operating_system: oracle9
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: oneapi@=2024.1.2
+    paths:
+      cc: /opt/intel/oneapi/compiler/2024.1/bin/icx
+      cxx: /opt/intel/oneapi/compiler/2024.1/bin/icpx
+      f77: /opt/intel/oneapi/compiler/2024.1/bin/ifort
+      fc: /opt/intel/oneapi/compiler/2024.1/bin/ifort
+      #f77: /opt/intel/oneapi/compiler/2024.1/bin/ifx
+      #fc: /opt/intel/oneapi/compiler/2024.1/bin/ifx
+    flags:
+      cflags: -diag-disable=10441
+      cxxflags: -diag-disable=10441
+      fflags: -diag-disable=10448
+    operating_system: oracle9
+    target: x86_64
+    modules: []
+    environment:
+      # change to append_path once relevant PR is merged
+      append_path:
+        CPATH: /opt/intel/oneapi/compiler/2024.1/opt/compiler/include/intel64
+    extra_rpaths: []
