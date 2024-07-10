@@ -143,13 +143,15 @@ class StackEnv(object):
             with open(result_out_path, "w") as f:
                 f.write(sanitized_output)
         else:
+            source = None
             destination = result_out_path
             if os.path.exists(update_in_path):
                 source = update_in_path
             elif os.path.exists(default_in_path):
                 source = default_in_path
-            logging.info(f"  Copying {source} ...\n  ... to {destination}")
-            shutil.copy(source, destination)
+            if source:
+                logging.info(f"  Copying {source} ...\n  ... to {destination}")
+                shutil.copy(source, destination)
 
     def _copy_common_includes(self):
         """Copy common directory into environment"""

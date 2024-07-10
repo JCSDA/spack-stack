@@ -1,3 +1,4 @@
+import shutil
 import os
 
 import pytest
@@ -72,7 +73,17 @@ def all_specs():
 def test_apps(template):
     if not template:
         return
-    stack_create("create", "env", "--template", template, "--dir", test_dir, "--overwrite")
+    #shutil.rmtree(test_dir)
+    stack_create(
+        "create",
+        "env",
+        "--template",
+        template,
+        "--dir",
+        test_dir,
+        "--compiler",
+        "gcc"
+    )
 
 
 @pytest.mark.extension("stack")
@@ -81,7 +92,18 @@ def test_apps(template):
 def test_sites(site):
     if not site:
         return
-    stack_create("create", "env", "--site", site, "--dir", test_dir, "--overwrite")
+    if os.path.exists(test_dir):
+        shutil.rmtree(test_dir)
+    stack_create(
+        "create",
+        "env",
+        "--site",
+        site,
+        "--dir",
+        test_dir,
+        "--compiler",
+        "gcc"
+    )
 
 
 @pytest.mark.extension("stack")
@@ -91,6 +113,7 @@ def test_sites(site):
 def test_containers(container, spec):
     if not container or not spec:
         return
+    #shutil.rmtree(test_dir)
     container_wo_ext = os.path.splitext(container)[0]
     spec_wo_ext = os.path.splitext(spec)[0]
     stack_create(
@@ -101,39 +124,65 @@ def test_containers(container, spec):
         "--spec",
         spec_wo_ext,
         "--dir",
-        test_dir,
-        "--overwrite",
+        test_dir
     )
 
 
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
-def test_modulesys():
-    modsystems = {"lmod", "tcl"}
-    for modulesys in modsystems:
+def test_modules():
+    #shutil.rmtree(test_dir)
+    stack_create(
+        "create",
+        "env",
+        "--site",
+        "hera",
+        "--name",
+        "modulesys_test",
+        "--dir",
+        test_dir,
+        "--compiler",
+        "gcc"
+    )
+    modules_yaml_path = os.path.join(test_dir, "modulesys_test", "common", "modules.yaml")
+    with open(modules_yaml_path, "r") as f:
+        modules_yaml_txt = f.read()
+    assert "%s:" % "lmod" in modules_yaml_txt
+    assert "%s:" % "tcl" not in modules_yaml_txt
+
+
+@pytest.mark.extension("stack")
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_compilers():
+    for compiler in ["gcc", "oneapi"]:
+        if os.path.exists(test_dir):
+            shutil.rmtree(test_dir)
         stack_create(
             "create",
             "env",
             "--site",
-            "hera",
+            "blackpearl",
             "--name",
-            "modulesys_test",
+            "compiler_test",
             "--dir",
             test_dir,
-            "--overwrite",
-            "--modulesys",
-            modulesys,
+            "--compiler",
+            compiler
         )
-    modules_yaml_path = os.path.join(test_dir, "modulesys_test", "common", "modules.yaml")
-    with open(modules_yaml_path, "r") as f:
-        modules_yaml_txt = f.read()
-    assert "%s:" % modulesys in modules_yaml_txt
-    assert "%s:" % list(modsystems.difference(modulesys))[0] not in modules_yaml_txt
+        packages_yaml_path = os.path.join(test_dir, "compiler_test", "site", "packages.yaml")
+        with open(packages_yaml_path, "r") as f:
+            packages_yaml_txt = f.read()
+        assert f"{compiler}@" in packages_yaml_txt
+        env_yaml_path = os.path.join(test_dir, "compiler_test", "spack.yaml")
+        with open(env_yaml_path, "r") as f:
+            env_yaml_txt = f.read()
+        assert f"%{compiler}" in env_yaml_txt
 
 
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_upstream():
+    #shutil.rmtree(test_dir)
     stack_create(
         "create",
         "env",
@@ -143,7 +192,8 @@ def test_upstream():
         "upstream_test",
         "--dir",
         test_dir,
-        "--overwrite",
+        "--compiler",
+        "gcc",
         "--upstream",
         "/test/path/to/upstream/env",
     )
@@ -159,6 +209,7 @@ def test_upstream():
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_modifypkg():
+    #shutil.rmtree(test_dir)
     stack_create(
         "create",
         "env",
@@ -168,7 +219,8 @@ def test_modifypkg():
         "modifypkg_test",
         "--dir",
         test_dir,
-        "--overwrite",
+        "--compiler",
+        "gcc",
         "--modify-pkg",
         "hdf5",
         "--modify-pkg",
