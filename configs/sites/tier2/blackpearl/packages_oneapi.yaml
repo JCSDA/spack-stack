@@ -29,6 +29,3 @@ packages:
     externals:
     - spec: intel-oneapi-runtime@2024.1.2%oneapi@2024.1.2
       prefix: /opt/intel/oneapi
-  # test
-  wget:
-    buildable: false
