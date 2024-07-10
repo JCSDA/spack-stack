@@ -192,7 +192,7 @@ modules:
             'TOCGRIB': '{prefix}/bin/tocgrib'
             'TOCGRIB2': '{prefix}/bin/tocgrib2'
             'TOCGRIB2SUPER': '{prefix}/bin/tocgrib2super'
-            'WGRIB2': '{prefix}/bin/wgrib2'
+            'WGRIB': '{prefix}/bin/wgrib2'
       landsfcutil:
         environment:
           set:
