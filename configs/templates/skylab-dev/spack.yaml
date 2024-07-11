@@ -20,7 +20,6 @@ spack:
     - soca-env
 
     # Various fms tags (list all to avoid duplicate packages)
-    - fms@release-jcsda
     - fms@2023.04
 
     # Various crtm tags (list all to avoid duplicate packages)
