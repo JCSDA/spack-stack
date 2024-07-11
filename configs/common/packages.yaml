@@ -258,9 +258,8 @@
       require: '@2.10.0 precision=4,d,8 +extradeps'
     w3nco:
       require: '@2.4.1'
-    # When changing wgrib2, also check Hercules and Nautilus site configs
     wgrib2:
-      require: '@2.0.8'
+      require: '@3.1.1'
     wrf-io:
       require: '@1.2.0'
     zstd:
