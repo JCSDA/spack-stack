@@ -202,7 +202,7 @@
       require: '~mpi'
     # To avoid duplicate packages
     py-jinja2:
-      require: '@3.0.3'
+      require: '@3.1.2'
     py-meson-python:
        require: '@0.15.0'
     # Comment out for now until build problems are solved
