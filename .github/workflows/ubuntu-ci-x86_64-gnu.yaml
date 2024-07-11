@@ -54,11 +54,11 @@ jobs:
           # Set up spack-stack
           source ./setup.sh
 
-          declare -a TEMPLATES=("unified-dev", "skylab-dev")
+          declare -a TEMPLATES=("unified-dev" "skylab-dev")
           for TEMPLATE in "${TEMPLATES[@]}"; do
-            if [[ "${TEMPLATE}" == "unified-dev" ]]; then
+            if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
               export ENVNAME=ue-gcc-11.4.0-buildcache
-            elif [[ "${TEMPLATE}" == "skylab-dev" ]]; then
+            elif [[ "${TEMPLATE}" == *"skylab-dev"* ]]; then
               export ENVNAME=se-gcc-11.4.0-buildcache
             fi
             echo "Creating environment ${ENVNAME} from template ${TEMPLATE}"
