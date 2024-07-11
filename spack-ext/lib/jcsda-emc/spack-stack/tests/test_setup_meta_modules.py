@@ -50,8 +50,8 @@ def test_setup_meta_modules():
     # Setup env and pretend that a build exists
     # by creating the module directory structure.
     scope = env.scope_name
-    #spack.config.add("packages:all:compiler:[{}]".format(comp), scope=scope)
-    #spack.config.add("packages:all:providers:mpi:[{}]".format(mpi), scope=scope)
+    spack.config.add("packages:all:compiler:[{}]".format(comp), scope=scope)
+    spack.config.add("packages:all:providers:mpi:[{}]".format(mpi), scope=scope)
     spack.config.add("packages:openmpi:version:[{}]".format(mpi_ver))
     spack.main.SpackCommand("stack")
     os.makedirs(compiler_module_path)

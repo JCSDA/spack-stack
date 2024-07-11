@@ -73,7 +73,6 @@ def all_specs():
 def test_apps(template):
     if not template:
         return
-    #shutil.rmtree(test_dir)
     stack_create(
         "create",
         "env",
@@ -113,7 +112,6 @@ def test_sites(site):
 def test_containers(container, spec):
     if not container or not spec:
         return
-    #shutil.rmtree(test_dir)
     container_wo_ext = os.path.splitext(container)[0]
     spec_wo_ext = os.path.splitext(spec)[0]
     stack_create(
@@ -131,7 +129,6 @@ def test_containers(container, spec):
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_modules():
-    #shutil.rmtree(test_dir)
     stack_create(
         "create",
         "env",
@@ -182,7 +179,6 @@ def test_compilers():
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_upstream():
-    #shutil.rmtree(test_dir)
     stack_create(
         "create",
         "env",
@@ -209,7 +205,6 @@ def test_upstream():
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_modifypkg():
-    #shutil.rmtree(test_dir)
     stack_create(
         "create",
         "env",
