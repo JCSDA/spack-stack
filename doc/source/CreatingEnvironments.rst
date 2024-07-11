@@ -14,7 +14,7 @@ Note that items in "<>" should be replaced with the appropriate values (site nam
 
    . <path to spack-stack directory>/setup.sh
 
-   spack stack create env --site <site name> --template <template name> --name <environment name>
+   spack stack create env --site <site name> --template <template name> --name <environment name> --compiler <compiler>
 
    cd ${SPACK_STACK_DIR}/envs/<environment name>/
 
@@ -33,4 +33,4 @@ Note that items in "<>" should be replaced with the appropriate values (site nam
    spack stack setup-meta-modules
 
 .. note::
-   By default, the ``spack stack create env`` command will use the specified site to determine whether to use the tcl-based (configs/common/modules_tcl.yaml) or the Lmod-based (configs/common/modules_lmod.yaml) module configuration. To override this behavior, use the ``--modulesys {tcl,lmod}`` argument to that command to specify which to use.
+   Depending on the site configuration, ``tcl`` may be used instead of ``lmod`` modules. Check ``envs/<environment name>/site/modules.yaml`` and replace ``lmod`` with ``tcl`` if necessary in ``spack module lmod refresh``.

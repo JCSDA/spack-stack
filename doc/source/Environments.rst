@@ -7,9 +7,11 @@ This section describes the environments (environment specs) defined in ``spack/v
 
 Environments can be constructed in two ways in spack-stack:
 
-1. Start with an empty template, ``spack stack create env --template=empty`` or just ``spack stack create env`` without specifying a template.
+1. Start with an empty template, ``spack stack create env --template=empty --compiler=<compiler>`` or just ``spack stack create env --compiler=<compiler>`` without specifying a template.
 
     - Configure the environment as shown in :numref:`Sections %s <NewSiteConfigs>`.
+
+    - Ensure that <compiler> corresponds to a valid compiler for the site. Examples are ``gcc``, ``intel``, ``apple-clang``, ``oneapi``.
 
     - Add spack packages (also referred to as ``specs``) to the environment using ``spack add``. These packages can be virtual environments described in :numref:`Section %s <EnvironmentsVirtualPackages>` below, or individual packages, e.g. ``esmf`` or ``atlas``. Examples:
 
@@ -27,7 +29,7 @@ Environments can be constructed in two ways in spack-stack:
 
     .. code-block:: console
 
-       spack stack create env --template=skylab-1.0.0
+       spack stack create env --template=skylab-1.0.0 --compiler=<compiler>
        ...
        cd envs/env-name
        spack env activate .
@@ -40,13 +42,7 @@ Environments can be constructed in two ways in spack-stack:
 Additional packages
 -------------------
 
-Packages that are available in the JCSDA/NOAA-EMC spack fork, but not (yet) in the authoritative spack repository are defined in ``spack/var/spack/repos/jcsda-emc/packages/``. Users are encouraged to run ``spack info <packagename>`` or open the files in an ASCII editor for more information.
-
-**WORK IN PROGRESS**
-
-**AUTOMATICALLY GENERATE A TABLE WITH NAME AND DESCRIPTION BASED ON THE FILE NAME AND THE DOXSTRING? IF WE DO THAT, ALSO UPDATE THE SECTION ON GENERATING DOCUMENTATION WITH THE NECESSARY DETAILS**
-
-**For now, check the contents of ``spack/var/spack/repos/jcsda-emc/packages/`` yourself, sorry. Also, run ``spack info ecmwf-atlas``, for example, to obtain further information on the package.**
+Packages that are available in the JCSDA/NOAA-EMC spack fork, but not (yet) in the authoritative spack repository are defined in ``spack-ext/repos/spack-stack/packages/``. Users are encouraged to run ``spack info <packagename>`` or open the files in an ASCII editor for more information.
 
 .. _EnvironmentsVirtualPackages:
 
@@ -54,13 +50,7 @@ Packages that are available in the JCSDA/NOAA-EMC spack fork, but not (yet) in t
 Virtual packages
 ----------------
 
-The purpose of virtual packages is to provide a convenient collection of packages for a given application. These packages are defined in ``spack/var/spack/repos/jcsda-emc-bundles/packages/``. Currently available virtual packages are:
-
-**WORK IN PROGRESS**
-
-**AUTOMATICALLY GENERATE A TABLE WITH NAME AND DESCRIPTION BASED ON THE FILE NAME AND THE DOXSTRING? IF WE DO THAT, ALSO UPDATE THE SECTION ON GENERATING DOCUMENTATION WITH THE NECESSARY DETAILS**
-
-**For now, check the contents of ``spack/var/spack/repos/jcsda-emc-bundles/packages/`` yourself, sorry. Also, run ``spack info ewok-env``, for example, to obtain further information on the package.**
+The purpose of virtual packages is to provide a convenient collection of packages for a given application. These packages are also defined in ``spack-ext/repos/spack-stack/packages/``. Users are encouraged to run ``spack info <packagename>`` or open the files in an ASCII editor for more information.
 
 .. _EnvironmentsTemplates:
 
@@ -68,13 +58,4 @@ The purpose of virtual packages is to provide a convenient collection of package
 Templates
 ---------
 
-Templates are vetted combinations of packages, i.e. these have been tested to build together. Templates are defined in ``configs/templates/``. Currently available templates are:
-
-**WORK IN PROGRESS**
-
-**AUTOMATICALLY GENERATE A TABLE WITH NAME AND DESCRIPTION BASED ON THE FILE NAME AND THE SPECS IN THE TEMPLATE? IF WE DO THAT, ALSO UPDATE THE SECTION ON GENERATING DOCUMENTATION WITH THE NECESSARY DETAILS**
-
-**For now, check the contents of ``configs/templates/`` yourself, sorry.**
-
-.. _EnvironmentsContainers:
-
+Templates are vetted combinations of packages, i.e. these have been tested to build together. Templates are defined in ``configs/templates/``. Users are encouraged to inspect these templates in an ASCII editor for more information.
