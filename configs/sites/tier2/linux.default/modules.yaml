@@ -1,0 +1,10 @@
+modules:
+  default:
+    enable::
+    - tcl
+    tcl:
+      include:
+      # List of packages for which we need modules that are blacklisted by default
+      - openmpi
+      - mpich
+      - python

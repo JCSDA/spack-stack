@@ -8,7 +8,7 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
-    - ewok-env +ecflow +cylc
+    - ewok-env +ecflow ~cylc
     - ai-env
     - geos-gcm-env          ^esmf@=8.6.1
     - global-workflow-env   ^esmf@=8.6.1
