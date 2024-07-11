@@ -27,7 +27,7 @@
     cairo:
       require: '+pic'
     cdo:
-      require: '@2.2.0 ~openmp'
+      require: '@2.3.0 ~openmp'
     cmake:
       version: ['3.27.9']
       require: '+ownlibs'
