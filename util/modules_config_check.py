@@ -38,6 +38,9 @@ del(modules["tcl"]["modules"]["default"]["LMOD_OR_TCL"]["projections"]["^mpi"])
 # If sections mismatch, print a diff of the whole configuration
 dump_lmod = syaml.dump_config(modules["lmod"]).split("\n")
 dump_tcl = syaml.dump_config(modules["tcl"]).split("\n")
+# Remove empty lines 
+dump_lmod = [ x for x in dump_lmod if x.strip() ]
+dump_tcl = [ x for x in dump_tcl if x.strip() ]
 diff = "\n".join(list(difflib.context_diff(dump_lmod, dump_tcl)))
 if diff:
     print(diff)
