@@ -37,7 +37,7 @@
     ecbuild:
       require: '@3.7.2'
     eccodes:
-      require: '@2.33.0 +png'
+      require: '@2.33.0 +png +tools'
     ecflow:
       require: '@5.11.4 +ui'
     eckit:
