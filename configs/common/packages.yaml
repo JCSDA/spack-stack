@@ -27,7 +27,7 @@
     cairo:
       require: '+pic'
     cdo:
-      require: '@2.2.0 ~openmp'
+      require: '@2.3.0 ~openmp'
     cmake:
       version: ['3.27.9']
       require: '+ownlibs'
@@ -74,6 +74,7 @@
       # Pin version to avoid duplicates
       require: '@2.6.4'
     fms:
+      require: '@2023.04'
       variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
     fontconfig:
       require: '+pic'
@@ -258,9 +259,8 @@
       require: '@2.10.0 precision=4,d,8 +extradeps'
     w3nco:
       require: '@2.4.1'
-    # When changing wgrib2, also check Hercules and Nautilus site configs
     wgrib2:
-      require: '@2.0.8'
+      require: '@3.1.1'
     wrf-io:
       require: '@1.2.0'
     zstd:

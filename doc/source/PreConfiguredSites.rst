@@ -141,9 +141,6 @@ For ``spack-stack-1.7.0`` with GNU, load the following modules after loading min
    module load stack-openmpi/4.1.6
    module load stack-python/3.10.13
 
-.. note::
-   The unified environment on Orion uses ``cdo@2.3.0`` instead of the default ``cdo@2.2.0``. This is a temporary change for release/1.7.0 and no longer needed on develop.
-
 ------------------------------
 MSU Hercules
 ------------------------------
@@ -357,10 +354,6 @@ With AMD clang/flang (aocc), the following is required for building new spack en
 .. note::
 
    ``spack-stack-1.7.0`` is not yet supported with the Arm clang/flang compilers. Use Intel instead.
-
-.. note::
-
-   `wgrib2@2.0.8` does not build on Nautilus, therefore we are using `wgrib2@3.1.1` on this system.
 
 .. _Preconfigured_Sites_Derecho:
 
