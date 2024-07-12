@@ -1,5 +1,5 @@
 packages:
   all:
-    compiler:: [gcc@=13.3.0]
+    compiler:: [gcc@13.3.0]
     providers:
-      mpi:: [openmpi@=5.0.3]
+      mpi:: [openmpi@5.0.3]
