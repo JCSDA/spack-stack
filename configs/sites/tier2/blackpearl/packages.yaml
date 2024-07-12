@@ -11,10 +11,10 @@ packages:
     externals:
     - spec: binutils@2.35.2
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.7.4
-      prefix: /usr
+  #bison:
+  #  externals:
+  #  - spec: bison@3.7.4
+  #    prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.32

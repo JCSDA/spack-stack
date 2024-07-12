@@ -46,7 +46,11 @@ spack:
     - [$packages]
     - [$compilers]
     exclude:
-    # py-torch in ai-env doesn't build with Intel
+    # Don't build ai-env and jedi-tools-env with Intel or oneAPI,
+    # some packages don't build (e.g., py-torch in ai-env doesn't
+    # build with Intel, and there are constant problems concretizing
+    # the environment
     - ai-env%intel
-    # jedi-tools doesn't build with Intel
+    - ai-env%oneapi
     - jedi-tools-env%intel
+    - jedi-tools-env%oneapi
