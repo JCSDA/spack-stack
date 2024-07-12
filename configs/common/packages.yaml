@@ -74,6 +74,7 @@
       # Pin version to avoid duplicates
       require: '@2.6.4'
     fms:
+      require: '@2023.04'
       variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
     fontconfig:
       require: '+pic'
