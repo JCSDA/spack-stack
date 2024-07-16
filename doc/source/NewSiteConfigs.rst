@@ -94,7 +94,7 @@ These instructions are meant to be a reference that users can follow to set up t
    If you encounter build errors for gdal later on in spack-stack (see :numref:`Section %s <KnownIssues>`), you may need to install the full ``Xcode`` application and then switch ``xcode-select`` over with ``sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`` (change the path if you installed Xcode somewhere else).
 
 .. note::
-   I you have clang 15.x, please read the Known Issues entry on clang 15.x (see :numref:`Section %s <KnownIssues>`).
+   If you have clang 15.x, please read the Known Issues entry on clang 15.x (see :numref:`Section %s <KnownIssues>`).
 
 2. Set up an environment using the native architecture
 
@@ -244,8 +244,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
 
-   PATH="$HOMEBREW_ROOT/opt/qt@5/bin:$PATH" \
-        spack external find --scope system qt
+   ``PATH="$HOMEBREW_ROOT/opt/qt@5/bin:$PATH" \
+        spack external find --scope system qt``
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
    # The texlive bin directory must have been added to PATH (see above)
