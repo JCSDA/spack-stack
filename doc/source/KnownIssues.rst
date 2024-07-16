@@ -123,9 +123,9 @@ macOS
 
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
 
-6. ``apple-clang@15.0.0`` not yet supported
+6. Not all versions of ``apple-clang@15.0.0`` are currently supported.
 
-   Building with ``apple-clang@15.0.0`` is under development and should be working soon. In the meantime, please use ``apple-clang@14.x`` or older versions.
+   If you are running macOS Sonoma 14.5 you may have a recent version of clang that does not yet build spack packages. On the console you should run ``clang --version`` and verify that the underlying clang compiler is ``clang-1500.1.0.2.5`` which is the version provided with Command Line Tools for XCode 15.1. You can downgrade your Command Line Tool packages by first running ``sudo rm -rf /Library/Developer/CommandLineTools`` then you can download and install the Command Line Tools 15.1 APK from `developer.apple.com <https://developer.apple.com/download/all/>_`. The Apple Developer site requires an iCloud login.
 
 ==============================
 Ubuntu

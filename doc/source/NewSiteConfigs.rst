@@ -93,6 +93,9 @@ These instructions are meant to be a reference that users can follow to set up t
 .. note::
    If you encounter build errors for gdal later on in spack-stack (see :numref:`Section %s <KnownIssues>`), you may need to install the full ``Xcode`` application and then switch ``xcode-select`` over with ``sudo xcode-select -s /Applications/Xcode.app/Contents/Developer`` (change the path if you installed Xcode somewhere else).
 
+.. note::
+   I you have clang 15.x, please read the Known Issues entry on clang 15.x (see :numref:`Section %s <KnownIssues>`).
+
 2. Set up an environment using the native architecture
 
     a. Arm
@@ -226,20 +229,23 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    spack external find --scope system \
        --exclude bison --exclude openssl \
        --exclude python --exclude gettext
-   spack external find --scope system libiconv
    spack external find --scope system perl
    spack external find --scope system wget
 
-   # Note - only needed for running JCSDA's
+   # Note - only needed for running JCSDA\'s
    # JEDI-Skylab system (using R2D2 localhost)
    spack external find --scope system mysql
+
+   # Some dependency paths may be complicated by the use of homebrew casks.
+   # These dependencies require PATH modification to enable spack external find.
+   PATH="$HOMEBREW_ROOT/opt/libiconv/bin:$PATH" \
+        spack external find --scope system libiconv
 
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
 
-   # Note - Path to qt can differ by homebrew version. Check path if qt is not found.
    PATH="$HOMEBREW_ROOT/opt/qt@5/bin:$PATH" \
-       spack external find --scope system qt
+        spack external find --scope system qt
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
    # The texlive bin directory must have been added to PATH (see above)
