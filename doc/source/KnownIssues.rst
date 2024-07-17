@@ -125,7 +125,7 @@ macOS
 
 6. Not all versions of ``apple-clang@15.0.0`` are currently supported.
 
-   If you are running macOS Sonoma 14.5 you may have a recent version of clang that does not yet build spack packages. On the console you should run ``clang --version`` and verify that the underlying clang compiler is ``clang-1500.1.0.2.5`` which is the version provided with Command Line Tools for XCode 15.1. You can downgrade your Command Line Tool packages by first running ``sudo rm -rf /Library/Developer/CommandLineTools`` then you can download and install the Command Line Tools 15.1 APK from `developer.apple.com <https://developer.apple.com/download/all/>_`. The Apple Developer site requires an iCloud login.
+   If you are running macOS Sonoma 14.5 you may have a recent version of clang that does not yet build spack packages. On the console you should run ``clang --version`` and verify that the underlying clang compiler is ``clang-1500.1.0.2.5`` which is the version provided with Command Line Tools for XCode 15.1. You can downgrade your Command Line Tool packages by first running ``sudo rm -rf /Library/Developer/CommandLineTools`` then you can download and install the Command Line Tools 15.1 APK from `developer.apple.com <https://developer.apple.com/download/all/>`_. The Apple Developer site requires an iCloud login.
 
 ==============================
 Ubuntu
