@@ -27,7 +27,7 @@
     cairo:
       require: '+pic'
     cdo:
-      require: '@2.2.0 ~openmp'
+      require: '@2.3.0 ~openmp'
     cmake:
       version: ['3.27.9']
       require: '+ownlibs'
@@ -58,12 +58,12 @@
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
           message: "Extra ESMF compile options for Intel"
-        - any_of: ['']
-          when: "%gcc"
-          message: "Extra ESMF compile options for GCC"
-        - any_of: ['']
-          when: "%apple-clang"
-          message: "Extra ESMF compile options for GCC"
+        #- any_of: ['']
+        #  when: "%gcc"
+        #  message: "Extra ESMF compile options for GCC"
+        #- any_of: ['']
+        #  when: "%apple-clang"
+        #  message: "Extra ESMF compile options for GCC"
     fckit:
       require: '@0.11.0 +eckit'
     fftw:
@@ -74,6 +74,7 @@
       # Pin version to avoid duplicates
       require: '@2.6.4'
     fms:
+      require: '@2023.04'
       variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
     fontconfig:
       require: '+pic'
@@ -86,6 +87,8 @@
     g2tmpl:
       require:
         - '@1.10.2'
+    gcc-runtime:
+      require: '%gcc'
     gfsio:
       require: '@1.4.1'
     #git-lfs:
@@ -198,9 +201,9 @@
       require: '@3.8.0'
     py-h5py:
       require: '~mpi'
-    # To avoid duplicate packages
-    py-jinja2:
-      require: '@3.0.3'
+    ## To avoid duplicate packages
+    #py-jinja2:
+    #  require: '@3.1.2'
     py-meson-python:
        require: '@0.15.0'
     # Comment out for now until build problems are solved
@@ -214,7 +217,8 @@
     # py-numpy@1.26 causes many build problems with older Python packages
     # also check Nautilus site config when making changes here
     py-numpy:
-      require: '@:1.25'
+      require:
+      - '@:1.25'
     py-pandas:
       require: '+excel'
     py-pybind11:
@@ -250,13 +254,13 @@
     # Note - we can remove upp from stack at some point?
     upp:
       require: '@10.0.10'
+    # Need extradeps for grib-utils, enable by default to avoid duplicate packages
     w3emc:
-      require: '@2.10.0 precision=4,d,8'
+      require: '@2.10.0 precision=4,d,8 +extradeps'
     w3nco:
       require: '@2.4.1'
-    # When changing wgrib2, also check Hercules and Nautilus site configs
     wgrib2:
-      require: '@2.0.8'
+      require: '@3.1.1'
     wrf-io:
       require: '@1.2.0'
     zstd:

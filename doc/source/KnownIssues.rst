@@ -40,12 +40,6 @@ General
    This problem is caused by a bad library in the Intel oneAPI installation. The solution is to fix the library using patchelf, which requires write access to the oneAPI installation: First, verify that ``ldd /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` says it is statically linked (it isn't). Then, run: ``patchelf --add-needed libc.so.6 /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` and your application should run rightaway (no need to recompile).
 
 ==============================
-MSU Hercules
-==============================
-
-1. ``wgrib2@2.0.8`` doesn't build on Hercules, use ``wgrib2@3.1.1`` instead.
-
-==============================
 NASA Discover
 ==============================
 
@@ -90,14 +84,6 @@ NAVY HPCMP Narwhal
 ==============================
 
 1. On Narwhal (like on any other Cray), the spack build environment depends on the currently loaded modules. It is therefore necessary to build separate environments for different compilers while having the correct modules for that setup loaded.
-
-2. ``mapl@2.35.2`` does not build on Narwhal, see https://github.com/JCSDA/spack-stack/issues/524. When using the ``unified-dev`` template, one has to manually remove ``jedi-ufs-env`` and ``ufs-weather-model-env`` from the environment's ``spack.yaml``.
-
-==============================
-NAVY HPCMP Nautilus
-==============================
-
-1. ``wgrib2@2.0.8`` doesn't build on Nautilus, use ``wgrib2@3.1.1`` instead.
 
 ==============================
 macOS
