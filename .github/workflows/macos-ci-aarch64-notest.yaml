@@ -1,0 +1,23 @@
+name: macos-ci-aarch64-build
+on:
+  pull_request:
+    paths:
+      - 'configs/sites/**'
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  macos-ci-aarch64-build:
+    runs-on: [macos-ci-aarch64]
+    steps:
+      - run: 'echo "No build required"'

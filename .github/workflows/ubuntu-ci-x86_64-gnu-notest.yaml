@@ -1,0 +1,23 @@
+name: ubuntu-ci-c6a-x86_64-gnu-build
+on:
+  pull_request:
+    paths:
+      - 'configs/sites/**'
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ubuntu-ci-c6a-x86_64-gnu-build:
+    runs-on: [ubuntu-ci-c6a-x86_64]
+    steps:
+      - run: 'echo "No build required"'
