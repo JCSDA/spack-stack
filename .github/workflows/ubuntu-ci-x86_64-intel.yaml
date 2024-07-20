@@ -6,6 +6,7 @@ on:
       - 'doc/**'
       - '**.md'
       - '.github/ISSUE_TEMPLATE/*'
+      - '.github/workflows/ubuntu-ci-x86_64-intel-notest.yaml'
       - '.gitignore'
   workflow_dispatch:
 
