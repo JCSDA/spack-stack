@@ -253,7 +253,7 @@ class StackEnv(object):
                 original_sections[key] = copy.deepcopy(section)
 
         # Commonly used config settings
-        compiler = f"packages:all:require:['%{self.compiler}']"
+        compiler = f"packages:all:prefer:['%{self.compiler}']"
         spack.config.add(compiler, scope=env_scope)
         # Also update compiler definitions if matrices are used
         # DH I am too stupid to do this the "spack way" ...
