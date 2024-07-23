@@ -47,3 +47,4 @@ spack:
     - ai-env%oneapi
     # jedi-tools doesn't build with Intel
     - jedi-tools-env%intel
+    - jedi-tools-env%oneapi
