@@ -59,9 +59,6 @@ jobs:
           spack env activate ${ENVDIR}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
-          # Disable ai-env for oneAPI
-          sed -i 's|^\s\+- ai-env||' ${ENVDIR}/spack.yaml
-
           # Find external packages
           spack external find --scope system \
               --exclude bison --exclude openssl \
