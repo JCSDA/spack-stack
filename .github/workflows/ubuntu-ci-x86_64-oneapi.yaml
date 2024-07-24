@@ -230,6 +230,8 @@ jobs:
           # Retain config from upstream so we don't have to rebuild:
           cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
+          # Pin gmake to avoid duplicate packages (excluded gmake from spack external find above)
+          spack config add "packages:gmake:require:'@:4.2'"
           spack add nccmp@1.9.0.1%oneapi
           spack concretize | tee envs/chaintest/log.concretize
           unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
