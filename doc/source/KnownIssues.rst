@@ -40,12 +40,6 @@ General
    This problem is caused by a bad library in the Intel oneAPI installation. The solution is to fix the library using patchelf, which requires write access to the oneAPI installation: First, verify that ``ldd /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` says it is statically linked (it isn't). Then, run: ``patchelf --add-needed libc.so.6 /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` and your application should run rightaway (no need to recompile).
 
 ==============================
-MSU Hercules
-==============================
-
-1. ``wgrib2@2.0.8`` doesn't build on Hercules, use ``wgrib2@3.1.1`` instead.
-
-==============================
 NASA Discover
 ==============================
 
@@ -91,14 +85,6 @@ NAVY HPCMP Narwhal
 
 1. On Narwhal (like on any other Cray), the spack build environment depends on the currently loaded modules. It is therefore necessary to build separate environments for different compilers while having the correct modules for that setup loaded.
 
-2. ``mapl@2.35.2`` does not build on Narwhal, see https://github.com/JCSDA/spack-stack/issues/524. When using the ``unified-dev`` template, one has to manually remove ``jedi-ufs-env`` and ``ufs-weather-model-env`` from the environment's ``spack.yaml``.
-
-==============================
-NAVY HPCMP Nautilus
-==============================
-
-1. ``wgrib2@2.0.8`` doesn't build on Nautilus, use ``wgrib2@3.1.1`` instead.
-
 ==============================
 macOS
 ==============================
@@ -123,9 +109,9 @@ macOS
 
    Can happen when trying to use the raster plotting scripts in ``fv3-jedi-tools``. In that case, exporting ``DYLD_LIBRARY_PATH=/usr/lib/:$DYLD_LIBRARY_PATH`` can help. If ``git`` commands fail after this, you might need to verify where ``which git`` points to (Homebrew vs module) and unload the ``git`` module.
 
-6. ``apple-clang@15.0.0`` not yet supported
+6. Not all versions of ``apple-clang@15.0.0`` are currently supported.
 
-   Building with ``apple-clang@15.0.0`` is under development and should be working soon. In the meantime, please use ``apple-clang@14.x`` or older versions.
+   If you are running macOS Sonoma 14.5 you may have a recent version of clang that does not yet build spack packages. On the console you should run ``clang --version`` and verify that the underlying clang compiler is ``clang-1500.1.0.2.5`` which is the version provided with Command Line Tools for XCode 15.1. You can downgrade your Command Line Tool packages by first running ``sudo rm -rf /Library/Developer/CommandLineTools`` then you can download and install the Command Line Tools 15.1 APK from `developer.apple.com <https://developer.apple.com/download/all/>`_. The Apple Developer site requires an iCloud login.
 
 ==============================
 Ubuntu

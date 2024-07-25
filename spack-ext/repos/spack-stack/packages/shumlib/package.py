@@ -39,7 +39,7 @@ class Shumlib(MakefilePackage):
             os.system("make -f make/vm-x86-gfortran-clang.mk")
         elif spec.satisfies("%gcc"):
             os.system("make -f make/vm-x86-gfortran-gcc.mk")
-        elif spec.satisfies("%intel"):
+        elif spec.satisfies("%intel") or spec.satisfies("%oneapi"):
             os.system("make -f make/vm-x86-ifort-icc.mk")
         else:
             raise InstallError("No shumlib make config for this compiler")

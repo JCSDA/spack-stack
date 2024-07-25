@@ -6,6 +6,7 @@ on:
       - 'doc/**'
       - '**.md'
       - '.github/ISSUE_TEMPLATE/*'
+      - '.github/workflows/ubuntu-ci-x86_64-gnu-notest.yaml'
       - '.gitignore'
   workflow_dispatch:
 
@@ -53,88 +54,99 @@ jobs:
 
           # Set up spack-stack
           source ./setup.sh
-          export ENVNAME=ue-gcc-11.4.0-buildcache
-          export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site linux.default --template unified-dev --name ${ENVNAME}
-          spack env activate ${ENVDIR}
-          export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
-          # Find external packages
-          spack external find --scope system \
-              --exclude bison --exclude openssl \
-              --exclude curl --exclude python
-          spack external find --scope system sed
-          spack external find --scope system perl
-          spack external find --scope system wget
-          spack external find --scope system texlive
-          spack external find --scope system mysql
+          declare -a TEMPLATES=("unified-dev" "skylab-dev")
+          for TEMPLATE in "${TEMPLATES[@]}"; do
+            if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
+              export ENVNAME=ue-gcc-11.4.0-buildcache
+            elif [[ "${TEMPLATE}" == *"skylab-dev"* ]]; then
+              export ENVNAME=se-gcc-11.4.0-buildcache
+            fi
+            echo "Creating environment ${ENVNAME} from template ${TEMPLATE}"
 
-          # Find compilers
-          spack compiler find --scope system
+            export ENVDIR=$PWD/envs/${ENVNAME}
+            spack stack create env --site linux.default --template ${TEMPLATE} --name ${ENVNAME}
+            spack env activate ${ENVDIR}
+            export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
-          export -n SPACK_SYSTEM_CONFIG_PATH
+            # Find external packages
+            spack external find --scope system \
+                --exclude bison --exclude openssl \
+                --exclude curl --exclude python
+            spack external find --scope system sed
+            spack external find --scope system perl
+            spack external find --scope system wget
+            spack external find --scope system texlive
+            spack external find --scope system mysql
 
-          # For buildcaches
-          spack config add config:install_tree:padded_length:200
+            # Find compilers
+            spack compiler find --scope system
 
-          # Set compiler and MPI
-          spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
-          spack config add "packages:all:compiler:[gcc@11.4.0]"
-          sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel', '\%oneapi'\]/\['\%gcc'\]/g" $ENVDIR/spack.yaml
+            export -n SPACK_SYSTEM_CONFIG_PATH
 
-          # Add additional variants for MET packages, different from config/common/packages.yaml
-          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+            # For buildcaches
+            spack config add config:install_tree:padded_length:200
 
-          # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.gnu-11.4.0-buildcache
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0-buildcache -i fms -i crtm -i esmf -i mapl
+            # Set compiler and MPI
+            spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
+            spack config add "packages:all:compiler:[gcc@11.4.0]"
+            sed -i "s/\['\%aocc', '\%apple-clang', '\%gcc', '\%intel', '\%oneapi'\]/\['\%gcc'\]/g" $ENVDIR/spack.yaml
 
-          # Add and update source cache
-          spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
-          spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
+            # Add additional variants for MET packages, different from config/common/packages.yaml
+            spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
-          # Add binary cache if requested
-          if [ "$USE_BINARY_CACHE" = true ] ; then
-            set +e
-            spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
-            spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
-            set +e
-            echo "Packages in spack binary cache:"
-            spack buildcache list
-          fi
+            # Concretize and check for duplicates
+            spack concretize 2>&1 | tee log.concretize.gnu-11.4.0-buildcache
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0-buildcache -i fms -i crtm -i esmf -i mapl
 
-          # Break installation up in pieces and create build caches in between
-          # This allows us to "spin up" builds that altogether take longer than
-          # six hours, and/or fail later in the build process.
+            # Add and update source cache
+            spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
+            spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
 
-          # base-env
-          echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
+            # Add binary cache if requested
+            if [ "$USE_BINARY_CACHE" = true ] ; then
+              set +e
+              spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+              spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+              set +e
+              echo "Packages in spack binary cache:"
+              spack buildcache list
+            fi
 
-          # jedi-base-env
-          echo "jedi-base-env ..."
-          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+            # Break installation up in pieces and create build caches in between
+            # This allows us to "spin up" builds that altogether take longer than
+            # six hours, and/or fail later in the build process.
 
-          # the rest
-          echo "unified-env ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.unified-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
+            # base-env
+            echo "base-env ..."
+            spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
+            spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
 
-          # Remove binary cache for next round of concretization
-          if [ "$USE_BINARY_CACHE" = true ] ; then
-            spack mirror rm local-binary
-          fi
+            # jedi-base-env
+            echo "jedi-base-env ..."
+            spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
+            spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
 
-          # Remove buildcache config settings
-          spack config remove config:install_tree:padded_length
+            # the rest
+            echo "${TEMPLATE} ..."
+            spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}
+            spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
 
-          # Next steps: synchronize source and build cache to a central/combined mirror?
+            # Remove binary cache for next round of concretization
+            if [ "$USE_BINARY_CACHE" = true ] ; then
+              spack mirror rm local-binary
+            fi
 
-          # Cleanup
-          spack clean -a
-          spack env deactivate
+            # Remove buildcache config settings
+            spack config remove config:install_tree:padded_length
+
+            # Next steps: synchronize source and build cache to a central/combined mirror?
+
+            # Cleanup
+            spack clean -a
+            spack env deactivate
+
+          done
 
       - name: create-env
         run: |
