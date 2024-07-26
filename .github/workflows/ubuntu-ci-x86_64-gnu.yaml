@@ -196,6 +196,8 @@ jobs:
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/common/packages.yaml
           spack stack create env --name chaintest3 --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2> stderr.txt
           cnt=$(grep -c "WARNING.*do not match" stderr.txt || true)
+          echo $cnt
+          cat stderr.txt
           if [ $cnt -ne 2 ]; then echo "Missing 'create env' warnings"; exit 1; fi
 
       - name: test-env
