@@ -32,7 +32,7 @@ def test_setup_meta_modules():
     os.makedirs(test_dir, exist_ok=True)
 
     env_dir = os.path.join(test_dir)
-    stack_create("create", "env", "--dir", env_dir, "--overwrite", "--name", "modtest")
+    stack_create("create", "env", "--dir", env_dir, "--name", "modtest", "--compiler", "gcc")
 
     # Create empty env
     env_dir = os.path.join(env_dir, "modtest")
