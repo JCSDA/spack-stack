@@ -194,7 +194,7 @@ jobs:
           if [ $cnt -ne 0 ]; then echo "Incorrect 'create env' warning"; exit 1; fi
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/site/packages.yaml
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/common/packages.yaml
-          spack stack create env --name chaintest3 --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2> stderr.txt
+          spack stack create env --name chaintest3 --site linux.default --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2> stderr.txt
           cnt=$(grep -c "WARNING.*do not match" stderr.txt || true)
           echo $cnt
           echo here
@@ -202,9 +202,9 @@ jobs:
           echo now here
           tail $PWD/envs/chaintest/common/packages.yaml
           echo right here
-          tail $PWD/envs/chaintest3/site/packages.yaml
+          tail $PWD/envs/chaintest3/site/packages.yaml || true
           echo nowhere
-          tail $PWD/envs/chaintest/common/packages.yaml
+          tail $PWD/envs/chaintest3/common/packages.yaml || true
           cat stderr.txt
           if [ $cnt -ne 2 ]; then echo "Missing 'create env' warnings"; exit 1; fi
 
