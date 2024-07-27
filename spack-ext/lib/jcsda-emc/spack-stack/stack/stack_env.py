@@ -1,4 +1,5 @@
 import copy
+import filecmp
 import io
 import logging
 import os
@@ -280,7 +281,8 @@ class StackEnv(object):
                     "site": os.path.normpath(os.path.join(upstream_path, "../site/")),
                 }
                 for n in ("common", "site"):
-                    if os.system("diff -rq %s %s &> /dev/null" % (env_config_dirs[n], upstream_config_dirs[n])):
+                    comparison = filecmp.dircmp(upstream_config_dirs[n], env_config_dirs[n])
+                    if comparison.diff_files or comparison.left_only or comparison.right_only:
                         logging.warning(
                             (f"WARNING: {n} config directories for this environment and upstream "
                              f"'{upstream_path}' do not match! Verify that you are using the same "
