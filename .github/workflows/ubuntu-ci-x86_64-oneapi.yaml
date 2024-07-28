@@ -1,0 +1,259 @@
+name: ubuntu-ci-c6a-x86_64-oneapi-build
+on:
+  pull_request:
+    paths-ignore:
+      - 'configs/sites/**'
+      - 'doc/**'
+      - '**.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  ubuntu-ci-c6a-x86_64-oneapi-build:
+    runs-on: [ubuntu-ci-c6a-x86_64]
+
+    steps:
+      - name: cleanup
+        run: |
+          pwd
+          ls -lart
+          rm -fr *
+
+      - name: checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: prepare-directories
+        run: |
+          mkdir -p /home/ubuntu/spack-stack/build-cache/
+          mkdir -p /home/ubuntu/spack-stack/source-cache/
+
+      - name: create-buildcache
+        run: |
+          # Get day of week to decide whether to use build caches or not
+          DOW=$(date +%u)
+          # Monday is 1 ... Sunday is 7
+          if [[ $DOW == 7 ]]; then
+            export USE_BINARY_CACHE=false
+            echo "Ignore existing binary cache for creating buildcache environment"
+          else
+            export USE_BINARY_CACHE=true
+            echo "Use existing binary cache for creating buildcache environment"
+          fi
+
+          # Set up spack-stack
+          source ./setup.sh
+          export ENVNAME=ue-oneapi-2024.2.0-buildcache
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          spack stack create env --site linux.default --template unified-dev --name ${ENVNAME} --compiler oneapi
+          spack env activate ${ENVDIR}
+          export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
+
+          # Find external packages
+          spack external find --scope system \
+              --exclude bison --exclude openssl \
+              --exclude curl --exclude python \
+              --exclude gmake
+          spack external find --scope system sed
+          spack external find --scope system perl
+          spack external find --scope system wget
+          spack external find --scope system texlive
+          spack external find --scope system mysql
+
+          # Find compilers
+          spack compiler find --scope system
+
+          # For Intel oneAPI
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "- compiler:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    spec: oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cc: /opt/intel/oneapi/compiler/2024.2/bin/icx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    flags:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      cxxflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fflags: -diag-disable=10448" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    environment: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      #prepend_path:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      #  LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    extra_rpaths: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+
+          # Need to find external Intel MPI and annotate with the
+          # correct compiler, no way to do that with spack commands.
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+
+          # Add external Intel MKL and oneAPI runtime
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  intel-oneapi-mkl:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  intel-oneapi-runtime:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-runtime@2024.2.0%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+
+          export -n SPACK_SYSTEM_CONFIG_PATH
+
+          # For buildcaches
+          spack config add config:install_tree:padded_length:200
+
+          # Set compiler and MPI specs
+          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.13]"
+          spack config add "packages:all:compiler:[oneapi@2024.2.0]"
+
+          # Add additional variants for MET packages, different from config/common/packages.yaml
+          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+
+          # Switch providers for blas, lapack, fftw-api
+          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi]"
+          spack config add "packages:all:providers:blas:[intel-oneapi-mkl]"
+          spack config add "packages:all:providers:fftw-api:[intel-oneapi-mkl]"
+          spack config add "packages:all:providers:lapack:[intel-oneapi-mkl]"
+          spack config add "packages:ectrans:require:'+mkl ~fftw'"
+          spack config add "packages:gsibec:require:'+mkl'"
+          spack config add "packages:py-numpy:require:['^intel-oneapi-mkl']"
+
+          # Pin gmake to avoid duplicate packages (excluded gmake from spack external find above)
+          spack config add "packages:gmake:require:'@:4.2'"
+
+          # Remove wgrib2 from all virtual packages, since it doesn't build with oneAPI
+          sed -i 's/depends_on("wgrib2")/#depends_on("wgrib2")/g' `grep -lRie wgrib2 spack-ext/`
+
+          # Don't generate ecflow module when using external package
+          spack config add "modules:default:tcl:exclude:[ecflow]"
+
+          # Concretize and check for duplicates
+          spack concretize 2>&1 | tee log.concretize.oneapi-2024.2.0-buildcache
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.oneapi-2024.2.0-buildcache -i fms -i crtm -i esmf -i mapl
+
+          # Add and update source cache
+          spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
+          spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
+
+          # Add binary cache if requested
+          if [ "$USE_BINARY_CACHE" = true ] ; then
+            set +e
+            spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+            spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+            set +e
+            echo "Packages in spack binary cache:"
+            spack buildcache list
+          fi
+
+          # Break installation up in pieces and create build caches in between
+          # This allows us to "spin up" builds that altogether take longer than
+          # six hours, and/or fail later in the build process.
+
+          # base-env
+          echo "base-env ..."
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.base-env
+          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
+
+          # jedi-base-env
+          echo "jedi-base-env ..."
+          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.jedi-base-env
+          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+
+          # the rest
+          echo "unified-env ..."
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.unified-env
+          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
+
+          # Remove binary cache for next round of concretization
+          if [ "$USE_BINARY_CACHE" = true ] ; then
+            spack mirror rm local-binary
+          fi
+
+          # Remove buildcache config settings
+          spack config remove config:install_tree:padded_length
+
+          # Next steps: synchronize source and build cache to a central/combined mirror?
+
+          # Cleanup
+          spack clean -a
+          spack env deactivate
+
+      - name: create-env
+        run: |
+          source ./setup.sh
+          export BUILDCACHE_ENVNAME=ue-oneapi-2024.2.0-buildcache
+          export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
+          export ENVNAME=ue-oneapi-2024.2.0
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
+          spack env activate ${ENVDIR}
+
+          # Concretize
+          spack concretize --force 2>&1 | tee log.concretize.oneapi-2024.2.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.oneapi-2024.2.0 -i fms -i crtm -i esmf -i mapl
+
+          # Add binary cache back in and reindex it
+          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+          echo "Packages in combined spack build caches:"
+          spack buildcache list
+
+          # base-env
+          echo "base-env ..."
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0.unified-env
+
+          ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+          spack clean -a
+          spack module tcl refresh -y
+          spack stack setup-meta-modules
+          spack env deactivate
+
+          ### # Test environment chaining
+          ### echo "Test environment chaining"
+          ### spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install --compiler intel
+          ### # Retain config from upstream so we don't have to rebuild:
+          ### cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
+          ### spack env activate ${PWD}/envs/chaintest
+          ### # Pin gmake to avoid duplicate packages (excluded gmake from spack external find above)
+          ### spack config add "packages:gmake:require:'@:4.2'"
+          ### spack add nccmp@1.9.0.1%oneapi
+          ### spack concretize | tee envs/chaintest/log.concretize
+          ### unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
+          ### if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
+          ### spack env deactivate
+
+      - name: test-env
+        run: |
+          source /etc/profile.d/modules.sh
+          module use /home/ubuntu/spack-stack/modulefiles
+
+          export ENVNAME=ue-oneapi-2024.2.0
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          ls -l ${ENVDIR}/install/modulefiles/Core
+
+          module use ${ENVDIR}/install/modulefiles/Core
+          module load stack-oneapi/2024.2.0
+          module load stack-intel-oneapi-mpi/2021.13
+          module load stack-python/3.10.13
+          module available
+
+          module load jedi-ufs-env
+          module load ewok-env
+          module load soca-env
+          module list
