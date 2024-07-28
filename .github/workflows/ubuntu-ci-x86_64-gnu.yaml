@@ -177,7 +177,7 @@ jobs:
 
           # Test environment chaining
           echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install --compiler gcc
+          spack stack create env --name chaintest --template empty --site linux.default --compiler gcc --upstream ${ENVDIR}/install
           # Retain config from upstream so we don't have to rebuild:
           cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
@@ -188,12 +188,12 @@ jobs:
           spack env deactivate
           echo "Verify 'create env' warnings"
           set -x
-          spack stack create env --name chaintest2 --site linux.default --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
+          spack stack create env --name chaintest2 --compiler gcc --site linux.default --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
           cnt=$(grep -c "WARNING" stderr.txt || true)
           if [ $cnt -ne 0 ]; then echo "Incorrect 'create env' warning"; exit 1; fi
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/site/packages.yaml
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/common/packages.yaml
-          spack stack create env --name chaintest3 --site linux.default --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
+          spack stack create env --name chaintest3 --site linux.default --compiler gcc --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
           cnt=$(grep -c "WARNING.*do not match" stderr.txt || true)
           echo $cnt
           echo here
