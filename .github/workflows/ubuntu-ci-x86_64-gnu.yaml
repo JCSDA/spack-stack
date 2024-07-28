@@ -190,7 +190,7 @@ jobs:
           spack env deactivate
           echo "Verify 'create env' warnings"
           set -x
-          spack stack create env --name chaintest2 --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
+          spack stack create env --name chaintest2 --site linux.default --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
           cnt=$(grep -c "WARNING" stderr.txt || true)
           if [ $cnt -ne 0 ]; then echo "Incorrect 'create env' warning"; exit 1; fi
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/site/packages.yaml
