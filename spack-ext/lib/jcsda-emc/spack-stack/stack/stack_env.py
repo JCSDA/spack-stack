@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import copy
 import filecmp
 import io
@@ -93,24 +94,17 @@ class StackEnv(object):
             self.site = None
         self.desc = kwargs.get("desc", None)
         self.compiler = kwargs.get("compiler", None)
-        self.mpi = kwargs.get("mpi", None)
-        self.base_packages = kwargs.get("base_packages", None)
         self.install_prefix = kwargs.get("install_prefix", None)
-        self.mirror = kwargs.get("mirror", None)
         self.upstreams = kwargs.get("upstreams", None)
-        self.modulesys = kwargs.get("modulesys", None)
         self.modifypkg = kwargs.get("modifypkg", None)
 
         if not self.name:
             # site = self.site if self.site else 'default'
-            self.name = "{}.{}".format(self.template, self.site)
+            self.name = "{}.{}.{}".format(self.template, self.site, self.compiler)
 
     def env_dir(self):
         """env_dir is <dir>/<name>"""
         return os.path.join(self.dir, self.name)
-
-    def add_includes(self, includes):
-        self.includes.extend(includes)
 
     def get_lmod_or_tcl(self, site_configs_dir):
         site_modules_yaml_path = os.path.join(site_configs_dir, "modules.yaml")
@@ -123,21 +117,62 @@ class StackEnv(object):
            in site modules.yaml, or use '--modulesys {tcl,lmod}'"""
         return lmod_or_tcl_list[0]
 
+    def _copy_or_merge_includes(self, section, default_in_path, update_in_path, result_out_path):
+        """Given two potential config files, merge the two (update the former with the latter)
+        into an output config file. If only one of them exists, copy that file to the output.
+        Do nothing if neither of them exists."""
+        if os.path.exists(default_in_path) and \
+                os.path.exists(update_in_path):
+            logging.info(f"  Merging {default_in_path} and ...\n  ... {update_in_path} (the latter overwrites the former) ...\n  ... into {result_out_path}")
+            with open(default_in_path, "r") as f:
+                default_in_yaml = syaml.load_config(f)
+            with open(update_in_path, "r") as f:
+                update_in_yaml = syaml.load_config(f)
+            #
+            default_in_data = default_in_yaml[section]
+            update_in_data = update_in_yaml[section]
+            result_data = spack.config.merge_yaml(default_in_data, update_in_data)
+            result_out_yaml = OrderedDict()
+            result_out_yaml[section] = result_data
+            # Write file, but sanitize the output.
+            stream = io.StringIO()
+            syaml.dump_config(result_out_yaml, stream)
+            # - replace "- packages:" with "packages:" (similar for modules)
+            sanitized_output = re.sub(r"- {}:".format(section), "{}:".format(section), stream.getvalue())
+            # - get rid of annoying single quotes and !!omap
+            sanitized_output = re.sub(r"!!omap", "", re.sub(r"'(\S+):':", "\g<1>::", sanitized_output))
+            with open(result_out_path, "w") as f:
+                f.write(sanitized_output)
+        else:
+            source = None
+            destination = result_out_path
+            if os.path.exists(update_in_path):
+                source = update_in_path
+            elif os.path.exists(default_in_path):
+                source = default_in_path
+            if source:
+                logging.info(f"  Copying {source} ...\n  ... to {destination}")
+                shutil.copy(source, destination)
+
     def _copy_common_includes(self):
         """Copy common directory into environment"""
         self.includes.append("common")
         env_common_dir = os.path.join(self.env_dir(), "common")
+        logging.info(f"Copying common includes from {common_path} ...\n  ... to {env_common_dir}")
         shutil.copytree(
-            common_path, env_common_dir, ignore=shutil.ignore_patterns("modules_*.yaml")
+            common_path, env_common_dir, ignore=shutil.ignore_patterns("modules*.yaml", "packages*.yaml")
         )
-        if self.modulesys:
-            lmod_or_tcl = self.modulesys
-        else:
-            lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
-        common_modules_yaml_path = os.path.join(common_path, "modules_%s.yaml" % lmod_or_tcl)
+        # Merge or copy common module config(s)
+        lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
+        modules_yaml_path = os.path.join(common_path, "modules.yaml")
+        modules_yaml_modulesys_path = os.path.join(common_path, f"modules_{lmod_or_tcl}.yaml")
         destination = os.path.join(env_common_dir, "modules.yaml")
-        logging.info(f"Copying common includes from {common_modules_yaml_path} ...\n  ... to {destination}")
-        shutil.copy(common_modules_yaml_path, destination)
+        self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
+        # Merge or copy common package config(s)
+        packages_yaml_path = os.path.join(common_path, "packages.yaml")
+        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{self.compiler}.yaml")
+        destination = os.path.join(env_common_dir, "packages.yaml")
+        self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
     def site_configs_dir(self):
         site_configs_dir = None
@@ -154,34 +189,24 @@ class StackEnv(object):
 
         site_name = "site"
         self.includes.append(site_name)
+        env_path = self.site_configs_dir()
         env_site_dir = os.path.join(self.env_dir(), site_name)
         logging.info(f"Copying site includes from {self.site_configs_dir()} ...\n  ... to {env_site_dir}")
-        shutil.copytree(self.site_configs_dir(), env_site_dir)
-        # Update site modules.yaml if user overrides default module system
-        if not self.modulesys:
-            return
-        lmod_or_tcl = self.modulesys
-        site_modules_yaml_path = os.path.join(env_site_dir, "modules.yaml")
-        with open(site_modules_yaml_path, "r") as f:
-            site_modules_yaml = syaml.load_config(f)
-        current_sys = site_modules_yaml["modules"]["default"]["enable"][0]
-        if lmod_or_tcl == current_sys:
-            return
-        logging.info("Updating site modules.yaml to reflect env module system override setting\n")
-        site_modules_yaml["modules"]["default"]["enable"][0] = lmod_or_tcl
-        current_config = site_modules_yaml["modules"]["default"][current_sys]
-        site_modules_yaml["modules"]["default"][lmod_or_tcl] = current_config
-        del site_modules_yaml["modules"]["default"][current_sys]
-        # Write file, and get rid of annoying single quotes
-        stream = io.StringIO()
-        syaml.dump_config(site_modules_yaml, stream)
-        with open(site_modules_yaml_path, "w") as f:
-            f.write(stream.getvalue().replace("'enable:':", "enable::"))
+        shutil.copytree(
+            self.site_configs_dir(), env_site_dir, ignore=shutil.ignore_patterns("modules*.yaml", "packages*.yaml")
+        )
+        # Merge or copy site module config(s)
+        lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
+        modules_yaml_path = os.path.join(env_path, "modules.yaml")
+        modules_yaml_modulesys_path = os.path.join(env_path, f"modules_{lmod_or_tcl}.yaml")
+        destination = os.path.join(env_site_dir, "modules.yaml")
+        self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
+        # Merge or copy site package config(s)
+        packages_yaml_path = os.path.join(env_path, "packages.yaml")
+        packages_compiler_yaml_path = os.path.join(env_path, f"packages_{self.compiler}.yaml")
+        destination = os.path.join(env_site_dir, "packages.yaml")
+        self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
-    def _copy_package_includes(self):
-        """Overwrite base packages in environment common dir"""
-        env_common_dir = os.path.join(self.env_dir(), "common")
-        shutil.copy(self.base_packages, env_common_dir)
 
     def write(self):
         """Write environment out to a spack.yaml in <env_dir>/<name>.
@@ -201,10 +226,6 @@ class StackEnv(object):
 
         # Copy common include files
         self._copy_common_includes()
-
-        # Overwrite common packages if base_packages is not None
-        if self.base_packages:
-            self._copy_package_includes()
 
         # No way to add to env includes using pure Spack.
         env_yaml["spack"]["include"] = self.includes
@@ -233,12 +254,22 @@ class StackEnv(object):
                 original_sections[key] = copy.deepcopy(section)
 
         # Commonly used config settings
-        if self.compiler:
-            compiler = "packages:all::compiler:[{}]".format(self.compiler)
-            spack.config.add(compiler, scope=env_scope)
-        if self.mpi:
-            mpi = "packages:all::providers:mpi:[{}]".format(self.mpi)
-            spack.config.add(mpi, scope=env_scope)
+        compiler = f"packages:all:prefer:['%{self.compiler}']"
+        spack.config.add(compiler, scope=env_scope)
+        # Also update compiler definitions if matrices are used
+        # DH I am too stupid to do this the "spack way" ...
+        definitions = spack.config.get("definitions", scope=env_scope)
+        if definitions:
+            target_compiler = f"%{self.compiler}"
+            for i in range(len(definitions)):
+                if "compilers" in definitions[i]:
+                    j = len(definitions[i]["compilers"])-1
+                    while j>=0:
+                        if not definitions[i]["compilers"][j] == target_compiler:
+                            definitions[i]["compilers"].pop(j)
+                        j -= 1
+            spack.config.set("definitions", definitions, scope=env_scope)
+
         if self.install_prefix:
             # Modules can go in <prefix>/modulefiles by default
             prefix = "config:install_tree:root:{}".format(self.install_prefix)
@@ -318,7 +349,7 @@ class StackEnv(object):
             spack.config.add(repo_cfg, scope=env_scope)
 
         # Merge the original spack.yaml template back in
-        # so it has the higest precedence
+        # so it has the highest precedence
         for section in spack.config.SECTION_SCHEMAS.keys():
             original = original_sections.get(section, {})
             existing = spack.config.get(section, scope=env_scope)

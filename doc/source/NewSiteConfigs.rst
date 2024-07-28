@@ -213,7 +213,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. code-block:: console
 
-   spack stack create env --site macos.default [--template unified-dev] --name unified-env.mymacos
+   spack stack create env --site macos.default [--template unified-dev] --name unified-env.mymacos --compiler=apple-clang
    cd envs/unified-env.mymacos/
    spack env activate [-p] .
 
@@ -314,14 +314,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack config add "packages:ewok-env:variants:+mysql"
 
-9. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for macOS, as above:
-
-.. code-block:: console
-
-   definitions:
-   - compilers: ['%apple-clang']
-
-10. If needed, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mymacos/spack.yaml``, etc.
+9. If needed, edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``envs/unified-env.mymacos/spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -329,7 +322,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    vi common/*.yaml
    vi site/*.yaml
 
-11. Process the specs and install
+10. Process the specs and install
 
 It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
 This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
@@ -342,13 +335,13 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
    ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
-12. Create lmod module files
+11. Create lmod module files
 
 .. code-block:: console
 
    spack module lmod refresh
 
-13. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/unified-env.mymacos/modulefiles/Core``.
+12. Create meta-modules for compiler, mpi, python. This will create a meta module at ``envs/unified-env.mymacos/modulefiles/Core``.
 
 .. code-block:: console
 
@@ -357,7 +350,7 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. note::
    Unlike preconfigured environments and Linux environments, MacOS users typically need to activate lmod's ``module`` tool within each shell session. This can be done by running ``source $HOMEBREW_ROOT/opt/lmod/init/profile``
 
-14. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+13. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mymacos/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux:
@@ -512,7 +505,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   spack stack create env --site linux.default [--template unified-dev] --name unified-env.mylinux
+   spack stack create env --site linux.default [--template unified-dev] --name unified-env.mylinux --compiler=gcc
    cd envs/unified-env.mylinux/
    spack env activate [-p] .
 
@@ -605,8 +598,8 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 12. Process the specs and install
 
-It is recommended to save the output of concretize in a log file and inspect that log file using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
-This is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
+It is recommended to save the output of concretize in a log file and inspect that log file manually and also using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
+The former is to ensure that the correct compiler and MPI libraries are being used. The latter is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
 Note that in the unified environment, there may be deliberate duplicates; consult the specs in spack.yaml to determine which ones are desired.
 See the :ref:`documentation <Duplicate_Checker>` for usage information including command line options.
 
@@ -693,7 +686,7 @@ With all of that in mind, the following instructions were used on an Amazon Web 
 
 .. code-block:: console
 
-   spack stack create env --site linux.default --template jedi-mpas-nvidia-dev --name jedi-mpas-nvidia-env
+   spack stack create env --site linux.default --template jedi-mpas-nvidia-dev --name jedi-mpas-nvidia-env --compiler=nvhpc
    cd envs/jedi-mpas-nvidia-env/
    spack env activate [-p] .
 

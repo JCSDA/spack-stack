@@ -652,29 +652,20 @@ The following instructions install a new spack environment on a pre-configured s
 
    # Create a pre-configured Spack environment in envs/<template>.<site>
    # (copies site-specific, application-specific, and common config files into the environment directory)
-   spack stack create env --site hera --template unified-dev --name unified-dev.hera
+   spack stack create env --site hera --template unified-dev --name unified-dev.hera.intel --compiler intel
 
    # Activate the newly created environment
    # Optional: decorate the command line prompt using -p
    #     Note: in some cases, this can mess up long lines in bash
    #     because color codes are not escaped correctly. In this
    #     case, use export SPACK_COLOR='never' first.
-   cd envs/unified-dev.hera/
+   cd envs/unified-dev.hera.intel/
    spack env activate [-p] .
 
-   # Edit the main config file for the environment and adjust the compiler matrix
-   # to match the compilers available on your system, or a subset of them (see
-   # note below for more information). Replace
-   #    definitions:
-   #    - compilers: ['%apple-clang', '%gcc', '%intel']
-   # with the appropriate list of compilers for your system and desires, e.g.
-   #    definitions:
-   #    - compilers: ['%gcc', '%intel']
-   emacs envs/unified-dev.hera/spack.yaml
-
-   # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, site.yaml)
-   emacs envs/unified-dev.hera/common/*.yaml
-   emacs envs/unified-dev.hera/site/*.yaml
+   # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, modules.yaml, ...)
+   emacs spack.yaml
+   emacs common/*.yaml
+   emacs site/*.yaml
 
    # Process/concretize the specs; optionally check for duplicate packages
    spack concretize | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
@@ -702,9 +693,6 @@ The following instructions install a new spack environment on a pre-configured s
 
     spack concretize 2>&1 | tee log.concretize
     spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
-
-.. note::
-  For platforms with multiple compilers in the site config, make sure that the correct compiler and corresponding MPI library are set correctly in ``envs/jedi-fv3.hera/site/packages.yaml`` before running ``spack concretize``. Also, check the output of ``spack concretize`` to make sure that the correct compiler is used (e.g. ``%intel-2022.0.1``). If not, edit ``envs/jedi-fv3.hera/site/compilers.yaml`` and remove the offending compiler. Then, remove ``envs/jedi-fv3.hera/spack.lock`` and rerun ``spack concretize``.
 
 .. _Preconfigured_Sites_ExtendingEnvironments:
 
