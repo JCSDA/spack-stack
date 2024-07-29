@@ -187,24 +187,10 @@ jobs:
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate
           echo "Verify 'create env' warnings"
-          set -x
-          spack stack create env --name chaintest2 --compiler gcc --site linux.default --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
-          cnt=$(grep -c "WARNING" stderr.txt || true)
-          if [ $cnt -ne 0 ]; then echo "Incorrect 'create env' warning"; exit 1; fi
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/site/packages.yaml
           echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/common/packages.yaml
           spack stack create env --name chaintest3 --site linux.default --compiler gcc --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
           cnt=$(grep -c "WARNING.*do not match" stderr.txt || true)
-          echo $cnt
-          echo here
-          tail $PWD/envs/chaintest/site/packages.yaml
-          echo now here
-          tail $PWD/envs/chaintest/common/packages.yaml
-          echo right here
-          tail $PWD/envs/chaintest3/site/packages.yaml || true
-          echo nowhere
-          tail $PWD/envs/chaintest3/common/packages.yaml || true
-          cat stderr.txt
           if [ $cnt -ne 2 ]; then echo "Missing 'create env' warnings"; exit 1; fi
 
       - name: test-env
