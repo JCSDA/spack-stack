@@ -124,7 +124,6 @@ apt install -y \
     libqt5svg5-dev \
     qt5dxcb-plugin
 
-
 # This is because boost doesn't work with the Intel compiler
 apt install -y \
     libboost1.74-dev \
@@ -223,7 +222,7 @@ exit
 mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
 cd /home/ubuntu/jedi/ecflow-5.8.4/src
 wget -O ecFlow-5.8.4-Source.tar.gz \
-     https://confluence.ecmwf.int/download/attachments/8650755/ecFlow-5.8.4-Source.tar.gz?api=v2
+     https://github.com/ecmwf/ecflow/releases/download/-5.8.4/ecFlow-5.8.4-Source.tar.gz
 tar -xvzf ecFlow-5.8.4-Source.tar.gz
 export WK=/home/ubuntu/jedi/ecflow-5.8.4/src/ecFlow-5.8.4-Source
 export BOOST_ROOT=/usr
@@ -383,7 +382,7 @@ git clone --recurse-submodules -b release/1.7.0 https://github.com/JCSDA/spack-s
 cd spack-stack-1.7/
 . setup.sh
 spack stack create env --site aws-pcluster --template=unified-dev --name=unified-intel
-cd unified-intel
+cd envs/unified-intel
 spack env activate -p .
 
 # Edit envs/unified-intel/spack.yaml.
