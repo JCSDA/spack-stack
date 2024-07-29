@@ -177,7 +177,7 @@ jobs:
 
           # Test environment chaining
           echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install --compiler gcc
+          spack stack create env --name chaintest --template empty --site linux.default --compiler gcc --upstream ${ENVDIR}/install
           # Retain config from upstream so we don't have to rebuild:
           cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
           spack env activate ${PWD}/envs/chaintest
@@ -186,6 +186,12 @@ jobs:
           unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
           if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
           spack env deactivate
+          echo "Verify 'create env' warnings"
+          echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/site/packages.yaml
+          echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/common/packages.yaml
+          spack stack create env --name chaintest3 --site linux.default --compiler gcc --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
+          cnt=$(grep -c "WARNING.*do not match" stderr.txt || true)
+          if [ $cnt -ne 2 ]; then echo "Missing 'create env' warnings"; exit 1; fi
 
       - name: test-env
         run: |
