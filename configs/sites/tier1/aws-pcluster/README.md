@@ -221,10 +221,9 @@ exit
 ```
 mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
 cd /home/ubuntu/jedi/ecflow-5.8.4/src
-wget -O ecFlow-5.8.4-Source.tar.gz \
-     https://github.com/ecmwf/ecflow/releases/download/-5.8.4/ecFlow-5.8.4-Source.tar.gz
-tar -xvzf ecFlow-5.8.4-Source.tar.gz
-export WK=/home/ubuntu/jedi/ecflow-5.8.4/src/ecFlow-5.8.4-Source
+wget https://github.com/ecmwf/ecflow/archive/refs/tags/5.8.4.tar.gz
+tar -xvzf 5.8.4.tar.gz
+export WK=/home/ubuntu/jedi/ecflow-5.8.4/src/ecflow-5.8.4
 export BOOST_ROOT=/usr
 
 # Build ecFlow
