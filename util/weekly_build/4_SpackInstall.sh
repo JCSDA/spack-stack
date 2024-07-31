@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
 cd $RUNDIR/spack-stack-build-cache-${RUNID}

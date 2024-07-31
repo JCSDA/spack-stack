@@ -2,6 +2,8 @@
 
 if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
+set -e
+
 cd $RUNDIR/spack-stack-build-cache-$RUNID
 
 . setup.sh
