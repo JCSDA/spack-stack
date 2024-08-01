@@ -8,7 +8,7 @@ cd $(dirname $0)
 
 trap "ERROR" ERR
 
-function ERROR { ALERT_CMD ; exit 1;}
+function ERROR { alert_cmd ; exit 1;}
 
 export SETUPDONE=YES
 
