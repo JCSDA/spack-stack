@@ -15,12 +15,12 @@ COMPILERS=intel
 
 PACKAGES_TO_TEST="libpng libaec jasper scotch w3emc g2 g2c"
 
-function scheduler_cmd {
-  $* | tee -a log.install 2>&1
-}
-
 function alert_cmd {
   echo "This is a placeholder alerting function. 'alert_cmd' should be defined for each system."
+}
+
+function spack_install_exe {
+  spack $* | tee -a log.install 2>&1
 }
 
 case $PLATFORM in
@@ -47,9 +47,11 @@ case $PLATFORM in
   acorn)
     COMPILERS="intel@2022"
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
-    function scheduler_cmd {
+    function spack_install_exe {
       set +e
-      qsub -N spack-build-cache-$RUNID -j oe -A NCEPLIBS-DEV -l select=1:ncpus=6:mem=10000MB -l walltime=03:00:00 -V -Wblock=true -- $*
+      ( qsub -N spack-build-cache-$RUNID-A -j oe -A NCEPLIBS-DEV -l select=1:ncpus=6:mem=10000MB -l walltime=03:00:00 -V -Wblock=true -- $(which spack) $* ) &
+      ( qsub -N spack-build-cache-$RUNID-B -j oe -A NCEPLIBS-DEV -l select=1:ncpus=6:mem=10000MB -l walltime=03:00:00 -V -Wblock=true -- $(which spack) $* ) &
+      wait
       rc=$?
       set -e
       cat spack-build-cache-${RUNID}*
