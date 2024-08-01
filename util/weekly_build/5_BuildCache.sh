@@ -6,7 +6,9 @@ if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
 cd $RUNDIR/$RUNID
 
+set +x
 . setup.sh
+set -x
 
 for compiler in $COMPILERS; do
   cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
