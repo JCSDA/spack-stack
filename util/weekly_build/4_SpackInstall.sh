@@ -17,7 +17,7 @@ for compiler in $COMPILERS; do
   spack env activate .
   spack fetch
   # Just install the packages we're testing (+dependencies):
-  $SCHEDULER_CMD $(which spack) install $INSTALL_OPTS --test root $PACKAGES_TO_TEST 2>&1 | tee log.install_withtesting
+  scheduler_cmd $(which spack) install $INSTALL_OPTS --test root $PACKAGES_TO_TEST
   # Install the rest of the stack as usual:
-  $SCHEDULER_CMD $(which spack) install $INSTALL_OPTS $PACKAGES_TO_INSTALL 2>&1 | tee log.install
+  scheduler_cmd $(which spack) install $INSTALL_OPTS $PACKAGES_TO_INSTALL
 done

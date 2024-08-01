@@ -2,18 +2,22 @@ echo Run ID: ${1?"First arg: Unique run ID"}
 echo Run directory: ${2?"Second arg: base directory for build"}
 echo Platform name: ${3?"Third arg: platform name ('hera', 'hercules', etc.)"}
 
-export RUNID=$1
-export RUNDIR=$2
-export PLATFORM=$3
+RUNID=$1
+RUNDIR=$2
+PLATFORM=$3
 
 if [ ${RUNDIR::1} != "/" ]; then
   echo "FATAL ERROR: Directory should be an absolute path!"
   exit 1
 fi
 
-export COMPILERS=intel
+COMPILERS=intel
 
-export PACKAGES_TO_TEST="libpng libaec jasper scotch w3emc g2 g2c"
+PACKAGES_TO_TEST="libpng libaec jasper scotch w3emc g2 g2c"
+
+function scheduler_cmd {
+  $* | tee -a log.install 2>&1
+}
 
 case $PLATFORM in
   hercules)
@@ -39,10 +43,18 @@ case $PLATFORM in
   acorn)
     COMPILERS="intel@2022"
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
-    SCHEDULER_CMD="qsub -N spack-build-cache-$RUNID -A NCEPLIBS-DEV -l select=1:ncpus=6:mem=10000MB -l walltime=03:00:00 -V -Wblock=true --"
+    function scheduler_cmd {
+      set +e
+      qsub -N spack-build-cache-$RUNID -j oe -A NCEPLIBS-DEV -l select=1:ncpus=6:mem=10000MB -l walltime=03:00:00 -V -Wblock=true -- $*
+      rc=$?
+      set -e
+      cat spack-build-cache-${RUNID}*
+      return $rc
+    }
+    PACKAGES_TO_TEST="libpng libaec jasper w3emc g2c"
     PACKAGES_TO_INSTALL="ufs-weather-model-env global-workflow-env upp-env"
     INSTALL_OPTS="-j6"
-    function ALERT_CMD {
+    function alert_cmd {
       mail -s 'spack-stack weekly build failure' alexander.richert@noaa.gov  < <(echo "Weekly spack-stack build failed. Run ID: $RUNID")
     }
     TEST_UFSWM=ON
