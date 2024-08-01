@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 

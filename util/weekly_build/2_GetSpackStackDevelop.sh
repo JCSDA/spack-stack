@@ -2,7 +2,9 @@
 
 if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
-set -e
+set -ex
 
 cd $RUNDIR
-git clone --recurse-submodules https://github.com/JCSDA/spack-stack -b develop ${RUNID}
+if [ ! -d $RUNID ]; then
+  git clone --recurse-submodules https://github.com/JCSDA/spack-stack -b develop $RUNID
+fi

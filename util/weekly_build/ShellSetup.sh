@@ -37,13 +37,13 @@ case $PLATFORM in
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/glade/work/epicufsrt/contrib/spack-stack/derecho/build_cache}
     ;;
   acorn)
-    COMPILERS="intel@19 intel@2022"
+    COMPILERS="intel"
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
     SCHEDULER_CMD="qsub -N spack-build-cache-$RUNID -A NCEPLIBS-DEV -l select=1:ncpus=6:mem=10000MB -l walltime=03:00:00 -V -Wblock=true --"
     PACKAGES_TO_INSTALL="ufs-weather-model-env global-workflow-env upp-env"
     INSTALL_OPTS="-j6"
     function ALERT_CMD {
-      mail -s 'spack-stack weekly build failure' alexander.richert@noaa.gov hang.lei@noaa.gov < <(echo "Weekly spack-stack build failed. Run ID: $RUNID")
+      mail -s 'spack-stack weekly build failure' alexander.richert@noaa.gov  < <(echo "Weekly spack-stack build failed. Run ID: $RUNID")
     }
     TEST_UFSWM=ON
     ;;

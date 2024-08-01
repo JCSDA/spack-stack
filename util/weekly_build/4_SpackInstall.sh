@@ -1,12 +1,14 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
 cd $RUNDIR/${RUNID}
 
+set +x
 . setup.sh
+set -x
 
 INSTALL_OPTS="--show-log-on-error $INSTALL_OPTS"
 

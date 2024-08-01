@@ -1,6 +1,8 @@
 #!/bin/bash
 
-set -e
+set -ex
+
+cd $(dirname $0)
 
 . ShellSetup.sh $*
 

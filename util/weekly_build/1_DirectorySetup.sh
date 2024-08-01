@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -e
+set -ex
 
 echo Base directory: ${2?"Second arg: base directory for build"}
 

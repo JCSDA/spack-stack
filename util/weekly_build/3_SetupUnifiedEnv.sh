@@ -2,13 +2,16 @@
 
 if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
-set -e
+set -ex
 
 cd $RUNDIR/$RUNID
 
+set +x
 . setup.sh
+set -x
 
 for compiler in $COMPILERS; do
+  rm -rf $RUNDIR/$RUNID/envs/build-${compiler/@/-}
   spack stack create env --name build-${compiler/@/-} --template unified-dev --site $PLATFORM --compiler $compiler
   cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
   spack env activate .
