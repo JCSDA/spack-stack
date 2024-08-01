@@ -13,7 +13,7 @@ fi
 
 export COMPILERS=intel
 
-export PACKAGESTOTEST="libpng libaec jasper scotch w3emc g2 g2c"
+export PACKAGES_TO_TEST="libpng libaec jasper scotch w3emc g2 g2c"
 
 case $PLATFORM in
   hercules)
@@ -37,10 +37,12 @@ case $PLATFORM in
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/glade/work/epicufsrt/contrib/spack-stack/derecho/build_cache}
     ;;
   acorn)
-    COMPILERS="intel"
+    COMPILERS="intel@19 intel@2022"
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
     TEST_UFSWM=ON
-    SCHEDULER_CMD="qsub -N spack-build-cache-$RUNID -P NCEPLIBS-DEV -V -I --"
+    SCHEDULER_CMD="qsub -N spack-build-cache-$RUNID -A NCEPLIBS-DEV -l nodes=1:ppn=6 -l walltime=03:00:00 -V -Wblock=true --"
+    PACKAGES_TO_INSTALL=" ufs-weather-model-env global-workflow-env upp-env"
+    INSTALL_OPTS="-j6"
     ;;
   gaea)
     COMPILERS="intel"

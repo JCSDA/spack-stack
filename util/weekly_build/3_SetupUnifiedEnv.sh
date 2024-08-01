@@ -4,13 +4,13 @@ if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
 set -e
 
-cd $RUNDIR/spack-stack-build-cache-$RUNID
+cd $RUNDIR/$RUNID
 
 . setup.sh
 
 for compiler in $COMPILERS; do
-  spack stack create env --name build-$compiler --template unified-dev --site $PLATFORM --compiler $compiler
-  cd envs/build-$compiler
+  spack stack create env --name build-${compiler/@/-} --template unified-dev --site $PLATFORM --compiler $compiler
+  cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
   spack env activate .
   # Check for duplicates and fail before doing the "real" concretization with test deps:
   spack concretize --fresh 2>&1 | tee log.concretize
