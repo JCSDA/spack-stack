@@ -4,6 +4,13 @@ set -e
 
 . ShellSetup.sh $*
 
+trap "ERROR" ERR
+
+function ERROR {
+  eval "$ALERT_CMD"
+  exit 1
+}
+
 export SETUPDONE=YES
 
 ./1_DirectorySetup.sh $*
