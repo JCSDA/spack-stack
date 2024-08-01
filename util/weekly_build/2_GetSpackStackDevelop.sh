@@ -6,5 +6,5 @@ set -ex
 
 cd $RUNDIR
 if [ ! -d $RUNID ]; then
-  git clone --recurse-submodules https://github.com/JCSDA/spack-stack -b develop $RUNID
+  git clone --recurse-submodules https://github.com/AlexanderRichert-NOAA/spack-stack -b weekly_build $RUNID
 fi
