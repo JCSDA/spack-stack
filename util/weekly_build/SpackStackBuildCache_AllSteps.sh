@@ -6,10 +6,7 @@ set -e
 
 trap "ERROR" ERR
 
-function ERROR {
-  eval "$ALERT_CMD"
-  exit 1
-}
+function ERROR { ALERT_CMD ; exit 1;}
 
 export SETUPDONE=YES
 
