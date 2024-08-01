@@ -100,7 +100,7 @@ class StackEnv(object):
 
         if not self.name:
             # site = self.site if self.site else 'default'
-            self.name = "{}.{}.{}".format(self.template, self.site, self.compiler)
+            self.name = "{}.{}.{}".format(self.template, self.site, self.compiler.replace("@", "-"))
 
     def env_dir(self):
         """env_dir is <dir>/<name>"""
@@ -170,7 +170,7 @@ class StackEnv(object):
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
         # Merge or copy common package config(s)
         packages_yaml_path = os.path.join(common_path, "packages.yaml")
-        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{self.compiler}.yaml")
+        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{self.compiler.split('@')[0]}.yaml")
         destination = os.path.join(env_common_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -203,7 +203,7 @@ class StackEnv(object):
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
         # Merge or copy site package config(s)
         packages_yaml_path = os.path.join(env_path, "packages.yaml")
-        packages_compiler_yaml_path = os.path.join(env_path, f"packages_{self.compiler}.yaml")
+        packages_compiler_yaml_path = os.path.join(env_path, f"packages_{self.compiler.split('@')[0]}.yaml")
         destination = os.path.join(env_site_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -260,7 +260,7 @@ class StackEnv(object):
         # DH I am too stupid to do this the "spack way" ...
         definitions = spack.config.get("definitions", scope=env_scope)
         if definitions:
-            target_compiler = f"%{self.compiler}"
+            target_compiler = f"%{self.compiler}".split("@")[0]
             for i in range(len(definitions)):
                 if "compilers" in definitions[i]:
                     j = len(definitions[i]["compilers"])-1
