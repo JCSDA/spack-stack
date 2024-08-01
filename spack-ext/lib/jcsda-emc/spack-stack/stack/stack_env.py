@@ -260,14 +260,10 @@ class StackEnv(object):
         # DH I am too stupid to do this the "spack way" ...
         definitions = spack.config.get("definitions", scope=env_scope)
         if definitions:
-            target_compiler = f"%{self.compiler}".split("@")[0]
+            target_compiler = f"%{self.compiler}"
             for i in range(len(definitions)):
                 if "compilers" in definitions[i]:
-                    j = len(definitions[i]["compilers"])-1
-                    while j>=0:
-                        if not definitions[i]["compilers"][j] == target_compiler:
-                            definitions[i]["compilers"].pop(j)
-                        j -= 1
+                    definitions[i] = {"compilers": [target_compiler]}
             spack.config.set("definitions", definitions, scope=env_scope)
 
         if self.install_prefix:
