@@ -19,6 +19,10 @@ function scheduler_cmd {
   $* | tee -a log.install 2>&1
 }
 
+function alert_cmd {
+  echo "This is a placeholder alerting function. 'alert_cmd' should be defined for each system."
+}
+
 case $PLATFORM in
   hercules)
     COMPILERS="intel gcc"
