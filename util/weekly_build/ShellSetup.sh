@@ -37,7 +37,7 @@ case $PLATFORM in
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/glade/work/epicufsrt/contrib/spack-stack/derecho/build_cache}
     ;;
   acorn)
-    COMPILERS="intel"
+    COMPILERS="intel@2022"
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
     SCHEDULER_CMD="qsub -N spack-build-cache-$RUNID -A NCEPLIBS-DEV -l select=1:ncpus=6:mem=10000MB -l walltime=03:00:00 -V -Wblock=true --"
     PACKAGES_TO_INSTALL="ufs-weather-model-env global-workflow-env upp-env"
