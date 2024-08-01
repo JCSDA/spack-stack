@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -ex
+set -exa
 
 cd $(dirname $0)
 
