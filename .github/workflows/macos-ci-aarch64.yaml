@@ -1,12 +1,6 @@
 name: macos-ci-aarch64-build
 on:
   pull_request:
-    paths-ignore:
-      - 'configs/sites/**'
-      - 'doc/**'
-      - '**.md'
-      - '.github/ISSUE_TEMPLATE/*'
-      - '.gitignore'
   workflow_dispatch:
 
 concurrency:
