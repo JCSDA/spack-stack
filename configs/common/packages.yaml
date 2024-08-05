@@ -196,6 +196,10 @@
     # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
     py-cython:
       require: '@0.29.36'
+    # https://github.com/JCSDA/spack-stack/issues/1216
+    # https://github.com/pydata/xarray/issues/8917
+    py-dask:
+      require: '@2021.4.1:'
     # To avoid duplicate packages
     py-flit-core:
       require: '@3.8.0'
