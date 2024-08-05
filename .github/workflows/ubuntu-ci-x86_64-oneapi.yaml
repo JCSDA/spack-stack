@@ -244,7 +244,7 @@ jobs:
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-oneapi/2024.2.0
           module load stack-intel-oneapi-mpi/2021.13
-          module load stack-python/3.10.13
+          module load stack-python/3.11.7
           module available
 
           module load jedi-ufs-env
