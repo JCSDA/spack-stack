@@ -196,10 +196,13 @@
     # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
     py-cython:
       require: '@0.29.36'
+    # As long as we need the "delayed" variant for py-dask,
+    # we are restricted to version 2021.03.0 (last one that has it)
+    # and newer than 2021.01.0 because of these issues:
     # https://github.com/JCSDA/spack-stack/issues/1216
     # https://github.com/pydata/xarray/issues/8917
     py-dask:
-      require: '@2021.4.1:'
+      require: '@2021.3.0'
     # To avoid duplicate packages
     py-flit-core:
       require: '@3.8.0'
