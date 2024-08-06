@@ -1,0 +1,18 @@
+# Pin versions and specs when building packages
+packages:
+  #
+  all:
+    providers:
+      blas: [openblas]
+      fftw-api: [fftw]
+      lapack: [openblas]
+  #
+  ectrans:
+    require:
+    - '~mkl +fftw'
+  gsibec:
+    require:
+    - '~mkl'
+  #py-numpy:
+  #  require:
+  #  - '^intel-oneapi-mkl' ^ ???
