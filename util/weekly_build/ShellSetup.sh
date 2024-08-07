@@ -14,7 +14,7 @@ fi
 PACKAGES_TO_TEST=${PACKAGES_TO_TEST:-"libpng libaec jasper scotch w3emc g2 g2c"}
 
 function alert_cmd {
-  echo "This is a placeholder alerting function. 'alert_cmd' should be defined for each system."
+  echo "Your run failed in $1. This is a placeholder alerting function. 'alert_cmd' should be defined for each system."
 }
 
 function spack_install_exe {
@@ -59,7 +59,7 @@ case $PLATFORM in
     PACKAGES_TO_INSTALL="ufs-weather-model-env global-workflow-env upp-env"
     INSTALL_OPTS="-j6"
     function alert_cmd {
-      mail -s 'spack-stack weekly build failure' alexander.richert@noaa.gov  < <(echo "Weekly spack-stack build failed. Run ID: $RUNID")
+      mail -s 'spack-stack weekly build failure' alexander.richert@noaa.gov  < <(echo "Weekly spack-stack build failed in $1. Run ID: $RUNID")
     }
     TEST_UFSWM=ON
     ;;
