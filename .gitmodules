@@ -1,7 +1,9 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = spack-stack-dev
+  #url = https://github.com/jcsda/spack
+  #branch = spack-stack-dev
+  url = https://github.com/climbfuji/spack
+  branch = feature/update_odc_and_yafyaml_for_gcc13
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
