@@ -4,7 +4,6 @@ modules:
   default:
     roots:
       tcl: $env/install/modulefiles
-    arch_folder: false
     tcl:
       # Core compiler is a dummy that is not used to build the stack, do not change.
       # Hopefully nobody is trying to build software with gcc-4.6 in 2023 ...
@@ -35,11 +34,13 @@ modules:
       - freetype
       - gcc-runtime
       - gdbm
+      - gmake
       - googletest
       - hwloc
       - inputproto
       - kbproto
       - libaec
+      - libbsd
       - libedit
       - libevent
       - libfabric
@@ -47,6 +48,7 @@ modules:
       - libgeotiff
       - libice
       - libiconv
+      - libm
       - libpciaccess
       - libpthread-stubs
       - libsigsegv
@@ -265,31 +267,3 @@ modules:
           set:
             'UPP_INC': '{prefix}/include'
             'UPP_LIB': '{prefix}/lib/libupp.a'
-
-    prefix_inspections:
-      bin:
-      - PATH
-      man:
-      - MANPATH
-      share/man:
-      - MANPATH
-      share/aclocal:
-      - ACLOCAL_PATH
-      lib:
-      # Do not set LIBRARY_PATH, this messes up the
-      # rpath handling on macOS (in cmake builds)
-      #- LIBRARY_PATH
-      - LD_LIBRARY_PATH
-      - DYLD_LIBRARY_PATH
-      lib64:
-      # Do not set LIBRARY_PATH, this messes up the
-      # rpath handling on macOS (in cmake builds)
-      #- LIBRARY_PATH
-      - LD_LIBRARY_PATH
-      - DYLD_LIBRARY_PATH
-      include:
-      - CPATH
-      lib/pkgconfig:
-      - PKG_CONFIG_PATH
-      lib64/pkgconfig:
-      - PKG_CONFIG_PATH
