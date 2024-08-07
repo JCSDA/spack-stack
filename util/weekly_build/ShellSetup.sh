@@ -11,9 +11,7 @@ if [ ${RUNDIR::1} != "/" ]; then
   exit 1
 fi
 
-COMPILERS=intel
-
-PACKAGES_TO_TEST="libpng libaec jasper scotch w3emc g2 g2c"
+PACKAGES_TO_TEST=${PACKAGES_TO_TEST:-"libpng libaec jasper scotch w3emc g2 g2c"}
 
 function alert_cmd {
   echo "This is a placeholder alerting function. 'alert_cmd' should be defined for each system."
@@ -25,27 +23,27 @@ function spack_install_exe {
 
 case $PLATFORM in
   hercules)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/work/noaa/epic/role-epic/spack-stack/hercules/build_cache}
     ;;
   orion)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/work/noaa/epic/role-epic/spack-stack/orion/build_cache}
     ;;
   discover16)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/gpfsm/dswdev/jcsda/spack-stack/scu16/build_cache}
     ;;
   discover17)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/gpfsm/dswdev/jcsda/spack-stack/scu17/build_cache}
     ;;
   derecho)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/glade/work/epicufsrt/contrib/spack-stack/derecho/build_cache}
     ;;
   acorn)
-    COMPILERS="intel@2022"
+    COMPILERS=${COMPILERS:-"intel@2022"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
     function spack_install_exe {
       set +e
@@ -66,31 +64,32 @@ case $PLATFORM in
     TEST_UFSWM=ON
     ;;
   gaea)
-    COMPILERS="intel"
+    COMPILERS=${COMPILERS:-"intel"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/ncrc/proj/epic/spack-stack/build_cache}
     ;;
   hera)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/scratch1/NCEPDEV/nems/role.epic/spack-stack/build_cache}
     ;;
   jet)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/build_cache}
     ;;
   narwhal)
-    COMPILERS="intel gcc"
+    COMPILERS=${COMPILERS:-"intel gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/p/app/projects/NEPTUNE/spack-stack/build_cache}
     ;;
   nautilus)
-    COMPILERS="intel"
+    COMPILERS=${COMPILERS:-"intel"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/p/app/projects/NEPTUNE/spack-stack/build_cache}
     ;;
   s4)
-    COMPILERS="intel"
+    COMPILERS=${COMPILERS:-"intel"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/data/prod/jedi/spack-stack/build_cache}
     ;;
   linux.default)
-    COMPILERS="gcc"
+    COMPILERS=${COMPILERS:-"gcc"}
+
 esac
 
 echo "Build cache target directory: ${BUILD_CACHE_DIR?'BUILD_CACHE_DIR must be set!'}"
