@@ -9,8 +9,8 @@ from the Community AMIs tab that matches your desired OS and PCluster version.
 Select an instance type of the same family that you are planning to use for the
 head and the compute nodes, and specify enough enough storage for a swap file
 and a spack-stack installation.
-- AMI Name: aws-parallelcluster-3.7.1-ubuntu-2204-lts-hvm-x86_64
-- AMI ID: ami-0906e8b928cde5ccc
+- AMI Name: aws-parallelcluster-3.9.3-ubuntu-2204-lts-hvm-x86_64
+- AMI ID: ami-08e88679103d6ab5f
 - Instance r7a.4xlarge  (uses same processor architecture as hpc7a instances)
 - Use 300GB of gp3 storage as /
 - Attach security groups allowing ssh inbound traffic and NFS outbound traffic
@@ -21,7 +21,7 @@ and NFS access.
 
 ```
 aws ec2 run-instances \
-    --image-id ami-0906e8b928cde5ccc \
+    --image-id ami-08e88679103d6ab5f \
     --count 1 \
     --instance-type r7a.4xlarge \
     --key-name YOUR-KEY-NAME \
@@ -84,6 +84,7 @@ apt install -y \
     tcl-dev \
     nano
 sudo -u ubuntu git lfs install
+sudo -u ubuntu git config --global credential.helper 'cache --timeout=3600'
 
 
 # Install compilers and various dev dependencies.
@@ -122,7 +123,6 @@ apt install -y \
     qt5-qmake \
     libqt5svg5-dev \
     qt5dxcb-plugin
-
 
 # This is because boost doesn't work with the Intel compiler
 apt install -y \
@@ -209,24 +209,21 @@ apt install -y docker-ce \
     docker-buildx-plugin \
     docker-compose-plugin
 docker run hello-world
+sudo usermod -aG docker $USER
 # DH* TODO 2023/02/21: Add users to group docker so that non-root users can run it
 # See https://docs.docker.com/engine/install/linux-postinstall/
 
 # Exit root session
 exit
-
-# Basic git config
-git config --global credential.helper cache
 ```
 
 4. Build ecflow outside of spack to be able to link against OS boost
 ```
 mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
 cd /home/ubuntu/jedi/ecflow-5.8.4/src
-wget https://confluence.ecmwf.int/download/attachments/8650755/ecFlow-5.8.4-Source.tar.gz?api=v2
-mv ecFlow-5.8.4-Source.tar.gz\?api\=v2 ecFlow-5.8.4-Source.tar.gz
-tar -xvzf ecFlow-5.8.4-Source.tar.gz
-export WK=/home/ubuntu/jedi/ecflow-5.8.4/src/ecFlow-5.8.4-Source
+wget https://github.com/ecmwf/ecflow/archive/refs/tags/5.8.4.tar.gz
+tar -xvzf 5.8.4.tar.gz
+export WK=/home/ubuntu/jedi/ecflow-5.8.4/src/ecflow-5.8.4
 export BOOST_ROOT=/usr
 
 # Build ecFlow
@@ -308,21 +305,22 @@ ln -sf /opt/lmod/lmod/init/profile.fish /etc/profile.d/z00_lmod.fish
 # Update the Intel MPI module to load AWS libfabric.
 cat << 'EOF' >> /opt/intel/oneapi/mpi/2021.10.0/modulefiles/mpi
 conflict openmpi
-if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.18.2amzn1.0 ] } {
-    module load libfabric-aws/1.18.2amzn1.0
+if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.19.0amzn4.0 ] } {
+    module load libfabric-aws/1.19.0amzn4.0
 }
 EOF
 
 # Update the AWS OpenMPI module to load AWS libfabric.
-cat << 'EOF' >> /usr/share/modules/modulefiles/openmpi/4.1.5
+cat << 'EOF' >> /opt/amazon/modules/modulefiles/openmpi/4.1.6
 conflict mpi
-if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.18.2amzn1.0 ] } {
-    module load libfabric-aws/1.18.2amzn1.0
+if { [ module-info mode load ] && ![ is-loaded libfabric-aws/1.19.0amzn4.0 ] } {
+    module load libfabric-aws/1.19.0amzn4.0
 }
 EOF
 
 # Add a number of default module locations to the lmod startup script.
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
+module use /opt/amazon/modules/modulefiles
 module use /usr/share/modules/modulefiles
 module use /opt/intel/oneapi/mpi/2021.10.0/modulefiles
 module use /home/ubuntu/jedi/modulefiles
@@ -335,10 +333,10 @@ exit
 ssh ...
 # Now user ubuntu
 module av
-module load libfabric-aws/1.18.2amzn1.0
-module load openmpi/4.1.5
+module load libfabric-aws/1.19.0amzn4.0
+module load openmpi/4.1.6
 module list
-module unload openmpi/4.1.5
+module unload openmpi/4.1.6
 module load mpi
 module list
 module purge
@@ -383,7 +381,8 @@ git clone --recurse-submodules -b release/1.7.0 https://github.com/JCSDA/spack-s
 cd spack-stack-1.7/
 . setup.sh
 spack stack create env --site aws-pcluster --template=unified-dev --name=unified-intel
-spack env activate -p envs/unified-env
+cd envs/unified-intel
+spack env activate -p .
 
 # Edit envs/unified-intel/spack.yaml.
 # 1) Find this line:
@@ -392,9 +391,9 @@ spack env activate -p envs/unified-env
 #    the line should look like this:
 #      compilers: [%intel']
 
-spack concretize 2>&1 | tee log.concretize.unified-env.001
-./util/show_duplicate_packages.py -d log.concretize.unified-env.001
-spack install --verbose 2>&1 | tee log.install.unified-env.001
+spack concretize 2>&1 | tee log.concretize.001
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.001
+spack install -j 12 --verbose 2>&1 | tee log.install.001
 spack module lmod refresh
 spack stack setup-meta-modules
 ```
@@ -425,7 +424,7 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
     - spec: intel-oneapi-mpi@2021.10.0%intel@2022.1.0
       prefix: /opt/intel
       modules:
-      - libfabric-aws/1.18.2amzn1.0
+      - libfabric-aws/1.19.0amzn4.0
       - intelmpi
 EOF
 
@@ -433,12 +432,12 @@ EOF
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   openmpi:
     externals:
-    - spec: openmpi@4.1.5%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+    - spec: openmpi@4.1.6%gcc@9.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
         fabrics=ofi schedulers=slurm
       prefix: /opt/amazon/openmpi
       modules:
-      - libfabric-aws/1.18.2amzn1.0
-      - openmpi/4.1.5
+      - libfabric-aws/1.19.0amzn4.0
+      - openmpi/4.1.6
 EOF
 
 # Can't find qt5 because qtpluginfo is broken,
@@ -467,7 +466,7 @@ export -n SPACK_SYSTEM_CONFIG_PATH
 spack config add "packages:mpi:buildable:False"
 spack config add "packages:python:buildable:False"
 spack config add "packages:openssl:buildable:False"
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0, openmpi@4.1.5]"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0, openmpi@4.1.6]"
 spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.4.0]"
 
 # edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
@@ -500,7 +499,7 @@ spack stack setup-meta-modules
 # Example given for building jedi-bundle
 module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-intel/install/modulefiles/Core
 module load stack-gcc/11.4.0
-module load stack-openmpi/4.1.5
+module load stack-openmpi/4.1.6
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
@@ -530,6 +529,7 @@ source /opt/intel/oneapi/mpi/2021.10.0/env/vars.sh
 
 # Activate spack stack modules.
 module use /mnt/experiments-efs/spack-stack-1.7/envs/unified-intel/install/modulefiles/Core
+module use $HOME/spack-stack-1.7/envs/unified-intel/install/modulefiles/Core
 module load stack-intel/2021.10.0
 module load stack-intel-oneapi-mpi/2021.10.0
 module load base-env
@@ -549,4 +549,24 @@ ecbuild -DCMAKE_CXX_COMPILER=mpiicpc \
 make update
 make -j10
 ctest
+```
+
+15. Once the parallel cluster head node image is fully configured and tested you
+can create an AMI snapshot based on the configured instance using the
+[instructions](https://docs.aws.amazon.com/parallelcluster/latest/ug/building-custom-ami-v3.html)
+published by AWS. Included here is a short summary of those instructions.
+
+```
+# 1) In a SSH session on the instance delete any unwanted files and directories
+#    in your home directory and in the /root directory.
+
+# 2) Use the AMI cleanup script to prepare the instance for imaging.
+sudo /usr/local/sbin/ami_cleanup.sh
+sudo apt clean
+
+# 3) From the AWS console navigate to the build instance and choose
+#    "Instance state" and select "Stop instance"
+
+# 4) Create a new AMI from the instance. From at the instance view in the prior
+#    step select "Actions" and choose "Image" and then "Create image".
 ```
