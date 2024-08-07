@@ -11,10 +11,6 @@ packages:
       modules:
       - cray-mpich-ucx/8.1.21
       - craype-network-ucx
-  intel-oneapi-tbb:
-    externals:
-    - spec: intel-oneapi-tbb@2021.10.0
-      prefix: /opt/intel/oneapi_2023.2.0.49397
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2023.2.0
