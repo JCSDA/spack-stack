@@ -1,7 +1,9 @@
 #!/bin/bash
 
+if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
+
 set -ex
 
-echo Base directory: ${2?"Second arg: base directory for build"}
+echo Base directory: ${RUNDIR:?}
 
-mkdir -p $2
+mkdir -p $RUNDIR
