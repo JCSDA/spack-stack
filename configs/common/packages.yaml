@@ -161,7 +161,7 @@ packages:
     require: '@4.6.1'
   # ninja - when adding information here, also check Discover site config
   odc:
-    require: '@1.4.6 ~fortran'
+    require: '@1.5.2 ~fortran'
   openblas:
     require: '@0.3.24 +noavx512'
   openmpi:
