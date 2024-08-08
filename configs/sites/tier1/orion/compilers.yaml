@@ -22,10 +22,10 @@ compilers:
 - compiler:
     spec: gcc@12.2.0
     paths:
-      cc: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gcc
-      cxx: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/g++
-      f77: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gfortran
-      fc: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gfortran
+      cc: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/gcc
+      cxx: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/g++
+      f77: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/gfortran
+      fc: /work/noaa/epic/role-epic/spack-stack/orion/installs/gcc/12.2.0/bin/gfortran
     flags: {}
     operating_system: rocky9
     target: x86_64
