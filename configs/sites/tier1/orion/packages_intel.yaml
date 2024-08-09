@@ -5,6 +5,10 @@ packages:
       mpi:: [intel-oneapi-mpi@2021.9.0]
       # https://github.com/JCSDA/spack-stack/issues/1055
       zlib-api:: [zlib]
+      # Remove the next three lines to switch to intel-oneapi-mkl
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
   mpi:
     buildable: False
   intel-oneapi-mpi:
@@ -20,11 +24,6 @@ packages:
     #  modules:
     #  - intel-oneapi-mkl/2023.1.0
   # Remove this section to switch to intel-oneapi-mkl
-  all:
-    providers:
-      blas:: [openblas]
-      fftw-api:: [fftw]
-      lapack:: [openblas]
   ectrans:
     require::
     - '@1.2.0 ~mkl +fftw'
