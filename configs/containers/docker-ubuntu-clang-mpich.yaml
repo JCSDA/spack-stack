@@ -9,7 +9,7 @@ spack:
 
   compilers:
   - compiler:
-      spec: clang@10.0.0
+      spec: clang@14.0.0
       paths:
         cc: /usr/bin/clang
         cxx: /usr/bin/clang++
@@ -31,7 +31,7 @@ spack:
       target: [x86_64]
       providers:
         mpi: [mpich@4.2.1]
-      compiler: [clang@10.0.0]
+      compiler: [clang@14.0.0]
     gcc:
       buildable: false
       externals:
@@ -43,30 +43,10 @@ spack:
         - any_of: ['fflags="-no-pie"']
           when: "@1.10.2: %clang"
           message: "Extra g2tmpl compile options for version 1.10.2+ with clang"
-    gmake:
-      buildable: false
-      externals:
-      - spec: gmake@4.2.1
-        prefix: /usr
-    diffutils:
-      buildable: false
-      externals:
-      - spec: diffutils@3.7
-        prefix: /usr
-    git:
-      buildable: false
-      externals:
-      - spec: git@2.25.1~tcltk
-        prefix: /usr
-    git-lfs:
-      buildable: false
-      externals:
-      - spec: git-lfs@2.9.2
-        prefix: /usr
     llvm:
       buildable: false
       externals:
-      - spec: llvm@10.0.0 +clang
+      - spec: llvm@14.0.0 +clang
         prefix: /usr
     mpich:
       buildable: false
@@ -74,21 +54,41 @@ spack:
       - spec: mpich@4.2.1
         prefix: /opt/mpich-4.2.1
       version: [4.2.1]
+    gmake:
+      buildable: false
+      externals:
+      - spec: gmake@4.3
+        prefix: /usr
+    diffutils:
+      buildable: false
+      externals:
+      - spec: diffutils@3.8
+        prefix: /usr
+    git:
+      buildable: false
+      externals:
+      - spec: git@2.34.1~tcltk
+        prefix: /usr
+    git-lfs:
+      buildable: false
+      externals:
+      - spec: git-lfs@3.0.2
+        prefix: /usr
     mysql:
       buildable: false
       externals:
-      - spec: mysql@8.0.32
+      - spec: mysql@8.0.39
         prefix: /usr
     qt:
       buildable: false
       externals:
-      - spec: qt@5.12.8
+      - spec: qt@5.15.3
         prefix: /usr
       version: [5.15.3]
     wget:
       buildable: false
       externals:
-      - spec: wget@1.20.3
+      - spec: wget@1.21.2
         prefix: /usr
       version: [1.21.2]
 
@@ -125,9 +125,9 @@ spack:
     os_packages:
       build:
       - bc
-      - clang-10
-      - libclang-10-dev
-      - libc++-10-dev
+      - clang-14
+      - libclang-14-dev
+      - libc++-14-dev
       - cpp
       - g++
       - gcc
@@ -136,16 +136,17 @@ spack:
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
 
       final:
       - bc
-      - clang-10
-      - libclang-10-dev
-      - libc++-10-dev
+      - clang-14
+      - libclang-14-dev
+      - libc++-14-dev
       - cpp
       - g++
       - gcc
@@ -154,7 +155,8 @@ spack:
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
@@ -179,14 +181,6 @@ spack:
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
-        # Create symbolic links for clang compilers
-        RUN cd /usr/bin && \
-        ln -svf clang-10 clang && \
-        ln -svf clang++-10 clang++ && \
-        ln -svf clang-cpp-10 clang-cpp && \
-        cd /usr/lib/llvm-10/lib && \
-        ln -svf libc++abi.so.1.0 libc++abi.so
-        #
         # Build mpich outside of spack-stack
         ENV MPICH_VERSION=4.2.1
         ENV CC=clang
@@ -219,13 +213,6 @@ spack:
         ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
         ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
       final: |
-        # Create symbolic links for clang compilers
-        RUN cd /usr/bin && \
-        ln -svf clang-10 clang && \
-        ln -svf clang++-10 clang++ && \
-        ln -svf clang-cpp-10 clang-cpp && \
-        cd /usr/lib/llvm-10/lib && \
-        ln -svf libc++abi.so.1.0 libc++abi.so
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
         ENV MPICH_VERSION=4.2.1
