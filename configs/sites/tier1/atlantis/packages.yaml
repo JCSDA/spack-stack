@@ -1,15 +1,8 @@
 packages:
   all:
     compiler:: [intel@2021.6.0]
-    providers: 
+    providers:
       mpi:: [intel-oneapi-mpi@2021.6.0]
-      blas:: [intel-oneapi-mkl]
-      fftw-api:: [intel-oneapi-mkl]
-      lapack:: [intel-oneapi-mkl]
-  ectrans:
-    variants:: +mkl ~fftw
-  gsibec:
-    variants:: +mkl
 
 ### MPI, Python, MKL
   mpi:
@@ -25,7 +18,7 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2022.1.0
       modules:
-      -  mkl/2022.1.0        
+      -  mkl/2022.1.0
       prefix: /cm/shared/apps/intel/oneapi
   intel-oneapi-ipp:
     externals:
@@ -41,7 +34,7 @@ packages:
       prefix: /cm/shared/apps/intel/oneapi
   #python:
   #  buildable: False
-  #  externals: 
+  #  externals:
   #  - spec: python@3.9.15
   #    modules:
   #    - python39
