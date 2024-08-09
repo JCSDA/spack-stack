@@ -17,6 +17,10 @@ packages:
     externals:
     - spec: intel-oneapi-mpi@2021.5.0%intel@2021.5.0
       prefix: /opt/intel/oneapi/2022.1
+  intel-oneapi-mkl:
+    externals:
+    - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
+      prefix: /opt/intel/oneapi/2022.1
   # Commenting this out for now, not working as expected
   #mpich:
   #  externals:
