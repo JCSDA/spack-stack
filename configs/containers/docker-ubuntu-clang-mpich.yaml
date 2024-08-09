@@ -16,7 +16,7 @@ spack:
         f77: /usr/bin/gfortran
         fc: /usr/bin/gfortran
       flags: {}
-      operating_system: ubuntu20.04
+      operating_system: ubuntu22.04
       modules: []
       environment:
         prepend_path:
@@ -112,7 +112,7 @@ spack:
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
     images:
-      os: ubuntu:20.04
+      os: ubuntu:22.04
       spack:
         url: https://github.com/jcsda/spack
         ref: spack-stack-dev

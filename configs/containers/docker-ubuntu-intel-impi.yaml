@@ -121,7 +121,7 @@ spack:
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
     images:
-      os: ubuntu:20.04
+      os: ubuntu:22.04
       spack:
         url: https://github.com/jcsda/spack
         ref: spack-stack-dev
