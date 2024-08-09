@@ -1,14 +1,14 @@
 packages:
   all:
-    # Removing gcc/mpich for now, not working as expected
-    #compiler:: [intel@2021.5.0, gcc@9.3.0]
-    #providers:
-    #  mpi:: [intel-oneapi-mpi@2021.5.0, mpich@4.0.1]
     compiler:: [intel@2021.5.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.0]
       # https://github.com/JCSDA/spack-stack/issues/1055
       zlib-api:: [zlib]
+      # Remove the next three lines to switch to intel-oneapi-mkl
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
 
 ### MPI, Python, MKL
   mpi:
@@ -18,16 +18,22 @@ packages:
     - spec: intel-oneapi-mpi@2021.5.0%intel@2021.5.0
       prefix: /opt/intel/oneapi/2022.1
   intel-oneapi-mkl:
-    externals:
-    - spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
-      prefix: /opt/intel/oneapi/2022.1
-  # Commenting this out for now, not working as expected
-  #mpich:
-  #  externals:
-  #  - spec: mpich@4.0.1%gcc@9.3.0 ~hydra device=ch4
-  #    prefix: /data/prod/hpc-stack/gnu-9.3.0/mpich/4.0.1
-  #    modules:
-  #    - mpich/4.0.1
+    # Remove buildable: False and uncomment externals section below to use intel-oneapi-mkl
+    buildable: False
+    #externals:
+    #- spec: intel-oneapi-mkl@2022.0.1%intel@2021.5.0
+    #  prefix: /opt/intel/oneapi/2022.1
+
+  # Remove this section to switch to intel-oneapi-mkl
+  ectrans:
+    require::
+    - '@1.2.0 ~mkl +fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@:1.25 ^openblas'
 
 ### All other external packages listed alphabetically
   autoconf:
