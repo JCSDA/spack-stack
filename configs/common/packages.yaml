@@ -43,7 +43,7 @@
     eckit:
       require: '@1.24.5 linalg=eigen,lapack compression=lz4,bzip2'
     ecmwf-atlas:
-      require: '@0.36.0 +fckit +trans +tesselation +fftw'
+      require: '@0.38.1 +fckit +trans +tesselation +fftw'
     ectrans:
       require: '@1.2.0 ~mkl +fftw'
     eigen:
