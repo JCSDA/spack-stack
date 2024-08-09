@@ -9,14 +9,14 @@ spack:
 
   compilers:
   - compiler:
-      spec: gcc@9.4.0
+      spec: gcc@12.3.0
       paths:
-        cc: /usr/bin/gcc
-        cxx: /usr/bin/g++
-        f77: /usr/bin/gfortran
-        fc: /usr/bin/gfortran
+        cc: /usr/bin/gcc-12
+        cxx: /usr/bin/g++-12
+        f77: /usr/bin/gfortran-12
+        fc: /usr/bin/gfortran-12
       flags: {}
-      operating_system: ubuntu20.04
+      operating_system: ubuntu22.04
       modules: []
       environment: {}
       extra_rpaths: []
@@ -29,47 +29,47 @@ spack:
       target: [x86_64]
       providers:
         mpi: [openmpi@5.0.3]
-      compiler: [gcc@9.4.0]
+      compiler: [gcc@12.3.0]
     gcc:
       buildable: false
       externals:
-      - spec: gcc@9.4.0
+      - spec: gcc@12.3.0
         prefix: /usr
     gmake:
       buildable: false
       externals:
-      - spec: gmake@4.2.1
+      - spec: gmake@4.3
         prefix: /usr
     diffutils:
       buildable: false
       externals:
-      - spec: diffutils@3.7
+      - spec: diffutils@3.8
         prefix: /usr
     git:
       buildable: false
       externals:
-      - spec: git@2.25.1~tcltk
+      - spec: git@2.34.1~tcltk
         prefix: /usr
     git-lfs:
       buildable: false
       externals:
-      - spec: git-lfs@2.9.2
+      - spec: git-lfs@3.0.2
         prefix: /usr
     mysql:
       buildable: false
       externals:
-      - spec: mysql@8.0.32
+      - spec: mysql@8.0.39
         prefix: /usr
     qt:
       buildable: false
       externals:
-      - spec: qt@5.12.8
+      - spec: qt@5.15.3
         prefix: /usr
       version: [5.15.3]
     wget:
       buildable: false
       externals:
-      - spec: wget@1.20.3
+      - spec: wget@1.21.2
         prefix: /usr
       version: [1.21.2]
 
@@ -107,14 +107,15 @@ spack:
       build:
       - bc
       - cpp
-      - g++
-      - gcc
-      - gfortran
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
@@ -122,14 +123,15 @@ spack:
       final:
       - bc
       - cpp
-      - g++
-      - gcc
-      - gfortran
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
