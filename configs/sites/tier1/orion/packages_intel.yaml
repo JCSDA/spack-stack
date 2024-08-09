@@ -13,7 +13,24 @@ packages:
       modules:
       - intel-oneapi-mpi/2021.9.0
   intel-oneapi-mkl:
-    externals:
-    - spec: intel-oneapi-mkl@2023.1.0%intel@2021.9.0
-      modules:
-      - intel-oneapi-mkl/2023.1.0
+    # Remove buildable: False and uncomment externals section below to use intel-oneapi-mkl
+    buildable: False
+    #externals:
+    #- spec: intel-oneapi-mkl@2023.1.0%intel@2021.9.0
+    #  modules:
+    #  - intel-oneapi-mkl/2023.1.0
+  # Remove this section to switch to intel-oneapi-mkl
+  all:
+    providers:
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
+  ectrans:
+    require::
+    - '@1.2.0 ~mkl +fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@:1.25 ^openblas'
