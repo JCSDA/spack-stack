@@ -54,7 +54,7 @@
     esmf:
       require:
         - '~xerces ~pnetcdf +shared +external-parallelio'
-        - any_of: ['@=8.6.1 snapshot=none', '@=8.7.0b04 snapshot=b04']
+        - any_of: ['@=8.6.1 snapshot=none', '@=8.7.0b11 snapshot=b11']
         - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
           when: "%intel"
           message: "Extra ESMF compile options for Intel"
