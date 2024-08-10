@@ -20,12 +20,14 @@ class JediBaseEnv(BundlePackage):
     # Need to find a free fftw provider for fftw-api ...
     variant("fftw", default=True, description="Build fftw")
     variant("hdf4", default=True, description="Build hdf4 library and python hdf module")
+    variant("bufrquery", default=False, description="Build bufr-query library")
 
     depends_on("base-env", type="run")
     depends_on("bison", type="run")
     depends_on("blas", type="run")
     depends_on("boost", type="run")
     depends_on("bufr", type="run")
+    depends_on("bufr-query", when="+bufrquery", type="run")
     # Force users to load manually
     # depends_on("crtm@v2.4.1-jedi", type="run")
     depends_on("ecbuild", type="run")
