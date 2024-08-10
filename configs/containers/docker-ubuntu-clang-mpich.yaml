@@ -182,6 +182,9 @@ spack:
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
         # Build mpich outside of spack-stack
+        RUN cd /usr/bin && \
+        ln -svf clang-14 clang && \
+        ln -svf clang++-14 clang++
         ENV MPICH_VERSION=4.2.1
         ENV CC=clang
         ENV CXX=clang++
@@ -228,7 +231,10 @@ spack:
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
         # Replicate settings for root user
-        RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
+        RUN cd /usr/bin && \
+        ln -svf clang-14 clang && \
+        ln -svf clang++-14 clang++ && \
+        echo "ulimit -s unlimited" >> /root/.bashrc && \
         echo "ulimit -v unlimited" >> /root/.bashrc && \
         echo "export CC=clang" >> /root/.bashrc && \
         echo "export CXX=clang++" >> /root/.bashrc && \
