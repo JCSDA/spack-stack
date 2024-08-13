@@ -106,7 +106,6 @@ spack:
     os_packages:
       build:
       - bc
-      - cpp
       - g++-12
       - gcc-12
       - gfortran-12
@@ -122,7 +121,6 @@ spack:
 
       final:
       - bc
-      - cpp
       - g++-12
       - gcc-12
       - gfortran-12
@@ -154,11 +152,10 @@ spack:
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
-        # Make symbolic links for gcc-12
-        RUN cd /usr/bin && \
-        ln -svf gcc-12 gcc && \
-        ln -svf g++-12 g++ && \
-        ln -svf gfortran-12 gfortran
+        # Set the GNU 12.x toolchain as the default compilers.
+        RUN update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
       pre_final: |
         # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
@@ -174,11 +171,10 @@ spack:
       final: |
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
-        # Make symbolic links for gcc-12
-        RUN cd /usr/bin && \
-        ln -svf gcc-12 gcc && \
-        ln -svf g++-12 g++ && \
-        ln -svf gfortran-12 gfortran
+        # Set the GNU 12.x toolchain as the default compilers.
+        RUN update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
