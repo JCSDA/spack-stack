@@ -135,8 +135,6 @@ spack:
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
-      # Implicitly included in build step
-      - build-essential
       - ca-certificates
       - curl
       - file
