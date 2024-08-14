@@ -132,9 +132,6 @@ modules:
             'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
-          # Keeping this as a reminder how to do snapshots
-          #^esmf@8.3.0b09~debug snapshot=b09: 'esmf-8.3.0b09'
-          #^esmf@8.3.0b09+debug snapshot=b09: 'esmf-8.3.0b09-debug'
           ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
           ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
           ^esmf@8.5.0~debug snapshot=none: 'esmf-8.5.0'
@@ -147,8 +144,8 @@ modules:
           ^esmf@8.6.1+debug snapshot=none: 'esmf-8.6.1-debug'
           ^esmf@8.7.0b04~debug snapshot=b04: 'esmf-8.7.0b04'
           ^esmf@8.7.0b04+debug snapshot=b04: 'esmf-8.7.0b04-debug'
-          ^esmf@8.7.0b11~debug snapshot=b04: 'esmf-8.7.0b11'
-          ^esmf@8.7.0b11+debug snapshot=b04: 'esmf-8.7.0b11-debug'
+          ^esmf@8.7.0b11~debug snapshot=b11: 'esmf-8.7.0b11'
+          ^esmf@8.7.0b11+debug snapshot=b11: 'esmf-8.7.0b11-debug'
       openmpi:
         environment:
           set:
