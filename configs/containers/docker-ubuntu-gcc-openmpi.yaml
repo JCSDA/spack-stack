@@ -35,6 +35,11 @@ spack:
       externals:
       - spec: gcc@12.3.0
         prefix: /usr
+    gcc-runtime:
+      buildable: false
+      externals:
+      - spec: gcc-runtime@12.3.0
+        prefix: /usr
     gmake:
       buildable: false
       externals:
@@ -139,9 +144,6 @@ spack:
       - gnupg2
       - iproute2
       - locales
-      - python3
-      - python3-pip
-      - python3-setuptools
       - unzip
       - vim
 
