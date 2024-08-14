@@ -256,7 +256,7 @@ With Intel, the following is required for building new spack environments and fo
    module load cray-mpich/8.1.21
    module load libfabric/1.12.1.2.2.1
 
-TODO UPDATE - For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
+THIS SECTION IS OUT OF DATE, REFER TO 1.7.0 RELEASE DOCUMENTATION -  - For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
@@ -282,7 +282,7 @@ With GNU, the following is required for building new spack environments and for 
    module load cray-mpich/8.1.21
    module load libfabric/1.12.1.2.2.1
 
-TODO UPDATE - For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
+THIS SECTION IS OUT OF DATE, REFER TO 1.7.0 RELEASE DOCUMENTATION - For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
 .. code-block:: console
 
