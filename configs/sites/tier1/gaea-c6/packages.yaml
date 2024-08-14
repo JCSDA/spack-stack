@@ -3,14 +3,39 @@ packages:
     compiler:: [intel@2023.2.0]
     providers:
       mpi:: [cray-mpich@8.1.29]
+      # Remove the next three lines to switch to intel-oneapi-mkl
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
 
-### MPI
+### MPI, Python, MKL
+  mpi:
+    buildable: False
   cray-mpich:
     externals:
     - spec: cray-mpich@8.1.29%intel@2023.2.0~wrappers
       modules:
       - craype-network-ofi
       - cray-mpich/8.1.29
+  intel-oneapi-mkl:
+    # Remove buildable: False and configure+uncomment externals section below to use intel-oneapi-mkl
+    buildable: False
+    #externals:
+    #- spec: intel-oneapi-mkl@2022.0.2%intel@2023.2.0
+    #  prefix: /apps/oneapi
+
+### Modification of common packages
+  # DH* Remove this section to switch to intel-oneapi-mkl
+  ectrans:
+    require::
+    - '@1.2.0 ~mkl +fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@:1.25 ^openblas'
+  # *DH
 
 ### All other external packages listed alphabetically
   autoconf:
