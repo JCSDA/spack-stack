@@ -37,6 +37,9 @@ spack:
     # MADIS for WCOSS2 decoders.
     - madis@4.5
 
+    # bufr_query for BUFR readers
+    #- bufr-query@0.0.2
+
   specs:
   - matrix:
     - [$packages]
