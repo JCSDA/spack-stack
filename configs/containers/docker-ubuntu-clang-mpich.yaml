@@ -194,7 +194,7 @@ spack:
         ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
         ln -svf /usr/bin/g++-12 /usr/bin/g++ && \
         ln -svf /usr/bin/clang-14 /usr/bin/clang && \
-        ln -svf /usr/bin/clang++-14 /usr/bin/clang++- && \
+        ln -svf /usr/bin/clang++-14 /usr/bin/clang++ && \
         ln -svf /usr/bin/clang-cpp-14 /usr/bin/clang-cpp
         # Build mpich outside of spack-stack
         ENV MPICH_VERSION=4.2.1
@@ -238,7 +238,7 @@ spack:
         ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
         ln -svf /usr/bin/g++-12 /usr/bin/g++ && \
         ln -svf /usr/bin/clang-14 /usr/bin/clang && \
-        ln -svf /usr/bin/clang++-14 /usr/bin/clang++- && \
+        ln -svf /usr/bin/clang++-14 /usr/bin/clang++ && \
         ln -svf /usr/bin/clang-cpp-14 /usr/bin/clang-cpp
         # Copy mpich-${MPICH_VERSION} installation from builder
         COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
