@@ -35,7 +35,12 @@ spack:
     gcc:
       buildable: false
       externals:
-      - spec: gcc@9.4.0
+      - spec: gcc@11.2.1
+        prefix: /usr
+    gcc-runtime:
+      buildable: false
+      externals:
+      - spec: gcc-runtime@12.3.0
         prefix: /usr
     g2tmpl:
       # https://github.com/JCSDA/spack-stack/issues/525
@@ -129,6 +134,7 @@ spack:
       - libclang-14-dev
       - libc++-14-dev
       - cpp
+      - libgomp1
       - g++
       - gcc
       - gfortran
@@ -148,6 +154,7 @@ spack:
       - libclang-14-dev
       - libc++-14-dev
       - cpp
+      - libgomp1
       - g++
       - gcc
       - gfortran
