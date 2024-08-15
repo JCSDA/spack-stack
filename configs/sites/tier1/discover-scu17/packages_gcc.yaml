@@ -1,0 +1,14 @@
+packages:
+  all:
+    compiler:: [gcc@12.3.0]
+    providers:
+      mpi:: [openmpi@4.1.6]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.6%gcc@=12.3.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+        fabrics=ucx schedulers=slurm
+      prefix: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-12.3.0
+      modules:
+      - mpi/openmpi/4.1.6/gcc-12.3.0

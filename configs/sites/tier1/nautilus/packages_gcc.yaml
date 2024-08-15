@@ -1,0 +1,14 @@
+packages:
+  all:
+    compiler:: [gcc@12.2.1]
+    providers:
+      mpi:: [openmpi@5.0.1]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@5.0.1%gcc@12.2.1~cuda~java~memchecker~static~wrapper-rpath fabrics=ucx schedulers=slurm
+      prefix: /p/app/penguin/openmpi/5.0.1/gcc-8.5.0
+      modules:
+      - penguin/openmpi/5.0.1/gcc-8.5.0
+      - slurm

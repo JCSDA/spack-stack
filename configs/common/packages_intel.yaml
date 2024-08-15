@@ -1,0 +1,20 @@
+packages:
+  all:
+    providers:
+      blas: [intel-oneapi-mkl]
+      fftw-api: [intel-oneapi-mkl]
+      lapack: [intel-oneapi-mkl]
+  ectrans:
+    require:
+    - '+mkl ~fftw'
+  # gettext 0.22.5 does not compile with Intel Classic compilers:
+  # malloca.c(49): error #3895: expected a comma (the one-argument version of static_assert is not enabled in this mode)
+  gettext:
+    require:
+    - '@:0.21'
+  gsibec:
+    require:
+    - '+mkl'
+  py-numpy:
+    require:
+    - '^intel-oneapi-mkl'
