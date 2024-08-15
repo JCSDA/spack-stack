@@ -31,7 +31,11 @@ class UppEnv(BundlePackage):
     depends_on("wrf-io")
     depends_on("prod-util")
     # For testing:
-    depends_on("wgrib2")
+    # Currently, wgrib2 doesn't build with oneapi,
+    # but there isn't a "when not" option in spack yet
+    depends_on("wgrib2", when="%apple-clang")
+    depends_on("wgrib2", when="%gcc")
+    depends_on("wgrib2", when="%intel")
     depends_on("grib-util")
 
     # There is no need for install() since there is no code.

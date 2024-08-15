@@ -81,8 +81,6 @@ jobs:
           echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    environment: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      #prepend_path:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      #  LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin'" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    extra_rpaths: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
 
           # Need to find external Intel MPI and annotate with the

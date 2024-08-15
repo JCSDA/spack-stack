@@ -1,0 +1,15 @@
+packages:
+  all:
+    compiler:: [gcc@11.4.0]
+    providers:
+      mpi:: [openmpi@4.1.6]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.6%gcc@11.4.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+        fabrics=ofi schedulers=slurm
+      prefix: /opt/amazon/openmpi
+      modules:
+      - libfabric-aws/1.19.0amzn4.0
+      - openmpi/4.1.6
