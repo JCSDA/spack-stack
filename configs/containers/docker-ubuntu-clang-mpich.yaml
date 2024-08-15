@@ -189,15 +189,13 @@ spack:
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
         # Set default binaries for clang-14 and GNU-12.
-        RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100 && \
-        update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 100 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 1 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 10 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/clang-cpp-14 100 && \
-        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 && \
-        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 && \
-        update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100
+        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
+        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
+        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
+        ln -svf /usr/bin/g++-12 /usr/bin/g++ && \
+        ln -svf /usr/bin/clang-14 /usr/bin/clang && \
+        ln -svf /usr/bin/clang++-14 /usr/bin/clang++- && \
+        ln -svf /usr/bin/clang-cpp-14 /usr/bin/clang-cpp
         # Build mpich outside of spack-stack
         ENV MPICH_VERSION=4.2.1
         ENV CC=clang
@@ -235,14 +233,13 @@ spack:
         ENV MPICH_VERSION=4.2.1
         # Set the GNU 12.x toolchain as the default compilers.
         # Set default binaries for clang-14 and GNU-12.
-        RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100 && \
-        update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 100 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 1 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 10 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/clang-cpp-14 100 && \
-        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 && \
-        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+        RUN update-alternatives ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
+        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
+        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
+        ln -svf /usr/bin/g++-12 /usr/bin/g++ && \
+        ln -svf /usr/bin/clang-14 /usr/bin/clang && \
+        ln -svf /usr/bin/clang++-14 /usr/bin/clang++- && \
+        ln -svf /usr/bin/clang-cpp-14 /usr/bin/clang-cpp
         # Copy mpich-${MPICH_VERSION} installation from builder
         COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI
