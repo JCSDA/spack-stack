@@ -1,34 +1,10 @@
 packages:
-  all:
-    compiler:: [intel@2021.10.0, gcc@12.3.0]
-    providers:
-      mpi:: [intel-oneapi-mpi@2021.10.0, openmpi@4.1.6]
-
-### MPI, Python, MKL
-  mpi:
-    buildable: False
-  intel-oneapi-mpi:
-    externals:
-    - spec: intel-oneapi-mpi@2021.10.0%intel@=2021.10.0
-      prefix: /usr/local/intel/oneapi/2021/
-      modules:
-      - mpi/impi/2021.10.0
-  openmpi:
-    externals:
-    - spec: openmpi@4.1.6%gcc@=12.3.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
-        fabrics=ucx schedulers=slurm
-      prefix: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-12.3.0
-      modules:
-      - mpi/openmpi/4.1.6/gcc-12.3.0
-
 ### Modification of common packages
-
   # Problems building shared hdf-eos2 with Intel, not needed
   hdf-eos2:
     variants: ~shared
   met:
     variants: +python +grib2 +graphics +lidar2nc +modis
-
 ### All other external packages listed alphabetically
   autoconf:
     externals:

@@ -24,7 +24,11 @@ class EmcVerifGlobalEnv(BundlePackage):
     depends_on("grib-util")
     # Test grads
     # depends_on('grads')
-    depends_on("wgrib2")
+    # Currently, wgrib2 doesn't build with oneapi,
+    # but there isn't a "when not" option in spack yet
+    depends_on("wgrib2", when="%apple-clang")
+    depends_on("wgrib2", when="%gcc")
+    depends_on("wgrib2", when="%intel")
     depends_on("python")
     depends_on("prod-util")
     depends_on("met")

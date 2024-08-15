@@ -1,0 +1,23 @@
+packages:
+  all:
+    providers:
+      blas: [intel-oneapi-mkl]
+      fftw-api: [intel-oneapi-mkl]
+      lapack: [intel-oneapi-mkl]
+  ectrans:
+    require:
+    - '+mkl ~fftw'
+  gsibec:
+    require:
+    - '+mkl'
+  py-numpy:
+    require:
+    - '^intel-oneapi-mkl'
+  bison:
+    require: '%gcc'
+  gmake:
+    require: '%gcc'
+  libmd:
+    require: '%gcc'
+  libbsd:
+    require: '%gcc'

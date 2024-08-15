@@ -1,0 +1,14 @@
+packages:
+  all:
+    compiler:: [gcc@9.2.0]
+    providers:
+      mpi:: [openmpi@4.1.6]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.6%gcc@9.2.0
+      prefix: /apps/openmpi/4.1.6/gnu9.2.0/
+      modules:
+      - gnu/9.2.0b
+      - openmpi/4.1.6_gnu9.2.0

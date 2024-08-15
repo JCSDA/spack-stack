@@ -96,6 +96,17 @@ jobs:
           echo "    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
+          # Add external Intel MKL and oneAPI runtime
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  intel-oneapi-mkl:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-mkl@2023.2.0%intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "  intel-oneapi-runtime:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "    - spec: intel-oneapi-runtime@2023.2.0%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+
           # Add external ecflow for Intel
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "  ecflow::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
