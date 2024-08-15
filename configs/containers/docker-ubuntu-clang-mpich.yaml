@@ -133,11 +133,11 @@ spack:
       - clang-14
       - libclang-14-dev
       - libc++-14-dev
-      - cpp
+      - cpp-12
       - libgomp1
-      - g++
-      - gcc
-      - gfortran
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
@@ -153,11 +153,11 @@ spack:
       - clang-14
       - libclang-14-dev
       - libc++-14-dev
-      - cpp
+      - cpp-12
       - libgomp1
-      - g++
-      - gcc
-      - gfortran
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
@@ -188,6 +188,11 @@ spack:
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
+        # Set the GNU 12.x toolchain as the default compilers.
+        RUN update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 12 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
         # Build mpich outside of spack-stack
         RUN cd /usr/bin && \
         ln -svf clang-14 clang && \
@@ -226,6 +231,11 @@ spack:
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
         ENV MPICH_VERSION=4.2.1
+        # Set the GNU 12.x toolchain as the default compilers.
+        RUN update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 12 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
         # Copy mpich-${MPICH_VERSION} installation from builder
         COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI
@@ -246,6 +256,7 @@ spack:
         echo "export CC=clang" >> /root/.bashrc && \
         echo "export CXX=clang++" >> /root/.bashrc && \
         echo "export FC=gfortran" >> /root/.bashrc && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/clang-*/jedi-cmake-*)" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
 
     # Labels for the image
