@@ -237,7 +237,7 @@ spack:
         echo "export CC=icc" >> /root/.bashrc && \
         echo "export CXX=icpc" >> /root/.bashrc && \
         echo "export FC=ifort" >> /root/.bashrc && \
-        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/intel-*/jedi-cmake-*)" >> /root/.bashrc"
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/intel-*/jedi-cmake-*)" >> /root/.bashrc" && \
         echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /root/.bashrc && \
         echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
