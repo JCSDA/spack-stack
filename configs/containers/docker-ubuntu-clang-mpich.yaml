@@ -35,7 +35,7 @@ spack:
     gcc:
       buildable: false
       externals:
-      - spec: gcc@11.2.1
+      - spec: gcc@12.3.0
         prefix: /usr
     gcc-runtime:
       buildable: false
@@ -188,15 +188,17 @@ spack:
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
-        # Set the GNU 12.x toolchain as the default compilers.
-        RUN update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 12 && \
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 && \
-        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+        # Set default binaries for clang-14 and GNU-12.
+        RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100 && \
+        update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 100 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 1 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 10 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/clang-cpp-14 100 && \
+        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100 && \
+        update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100
         # Build mpich outside of spack-stack
-        RUN cd /usr/bin && \
-        ln -svf clang-14 clang && \
-        ln -svf clang++-14 clang++
         ENV MPICH_VERSION=4.2.1
         ENV CC=clang
         ENV CXX=clang++
@@ -232,10 +234,15 @@ spack:
         COPY --from=builder /root/spack_find.out /root/spack_find.out
         ENV MPICH_VERSION=4.2.1
         # Set the GNU 12.x toolchain as the default compilers.
-        RUN update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 12 && \
-        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 12 && \
-        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 12
+        # Set default binaries for clang-14 and GNU-12.
+        RUN update-alternatives --install /usr/bin/clang clang /usr/bin/clang-14 100 && \
+        update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-14 100 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 1 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-12 10 && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/clang-cpp-14 100 && \
+        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-12 12 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-12 100 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
         # Copy mpich-${MPICH_VERSION} installation from builder
         COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI
@@ -248,10 +255,7 @@ spack:
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
         # Replicate settings for root user
-        RUN cd /usr/bin && \
-        ln -svf clang-14 clang && \
-        ln -svf clang++-14 clang++ && \
-        echo "ulimit -s unlimited" >> /root/.bashrc && \
+        RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
         echo "ulimit -v unlimited" >> /root/.bashrc && \
         echo "export CC=clang" >> /root/.bashrc && \
         echo "export CXX=clang++" >> /root/.bashrc && \
