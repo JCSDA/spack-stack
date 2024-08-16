@@ -14,7 +14,7 @@ spack:
     - jedi-fv3-env
     - jedi-geos-env         ^esmf@=8.6.1
     - jedi-mpas-env
-    - jedi-neptune-env      ^esmf@=8.7.0b11
+    - jedi-neptune-env      ^esmf@=8.7.0b11 snapshot=b11
     - jedi-ufs-env          ^esmf@=8.6.1
     - jedi-um-env
     - soca-env
