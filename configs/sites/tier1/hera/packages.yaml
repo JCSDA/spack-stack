@@ -49,17 +49,9 @@ packages:
     externals:
     - spec: findutils@4.5.11
       prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.5.37+lex
-      prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.0.2
-      prefix: /usr
-  gettext:
-    externals:
-    - spec: gettext@0.19.8.1
       prefix: /usr
   ghostscript:
     externals:
