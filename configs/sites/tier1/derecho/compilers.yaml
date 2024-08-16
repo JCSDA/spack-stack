@@ -6,10 +6,7 @@ compilers::
       cxx: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/bin/intel64/icpc
       f77: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/bin/intel64/ifort
       fc: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/bin/intel64/ifort
-    flags:
-      cflags: -diag-disable=10441
-      cxxflags: -diag-disable=10441
-      fflags: -diag-disable=10448
+    flags: {}
     operating_system: sles15
     target: x86_64
     modules:
