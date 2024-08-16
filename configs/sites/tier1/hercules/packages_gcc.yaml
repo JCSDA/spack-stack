@@ -1,0 +1,14 @@
+packages:
+  all:
+    compiler:: [gcc@12.2.0]
+    providers:
+      mpi:: [openmpi@4.1.6]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.6%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
+        schedulers=slurm
+      modules:
+      - gcc/12.2.0
+      - openmpi/4.1.6-gcc-12.2.0-spack

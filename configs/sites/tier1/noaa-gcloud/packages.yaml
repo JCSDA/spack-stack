@@ -1,30 +1,8 @@
 packages:
-  all:
-    compiler:: [intel@2021.3.0, gcc@9.2.0]
-    providers:
-      mpi:: [intel-oneapi-mpi@2021.3.0, openmpi@3.1.4]
-
-### MPI, Python, MKL
-  mpi:
-    buildable: False
-  intel-oneapi-mpi:
-    externals:
-    - spec: intel-oneapi-mpi@2021.3.0%intel@2021.3.0
-      prefix: /apps/oneapi
-      modules:
-      - impi/2021.3.0
-  openmpi:
-    externals:
-    - spec: openmpi@3.1.4%gcc@9.2.0
-      prefix: /apps/openmpi/3.1.4/gnu/gcc-9.2.0
-      modules:
-      - openmpi/3.1.4
-
 ### Modifications of common packages
   # Pin flex to avoid duplicate packages
   flex:
     version: ['2.6.4']
-
 ### All other external packages listed alphabetically
   bash:
     externals:

@@ -1,4 +1,5 @@
   ### spack-stack-1.6.0 / skylab-7.x.y containers for fv3-jedi and mpas-jedi (but not for ufs-jedi)
+<<<<<<< HEAD
   specs: [
     base-env@1.0.0,
     jedi-base-env@1.0.0,
@@ -52,7 +53,7 @@
     mapl@2.46.2,
     zlib-ng@2.1.5,
     zstd@1.5.2,
-    odc@1.4.6,
+    odc@1.5.2,
     shumlib@macos_clang_linux_intel_port,
     awscli-v2@2.13.22,
     py-globus-cli@3.16.0,

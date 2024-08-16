@@ -1,29 +1,4 @@
 packages:
-  all:
-    compiler:: [intel@2021.9.0, gcc@12.2.0]
-    providers:
-      mpi:: [intel-oneapi-mpi@2021.9.0, openmpi@4.1.4]
-      zlib-api:: [zlib]
-
-### MPI, Python, MKL
-  mpi:
-    buildable: False
-  intel-oneapi-mpi:
-    externals:
-    - spec: intel-oneapi-mpi@2021.9.0%intel@2021.9.0
-      #prefix: /apps/spack-managed/oneapi-2023.1.0/intel-oneapi-mpi-2021.9.0-a66eaipzsnyrdgaqzxmqmqz64qzvhkse
-      modules:
-      - intel-oneapi-mpi/2021.9.0
-  openmpi:
-    externals:
-    - spec: openmpi@4.1.4%gcc@12.2.0 ~atomics~cuda~cxx~cxx_exceptions~gpfs~internal-hwloc~internal-libevent~internal-pmix~java~legacylaunchers~lustre~memchecker~openshmem~orterunprefix+pmi+romio+rsh~singularity+static+vt+wrapper-rpath fabrics=none romio-filesystem=none schedulers=slurm
-      modules:
-      - gcc/12.2.0
-      - openmpi/4.1.4
-
-### Modifications of common packages
-
-### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -86,7 +61,7 @@ packages:
   git-lfs:
     externals:
     - spec: git-lfs@3.1.2
-      prefix: /apps/spack-managed/gcc-11.3.1/git-lfs-3.1.2
+      prefix: /apps/spack-managed/gcc-11.3.1/git-lfs-3.1.2-sjfqfgha27na65g3lrcqamncnryjoa7l
   gmake:
     externals:
     - spec: gmake@4.3

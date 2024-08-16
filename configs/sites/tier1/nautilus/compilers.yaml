@@ -56,8 +56,7 @@ compilers:
       cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/icpx
       f77: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/ifort
       fc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/ifort
-    flags:
-      fflags: -diag-disable=10448
+    flags: {}
     operating_system: rhel8
     target: x86_64
     modules: []
