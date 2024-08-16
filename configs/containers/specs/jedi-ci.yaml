@@ -1,5 +1,4 @@
-  ### spack-stack-1.6.0 / skylab-7.x.y containers for fv3-jedi and mpas-jedi (but not for ufs-jedi)
-<<<<<<< HEAD
+# spack-stack containers are configured for fv3-jedi and mpas-jedi, but not for ufs-jedi.
   specs: [
     base-env@1.0.0,
     jedi-base-env@1.0.0,
