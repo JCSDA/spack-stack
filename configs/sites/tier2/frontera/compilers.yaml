@@ -6,10 +6,7 @@ compilers::
         cxx: /opt/intel/oneapi/compiler/2023.1.0/linux/bin/intel64/icpc
         f77: /opt/intel/oneapi/compiler/2023.1.0/linux/bin/intel64/ifort
         fc: /opt/intel/oneapi/compiler/2023.1.0/linux/bin/intel64/ifort
-      flags:
-        cflags: -diag-disable=10441
-        cxxflags: -diag-disable=10441
-        fflags: -diag-disable=10448
+      flags: {}
       operating_system: centos7
       target: x86_64
       modules:
