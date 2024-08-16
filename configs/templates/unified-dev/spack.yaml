@@ -17,11 +17,11 @@ spack:
     - jedi-fv3-env
     - jedi-geos-env         ^esmf@=8.6.1
     - jedi-mpas-env
-    - jedi-neptune-env      ^esmf@=8.7.0b11
+    - jedi-neptune-env      ^esmf@=8.7.0b11 snapshot=b11
     - jedi-tools-env
     - jedi-ufs-env          ^esmf@=8.6.1
     - jedi-um-env
-    - neptune-env ~python   ^esmf@=8.7.0b11
+    - neptune-env ~python   ^esmf@=8.7.0b11 snapshot=b11
     - soca-env
     - ufs-srw-app-env       ^esmf@=8.6.1
     - ufs-weather-model-env ^esmf@=8.6.1
