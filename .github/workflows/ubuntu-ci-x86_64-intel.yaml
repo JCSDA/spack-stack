@@ -75,10 +75,7 @@ jobs:
           echo "      cxx: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      f77: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      fc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    flags:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cxxflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      fflags: -diag-disable=10448" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
