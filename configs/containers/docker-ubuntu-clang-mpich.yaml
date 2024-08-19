@@ -233,7 +233,7 @@ spack:
         ENV MPICH_VERSION=4.2.1
         # Set the GNU 12.x toolchain as the default compilers.
         # Set default binaries for clang-14 and GNU-12.
-        RUN update-alternatives ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
+        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
         ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
         ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
         ln -svf /usr/bin/g++-12 /usr/bin/g++ && \
