@@ -132,9 +132,12 @@ packages:
     variants: '+pflogger'
   # If making changes here, also check the Discover site configs and the CI workflows
   met:
-    require: '@11.1.1 +python +grib2'
+    require:
+      - any_of: ['@=11.1.1', '@=9.1.3']
+      - '+python +grib2'
   metplus:
-    require: '@5.1.0'
+    require:
+      - any_of: ['@=5.1.0', '@=3.1.1']
   metis:
     require: '+int64 +real64'
   mpich:
