@@ -5,7 +5,7 @@ Generating new site configs
 
 The instructions here describe how to generate a new site config. In addition to configuring new production and testing systems, this is the recommended way for developers to use spack-stack locally on their Linux or MacOS workstations. In general, the recommended approach is to start with an empty/default site config (`linux.default` or `macos.default`). The instructions differ slightly for macOS and Linux and assume that the prerequisites for the platform have been installed as described in :numref:`Sections %s <NewSiteConfigs_macOS>` and :numref:`%s <NewSiteConfigs_Linux>`.
 
-It is also instructive to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``.
+The instructions below are for GNU (`gcc`), since this is the easiest and best supported setup. Creating site configs for other compilers is more involved and not described here. It is recommended to peruse the GitHub actions scripts in ``.github/workflows`` and ``.github/actions`` to see how automated spack-stack builds are configured for CI testing, as well as the existing site configs in ``configs/sites``.
 
 .. note::
    We try to maintain compatibility with as many compilers and compiler versions as possible. The following table lists the compilers that are known to work. Please be aware that if you choose to use a different, older or newer compiler, spack-stack may not work as expected and we have limited resources available for support. Further note that Intel compiler versions are confusing, because the oneAPI version doesn't match the compiler version. We generally refer to the compiler version being the version string in the path to the compiler, e.g, `/apps/oneapi/compiler/2022.0.2/linux/bin/intel64/ifort`.
@@ -13,11 +13,11 @@ It is also instructive to peruse the GitHub actions scripts in ``.github/workflo
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
 +===========================================+======================================================================+===========================+
-| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the final version in oneAPI 2023.2.3 [#fn1]_             | ``intel@``                |
+| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the final version in oneAPI 2023.2.4 [#fn1]_             | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Intel mixed (icx, icpx, ifort)            | 2024.1.2                                                             | ``oneapi@``               |
+| Intel mixed (icx, icpx, ifort)            | 2024.1.2 to 2024.2.0                                                 | ``oneapi@``               |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| GNU (gcc, g++, gfortran)                  | 9.2.0 to 12.2.0 (note: 13.x.y is **not** yet supported)              | ``gcc@``                  |
+| GNU (gcc, g++, gfortran)                  | 9.2.0 to 13.3.0 (note: 14.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0 [#fn2]_                                             | ``apple-clang@``          |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
@@ -581,14 +581,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    sed -i 's/tcl/lmod/g' site/modules.yaml
 
-10. If applicable (depends on the environment), edit the main config file for the environment and adjust the compiler matrix to match the compilers for Linux, as above:
-
-.. code-block:: console
-
-   definitions:
-   - compilers: ['%gcc']
-
-11. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``spack.yaml``, etc.
+10. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -596,7 +589,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi common/*.yaml
    vi site/*.yaml
 
-12. Process the specs and install
+11. Process the specs and install
 
 It is recommended to save the output of concretize in a log file and inspect that log file manually and also using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
 The former is to ensure that the correct compiler and MPI libraries are being used. The latter is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
@@ -609,19 +602,19 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
    ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
-13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
+12. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
 
 .. code-block:: console
 
    spack module tcl refresh
 
-14. Create meta-modules for compiler, mpi, python
+13. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
    spack stack setup-meta-modules
 
-15. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+14. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 
 ..  _NewSiteConfigs_Linux_CreateEnv_Nvidia:
