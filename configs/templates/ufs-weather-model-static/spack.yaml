@@ -21,7 +21,7 @@ spack:
   - bacio@2.4.1
   - crtm@=2.4.0 ~fix
   - esmf@8.6.1 +external-parallelio ~xerces ~pnetcdf snapshot=none fflags="-fp-model precise" cxxflags="-fp-model precise"
-  - fms@2024.01 constants=GFS precision=32,64 +quad_precision +gfs_phys +openmp
+  - fms@2024.02 constants=GFS precision=32,64 +quad_precision +gfs_phys +openmp
   - g2@3.5.1
   - g2tmpl@1.13.0
   - gftl-shared@1.6.1

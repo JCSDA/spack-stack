@@ -71,7 +71,7 @@ packages:
     # Pin version to avoid duplicates
     require: '@2.6.4'
   fms:
-    require: '@2024.01'
+    require: '@2024.02'
     variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
   fontconfig:
     require: '+pic'
@@ -128,7 +128,7 @@ packages:
   magics:
     require: "@4.15.3:"
   mapl:
-    require: '@2.46.3 +shared ~f2py'
+    require: '@2.46.3 ~shared ~f2py'
     variants: '+pflogger'
   # If making changes here, also check the Discover site configs and the CI workflows
   met:
