@@ -20,7 +20,7 @@ spack:
       modules: []
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '/usr/lib/llvm-10/lib'
+          LD_LIBRARY_PATH: '/usr/lib/llvm-14/lib'
       extra_rpaths: []
 
   # Basic package config from configs/common/packages.yaml
@@ -133,6 +133,7 @@ spack:
       - clang-14
       - libclang-14-dev
       - libc++-14-dev
+      - libomp5-14
       - cpp-12
       - libgomp1
       - g++-12
@@ -153,6 +154,7 @@ spack:
       - clang-14
       - libclang-14-dev
       - libc++-14-dev
+      - libomp5-14
       - cpp-12
       - libgomp1
       - g++-12
@@ -180,6 +182,8 @@ spack:
       - python3-setuptools
       - unzip
       - vim
+      - nano
+      - less
 
     # Extra instructions
     extra_instructions:
