@@ -104,14 +104,13 @@ jobs:
           #echo "    - spec: intel-oneapi-runtime@2023.2.0%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           #echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
-          # Add external ecflow for Intel
+          # Add external qt@5 to build ecflow
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  ecflow::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  qt::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: ecflow@5.8.4+ui+static_boost" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      - ecflow/5.11.4" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: qt@5.15.3" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
@@ -125,8 +124,8 @@ jobs:
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
-          # Don't generate ecflow module when using external package
-          spack config add "modules:default:tcl:exclude:[ecflow]"
+          # Don't generate qt module when using external package
+          spack config add "modules:default:tcl:exclude:[qt]"
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.intel-2021.10.0-buildcache
