@@ -20,17 +20,17 @@ spack:
   specs:
   - bacio@2.4.1
   - crtm@=2.4.0 ~fix
-  - esmf@8.5.0 +external-parallelio ~xerces ~pnetcdf snapshot=none fflags="-fp-model precise" cxxflags="-fp-model precise"
-  - fms@2023.02.01 constants=GFS precision=32,64 +quad_precision +gfs_phys +openmp
-  - g2@3.4.5
-  - g2tmpl@1.10.2
+  - esmf@8.6.1 +external-parallelio ~xerces ~pnetcdf snapshot=none fflags="-fp-model precise" cxxflags="-fp-model precise"
+  - fms@2024.01 constants=GFS precision=32,64 +quad_precision +gfs_phys +openmp
+  - g2@3.5.1
+  - g2tmpl@1.13.0
   - gftl-shared@1.6.1
   - hdf5@1.14.0 +hl +mpi ~tools ~szip
   - ip@3.3.3 +openmp
   - jasper@2.0.25
   - libjpeg-turbo
   - libpng@1.6.37 libs=static
-  - mapl@2.40.3 ~pflogger ~fargparse ~extdata2g ~f2py
+  - mapl@2.46.3 ~pflogger ~fargparse ~extdata2g ~f2py
   - netcdf-c@4.9.2 ~parallel-netcdf +mpi ~dap ~szip
   - netcdf-fortran@4.6.0
   - parallel-netcdf@1.12.2
