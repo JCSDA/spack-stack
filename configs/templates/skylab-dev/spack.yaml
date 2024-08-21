@@ -27,6 +27,8 @@ spack:
     - esmf@=8.6.1 snapshot=none
     - esmf@=8.7.0b11 snapshot=b11
 
+    - gh@2.50.0
+
   specs:
   - matrix:
     - [$packages]
