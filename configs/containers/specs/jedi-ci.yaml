@@ -56,6 +56,7 @@
     shumlib@macos_clang_linux_intel_port,
     awscli-v2@2.13.22,
     py-globus-cli@3.16.0,
+    py-fortranformat@2.0.0,
     # Added for new CI system 2024/04/30
     py-ansi2html@1.6.0,
     py-pygithub@2.1.1,
