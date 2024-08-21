@@ -2,7 +2,7 @@
   specs: [base-env@1.0.0, jedi-base-env@1.0.0, ewok-env@1.0.0, jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0, bacio@2.4.1, bison@3.8.2, bufr@12.1.0, ecbuild@3.7.2, eccodes@2.33.0, ecflow@5,
     eckit@1.24.5, ecmwf-atlas@0.38.1 +fckit +trans +tesselation +fftw, fiat@1.2.0, ectrans@1.2.0 +fftw,
-    eigen@3.4.0, fckit@0.11.0, fms@2024.02, g2@3.4.9, g2tmpl@1.10.2,
+    eigen@3.4.0, fckit@0.11.0, fms@2024.02, g2@3.5.1, g2tmpl@1.13.0,
     gsibec@1.2.1, hdf@4.2.15, hdf5@1.14.3, ip@5.0.0, jasper@2.0.32, jedi-cmake@1.4.0,
     libpng@1.6.37, nccmp@1.9.0.1, netcdf-c@4.9.2, netcdf-cxx4@4.3.1, netcdf-fortran@4.6.1,
     parallelio@2.6.2, parallel-netcdf@1.12.3, py-eccodes@1.5.0, py-f90nml@1.4.3,

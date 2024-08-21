@@ -78,7 +78,8 @@ packages:
   freetype:
     require: '+pic'
   g2:
-    require: '@3.5.1'
+    require:
+    - '@3.5.1'
   g2c:
     require: '@1.6.4'
   g2tmpl:
