@@ -35,7 +35,7 @@ spack:
   - parallelio@2.5.10
   - esmf@8.4.2
   - fms@2023.01
-  - bufr@12.0.0
+  - bufr@12.1.0
   - bacio@2.4.1
   - crtm@2.4.0
   - g2@3.4.5

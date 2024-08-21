@@ -23,7 +23,7 @@ spack:
     - jedi-um-env
     - neptune-env ~python   ^esmf@=8.7.0b11 snapshot=b11
     - soca-env
-    - ufs-srw-app-env       ^esmf@=8.6.1
+    - ufs-srw-app-env       ^esmf@=8.6.1 ^metplus@5.1.0 ^met@11.1.1
     - ufs-weather-model-env ^esmf@=8.6.1
 
     # Various crtm tags (list all to avoid duplicate packages)

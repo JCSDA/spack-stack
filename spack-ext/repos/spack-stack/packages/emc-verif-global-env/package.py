@@ -36,7 +36,9 @@ class EmcVerifGlobalEnv(BundlePackage):
     depends_on("wgrib2", when="%intel")
     depends_on("python")
     depends_on("prod-util")
-    depends_on("met")
-    depends_on("metplus")
+    depends_on("met@9.1.3", when="%gcc")
+    depends_on("met@9.1.3", when="%intel")
+    depends_on("metplus@3.1.1", when="%gcc")
+    depends_on("metplus@3.1.1", when="%intel")
 
     # There is no need for install() since there is no code.
