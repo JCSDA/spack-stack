@@ -55,5 +55,6 @@ class NeptuneEnv(BundlePackage):
         depends_on("py-xarray", type="run")
         depends_on("py-xnrl", type="run")
         depends_on("py-pytest", type="run")
+        depends_on("py-fortranformat", type="run")
 
     # There is no need for install() since there is no code.
