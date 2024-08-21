@@ -134,6 +134,8 @@ spack:
       - libclang-14-dev
       - libc++-14-dev
       - libomp5-14
+      - libomp-14-dev
+      - libc++abi-14-dev
       - cpp-12
       - libgomp1
       - g++-12
@@ -155,6 +157,8 @@ spack:
       - libclang-14-dev
       - libc++-14-dev
       - libomp5-14
+      - libomp-14-dev
+      - libc++abi-14-dev
       - cpp-12
       - libgomp1
       - g++-12
