@@ -37,7 +37,7 @@ packages:
   ecflow:
     require: '@5.11.4 +ui'
   eckit:
-    require: '@1.24.5 linalg=eigen,lapack compression=lz4,bzip2'
+    require: '@1.27.0 linalg=eigen,lapack compression=lz4,bzip2'
   ecmwf-atlas:
     require: '@0.38.1 +fckit +trans +tesselation +fftw'
   ectrans:
