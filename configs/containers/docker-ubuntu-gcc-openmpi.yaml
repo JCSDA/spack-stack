@@ -148,6 +148,8 @@ spack:
       - locales
       - unzip
       - vim
+      - nano
+      - less
 
     # Extra instructions
     extra_instructions:

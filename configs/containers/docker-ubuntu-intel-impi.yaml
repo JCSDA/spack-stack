@@ -182,6 +182,8 @@ spack:
       - python3-setuptools
       - unzip
       - vim
+      - nano
+      - less
 
     # Extra instructions
     extra_instructions:
