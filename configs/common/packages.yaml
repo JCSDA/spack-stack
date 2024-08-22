@@ -20,6 +20,8 @@ packages:
     require: '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
   bufr:
     require: '@12.1.0 +python'
+  bufr-query:
+    require: '@0.0.2 +python'
   cairo:
     require: '+pic'
   cdo:
