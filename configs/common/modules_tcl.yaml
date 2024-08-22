@@ -25,7 +25,6 @@ modules:
       - automake
       - berkeley-db
       - bison
-      - boost
       - bzip2
       - diffutils
       - expat

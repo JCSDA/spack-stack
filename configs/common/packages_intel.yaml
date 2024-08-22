@@ -21,3 +21,6 @@ packages:
   boost:
     require:
     - '%gcc'
+  ecflow:
+    require:
+    - '%gcc'
