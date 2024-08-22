@@ -7,7 +7,7 @@ packages:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.21%intel@2021.10.0 ~wrappers
+    - spec: cray-mpich@8.1.21%intel@2021.10.0 +wrappers
       modules:
       - cray-mpich-ucx/8.1.21
       - craype-network-ucx
