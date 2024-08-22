@@ -288,7 +288,7 @@ With GNU, the following is required for building new spack environments and for 
    module load cray-mpich-ucx/8.1.21
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
-   module load cray-libsci/22.11.1.2
+   module load cray-libsci/23.05.1.4
 
 THIS SECTION IS OUT OF DATE, REFER TO 1.7.0 RELEASE DOCUMENTATION - For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 

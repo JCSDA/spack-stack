@@ -36,11 +36,11 @@ compilers::
       modules:
       - PrgEnv-gnu/8.3.3
       - gcc/10.3.0
-      - cray-libsci/22.11.1.2
+      - cray-libsci/23.05.1.4
       - libfabric/1.12.1.2.2.1
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/22.11.1.2/GNU/9.1/x86_64/lib'
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/23.05.1.4/GNU/10.3/x86_64/lib'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
