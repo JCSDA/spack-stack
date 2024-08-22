@@ -19,7 +19,7 @@ conflict("stack-intel-oneapi-compilers")
 @MODULEPREREQS@
 
 -- spack compiler module hierarchy
-prepend_path("MODULEPATH", "@MODULEPATH@")
+@MODULEPATHS@
 
 -- compiler environment variables
 setenv("F77", "@F77@")
