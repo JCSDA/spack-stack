@@ -200,7 +200,7 @@ def module_prereq_command(module_choice, module):
 
 def modulepath_prepend_command(module_choice, modulepath):
     if module_choice == "lmod":
-        return 'prepend_path("MODULEPATH", "{})\n'.format(modulepath)
+        return 'prepend_path("MODULEPATH", "{}")\n'.format(modulepath)
     else:
         return "prepend-path {{MODULEPATH}} {{{}}}\n".format(modulepath)
 
@@ -384,14 +384,23 @@ def setup_meta_modules():
     # Create compiler modules
     logging.info("Creating compiler modules ...")
     compiler_config = spack.config.get("compilers")
-    # Collecti and save modulepaths for the preferred compiler
+    # Collect and save modulepaths for the preferred compiler
     MODULEPATHS_SAVE = []
-    for compiler in compiler_config:
-        # On macOS, since July 2023, spack compiler find creates 'apple-clang@=14.0.0' etc.
-        compiler_spec = compiler["compiler"]["spec"].replace("@=", "@")
-        if compiler_spec in sorted_flattened_compiler_list:
-            (compiler_name, compiler_version) = compiler_spec.split("@")
+    for compiler_identifier in sorted_flattened_compiler_list:
+        (compiler_name, compiler_version) = compiler_identifier.replace("@=","@").split("@")
+        # Loop through all configured compilers and find the correct match
+        compiler = False
+        for candidate_compiler in compiler_config:
+            if compiler_identifier.replace("@=","@") == \
+                    candidate_compiler["compiler"]["spec"].replace("@=", "@"):
+                compiler = candidate_compiler
+                break
+        if not compiler:
+            raise Exception("No matching compiler for {} found in spack compiler config".format(compiler))
+            continue
 
+        # This is only to keep the current level of indentation for easier reviewing
+        if True:
             modulepath_save = os.path.join(module_dir, compiler_name, compiler_version) 
             if not os.path.isdir(modulepath_save):
                 os.makedirs(modulepath_save)
