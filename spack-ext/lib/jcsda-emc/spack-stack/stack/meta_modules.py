@@ -312,12 +312,11 @@ def setup_meta_modules():
     # Parse the directory tree under the top-level module directory
     logging.debug(os.listdir(module_dir))
     # First, check for compilers
-    #raise Exception(compiler_candidate_list)
     compiler_dict = get_matched_dict(module_dir, compiler_candidate_list)
     if not compiler_dict:
         raise Exception("No matching compilers found")
     logging.info(" ... stack compilers: '{}'".format(compiler_dict))
-    print("XXX COMPILER DICT:", compiler_dict)
+
     # Then, check for mpi providers - recursively for compilers
     mpi_dict = get_matched_dict(module_dir, mpi_candidate_list, compiler_candidate_list)
     if not mpi_dict:
@@ -334,7 +333,6 @@ def setup_meta_modules():
                 compiler_candidate_list,
             )
             compiler_dict = merge_dicts(compiler_dict, compiler_dict_tmp)
-    print("XXX COMPILER DICT UPDATED:", compiler_dict)
 
     # For future use, we need a flattened list of all compilers
     flattened_compiler_list = [
@@ -343,6 +341,7 @@ def setup_meta_modules():
         for version in compiler_dict[name]
     ]
 
+    # Determine core compiler(s) and make sure they are not used (usually something ancient)
     core_compilers = module_config["default"][module_choice]["core_compilers"]
     logging.info("  ... core compilers: {}".format(core_compilers))
     # Check that none of the compilers used for the stack is a core compiler
@@ -360,6 +359,10 @@ def setup_meta_modules():
         os.mkdir(meta_module_dir)
     logging.info("  ... meta module directory : {}".format(meta_module_dir))
 
+    # Determine the preferred compiler and sort the flattened list of compilers
+    # such that the preferred compiler comes last. This is so that all other
+    # compilers populate the MODULEPATHS_SAVE list before the preferred compiler
+    # takes it and adds it to the stack-COMPILER metamodule.
     try:
         preferred_compilers = spack.config.get("packages")["all"]["prefer"]
     except:
@@ -381,7 +384,6 @@ def setup_meta_modules():
     # Sort the list using the custom key
     # add debug logging message here
     sorted_flattened_compiler_list = sorted(flattened_compiler_list, key=custom_sort_key)
-
 
     # Create compiler modules
     logging.info("Creating compiler modules ...")
@@ -517,7 +519,6 @@ def setup_meta_modules():
                 f.write(module_content)
             logging.info("  ... writing {}".format(compiler_module_file))
     del MODULEPATHS_SAVE
-
 
     # Create mpi modules
     for mpi_name in mpi_dict.keys():
