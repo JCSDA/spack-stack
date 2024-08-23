@@ -27,6 +27,8 @@ spack:
     - esmf@=8.6.1 snapshot=none
     - esmf@=8.7.0b11 snapshot=b11
 
+    # Add the github-cli as a top-level package for users that do not have
+    # a user-space or platform install.
     - gh@2.50.0
 
   specs:
