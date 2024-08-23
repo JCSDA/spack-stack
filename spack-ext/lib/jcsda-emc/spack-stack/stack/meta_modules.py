@@ -85,7 +85,6 @@ def get_matched_dict(root_dir, candidate_list, sub_candidate_list=None):
         matched_name = None
         matched_version = None
         for xdir in dirs:
-            print("XXX", candidate, xdir)
             # Partial matches: name/version/
             if ("@" in candidate and xdir == candidate.split("@")[0]) or (xdir == candidate):
                 candidate_dir = os.path.join(root_dir, xdir)
@@ -373,16 +372,13 @@ def setup_meta_modules():
     if len(preferred_compilers)>1:
         raise Exception(f"Not supported: more than one preferred compiler: {preferred_compilers}")
     preferred_compiler = preferred_compilers[0].replace("%","")
-    logging.info("  PREFERRED COMPILER: {}".format(preferred_compiler))
+    logging.info("  ... preferred compiler: {}".format(preferred_compiler))
     del preferred_compilers
-    # Custom key function for sorting
+    # Sort the list using a custom key
     def custom_sort_key(entry):
         # Return a tuple where the first element is 1 if the entry contains the word, else 0
         # The second element is the entry itself for natural sorting within groups
         return (1 if preferred_compiler in entry else 0, entry)
-
-    # Sort the list using the custom key
-    # add debug logging message here
     sorted_flattened_compiler_list = sorted(flattened_compiler_list, key=custom_sort_key)
 
     # Create compiler modules
@@ -396,10 +392,10 @@ def setup_meta_modules():
         if compiler_spec in sorted_flattened_compiler_list:
             (compiler_name, compiler_version) = compiler_spec.split("@")
 
-            logging.info("  ... bla")
             modulepath_save = os.path.join(module_dir, compiler_name, compiler_version) 
             if not os.path.isdir(modulepath_save):
                 os.makedirs(modulepath_save)
+            logging.info("  ... ... appending {} to MODULEPATHS_SAVE".format(modulepath_save))
             MODULEPATHS_SAVE.append(modulepath_save)
 
             # For tcl modules remove the compiler prefices from the module contents
@@ -428,81 +424,81 @@ def setup_meta_modules():
                         del pattern
                         del tmp_compiler_spec
 
-            if compiler_name in preferred_compiler:
-                logging.info(
-                    "  ... configuring stack compiler {}@{}".format(compiler_name, compiler_version)
-                )
-                compiler_module_dir = os.path.join(meta_module_dir, "stack-" + compiler_name)
-                compiler_module_file = os.path.join(
-                    compiler_module_dir, compiler_version + MODULE_FILE_EXTENSION[module_choice]
-                )
-                substitutes = SUBSTITUTES_TEMPLATE.copy()
-
-                # Compiler environment variables; names are lowercase in spack
-                substitutes["CC"] = compiler["compiler"]["paths"]["cc"]
-                substitutes["CXX"] = compiler["compiler"]["paths"]["cxx"]
-                substitutes["F77"] = compiler["compiler"]["paths"]["f77"]
-                substitutes["FC"] = compiler["compiler"]["paths"]["fc"]
-                logging.debug("  ... ... CC  : {}".format(substitutes["CC"]))
-                logging.debug("  ... ... CXX : {}".format(substitutes["CXX"]))
-                logging.debug("  ... ... F77 : {}".format(substitutes["F77"]))
-                logging.debug("  ... ... FC' : {}".format(substitutes["FC"]))
-
-                # Compiler flags; names are lowercase in spack
-                for flag_name in compiler["compiler"]["flags"]:
-                    flag_values = compiler["compiler"]["flags"][flag_name]
-                    substitutes["COMPFLAGS"] += setenv_command(
-                        module_choice, flag_name.upper(), flag_values
-                    )
-                substitutes["COMPFLAGS"] = substitutes["COMPFLAGS"].rstrip("\n")
-                logging.debug("  ... ... COMPFLAGS: {}".format(substitutes["COMPFLAGS"]))
-
-                # Existing non-spack modules to load
-                for module in compiler["compiler"]["modules"]:
-                    substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-                    substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
-                substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
-                substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
-                logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
-                logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"]))
-
-                # Environment variables; case-sensitive in spack
-                if (
-                    "environment" in compiler["compiler"].keys()
-                    and compiler["compiler"]["environment"]
-                ):
-                    # append_path
-                    if "append_path" in compiler["compiler"]["environment"].keys():
-                        for env_name in compiler["compiler"]["environment"]["append_path"]:
-                            env_values = compiler["compiler"]["environment"]["append_path"][env_name]
-                            substitutes["ENVVARS"] += append_path_command(
-                                module_choice, env_name, env_values
-                            )
-                    # prepend_path
-                    if "prepend_path" in compiler["compiler"]["environment"].keys():
-                        for env_name in compiler["compiler"]["environment"]["prepend_path"]:
-                            env_values = compiler["compiler"]["environment"]["prepend_path"][env_name]
-                            substitutes["ENVVARS"] += prepend_path_command(
-                                module_choice, env_name, env_values
-                            )
-                    # set
-                    if "set" in compiler["compiler"]["environment"].keys():
-                        for env_name in compiler["compiler"]["environment"]["set"]:
-                            env_values = compiler["compiler"]["environment"]["set"][env_name]
-                            substitutes["ENVVARS"] += setenv_command(
-                                module_choice, env_name, env_values
-                            )
-                    substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
-                    logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
-
-                # Spack compiler module hierarchy
-                for modulepath in MODULEPATHS_SAVE:
-                    substitutes["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
-                substitutes["MODULEPATHS"] = substitutes["MODULEPATHS"].rstrip("\n")
-                logging.debug("  ... ... MODULEPATHS  : {}".format(substitutes["MODULEPATHS"]))
-
+            # The remainder of the loop is only needed for the preferred compiler
             if not compiler_name in preferred_compiler:
                 continue
+
+            logging.info(
+                "  ... configuring stack compiler {}@{}".format(compiler_name, compiler_version)
+            )
+            compiler_module_dir = os.path.join(meta_module_dir, "stack-" + compiler_name)
+            compiler_module_file = os.path.join(
+                compiler_module_dir, compiler_version + MODULE_FILE_EXTENSION[module_choice]
+            )
+            substitutes = SUBSTITUTES_TEMPLATE.copy()
+
+            # Compiler environment variables; names are lowercase in spack
+            substitutes["CC"] = compiler["compiler"]["paths"]["cc"]
+            substitutes["CXX"] = compiler["compiler"]["paths"]["cxx"]
+            substitutes["F77"] = compiler["compiler"]["paths"]["f77"]
+            substitutes["FC"] = compiler["compiler"]["paths"]["fc"]
+            logging.debug("  ... ... CC  : {}".format(substitutes["CC"]))
+            logging.debug("  ... ... CXX : {}".format(substitutes["CXX"]))
+            logging.debug("  ... ... F77 : {}".format(substitutes["F77"]))
+            logging.debug("  ... ... FC' : {}".format(substitutes["FC"]))
+
+            # Compiler flags; names are lowercase in spack
+            for flag_name in compiler["compiler"]["flags"]:
+                flag_values = compiler["compiler"]["flags"][flag_name]
+                substitutes["COMPFLAGS"] += setenv_command(
+                    module_choice, flag_name.upper(), flag_values
+                )
+            substitutes["COMPFLAGS"] = substitutes["COMPFLAGS"].rstrip("\n")
+            logging.debug("  ... ... COMPFLAGS: {}".format(substitutes["COMPFLAGS"]))
+
+            # Existing non-spack modules to load
+            for module in compiler["compiler"]["modules"]:
+                substitutes["MODULELOADS"] += module_load_command(module_choice, module)
+                substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
+            substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
+            substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
+            logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
+            logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"]))
+
+            # Environment variables; case-sensitive in spack
+            if (
+                "environment" in compiler["compiler"].keys()
+                and compiler["compiler"]["environment"]
+            ):
+                # append_path
+                if "append_path" in compiler["compiler"]["environment"].keys():
+                    for env_name in compiler["compiler"]["environment"]["append_path"]:
+                        env_values = compiler["compiler"]["environment"]["append_path"][env_name]
+                        substitutes["ENVVARS"] += append_path_command(
+                            module_choice, env_name, env_values
+                        )
+                # prepend_path
+                if "prepend_path" in compiler["compiler"]["environment"].keys():
+                    for env_name in compiler["compiler"]["environment"]["prepend_path"]:
+                        env_values = compiler["compiler"]["environment"]["prepend_path"][env_name]
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, env_name, env_values
+                        )
+                # set
+                if "set" in compiler["compiler"]["environment"].keys():
+                    for env_name in compiler["compiler"]["environment"]["set"]:
+                        env_values = compiler["compiler"]["environment"]["set"][env_name]
+                        substitutes["ENVVARS"] += setenv_command(
+                            module_choice, env_name, env_values
+                        )
+                substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
+                logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
+
+            # Spack compiler module hierarchy - append all saved modulepaths
+            for modulepath in MODULEPATHS_SAVE:
+                substitutes["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
+            substitutes["MODULEPATHS"] = substitutes["MODULEPATHS"].rstrip("\n")
+            logging.debug("  ... ... MODULEPATHS  : {}".format(substitutes["MODULEPATHS"]))
 
             # Read compiler template into module_content string
             with open(COMPILER_TEMPLATES[module_choice]) as f:
