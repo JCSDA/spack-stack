@@ -48,5 +48,6 @@ class GlobalWorkflowEnv(BundlePackage):
     depends_on("gsi-ncdiag")
     depends_on("crtm@2.4.0.1")
     depends_on("py-wxflow", when="+python")
+    depends_on("gh")
 
     # There is no need for install() since there is no code.
