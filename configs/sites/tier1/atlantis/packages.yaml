@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.6.0]
+    compiler:: [intel@2021.6.0] # todo: add gcc here
     providers:
       mpi:: [intel-oneapi-mpi@2021.6.0]
 

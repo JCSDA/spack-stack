@@ -16,3 +16,4 @@ compilers:
       prepend_path:
         LD_LIBRARY_PATH: /cm/shared/apps/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin
     extra_rpaths: []
+# Todo: Define gcc compiler (default for Atlantis) for Intel (ecflow)
