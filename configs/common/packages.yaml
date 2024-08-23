@@ -19,7 +19,9 @@ packages:
   boost:
     require: '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
   bufr:
-    require: '@12.0.1 +python'
+    require: '@12.1.0 +python'
+  bufr-query:
+    require: '@0.0.2 +python'
   cairo:
     require: '+pic'
   cdo:
@@ -37,7 +39,7 @@ packages:
   ecflow:
     require: '@5.11.4 +ui'
   eckit:
-    require: '@1.24.5 linalg=eigen,lapack compression=lz4,bzip2'
+    require: '@1.27.0 linalg=eigen,lapack compression=lz4,bzip2'
   ecmwf-atlas:
     require: '@0.38.1 +fckit +trans +tesselation +fftw'
   ectrans:
@@ -71,19 +73,20 @@ packages:
     # Pin version to avoid duplicates
     require: '@2.6.4'
   fms:
-    require: '@2023.04'
+    require: '@2024.02'
     variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
   fontconfig:
     require: '+pic'
   freetype:
     require: '+pic'
   g2:
-    require: '@3.4.9'
+    require:
+    - '@3.5.1'
   g2c:
     require: '@1.6.4'
   g2tmpl:
     require:
-    - '@1.10.2'
+    - '@1.13.0'
   gcc-runtime:
     require: '%gcc'
   gfsio:
@@ -128,7 +131,7 @@ packages:
   magics:
     require: "@4.15.3:"
   mapl:
-    require: '@2.46.2 +shared ~f2py'
+    require: '@2.46.3 ~shared ~f2py'
     variants: '+pflogger'
   # If making changes here, also check the Discover site configs and the CI workflows
   met:
