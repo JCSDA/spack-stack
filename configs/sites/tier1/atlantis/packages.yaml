@@ -122,10 +122,11 @@ packages:
     externals:
     - spec: flex@2.6.1+lex
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1k
-      prefix: /usr
+  # Can no longer use, issues with py-cryptography
+  #openssl:
+  #  externals:
+  #  - spec: openssl@1.1.1k
+  #    prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.2.1
