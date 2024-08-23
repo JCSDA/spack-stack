@@ -14,27 +14,30 @@ compilers::
       modules:
       - PrgEnv-intel/8.3.3
       - intel-classic/2023.2.0
+      - cray-libsci/23.05.1.4
       - libfabric/1.12.1.2.2.1
       environment:
         prepend_path:
           PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
           CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
-          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/22.11.1.2/INTEL/19.0/x86_64/lib:/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib:/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
   - compiler:
       spec: gcc@10.3.0
       paths:
-        cc: cc
-        cxx: CC
-        f77: ftn
-        fc: ftn
+        cc: /opt/cray/pe/gcc/10.3.0/bin/gcc
+        cxx: /opt/cray/pe/gcc/10.3.0/bin/g++
+        f77: /opt/cray/pe/gcc/10.3.0/bin/gfortran
+        fc: /opt/cray/pe/gcc/10.3.0/bin/gfortran
       flags: {}
       operating_system: sles15
       modules:
       - PrgEnv-gnu/8.3.3
       - gcc/10.3.0
+      - cray-libsci/22.11.1.2
+      - libfabric/1.12.1.2.2.1
       environment:
         prepend_path:
           LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/22.11.1.2/GNU/9.1/x86_64/lib'

@@ -15,7 +15,7 @@ spack:
   # Note: Set 'compilers' manually; must match upstream list
   - compilers: []
   - packages:
-    - global-workflow-env ^bufr@11.7.0 ^metplus@3.1.1 ^met@9.1.3
+    - global-workflow-env ^metplus@3.1.1 ^met@9.1.3
     - ufs-weather-model-env
     - gsi-env
 

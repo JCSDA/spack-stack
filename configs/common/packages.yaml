@@ -19,7 +19,9 @@ packages:
   boost:
     require: '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
   bufr:
-    require: '@12.0.1 +python'
+    require: '@12.1.0 +python'
+  bufr-query:
+    require: '@0.0.2 +python'
   cairo:
     require: '+pic'
   cdo:
@@ -37,7 +39,7 @@ packages:
   ecflow:
     require: '@5.11.4 +ui'
   eckit:
-    require: '@1.24.5 linalg=eigen,lapack compression=lz4,bzip2'
+    require: '@1.27.0 linalg=eigen,lapack compression=lz4,bzip2'
   ecmwf-atlas:
     require: '@0.38.1 +fckit +trans +tesselation +fftw'
   ectrans:
