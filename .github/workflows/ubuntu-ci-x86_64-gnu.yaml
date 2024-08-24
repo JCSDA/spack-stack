@@ -200,7 +200,7 @@ jobs:
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-gcc/11.4.0
           module load stack-openmpi/5.0.3
-          module load stack-python/3.10.13
+          module load stack-python/3.11.7
           module available
 
           module load jedi-ufs-env
