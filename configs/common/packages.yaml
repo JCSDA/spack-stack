@@ -186,7 +186,7 @@ packages:
   proj:
     require: '~tiff'
   python:
-    require: '@3.10.13'
+    require: '@3.11.7'
   py-attrs:
     # https://github.com/JCSDA/spack-stack/issues/740
     require: '@21.4.0'
