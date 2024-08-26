@@ -17,6 +17,7 @@ spack:
     - jedi-neptune-env      ^esmf@=8.7.0b11 snapshot=b11
     - jedi-ufs-env          ^esmf@=8.6.1
     - jedi-um-env
+    - neptune-env ~espc +python ~xnrl ^esmf@=8.7.0b11 snapshot=b11
     - soca-env
 
     # Various crtm tags (list all to avoid duplicate packages)

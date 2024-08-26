@@ -20,6 +20,7 @@ jobs:
         run: |
           pwd
           ls -lart
+          find ./* -type d -exec chmod u+xw {} \;
           rm -fr *
 
       - name: checkout
