@@ -42,7 +42,7 @@ spack:
       require:
         - any_of: ['fflags="-fno-range-check"']
           when: "@3.5.1 %clang"
-          message: "Extra g2 compile options for version 3.5.1 with clang"
+          message: "Extra g2 compile options for version 3.5.1 with clang/gfortran"
     g2tmpl:
       # https://github.com/JCSDA/spack-stack/issues/525
       require:
