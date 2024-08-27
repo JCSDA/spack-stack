@@ -1,0 +1,5 @@
+packages:
+  all:
+    compiler:: [aocc@4.2.0]
+    providers:
+      mpi:: [openmpi@5.0.3]
