@@ -16,7 +16,7 @@ spack:
         f77: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
         fc: /opt/intel/oneapi/compiler/2022.1.0/linux/bin/intel64/ifort
       flags: {}
-      operating_system: ubuntu20.04
+      operating_system: ubuntu22.04
       modules: []
       environment:
         prepend_path:
@@ -53,31 +53,43 @@ spack:
     gmake:
       buildable: false
       externals:
-      - spec: gmake@4.2.1
+      - spec: gmake@4.3
         prefix: /usr
     diffutils:
       buildable: false
       externals:
-      - spec: diffutils@3.7
-        prefix: /usr
-    gettext:
-      externals:
-      - spec: gettext@0.19.8.1
+      - spec: diffutils@3.8
         prefix: /usr
     git:
       buildable: false
       externals:
-      - spec: git@2.25.1~tcltk
+      - spec: git@2.34.1~tcltk
         prefix: /usr
     git-lfs:
       buildable: false
       externals:
-      - spec: git-lfs@2.9.2
+      - spec: git-lfs@3.0.2
         prefix: /usr
     mysql:
       buildable: false
       externals:
-      - spec: mysql@8.0.32
+      - spec: mysql@8.0.39
+        prefix: /usr
+    qt:
+      buildable: false
+      externals:
+      - spec: qt@5.15.3
+        prefix: /usr
+      version: [5.15.3]
+    wget:
+      buildable: false
+      externals:
+      - spec: wget@1.21.2
+        prefix: /usr
+      version: [1.21.2]
+    gettext:
+      externals:
+      - spec: gettext@0.21
         prefix: /usr
     py-pynacl:
       buildable: false
@@ -88,18 +100,6 @@ spack:
     # build with Intel.
     python:
       variants: ~crypt
-    qt:
-      buildable: false
-      externals:
-      - spec: qt@5.12.8
-        prefix: /usr
-      version: [5.15.3]
-    wget:
-      buildable: false
-      externals:
-      - spec: wget@1.20.3
-        prefix: /usr
-      version: [1.21.2]
 
   specs: []
 
@@ -121,7 +121,7 @@ spack:
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
     images:
-      os: ubuntu:20.04
+      os: ubuntu:22.04
       spack:
         url: https://github.com/jcsda/spack
         ref: spack-stack-dev
@@ -145,7 +145,8 @@ spack:
       - gpg
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
@@ -163,7 +164,8 @@ spack:
       - gpg
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
@@ -180,6 +182,8 @@ spack:
       - python3-setuptools
       - unzip
       - vim
+      - nano
+      - less
 
     # Extra instructions
     extra_instructions:
@@ -235,6 +239,7 @@ spack:
         echo "export CC=icc" >> /root/.bashrc && \
         echo "export CXX=icpc" >> /root/.bashrc && \
         echo "export FC=ifort" >> /root/.bashrc && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/intel-*/jedi-cmake-*)" >> /root/.bashrc && \
         echo "source /opt/intel/oneapi/compiler/latest/env/vars.sh" >> /root/.bashrc && \
         echo "source /opt/intel/oneapi/mpi/latest/env/vars.sh" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
