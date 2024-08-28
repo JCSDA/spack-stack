@@ -12,20 +12,20 @@ spack:
   - site
   - common
   definitions:
-  # Note: Set 'compilers' manually; must match upstream list
-  - compilers: []
+  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
-    - global-workflow-env ^metplus@3.1.1 ^met@9.1.3
+    - global-workflow-env
     - ufs-weather-model-env
+    - emc-verif-global-env
     - gsi-env
+
+  packages:
+      met:
+         require:: '@9.1.3 +python +grib2'
+      metplus:
+         require:: '@3.1.1 ^met@9.1.3'
 
   specs:
   - matrix:
     - [$packages]
     - [$compilers]
-
-  packages:
-    python::
-      require: ['@3.11.6']
-    py-numpy::
-      require: ['@1.23.4']
