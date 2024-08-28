@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.5.0]
+    compiler:: [intel@2021.5.0,gcc@9.3.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.5.0]
       # https://github.com/JCSDA/spack-stack/issues/1055
@@ -68,13 +68,6 @@ packages:
     externals:
     - spec: doxygen@1.8.5+graphviz~mscgen
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /data/prod/jedi/spack-stack/ecflow-5.8.4
-      modules:
-      - ecflow/5.8.4
   file:
     externals:
     - spec: file@5.11
@@ -161,6 +154,7 @@ packages:
     - spec: pkg-config@0.27.1
       prefix: /usr
   qt:
+    buildable: False
     externals:
     - spec: qt@5.9.7
       prefix: /usr

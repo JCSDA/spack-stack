@@ -18,3 +18,9 @@ packages:
   py-numpy:
     require:
     - '^intel-oneapi-mkl'
+  boost:
+    require:
+    - '%gcc'
+  ecflow:
+    require:
+    - '%gcc'

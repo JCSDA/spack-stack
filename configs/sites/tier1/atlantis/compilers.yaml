@@ -54,3 +54,4 @@ compilers:
       append_path:
         CPATH: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/opt/compiler/include/intel64/
     extra_rpaths: []
+# Todo: Define gcc compiler (default for Atlantis) for Intel (ecflow)

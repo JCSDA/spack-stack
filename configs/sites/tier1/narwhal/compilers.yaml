@@ -6,10 +6,7 @@ compilers::
         cxx: CC
         f77: ftn
         fc: ftn
-      flags:
-        cflags: -diag-disable=10441
-        cxxflags: -diag-disable=10441
-        fflags: -diag-disable=10448
+      flags: {}
       operating_system: sles15
       modules:
       - PrgEnv-intel/8.3.3
@@ -27,20 +24,20 @@ compilers::
   - compiler:
       spec: gcc@10.3.0
       paths:
-        cc: /opt/cray/pe/gcc/10.3.0/bin/gcc
-        cxx: /opt/cray/pe/gcc/10.3.0/bin/g++
-        f77: /opt/cray/pe/gcc/10.3.0/bin/gfortran
-        fc: /opt/cray/pe/gcc/10.3.0/bin/gfortran
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
       flags: {}
       operating_system: sles15
       modules:
       - PrgEnv-gnu/8.3.3
       - gcc/10.3.0
-      - cray-libsci/22.11.1.2
+      - cray-libsci/23.05.1.4
       - libfabric/1.12.1.2.2.1
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/22.11.1.2/GNU/9.1/x86_64/lib'
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/23.05.1.4/GNU/10.3/x86_64/lib'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []

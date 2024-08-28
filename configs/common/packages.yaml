@@ -17,7 +17,8 @@ packages:
     require: '@3.4:'
   # 1.85 incompatible with ecflow@5.11.4 - use latest 'good version'
   boost:
-    require: '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
+    require:
+    - '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
   bufr:
     require: '@12.1.0 +python'
   bufr-query:
@@ -37,7 +38,8 @@ packages:
   eccodes:
     require: '@2.33.0 +png +tools'
   ecflow:
-    require: '@5.11.4 +ui'
+    require:
+    - '@5.11.4 +ui'
   eckit:
     require: '@1.27.0 linalg=eigen,lapack compression=lz4,bzip2'
   ecmwf-atlas:

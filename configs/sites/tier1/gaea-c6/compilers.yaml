@@ -23,3 +23,4 @@ compilers:
         # which confuses some packages.
         CONFIG_SITE: ''
     extra_rpaths: []
+# Todo: Define gcc compiler 12.x.y for Intel backend (ecflow)
