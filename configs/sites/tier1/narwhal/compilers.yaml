@@ -2,10 +2,10 @@ compilers::
   - compiler:
       spec: intel@2021.10.0
       paths:
-        cc: /opt/intel/oneapi_2023.2.0.49397/compiler/2023.2.0/linux/bin/intel64/icc
-        cxx: /opt/intel/oneapi_2023.2.0.49397/compiler/2023.2.0/linux/bin/intel64/icpc
-        f77: /opt/intel/oneapi_2023.2.0.49397/compiler/2023.2.0/linux/bin/intel64/ifort
-        fc: /opt/intel/oneapi_2023.2.0.49397/compiler/2023.2.0/linux/bin/intel64/ifort
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
       flags: {}
       operating_system: sles15
       modules:
@@ -24,10 +24,10 @@ compilers::
   - compiler:
       spec: gcc@10.3.0
       paths:
-        cc: /opt/cray/pe/gcc/10.3.0/bin/gcc
-        cxx: /opt/cray/pe/gcc/10.3.0/bin/g++
-        f77: /opt/cray/pe/gcc/10.3.0/bin/gfortran
-        fc: /opt/cray/pe/gcc/10.3.0/bin/gfortran
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
       flags: {}
       operating_system: sles15
       modules:
