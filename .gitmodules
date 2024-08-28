@@ -1,7 +1,9 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = spack-stack-dev
+  #url = https://github.com/jcsda/spack
+  #branch = spack-stack-dev
+  url = https://github.com/climbfuji/spack
+  branch = bugfix/ecflow_cassert_vfile
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
