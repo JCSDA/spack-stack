@@ -56,3 +56,20 @@ compilers:
       append_path:
         CPATH: /opt/intel/oneapi/compiler/2024.1/opt/compiler/include/intel64
     extra_rpaths: []
+- compiler:
+    spec: aocc@=4.2.0
+    paths:
+      cc: /home/dom/prod/aocc-4.2.0/bin/clang
+      cxx: /home/dom/prod/aocc-4.2.0/bin/clang++
+      f77: /home/dom/prod/aocc-4.2.0/bin/flang
+      fc: /home/dom/prod/aocc-4.2.0/bin/flang
+    flags: {}
+    operating_system: oracle9
+    target: x86_64
+    modules:
+    - aocc/4.2.0
+    environment:
+      append_path:
+        # For libquadmath etc
+        LD_LIBRARY_PATH: /usr/lib/gcc/x86_64-redhat-linux/11
+    extra_rpaths: []
