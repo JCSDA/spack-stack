@@ -36,20 +36,6 @@ compilers:
         LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
     extra_rpaths: []
 - compiler:
-    spec: gcc@12.2.1
-    paths:
-      cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
-      cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
-      f77: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
-      fc: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
-    flags: {}
-    operating_system: rhel8
-    target: x86_64
-    modules:
-    - scl/gcc-toolset-12
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: oneapi@2024.1.2
     paths:
       cc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/icx
@@ -67,4 +53,33 @@ compilers:
         LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
       append_path:
         CPATH: '/p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/opt/compiler/include/intel64'
+    extra_rpaths: []
+- compiler:
+    spec: gcc@12.2.1
+    paths:
+      cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+      cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+      f77: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
+      fc: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - scl/gcc-toolset-12
+    environment: {}
+    extra_rpaths: []
+# Required for Intel backend
+- compiler:
+    spec: gcc@11.2.1
+    paths:
+      cc: /opt/rh/gcc-toolset-11/root/usr/bin/gcc
+      cxx: /opt/rh/gcc-toolset-11/root/usr/bin/g++
+      f77: /opt/rh/gcc-toolset-11/root/usr/bin/gfortran
+      fc: /opt/rh/gcc-toolset-11/root/usr/bin/gfortran
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - scl/gcc-toolset-11
+    environment: {}
     extra_rpaths: []

@@ -19,7 +19,7 @@ conflict("stack-mpt")
 @MODULEPREREQS@
 
 -- spack compiler module hierarchy
-prepend_path("MODULEPATH", "@MODULEPATH@")
+@MODULEPATHS@
 
 -- mpi wrapper environment variables
 setenv("MPICC",  "@MPICC@")

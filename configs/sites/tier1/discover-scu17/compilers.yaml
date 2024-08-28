@@ -51,3 +51,18 @@ compilers:
     - comp/gcc/12.3.0
     environment: {}
     extra_rpaths: []
+# Needed for Intel backend
+- compiler:
+    spec: gcc@=11.4.0
+    paths:
+      cc: /usr/local/other/gcc/11.4.0/bin/gcc
+      cxx: /usr/local/other/gcc/11.4.0/bin/g++
+      f77: /usr/local/other/gcc/11.4.0/bin/gfortran
+      fc: /usr/local/other/gcc/11.4.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules:
+    - comp/gcc/11.4.0
+    environment: {}
+    extra_rpaths: []

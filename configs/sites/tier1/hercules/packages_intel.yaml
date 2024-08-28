@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [intel@2021.9.0]
+    compiler:: [intel@2021.9.0,gcc@12.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.9.0]
       # Remove the next three lines to switch to intel-oneapi-mkl

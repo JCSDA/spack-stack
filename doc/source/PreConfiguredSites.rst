@@ -255,7 +255,13 @@ With Intel, the following is required for building new spack environments and fo
    module unload cray-mpich
    module unload craype-network-ofi
    module load craype-network-ucx
-   module load cray-mpich-ucx/8.1.21
+   # Warning. Do not load cray-mpich-ucx/8.1.21
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load cray-mpich-ucx/8.1.21
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
@@ -285,10 +291,16 @@ With GNU, the following is required for building new spack environments and for 
    module unload cray-mpich
    module unload craype-network-ofi
    module load craype-network-ucx
-   module load cray-mpich-ucx/8.1.21
+   # Warning. Do not load cray-mpich-ucx/8.1.21
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load cray-mpich-ucx/8.1.21
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
-   module load cray-libsci/22.11.1.2
+   module load cray-libsci/23.05.1.4
 
 THIS SECTION IS OUT OF DATE, REFER TO 1.7.0 RELEASE DOCUMENTATION - For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
