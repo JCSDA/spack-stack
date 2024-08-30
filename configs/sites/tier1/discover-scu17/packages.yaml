@@ -46,13 +46,6 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.11.4+ui+static_boost
-      prefix: /discover/swdev/jcsda/spack-stack/scu17/ecflow-5.11.4
-      modules:
-      - ecflow/5.11.4
   findutils:
     externals:
     - spec: findutils@4.8.0
@@ -119,6 +112,7 @@ packages:
     - spec: pkg-config@0.29.2
       prefix: /usr
   qt:
+    buildable: False
     externals:
     - spec: qt@5.15.10
       prefix: /usr/local/other/xpdf/4.04/Deps
