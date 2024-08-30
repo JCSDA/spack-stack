@@ -6,10 +6,7 @@ compilers:
       cxx: /p/app/compilers/amd/aocc/4.0.0/bin/clang++
       f77: /p/app/compilers/amd/aocc/4.0.0/bin/flang
       fc: /p/app/compilers/amd/aocc/4.0.0/bin/flang
-    flags:
-      cflags: null
-      cxxflags: null
-      fflags: null
+    flags: {}
     operating_system: rhel8
     target: x86_64
     modules:
