@@ -214,6 +214,8 @@ packages:
   ## To avoid duplicate packages
   #py-jinja2:
   #  require: '@3.1.2'
+  py-matplotlib:
+     require: '@3.7.4'
   py-meson-python:
      require: '@0.15.0'
   # Comment out for now until build problems are solved
@@ -228,7 +230,7 @@ packages:
   # also check Nautilus site config when making changes here
   py-numpy:
     require:
-    - '@:1.25'
+    - '@:1.23.5'
   py-pandas:
     require: '+excel'
   py-pybind11:
