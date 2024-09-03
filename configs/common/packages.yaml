@@ -214,6 +214,7 @@ packages:
   ## To avoid duplicate packages
   #py-jinja2:
   #  require: '@3.1.2'
+  # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
      require: '@3.7.4'
   py-meson-python:
