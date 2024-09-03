@@ -1,6 +1,9 @@
 packages:
   cairo:
     variants: ~png ~svg
+  # https://github.com/JCSDA/spack-stack/issues/1211
+  fms:
+    variants: +shared
   git:
     buildable: false
   libiconv:
