@@ -229,6 +229,7 @@ packages:
     require: '@1.5.8 ~mpi'
   # py-numpy@1.26 causes many build problems with older Python packages
   # also check Nautilus site config when making changes here
+  # https://github.com/JCSDA/spack-stack/issues/1276
   py-numpy:
     require:
     - '@:1.23.5'
