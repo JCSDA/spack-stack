@@ -25,8 +25,8 @@ packages:
   intel-oneapi-mkl:
     buildable: False
     externals:
-    - spec: intel-oneapi-mkl@2024.1%oneapi@2024.1.2
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2
+    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
   openblas:
     buildable: False
   ectrans:
