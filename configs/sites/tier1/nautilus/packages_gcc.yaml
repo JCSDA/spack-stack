@@ -21,11 +21,6 @@ packages:
       modules:
       - penguin/openmpi/5.0.1/gcc-8.5.0
       - slurm
-  intel-oneapi-mkl:
-    buildable: False
-    externals:
-    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
   openblas:
     buildable: False
   ectrans:

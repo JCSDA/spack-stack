@@ -19,13 +19,6 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  ecflow::
-    buildable: false
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4-cray-python-3.9.7.1
-      modules:
-      - ecflow/5.8.4-cray-python-3.9.7.1
   findutils:
     externals:
     - spec: findutils@4.6.0
@@ -80,6 +73,7 @@ packages:
     - spec: pkg-config@0.29.2
       prefix: /usr
   qt:
+    buildable: False
     externals:
     - spec: qt@5.15.2
       prefix: /p/app/projects/NEPTUNE/spack-stack/qt-5.15.2/5.15.2/gcc_64
