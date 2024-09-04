@@ -31,7 +31,7 @@
       - '@1.2.1 ~mkl'
     py-numpy:
       require::
-      - '@:1.23 ^openblas'
+      - '@:1.24 ^openblas'
     # *DH
     eckit:
       require:
