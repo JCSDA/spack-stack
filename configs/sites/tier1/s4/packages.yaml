@@ -33,7 +33,7 @@ packages:
     - '@1.2.1 ~mkl'
   py-numpy:
     require::
-    - '@:1.25 ^openblas'
+    - '@:1.23 ^openblas'
 
 ### All other external packages listed alphabetically
   autoconf:
