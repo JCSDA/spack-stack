@@ -42,12 +42,6 @@ spack:
       externals:
       - spec: gcc-runtime@12.3.0
         prefix: /usr
-    #g2:
-    #  # https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/745
-    #  require:
-    #    - any_of: ['fflags="-fno-range-check"']
-    #      when: "@3.5.1 %clang"
-    #      message: "Extra g2 compile options for version 3.5.1 with clang"
     g2tmpl:
       # https://github.com/JCSDA/spack-stack/issues/525
       require:
