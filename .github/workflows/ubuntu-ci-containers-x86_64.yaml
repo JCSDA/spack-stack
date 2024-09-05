@@ -1,15 +1,13 @@
 name: ubuntu-ci-container-x86_64-build
 on:
   # Uncomment this to test for PRs (but do not submit)
-  # DH* for testing only
-  pull_request:
-    paths-ignore:
-      - 'configs/sites/**'
-      - 'doc/**'
-      - '**.md'
-      - '.github/ISSUE_TEMPLATE/*'
-      - '.gitignore'
-  # *DH
+  #pull_request:
+  #  paths-ignore:
+  #    - 'configs/sites/**'
+  #    - 'doc/**'
+  #    - '**.md'
+  #    - '.github/ISSUE_TEMPLATE/*'
+  #    - '.gitignore'
 
   schedule:
     - cron: '0 8 * * *'
@@ -70,29 +68,12 @@ jobs:
             exit 0
           fi
 
-          # DH* for testing only
-          export CONTAINER='docker-ubuntu-clang-mpich'
-          export SPECS='jedi-ci'
-          # *DH
-
           export ENVDIR=$PWD/envs/${CONTAINER}
           spack stack create ctr --container ${CONTAINER} --specs ${SPECS}
 
           cd ${ENVDIR}
           spack containerize > Dockerfile
           docker build -t ${CONTAINER}-${SPECS} .
-
-          # DH* for testing only
-          export CONTAINER='docker-ubuntu-gcc-openmpi'
-          export SPECS='jedi-ci'
-
-          export ENVDIR=$PWD/envs/${CONTAINER}
-          spack stack create ctr --container ${CONTAINER} --specs ${SPECS}
-
-          cd ${ENVDIR}
-          spack containerize > Dockerfile
-          docker build -t ${CONTAINER}-${SPECS} .
-          # *DH
 
       # Report status to JCSDA CI slack channel for nightly runs only
       - name: Report Status
