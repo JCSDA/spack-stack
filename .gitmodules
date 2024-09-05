@@ -1,7 +1,11 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = release/1.8.0
+  ##url = https://github.com/jcsda/spack
+  ##branch = release/1.8.0
+  #url = https://github.com/RatkoVasic-NOAA/spack
+  #branch = g2-GNU-fix
+  url = https://github.com/climbfuji/spack
+  branch = bugfix/g2_gnu_fix_dom
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
