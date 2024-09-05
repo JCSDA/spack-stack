@@ -45,12 +45,12 @@ spack:
       externals:
       - spec: gmake@4.3
         prefix: /usr
-    g2:
-      # https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/745
-      require:
-      - any_of: ['fflags="-fno-range-check"']
-        when: "@3.5.1 %gcc"
-        message: "Extra g2 compile options for version 3.5.1 with gcc/gfortran"
+    #g2:
+    #  # https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/745
+    #  require:
+    #  - any_of: ['fflags="-fno-range-check"']
+    #    when: "@3.5.1 %gcc"
+    #    message: "Extra g2 compile options for version 3.5.1 with gcc/gfortran"
     diffutils:
       buildable: false
       externals:
