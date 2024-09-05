@@ -5,7 +5,7 @@ Pre-configured sites
 
 Pre-configured sites are split into two categories: Tier 1 with officially supported spack-stack installations (see :numref:`Section %s <Preconfigured_Sites_Tier1>`), and Tier 2 (sites with configuration files that were tested or contributed by others in the past, but that are not officially supported by the spack-stack team; see :numref:`Section %s <Preconfigured_Sites_Tier2>`).
 
-Directories ``configs/sites/tier1`` and ``configs/sites/tier2`` contains site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
+Directories ``configs/sites/tier1`` and ``configs/sites/tier2`` contain site configurations for several HPC systems, as well as minimal configurations for macOS and Linux. The macOS and Linux configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
 As of spack-stack-1.8.0, this page provides general information on the supported platforms, such as the location of the spack-stack installations on tier 1 platforms and instructions on how to set up an environment for **building** spack-stack environments. Information on **using** spack-stack environments for development of downstream application is available on the spack-stack wiki: https://github.com/JCSDA/spack-stack/wiki
 
