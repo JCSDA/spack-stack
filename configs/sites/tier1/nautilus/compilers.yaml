@@ -6,13 +6,11 @@ compilers:
       cxx: /p/app/compilers/amd/aocc/4.0.0/bin/clang++
       f77: /p/app/compilers/amd/aocc/4.0.0/bin/flang
       fc: /p/app/compilers/amd/aocc/4.0.0/bin/flang
-    flags:
-      cflags: null
-      cxxflags: null
-      fflags: null
+    flags: {}
     operating_system: rhel8
     target: x86_64
     modules:
+    - slurm
     - amd/aocc/4.0.0
     - amd/aocl/aocc/4.0
     environment: {}
@@ -28,6 +26,7 @@ compilers:
     operating_system: rhel8
     target: x86_64
     modules:
+    - slurm
     - intel/compiler/2022.0.2
     environment:
       prepend_path:
@@ -36,23 +35,29 @@ compilers:
         LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/p/app/compilers/intel/oneapi/compiler/2022.0.2/linux/compiler/lib/intel64_lin:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
     extra_rpaths: []
 - compiler:
-    spec: oneapi@2024.1.2
+    spec: oneapi@2024.2.1
     paths:
-      cc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/icx
-      cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/icpx
-      f77: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/ifort
-      fc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/bin/ifort
+      cc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icx
+      cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icpx
+      f77: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+      fc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
     flags: {}
     operating_system: rhel8
     target: x86_64
-    modules: []
+    modules:
+    - slurm
+    - tbb/2021.13
+    - compiler-rt/2024.2.1
+    - compiler/2024.2.1
+    - ifort/2024.2.1
     environment:
       prepend_path:
         PATH: '/opt/rh/gcc-toolset-11/root/usr/bin'
         CPATH: '/opt/rh/gcc-toolset-11/root/usr/include'
         LD_LIBRARY_PATH: '/opt/scyld/slurm/lib64:/opt/scyld/slurm/lib64/slurm:/opt/rh/gcc-toolset-11/root/usr/lib64:/opt/rh/gcc-toolset-11/root/usr/lib'
+        MODULEPATH: '/p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles'
       append_path:
-        CPATH: '/p/app/projects/NEPTUNE/spack-stack/oneapi-2024.1.2/compiler/2024.1/opt/compiler/include/intel64'
+        CPATH: '/p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/opt/compiler/include/intel64'
     extra_rpaths: []
 - compiler:
     spec: gcc@12.2.1
@@ -65,6 +70,7 @@ compilers:
     operating_system: rhel8
     target: x86_64
     modules:
+    - slurm
     - scl/gcc-toolset-12
     environment: {}
     extra_rpaths: []
@@ -80,6 +86,7 @@ compilers:
     operating_system: rhel8
     target: x86_64
     modules:
+    - slurm
     - scl/gcc-toolset-11
     environment: {}
     extra_rpaths: []
