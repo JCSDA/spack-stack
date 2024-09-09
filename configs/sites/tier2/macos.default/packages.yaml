@@ -3,10 +3,12 @@ packages:
     variants: ~png ~svg
   # https://github.com/JCSDA/spack-stack/issues/1211
   fms:
-    variants: +shared
+    require:
+    - '+shared'
   git:
     buildable: false
   libiconv:
     buildable: false
   wgrib2:
-    variants: ~openmp
+    require:
+    - '~openmp'
