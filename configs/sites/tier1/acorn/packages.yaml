@@ -9,11 +9,6 @@
       externals:
       - spec: git-lfs@2.11.0
         modules: [git-lfs/2.11.0]
-    perl:
-      buildable: false
-      externals:
-      - spec: perl@5.26.1~cpanm+shared+threads
-        prefix: /usr
     mysql:
       buildable: false
       externals:
@@ -38,6 +33,7 @@
     gdal:
       variants: ~curl
     flex:
+      buildable: false
       externals:
       - spec: flex@2.6.4+lex
         prefix: /usr
