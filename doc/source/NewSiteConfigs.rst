@@ -152,6 +152,9 @@ These instructions are meant to be a reference that users can follow to set up t
    brew install libiconv
    # Note - need to pin to version 5
    brew install qt@5
+   # Note - For Sonoma only, install m4 and pkg-config
+   brew install m4
+   brew install pkg-config
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
@@ -247,6 +250,9 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    PATH="$HOMEBREW_ROOT/opt/qt@5/bin:$PATH" \
         spack external find --scope system qt
+
+   PATH="$HOMEBREW_ROOT/opt/m4/bin:$PATH" \
+        spack external find --scope system m4
 
    # Optional, only if planning to build jedi-tools environment with LaTeX support
    # The texlive bin directory must have been added to PATH (see above)
