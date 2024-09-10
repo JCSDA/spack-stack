@@ -1,0 +1,42 @@
+packages:
+  all:
+    compiler:: [intel@2021.10.0,gcc@12.2.0]
+    providers:
+      mpi:: [cray-mpich@8.1.25]
+      # Remove the next three lines to switch to intel-oneapi-mkl
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
+  mpi:
+    buildable: False
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.25%intel@2021.10.0 +wrappers
+      modules:
+      - craype/2.7.20
+      - cray-mpich/8.1.25
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
+  intel-oneapi-mkl:
+    # Remove buildable: False and configure+uncomment externals section below to use intel-oneapi-mkl
+    # Note that on 2024/08/14, Dom H couldn't find any MKL installation on Derecho - keep using fftw
+    # and openblas, or find another provider (Cray stuff)?
+    buildable: False
+    #externals:
+    #- spec: intel-oneapi-mkl@2022.0.2%intel@2021.5.0
+    #  prefix: /apps/oneapi
+  # Newer versions of patchelf (tested 0.18.0) don't build with Intel on Derecho
+  patchelf:
+    version:: ['0.17.2']
+  # DH* Remove this section to switch to intel-oneapi-mkl
+  ectrans:
+    require::
+    - '@1.2.0 ~mkl +fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@:1.25 ^openblas'
+  # *DH
+

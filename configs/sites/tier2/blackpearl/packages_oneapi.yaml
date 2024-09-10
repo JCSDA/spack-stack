@@ -1,26 +1,8 @@
 packages:
   all:
-    compiler:: [oneapi@2024.1.2]
+    compiler:: [oneapi@2024.1.2,gcc@11.4.1]
     providers:
       mpi:: [intel-oneapi-mpi]
-      blas:: [intel-oneapi-mkl]
-      fftw-api:: [intel-oneapi-mkl]
-      lapack:: [intel-oneapi-mkl]
-  ectrans:
-    require:: '+mkl ~fftw'
-  gsibec:
-    require:: '+mkl'
-  py-numpy:
-    require:
-    - '^intel-oneapi-mkl'
-  bison:
-    require: '%gcc'
-  gmake:
-    require: '%gcc'
-  libmd:
-    require: '%gcc'
-  libbsd:
-    require: '%gcc'
 
   mpi:
     buildable: False

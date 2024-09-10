@@ -47,10 +47,7 @@ compilers:
       fc: /opt/intel/oneapi/compiler/2024.1/bin/ifort
       #f77: /opt/intel/oneapi/compiler/2024.1/bin/ifx
       #fc: /opt/intel/oneapi/compiler/2024.1/bin/ifx
-    flags:
-      cflags: -diag-disable=10441
-      cxxflags: -diag-disable=10441
-      fflags: -diag-disable=10448
+    flags: {}
     operating_system: oracle9
     target: x86_64
     modules: []
@@ -58,4 +55,21 @@ compilers:
       # change to append_path once relevant PR is merged
       append_path:
         CPATH: /opt/intel/oneapi/compiler/2024.1/opt/compiler/include/intel64
+    extra_rpaths: []
+- compiler:
+    spec: aocc@=4.2.0
+    paths:
+      cc: /home/dom/prod/aocc-4.2.0/bin/clang
+      cxx: /home/dom/prod/aocc-4.2.0/bin/clang++
+      f77: /home/dom/prod/aocc-4.2.0/bin/flang
+      fc: /home/dom/prod/aocc-4.2.0/bin/flang
+    flags: {}
+    operating_system: oracle9
+    target: x86_64
+    modules:
+    - aocc/4.2.0
+    environment:
+      append_path:
+        # For libquadmath etc
+        LD_LIBRARY_PATH: /usr/lib/gcc/x86_64-redhat-linux/11
     extra_rpaths: []

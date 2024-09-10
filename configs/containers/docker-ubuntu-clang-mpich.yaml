@@ -9,18 +9,18 @@ spack:
 
   compilers:
   - compiler:
-      spec: clang@10.0.0
+      spec: clang@14.0.0
       paths:
         cc: /usr/bin/clang
         cxx: /usr/bin/clang++
         f77: /usr/bin/gfortran
         fc: /usr/bin/gfortran
       flags: {}
-      operating_system: ubuntu20.04
+      operating_system: ubuntu22.04
       modules: []
       environment:
         prepend_path:
-          LD_LIBRARY_PATH: '/usr/lib/llvm-10/lib'
+          LD_LIBRARY_PATH: '/usr/lib/llvm-14/lib'
       extra_rpaths: []
 
   # Basic package config from configs/common/packages.yaml
@@ -31,42 +31,33 @@ spack:
       target: [x86_64]
       providers:
         mpi: [mpich@4.2.1]
-      compiler: [clang@10.0.0]
+      compiler: [clang@14.0.0]
     gcc:
       buildable: false
       externals:
-      - spec: gcc@9.4.0
+      - spec: gcc@12.3.0
         prefix: /usr
+    gcc-runtime:
+      buildable: false
+      externals:
+      - spec: gcc-runtime@12.3.0
+        prefix: /usr
+    g2:
+      # https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/745
+      require:
+        - any_of: ['fflags="-fno-range-check"']
+          when: "@3.5.1 %clang"
+          message: "Extra g2 compile options for version 3.5.1 with clang"
     g2tmpl:
       # https://github.com/JCSDA/spack-stack/issues/525
       require:
         - any_of: ['fflags="-no-pie"']
           when: "@1.10.2: %clang"
           message: "Extra g2tmpl compile options for version 1.10.2+ with clang"
-    gmake:
-      buildable: false
-      externals:
-      - spec: gmake@4.2.1
-        prefix: /usr
-    diffutils:
-      buildable: false
-      externals:
-      - spec: diffutils@3.7
-        prefix: /usr
-    git:
-      buildable: false
-      externals:
-      - spec: git@2.25.1~tcltk
-        prefix: /usr
-    git-lfs:
-      buildable: false
-      externals:
-      - spec: git-lfs@2.9.2
-        prefix: /usr
     llvm:
       buildable: false
       externals:
-      - spec: llvm@10.0.0 +clang
+      - spec: llvm@14.0.0 +clang
         prefix: /usr
     mpich:
       buildable: false
@@ -74,21 +65,41 @@ spack:
       - spec: mpich@4.2.1
         prefix: /opt/mpich-4.2.1
       version: [4.2.1]
+    gmake:
+      buildable: false
+      externals:
+      - spec: gmake@4.3
+        prefix: /usr
+    diffutils:
+      buildable: false
+      externals:
+      - spec: diffutils@3.8
+        prefix: /usr
+    git:
+      buildable: false
+      externals:
+      - spec: git@2.34.1~tcltk
+        prefix: /usr
+    git-lfs:
+      buildable: false
+      externals:
+      - spec: git-lfs@3.0.2
+        prefix: /usr
     mysql:
       buildable: false
       externals:
-      - spec: mysql@8.0.32
+      - spec: mysql@8.0.39
         prefix: /usr
     qt:
       buildable: false
       externals:
-      - spec: qt@5.12.8
+      - spec: qt@5.15.3
         prefix: /usr
       version: [5.15.3]
     wget:
       buildable: false
       externals:
-      - spec: wget@1.20.3
+      - spec: wget@1.21.2
         prefix: /usr
       version: [1.21.2]
 
@@ -112,7 +123,7 @@ spack:
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
     images:
-      os: ubuntu:20.04
+      os: ubuntu:22.04
       spack:
         url: https://github.com/jcsda/spack
         ref: spack-stack-dev
@@ -125,36 +136,46 @@ spack:
     os_packages:
       build:
       - bc
-      - clang-10
-      - libclang-10-dev
-      - libc++-10-dev
-      - cpp
-      - g++
-      - gcc
-      - gfortran
+      - clang-14
+      - libclang-14-dev
+      - libc++-14-dev
+      - libomp5-14
+      - libomp-14-dev
+      - libc++abi-14-dev
+      - cpp-12
+      - libgomp1
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
 
       final:
       - bc
-      - clang-10
-      - libclang-10-dev
-      - libc++-10-dev
-      - cpp
-      - g++
-      - gcc
-      - gfortran
+      - clang-14
+      - libclang-14-dev
+      - libc++-14-dev
+      - libomp5-14
+      - libomp-14-dev
+      - libc++abi-14-dev
+      - cpp-12
+      - libgomp1
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
@@ -171,6 +192,8 @@ spack:
       - python3-setuptools
       - unzip
       - vim
+      - nano
+      - less
 
     # Extra instructions
     extra_instructions:
@@ -179,14 +202,14 @@ spack:
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
-        # Create symbolic links for clang compilers
-        RUN cd /usr/bin && \
-        ln -svf clang-10 clang && \
-        ln -svf clang++-10 clang++ && \
-        ln -svf clang-cpp-10 clang-cpp && \
-        cd /usr/lib/llvm-10/lib && \
-        ln -svf libc++abi.so.1.0 libc++abi.so
-        #
+        # Set default binaries for clang-14 and GNU-12.
+        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
+        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
+        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
+        ln -svf /usr/bin/g++-12 /usr/bin/g++ && \
+        ln -svf /usr/bin/clang-14 /usr/bin/clang && \
+        ln -svf /usr/bin/clang++-14 /usr/bin/clang++ && \
+        ln -svf /usr/bin/clang-cpp-14 /usr/bin/clang-cpp
         # Build mpich outside of spack-stack
         ENV MPICH_VERSION=4.2.1
         ENV CC=clang
@@ -219,16 +242,18 @@ spack:
         ENV CPATH=/opt/mpich-${MPICH_VERSION}/include:${CPATH}
         ENV LD_LIBRARY_PATH=/opt/mpich-${MPICH_VERSION}/lib:${LD_LIBRARY_PATH}
       final: |
-        # Create symbolic links for clang compilers
-        RUN cd /usr/bin && \
-        ln -svf clang-10 clang && \
-        ln -svf clang++-10 clang++ && \
-        ln -svf clang-cpp-10 clang-cpp && \
-        cd /usr/lib/llvm-10/lib && \
-        ln -svf libc++abi.so.1.0 libc++abi.so
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
         ENV MPICH_VERSION=4.2.1
+        # Set the GNU 12.x toolchain as the default compilers.
+        # Set default binaries for clang-14 and GNU-12.
+        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
+        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
+        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
+        ln -svf /usr/bin/g++-12 /usr/bin/g++ && \
+        ln -svf /usr/bin/clang-14 /usr/bin/clang && \
+        ln -svf /usr/bin/clang++-14 /usr/bin/clang++ && \
+        ln -svf /usr/bin/clang-cpp-14 /usr/bin/clang-cpp
         # Copy mpich-${MPICH_VERSION} installation from builder
         COPY --from=builder /opt/mpich-${MPICH_VERSION} /opt/mpich-${MPICH_VERSION}
         # Make a non-root user:nonroot / group:nonroot for running MPI
@@ -246,6 +271,7 @@ spack:
         echo "export CC=clang" >> /root/.bashrc && \
         echo "export CXX=clang++" >> /root/.bashrc && \
         echo "export FC=gfortran" >> /root/.bashrc && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/clang-*/jedi-cmake-*)" >> /root/.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
 
     # Labels for the image

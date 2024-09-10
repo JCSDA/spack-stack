@@ -1,53 +1,4 @@
 packages:
-  all:
-    compiler:: [intel@2021.6.0]
-    providers: 
-      mpi:: [intel-oneapi-mpi@2021.6.0]
-      blas:: [intel-oneapi-mkl]
-      fftw-api:: [intel-oneapi-mkl]
-      lapack:: [intel-oneapi-mkl]
-  ectrans:
-    variants:: +mkl ~fftw
-  gsibec:
-    variants:: +mkl
-
-### MPI, Python, MKL
-  mpi:
-    buildable: False
-  intel-oneapi-mpi:
-    externals:
-    - spec: intel-oneapi-mpi@2021.6.0%intel@2021.6.0
-      prefix: /cm/shared/apps/intel/oneapi
-      modules:
-      - mpi/2021.6.0
-      - slurm
-  intel-oneapi-mkl:
-    externals:
-    - spec: intel-oneapi-mkl@2022.1.0
-      modules:
-      -  mkl/2022.1.0        
-      prefix: /cm/shared/apps/intel/oneapi
-  intel-oneapi-ipp:
-    externals:
-    - spec: intel-oneapi-ipp@2021.6.0
-      modules:
-      - intel_ipp_intel64/2021.6.0
-      prefix: /cm/shared/apps/intel/oneapi
-  intel-oneapi-tbb:
-    externals:
-    - spec: intel-oneapi-tbb@2021.6.0
-      modules:
-      - tbb/2021.6.0
-      prefix: /cm/shared/apps/intel/oneapi
-  #python:
-  #  buildable: False
-  #  externals: 
-  #  - spec: python@3.9.15
-  #    modules:
-  #    - python39
-  #    prefix: /cm/local/apps/python39
-
-### All other external packages listed alphabetically
   curl:
     externals:
     - spec: curl@7.61.1
@@ -129,10 +80,11 @@ packages:
     externals:
     - spec: flex@2.6.1+lex
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1k
-      prefix: /usr
+  # Can no longer use, issues with py-cryptography
+  #openssl:
+  #  externals:
+  #  - spec: openssl@1.1.1k
+  #    prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.2.1

@@ -27,6 +27,8 @@ class PyXnrl(PythonPackage):
     depends_on("py-poetry", type="build")
 
     depends_on("py-metpy", type=("build", "run"))
+    # Note: if the +delayed option is removed, also
+    # need to remove it from gmao-swell-env.
     depends_on("py-dask +delayed", type=("build", "run"))
     depends_on("py-h5netcdf", type=("build", "run"))
     depends_on("py-netcdf4", type=("build", "run"))

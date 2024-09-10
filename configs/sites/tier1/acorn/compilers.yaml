@@ -70,3 +70,25 @@ compilers:
         # which confuses some packages.
         CONFIG_SITE: ''
     extra_rpaths: []
+# Needed for Intel 19/2022 backend
+- compiler:
+    spec: gcc@10.2.0
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: sles15
+    modules:
+    - PrgEnv-gnu/8.3.3
+    - craype/2.7.13
+    - gcc/10.2.0
+    - libfabric
+    environment:
+      set:
+        # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so 
+        # Automake-based builds are installed in lib64 
+        # which confuses some packages.
+        CONFIG_SITE: ''
+    extra_rpaths: []

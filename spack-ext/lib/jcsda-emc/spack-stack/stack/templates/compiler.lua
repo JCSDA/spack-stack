@@ -8,18 +8,19 @@ local pkgNameVer = myModuleFullName()
 family("MetaCompiler")
 
 -- conflicts
+conflict("stack-aocc")
 conflict("stack-apple-clang")
 conflict("stack-clang")
-conflict("stack-gnu")
+conflict("stack-gcc")
 conflict("stack-intel")
-conflict("stack-intel-oneapi-compilers")
+conflict("stack-oneapi")
 
 -- prerequisite modules
 @MODULELOADS@
 @MODULEPREREQS@
 
 -- spack compiler module hierarchy
-prepend_path("MODULEPATH", "@MODULEPATH@")
+@MODULEPATHS@
 
 -- compiler environment variables
 setenv("F77", "@F77@")

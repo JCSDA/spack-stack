@@ -1,0 +1,34 @@
+packages:
+# On Nautilus, use intel-oneapi-mkl as provider
+# for blas, lapack, fftw-api with GNU because of
+# problems using openblas in downstream applications
+# (e.g. py-pandas):
+# ELF load command address/offset not properly aligned" when loading libopenblas.so
+# https://github.com/OpenMathLib/OpenBLAS/wiki/Faq#ELFoffset
+  all:
+    compiler:: [gcc@12.2.1]
+    providers:
+      mpi:: [openmpi@5.0.1]
+      blas:: [intel-oneapi-mkl]
+      fftw-api:: [intel-oneapi-mkl]
+      lapack:: [intel-oneapi-mkl]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@5.0.1%gcc@12.2.1~cuda~java~memchecker~static~wrapper-rpath fabrics=ucx schedulers=slurm
+      prefix: /p/app/penguin/openmpi/5.0.1/gcc-8.5.0
+      modules:
+      - penguin/openmpi/5.0.1/gcc-8.5.0
+      - slurm
+  openblas:
+    buildable: False
+  ectrans:
+    require::
+    - '@1.2.0 +mkl ~fftw'
+  gsibec:
+    require::
+    - '@1.2.1 +mkl'
+  py-numpy:
+    require::
+    - '@:1.25 ^intel-oneapi-mkl'

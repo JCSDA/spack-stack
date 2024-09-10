@@ -1,0 +1,18 @@
+packages:
+  all:
+    compiler:: [intel@2021.5.0,gcc@11.2.1]
+    providers:
+      mpi:: [openmpi@4.1.6]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.6%intel@2021.5.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm
+      prefix: /p/app/penguin/openmpi/4.1.6/intel-classic-2022.0.2
+      modules:
+      - penguin/openmpi/4.1.6/intel-classic-2022.0.2
+      - slurm
+  intel-oneapi-mkl:
+    externals:
+    - spec: intel-oneapi-mkl@2022.0.2%intel@2021.5.0
+      prefix: /p/app/compilers/intel/oneapi

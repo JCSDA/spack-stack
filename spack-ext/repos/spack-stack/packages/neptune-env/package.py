@@ -19,7 +19,9 @@ class NeptuneEnv(BundlePackage):
 
     version("1.4.0")
 
-    variant("python", default=True, description="Build Python libraries")
+    variant("python", default=True, description="Build Python dependencies")
+    variant("espc", default=True, description="Build ESPC dependencies")
+    variant("xnrl", default=True, description="Build XNRL and its extra Python dependencies")
 
     depends_on("base-env", type="run")
 
@@ -37,9 +39,11 @@ class NeptuneEnv(BundlePackage):
     depends_on("nco", type="run")
     depends_on("mct", type="run")
 
-    # Required by ESPC
-    depends_on("fftw", type="build")
-    depends_on("netlib-lapack", type="build")
+    conflicts("+xnrl", when="~python", msg="Variant xnrl requires variant python")
+
+    with when("+espc"):
+        depends_on("fftw", type="build")
+        depends_on("netlib-lapack", type="build")
 
     with when("+python"):
         depends_on("py-f90nml", type="run")
@@ -53,7 +57,10 @@ class NeptuneEnv(BundlePackage):
         depends_on("py-pyyaml", type="run")
         depends_on("py-scipy", type="run")
         depends_on("py-xarray", type="run")
-        depends_on("py-xnrl", type="run")
         depends_on("py-pytest", type="run")
+        depends_on("py-fortranformat", type="run")
+
+    with when("+xnrl"):
+        depends_on("py-xnrl", type="run")
 
     # There is no need for install() since there is no code.

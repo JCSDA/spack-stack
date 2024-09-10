@@ -9,14 +9,14 @@ spack:
 
   compilers:
   - compiler:
-      spec: gcc@9.4.0
+      spec: gcc@12.3.0
       paths:
-        cc: /usr/bin/gcc
-        cxx: /usr/bin/g++
-        f77: /usr/bin/gfortran
-        fc: /usr/bin/gfortran
+        cc: /usr/bin/gcc-12
+        cxx: /usr/bin/g++-12
+        f77: /usr/bin/gfortran-12
+        fc: /usr/bin/gfortran-12
       flags: {}
-      operating_system: ubuntu20.04
+      operating_system: ubuntu22.04
       modules: []
       environment: {}
       extra_rpaths: []
@@ -29,47 +29,58 @@ spack:
       target: [x86_64]
       providers:
         mpi: [openmpi@5.0.3]
-      compiler: [gcc@9.4.0]
+      compiler: [gcc@12.3.0]
     gcc:
       buildable: false
       externals:
-      - spec: gcc@9.4.0
+      - spec: gcc@12.3.0
+        prefix: /usr
+    gcc-runtime:
+      buildable: false
+      externals:
+      - spec: gcc-runtime@12.3.0
         prefix: /usr
     gmake:
       buildable: false
       externals:
-      - spec: gmake@4.2.1
+      - spec: gmake@4.3
         prefix: /usr
+    g2:
+      # https://github.com/NOAA-EMC/NCEPLIBS-g2/issues/745
+      require:
+      - any_of: ['fflags="-fno-range-check"']
+        when: "@3.5.1 %gcc"
+        message: "Extra g2 compile options for version 3.5.1 with gcc/gfortran"
     diffutils:
       buildable: false
       externals:
-      - spec: diffutils@3.7
+      - spec: diffutils@3.8
         prefix: /usr
     git:
       buildable: false
       externals:
-      - spec: git@2.25.1~tcltk
+      - spec: git@2.34.1~tcltk
         prefix: /usr
     git-lfs:
       buildable: false
       externals:
-      - spec: git-lfs@2.9.2
+      - spec: git-lfs@3.0.2
         prefix: /usr
     mysql:
       buildable: false
       externals:
-      - spec: mysql@8.0.32
+      - spec: mysql@8.0.39
         prefix: /usr
     qt:
       buildable: false
       externals:
-      - spec: qt@5.12.8
+      - spec: qt@5.15.3
         prefix: /usr
       version: [5.15.3]
     wget:
       buildable: false
       externals:
-      - spec: wget@1.20.3
+      - spec: wget@1.21.2
         prefix: /usr
       version: [1.21.2]
 
@@ -93,7 +104,7 @@ spack:
     # Sets the base images for the stages where Spack builds the
     # software or where the software gets installed after being built..
     images:
-      os: ubuntu:20.04
+      os: ubuntu:22.04
       spack:
         url: https://github.com/jcsda/spack
         ref: spack-stack-dev
@@ -106,46 +117,45 @@ spack:
     os_packages:
       build:
       - bc
-      - cpp
-      - g++
-      - gcc
-      - gfortran
+      - cpp-12
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
 
       final:
       - bc
-      - cpp
-      - g++
-      - gcc
-      - gfortran
+      - cpp-12
+      - g++-12
+      - gcc-12
+      - gfortran-12
       - git
       - git-lfs
       - make
       - mysql-server
-      - qt5-default
+      - qtbase5-dev
+      - qt5-qmake
       - libqt5svg5-dev
       - qt5dxcb-plugin
       - wget
-      # Implicitly included in build step
-      - build-essential
       - ca-certificates
       - curl
       - file
       - gnupg2
       - iproute2
       - locales
-      - python3
-      - python3-pip
-      - python3-setuptools
       - unzip
       - vim
+      - nano
+      - less
 
     # Extra instructions
     extra_instructions:
@@ -154,6 +164,11 @@ spack:
         COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
+        # Set the GNU 12.x toolchain as the default compilers.
+        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
+        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
+        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
+        ln -svf /usr/bin/g++-12 /usr/bin/g++
       pre_final: |
         # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
@@ -169,6 +184,11 @@ spack:
       final: |
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
+        # Set the GNU 12.x toolchain as the default compilers.
+        RUN ln -svf /usr/bin/gfortran-12 /usr/bin/gfortran && \
+        ln -svf /usr/bin/cpp-12 /usr/bin/cpp && \
+        ln -svf /usr/bin/gcc-12 /usr/bin/gcc && \
+        ln -svf /usr/bin/g++-12 /usr/bin/g++
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
@@ -189,10 +209,11 @@ spack:
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig && \
         mkdir /root/.pmix && \
         echo "rmaps_default_mapping_policy=:oversubscribe" >> /root/.pmix/mca-params.conf
-        # Also set necessary environment variables for openmpi
+        # Also set necessary environment variables for openmpi and jedi-cmake.
         RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
         echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
-        echo "export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe" >> /root/.bashrc
+        echo "export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe" >> /root/.bashrc && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/gcc-*/jedi-cmake-*)" >> /root/.bashrc
 
     # Labels for the image
     labels:

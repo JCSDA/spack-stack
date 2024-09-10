@@ -1,0 +1,13 @@
+packages:
+  all:
+    compiler:: [gcc@10.3.0]
+    providers:
+      mpi:: [cray-mpich@8.1.21]
+  mpi:
+    buildable: False
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.21%gcc@10.3.0 ~wrappers
+      modules:
+      - cray-mpich-ucx/8.1.21
+      - craype-network-ucx

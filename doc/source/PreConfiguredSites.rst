@@ -249,20 +249,24 @@ With Intel, the following is required for building new spack environments and fo
 
    umask 0022
    module unload PrgEnv-cray
-   module load PrgEnv-intel/8.3.2
+   module load PrgEnv-intel/8.3.3
    module unload intel
-   module load intel-classic/2021.4.0
+   module load intel-classic/2023.2.0
    module unload cray-mpich
-   module load cray-mpich/8.1.14
-   module unload cray-python
-   module load cray-python/3.9.7.1
+   module unload craype-network-ofi
+   module load craype-network-ucx
+   # Warning. Do not load cray-mpich-ucx/8.1.21
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load cray-mpich-ucx/8.1.21
+   module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
-   module load cray-libsci/22.08.1.1
+   module load cray-libsci/23.05.1.4
 
-   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
-   module load ecflow/5.8.4
-
-For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
+THIS SECTION IS OUT OF DATE, REFER TO 1.7.0 RELEASE DOCUMENTATION -  - For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
 
 .. code-block:: console
 
@@ -271,8 +275,8 @@ For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules
    module unload craype-network-ofi
    module load craype-network-ucx
    module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.7.0/envs/ue-intel-2021.4.0/install/modulefiles/Core
-   module load stack-intel/2021.4.0
-   module load stack-cray-mpich/8.1.14
+   module load stack-intel/2021.10.0
+   module load stack-cray-mpich/8.1.21
    module load stack-python/3.10.13
 
 With GNU, the following is required for building new spack environments and for using spack to build and run software.  Don't use ``module purge`` on Narwhal!
@@ -281,20 +285,24 @@ With GNU, the following is required for building new spack environments and for 
 
    umask 0022
    module unload PrgEnv-cray
-   module load PrgEnv-gnu/8.3.2
+   module load PrgEnv-gnu/8.3.3
    module unload gcc
    module load gcc/10.3.0
    module unload cray-mpich
-   module load cray-mpich/8.1.14
-   module unload cray-python
-   module load cray-python/3.9.7.1
+   module unload craype-network-ofi
+   module load craype-network-ucx
+   # Warning. Do not load cray-mpich-ucx/8.1.21
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load cray-mpich-ucx/8.1.21
+   module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
-   module load cray-libsci/22.08.1.1
+   module load cray-libsci/23.05.1.4
 
-   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
-   module load ecflow/5.8.4
-
-For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
+THIS SECTION IS OUT OF DATE, REFER TO 1.7.0 RELEASE DOCUMENTATION - For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
 
 .. code-block:: console
 
@@ -304,7 +312,7 @@ For ``spack-stack-1.7.0`` with GNU, proceed with loading the following modules:
    module load craype-network-ucx
    module use /p/app/projects/NEPTUNE/spack-stack/spack-stack-1.7.0/envs/ue-gcc-10.3.0/install/modulefiles/Core
    module load stack-gcc/10.3.0
-   module load stack-cray-mpich/8.1.14
+   module load stack-cray-mpich/8.1.21
    module load stack-python/3.10.13
 
 .. _Preconfigured_Sites_Nautilus:
@@ -319,13 +327,6 @@ With Intel, the following is required for building new spack environments and fo
 
    umask 0022
    module purge
-
-   module load slurm
-   module load intel/compiler/2022.0.2
-   module load penguin/openmpi/4.1.6/intel-classic-2022.0.2
-
-   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
-   module load ecflow/5.8.4
 
 For ``spack-stack-1.7.0`` with Intel, proceed with loading the following modules:
 
@@ -342,14 +343,6 @@ With AMD clang/flang (aocc), the following is required for building new spack en
 
    umask 0022
    module purge
-
-   module load slurm
-   module load amd/aocc/4.0.0
-   module load amd/aocl/aocc/4.0
-   module load penguin/openmpi/4.1.4/aocc
-
-   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
-   module load ecflow/5.8.4
 
 .. note::
 

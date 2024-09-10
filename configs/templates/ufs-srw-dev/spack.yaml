@@ -54,5 +54,5 @@ spack:
   - wrf-io@1.2.0
   - ncio@1.1.2
   - gsi-ncdiag@1.1.2
-  - met@11.1.0
+  - met@11.1.1
   - metplus@5.1.0

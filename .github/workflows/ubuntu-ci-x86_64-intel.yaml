@@ -20,6 +20,7 @@ jobs:
         run: |
           pwd
           ls -lart
+          find ./* -type d -exec chmod u+xw {} \;
           rm -fr *
 
       - name: checkout
@@ -75,10 +76,7 @@ jobs:
           echo "      cxx: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/icpc" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      f77: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      fc: /opt/intel/oneapi/compiler/2023.2.3/linux/bin/intel64/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    flags:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cxxflags: -diag-disable=10441" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      fflags: -diag-disable=10448" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
@@ -96,14 +94,24 @@ jobs:
           echo "    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
-          # Add external ecflow for Intel
+          # Add external Intel MKL and oneAPI runtime
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  ecflow::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  intel-oneapi-mkl:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: intel-oneapi-mkl@2023.2.0%intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "  intel-oneapi-runtime:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "    - spec: intel-oneapi-runtime@2023.2.0%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          #echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+
+          # Add external qt@5 to build ecflow
+          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "  qt::" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    buildable: False" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: ecflow@5.8.4+ui+static_boost" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      modules:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      - ecflow/5.11.4" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "    - spec: qt@5.15.3" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+          echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
@@ -112,13 +120,13 @@ jobs:
 
           # Set compiler and MPI specs
           spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
-          spack config add "packages:all:compiler:[intel@2021.10.0]"
+          spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.4.0]"
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
           spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
-          # Don't generate ecflow module when using external package
-          spack config add "modules:default:tcl:exclude:[ecflow]"
+          # Don't generate qt module when using external package
+          spack config add "modules:default:tcl:exclude:[qt]"
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.intel-2021.10.0-buildcache
@@ -224,7 +232,7 @@ jobs:
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-intel/2021.10.0
           module load stack-intel-oneapi-mpi/2021.10.0
-          module load stack-python/3.10.13
+          module load stack-python/3.11.7
           module available
 
           module load jedi-ufs-env
