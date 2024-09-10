@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "build host: $(hostname)"
+
 set -exa
 
 cd $(dirname $0)
