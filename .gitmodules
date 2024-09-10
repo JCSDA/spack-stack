@@ -1,9 +1,7 @@
 [submodule "spack"]
   path = spack
-  #url = https://github.com/jcsda/spack
-  #branch = release/1.8.0
-  url = https://github.com/srherbener/spack
-  branch = feature/enable-mac-sonoma
+  url = https://github.com/jcsda/spack
+  branch = release/1.8.0
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
