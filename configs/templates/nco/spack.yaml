@@ -26,8 +26,11 @@ spack:
   - crtm
   - curl
   - ecflow
+  - eckit
+  - ecmwf-atlas
   - eigen
   - esmf
+  - fckit
   - fms
   - g2
   - g2c
@@ -35,9 +38,11 @@ spack:
   - gdal
   - geos
   - gfsio
+  - gftl-shared
   - git
   - grib-util
   - gsl
+  - gsl-lite
   - hdf5
   - imagemagick
   - ip
@@ -57,11 +62,13 @@ spack:
   - met
   - metis
   - metplus
+  - nccmp
+  - gsi-ncdiag
   - nco
-  - ncivew
+  - ncview
   - nemsio
   - nemsiogfs
-  - netcdf-c +fismahigh
+  - netcdf-c
   - netcdf-fortran
   - perl
   - pigz
@@ -69,6 +76,7 @@ spack:
   - pixman
   - proj
   - python
+  - qhull
   - readline
   - rsync
   - scotch
@@ -79,13 +87,12 @@ spack:
   - udunits
   - upp
   - w3emc
-  - w3enco
+  - w3nco
   - wgrib2
   - wrf-io
 
   packages:
-    all:
-      prefer: 'intel@19.1.3.304'
+    # Strictly set virtual package providers:
     mpi:
       require: cray-mpich
     fftw-api:
@@ -96,3 +103,38 @@ spack:
       require: openblas
     jpeg:
       require: libjpeg-turbo
+    # Individual package settings.
+    # Use `require::` to override require's from {common,site}/packages.yaml,
+    # and `require:<newline>  - '...'` to add to existing ones.
+    cdo:
+      require:
+      - 'grib2=none' # avoids eccodes/grib-api dependency
+    curl:
+      require:
+      - '~nghttp2' # avoid nghttp2 dependency
+    ecmwf-atlas:
+      require:: '@0.33.0 +fckit ~trans ~fftw' # disabling trans and fftw to minimize dependencies; older version because newer eckit doesn't build with intel@19
+    esmf:
+      require:
+      - 'snapshot=none' # make sure spack-stack doesn't accidentally give us a beta snapshot
+    fckit:
+      require:: '@0.10.1 +eckit' # older version needed for older eckit & ecmwf-atlas
+    glib:
+      require: '@:2.74.3' # newer versions don't build with intel@19
+    mapl:
+      require:
+      - '~pflogger ~fargparse ~extdata2g' # minimize dependencies
+    netcdf-c:
+      require:: '@4.9.2 +mpi ~parallel-netcdf ~dap ~blosc ~szip build_system=autotools' # disabling dap prevents network access; disabling blosc and szip reduces dependencies
+    py-pandas:
+      require:: '~excel' # minimize dependencies
+    subversion:
+      require:
+      - '~serf +pic' # avoid serf dependency
+    # Explicitly require gcc when needed so Spack won't do anything weird:
+    boost:
+      require: '%gcc'
+    gcc-runtime:
+      require: '%gcc'
+    harfbuzz:
+      require: '%gcc'
