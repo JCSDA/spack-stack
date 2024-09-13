@@ -152,21 +152,30 @@ These instructions are meant to be a reference that users can follow to set up t
    brew install libiconv
    # Note - need to pin to version 5
    brew install qt@5
-   # Note - For Sonoma only, install m4 and pkg-config
    brew install m4
+   # Note - For Sonoma only: install pkg-config, diffutils and clingo
    brew install pkg-config
+   brew install diffutils
+   brew install clingo
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
    brew install mysql
 
 .. note::
-  On an Intel based Mac, you will need to also install pkg-config using homebrew.
+  On an Intel based Mac, regardless of MacOS version, you will need to also install pkg-config using homebrew.
   This is done to work around an issue where libraries (eg, openssl) cannot be properly found during code compilation.
 
 .. code-block:: console
 
   brew install pkg-config  # Intel based Mac only
+
+.. note::
+  For spack-stack-1.8.0 and newer, you must be using cmake 3.26+.
+  Make sure you upgrade cmake in homebrew.
+
+.. code-block:: console
+  brew upgrade cmake
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -232,7 +241,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
    spack external find --scope system \
        --exclude bison --exclude openssl \
-       --exclude python --exclude gettext
+       --exclude python --exclude gettext \
+       --exclude m4
    spack external find --scope system perl
    spack external find --scope system wget
 
@@ -248,7 +258,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    PATH="$HOMEBREW_ROOT/opt/curl/bin:$PATH" \
         spack external find --scope system curl
 
-   PATH="$HOMEBREW_ROOT/opt/qt@5/bin:$PATH" \
+   PATH="$HOMEBREW_ROOT/opt/qt5/bin:$PATH" \
         spack external find --scope system qt
 
    PATH="$HOMEBREW_ROOT/opt/m4/bin:$PATH" \
