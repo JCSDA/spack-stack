@@ -9,6 +9,29 @@ Directories ``configs/sites/tier1`` and ``configs/sites/tier2`` contain site con
 
 As of spack-stack-1.8.0, this page provides general information on the supported platforms, such as the location of the spack-stack installations on tier 1 platforms and instructions on how to set up an environment for **building** spack-stack environments. Information on **using** spack-stack environments for development of downstream applications is available on the spack-stack wiki: https://github.com/JCSDA/spack-stack/wiki
 
+.. _EnvironmentNamingConventions:
+
+=============================================================
+Environment naming conventions
+=============================================================
+
+The following naming conventions are used on all fully-supported (tier 1) sites. Environments are named using an abbreviated prefix that depends on the template/purpose, followed by the compiler name and version: `prefix-compiler-version`. The following table lists the prefices and gives a few examples.
+
++----------------------------------+---------------------------------------------------------+----------------+---------------------------+
+| Template (``configs/templates``) | Description                                             | Prefix         | Examples                  |
++==================================+=========================================================+================+===========================+
+| ``unified-dev``                  | Unified environment for all organizations/applications  | ``ue``         | ``ue-intel-2021.10.0``    |
++----------------------------------+---------------------------------------------------------+----------------+---------------------------+
+| ``skylab-dev``                   | JEDI/Skylab environment for JEDI, models, EWOK          | ``se``         | ``se-apple-clang@14.0.6`` |
++----------------------------------+---------------------------------------------------------+----------------+---------------------------+
+| ``neptune-dev``                  | NEPTUNE standalone environment (with xNRL Python)       | ``ne``         | ``ne-oneapi02024.2.1``    |
++----------------------------------+---------------------------------------------------------+----------------+---------------------------+
+| ``gsi-addon-dev``                | GSI addon (chained) environment on top of unified env.  | ``gsi``        | ``gsi-gcc@13.3.0``        |
++----------------------------------+---------------------------------------------------------+----------------+---------------------------+
+| ``unified-dev`` with new ESMF    | Unified environment with new ESMF (chained from ``ue``) | ``esmf870b99`` | ``esmf870b99-aocc-4.2.0`` |
++----------------------------------+---------------------------------------------------------+----------------+---------------------------+
+
+
 .. _Preconfigured_Sites_Tier1:
 
 =============================================================
