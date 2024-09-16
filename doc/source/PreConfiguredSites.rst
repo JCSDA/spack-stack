@@ -15,21 +15,21 @@ As of spack-stack-1.8.0, this page provides general information on the supported
 Environment naming conventions
 =============================================================
 
-The following naming conventions are used on all fully-supported (tier 1) sites. Environments are named using an abbreviated prefix that depends on the template/purpose, followed by the compiler name and version: `prefix-compiler-version`. The following table lists the prefices and gives a few examples.
+The following naming conventions are used on all fully-supported (tier 1) sites. Environments are named using an abbreviated prefix that depends on the template/purpose, followed by the compiler name and version: ``prefix-compiler-version``. The following table lists the prefices and gives a few examples.
 
-+----------------------------------+---------------------------------------------------------+----------------+---------------------------+
-| Template (``configs/templates``) | Description                                             | Prefix         | Examples                  |
-+==================================+=========================================================+================+===========================+
-| ``unified-dev``                  | Unified environment for all organizations/applications  | ``ue``         | ``ue-intel-2021.10.0``    |
-+----------------------------------+---------------------------------------------------------+----------------+---------------------------+
-| ``skylab-dev``                   | JEDI/Skylab environment for JEDI, models, EWOK          | ``se``         | ``se-apple-clang@14.0.6`` |
-+----------------------------------+---------------------------------------------------------+----------------+---------------------------+
-| ``neptune-dev``                  | NEPTUNE standalone environment (with xNRL Python)       | ``ne``         | ``ne-oneapi02024.2.1``    |
-+----------------------------------+---------------------------------------------------------+----------------+---------------------------+
-| ``gsi-addon-dev``                | GSI addon (chained) environment on top of unified env.  | ``gsi``        | ``gsi-gcc@13.3.0``        |
-+----------------------------------+---------------------------------------------------------+----------------+---------------------------+
-| ``unified-dev`` with new ESMF    | Unified environment with new ESMF (chained from ``ue``) | ``esmf870b99`` | ``esmf870b99-aocc-4.2.0`` |
-+----------------------------------+---------------------------------------------------------+----------------+---------------------------+
++----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
+| Template (``configs/templates``) | Description                                             | Prefix            | Examples                     |
++==================================+=========================================================+===================+==============================+
+| ``unified-dev``                  | Unified environment for all organizations/applications  | ``ue``            | ``ue-intel-2021.10.0``       |
++----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
+| ``skylab-dev``                   | JEDI/Skylab environment for JEDI, models, EWOK          | ``se``            | ``se-apple-clang-14.0.6``    |
++----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
+| ``neptune-dev``                  | NEPTUNE standalone environment (with xNRL Python)       | ``ne``            | ``ne-oneapi-2024.2.1``       |
++----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
+| ``gsi-addon-dev``                | GSI addon (chained) environment on top of unified env.  | ``gsi``           | ``gsi-gcc-13.3.0``           |
++----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
+| ``unified-dev`` with new ESMF    | Unified environment with new ESMF (chained from ``ue``) | ``ue-esmf870b99`` | ``ue-esmf870b99-aocc-4.2.0`` |
++----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
 
 
 .. _Preconfigured_Sites_Tier1:
