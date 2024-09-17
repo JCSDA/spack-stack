@@ -43,6 +43,8 @@ case $PLATFORM in
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/glade/work/epicufsrt/contrib/spack-stack/derecho/build_cache}
     ;;
   acorn)
+    # Python module needed for Spack backend to avoid resource misplacement bug:
+    module load gcc/10.3.0 python/3.11.7
     COMPILERS=${COMPILERS:-"intel@2022"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
     function spack_install_exe {
