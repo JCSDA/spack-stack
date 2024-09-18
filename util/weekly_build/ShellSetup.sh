@@ -43,9 +43,8 @@ case $PLATFORM in
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/glade/work/epicufsrt/contrib/spack-stack/derecho/build_cache}
     ;;
   acorn)
-    # Python module needed for Spack backend to avoid resource misplacement bug:
-    module load gcc/10.3.0 python/3.11.7
-    COMPILERS=${COMPILERS:-"intel@2022"}
+    module load gcc/11.2.0 python/3.11.7
+    COMPILERS=${COMPILERS:-"intel@2022.2.0.262 intel@19.1.3.304"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
     function spack_install_exe {
 #      set +e
@@ -60,12 +59,12 @@ case $PLATFORM in
 ##      /opt/pbs/bin/qsub -Wblock=true ${SPACK_ENV}/build.pbs
 ##      spack $* | tee -a log.install 2>&1
       shift 1
-      ${SPACK_STACK_DIR}/util/parallel_install.sh 2 4 $*
+      ${SPACK_STACK_DIR}/util/parallel_install.sh 3 4 $*
     }
     PACKAGES_TO_TEST="libpng libaec jasper w3emc g2c"
-    PACKAGES_TO_INSTALL="ufs-weather-model-env global-workflow-env upp-env"
-    INSTALL_OPTS="-j6"
+    PACKAGES_TO_INSTALL="ufs-weather-model-env global-workflow-env gsi-env madis"
     function alert_cmd {
+      module purge # annoying libstdc++ issue
       mail -s 'spack-stack weekly build failure' alexander.richert@noaa.gov  < <(echo "Weekly spack-stack build failed in $1. Run ID: $RUNID")
     }
     TEST_UFSWM=ON
