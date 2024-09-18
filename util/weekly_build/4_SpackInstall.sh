@@ -10,7 +10,7 @@ set +x
 . setup.sh
 set -x
 
-INSTALL_OPTS="--show-log-on-error --fail-fast $INSTALL_OPTS"
+INSTALL_OPTS="--show-log-on-error --fail-fast --no-cache $INSTALL_OPTS"
 
 for compiler in $COMPILERS; do
   cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
