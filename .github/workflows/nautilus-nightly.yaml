@@ -32,3 +32,5 @@ jobs:
       uses: ./.github/actions/Nightly_01_DirectorySetup
     - name: 02_GetSpackStackDevelop
       uses: ./.github/actions/Nightly_02_GetSpackStackDevelop
+    - name: 03_SetupUnifiedEnv
+      uses: ./.github/actions/Nightly_02_SetupUnifiedEnv

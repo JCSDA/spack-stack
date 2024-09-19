@@ -1,5 +1,4 @@
 name: Nightly 01 Directory Setup
-#description: Display a GitHub Actions log files - requires CI_DIR environment variable from caller
 
 runs:
   using: "composite"

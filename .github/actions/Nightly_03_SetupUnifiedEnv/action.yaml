@@ -1,0 +1,11 @@
+name: Nightly 03 Setup Unified Env
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 03 Setup Unified Env
+    shell: bash
+    run: |
+      RUNID=`date +"%Y%m%d"`
+      cd util/weekly_build
+      ./3_SetupUnifiedEnv.sh ${RUNID} ${BASEDIR} ${PLATFORM}
