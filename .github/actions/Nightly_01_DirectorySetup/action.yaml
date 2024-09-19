@@ -1,0 +1,14 @@
+name: Nightly 01 Directory Setup
+#description: Display a GitHub Actions log files - requires CI_DIR environment variable from caller
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 01 Directory Setup
+    shell: bash
+    run: |
+      RUNID=`date +"%Y%m%d"`
+      RUNDIR=${BASE_DIR}/${RUNID}
+      [ -d {RUNDIR} ] && rm -fr ${RUNDIR}
+      cd util/weekly_build
+      ./1_DirectorySetup.sh ${RUNID} ${RUNDIR} ${PLATFORM}

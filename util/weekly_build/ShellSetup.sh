@@ -86,8 +86,8 @@ case $PLATFORM in
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/p/app/projects/NEPTUNE/spack-stack/build_cache}
     ;;
   nautilus)
-    COMPILERS=${COMPILERS:-"intel"}
-    BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/p/app/projects/NEPTUNE/spack-stack/build_cache}
+    COMPILERS=${COMPILERS:-"intel oneapi gcc"}
+    BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/p/app/projects/NEPTUNE/spack-stack/build-cache}
     ;;
   s4)
     COMPILERS=${COMPILERS:-"intel"}
