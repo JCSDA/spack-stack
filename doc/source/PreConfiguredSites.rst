@@ -242,22 +242,14 @@ The following is required for building new spack environments with any supported
 NOAA Acorn (WCOSS2 test system)
 -------------------------------
 
-**NEEDS UPDATING**
+On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed in ``lib64``, breaking the ``lib`` assumption made by some packages. Therefore, ``CONFIG_SITE`` should remain set to empty in ``compilers.yaml``.
 
-For spack-stack-1.7.0, the meta modules are in ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/spack-stack-1.7.0/envs/ue-intel{19,2022}/modulefiles/Core``.
+For official deployments on ``spack-stack`` on Acorn, be mindful of umask and group ownership, as these can be finicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
 
-On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed in ``lib64``, breaking the ``lib`` assumption made by some packages. Therefore, ``CONFIG_SITE`` should be set to empty in ``compilers.yaml``. Also, don't use ``module purge`` on Acorn!
-
-When installing an official ``spack-stack`` on Acorn, be mindful of umask and group ownership, as these can be finicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
-
-Due to a combined quirk of Cray and Spack, the ``PrgEnv-gnu`` and ``gcc`` modules must be loaded when `ESMF` is being installed with ``gcc``.
-
-As of spring 2023, there is an inconsistency in ``libstdc++`` versions on Acorn between the login and compute nodes. It is advisable to compile on the compute nodes, which requires running ``spack fetch`` prior to installing through a batch job.
-
-Note that certain packages, such as recent versions of `py-scipy`, cannot be compiled on compute nodes because their build systems require internet access.
+Note that for the installation using Intel 19, the system GCC, 7.5.0, is used on the backend for the Intel compiler. More recent versions of GCC are not reliably compatible. Likewise, for Intel 2022, GCC 10.2.0 is used on the backend. Intel 19 is not reliably compatible with C++17 standards, and Intel 2022 is not reliably compatible with C++20. Without a handful of package version restrictions, certain package builds will break, usually in the configure stage.
 
 .. note::
-   System-wide ``spack`` software installations are maintained by NCO on this platform which are not associated with spack-stack. The spack-stack official installations use those installations for one dependency (git-lfs).
+   System-wide ``spack`` software installations are maintained by NCO on this platform, which are not associated with spack-stack.
 
 .. _Preconfigured_Sites_Parallel_Works:
 
