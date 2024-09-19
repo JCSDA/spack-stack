@@ -1,0 +1,11 @@
+name: Nightly 04 Spack Install
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 04 Spack Install
+    shell: bash
+    run: |
+      RUNID=`date +"%Y%m%d"`
+      cd util/weekly_build
+      ./4_SpackInstall.sh ${RUNID} ${BASEDIR} ${PLATFORM}
