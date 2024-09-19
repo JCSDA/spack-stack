@@ -54,7 +54,7 @@ packages:
   # Also, check the acorn and derecho site configs which have esmf modifications.
   esmf:
     require:
-      - '~xerces ~pnetcdf +shared +external-parallelio'
+      - '~xerces ~pnetcdf +shared +external-parallelio +python'
       - any_of: ['@=8.6.1 snapshot=none', '@=8.7.0b11 snapshot=b11']
       - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
         when: "%intel"
