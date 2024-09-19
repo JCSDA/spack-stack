@@ -8,7 +8,9 @@ runs:
     shell: bash
     run: |
       RUNID=`date +"%Y%m%d"`
-      RUNDIR=${BASE_DIR}/${RUNID}
-      [ -d {RUNDIR} ] && rm -fr ${RUNDIR}
+      # DH* TODO REMOVE LATER?
+      RUNDIR=${BASEDIR}/${RUNID}
+      rm -vfr ${RUNDIR}
+      # *DH
       cd util/weekly_build
-      ./1_DirectorySetup.sh ${RUNID} ${RUNDIR} ${PLATFORM}
+      ./1_DirectorySetup.sh ${RUNID} ${BASEDIR} ${PLATFORM}

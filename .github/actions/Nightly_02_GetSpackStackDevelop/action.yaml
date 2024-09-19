@@ -1,0 +1,12 @@
+name: Nightly 02 Get Spack-Stack Develop
+#description: Display a GitHub Actions log files - requires CI_DIR environment variable from caller
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 02 Get Spack-Stack Develop
+    shell: bash
+    run: |
+      RUNID=`date +"%Y%m%d"`
+      cd util/weekly_build
+      ./2_GetSpackStackDevelop.sh ${RUNID} ${BASEDIR} ${PLATFORM}
