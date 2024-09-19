@@ -44,7 +44,7 @@ case $PLATFORM in
     ;;
   acorn)
     module load gcc/11.2.0 python/3.11.7
-    COMPILERS=${COMPILERS:-"intel@2022.2.0.262 intel@19.1.3.304"}
+    COMPILERS=${COMPILERS:-"intel@2022.0.2.262 intel@19.1.3.304"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/lfs/h1/emc/nceplibs/noscrub/spack-stack/build_cache}
     function spack_install_exe {
 #      set +e
