@@ -23,4 +23,4 @@ function spack_install_exe {
 
 . $(dirname $0)/sites/${PLATFORM}.sh
 
-echo "Build cache target directory: ${BUILD_CACHE_DIR?'BUILD_CACHE_DIR must be set!'}"
+echo "Build cache target name/directory: ${BUILD_CACHE?'BUILD_CACHE must be set (name of configured mirror or directory path!'}"

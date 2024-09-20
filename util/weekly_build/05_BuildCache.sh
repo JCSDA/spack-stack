@@ -13,5 +13,6 @@ set -x
 for compiler in $COMPILERS; do
   cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
   spack env activate .
-  spack buildcache push --unsigned --force ${BUILD_CACHE_DIR?"BUILD_CACHE_DIR must be set!"} $PACKAGES_TO_INSTALL
+  spack buildcache push --unsigned --force ${BUILD_CACHE:-local-binary} $PACKAGES_TO_INSTALL
+  spack buildcache rebuild-index ${BUILD_CACHE:-local-binary}
 done

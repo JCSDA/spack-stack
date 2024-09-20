@@ -1,7 +1,7 @@
 mirrors:
-  local-source:
+  local-cache:
     fetch:
-      url: file:///gpfs/fs1/neptune/spack-stack/source-cache
+      url: file:///gpfs/fs1/neptune/spack-stack/cache
       access_pair:
       - null
       - null
@@ -9,7 +9,7 @@ mirrors:
       profile: null
       endpoint_url: null
     push:
-      url: file:///gpfs/fs1/neptune/spack-stack/source-cache
+      url: file:///gpfs/fs1/neptune/spack-stack/cache
       access_pair:
       - null
       - null
