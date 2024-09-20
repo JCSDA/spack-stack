@@ -393,6 +393,7 @@ The following instructions were used to prepare a basic Red Hat 8 system as it i
    yum -y install patch
    yum -y install automake
    yum -y install xorg-x11-xauth
+   yum -y install xterm
    yum -y install perl-IPC-Cmd
    yum -y install gettext-devel
    yum -y install texlive
