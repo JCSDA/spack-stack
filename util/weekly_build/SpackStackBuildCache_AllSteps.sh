@@ -16,10 +16,10 @@ function trap_and_run {
   $*
 }
 
-trap_and_run ./1_DirectorySetup.sh $*
-trap_and_run ./2_GetSpackStack.sh $*
-trap_and_run ./3_SetupUnifiedEnv.sh $*
-trap_and_run ./4_SpackInstall.sh $*
-trap_and_run ./5_BuildCache.sh $*
-trap_and_run ./6_AppTests.sh $*
-trap_and_run ./7_Cleanup.sh $*
+trap_and_run ./01_DirectorySetup.sh $*
+trap_and_run ./02_GetSpackStack.sh $*
+trap_and_run ./03_SetupUnifiedEnv.sh $*
+trap_and_run ./04_SpackInstall.sh $*
+trap_and_run ./05_BuildCache.sh $*
+trap_and_run ./06_AppTests.sh $*
+trap_and_run ./07_Cleanup.sh $*
