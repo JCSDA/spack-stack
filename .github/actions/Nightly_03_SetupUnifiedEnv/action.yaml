@@ -8,4 +8,4 @@ runs:
     run: |
       RUNID=`date +"%Y%m%d"`
       cd util/weekly_build
-      ./3_SetupUnifiedEnv.sh ${RUNID} ${BASEDIR} ${PLATFORM}
+      ./03_SetupEnv.sh ${RUNID} ${BASEDIR} ${PLATFORM}

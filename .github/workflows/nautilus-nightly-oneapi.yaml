@@ -18,11 +18,14 @@ defaults:
 env:
   BASEDIR: /p/work2/heinzell/spack-stack-nightly
   PLATFORM: nautilus
+  COMPILER: oneapi
 
 jobs:
 
-  nightly-build:
+  nightly-build-oneapi:
     runs-on: ['self-hosted','nautilus-heinzell']
+    # Set timeout to 12hrs
+    #timeout-minutes: 720
     steps:
     - uses: actions/checkout@v4
       with:

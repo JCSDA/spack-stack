@@ -86,6 +86,8 @@ case $PLATFORM in
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/p/app/projects/NEPTUNE/spack-stack/build_cache}
     ;;
   nautilus)
+    module purge
+    umask 0022
     COMPILERS=${COMPILERS:-"intel oneapi gcc"}
     BUILD_CACHE_DIR=${BUILD_CACHE_DIR:-/p/app/projects/NEPTUNE/spack-stack/build-cache}
     ;;

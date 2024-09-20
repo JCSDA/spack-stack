@@ -8,4 +8,4 @@ runs:
     run: |
       RUNID=`date +"%Y%m%d"`
       cd util/weekly_build
-      ./2_GetSpackStackDevelop.sh ${RUNID} ${BASEDIR} ${PLATFORM}
+      ./02_GetSpackStackDevelop.sh ${RUNID} ${BASEDIR} ${PLATFORM}

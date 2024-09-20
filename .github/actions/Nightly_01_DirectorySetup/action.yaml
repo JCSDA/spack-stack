@@ -12,4 +12,4 @@ runs:
       rm -vfr ${RUNDIR}
       # *DH
       cd util/weekly_build
-      ./1_DirectorySetup.sh ${RUNID} ${BASEDIR} ${PLATFORM}
+      ./01_DirectorySetup.sh ${RUNID} ${BASEDIR} ${PLATFORM}
