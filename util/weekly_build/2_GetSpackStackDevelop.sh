@@ -9,5 +9,5 @@ if [ -d $RUNID ]; then
   cd $RUNID
   git pull
 else
-  git clone --recurse-submodules https://github.com/AlexanderRichert-NOAA/spack-stack -b weekly_build $RUNID
+  git clone --recurse-submodules ${SPACK_STACK_URL:-https://github.com/AlexanderRichert-NOAA/spack-stack} -b ${SPACK_STACK_BRANCH:-weekly_build} $RUNID
 fi
