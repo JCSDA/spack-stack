@@ -10,7 +10,13 @@ set +x
 . setup.sh
 set -x
 
-INSTALL_OPTS="--show-log-on-error --fail-fast --no-cache $INSTALL_OPTS"
+if [ "$REUSE_BUILD_CACHE" == YES ]; then
+  cache_flag="--no-check-signature"
+else
+  cache_flag="--no-cache"
+fi
+
+INSTALL_OPTS="--show-log-on-error --fail-fast $cache_flag $INSTALL_OPTS"
 
 for compiler in $COMPILERS; do
   cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
