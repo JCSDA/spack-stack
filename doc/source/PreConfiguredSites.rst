@@ -125,24 +125,6 @@ The following is required for building new spack environments with any supported
    module use /discover/swdev/jcsda/spack-stack/scu16/modulefiles
    module load miniconda/3.9.7
 
-For ``spack-stack-1.8.0`` with Intel, load the following modules after loading miniconda:
-
-.. code-block:: console
-
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.8.0/envs/ue-intel-2021.6.0/install/modulefiles/Core
-   module load stack-intel/2021.6.0
-   module load stack-intel-oneapi-mpi/2021.6.0
-   module load stack-python/3.11.7
-
-For ``spack-stack-1.8.0`` with GNU, load the following modules after loading miniconda:
-
-.. code-block:: console
-
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu16/spack-stack-1.8.0/envs/ue-gcc-12.1.0/install/modulefiles/Core
-   module load stack-gcc/12.1.0
-   module load stack-openmpi/4.1.3
-   module load stack-python/3.11.7
-
 .. _Preconfigured_Sites_Discover_SCU17:
 
 ------------------------------
@@ -156,24 +138,6 @@ The following is required for building new spack environments with any supported
    module purge
    module use /discover/swdev/gmao_SIteam/modulefiles-SLES15
    module use /discover/swdev/jcsda/spack-stack/scu17/modulefiles
-
-For ``spack-stack-1.8.0`` with Intel, load the following modules:
-
-.. code-block:: console
-
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-1.8.0/envs/ue-intel-2021.10.0/install/modulefiles/Core
-   module load stack-intel/2021.10.0
-   module load stack-intel-oneapi-mpi/2021.10.0
-   module load stack-python/3.11.7
-
-For ``spack-stack-1.8.0`` with GNU, load the following modules:
-
-.. code-block:: console
-
-   module use /gpfsm/dswdev/jcsda/spack-stack/scu17/spack-stack-1.8.0/envs/ue-gcc-12.3.0/install/modulefiles/Core
-   module load stack-gcc/12.3.0
-   module load stack-openmpi/4.1.6
-   module load stack-python/3.11.7
 
 .. _Preconfigured_Sites_Narwhal:
 
