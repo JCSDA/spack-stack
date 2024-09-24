@@ -37,5 +37,5 @@ jobs:
       uses: ./.github/actions/Nightly_02_GetSpackStackDevelop
     - name: 03_SetupUnifiedEnv
       uses: ./.github/actions/Nightly_03_SetupUnifiedEnv
-    #- name: 04_SpackInstall
-    #  uses: ./.github/actions/Nightly_04_SpackInstall
+    - name: 04_SpackInstall
+      uses: ./.github/actions/Nightly_04_SpackInstall
