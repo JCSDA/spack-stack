@@ -27,7 +27,7 @@ for compiler in $COMPILERS; do
     spack fetch --missing --dependencies $PACKAGES_TO_INSTALL 2>&1 | tee log.fetch
   fi
   # Just install the packages we're testing (+dependencies):
-  spack_install_exe install $INSTALL_OPTS --test root $PACKAGES_TO_TEST 2>&1 | tee log.test.install
+  spack_install_exe install $INSTALL_OPTS --test root $PACKAGES_TO_TEST
   # Install the rest of the stack as usual:
-  spack_install_exe install $INSTALL_OPTS $PACKAGES_TO_INSTALL 2>&1 | tee log.install
+  spack_install_exe install $INSTALL_OPTS $PACKAGES_TO_INSTALL
 done
