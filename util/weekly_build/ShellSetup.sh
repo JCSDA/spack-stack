@@ -18,7 +18,8 @@ function alert_cmd {
 }
 
 function spack_install_exe {
-  spack $* | tee -a log.install 2>&1
+  #spack $* | tee -a log.install 2>&1
+  spack $*
 }
 
 case $PLATFORM in
