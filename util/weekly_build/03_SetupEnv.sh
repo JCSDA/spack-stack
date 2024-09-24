@@ -11,6 +11,8 @@ set +x
 set -x
 
 for compiler in $COMPILERS; do
+  echo "Setting up environment build-${compiler/@/-} using template unified-dev"
+  #echo "Setting up environment build-${compiler/@/-} using template unified-dev"
   rm -rf $RUNDIR/$RUNID/envs/build-${compiler/@/-}
   spack stack create env --name build-${compiler/@/-} --template unified-dev --site $PLATFORM --compiler $compiler
   cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}

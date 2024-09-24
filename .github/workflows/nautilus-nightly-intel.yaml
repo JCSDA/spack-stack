@@ -1,4 +1,4 @@
-name: nautilus unified-env oneapi
+name: nautilus unified-env intel
 
 on:
   workflow_dispatch:
@@ -18,11 +18,11 @@ defaults:
 env:
   BASEDIR: /p/work2/heinzell/spack-stack-nightly
   PLATFORM: nautilus
-  COMPILERS: oneapi
+  COMPILERS: intel
 
 jobs:
 
-  nightly-build-oneapi:
+  nightly-build-intel:
     runs-on: ['self-hosted','nautilus-heinzell']
     # Set timeout to 12hrs
     timeout-minutes: 720
