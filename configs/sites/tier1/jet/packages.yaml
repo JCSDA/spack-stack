@@ -57,10 +57,6 @@ packages:
     externals:
     - spec: gawk@4.0.2
       prefix: /usr
-  gettext:
-    externals:
-    - spec: gettext@0.19.8.1
-      prefix: /usr
   ghostscript:
     externals:
     - spec: ghostscript@9.25
