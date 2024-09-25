@@ -13,5 +13,5 @@ packages:
       - mpi/impi/2021.10.0
   intel-oneapi-mkl:
     externals:
-    - spec: intel-oneapi-mkl@2032.2.0%intel@2021.10.0
+    - spec: intel-oneapi-mkl@2023.2.0%intel@2021.10.0
       prefix: /usr/local/intel/oneapi/2021
