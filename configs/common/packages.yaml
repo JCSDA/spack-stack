@@ -235,7 +235,7 @@ packages:
     require: '@2.11.0'
   # To avoid duplicate packages
   py-ruamel-yaml:
-    require: '@0.17.32'
+    require: '@0.17.16'
   # Pin the py-setuptools version to avoid duplicate Python packages
   py-setuptools:
     require: '@63.4.3'
