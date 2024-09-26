@@ -15,7 +15,7 @@ INSTALL_OPTS="--show-log-on-error --fail-fast --no-cache $INSTALL_OPTS"
 for compiler in $COMPILERS; do
   cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
   spack env activate .
-  spack fetch # 2>&1 | tee log.fetch
+  #spack fetch # 2>&1 | tee log.fetch
   #if [ -z "$PACKAGES_TO_INSTALL" ]; then
   #  spack fetch --missing # 2>&1 | tee log.fetch
   #else

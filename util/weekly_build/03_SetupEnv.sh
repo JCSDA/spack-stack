@@ -24,4 +24,9 @@ for compiler in $COMPILERS; do
   spack concretize --fresh --force
 # The following is not working at the moment, for seemingly a couple reasons. Therefore packages with test-only deps cannot be tested.
 #  spack concretize --force --fresh --test all 2>&1 | tee log.concretize_test
+  # Get path to local-source mirror from spack site config
+  SOURCE_MIRROR=`spack mirror list | grep local-source`
+  SOURCE_MIRROR=${SOURCE_MIRROR/local-source \[sb\] file:\/\//}
+  # Download all source codes needed to build the environment
+  spack mirror create -a -d ${SOURCE_MIRROR}
 done
