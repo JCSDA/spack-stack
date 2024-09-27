@@ -63,7 +63,7 @@ Pre-configured sites (tier 1)
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Narwhal               | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 | U.S. Navy (HPCMP)   +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Nautilus              | Intel              | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+|                     | Nautilus              | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | Univ. of Wisconsin  | S4                    | Intel              | ``/data/prod/jedi/spack-stack/``                       | JCSDA           |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -154,6 +154,34 @@ The following is required for building new spack environments with Intel on this
    module load PrgEnv-intel/8.3.3
    module unload intel
    module load intel-classic/2023.2.0
+   module unload cray-mpich
+   module unload craype-network-ofi
+   # Warning. Do not load craype-network-ucx
+   # or cray-mpich-ucx/8.1.21!
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load craype-network-ucx
+   #module load cray-mpich-ucx/8.1.21
+   module load libfabric/1.12.1.2.2.1
+   module unload cray-libsci
+   module load cray-libsci/23.05.1.4
+
+The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Narwhal!
+
+.. code-block:: console
+
+   umask 0022
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.3.3
+   module unload intel
+   module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
+   module load tbb/2021.13
+   module load compiler-rt/2024.2.1
+   module load compiler/2024.2.1
+   module load ifort/2024.2.1
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx

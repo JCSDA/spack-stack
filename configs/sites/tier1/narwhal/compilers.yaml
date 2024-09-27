@@ -22,6 +22,38 @@ compilers::
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
   - compiler:
+      spec: oneapi@2024.2.1
+      paths:
+        #cc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icx
+        #cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icpx
+        #f77: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+        #fc: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      flags: {}
+      operating_system: sles15
+      modules:
+      - PrgEnv-intel/8.3.3
+      - tbb/2021.13
+      - compiler-rt/2024.2.1
+      - compiler/2024.2.1
+      - ifort/2024.2.1
+      - cray-libsci/23.05.1.4
+      - libfabric/1.12.1.2.2.1
+      environment:
+        prepend_path:
+          PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
+          CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib:/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
+          MODULEPATH: '/p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles'
+        append_path:
+          CPATH: '/p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/opt/compiler/include/intel64'
+        set:
+          CRAYPE_LINK_TYPE: 'dynamic'
+      extra_rpaths: []
+  - compiler:
       spec: gcc@10.3.0
       paths:
         cc: cc
