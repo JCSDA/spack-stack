@@ -38,10 +38,6 @@ packages:
     externals:
     - spec: gawk@4.2.1
       prefix: /usr
-  gettext:
-    externals:
-    - spec: gettext@0.19.8.1
-      prefix: /usr
   git:
     externals:
     - spec: git@2.39.3~tcltk
