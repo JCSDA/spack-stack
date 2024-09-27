@@ -6,7 +6,7 @@ sudo su -
 chmod 755 /contrib
 
 cd /contrib/spack-stack-rocky8/
-git clone --recursive https://github.com/JCSDA/spack-stack spack-stack-1.8.0
+git clone --recursive https://github.com/JCSDA/spack-stack -b release/1.8.0 spack-stack-1.8.0
 cd spack-stack-1.8.0
 . setup.sh
 spack stack create env --name ue-intel-2021.10.0 --template unified-dev --site noaa-aws --compiler intel
