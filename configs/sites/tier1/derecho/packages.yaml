@@ -7,6 +7,11 @@ packages:
   # Need to force spack to build python with ssl variant when using older openssl from OS
   python:
     require: "+ssl"
+  # py-scipy 1.12 does not build with intel on Derecho, pin to 1.11.4
+  # use same version with gcc for consistency on the machine
+  py-scipy:
+    require:
+    - '@1.11.4'
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -26,8 +31,8 @@ packages:
       prefix: /usr
   curl:
     externals:
-    - spec: curl@7.79.1+gssapi+ldap+nghttp2
-      prefix: /usr
+    - spec: curl@8.1.2+gssapi+ldap+nghttp2
+      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/curl/8.1.2/gcc/7.5.0/uq6y
   cvs:
     externals:
     - spec: cvs@1.12.13
@@ -36,13 +41,6 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /glade/work/epicufsrt/contrib/spack-stack/derecho/ecflow-5.8.4
-      modules:
-      - ecflow/5.8.4
   findutils:
     externals:
     - spec: findutils@4.8.0
@@ -96,6 +94,11 @@ packages:
     externals:
     - spec: pkg-config@0.29.2
       prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@5.14.2
+      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/qt/5.14.2/gcc/7.5.0/eqcj
   sed:
     externals:
     - spec: sed@4.4
