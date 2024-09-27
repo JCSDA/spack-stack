@@ -3,7 +3,7 @@
 ## Steps to perform to install spack-stack version 1.8.0
 
 sudo su -
-chmod 755 /contrib
+chmod 777 /contrib
 
 cd /contrib/spack-stack-rocky8/
 git clone --recursive https://github.com/JCSDA/spack-stack -b release/1.8.0 spack-stack-1.8.0
