@@ -190,7 +190,7 @@ modules:
             'TOCGRIB': '{prefix}/bin/tocgrib'
             'TOCGRIB2': '{prefix}/bin/tocgrib2'
             'TOCGRIB2SUPER': '{prefix}/bin/tocgrib2super'
-            'WGRIB': '{prefix}/bin/wgrib2'
+            'WGRIB': '{prefix}/bin/wgrib'
       landsfcutil:
         environment:
           set:
@@ -259,6 +259,8 @@ modules:
 
       hierarchy:
       - mpi
+      - g2virt
+      - g2tmplvirt
 
     prefix_inspections:
       bin:

@@ -45,10 +45,6 @@ packages:
     externals:
     - spec: berkeley-db@5.3.21
       prefix: /usr
-  bzip2:
-    externals:
-    - spec: bzip2@1.0.6
-      prefix: /usr
   cpio:
     externals:
     - spec: cpio@2.11
@@ -116,10 +112,6 @@ packages:
     externals:
     - spec: openjdk@1.8.0_312-b07
       prefix: /usr
-  krb5:
-    externals:
-    - spec: krb5@1.15.1
-      prefix: /usr
   libfuse:
     externals:
     - spec: libfuse@2.9.2
@@ -183,11 +175,10 @@ packages:
     externals:
     - spec: wget@1.14
       prefix: /usr
-  xz:
-    externals:
-    - spec: xz@5.2.2
-      prefix: /usr
   zip:
     externals:
     - spec: zip@3.0
       prefix: /usr
+
+  zlib:
+    require: ["~shared"]
