@@ -5,5 +5,3 @@ modules:
     lmod:
       include:
       - python
-      exclude:
-      - ecflow
