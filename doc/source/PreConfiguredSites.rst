@@ -118,16 +118,12 @@ NASA Discover SCU16
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
    module use /discover/swdev/gmao_SIteam/modulefiles-SLES12
    module use /discover/swdev/jcsda/spack-stack/scu16/modulefiles
    module load miniconda/3.9.7
-   module load ecflow/5.8.4
-
 
 .. _Preconfigured_Sites_Discover_SCU17:
 
@@ -137,15 +133,11 @@ NASA Discover SCU17
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
    module use /discover/swdev/gmao_SIteam/modulefiles-SLES15
    module use /discover/swdev/jcsda/spack-stack/scu17/modulefiles
-   module load ecflow/5.11.4
-
 
 .. _Preconfigured_Sites_Narwhal:
 
