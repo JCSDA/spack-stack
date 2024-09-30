@@ -171,6 +171,8 @@ The following is required for building new spack environments with Intel on this
 
 The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Narwhal!
 
+.. note:: This particular setup of the oneAPI compilers is outside the Cray-blessed environment and there are problems installing Python packages with spack.
+
 .. code-block:: console
 
    umask 0022
