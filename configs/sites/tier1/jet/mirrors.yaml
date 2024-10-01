@@ -1,7 +1,7 @@
 mirrors:
   local-source:
     fetch:
-      url: file:///contrib/spack-stack/mirror
+      url: file:///lfs4/HFIP/hfv3gfs/role.epic/spack-stack/source-cache
       access_pair:
       - null
       - null
@@ -9,7 +9,7 @@ mirrors:
       profile: null
       endpoint_url: null
     push:
-      url: file:///contrib/spack-stack/mirror
+      url: file:///lfs4/HFIP/hfv3gfs/role.epic/spack-stack/source-cache
       access_pair:
       - null
       - null
