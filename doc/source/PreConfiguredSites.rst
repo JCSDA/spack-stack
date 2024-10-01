@@ -249,7 +249,6 @@ The following is required for building new spack environments with any supported
 .. code-block:: console
 
    module purge
-   No need to load modules, spack-stack-1.8.0 have no dependences
 
 
 .. _Preconfigured_Sites_Gaea_C5:
