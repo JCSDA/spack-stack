@@ -255,7 +255,6 @@ The following is required for building new spack environments with any supported
    export LMOD_TMOD_FIND_FIRST=yes
    module load ncarenv/23.09
    module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-   module load ecflow/5.8.4
 
 
 .. _Preconfigured_Sites_Acorn:
