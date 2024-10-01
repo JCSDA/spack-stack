@@ -319,7 +319,6 @@ The following is required for building new spack environments with any supported
 .. code-block:: console
 
    module purge
-   No need to load modules, spack-stack-1.8.0 have no dependences
 
 .. note::
    On Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
