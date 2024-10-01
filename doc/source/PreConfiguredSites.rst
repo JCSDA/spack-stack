@@ -290,7 +290,7 @@ The following is required for building new spack environments with Intel on this
 
 .. code-block:: console
 
-   These modules should be loaded by default, if not load (swap) with:
+   # These modules should be loaded by default, if not load (swap) with:
    module load PrgEnv-intel/8.3.3
    module load intel-classic/2023.2.0
    module load cray-mpich/8.1.25
