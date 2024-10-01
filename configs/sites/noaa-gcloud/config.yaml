@@ -1,5 +1,5 @@
 config:
-  build_jobs: 4
+  build_jobs: 6
 
   # Overrides for spack build and staging areas to speed up builds
   # and avoid errors with hard links on the NFS filesystem /contrib
