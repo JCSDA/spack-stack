@@ -65,7 +65,7 @@ packages:
   mysql:
     externals:
     - spec: mysql@8.0.31
-      prefix: /contrib/spack-stack/mysql-8.0.31
+      prefix: /contrib/spack-stack-rocky8/mysql-8.0.31
   ncurses:
     externals:
     - spec: ncurses@6.1-10.20180224+termlib abi=5
@@ -111,4 +111,4 @@ packages:
     - spec: zip@3.0
       prefix: /usr
   zlib:
-     require: ["~shared"]
+     require: [~shared]
