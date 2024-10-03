@@ -475,20 +475,14 @@ The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LT
    apt install -y automake
    apt install -y autopoint
    apt install -y gettext
-   apt install -y xterm
    apt install -y texlive
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
-   apt install -y meson
-   apt install -y bison
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
    apt install -y mysql-server
    apt install -y libmysqlclient-dev
-
-   # Python
-   apt install -y python3-dev python3-pip
 
    # Exit root session
    exit

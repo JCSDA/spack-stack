@@ -55,11 +55,13 @@ Pre-configured sites (tier 1)
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | NOAA (NCEP)         | Acorn                 | Intel              | ``/lfs/h1/emc/nceplibs/noscrub/spack-stack/``          | NOAA-EMC        |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Gaea                  | Intel              | ``/ncrc/proj/epic/spack-stack/``                       | EPIC / NOAA-EMC |
+|                     | Gaea C5               | Intel              | ``/ncrc/proj/epic/spack-stack/``                       | EPIC / NOAA-EMC |
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| NOAA (RDHPCS)       | Hera                  | GCC, Intel         | ``/scratch1/NCEPDEV/nems/role.epic/spack-stack/``      | EPIC / NOAA-EMC |
+|                     | Gaea C6               | Intel              | ``/ncrc/proj/epic/spack-stack/c6/``                    | EPIC / NOAA-EMC |
+| NOAA (RDHPCS)       +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+|                     | Hera                  | GCC, Intel         | ``/contrib/spack-stack/``                              | EPIC / NOAA-EMC |
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Jet                   | GCC, Intel         | ``/mnt/lfs4/HFIP/hfv3gfs/role.epic/spack-stack/``      | EPIC / NOAA-EMC |
+|                     | Jet                   | GCC, Intel         | ``/contrib/spack-stack``                               | EPIC / NOAA-EMC |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Narwhal               | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 | U.S. Navy (HPCMP)   +-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -73,7 +75,7 @@ Pre-configured sites (tier 1)
 + Amazon Web Services +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Parallelcluster JCSDA | GCC, Intel         |  *currently unavailable*                               | JCSDA           |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| NOAA (RDHPCS)       | RDHPCS Parallel Works | Intel              | ``/contrib/spack-stack/``                              | EPIC / JCSDA    |
+| NOAA (RDHPCS)       | RDHPCS Parallel Works | Intel              | ``/contrib/spack-stack-rocky8/``                       | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 
 .. _Preconfigured_Sites_Orion:
@@ -84,12 +86,9 @@ MSU Orion
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
-   module use /work/noaa/epic/role-epic/spack-stack/orion/modulefiles-rocky9
 
 
 .. _Preconfigured_Sites_Hercules:
@@ -100,14 +99,10 @@ MSU Hercules
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
-   module use /work/noaa/epic/role-epic/spack-stack/hercules/modulefiles
-   module load ecflow/5.8.4
-   module load git-lfs/3.1.2
+   # No need to load modules, spack-stack-1.8.0 have no dependences
 
 
 .. _Preconfigured_Sites_Discover_SCU16:
@@ -280,17 +275,9 @@ NOAA Parallel Works (AWS, Azure, Gcloud)
 
 The following is required for building new spack environments with any supported compiler on this platform. The default module path needs to be removed, otherwise spack detects the system as Cray.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
-   module unuse /opt/cray/craype/default/modulefiles
-   module unuse /opt/cray/modulefiles
-   module use /contrib/spack-stack/modulefiles
-   module load cmake/3.27.2
-   module load ecflow/5.8.4
-   module load git-lfs/2.4.1
 
 
 .. _Preconfigured_Sites_Gaea_C5:
@@ -301,17 +288,13 @@ NOAA RDHPCS Gaea C5
 
 The following is required for building new spack environments with Intel on this platform.. Don't use ``module purge`` on Gaea!
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
+   # These modules should be loaded by default, if not load (swap) with:
    module load PrgEnv-intel/8.3.3
    module load intel-classic/2023.1.0
    module load cray-mpich/8.1.25
    module load python/3.9.12
-
-   module use /ncrc/proj/epic/spack-stack/modulefiles
-   module load ecflow/5.8.4
 
 
 .. note::
@@ -333,17 +316,13 @@ NOAA RDHPCS Gaea C6
 
 The following is required for building new spack environments with Intel on this platform.. Don't use ``module purge`` on Gaea!
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
+   # These modules should be loaded by default, if not load (swap) with:
    module load PrgEnv-intel/8.3.3
-   module load intel-classic/2023.1.0
+   module load intel-classic/2023.2.0
    module load cray-mpich/8.1.25
    module load python/3.9.12
-
-   module use /ncrc/proj/epic/spack-stack/modulefiles
-   module load ecflow/5.8.4
 
 
 .. note::
@@ -365,14 +344,9 @@ NOAA RDHPCS Hera
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
-   module use /scratch1/NCEPDEV/nems/role.epic/modulefiles
-   module load miniconda3/4.12.0
-   module load ecflow/5.8.4
 
 .. note::
    On Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
@@ -386,15 +360,9 @@ NOAA RDHPCS Jet
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
-   module use /lfs4/HFIP/hfv3gfs/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load ecflow/5.5.3
-   module use /lfs4/HFIP/hfv3gfs/role.epic/modulefiles
 
 
 .. _Preconfigured_Sites_S4:
