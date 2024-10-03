@@ -1,18 +1,5 @@
 compilers:
 - compiler:
-    spec: clang@=14.0.6
-    paths:
-      cc: /usr/bin/clang
-      cxx: /usr/bin/clang++
-      f77: null
-      fc: null
-    flags: {}
-    operating_system: oracle9
-    target: x86_64
-    modules: []
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: gcc@=11.4.1
     paths:
       cc: /usr/bin/gcc
@@ -39,14 +26,15 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: oneapi@=2024.1.2
+    spec: oneapi@=2024.2.1
     paths:
-      cc: /opt/intel/oneapi/compiler/2024.1/bin/icx
-      cxx: /opt/intel/oneapi/compiler/2024.1/bin/icpx
-      f77: /opt/intel/oneapi/compiler/2024.1/bin/ifort
-      fc: /opt/intel/oneapi/compiler/2024.1/bin/ifort
-      #f77: /opt/intel/oneapi/compiler/2024.1/bin/ifx
-      #fc: /opt/intel/oneapi/compiler/2024.1/bin/ifx
+      cc: /opt/intel/oneapi/2024.2/bin/icx
+      cxx: /opt/intel/oneapi/2024.2/bin/icpx
+      # https://github.com/JCSDA/spack-stack/issues/1279
+      f77: /opt/intel/oneapi/2024.2/bin/ifort
+      fc: /opt/intel/oneapi/2024.2/bin/ifort
+      #f77: /opt/intel/oneapi/2024.2/bin/ifx
+      #fc: /opt/intel/oneapi/2024.2/bin/ifx
     flags: {}
     operating_system: oracle9
     target: x86_64
@@ -54,7 +42,7 @@ compilers:
     environment:
       # change to append_path once relevant PR is merged
       append_path:
-        CPATH: /opt/intel/oneapi/compiler/2024.1/opt/compiler/include/intel64
+        CPATH: /opt/intel/oneapi/compiler/2024.2/opt/compiler/include/intel64
     extra_rpaths: []
 - compiler:
     spec: aocc@=4.2.0

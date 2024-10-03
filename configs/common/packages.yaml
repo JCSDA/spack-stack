@@ -75,8 +75,9 @@ packages:
     # Pin version to avoid duplicates
     require: '@2.6.4'
   fms:
-    require: '@2024.02'
-    variants: 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
+    require:
+    - '@2024.02'
+    - 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
   fontconfig:
     require: '+pic'
   freetype:
@@ -214,6 +215,9 @@ packages:
   ## To avoid duplicate packages
   #py-jinja2:
   #  require: '@3.1.2'
+  # https://github.com/JCSDA/spack-stack/issues/1276
+  py-matplotlib:
+     require: '@3.7.4'
   py-meson-python:
      require: '@0.15.0'
   # Comment out for now until build problems are solved
@@ -226,9 +230,10 @@ packages:
     require: '@1.5.8 ~mpi'
   # py-numpy@1.26 causes many build problems with older Python packages
   # also check Nautilus site config when making changes here
+  # https://github.com/JCSDA/spack-stack/issues/1276
   py-numpy:
     require:
-    - '@:1.25'
+    - '@:1.23.5'
   py-pandas:
     require: '+excel'
   py-pybind11:
@@ -273,7 +278,8 @@ packages:
   w3nco:
     require: '@2.4.1'
   wgrib2:
-    require: '@3.1.1'
+    require:
+    - '@3.1.1'
   wrf-io:
     require: '@1.2.0'
   zstd:
