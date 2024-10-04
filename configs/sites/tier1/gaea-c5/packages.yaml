@@ -81,12 +81,6 @@ packages:
     externals:
     - spec: dos2unix@7.4.0
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/ecflow-5.8.4
-      modules: [ecflow/5.8.4]
   file:
     externals:
     - spec: file@5.32
@@ -197,7 +191,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.15.2
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/qt-5.15.2/5.15.2/gcc_64
+      prefix: /ncrc/proj/epic/spack-stack/qt-5.15.2/5.15.2/gcc_64
   rdma-core:
     externals:
     - spec: rdma-core@37.0
