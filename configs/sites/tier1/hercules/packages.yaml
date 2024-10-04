@@ -19,13 +19,6 @@ packages:
     externals:
     - spec: diffutils@3.7
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4
-      modules:
-      - ecflow/5.8.4
   findutils:
     externals:
     - spec: findutils@4.8.0
@@ -73,10 +66,10 @@ packages:
       prefix: /usr
   qt:
     externals:
-    - spec: qt@5.15.8
-      prefix: /apps/spack-managed/gcc-11.3.1/qt-5.15.8-d47tsna6f5dylcpblkfgw4gpn2cucihd
+    - spec: qt@5.15.14
+      prefix: /apps/contrib/spack-stack-1.1/gcc-11.3.1/qt-5.15.14-mfeuvcidmyqoi2m5i2tfrk6yd7xtk6pt
       modules:
-      - qt/5.15.8
+      - qt/5.15.14
   sed:
     externals:
     - spec: sed@4.8
