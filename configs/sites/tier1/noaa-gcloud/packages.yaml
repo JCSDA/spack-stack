@@ -15,13 +15,6 @@ packages:
     externals:
     - spec: diffutils@3.6
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /contrib/spack-stack-rocky8/ecflow-5.8.4
-      modules:
-      - ecflow/5.8.4
   file:
     externals:
     - spec: file@5.33
@@ -78,6 +71,11 @@ packages:
     externals:
     - spec: pkg-config@1.4.2
       prefix: /usr
+  qt:
+    buildable: false
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr/lib64/qt5
   rsync:
     externals:
     - spec: rsync@3.1.3
