@@ -1,0 +1,23 @@
+packages:
+  all:
+    compiler:: [gcc@11.2.0]
+    providers:
+      mpi:: [openmpi@4.1.6]
+      #blas:: [intel-oneapi-mkl]
+      #fftw-api:: [intel-oneapi-mkl]
+      #lapack:: [intel-oneapi-mkl]
+  slurm:
+    buildable: False
+    externals:
+    - spec: slurm@21.08.8 +pmix
+      modules:
+      - slurm/slurm/21.08.8
+  openmpi:
+    require: '@4.1.6 +gpfs +romio fabrics=ucx romio-filesystem=gpfs schedulers=slurm +pmi +internal-pmix +internal-hwloc +internal-libevent +legacylaunchers'
+modules:
+  default:
+    lmod:
+      include:
+      - openmpi
+      exclude:
+      - slurm
