@@ -10,14 +10,8 @@ packages:
     buildable: False
     externals:
     - spec: slurm@21.08.8 +pmix
-      modules:
-      - slurm/slurm/21.08.8
+      prefix: /cm/shared/apps/slurm/21.08.8
+      #modules:
+      #- slurm/slurm/21.08.8
   openmpi:
     require: '@4.1.6 +gpfs +romio fabrics=ucx romio-filesystem=gpfs schedulers=slurm +pmi +internal-pmix +internal-hwloc +internal-libevent +legacylaunchers'
-modules:
-  default:
-    lmod:
-      include:
-      - openmpi
-      exclude:
-      - slurm
