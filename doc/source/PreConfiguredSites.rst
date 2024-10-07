@@ -343,14 +343,9 @@ UW (Univ. of Wisconsin) S4
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
-   module use /data/prod/jedi/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load ecflow/5.8.4
 
 
 .. _Preconfigured_Sites_AWS_Parallelcluster:
