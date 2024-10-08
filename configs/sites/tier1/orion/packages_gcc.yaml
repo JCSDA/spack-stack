@@ -3,8 +3,6 @@ packages:
     compiler:: [gcc@12.2.0]
     providers:
       mpi:: [openmpi@4.1.4]
-      # https://github.com/JCSDA/spack-stack/issues/1055
-      zlib-api:: [zlib]
   mpi:
     buildable: False
   openmpi:
