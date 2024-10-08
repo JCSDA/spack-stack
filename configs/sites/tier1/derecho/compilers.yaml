@@ -14,9 +14,9 @@ compilers::
     - intel-classic/2023.2.1
     environment:
       prepend_path:
-        PATH: '/opt/cray/pe/gcc/12.2.0/bin'
-        CPATH: '/opt/cray/pe/gcc/12.2.0/snos/include'
-        LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/12.2.0/snos/lib:/opt/cray/pe/gcc/12.2.0/lib64'
+        PATH: '/opt/cray/pe/gcc/11.2.0/snos/bin'
+        CPATH: '/opt/cray/pe/gcc/11.2.0/snos/include'
+        LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2023.2.1/compiler/2023.2.1/linux/compiler/lib/intel64_lin:/opt/cray/pe/gcc/11.2.0/snos/lib:/opt/cray/pe/gcc/11.2.0/snos/lib64'
       set:
         # https://github.com/JCSDA/spack-stack/issues/957
         FI_CXI_RX_MATCH_MODE: 'hybrid'
@@ -36,6 +36,25 @@ compilers::
     modules:
     - ncarenv/23.09
     - gcc/12.2.0
+    environment:
+      set:
+        # https://github.com/JCSDA/spack-stack/issues/957
+        FI_CXI_RX_MATCH_MODE: 'hybrid'
+    extra_rpaths: []
+# Needed for intel
+- compiler:
+    spec: gcc@11.2.0
+    paths:
+      cc: /opt/cray/pe/gcc/11.2.0/bin/gcc
+      cxx: /opt/cray/pe/gcc/11.2.0/bin/g++
+      f77: /opt/cray/pe/gcc/11.2.0/bin/gfortran
+      fc: /opt/cray/pe/gcc/11.2.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules:
+    - ncarenv/23.09
+    - gcc/11.2.0
     environment:
       set:
         # https://github.com/JCSDA/spack-stack/issues/957
