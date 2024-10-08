@@ -15,6 +15,10 @@ packages:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.76.1+gssapi+ldap+nghttp2
+      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.7
@@ -60,6 +64,14 @@ packages:
       prefix: /work/noaa/epic/role-epic/spack-stack/hercules/mysql-8.0.31
       modules:
       - mysql/8.0.31
+  openssh:
+    externals:
+    - spec: openssh@8.7p1
+      prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@3.0.1
+      prefix: /usr
   pkgconf:
     externals:
     - spec: pkgconf@1.7.3
