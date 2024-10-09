@@ -211,8 +211,6 @@ NCAR-Wyoming Derecho
 
 The following is required for building new spack environments with any supported compiler on this platform.
 
-**NEEDS UPDATING**
-
 .. code-block:: console
 
    module purge
