@@ -487,6 +487,8 @@ The following instructions install a new spack environment on a pre-configured s
    # Check permissions for systems where non-owning users/groups need access
    ${SPACK_STACK_DIR}/util/check_permissions.sh
 
+To support users who consistently want the latest release, on NOAA RDHPCS tier 1 platforms, soft links pointing to the modulefiles associated with the latest release of the Unified Environment are provided under the main spack-stack directory. The usage consists of ``module use /path/to/spack-stack/latest-ue-<compiler>``, and then loading the spack-stack meta-modules as usual. These soft links should be updated when each release is finalized.
+
 .. note::
   You may want to capture the output from :code:`spack concretize` and :code:`spack install` comands in log files.
   For example:
