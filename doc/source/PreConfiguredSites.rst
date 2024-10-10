@@ -89,7 +89,7 @@ The following is required for building new spack environments with any supported
 .. code-block:: console
 
    # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
-   # Then sudo to role-epic account
+   # Then sudo to role-epic account.
    module purge
 
 
@@ -104,7 +104,7 @@ The following is required for building new spack environments with any supported
 .. code-block:: console
 
    # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
-   # Then sudo to role-epic account
+   # Then sudo to role-epic account.
    module purge
 
 
