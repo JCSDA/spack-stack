@@ -39,7 +39,8 @@ class NeptuneEnv(BundlePackage):
     depends_on("ip@5:", type="run", when="%gcc")
     depends_on("ip@5:", type="run", when="%intel")
     depends_on("ip@5:", type="run", when="%oneapi")
-    depends_on("esmf", type="run")
+    depends_on("esmf +python", when="+python", type="run")
+    depends_on("esmf ~python", when="~python", type="run")
     depends_on("nco", type="run")
     depends_on("mct", type="run")
 
