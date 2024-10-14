@@ -175,7 +175,8 @@ These instructions are meant to be a reference that users can follow to set up t
   Make sure you upgrade cmake in homebrew.
 
 .. code-block:: console
-  brew upgrade cmake
+
+   brew upgrade cmake
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -671,6 +672,7 @@ With all of that in mind, the following instructions were used on an Amazon Web 
 3. Load the correct module shipped with ``nvhpc-24-3``. Note that this is only required for ``spack`` to detect the compiler and ``openmpi`` library during the environment configuration below. It is not required when using the new environment to compile code.
 
 .. code-block:: console
+
    module purge
    module use /opt/nvidia/hpc_sdk/modulefiles
    module load nvhpc-openmpi3/24.3
