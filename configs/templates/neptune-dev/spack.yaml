@@ -8,8 +8,8 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
-      - neptune-env +espc ^esmf@8.7.0b11 snapshot=b11
-      - neptune-python-env +xnrl
+      - neptune-env +espc        ^esmf@8.7.0b11 snapshot=b11
+      - neptune-python-env +xnrl ^esmf@8.7.0b11 snapshot=b11
 
   specs:
     - matrix:
