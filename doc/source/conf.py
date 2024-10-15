@@ -51,11 +51,8 @@ extensions = [
     'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
-    'sphinx.ext.napoleon',
-    'sphinxcontrib.bibtex'
+    'sphinx.ext.napoleon'
 ]
-
-bibtex_bibfiles = []
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -122,37 +119,6 @@ html_theme_options = {"body_max_width": "none"}
 
 # Output file base name for HTML help builder.
 htmlhelp_basename = 'spack-stack'
-
-
-# -- Options for LaTeX output ------------------------------------------------
-
-latex_engine = 'pdflatex'
-latex_elements = {
-    # The paper size ('letterpaper' or 'a4paper').
-    #
-    # 'papersize': 'letterpaper',
-
-    # The font size ('10pt', '11pt' or '12pt').
-    #
-    # 'pointsize': '10pt',
-
-    # Additional stuff for the LaTeX preamble.
-    #
-    # 'preamble': '',
-
-    # Latex figure (float) alignment
-    #
-    # 'figure_align': 'htbp',
-    'maketitle': r'\newcommand\sphinxbackoftitlepage{For referencing this document please use: \newline \break Heinzeller, D., A. Richert, C. Book, E. Hartnett, H. Lei, N. Perlin, R. Vasic, S. Herbener, 2024. spack-stack documentation develop. Available at https://spack-stack.readthedocs.io/\textunderscore/downloads/en/latest/pdf/.}\sphinxmaketitle'
-}
-
-# Grouping the document tree into LaTeX files. List of tuples
-# (source start file, target name, title,
-#  author, documentclass [howto, manual, or own class]).
-latex_documents = [
-    (master_doc, 'spack-stack.tex', 'spack-stack documentation',
-     author,'manual'),
-]
 
 
 # -- Options for manual page output ------------------------------------------
