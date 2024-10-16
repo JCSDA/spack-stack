@@ -1,0 +1,1 @@
+Concretization for deployments should be done with `spack concretize --fresh` so as to ensure that the stack would concretize the same way if the build cache weren't there.
