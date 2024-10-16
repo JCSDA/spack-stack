@@ -22,6 +22,8 @@ class NeptunePythonEnv(BundlePackage):
     variant("xnrl", default=False, description="Build non-pulic XNRL")
 
     depends_on("neptune-env", type="run")
+    # Enable the Python variant for ESMF
+    depends_on("esmf +python", type="run")
 
     depends_on("py-h5py", type="run")
     depends_on("py-netcdf4", type="run")
