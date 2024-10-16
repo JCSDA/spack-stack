@@ -36,8 +36,7 @@ class NeptuneEnv(BundlePackage):
     depends_on("ip@5:", type="run", when="%gcc")
     depends_on("ip@5:", type="run", when="%intel")
     depends_on("ip@5:", type="run", when="%oneapi")
-    depends_on("esmf +python", when="+python", type="run")
-    depends_on("esmf ~python", when="~python", type="run")
+    depends_on("esmf", type="run")
     depends_on("nco", type="run")
     depends_on("mct", type="run")
 
@@ -48,5 +47,6 @@ class NeptuneEnv(BundlePackage):
     # Basic Python dependencies that are always needed
     depends_on("py-f90nml", type="run")
     depends_on("py-python-dateutil", type="run")
+    depends_on("py-pyyaml", type="run")
 
     # There is no need for install() since there is no code.
