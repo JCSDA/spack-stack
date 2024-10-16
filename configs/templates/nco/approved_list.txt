@@ -223,3 +223,4 @@ glibc
 parallelio
 pkg-config
 ecbuild
+gftl
