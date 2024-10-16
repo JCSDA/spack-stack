@@ -7,26 +7,21 @@ packages:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.21%intel@2021.10.0 ~wrappers
+    - spec: cray-mpich@8.1.21%oneapi@2024.2.0 ~wrappers
       modules:
       - cray-mpich-ucx/8.1.21
       - craype-network-ucx
   intel-oneapi-mkl:
     externals:
-    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
-      modules:
-      - mkl/2024.2
+    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.0
+      prefix: /opt/intel/oneapi_2024.2.0.634
   intel-oneapi-tbb:
     externals:
-    - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.1
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
+    - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.0
+      prefix: /opt/intel/oneapi_2024.2.0.634
       modules:
       - tbb/2021.13
   intel-oneapi-runtime:
     externals:
-    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
-      modules:
-      - tbb/2021.13
-      - compiler-rt/2024.2.1
+    - spec: intel-oneapi-runtime@2024.2.0%oneapi@2024.2.0
+      prefix: /opt/intel/oneapi_2024.2.0.634

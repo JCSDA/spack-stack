@@ -166,19 +166,13 @@ The following is required for building new spack environments with Intel on this
 
 The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Narwhal!
 
-.. note:: This particular setup of the oneAPI compilers is outside the Cray-blessed environment and there are problems installing Python packages with spack.
-
 .. code-block:: console
 
    umask 0022
    module unload PrgEnv-cray
-   module load PrgEnv-intel/8.3.3
+   module load PrgEnv-intel/8.4.0
    module unload intel
-   module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
-   module load tbb/2021.13
-   module load compiler-rt/2024.2.1
-   module load compiler/2024.2.1
-   module load ifort/2024.2.1
+   module load intel/2024.2
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx
