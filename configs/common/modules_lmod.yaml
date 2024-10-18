@@ -259,8 +259,6 @@ modules:
 
       hierarchy:
       - mpi
-      - g2virt
-      - g2tmplvirt
 
     prefix_inspections:
       bin:
