@@ -13,7 +13,7 @@ set -x
 for compiler in $COMPILERS; do
   for template in $TEMPLATES; do
     envname=build-$template-${compiler/@/-}
-    envdir=$RUNDIR/$RUNID/envs/build-$envname
+    envdir=$RUNDIR/$RUNID/envs/$envname
     echo "Setting up environment $envname in $envdir"
     rm -rf $envdir
     spack stack create env --name build-${template}-${compiler/@/-} --template $template --site $PLATFORM --compiler $compiler
