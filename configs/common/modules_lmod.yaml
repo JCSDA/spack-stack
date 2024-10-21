@@ -112,20 +112,10 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
-      hdf5:
-        environment:
-          set:
-            'HDF5_DIR': '{prefix}'
       libpng:
         environment:
           set:
             'PNG_ROOT': '{prefix}'
-      libyaml:
-        environment:
-          set:
-            'YAML_DIR': '{prefix}'
-            'YAML_LIB': '{prefix}/lib'
-            'YAML_INC': '{prefix}/include'
       madis:
         environment:
           set:
@@ -151,12 +141,6 @@ modules:
           set:
             'OMPI_MCA_rmaps_base_oversubscribe': '1'
             'PRTE_MCA_rmaps_default_mapping_policy': ':oversubscribe'
-      p4est:
-        environment:
-          set:
-            'P4EST_API_DIR': '{prefix}'
-            'P4EST_API_LIB': '{prefix}/lib'
-            'P4EST_API_INC': '{prefix}/include'
       bacio:
         environment:
           set:

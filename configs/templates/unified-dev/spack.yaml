@@ -8,35 +8,35 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
-    - base-env
-    #- ewok-env +ecflow ~cylc
-    #- ai-env
-    #- geos-gcm-env          ^esmf@=8.6.1
-    #- global-workflow-env   ^esmf@=8.6.1
-    #- gmao-swell-env
-    #- gsi-env               ^esmf@=8.6.1
-    #- jedi-fv3-env
-    #- jedi-geos-env         ^esmf@=8.6.1
-    #- jedi-mpas-env
-    #- jedi-neptune-env      ^esmf@=8.7.0b11 snapshot=b11
-    #- jedi-tools-env
-    #- jedi-ufs-env          ^esmf@=8.6.1
-    #- jedi-um-env
-    #- neptune-env ~espc +python ~xnrl ^esmf@=8.7.0b11 snapshot=b11
-    #- soca-env
-    #- ufs-srw-app-env       ^esmf@=8.6.1
-    #- ufs-weather-model-env ^esmf@=8.6.1
-    #
-    ## Various crtm tags (list all to avoid duplicate packages)
-    #- crtm@2.4.0.1
-    #- crtm@v2.4.1-jedi
-    #
-    ## Various esmf tags (list all to avoid duplicate packages)
-    #- esmf@=8.6.1 snapshot=none
-    #- esmf@=8.7.0b11 snapshot=b11
-    #
-    ## MADIS for WCOSS2 decoders.
-    #- madis@4.5
+    - ewok-env +ecflow ~cylc
+    - ai-env
+    - geos-gcm-env          ^esmf@=8.6.1
+    - global-workflow-env   ^esmf@=8.6.1
+    - gmao-swell-env
+    - gsi-env               ^esmf@=8.6.1
+    - jedi-fv3-env
+    - jedi-geos-env         ^esmf@=8.6.1
+    - jedi-mpas-env
+    - jedi-neptune-env      ^esmf@=8.7.0b11 snapshot=b11
+    - jedi-tools-env
+    - jedi-ufs-env          ^esmf@=8.6.1
+    - jedi-um-env
+    - neptune-env           ^esmf@=8.7.0b11 snapshot=b11
+    - neptune-python-env    ^esmf@=8.7.0b11 snapshot=b11
+    - soca-env
+    - ufs-srw-app-env       ^esmf@=8.6.1
+    - ufs-weather-model-env ^esmf@=8.6.1
+
+    # Various crtm tags (list all to avoid duplicate packages)
+    - crtm@2.4.0.1
+    - crtm@v2.4.1-jedi
+
+    # Various esmf tags (list all to avoid duplicate packages)
+    - esmf@=8.6.1 snapshot=none
+    - esmf@=8.7.0b11 snapshot=b11
+
+    # MADIS for WCOSS2 decoders.
+    - madis@4.5
 
   specs:
   - matrix:

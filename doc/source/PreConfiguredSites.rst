@@ -43,9 +43,9 @@ Pre-configured sites (tier 1)
 +=====================+=======================+====================+========================================================+=================+
 | **HPC platforms**                                                                                                                           |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Hercules              | GCC, Intel         | ``/work/noaa/epic/role-epic/spack-stack/hercules/``    | EPIC / JCSDA    |
+|                     | Hercules              | GCC, Intel         | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 | MSU                 +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Orion                 | GCC, Intel         | ``/work/noaa/epic/role-epic/spack-stack/orion/``       | EPIC / JCSDA    |
+|                     | Orion                 | GCC, Intel         | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Discover SCU16        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/``             | JCSDA           |
 | NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -88,6 +88,8 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
+   # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
+   # Then sudo to role-epic account.
    module purge
 
 
@@ -101,8 +103,9 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
+   # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
+   # Then sudo to role-epic account.
    module purge
-   # No need to load modules, spack-stack-1.8.0 have no dependences
 
 
 .. _Preconfigured_Sites_Discover_SCU16:
@@ -210,8 +213,6 @@ NCAR-Wyoming Derecho
 --------------------
 
 The following is required for building new spack environments with any supported compiler on this platform.
-
-**NEEDS UPDATING**
 
 .. code-block:: console
 
@@ -488,6 +489,8 @@ The following instructions install a new spack environment on a pre-configured s
 
    # Check permissions for systems where non-owning users/groups need access
    ${SPACK_STACK_DIR}/util/check_permissions.sh
+
+To support users who consistently want the latest release, on NOAA RDHPCS tier 1 platforms, soft links pointing to the modulefiles associated with the latest release of the Unified Environment are provided under the main spack-stack directory. The usage consists of ``module use /path/to/spack-stack/latest-ue-<compiler>``, and then loading the spack-stack meta-modules as usual. These soft links should be updated when each release is finalized.
 
 .. note::
   You may want to capture the output from :code:`spack concretize` and :code:`spack install` comands in log files.

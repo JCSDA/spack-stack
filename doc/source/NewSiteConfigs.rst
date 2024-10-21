@@ -175,7 +175,8 @@ These instructions are meant to be a reference that users can follow to set up t
   Make sure you upgrade cmake in homebrew.
 
 .. code-block:: console
-  brew upgrade cmake
+
+   brew upgrade cmake
 
 4. Configure your terminal to use the homebrew installed bash
 
@@ -211,11 +212,11 @@ Creating a new environment
 
 Remember to activate the ``lua`` module environment and have MacTeX in your search path, if applicable. It is also recommended to increase the stacksize limit to 65Kb using ``ulimit -S -s unlimited``.
 
-1. You will need to clone spack-stack and its dependencies and activate the spack-stack tool. It is also a good idea to save the directory in your environment for later use.
+1. You will need to clone spack-stack (selecting your desired spack-stack branch) and its dependencies and activate the spack-stack tool. It is also a good idea to save the directory in your environment for later use.
 
 .. code-block:: console
 
-   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
+   git clone [-b develop OR release/branch-name] --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
@@ -500,11 +501,11 @@ Creating a new environment
 
 It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimited``, and to test if the module environment functions correctly (``module available``).
 
-1. You will need to clone spack-stack and its dependencies and activate the spack-stack tool. It is also a good idea to save the directory in your environment for later use.
+1. You will need to clone spack-stack (selecting your desired spack-stack branch) and its dependencies and activate the spack-stack tool. It is also a good idea to save the directory in your environment for later use.
 
 .. code-block:: console
 
-   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
+   git clone [-b develop OR release/branch-name] --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
@@ -671,15 +672,16 @@ With all of that in mind, the following instructions were used on an Amazon Web 
 3. Load the correct module shipped with ``nvhpc-24-3``. Note that this is only required for ``spack`` to detect the compiler and ``openmpi`` library during the environment configuration below. It is not required when using the new environment to compile code.
 
 .. code-block:: console
+
    module purge
    module use /opt/nvidia/hpc_sdk/modulefiles
    module load nvhpc-openmpi3/24.3
 
-4. Clone spack-stack and its dependencies and activate the spack-stack tool.
+4. Clone spack-stack (selecting your desired spack-stack branch) and its dependencies and activate the spack-stack tool.
 
 .. code-block:: console
 
-   git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
+   git clone [-b develop OR release/branch-name] --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
