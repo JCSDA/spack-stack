@@ -47,5 +47,6 @@ class NeptuneEnv(BundlePackage):
     # Basic Python dependencies that are always needed
     depends_on("py-f90nml", type="run")
     depends_on("py-python-dateutil", type="run")
+    depends_on("py-pyyaml", type="run")
 
     # There is no need for install() since there is no code.

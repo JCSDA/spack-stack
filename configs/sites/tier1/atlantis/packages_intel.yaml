@@ -15,6 +15,6 @@ packages:
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2022.1.0
+      prefix: /cm/shared/apps/intel/oneapi
       modules:
       -  mkl/2022.1.0
-      prefix: /cm/shared/apps/intel/oneapi
