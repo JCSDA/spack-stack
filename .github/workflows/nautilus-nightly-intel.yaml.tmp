@@ -16,7 +16,7 @@ defaults:
     shell: bash
 
 env:
-  BASEDIR: /p/work2/heinzell/spack-stack-nightly
+  BASEDIR: /p/work2/heinzell/spack-stack-nightly/intel
   PLATFORM: nautilus
   COMPILERS: intel
 

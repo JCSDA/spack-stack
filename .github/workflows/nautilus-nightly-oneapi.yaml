@@ -16,7 +16,7 @@ defaults:
     shell: bash
 
 env:
-  BASEDIR: /p/work2/heinzell/spack-stack-nightly
+  BASEDIR: /p/work2/heinzell/spack-stack-nightly/oneapi
   PLATFORM: nautilus
   COMPILERS: oneapi
 
@@ -39,3 +39,8 @@ jobs:
       uses: ./.github/actions/Nightly_03_SetupEnv
     - name: 04_SpackInstall
       uses: ./.github/actions/Nightly_04_SpackInstall
+    - name: 05_BuildCache
+      uses: ./.github/actions/Nightly_05_BuildCache
+    # Skip step 6 - app test - for the moment
+    - name: 07_Cleanup
+      uses: ./.github/actions/Nightly_07_Cleanup
