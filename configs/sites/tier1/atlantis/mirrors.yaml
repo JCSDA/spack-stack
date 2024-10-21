@@ -1,7 +1,6 @@
 mirrors:
   local-source:
     fetch:
-      # TODO UPDATE?
       url: file:///neptune_diagnostics/spack-stack/source-cache/
       access_pair:
       - null
@@ -10,7 +9,6 @@ mirrors:
       profile: null
       endpoint_url: null
     push:
-      # TODO UPDATE?
       url: file:///neptune_diagnostics/spack-stack/source-cache/
       access_pair:
       - null
