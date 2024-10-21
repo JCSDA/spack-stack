@@ -19,3 +19,7 @@ echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 
 source ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
+
+export SPACK_USER_CACHE_PATH=$SPACK_ROOT/user_cache
+export SPACK_DISABLE_LOCAL_CONFIG=1
+echo "Changing bootstrap path to $(spack bootstrap root '$spack/bootstrap')"
