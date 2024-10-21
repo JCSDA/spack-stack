@@ -33,9 +33,9 @@ jobs:
         clean: true
     - name: 01_DirectorySetup
       uses: ./.github/actions/Nightly_01_DirectorySetup
-    - name: 02_GetSpackStackDevelop
-      uses: ./.github/actions/Nightly_02_GetSpackStackDevelop
-    - name: 03_SetupUnifiedEnv
-      uses: ./.github/actions/Nightly_03_SetupUnifiedEnv
+    - name: 02_GetSpackStack
+      uses: ./.github/actions/Nightly_02_GetSpackStack
+    - name: 03_SetupEnv
+      uses: ./.github/actions/Nightly_03_SetupEnv
     - name: 04_SpackInstall
       uses: ./.github/actions/Nightly_04_SpackInstall
