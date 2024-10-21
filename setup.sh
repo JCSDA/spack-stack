@@ -14,7 +14,7 @@ fi
 # Apply NCO-specific tweaks to make spack-stack installations more self contained.
 if [[ " $* " =~ " --nco " ]]; then
   export SPACK_DISABLE_LOCAL_CONFIG=1
-  spack bootstrap root '$spack/bootstrap'
+  echo "Changing bootstrap path to $(spack bootstrap root '$spack/bootstrap')"
 fi
 
 # Get the current hash of the spack-stack code
