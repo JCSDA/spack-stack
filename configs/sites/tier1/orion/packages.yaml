@@ -31,13 +31,6 @@ packages:
     externals:
     - spec: diffutils@3.7
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /work/noaa/epic/role-epic/spack-stack/orion/ecflow-5.8.4
-      modules:
-      - ecflow/5.8.4
   findutils:
     externals:
     - spec: findutils@4.8.0

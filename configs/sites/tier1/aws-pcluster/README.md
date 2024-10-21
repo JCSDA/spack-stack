@@ -116,7 +116,7 @@ apt install -y \
     liblcms2-dev \
     liblcms2-2
 
-# Install QT5 for ecflow
+# Install QT5, needed for install of ecflow
 apt install -y \
     qtcreator \
     qtbase5-dev \
@@ -217,51 +217,7 @@ sudo usermod -aG docker $USER
 exit
 ```
 
-4. Build ecflow outside of spack to be able to link against OS boost
-```
-mkdir -p /home/ubuntu/jedi/ecflow-5.8.4/src
-cd /home/ubuntu/jedi/ecflow-5.8.4/src
-wget https://github.com/ecmwf/ecflow/archive/refs/tags/5.8.4.tar.gz
-tar -xvzf 5.8.4.tar.gz
-export WK=/home/ubuntu/jedi/ecflow-5.8.4/src/ecflow-5.8.4
-export BOOST_ROOT=/usr
-
-# Build ecFlow
-cd $WK
-mkdir build
-cd build
-cmake .. -DPython3_EXECUTABLE=/usr/bin/python3 -DENABLE_STATIC_BOOST_LIBS=OFF -DCMAKE_INSTALL_PREFIX=/home/ubuntu/jedi/ecflow-5.8.4 2>&1 | tee log.cmake
-make -j10 2>&1 | tee log.make
-make install 2>&1 | tee log.install
-
-# Create a modulefiles directory and the "ecflow/5.8.4" module file.
-mkdir -p /home/ubuntu/jedi/modulefiles/ecflow
-
-cat << 'EOF' > /home/ubuntu/jedi/modulefiles/ecflow/5.8.4
-#%Module1.0
-
-module-whatis "Provides an ecflow-5.8.4 server+ui installation for use with spack."
-
-conflict ecflow
-
-proc ModulesHelp { } {
-puts stderr "Provides an ecflow-5.8.4 server+ui installation for use with spack."
-}
-
-# Set this value
-set ECFLOW_PATH "/home/ubuntu/jedi/ecflow-5.8.4"
-
-prepend-path PATH "${ECFLOW_PATH}/bin"
-prepend-path LD_LIBRARY_PATH "${ECFLOW_PATH}/lib"
-prepend-path LIBRARY_PATH "${ECFLOW_PATH}/lib"
-prepend-path CPATH "${ECFLOW_PATH}/include"
-prepend-path CMAKE_PREFIX_PATH "${ECFLOW_PATH}"
-prepend-path PYTHONPATH "${ECFLOW_PATH}/lib/python3.10/site-packages"
-EOF
-
-```
-
-5. Install lmod. This step must be done as `root`.
+4. Install lmod. This step must be done as `root`.
 ```
 # Install lua/lmod manually because apt only has older versions
 # that are not compatible with the modern lua modules spack produces
@@ -343,7 +299,7 @@ module purge
 module list
 ```
 
-6. Install msql community server
+5. Install msql community server
 ```
 cd /home/ubuntu/jedi
 mkdir -p mysql-8.0.31/src
@@ -365,7 +321,7 @@ exit
 rm *.deb
 ```
 
-7. Option 1: Testing existing site config in spack-stack (skip steps
+6. Option 1: Testing existing site config in spack-stack (skip steps
 8-9 afterwards) this install is done directly on the NFS drive. If you are
 testing an update to the configuration, do this on the faster EBS volume (use a
 directory in /home/ubuntu) in order to ensure a faster build. Once you have
@@ -398,7 +354,7 @@ spack module lmod refresh
 spack stack setup-meta-modules
 ```
 
-8. Option 2: Test configuring site from scratch
+7. Option 2: Test configuring site from scratch
 ```
 mkdir -p /home/ubuntu/jedi && cd /home/ubuntu/jedi
 git clone -b develop --recursive https://github.com/jcsda/spack-stack spack-stack
@@ -450,15 +406,6 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
       prefix: /usr
 EOF
 
-# Add external ecflow
-cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-  ecflow:
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4 +ui
-      prefix: /home/ubuntu/jedi/ecflow-5.8.4
-EOF
-
 spack compiler find --scope system
 
 export -n SPACK_SYSTEM_CONFIG_PATH
@@ -479,12 +426,12 @@ spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.4.0]"
 #         I_MPI_PMI_LIBRARY: '/opt/slurm/lib/libpmi.so'
 ```
 
-9. Option 2: To avoid duplicate library versions edit ``envs/unified-dev/site/packages.yaml``
+8. Option 2: To avoid duplicate library versions edit ``envs/unified-dev/site/packages.yaml``
 and remove entries for meson, ninja, hdf5, cmake and remove the external
 `cmake` and `openssl` entries.
 
 
-10. Concretize and install
+9. Concretize and install
 ```
 spack concretize 2>&1 | tee log.concretize.unified-env.001
 ./util/show_duplicate_packages.py -d log.concretize.unified-env.001
@@ -493,7 +440,7 @@ spack module lmod refresh
 spack stack setup-meta-modules
 ```
 
-11. Test spack-stack installation using your favorite application.
+10. Test spack-stack installation using your favorite application.
 
 ```
 # Example given for building jedi-bundle
@@ -515,12 +462,12 @@ make -j10
 ctest
 ```
 
-12. (Optional) Remove test installs of spack-stack environments, if desired.
+11. (Optional) Remove test installs of spack-stack environments, if desired.
 
-13. Create the AMI for use in the AWS parallelcluster config. You can follow
+12. Create the AMI for use in the AWS parallelcluster config. You can follow
 the official instructions for [Modifying an AWS ParallelCluster AMI](https://docs.aws.amazon.com/parallelcluster/latest/ug/building-custom-ami-v3.html#modify-an-aws-parallelcluster-ami-v3)
 
-14. Use the install to build
+13. Use the install to build
 
 ```
 # Load the intel toolchain into your environment.
@@ -551,7 +498,7 @@ make -j10
 ctest
 ```
 
-15. Once the parallel cluster head node image is fully configured and tested you
+14. Once the parallel cluster head node image is fully configured and tested you
 can create an AMI snapshot based on the configured instance using the
 [instructions](https://docs.aws.amazon.com/parallelcluster/latest/ug/building-custom-ami-v3.html)
 published by AWS. Included here is a short summary of those instructions.

@@ -3,7 +3,5 @@ modules:
     enable::
     - tcl
     tcl:
-      exclude:
-      - ecflow
       include:
       - python

@@ -1,0 +1,140 @@
+spack:
+  concretizer:
+    unify: when_possible
+
+  config:
+    install_tree:
+      root: $env/install
+  modules:
+    default:
+      roots:
+        lmod: $env/install/modulefiles
+        tcl: $env/install/modulefiles
+
+  view: false
+  include: []
+
+  specs:
+  - awscli
+  - bacio
+  - boost
+  - bufr
+  - cairo
+  - cdo
+  - cfitsio
+  - cmake
+  - crtm
+  - curl
+  - ecflow
+  - eckit
+  - ecmwf-atlas
+  - eigen
+  - esmf
+  - fckit
+  - fms
+  - g2
+  - g2c
+  - g2tmpl
+  - gdal
+  - geos
+  - gfsio
+  - gftl-shared
+  - git
+  - grib-util
+  - gsl
+  - gsl-lite
+  - hdf5
+  - imagemagick
+  - ip
+  - ip2
+  - jasper
+  - landsfcutil
+  - libgeotiff
+  - libiconv
+  - libjpeg-turbo
+  - libpng
+  - libtiff
+  - libxml2
+  - libxrender
+  - madis
+  - mapl
+  - mbedtls
+  - met
+  - metis
+  - metplus
+  - nccmp
+  - gsi-ncdiag
+  - nco
+  - ncview
+  - nemsio
+  - nemsiogfs
+  - netcdf-c
+  - netcdf-fortran
+  - perl
+  - pigz
+  - parallelio
+  - pixman
+  - proj
+  - python
+  - qhull
+  - readline
+  - rsync
+  - scotch
+  - sfcio
+  - sigio
+  - sp
+  - subversion
+  - udunits
+  - upp
+  - w3emc
+  - w3nco
+  - wgrib2
+  - wrf-io
+
+  packages:
+    # Strictly set virtual package providers:
+    mpi:
+      require: cray-mpich
+    fftw-api:
+      require: fftw
+    blas:
+      require: openblas
+    lapack:
+      require: openblas
+    jpeg:
+      require: libjpeg-turbo
+    # Individual package settings.
+    # Use `require::` to override require's from {common,site}/packages.yaml,
+    # and `require:<newline>  - '...'` to add to existing ones.
+    cdo:
+      require:
+      - 'grib2=none' # avoids eccodes/grib-api dependency
+    curl:
+      require:
+      - '~nghttp2' # avoid nghttp2 dependency
+    ecmwf-atlas:
+      require:: '@0.33.0 +fckit ~trans ~fftw' # disabling trans and fftw to minimize dependencies; older version because newer eckit doesn't build with intel@19
+    esmf:
+      require:
+      - 'snapshot=none' # make sure spack-stack doesn't accidentally give us a beta snapshot
+    fckit:
+      require:: '@0.10.1 +eckit' # older version needed for older eckit & ecmwf-atlas
+    glib:
+      require: '@:2.74.3' # newer versions don't build with intel@19
+    mapl:
+      require:
+      - '~pflogger ~fargparse ~extdata2g' # minimize dependencies
+    netcdf-c:
+      require:: '@4.9.2 +mpi ~parallel-netcdf ~dap ~blosc ~szip build_system=autotools' # disabling dap prevents network access; disabling blosc and szip reduces dependencies
+    py-pandas:
+      require:: '~excel' # minimize dependencies
+    subversion:
+      require:
+      - '~serf +pic' # avoid serf dependency
+    # Explicitly require gcc when needed so Spack won't do anything weird:
+    boost:
+      require: '%gcc'
+    gcc-runtime:
+      require: '%gcc'
+    harfbuzz:
+      require: '%gcc'

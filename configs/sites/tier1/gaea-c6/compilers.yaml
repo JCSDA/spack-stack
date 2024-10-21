@@ -23,4 +23,16 @@ compilers:
         # which confuses some packages.
         CONFIG_SITE: ''
     extra_rpaths: []
-# Todo: Define gcc compiler 12.x.y for Intel backend (ecflow)
+- compiler:
+    spec: gcc@12.3.0
+    paths:
+      cc: /usr/bin/gcc-12
+      cxx: /usr/bin/g++-12
+      f77: /usr/bin/gfortran-12
+      fc:  /usr/bin/gfortran-12
+    flags: {}
+    operating_system: sles15
+    modules:
+    - gcc-native-mixed/12.3
+    environment: {}
+    extra_rpaths: []

@@ -38,7 +38,7 @@
     py-f90nml@1.4.3,
     py-gitpython@3.1.40,
     py-h5py@3.11.0,
-    py-numpy@1.25.2,
+    py-numpy@1.23.5,
     py-pandas@1.5.3,
     py-pip,
     py-pyyaml@6.0,

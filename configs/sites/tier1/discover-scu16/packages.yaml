@@ -38,13 +38,6 @@ packages:
     externals:
     - spec: diffutils@3.3
       prefix: /usr
-  ecflow::
-    buildable: False
-    externals:
-    - spec: ecflow@5.8.4+ui+static_boost
-      prefix: /discover/swdev/jcsda/spack-stack/ecflow-5.8.4
-      modules:
-      - ecflow/5.8.4
   file:
     externals:
     - spec: file@5.22
@@ -129,6 +122,7 @@ packages:
     - spec: pkg-config@0.28
       prefix: /usr
   qt:
+    buildable: False
     externals:
     - spec: qt@5.15.2
       prefix: /discover/swdev/jcsda/spack-stack/qt-5.15.2/5.15.2/gcc_64
