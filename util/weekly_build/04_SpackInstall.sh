@@ -30,12 +30,14 @@ for compiler in $COMPILERS; do
     else
       mirrorpath=$(spack mirror list | awk "{if (\$1==\"$SOURCE_CACHE\") print \$NF}")
     fi
-    spack mirror create --dependencies --directory ${mirrorpath?"Source mirror path could not be determined. Check site's mirrors.yaml."} ${PACKAGES_TO_INSTALL:---all} 2>&1 | tee log.fetch
+    spack_wrapper log.fetch mirror create --dependencies \
+        --directory ${mirrorpath?"Source mirror path could not be determined. Check site's mirrors.yaml."} \
+        ${PACKAGES_TO_INSTALL:---all}
     # Just install the packages we're testing (+dependencies):
     if [[ ! -z "${PACKAGES_TO_TEST}" ]]; then
-      spack_install_exe install $INSTALL_OPTS --test root $PACKAGES_TO_TEST | tee log.install-and-test
+      spack_wrapper log.install-and-test install $INSTALL_OPTS --test root $PACKAGES_TO_TEST
     fi
     # Install the rest of the stack as usual:
-    spack_install_exe install $INSTALL_OPTS $PACKAGES_TO_INSTALL | tee log.install
+    spack_wrapper log.install install $INSTALL_OPTS $PACKAGES_TO_INSTALL
   done
 done

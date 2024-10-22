@@ -22,6 +22,13 @@ function spack_install_exe {
   spack $*
 }
 
+function spack_wrapper {
+  logfile=$1
+  shift
+  set -o pipefail
+  spack $* 2>&1 | tee -a $logfile
+}
+
 # Include platform-dependent configuration
 . $(dirname $0)/sites/${PLATFORM}.sh
 
