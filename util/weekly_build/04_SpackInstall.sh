@@ -32,7 +32,7 @@ for compiler in $COMPILERS; do
     fi
     spack mirror create --dependencies --directory ${mirrorpath?"Source mirror path could not be determined. Check site's mirrors.yaml."} ${PACKAGES_TO_INSTALL:---all} 2>&1 | tee log.fetch
     # Just install the packages we're testing (+dependencies):
-    if [[ -z "${PACKAGES_TO_TEST}" ]]; then
+    if [[ ! -z "${PACKAGES_TO_TEST}" ]]; then
       spack_install_exe install $INSTALL_OPTS --test root $PACKAGES_TO_TEST | tee log.install-and-test
     fi
     # Install the rest of the stack as usual:
