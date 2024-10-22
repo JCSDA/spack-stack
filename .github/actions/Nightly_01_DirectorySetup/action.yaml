@@ -13,9 +13,6 @@ runs:
       # Get day of week for later use and write to file
       DOW=$(date +%u)
       echo "${DOW}" > DOW_SAVE.log
-      ## DH* TODO REMOVE LATER?
-      #RUNDIR=${BASEDIR}/${RUNID}
-      #rm -vfr ${RUNDIR}
-      ## *DH
+      #
       cd util/weekly_build
       ./01_DirectorySetup.sh ${RUNID} ${BASEDIR} ${PLATFORM}

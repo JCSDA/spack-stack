@@ -7,6 +7,5 @@ runs:
     shell: bash
     run: |
       RUNID=$(<RUNID_SAVE.log)
-      echo "Got RUNID from file: '${RUNID}'"
       cd util/weekly_build
       ./02_GetSpackStack.sh ${RUNID} ${BASEDIR} ${PLATFORM}
