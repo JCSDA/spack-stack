@@ -7,6 +7,9 @@ runs:
     shell: bash
     run: |
       RUNID=`date +"%Y%m%d"`
+      # Write RUNID to file so that following steps use the
+      # same date and don't pick up the next day's date
+      echo "${RUNID}" > RUNID_SAVE.log
       # DH* TODO REMOVE LATER?
       RUNDIR=${BASEDIR}/${RUNID}
       rm -vfr ${RUNDIR}

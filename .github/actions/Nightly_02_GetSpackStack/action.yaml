@@ -6,6 +6,9 @@ runs:
   - name: Nightly 02 Get Spack-Stack
     shell: bash
     run: |
-      RUNID=`date +"%Y%m%d"`
+      #RUNID=`date +"%Y%m%d"`
+      RUNID=$(<RUNID_SAVE.log)
+      echo "RUNID? '${RUNID}'"
+      exit 1
       cd util/weekly_build
       ./02_GetSpackStack.sh ${RUNID} ${BASEDIR} ${PLATFORM}
