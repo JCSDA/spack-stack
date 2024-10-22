@@ -6,6 +6,6 @@ runs:
   - name: Nightly 03 Setup Env
     shell: bash
     run: |
-      RUNID=`date +"%Y%m%d"`
+      RUNID=$(<RUNID_SAVE.log)
       cd util/weekly_build
       ./03_SetupEnv.sh ${RUNID} ${BASEDIR} ${PLATFORM}

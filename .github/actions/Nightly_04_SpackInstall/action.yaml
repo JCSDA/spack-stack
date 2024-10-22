@@ -6,15 +6,15 @@ runs:
   - name: Nightly 04 Spack Install
     shell: bash
     run: |
-      # Get day of week - build everything from scratch on Sundays,
-      # otherwise use build cache to speed up the installations
-      DOW=$(date +%u)
+      RUNID=$(<RUNID_SAVE.log)
+      DOW=$(<DOW_SAVE.log)
+      # Bbuild everything from scratch on Sundays, otherwise
+      # use build cache to speed up the installations.
       # Monday is 1 ... Sunday is 7
       if [[ $DOW == 7 ]]; then
         export REUSE_BUILD_CACHE="NO"
       else
         export REUSE_BUILD_CACHE="YES"
       fi
-      RUNID=`date +"%Y%m%d"`
       cd util/weekly_build
       ./04_SpackInstall.sh ${RUNID} ${BASEDIR} ${PLATFORM}

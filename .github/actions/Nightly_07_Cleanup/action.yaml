@@ -6,6 +6,6 @@ runs:
   - name: Nightly 07 Cleanup
     shell: bash
     run: |
-      RUNID=`date +"%Y%m%d"`
+      RUNID=$(<RUNID_SAVE.log)
       cd util/weekly_build
       ./05_BuildCache.sh ${RUNID} ${BASEDIR} ${PLATFORM}
