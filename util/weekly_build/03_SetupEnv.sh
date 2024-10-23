@@ -21,7 +21,6 @@ for compiler in $COMPILERS; do
     spack env activate .
     spack config add "config:install_tree:padded_length:${PADDED_LENGTH:-200}"
     # Check for duplicates and fail before doing the "real" concretization:
-    #spack concretize --fresh --somethingnotsupported > log.concretize 2>&1
     spack_wrapper log.concretize concretize --fresh
     ${SPACK_STACK_DIR:?}/util/show_duplicate_packages.py log.concretize -d -i crtm -i esmf
     spack concretize --fresh --force
