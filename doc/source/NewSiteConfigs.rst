@@ -466,24 +466,25 @@ The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LT
    apt install -y environment-modules
 
    # Misc
-   apt install -y build-essential
-   apt install -y libkrb5-dev
-   apt install -y m4
-   apt install -y git
-   apt install -y git-lfs
-   apt install -y bzip2
-   apt install -y unzip
-   apt install -y automake
-   apt install -y autopoint
-   apt install -y gettext
-   apt install -y texlive
-   apt install -y libcurl4-openssl-dev
-   apt install -y libssl-dev
+   apt install -y \
+       build-essential \
+       libkrb5-dev \
+       m4 \
+       git \
+       git-lfs \
+       bzip2 \
+       unzip \
+       automake \
+       autopoint \
+       gettext \
+       texlive \
+       libomp5 \
+       libcurl4-openssl-dev \
+       libssl-dev
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
-   apt install -y mysql-server
-   apt install -y libmysqlclient-dev
+   apt install -y mysql-server libmysqlclient-dev
 
    # Exit root session
    exit
