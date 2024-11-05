@@ -35,9 +35,9 @@ for compiler in $COMPILERS; do
         ${PACKAGES_TO_INSTALL:---all}
     # Just install the packages we're testing (+dependencies):
     if [[ ! -z "${PACKAGES_TO_TEST}" ]]; then
-      spack_wrapper log.install-and-test install $INSTALL_OPTS --test root $PACKAGES_TO_TEST
+      spack_install_wrapper log.install-and-test install $INSTALL_OPTS --test root $PACKAGES_TO_TEST
     fi
     # Install the rest of the stack as usual:
-    spack_wrapper log.install install $INSTALL_OPTS $PACKAGES_TO_INSTALL
+    spack_install_wrapper log.install install $INSTALL_OPTS $PACKAGES_TO_INSTALL
   done
 done
