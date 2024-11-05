@@ -23,7 +23,6 @@ for compiler in $COMPILERS; do
     # Check for duplicates and fail before doing the "real" concretization:
     spack_wrapper log.concretize concretize --fresh
     ${SPACK_STACK_DIR:?}/util/show_duplicate_packages.py log.concretize -d -i crtm -i esmf
-    spack concretize --fresh --force
 #   The following is not working at the moment, for seemingly a couple reasons. Therefore packages with test-only deps cannot be tested.
 #    spack concretize --force --fresh --test all | tee log.concretize_test
   done
