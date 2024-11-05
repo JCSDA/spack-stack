@@ -5,6 +5,13 @@ Using spack-stack environments
 
 The following tutorial assumes you have a functioning spack-stack environment installed local to your system. This environment is provided on platforms described in :numref:`Section %s <Preconfigured_Sites>`. If you intend to run spack-stack on your developer machine or on a new platform, you can create an environment using the steps described in :numref:`Section %s <NewSiteConfigs>`.
 
+There are two primary steps in setting up a usable development environment.
+The first is to load the spack-stack environment and the second is to create a python virtual environment that is based on the python executable included within the spack-stack installation.
+The reason for the python virtual environment is to ensure that python based applications are utilizing the spack-stack python modules in a consistent manner.
+
+Load the spack-stack environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Spack environments are used by loading the modulefiles generated at the end of the installation process. These modules control the unix environment and allow CMake, ecbuild, and other build toolchains to resolve the version of software intended for the compilation task. The ``spack`` command itself is not needed in this setup, hence the instructions for creating new environments (``source setup.sh`` etc.) can be ignored. The following is sufficient for loading the modules, allowing them to be used while compiling and running user code.
 
 .. note::
@@ -28,3 +35,45 @@ Now list all available modules via ``module available``. You may be required to 
 
 .. note::
    When using ``lua`` modules, loading a different module will automatically switch the dependency modules. This is not the case for ``tcl`` modules. For the latter, it is recommended to start over with a clean shell and repeat the above steps.
+
+Build and activate a python virtual environment
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It is important that the creation of the python virtual environment be based on the python executable from the spack-stack installation.
+This ensures consistency for python applications between the python executable and the spack-stack installed python packages (eg., numpy).
+Without this consistency, it is easy for the wrong underlying library versions to get dynamically loaded and cause problems with applications crashing.
+
+After the :code:`module load stack-python-name/python-version` command is run, the environment variable :code:`python_ROOT` will be set to the path where the spack-stack installed python version is located.
+The :code:`python_ROOT` variable can be used to ensure that you get the proper virtual environment set as shown here:
+
+.. code-block:: console
+
+    ${python_ROOT}/bin/python3 -m venv <path-to-python-virtual-env>
+
+Once the virtual environment is set, it must be activated:
+
+.. code-block:: console
+
+   source <path-to-python-virtual-env>/bin/activate
+
+and after activation the spack-stack python executable will be the first one in your PATH.
+The implication of this is that you should activate the python virtual enviroment as the last step in setting up your environment to ensure that the path to the virtual environment python remains first in your PATH. Here is an example of the whole process:
+
+.. code-block:: console
+
+    module purge
+
+    module use $SPACK_STACK_GNU_ENV/install/modulefiles/Core
+    module load stack-gcc/12.2.0
+    module load stack-openmpi/4.1.4
+    module load stack-python/3.11.7
+
+    module load jedi-fv3-env
+    module load ewok-env
+    module load soca-env
+
+    cd $HOME/projects/jedi
+    ${python_ROOT}/bin/python3 -m venv jedi_py_venv
+    source jedi_py_venv/bin/activate
+
+
