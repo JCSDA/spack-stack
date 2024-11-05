@@ -8,7 +8,7 @@ runs:
     run: |
       RUNID=$(<RUNID_SAVE.log)
       DOW=$(<DOW_SAVE.log)
-      # Bbuild everything from scratch on Sundays, otherwise
+      # Build everything from scratch on Sundays, otherwise
       # use build cache to speed up the installations.
       # Monday is 1 ... Sunday is 7
       if [[ $DOW == 7 ]]; then
