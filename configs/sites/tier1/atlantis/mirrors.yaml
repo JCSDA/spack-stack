@@ -1,18 +1,3 @@
 mirrors:
-  local-source:
-    fetch:
-      url: file:///neptune_diagnostics/spack-stack/source-cache/
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
-    push:
-      url: file:///neptune_diagnostics/spack-stack/source-cache/
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
+  local-source: file:///neptune_diagnostics/spack-stack/source-cache
+  local-binary: file:///neptune_diagnostics/spack-stack/build-cache

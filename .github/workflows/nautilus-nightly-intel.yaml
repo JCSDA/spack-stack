@@ -1,0 +1,49 @@
+name: nautilus unified-env intel
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches:
+      - develop
+    types: [opened, synchronize, reopened]
+  # Is this UTC?
+  #schedule:
+  #  - cron: '0 8 * * *'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    shell: bash
+
+env:
+  BASEDIR: /p/work2/heinzell/spack-stack-nightly/intel
+  PLATFORM: nautilus
+  COMPILERS: intel
+
+jobs:
+
+  nightly-build-intel:
+    runs-on: ['self-hosted','nautilus-heinzell']
+    # Set timeout to 12hrs
+    timeout-minutes: 720
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        clean: true
+    - name: 01_DirectorySetup
+      uses: ./.github/actions/Nightly_01_DirectorySetup
+    - name: 02_GetSpackStack
+      uses: ./.github/actions/Nightly_02_GetSpackStack
+    - name: 03_SetupEnv
+      uses: ./.github/actions/Nightly_03_SetupEnv
+    - name: 04_SpackInstall
+      uses: ./.github/actions/Nightly_04_SpackInstall
+    - name: 05_BuildCache
+      uses: ./.github/actions/Nightly_05_BuildCache
+    # Skip step 6 - app test - for the moment
+    - name: 07_Cleanup
+      uses: ./.github/actions/Nightly_07_Cleanup

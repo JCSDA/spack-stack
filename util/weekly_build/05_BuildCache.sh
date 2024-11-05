@@ -11,8 +11,12 @@ set +x
 set -x
 
 for compiler in $COMPILERS; do
-  cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
-  spack env activate .
-  spack buildcache push --unsigned --force ${BUILD_CACHE} $PACKAGES_TO_INSTALL
-  spack buildcache rebuild-index ${BUILD_CACHE}
+  for template in $TEMPLATES; do
+    envname=build-$template-${compiler/@/-}
+    envdir=$RUNDIR/$RUNID/envs/$envname
+    cd $envdir
+    spack env activate .
+    spack buildcache push --unsigned --force ${BUILD_CACHE} $PACKAGES_TO_INSTALL
+    spack buildcache rebuild-index ${BUILD_CACHE}
+  done
 done

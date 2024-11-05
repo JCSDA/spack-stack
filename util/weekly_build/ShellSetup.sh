@@ -11,16 +11,28 @@ if [ ${RUNDIR::1} != "/" ]; then
   exit 1
 fi
 
-PACKAGES_TO_TEST=${PACKAGES_TO_TEST:-"libpng libaec jasper scotch w3emc g2 g2c"}
+# Defaults to empty, can be overwritten in site config
+PACKAGES_TO_TEST=""
 
 function alert_cmd {
   echo "Your run failed in $1. This is a placeholder alerting function. 'alert_cmd' should be defined for each system."
 }
 
-function spack_install_exe {
-  spack $* | tee -a log.install 2>&1
+function spack_wrapper {
+  logfile=$1
+  shift
+  set -o pipefail
+  spack $* 2>&1 | tee -a $logfile
 }
 
+function spack_install_wrapper {
+  logfile=$1
+  shift
+  set -o pipefail
+  spack $* 2>&1 | tee -a $logfile
+}
+
+# Include platform-dependent configuration
 . $(dirname $0)/sites/${PLATFORM}.sh
 
 SOURCE_CACHE=${SOURCE_CACHE:-local-source}

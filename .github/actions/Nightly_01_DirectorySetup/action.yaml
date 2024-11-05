@@ -1,0 +1,18 @@
+name: Nightly 01 Directory Setup
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 01 Directory Setup
+    shell: bash
+    run: |
+      # Write RUNID to file so that following steps use the
+      # same date and don't pick up the next day's date
+      RUNID=`date +"%Y%m%d"`
+      echo "${RUNID}" > RUNID_SAVE.log
+      # Get day of week for later use and write to file
+      DOW=$(date +%u)
+      echo "${DOW}" > DOW_SAVE.log
+      #
+      cd util/weekly_build
+      ./01_DirectorySetup.sh ${RUNID} ${BASEDIR} ${PLATFORM}

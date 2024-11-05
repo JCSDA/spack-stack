@@ -1,0 +1,11 @@
+name: Nightly 02 Get Spack-Stack
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 02 Get Spack-Stack
+    shell: bash
+    run: |
+      RUNID=$(<RUNID_SAVE.log)
+      cd util/weekly_build
+      ./02_GetSpackStack.sh ${RUNID} ${BASEDIR} ${PLATFORM}

@@ -18,7 +18,7 @@ function trap_and_run {
 
 trap_and_run ./01_DirectorySetup.sh $*
 trap_and_run ./02_GetSpackStack.sh $*
-trap_and_run ./03_SetupUnifiedEnv.sh $*
+trap_and_run ./03_SetupEnv.sh $*
 trap_and_run ./04_SpackInstall.sh $*
 trap_and_run ./05_BuildCache.sh $*
 trap_and_run ./06_AppTests.sh $*
