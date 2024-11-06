@@ -10,6 +10,9 @@ The first is to load the spack-stack environment and the second is to create a p
 The reason for the python virtual environment is to ensure that python based applications are utilizing the spack-stack python modules in a consistent manner.
 The third step is to configure your build system to use the python virtual environment created in the second step.
 
+When using a spack-stack environment please utilize the spack-stack installed python modules as much as possible to help maintain the consistency mentioned above.
+Note that after loading the spack-stack environment, all of the spack-stack installed python modules have been added to :code:`PYTHONPATH` so they are immediately accessable in your spack-stack based python virtual environment.
+
 Load the spack-stack environment
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
