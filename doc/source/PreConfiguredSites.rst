@@ -64,8 +64,10 @@ Pre-configured sites (tier 1)
 |                     | Jet                   | GCC, Intel         | ``/contrib/spack-stack``                               | EPIC / NOAA-EMC |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Narwhal               | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
-| U.S. Navy (HPCMP)   +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Nautilus              | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+|                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+| U.S. Navy (HPCMP)   | Nautilus              | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+|                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+|                     | Blueback (earlyaccess)| oneAPI             | (experimental only, no project directories yet         | NRL             |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | Univ. of Wisconsin  | S4                    | Intel              | ``/data/prod/jedi/spack-stack/``                       | JCSDA           |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -228,6 +230,37 @@ The following is required for building new spack environments with any supported
 
    umask 0022
    module purge
+
+
+.. _Preconfigured_Sites_Blueback:
+
+------------------------------
+NAVY HPCMP Blueback
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Blueback!
+
+.. code-block:: console
+
+   umask 0022
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.4.0
+   module unload intel
+   module load intel/2024.2
+   module unload cray-mpich
+   module unload craype-network-ofi
+   # Warning. Do not load craype-network-ucx
+   # or cray-mpich-ucx/8.1.21!
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load craype-network-ucx
+   #module load cray-mpich-ucx/8.1.21
+   module load libfabric/1.12.1.2.2.1
+   module unload cray-libsci
+   module load cray-libsci/23.05.1.4
 
 
 .. _Preconfigured_Sites_Derecho:
