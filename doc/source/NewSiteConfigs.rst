@@ -32,8 +32,7 @@ The instructions below are for GNU (`gcc`), since this is the easiest and best s
   We have noted problems on some - not all - platforms with ``intel@2021.5.0`` when we switched from ``zlib`` to ``zlib-ng`` in spack-stack-1.7.0. These issues went away when using a different version of the compiler (anything between 2021.3.0 and 2021.11.0). It is therefore recommended to avoid using ``intel@2021.5.0`` unless it is the only option.
 
 .. [#fn2]
-  Note that ``apple-clang@14.x`` compiler versions are fully supported, and ``apple-clang@15.0.0`` will work but requires the :ref:`workaround noted below<apple-clang-15-workaround>`.
-  Also, when using ``apple-clang@15.0.0`` you must use Command Line Tools version 15.1, and the Command Line Tools versions 15.3 and newer are not yet supported.
+  Note that ``apple-clang@14.x`` and ``apple-clang@15.x`` compiler versions are fully supported, and when using ``apple-clang@15.x`` the :ref:`workaround noted below<apple-clang-15-workaround>` is required.
 
 .. [#fn3]
   Support for Nvidia compilers is experimental and limited to a subset of packages. Please refer to :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv_Nvidia>` below.
@@ -285,8 +284,8 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. _apple-clang-15-workaround:
 .. note::
-  When using apple-clang@15.0.0 (or newer) compilers, you need to manually add the following ldflags spec in the `site/compilers.yaml` file.
-  There are known issues with new features in the Apple linker/loader that comes with the 15.0.0 compiler set, and this change tells the linker/loader to use its legacy features which work fine.
+  When using apple-clang@15.x (or newer) compilers, you need to manually add the following ldflags spec in the `site/compilers.yaml` file.
+  There are known issues with new features in the Apple linker/loader that comes with the 15.x compiler set, and this change tells the linker/loader to use its legacy features which work fine.
 
 .. code-block:: yaml
   :emphasize-lines: 9,10

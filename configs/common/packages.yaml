@@ -260,11 +260,11 @@ packages:
   scotch:
     require: '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch'
   sfcio:
-    require: '@1.4.1'
+    require: '@1.4.2'
   shumlib:
     require: '@macos_clang_linux_intel_port'
   sigio:
-    require: '@2.3.2'
+    require: '@2.3.3'
   sp:
     require: '@2.5.0 precision=4,d,8'
   udunits:
