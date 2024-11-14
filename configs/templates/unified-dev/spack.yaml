@@ -13,7 +13,7 @@ spack:
     - geos-gcm-env          ^esmf@=8.6.1
     - global-workflow-env   ^esmf@=8.6.1
     - gmao-swell-env
-    - gsi-env               ^esmf@=8.6.1
+    - gsi-env
     - jedi-fv3-env
     - jedi-geos-env         ^esmf@=8.6.1
     - jedi-mpas-env

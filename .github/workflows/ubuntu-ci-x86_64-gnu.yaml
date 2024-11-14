@@ -115,17 +115,22 @@ jobs:
             # base-env
             echo "base-env ..."
             spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
-            spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
+            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
 
             # jedi-base-env
             echo "jedi-base-env ..."
             spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
-            spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+
+            # jedi-ufs-env
+            echo "jedi-ufs-env ..."
+            spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-ufs-env
+            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
 
             # the rest
             echo "${TEMPLATE} ..."
             spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}
-            spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
+            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
 
             # Remove binary cache for next round of concretization
             if [ "$USE_BINARY_CACHE" = true ] ; then
@@ -145,6 +150,7 @@ jobs:
 
       - name: create-env
         run: |
+          # Set up spack-stack
           source ./setup.sh
           export BUILDCACHE_ENVNAME=ue-gcc-11.4.0-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
@@ -153,20 +159,22 @@ jobs:
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
-          # Concretize
+          # Concretize and check for duplicates
           spack concretize --force 2>&1 | tee log.concretize.gnu-11.4.0
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.gnu-11.4.0 -i fms -i crtm -i esmf -i mapl
 
-          # Add binary cache back in and reindex it
+          # Add binary cache back in
           spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
-          # base-env
-          echo "base-env ..."
+          # Install from cache
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0.unified-env
 
+          # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+
+          # Create modules
           spack clean -a
           spack module tcl refresh -y
           spack stack setup-meta-modules
@@ -201,7 +209,7 @@ jobs:
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-gcc/11.4.0
-          module load stack-openmpi/5.0.3
+          module load stack-openmpi/5.0.5
           module load stack-python/3.11.7
           module available
 

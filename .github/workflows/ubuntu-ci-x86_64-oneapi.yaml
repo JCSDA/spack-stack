@@ -161,17 +161,22 @@ jobs:
           # base-env
           echo "base-env ..."
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.base-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ base-env
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # jedi-base-env
           echo "jedi-base-env ..."
           spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.jedi-base-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+
+          # jedi-ufs-env
+          echo "jedi-ufs-env ..."
+          spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.jedi-ufs-env
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
 
           # the rest
           echo "unified-env ..."
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.unified-env
-          spack buildcache create -a -u /home/ubuntu/spack-stack/build-cache/
+          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
 
           # Remove binary cache for next round of concretization
           if [ "$USE_BINARY_CACHE" = true ] ; then
@@ -189,6 +194,7 @@ jobs:
 
       - name: create-env
         run: |
+          # Set up spack-stack
           source ./setup.sh
           export BUILDCACHE_ENVNAME=ue-oneapi-2024.2.0-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
@@ -197,38 +203,26 @@ jobs:
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
-          # Concretize
+          # Concretize and check for duplicates
           spack concretize --force 2>&1 | tee log.concretize.oneapi-2024.2.0
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.oneapi-2024.2.0 -i fms -i crtm -i esmf -i mapl
 
-          # Add binary cache back in and reindex it
+          # Add binary cache back in
           spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
-          # base-env
-          echo "base-env ..."
+          # Install from cache
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0.unified-env
 
+          # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+
+          # Create modules
           spack clean -a
           spack module tcl refresh -y
           spack stack setup-meta-modules
           spack env deactivate
-
-          ### # Test environment chaining
-          ### echo "Test environment chaining"
-          ### spack stack create env --name chaintest --template empty --site linux.default --upstream ${ENVDIR}/install --compiler intel
-          ### # Retain config from upstream so we don't have to rebuild:
-          ### cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
-          ### spack env activate ${PWD}/envs/chaintest
-          ### # Pin gmake to avoid duplicate packages (excluded gmake from spack external find above)
-          ### spack config add "packages:gmake:require:'@:4.2'"
-          ### spack add nccmp@1.9.0.1%oneapi
-          ### spack concretize | tee envs/chaintest/log.concretize
-          ### unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
-          ### if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
-          ### spack env deactivate
 
       - name: test-env
         run: |
