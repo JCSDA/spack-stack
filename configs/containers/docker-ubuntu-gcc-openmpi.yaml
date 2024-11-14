@@ -40,7 +40,7 @@ spack:
       externals:
       - spec: gcc-runtime@12.3.0
         prefix: /usr
-    gmake:
+    gmake::
       buildable: false
       externals:
       - spec: gmake@4.3

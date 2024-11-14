@@ -59,7 +59,7 @@ spack:
       - spec: mpich@4.2.1
         prefix: /opt/mpich-4.2.1
       version: [4.2.1]
-    gmake:
+    gmake::
       buildable: false
       externals:
       - spec: gmake@4.3

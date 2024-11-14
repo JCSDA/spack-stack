@@ -50,7 +50,7 @@ spack:
     #  externals:
     #  - spec: intel-oneapi-mkl@2022.1.0
     #    prefix: /opt/intel/oneapi
-    gmake:
+    gmake::
       buildable: false
       externals:
       - spec: gmake@4.3
