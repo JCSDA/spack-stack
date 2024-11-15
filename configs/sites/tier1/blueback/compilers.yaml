@@ -24,7 +24,7 @@ compilers::
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
   - compiler:
-      spec: gcc@10.3.0
+      spec: gcc@12.1.0
       paths:
         cc: cc
         cxx: CC
@@ -34,7 +34,7 @@ compilers::
       operating_system: sles15
       modules:
       - PrgEnv-gnu/8.4.0
-      - gcc/10.3.0
+      - gcc/12.1.0
       - cray-libsci/23.05.1.4
       - libfabric/1.12.1.2.2.1
       environment:
