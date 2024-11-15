@@ -1,51 +1,41 @@
-# Provisiong ParallelWorks AWS clusters
+# Provisiong NRL ParallelWorks AWS clusters
 
-## Steps to perform before installing spack-stack version 1.8.0
+## Steps to perform before installing spack-stack develop as of 2024/11/24
 
+Note. Some of these packages may already be installed, but for the sake of completeness, they are listed here.
+```
 sudo su -
 chmod 777 /contrib
-yum install -y qt5-qtbase-devel
+
+yum install -y gcc-toolset-13
+yum install -y gcc-toolset-13-runtime
+yum install -y gcc-toolset-13-binutils
+yum install -y gcc-toolset-13-gcc
+yum install -y gcc-toolset-13-gcc-c++
+yum install -y gcc-toolset-13-gcc-gfortran
+yum install -y gcc-toolset-13-gdb
+
+yum install -y binutils-devel
+yum install -y m4
+yum install -y wget
+yum install -y git
+yum install -y git-lfs
+yum install -y bash-completion
+yum install -y bzip2 bzip2-devel
+yum install -y unzip
+yum install -y patch
+yum install -y automake
+yum install -y xorg-x11-xauth
+yum install -y xterm
+yum install -y perl-IPC-Cmd
+yum install -y gettext-devel
+yum install -y texlive
+yum install -y bison
+yum install -y screen
+
+yum install -y qt5-qtbase
+yum install -y qt5-qttools-devel
 yum install -y qt5-qtsvg-devel
+```
 
-
-## Steps to install spack-stack version 1.8.0
-
-sudo su -
-chmod 777 /contrib
-
-module purge
-module unuse /opt/cray/craype/default/modulefiles
-module unuse /opt/cray/modulefiles
-### For noaa-aws, run the line below as well:
-module unuse /opt/intel/impi/2019.5.281/intel64/modulefiles
-module load gnu
-module load intel/2023.2.0
-module load impi/2023.2.0 
-module unload gnu
-
-cd /contrib/spack-stack-rocky8/
-git clone --recursive https://github.com/JCSDA/spack-stack -b release/1.8.0 spack-stack-1.8.0
-cd spack-stack-1.8.0
-. setup.sh
-spack stack create env --name ue-intel-2021.10.0 --template unified-dev --site noaa-aws --compiler intel
-cd envs/ue-intel-2021.10.0
-spack env activate .
-spack concretize 2>&1 | tee log.concretize
-spack install --verbose 2>&1 | tee log.install
-spack module lmod refresh -y
-spack stack setup-meta-modules
-
-## Steps to install GSI addon
-
-sudo su -
-chmod 777 /contrib
-
-cd /contrib/spack-stack-rocky8/spack-stack-1.8.0
-. setup.sh
-spack stack create env --name gsi-intel-2021.10.0 --template gsi-addon-dev --site noaa-aws --upstream /contrib/spack-stack-rocky8/spack-stack-1.8.0/envs/ue-intel-2021.10.0/install --compiler intel
-cd envs/gsi-intel-2021.10.0
-spack env activate .
-spack concretize 2>&1 | tee log.concretize
-spack install --verbose 2>&1 | tee log.install
-spack module lmod refresh --upstream-modules
-spack stack setup-meta-modules
+For instructions for building spack-stack, see the spack-stack documentation on readthedocs (https://spack-stack.readthedocs.io/en/latest). For instructions for using pre-built spack-stack environments, see the spack-stack wiki (https://github.com/JCSDA/spack-stack/wiki).

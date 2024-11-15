@@ -159,7 +159,7 @@ NASA Discover SCU17
 
 On Discover SCU17, ``qt`` needs to be installed as a one-off before spack can be used.
 
-**MISSING - THE CURRENT QT USED IN THE SCU17 SITE CONFIG DOES NOT WORK (/usr/local/other/xpdf/4.04/Deps)**
+**These instructions are missing. The current `qt` used in the SCU17 site config does not work (/usr/local/other/xpdf/4.04/Deps).**
 
 .. _MaintainersSection_Narwhal:
 
@@ -271,14 +271,6 @@ NOAA RDHPCS Jet
 On Jet, the ``target`` architecture must be set to ``core2`` to satisfy differences between the various Jet partitions and ensure that installations run on the front-end nodes (xjet-like) will function on the other partitions.
 
 Like Hera, Jet sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform. This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
-
-.. _MaintainersSection_S4:
-
-------------------------------
-UW (Univ. of Wisconsin) S4
-------------------------------
-
-**MISSING NEEDS UPDATING FROM JCSDA (OR REMOVE)**
 
 .. _MaintainersSection_AWS_Pcluster_Ubuntu:
 
