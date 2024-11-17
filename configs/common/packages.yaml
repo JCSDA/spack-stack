@@ -236,9 +236,10 @@ packages:
   # README.md
   #py-mysql-connector-python:
   #  require: '@8.0.32'
+  # Variant ~mpi not working for latest py-netcdf4
+  # https://github.com/spack/spack/issues/47652
   py-netcdf4:
-    #require: '@1.5.8 ~mpi'
-    require: '~mpi'
+    require: '@1.7.1 +mpi'
   # py-numpy@1.26 causes many build problems with older Python packages
   # also check Nautilus site config when making changes here
   # https://github.com/JCSDA/spack-stack/issues/1276
