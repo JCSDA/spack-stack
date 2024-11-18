@@ -31,10 +31,13 @@ packages:
     require:
     - any_of: ['@2.3.0 ~openmp']
       when: '%intel@2021:'
-      message: '2.3.0 is the last version to use C++17'
+      message: '2.3.0 is the last version to use C++17, use with Intel Classic'
+    - any_of: ['@2.3.0 ~openmp']
+      when: '%apple-clang@:14'
+      message: '2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier'
     - any_of: ['@2.0.5 ~openmp']
       when: '%intel@:2020'
-      message: '2.0.5 is the last version to use C++14'
+      message: '2.0.5 is the last version to use C++14, use with Intel Classic 2020 and earlier'
   cmake:
     version: ['3.27.9']
     require: '+ownlibs'
