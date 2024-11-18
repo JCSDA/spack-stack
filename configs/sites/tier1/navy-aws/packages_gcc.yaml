@@ -1,0 +1,15 @@
+packages:
+  all:
+    compiler:: [gcc@13.3.1]
+    providers:
+      mpi:: [openmpi@5.0.5]
+  mpi:
+    buildable: False
+  openmpi:
+    buildable: False
+    externals:
+    - spec: openmpi@5.0.5%gcc@13.3.1 fabrics=auto ~gpfs ~internal-hwloc ~internal-libevent
+        ~internal-pmix +lustre +openshmem schedulers=slurm +romio romio-filesystem=lustre
+      modules:
+      - libfabric-aws/1.22.0amzn2.0
+      - openmpi5/5.0.5
