@@ -1,0 +1,124 @@
+packages:
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.16.1
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.40.21~gold~headers
+      prefix: /opt/rh/gcc-toolset-13/root/usr
+    - spec: binutils@2.30.123~gold+headers
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.26.5
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.30
+      prefix: /usr
+  cvs:
+    externals:
+    - spec: cvs@1.11.23
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  doxygen:
+    externals:
+    - spec: doxygen@1.8.14+graphviz~mscgen
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.6.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.1+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.43.5+tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.4.1
+      prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.0p1
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.4.2
+      prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr/lib64/qt5
+  sed:
+    externals:
+    - spec: sed@4.5
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.10.2
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@6.5
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@2018
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.19.5
+      prefix: /usr
+  zlib:
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
