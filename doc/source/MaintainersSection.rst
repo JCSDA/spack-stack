@@ -29,28 +29,6 @@ Building ``git-lfs`` with spack isn't straightforward as it requires ``go-bootst
 
 Following this "installation", create modulefile from template ``doc/modulefile_templates/git-lfs``.
 
-..  _MaintainersSection_Miniconda:
-
-------------------------------
-Miniconda (legacy)
-------------------------------
-
-miniconda can be used to provide a basic version of Python that spack-stack uses to support its Python packages. This is not recommended on configurable systems (user workstations and laptops using GNU compiler) where Python gets installed by spack. But any system using Intel compilers with spack-stack will need an external Python to build ecflow with Python bindings (because ecflow requires a boost serialization function that does **not** work with Intel, a known yet ignored bug), and then both Python and ecflow are presented to spack as external packages. Often, it is possible to use the default (OS) Python if new enough (3.9+), or a module provided by the system administrators. If none of this works, use the following instructions to install a basic Python interpreter using miniconda:
-
-The following is for the example of ``miniconda_ver="py39_4.12.0"`` (for which ``python_ver=3.9.12``) and ``platform="MacOSX-x86_64"`` or ``platform="Linux-x86_64"``
-
-.. code-block:: console
-
-   cd /path/to/top-level/spack-stack/
-   mkdir -p miniconda-${python_ver}/src
-   cd miniconda-${python_ver}/src
-   wget https://repo.anaconda.com/miniconda/Miniconda3-${miniconda_ver}-${platform}.sh
-   sh Miniconda3-${miniconda_ver}-${platform}.sh -u -b -p /path/to/top-level/spack-stack/miniconda-${python_ver}
-   eval "$(/path/to/top-level/spack-stack/miniconda-${python_ver}/bin/conda shell.bash hook)"
-   conda install -y -c conda-forge libpython-static
-
-After the successful installation, create modulefile ``/path/to/top-level/spack-stack/modulefiles/miniconda/${python_ver}`` from template ``doc/modulefile_templates/miniconda`` and update ``MINICONDA_PATH`` and the Python version in this file.
-
 ..  _MaintainersSection_Qt5:
 
 ------------------------------
@@ -79,75 +57,6 @@ Sign into qt, select customized installation, choose qt@5.15.2 only (uncheck all
 
 .. note::
    If ``./qt-unified-linux-x64-online.run`` fails to start with the error ``qt.qpa.xcb: could not connect to display`` and a role account is being used, follow the procedure described in https://www.thegeekdiary.com/how-to-set-x11-forwarding-export-remote-display-for-users-who-switch-accounts-using-sudo to export the display. A possible warning ``xauth:  file /ncrc/home1/role.epic/.Xauthority does not exist`` can be ignored, since this file gets created by the ``xauth`` command.
-
-..  _MaintainersSection_ecFlow:
-
-------------------------------
-ecFlow (with GUI and Python)
-------------------------------
-
-Building ``ecFlow`` with spack is pretty tricky, because it requires functions from the ``boost`` serialization library that do not build cleanly with the Intel classic compilers (see https://github.com/USCiLab/cereal/issues/606 for a description of the problem of Intel with json cereal). When using the Intel compilers on HPC systems, it is therefore necessary to build ``ecFlow`` with the GNU compilers, preferably the same version that is used as the C++ backend for Intel, outside of spack-stack and make it available as a module. The build of ``ecFlow`` described below links against this ``boost`` library statically, therefore it does not interfere with ``boost`` built by spack-stack for other applications. ``ecFlow`` also uses ``Python3`` and ``qt5``.
-
-.. note::
-   Installing ``ecFlow`` with ``conda``, ``brew``, etc. is not recommended, since these install a number of packages as dependencies (e.g. ``numpy``, dynamically-linked ``boost``) that may interfere with the spack software stack.
-
-After loading the required modules for this system (typically the same ``gcc`` used as backend for Intel or for GNU spack-stack builds, ``cmake``, ``qt5``, ``Python3``), follow these instructions to install ecFlow with the graphical user interface (GUI) and Python3 API. See also https://confluence.ecmwf.int/display/ECFLOW/ecflow5.
-
-.. code-block:: console
-
-   mkdir -p /lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src
-   cd /lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src
-   wget https://confluence.ecmwf.int/download/attachments/8650755/ecFlow-5.8.4-Source.tar.gz?api=v2
-   wget https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.tar.gz
-   mv ecFlow-5.8.4-Source.tar.gz\?api\=v2 ecFlow-5.8.4-Source.tar.gz
-   tar -xvzf boost_1_78_0.tar.gz
-   tar -xvzf ecFlow-5.8.4-Source.tar.gz
-   export WK=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src/ecFlow-5.8.4-Source
-   export BOOST_ROOT=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4/src/boost_1_78_0
-
-   # Build static boost (to not interfere with spack-stack boost)
-   cd $BOOST_ROOT
-   ./bootstrap.sh 2>&1 | tee bootstrap.log
-   $WK/build_scripts/boost_build.sh 2>&1 | tee boost_build.log
-
-   # Build ecFlow
-   cd $WK
-   mkdir build
-   cd build
-   cmake .. -DCMAKE_INSTALL_PREFIX=/lustre/f2/pdata/esrl/gsd/spack-stack/ecflow-5.8.4 2>&1 | tee log.cmake
-   make -j4 2>&1 | tee log.make
-   make install 2>&1 | tee log.install
-
-Create modulefile ``/lustre/f2/pdata/esrl/gsd/spack-stack/modulefiles/ecflow/5.8.4`` from template ``doc/modulefile_templates/ecflow`` and update ``ECFLOW_PATH`` in this file.
-
-.. note::
-   For Cray systems, for example NRL's Narwhal, NOAA's Gaea C5, or NCAR's Derecho, the following modifications are necessary: After extracting the ecflow tarball, edit ``ecFlow-5.8.4-Source/build_scripts/boost_build.sh`` and remove the following lines:
-
-.. code-block:: console
-
-   if [ "$PE_ENV" = INTEL ] ; then
-      tool=intel
-   fi
-   if [ "$PE_ENV" = CRAY ] ; then
-      tool=cray
-   fi
-
-.. note::
-   Further on Narwhal, the ``cmake`` command for ``ecbuild`` must be told to use the GNU compilers:
-
-.. code-block:: console
-
-   CC=gcc CXX=g++ FC=gfortran cmake .. -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
-
-.. note::
-   Further, on Gaea C5, one needs to pass the correct ``python3`` executable to the ``cmake`` command:
-
-.. code-block:: console
-
-   cmake .. -DPython3_EXECUTABLE=`which python3` -DCMAKE_INSTALL_PREFIX=/path/to/ecflow/installation 2>&1 | tee log.cmake
-
-.. note::
-   Finally, on Casper, Derecho, or any other system with ``gcc@12.2.0``, one needs to patch file ``ecflow-5.8.4/src/ecFlow-5.8.4-Source/ACore/src/Passwd.cpp`` by adding ``#include <ctime>`` below line ``#include "Passwd.hpp"`` before running ``make``.
 
 ..  _MaintainersSection_MySQL:
 
@@ -209,6 +118,7 @@ If a mirror exists, add new packages to the mirror. Here, ``/path/to/mirror`` is
 
 If this fails with ``git lfs`` errors, check the site config for which module to load for ``git lfs`` support. Load the module, then run the ``spack mirror add`` command, then unload the module and proceed with the installation.
 
+
 ==============================
 Pre-configuring sites
 ==============================
@@ -219,7 +129,7 @@ Pre-configuring sites
 Preface/general instructions
 ------------------------------
 
-Preconfigured sites are defined through spack configuration files in the spack-stack directory ``configs/sites``, for example ``configs/sites/orion``. All files in the site-specific subdirectory will be copied into the environment into ``envs/env-name/site``. Site-specific configurations consist of general definitions (``config.yaml``), packages (``packages.yaml``), compilers (``compilers.yaml``), modules (``modules.yaml``), mirrors (``mirrors.yaml``) etc. These configurations overwrite the common configurations that are copied from ``configs/common`` into ``envs/env-name/common``.
+Preconfigured sites are defined through spack configuration files in the spack-stack directory ``configs/sites``, for example ``configs/sites/orion``. All files in the site-specific subdirectory will be copied into the environment into ``envs/env-name/site``. Site-specific configurations consist of general definitions (``config.yaml``), packages (``packages.yaml``, ``packages_*.yaml``), compilers (``compilers.yaml``), modules (``modules.yaml``), mirrors (``mirrors.yaml``) etc. These configurations overwrite the common configurations that are copied from ``configs/common`` into ``envs/env-name/common``.
 
 The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Preconfigured_Sites_ExtendingEnvironments>`.
 
@@ -229,112 +139,17 @@ Note that, for official installations of new environments on any supported platf
     
    spack install --source --verbose
 
-.. _MaintainersSection_Orion:
-
-------------------------------
-MSU Orion
-------------------------------
-
-On Orion, it is necessary to change the default ``umask`` from ``0027`` to ``0022`` so that users not in the group of the role account can still see and use the software stack. This can be done by running ``umask 022`` after logging into the role account.
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Note that the default/system ``qt@5`` can be used on Orion.
-
-.. code-block:: console
-
-   module purge
-   module load python/3.9.2
-   module load cmake/3.22.1
-   module load gcc/10.2.0
-
-.. _MaintainersSection_Hercules:
-
-------------------------------
-MSU Hercules
-------------------------------
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library, using an available ``Qt5`` installation. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/work/noaa/epic/role-epic/spack-stack/hercules/ecflow-5.8.4``. NOTE: do NOT include the ``Qt5`` module dependency in the ``ecflow`` modulefile, as it is only needed at build time (and causes issues with zlib/tar if the depedency is kept in the modulefile). 
-
-.. code-block:: console
-
-   module purge
-   module load qt/5.15.8
-
-openmpi
-  Because of difficulties with the default ``openmpi`` on Hercules, we build ``openmpi`` outside of spack and provide it as an external package. It is necessary to load the ``gcc`` compiler module and the ``zlib`` module for consistency. The configuration options are mostly adopted from the default OpenMPI installations that were done by the system administrators using spack (many of them are default values), except that we use internal ``hwloc`` and ``pmix``. Create modulefile ``openmpi`` from template ``doc/modulefile_templates/openmpi``.
-
-.. code-block:: console
-
-   ./configure \
-       --enable-shared \
-       --disable-silent-rules \
-       --disable-builtin-atomics \
-       --with-pmi=/opt/slurm \
-       --enable-static \
-       --enable-mpi1-compatibility \
-       --without-hcoll \
-       --without-psm2 \
-       --without-knem \
-       --without-verbs \
-       --without-psm \
-       --without-cma \
-       --without-ucx \
-       --without-mxm \
-       --without-fca \
-       --without-xpmem \
-       --without-ofi \
-       --without-cray-xpmem \
-       --without-sge \
-       --without-lsf \
-       --without-loadleveler \
-       --without-alps \
-       --without-tm \
-       --with-slurm \
-       --disable-memchecker \
-       --with-pmix=internal \
-       --with-zlib=/apps/spack-managed/gcc-12.2.0/zlib-1.2.13-p3sxbyfgvvjy7jx4kizib2jwvhm4s6l4 \
-       --with-hwloc=internal \
-       --disable-java \
-       --disable-mpi-java \
-       --with-gpfs=no \
-       --without-cuda \
-       --enable-wrapper-rpath \
-       --disable-wrapper-runpath \
-       --disable-mpi-cxx \
-       --disable-cxx-exceptions \
-       --with-wrapper-ldflags="-Wl,-rpath,/apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/lib/gcc/x86_64-pc-linux-gnu/12.2.0 -Wl,-rpath,/apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/lib64" \
-       --prefix=/work/noaa/epic/role-epic/spack-stack/hercules/openmpi-4.1.6/gcc-12.2.0-spack 2>&1 | tee log.config
-   make VERBOSE=1 -j4
-   make check
-   make install
-
 .. _MaintainersSection_Discover_SCU16:
 
 ------------------------------
 NASA Discover SCU16
 ------------------------------
 
-On Discover SCU16, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
-
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
+On Discover SCU16, ``qt`` needs to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
    :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/scu16/qt-5.15.2`` (note: it is currently installed in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``; an upcoming large system update will require is to rebuild anyway).
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
-
-.. code-block:: console
-
-   module purge
-   module load cmake/3.28.2
-   module load comp/gcc/12.1.0
-   module use /discover/swdev/jcsda/spack-stack/modulefiles
-   module load miniconda/3.10.13
-   module load qt/5.15.2
 
 .. _MaintainersSection_Discover_SCU17:
 
@@ -342,26 +157,9 @@ ecflow
 NASA Discover SCU17
 ------------------------------
 
-On Discover SCU17 ``ecflow`` needs to be installed as a one-off before spack can be used.
+On Discover SCU17, ``qt`` needs to be installed as a one-off before spack can be used.
 
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` (cont'd below).
-
-.. code-block:: console
-
-   module purge
-   module load cmake/3.28.2
-
-The following workaround is required after installing ``ecflow`` and creating the modulefile: edit ``path/to/ecflow/bin/ecflow_ui`` and change the last few lines to (i.e. prepend the ``LD_PRELOAD`` command):
-
-.. code-block:: console
-
-   if [ $ECFLOWUI_BT != "no" ]
-   then
-       LD_PRELOAD=/usr/lib64/libstdc++.so.6 catchsegv ${ECFLOWUI_USER_START_CMD} "$exe"
-   else
-       LD_PRELOAD=/usr/lib64/libstdc++.so.6 ${ECFLOWUI_USER_START_CMD} "$exe"
-   fi
+**These instructions are missing. The current `qt` used in the SCU17 site config does not work (/usr/local/other/xpdf/4.04/Deps).**
 
 .. _MaintainersSection_Narwhal:
 
@@ -369,7 +167,7 @@ The following workaround is required after installing ``ecflow`` and creating th
 NAVY HPCMP Narwhal
 ------------------------------
 
-On Narwhal, ``git-lfs``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used. Also, temporarily it is necessary to install ``node.js`` as an external package to work around build errors for ``py-jupyter-server`` (see https://github.com/JCSDA/spack-stack/issues/928 and https://github.com/spack/spack/issues/41899).
+On Narwhal, ``git-lfs`` and ``qt`` need to be installed as a one-off before spack can be used. Also, temporarily it is necessary to install ``node.js`` as an external package to work around build errors for ``py-jupyter-server`` (see https://github.com/JCSDA/spack-stack/issues/928 and https://github.com/spack/spack/issues/41899).
 
 git-lfs
    The following instructions install ``git-lfs`` in ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0``. Version 2.10.0 is the default version for Narwhal. First, download the ``git-lfs`` RPM on a system with full internet access (e.g., Derecho) using ``wget https://download.opensuse.org/repositories/openSUSE:/Leap:/15.2/standard/x86_64/git-lfs-2.10.0-lp152.1.2.x86_64.rpm`` and copy this file to ``/p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0/src``. Then switch to Narwhal and run the following commands. 
@@ -399,24 +197,6 @@ qt (qt@5)
 
    module load gcc/10.3.0
 
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``. Ensure to follow the extra instructions in that section for Narwhal.
-
-.. code-block:: console
-
-   module unload PrgEnv-cray
-   module load PrgEnv-intel/8.1.0
-   module unload intel
-
-   module unload cray-python
-   module load cray-python/3.9.7.1
-   module unload cray-libsci
-   module load cray-libsci/22.08.1.1
-
-   module load gcc/10.3.0
-   module use /p/app/projects/NEPTUNE/spack-stack/modulefiles
-   module load qt/5.15.2
-
 node.js
   ``node.js`` is difficult to install via ``spack``, but is needed to install certain Python packages. The complication is that when using a newer ``gcc`` compiler (either directly or as backend for ``icc`` etc.), the OS ``node.js`` errors out with unresolved symbols in the ``libstdc++`` library. Therefore, we need to install ``node.js`` with ``gcc@10.3.0`` loaded, and create modulefile ``node.js/20.10.0`` from template ``modulefiles/node.js``.
 
@@ -437,42 +217,6 @@ node.js
    make 2>&1 | tee log.make
    make install 2>&1 | tee log.install
 
-.. _MaintainersSection_Nautilus:
-
-------------------------------
-NAVY HPCMP Nautilus
-------------------------------
-
-On Nautilus, ``ecflow`` must be installed as a one-off before spack can be used.
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow`` in ``/p/app/projects/NEPTUNE/spack-stack/ecflow-5.8.4``.
-
-.. code-block:: console
-
-   module purge
-
-   module load slurm
-   module load amd/aocc/4.0.0
-   module load amd/aocl/aocc/4.0
-
-.. _MaintainersSection_Casper:
-
-------------------------------
-NCAR-Wyoming Casper
-------------------------------
-
-On Casper, there are problems with newer versions of the Intel compiler/MPI library when trying to run MPI jobs with just one task (``mpiexec -np 1``) - for JEDI, job hangs forever in a particular MPI communication call in oops. This is why an older version Intel 19 is used here.
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
-
-.. code-block:: console
-
-   module purge
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load gnu/12.2.0
-
 .. _MaintainersSection_Derecho:
 
 ------------------------------
@@ -485,31 +229,13 @@ libfabric (temporary)
 cray-pals (temporary)
   Until CISL fixes its unusual way of setting up Cray module environments, it is necessary to create a cray-pals (parallel application launcher) module to be able to find ``mpirun`` etc. Create directory ``/glade/work/epicufsrt/contrib/spack-stack/derecho/cray-pals`` and copy file ``/opt/cray/pe/lmod/modulefiles/core/cray-pals/1.2.11.lua`` into this directory.
 
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>` to install ``ecflow``. Be sure to follow the extra instructions for Derecho in that section.
-
-.. code-block:: console
-
-   module purge
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load gcc/12.2.0
-   module load cmake/3.26.3
-
-.. _MaintainersSection_WCOSS2:
-
-------------------------------
-NOAA NCO WCOSS2
-------------------------------
-
-**WORK IN PROGRESS**
-
 .. _MaintainersSection_Parallel_Works:
 
 ----------------------------------------
 NOAA Parallel Works (AWS, Azure, Gcloud)
 ----------------------------------------
 
-See ``configs/sites/noaa-aws/README.md``. These instructions are identical for all three vendors.
+See ``configs/sites/noaa-{aws,azure,gcloud}/README.md``.
 
 .. _MaintainersSection_GaeaC5:
 
@@ -517,7 +243,7 @@ See ``configs/sites/noaa-aws/README.md``. These instructions are identical for a
 NOAA RDHPCS Gaea C5
 ------------------------------
 
-On Gaea C5, ``miniconda``, ``qt``, and ``ecflow`` need to be installed as a one-off before spack can be used.
+On Gaea C5, ``qt`` needs to be installed as a one-off before spack can be used.
 
 qt (qt@5)
    The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/ncrc/proj/epic/spack-stack/qt-5.15.2``. :numref:`Section %s <MaintainersSection_Qt5>` describes how to export the X windows environment in order to install ``qt@5`` using the role account.
@@ -528,44 +254,11 @@ qt (qt@5)
    module load gcc/10.3.0
    module load PrgEnv-gnu/8.3.3
 
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `qt5` and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`. Because of the dependency on ``miniconda``, that module must be loaded automatically in the ``ecflow`` module (similar to ``qt@5.15.2-c5``).  Ensure to follow the extra instructions in that section for Gaea C5 in ``/ncrc/proj/epic/spack-stack/ecflow-5.8.4``.
-  
-   Ensure to follow the extra instructions in that section for Gaea.
-
-.. code-block:: console
-
-   module load PrgEnv-gnu/8.3.3
-   module use /ncrc/proj/epic/spack-stack/modulefiles/
-   module load qt/5.15.2
-   module load python/3.9.12
-   module load cmake/3.23.1
-
 .. _MaintainersSection_Hera:
 
 ------------------------------
 NOAA RDHPCS Hera
 ------------------------------
-
-On Hera, ``miniconda`` must be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library.
-
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
-
-openmpi
-   It is easier to build and test ``openmpi`` manually and use it as an external package, instead of building it as part of spack-stack. These instructions were used to build the ``openmpi@4.1.5`` MPI library with ``gcc@9.2.0`` as referenced in the Hera site config. After the installation, create modulefile `openmpi/4.1.5` using the template ``doc/modulefile_templates/openmpi``. Note the site-specific module settings at the end of the template, this will likely be different for other HPCs.
-
-.. code-block:: console
-
-   module purge
-   module load gnu/9.2.0
-   ./configure \
-       --prefix=/scratch1/NCEPDEV/jcsda/jedipara/spack-stack/openmpi-4.1.5 \
-       --with-pmi=/apps/slurm/default \
-       --with-lustre
-   make VERBOSE=1 -j4
-   make check
-   make install
 
 Hera sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform. This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
 
@@ -575,42 +268,9 @@ Hera sits behind the NOAA firewall and doesn't have access to all packages on th
 NOAA RDHPCS Jet
 ------------------------------
 
-Note that the ``target`` architecture for Jet must be set to ``core2`` to satisfy differences between the various Jet partitions and ensure that installations run on the front-end nodes (xjet-like) will function on the other partitions.
+On Jet, the ``target`` architecture must be set to ``core2`` to satisfy differences between the various Jet partitions and ensure that installations run on the front-end nodes (xjet-like) will function on the other partitions.
 
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
-
-.. code-block:: console
-
-   module use /lfs4/HFIP/hfv3gfs/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   # Need a newer gcc compiler than the default OS compiler gcc-4.8.5
-   module load gnu/9.2.0
-
-.. _MaintainersSection_S4:
-
-------------------------------
-UW (Univ. of Wisconsin) S4
-------------------------------
-
-gnu (module only)
-   The ``gnu/9.3.0`` module provided by the system administrators is broken. To create a usable version, turn ``/data/prod/hpc-stack/modulefiles/core/gnu/9.3.0.lua`` into a simple environment module (``tcl``) in ``/data/prod/jedi/spack-stack/modulefiles/gnu``.
-
-mpich (module only)
-   The ``mpich/4.0.1`` module provided by the system administrators is broken. To create a usable version, turn ``/data/prod/hpc-stack/modulefiles/compiler/gnu/9.3.0/mpich/4.0.1.lua`` into a simple environment module (``tcl``) in ``/data/prod/jedi/spack-stack/modulefiles/mpich``.
-
-miniconda
-   Follow the instructions in :numref:`Section %s <MaintainersSection_Miniconda>` to create a basic ``miniconda`` installation and associated modulefile for working with spack. Don't forget to log off and back on to forget about the conda environment.
-
-ecflow
-  ``ecFlow`` must be built manually using the GNU compilers and linked against a static ``boost`` library. After installing `miniconda`, and loading the following modules, follow the instructions in :numref:`Section %s <MaintainersSection_ecFlow>`.
-
-.. code-block:: console
-
-   module purge
-   module use /data/prod/jedi/spack-stack/modulefiles
-   module load miniconda/3.9.12
-   module load gcc/9.3.0
+Like Hera, Jet sits behind the NOAA firewall and doesn't have access to all packages on the web. It is therefore necessary to create a spack mirror on another platform. This can be done as described in section :numref:`Section %s <MaintainersSection_spack_mirrors>` for air-gapped systems.
 
 .. _MaintainersSection_AWS_Pcluster_Ubuntu:
 
@@ -619,6 +279,7 @@ Amazon Web Services Parallelcluster Ubuntu 20.04
 ------------------------------------------------
 
 See ``configs/sites/aws-pcluster/README.md``.
+
 
 .. _MaintainersSection_Testing_New_Packages:
 
