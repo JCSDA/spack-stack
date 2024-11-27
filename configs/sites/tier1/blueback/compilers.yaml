@@ -1,27 +1,5 @@
 compilers::
   - compiler:
-      spec: intel@2021.10.0
-      paths:
-        cc: cc
-        cxx: CC
-        f77: ftn
-        fc: ftn
-      flags: {}
-      operating_system: sles15
-      modules:
-      - PrgEnv-intel/8.4.0
-      - intel-classic/2023.2.0
-      - cray-libsci/23.05.1.4
-      - libfabric/1.12.1.2.2.1
-      environment:
-        prepend_path:
-          PATH: '/opt/cray/pe/gcc/10.3.0/snos/bin'
-          CPATH: '/opt/cray/pe/gcc/10.3.0/snos/include'
-          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib:/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
-        set:
-          CRAYPE_LINK_TYPE: 'dynamic'
-      extra_rpaths: []
-  - compiler:
       spec: oneapi@2024.2.0
       paths:
         cc: cc
@@ -46,7 +24,7 @@ compilers::
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths: []
   - compiler:
-      spec: gcc@10.3.0
+      spec: gcc@12.1.0
       paths:
         cc: cc
         cxx: CC
@@ -56,7 +34,7 @@ compilers::
       operating_system: sles15
       modules:
       - PrgEnv-gnu/8.4.0
-      - gcc/10.3.0
+      - gcc/12.1.0
       - cray-libsci/23.05.1.4
       - libfabric/1.12.1.2.2.1
       environment:

@@ -361,7 +361,10 @@ def setup_meta_modules():
     # Determine the preferred compiler and sort the flattened list of compilers
     # such that the preferred compiler comes last. This is so that all other
     # compilers populate the MODULEPATHS_SAVE list before the preferred compiler
-    # takes it and adds it to the stack-COMPILER metamodule.
+    # takes it and adds it to the stack-COMPILER metamodule. Likewise, we need
+    # to save the list of compiler substitutions from the preferred compiler
+    # so that we have access to it when we build the MPI meta module. Note that
+    # by definition, only the preferred compiler can be used for MPI dependencies.
     try:
         preferred_compilers = spack.config.get("packages")["all"]["prefer"]
     except:
@@ -386,6 +389,8 @@ def setup_meta_modules():
     compiler_config = spack.config.get("compilers")
     # Collect and save modulepaths for the preferred compiler
     MODULEPATHS_SAVE = []
+    # Initialize saved substitutes to None (populate for preferred compiler later)
+    SUBSTITUTES_SAVE = None
     for compiler_identifier in sorted_flattened_compiler_list:
         (compiler_name, compiler_version) = compiler_identifier.replace("@=","@").split("@")
         # Loop through all configured compilers and find the correct match
@@ -523,6 +528,10 @@ def setup_meta_modules():
             with open(compiler_module_file, "w") as f:
                 f.write(module_content)
             logging.info("  ... writing {}".format(compiler_module_file))
+            # If this is the last compiler in the list (i.e. the preferred compiler),
+            # then save the substitutes for later use for building the MPI meta module.
+            if compiler_identifier == sorted_flattened_compiler_list[-1]:
+                SUBSTITUTES_SAVE = substitutes
     del MODULEPATHS_SAVE
 
     # Create mpi modules
@@ -685,7 +694,18 @@ def setup_meta_modules():
                         )
 
                     # Compiler wrapper environment variables
-                    if "intel" in mpi_name:
+                    if "intel" in mpi_name and compiler_name == "oneapi":
+                        substitutes["MPICC"] = os.path.join("mpiicx")
+                        substitutes["MPICXX"] = os.path.join("mpiicpx")
+                        if "ifx" in SUBSTITUTES_SAVE["FC"] and not "ifort" in SUBSTITUTES_SAVE["FC"]:
+                            substitutes["MPIF77"] = os.path.join("mpiifx")
+                            substitutes["MPIF90"] = os.path.join("mpiifx")
+                        elif not "ifx" in SUBSTITUTES_SAVE["FC"] and "ifort" in SUBSTITUTES_SAVE["FC"]:
+                            substitutes["MPIF77"] = os.path.join("mpiifort")
+                            substitutes["MPIF90"] = os.path.join("mpiifort")
+                        else:
+                            raise Exception(f"For {mpi_name}, cannot determine MPI wrapper from FC={SUBSTITUTES_SAVE['FC']}")
+                    elif "intel" in mpi_name and compiler_name == "intel":
                         substitutes["MPICC"] = os.path.join("mpiicc")
                         substitutes["MPICXX"] = os.path.join("mpiicpc")
                         substitutes["MPIF77"] = os.path.join("mpiifort")
@@ -772,6 +792,7 @@ def setup_meta_modules():
                     with open(mpi_module_file, "w") as f:
                         f.write(module_content)
                     logging.info("  ... writing {}".format(mpi_module_file))
+    del SUBSTITUTES_SAVE
 
     # Create python modules. Need to accommodate both external
     # Python distributions and spack-built Python distributions.

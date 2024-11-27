@@ -35,7 +35,7 @@ jobs:
           mkdir -p /Users/ec2-user/spack-stack/build-cache
           mkdir -p /Users/ec2-user/spack-stack/source-cache
 
-      - name: create-env
+      - name: create-buildcache
         run: |
           # Get day of week to decide whether to use build caches or not
           DOW=$(date +%u)
@@ -56,15 +56,13 @@ jobs:
           source ./setup.sh
           # Important!
           export SPACK_PYTHON=/usr/bin/python3
-          export ENVNAME=ue-apple-clang-14.0.3
-          export ENVDIR=$PWD/envs/${ENVNAME}
-
           spack clean -ab
           spack bootstrap now
-
+          #
+          export ENVNAME=ue-apple-clang-14.0.3-buildcache
+          export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site macos.default --template unified-dev --name ${ENVNAME} --compiler apple-clang
           spack env activate ${ENVDIR}
-          spack add ${{ inputs.specs || '' }}
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
@@ -86,8 +84,11 @@ jobs:
 
           export -n SPACK_SYSTEM_CONFIG_PATH
 
+          # For buildcaches
+          spack config add config:install_tree:padded_length:200
+
           # Set compiler and MPI specs
-          spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
+          spack config add "packages:all:providers:mpi:[openmpi@5.0.5]"
           spack config add "packages:all:compiler:[apple-clang@14.0.3]"
 
           # Add additional variants for MET packages, different from config/common/packages.yaml
@@ -97,8 +98,8 @@ jobs:
           # *DH
 
           # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.3
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl
+          spack concretize 2>&1 | tee log.concretize.apple-clang-14.0.3-buildcache
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3-buildcache -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
           spack mirror add local-source file:///Users/ec2-user/spack-stack/source-cache/
@@ -121,29 +122,66 @@ jobs:
           # base-env
           echo "base-env ..."
           spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.apple-clang-14.0.3.base-env
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ base-env
+          spack buildcache create -u /Users/ec2-user/spack-stack/build-cache/ base-env
 
           # jedi-base-env
           echo "jedi-base-env ..."
           spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.apple-clang-14.0.3.jedi-base-env
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/ jedi-base-env
+          spack buildcache create -u /Users/ec2-user/spack-stack/build-cache/ jedi-base-env
+
+          # jedi-ufs-env
+          echo "jedi-ufs-env ..."
+          spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.apple-clang-14.0.3.jedi-ufs-env
+          spack buildcache create -u /Users/ec2-user/spack-stack/build-cache/ jedi-ufs-env
 
           # the rest
           echo "unified-env ..."
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.3.unified-env
-          spack buildcache create -a -u /Users/ec2-user/spack-stack/build-cache/
+          spack buildcache create -u /Users/ec2-user/spack-stack/build-cache/
 
           # Remove binary cache for next round of concretization
           if [ "$USE_BINARY_CACHE" = true ] ; then
             spack mirror rm local-binary
           fi
 
+          # Remove buildcache config settings
+          spack config remove config:install_tree:padded_length
+
+          # Next steps: synchronize source and build cache to a central/combined mirror?
+
+          # Cleanup
+          spack clean -a
+          spack env deactivate
+
+      - name: create-env
+        run: |
+          # Set up spack-stack
+          source ./setup.sh
+          # Important!
+          export SPACK_PYTHON=/usr/bin/python3
+          export BUILDCACHE_ENVNAME=ue-apple-clang-14.0.3-buildcache
+          export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
+          export ENVNAME=ue-apple-clang-14.0.3
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
+          spack env activate ${ENVDIR}
+
+          # Concretize and check for duplicates
+          spack concretize --force 2>&1 | tee log.concretize.apple-clang-14.0.3
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.apple-clang-14.0.3 -i fms -i crtm -i esmf -i mapl
+
+          # Add binary cache back in
+          spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
+          echo "Packages in combined spack build caches:"
+          spack buildcache list
+
+          # Install from cache
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.apple-clang-14.0.3.unified-env
+
           # Create modules
           spack clean -a
           spack module lmod refresh -y
           spack stack setup-meta-modules
-
-          # Next steps: synchronize source and build cache to a central/combined mirror?
           spack env deactivate
 
           # Test environment chaining
@@ -160,7 +198,6 @@ jobs:
 
       - name: test-env
         run: |
-          # Set up homebrew and lmod support
           eval "$(/opt/homebrew/bin/brew shellenv)"
           source /opt/homebrew/opt/lmod/init/profile
 
@@ -170,7 +207,7 @@ jobs:
 
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-apple-clang/14.0.3
-          module load stack-openmpi/5.0.3
+          module load stack-openmpi/5.0.5
           module load stack-python/3.11.7
           module available
 

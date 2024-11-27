@@ -43,9 +43,9 @@ Pre-configured sites (tier 1)
 +=====================+=======================+====================+========================================================+=================+
 | **HPC platforms**                                                                                                                           |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Hercules              | GCC, Intel         | ``/work/noaa/epic/role-epic/spack-stack/hercules/``    | EPIC / JCSDA    |
+|                     | Hercules              | GCC, Intel         | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 | MSU                 +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Orion                 | GCC, Intel         | ``/work/noaa/epic/role-epic/spack-stack/orion/``       | EPIC / JCSDA    |
+|                     | Orion                 | GCC, Intel         | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Discover SCU16        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/``             | JCSDA           |
 | NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -64,10 +64,12 @@ Pre-configured sites (tier 1)
 |                     | Jet                   | GCC, Intel         | ``/contrib/spack-stack``                               | EPIC / NOAA-EMC |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Narwhal               | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
-| U.S. Navy (HPCMP)   +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Nautilus              | Intel              | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+|                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+| U.S. Navy (HPCMP)   | Nautilus              | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+|                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+|                     | Blueback (earlyaccess)| GCC, oneAPI        | (experimental only, no project directories yet         | NRL             |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| Univ. of Wisconsin  | S4                    | Intel              | ``/data/prod/jedi/spack-stack/``                       | JCSDA           |
+| Univ. of Wisconsin  | S4                    | Intel              | ``/data/prod/jedi/spack-stack/``                       | SSEC            |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | **Cloud platforms**                                                                                                                         |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -77,6 +79,9 @@ Pre-configured sites (tier 1)
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | NOAA (RDHPCS)       | RDHPCS Parallel Works | Intel              | ``/contrib/spack-stack-rocky8/``                       | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
+| U.S. Navy (HPCMP)   | HPCMP Parallel Works  | GCC                | ``/contrib/spack-stack/``                              | NRL             |
++---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
+
 
 .. _Preconfigured_Sites_Orion:
 
@@ -88,6 +93,8 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
+   # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
+   # Then sudo to role-epic account.
    module purge
 
 
@@ -101,8 +108,9 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
+   # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
+   # Then sudo to role-epic account.
    module purge
-   # No need to load modules, spack-stack-1.8.0 have no dependences
 
 
 .. _Preconfigured_Sites_Discover_SCU16:
@@ -164,6 +172,30 @@ The following is required for building new spack environments with Intel on this
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
 
+The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Narwhal!
+
+.. code-block:: console
+
+   umask 0022
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.4.0
+   module unload intel
+   module load intel/2024.2
+   module unload cray-mpich
+   module unload craype-network-ofi
+   # Warning. Do not load craype-network-ucx
+   # or cray-mpich-ucx/8.1.21!
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load craype-network-ucx
+   #module load cray-mpich-ucx/8.1.21
+   module load libfabric/1.12.1.2.2.1
+   module unload cray-libsci
+   module load cray-libsci/23.05.1.4
+
 The following is required for building new spack environments with GNU on this platform.. Don't use ``module purge`` on Narwhal!
 
 .. code-block:: console
@@ -203,6 +235,59 @@ The following is required for building new spack environments with any supported
    module purge
 
 
+.. _Preconfigured_Sites_Blueback:
+
+------------------------------
+NAVY HPCMP Blueback
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Blueback!
+
+.. code-block:: console
+
+   umask 0022
+   module unload PrgEnv-cray
+   module load PrgEnv-intel/8.4.0
+   module unload intel
+   module load intel/2024.2
+   module unload cray-mpich
+   module unload craype-network-ofi
+   # Warning. Do not load craype-network-ucx
+   # or cray-mpich-ucx/8.1.21!
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load craype-network-ucx
+   #module load cray-mpich-ucx/8.1.21
+   module load libfabric/1.12.1.2.2.1
+   module unload cray-libsci
+   module load cray-libsci/23.05.1.4
+
+The following is required for building new spack environments with GNU on this platform.. Don't use ``module purge`` on Blueback!
+
+   umask 0022
+   module unload PrgEnv-cray
+   module load PrgEnv-gnu/8.4.0
+   module unload gcc
+   module load gcc/12.1.0
+   module unload cray-mpich
+   module unload craype-network-ofi
+   # Warning. Do not load craype-network-ucx
+   # or cray-mpich-ucx/8.1.21!
+   # There is a bug in the modulefile that prevents
+   # spack from setting the environment for its
+   # build steps when the module is already
+   # loaded. Instead, let spack load it when the
+   # package requires it.
+   #module load craype-network-ucx
+   #module load cray-mpich-ucx/8.1.21
+   module load libfabric/1.12.1.2.2.1
+   module unload cray-libsci
+   module load cray-libsci/23.05.1.4
+
+
 .. _Preconfigured_Sites_Derecho:
 
 --------------------
@@ -235,6 +320,7 @@ Note that for the installation using Intel 19, the system GCC, 7.5.0, is used on
 .. note::
    System-wide ``spack`` software installations are maintained by NCO on this platform, which are not associated with spack-stack.
 
+
 .. _Preconfigured_Sites_Parallel_Works:
 
 ----------------------------------------
@@ -246,6 +332,21 @@ The following is required for building new spack environments with any supported
 .. code-block:: console
 
    module purge
+
+
+.. _Preconfigured_Sites_Parallel_Works_Navy:
+
+----------------------------------------
+U.S. Navy Parallel Works (AWS)
+----------------------------------------
+
+The following is required for building new spack environments with GNU on this platform.
+
+.. code-block:: console
+
+   umask 0022
+   module purge
+   scl enable gcc-toolset-13 bash
 
 
 .. _Preconfigured_Sites_Gaea_C5:

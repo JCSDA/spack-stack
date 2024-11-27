@@ -1,4 +1,4 @@
-name: ubuntu-ci-c6a-x86_64-oneapi-build
+name: ubuntu-ci-c6a-x86_64-oneapi-ifx-build
 on:
   pull_request:
   workflow_dispatch:
@@ -12,7 +12,7 @@ defaults:
     shell: bash
 
 jobs:
-  ubuntu-ci-c6a-x86_64-oneapi-build:
+  ubuntu-ci-c6a-x86_64-oneapi-ifx-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
 
     steps:
@@ -50,7 +50,7 @@ jobs:
 
           # Set up spack-stack
           source ./setup.sh
-          export ENVNAME=ue-oneapi-2024.2.0-buildcache
+          export ENVNAME=ue-oneapi-ifx-2024.2.0-buildcache
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template unified-dev --name ${ENVNAME} --compiler oneapi
           spack env activate ${ENVDIR}
@@ -77,8 +77,8 @@ jobs:
           echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      cc: /opt/intel/oneapi/compiler/2024.2/bin/icx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "      cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+          echo "      fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
           echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
@@ -137,8 +137,8 @@ jobs:
           spack config add "modules:default:tcl:exclude:[ecflow]"
 
           # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.oneapi-2024.2.0-buildcache
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.oneapi-2024.2.0-buildcache -i fms -i crtm -i esmf -i mapl
+          spack concretize 2>&1 | tee log.concretize.oneapi-ifx-2024.2.0-buildcache
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.oneapi-ifx-2024.2.0-buildcache -i fms -i crtm -i esmf -i mapl
 
           # Add and update source cache
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
@@ -160,22 +160,22 @@ jobs:
 
           # base-env
           echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.base-env
+          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.oneapi-ifx-2024.2.0-buildcache.base-env
           spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
 
           # jedi-base-env
           echo "jedi-base-env ..."
-          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.jedi-base-env
+          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.oneapi-ifx-2024.2.0-buildcache.jedi-base-env
           spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
 
           # jedi-ufs-env
           echo "jedi-ufs-env ..."
-          spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.jedi-ufs-env
+          spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.oneapi-ifx-2024.2.0-buildcache.jedi-ufs-env
           spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
 
           # the rest
           echo "unified-env ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0-buildcache.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-ifx-2024.2.0-buildcache.unified-env
           spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
 
           # Remove binary cache for next round of concretization
@@ -196,16 +196,16 @@ jobs:
         run: |
           # Set up spack-stack
           source ./setup.sh
-          export BUILDCACHE_ENVNAME=ue-oneapi-2024.2.0-buildcache
+          export BUILDCACHE_ENVNAME=ue-oneapi-ifx-2024.2.0-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
-          export ENVNAME=ue-oneapi-2024.2.0
+          export ENVNAME=ue-oneapi-ifx-2024.2.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
           # Concretize and check for duplicates
-          spack concretize --force 2>&1 | tee log.concretize.oneapi-2024.2.0
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.oneapi-2024.2.0 -i fms -i crtm -i esmf -i mapl
+          spack concretize --force 2>&1 | tee log.concretize.oneapi-ifx-2024.2.0
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.oneapi-ifx-2024.2.0 -i fms -i crtm -i esmf -i mapl
 
           # Add binary cache back in
           spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
@@ -213,7 +213,7 @@ jobs:
           spack buildcache list
 
           # Install from cache
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-ifx-2024.2.0.unified-env
 
           # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
@@ -229,7 +229,7 @@ jobs:
           source /etc/profile.d/modules.sh
           module use /home/ubuntu/spack-stack/modulefiles
 
-          export ENVNAME=ue-oneapi-2024.2.0
+          export ENVNAME=ue-oneapi-ifx-2024.2.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           ls -l ${ENVDIR}/install/modulefiles/Core
 

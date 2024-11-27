@@ -13,7 +13,7 @@ packages:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0
+    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0 +classic-names
       prefix: /opt/intel/oneapi/2023.2
       modules:
       - intel/2023.2

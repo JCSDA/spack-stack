@@ -1,18 +1,4 @@
 packages:
-  all:
-    compiler:: [gcc@9.3.0]
-    providers: 
-      mpi:: [openmpi@4.0.5]
-
-### MPI, Python, MKL
-  mpi:
-    buildable: False
-  openmpi:
-    externals:
-    - spec: openmpi@4.0.5%gcc@9.3.0
-      prefix: /software7/depot/openmpi-4.0.5
-
-### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -23,23 +9,33 @@ packages:
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.30.117
+    - spec: binutils@2.40.21~gold~headers
+      prefix: /opt/rh/gcc-toolset-13/root/usr
+    - spec: binutils@2.30.123~gold+headers
       prefix: /usr
   bison:
     externals:
     - spec: bison@3.0.4
       prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.26.5
+      prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.30
       prefix: /usr
-  curl:
+  cvs:
     externals:
-    - spec: curl@7.61.1
+    - spec: cvs@1.11.23
       prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.6
+      prefix: /usr
+  doxygen:
+    externals:
+    - spec: doxygen@1.8.14+graphviz~mscgen
       prefix: /usr
   findutils:
     externals:
@@ -53,14 +49,18 @@ packages:
     externals:
     - spec: gawk@4.2.1
       prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
   git:
     externals:
-    - spec: git@2.39.2+tcltk
-      prefix: /software8/depot/git-2.39.2
+    - spec: git@2.43.5+tcltk
+      prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@3.3.0
-      prefix: /software8/depot/git-2.39.2
+    - spec: git-lfs@3.4.1
+      prefix: /usr
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -81,19 +81,22 @@ packages:
     externals:
     - spec: openssh@8.0p1
       prefix: /usr
-  # Don't use external openssl, too old
-  #openssl:
-  #  externals:
-  #  - spec: openssl@1.1.1k
-  #    prefix: /usr
-  # Can't use with py-xnrl
-  #perl:
-  #  externals:
-  #  - spec: perl@5.26.3~cpanm+shared+threads
-  #    prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+      prefix: /usr
   pkgconf:
     externals:
     - spec: pkgconf@1.4.2
+      prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr/lib64/qt5
+  sed:
+    externals:
+    - spec: sed@4.5
       prefix: /usr
   subversion:
     externals:
@@ -107,7 +110,15 @@ packages:
     externals:
     - spec: texinfo@6.5
       prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@2018
+      prefix: /usr
   wget:
     externals:
     - spec: wget@1.19.5
+      prefix: /usr
+  zlib:
+    externals:
+    - spec: zlib@1.2.11
       prefix: /usr

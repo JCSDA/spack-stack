@@ -35,7 +35,7 @@ spack:
   - g2
   - g2c
   - g2tmpl
-  - gdal
+  - gdal@3.8.5
   - geos
   - gfsio
   - gftl-shared

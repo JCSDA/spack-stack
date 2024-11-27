@@ -1,8 +1,10 @@
 packages:
   all:
     compiler:: [oneapi@2024.2.1,gcc@11.2.1]
+    #compiler:: [oneapi@2025.0.0, gcc@11.2.1]
     providers:
       mpi:: [intel-oneapi-mpi@2021.13]
+      #mpi:: [intel-oneapi-mpi@2021.14]
   mpi:
     buildable: False
   intel-oneapi-mpi:
@@ -11,18 +13,30 @@ packages:
       prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
       - mpi/2021.13
+    #- spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.0
+    #  prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.0.0
+    #  modules:
+    #  - mpi/2021.14
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
       prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
       - mkl/2024.2
+    #- spec: intel-oneapi-mkl@2025.0%oneapi@2025.0.0
+    #  prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.0.0
+    #  modules:
+    #  - mkl/2025.0
   intel-oneapi-tbb:
     externals:
     - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.1
       prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
       - tbb/2021.13
+    #- spec: intel-oneapi-tbb@2022.0%oneapi@2025.0.0
+    #  prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.0.0
+    #  modules:
+    #  - tbb/2022.0
   intel-oneapi-runtime:
     externals:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
@@ -30,3 +44,8 @@ packages:
       modules:
       - tbb/2021.13
       - compiler-rt/2024.2.1
+    #- spec: intel-oneapi-runtime@2025.0.0%oneapi@2025.0.0
+    #  prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.0.0
+    #  modules:
+    #  - tbb/2022.0
+    #  - compiler-rt/2025.0.0

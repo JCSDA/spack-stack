@@ -11,7 +11,7 @@ packages:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0
+    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0 +classic-names
       prefix: /opt/intel/oneapi
       modules:
       - libfabric-aws/1.19.0amzn4.0
