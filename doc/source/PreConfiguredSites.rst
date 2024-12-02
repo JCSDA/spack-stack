@@ -154,7 +154,7 @@ The following is required for building new spack environments with Intel on this
 
    umask 0022
    module unload PrgEnv-cray
-   module load PrgEnv-intel/8.3.3
+   module load PrgEnv-intel/8.4.0
    module unload intel
    module load intel-classic/2023.2.0
    module unload cray-mpich
@@ -202,7 +202,7 @@ The following is required for building new spack environments with GNU on this p
 
    umask 0022
    module unload PrgEnv-cray
-   module load PrgEnv-gnu/8.3.3
+   module load PrgEnv-gnu/8.4.0
    module unload gcc
    module load gcc/10.3.0
    module unload cray-mpich

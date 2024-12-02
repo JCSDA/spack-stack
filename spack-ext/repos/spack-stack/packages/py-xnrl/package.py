@@ -34,7 +34,8 @@ class PyXnrl(PythonPackage):
     depends_on("py-netcdf4", type=("build", "run"))
     depends_on("py-numpy", type=("build", "run"))
     depends_on("py-tqdm", type=("build", "run"))
-    depends_on("py-xarray", type=("build", "run"))
+    # py-xnrl@2024.05.23 does not work with py-xarray@2024.7.0
+    depends_on("py-xarray@:2023", type=("build", "run"))
     depends_on("py-ecmwflibs", type=("build", "run"))
     depends_on("eccodes", type=("build", "run"))
     depends_on("py-cfgrib", type=("build", "run"))
