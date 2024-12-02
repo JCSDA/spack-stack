@@ -13,11 +13,13 @@ The instructions below are for GNU (`gcc`), since this is the easiest and best s
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Compiler                                  | Versions tested/in use in one or more site configs                   | Spack compiler identifier |
 +===========================================+======================================================================+===========================+
-| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the final version in oneAPI 2023.2.4 [#fn1]_             | ``intel@``                |
+| Intel classic (icc, icpc, ifort)          | 2021.3.0 to the final version in oneAPI 2023.2.4 (2021.10.0) [#fn1]_ | ``intel@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Intel mixed (icx, icpx, ifort)            | 2024.1.2 to 2024.2.0                                                 | ``oneapi@``               |
+| Intel mixed (icx, icpx, ifort)            | 2024.1.2 to 2025.0.0                                                 | ``oneapi@``               |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| GNU (gcc, g++, gfortran)                  | 9.2.0 to 13.3.0 (note: 14.x.y is **not** yet supported)              | ``gcc@``                  |
+| Intel LLVM (icx, icpx, ifx)               | 2024.2.1 to 2025.0.0                                                 | ``oneapi@``               |
++-------------------------------------------+----------------------------------------------------------------------+---------------------------+
+| GNU (gcc, g++, gfortran)                  | 9.2.0 to 13.3.1 (note: 14.x.y is **not** yet supported)              | ``gcc@``                  |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | Apple clang (clang, clang++, w/ gfortran) | 13.1.6 to 15.0.0 [#fn2]_                                             | ``apple-clang@``          |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
@@ -478,6 +480,7 @@ The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LT
    apt install -y texlive
    apt install -y libcurl4-openssl-dev
    apt install -y libssl-dev
+   apt install -y wget
 
    # Note - only needed for running JCSDA's
    # JEDI-Skylab system (using R2D2 localhost)
