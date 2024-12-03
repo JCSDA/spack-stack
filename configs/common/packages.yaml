@@ -204,8 +204,9 @@ packages:
     require: '@21.4.0'
   py-cartopy:
     require: '+plotting'
+  # Avoid full rust dependency: version 43+ requires py-maturin
   py-cryptography:
-    require: '+rust_bootstrap'
+    require: '@:42 +rust_bootstrap'
   # Introduced in https://github.com/JCSDA/spack-stack/pull/894, pin py-cython
   # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
   py-cython:
