@@ -4,17 +4,17 @@
 # tested (ideally, have a discernably different error condition if there are
 # numerical differences)
 
+echo Base directory: ${RUNDIR:?}
 cd ${RUNDIR}
 
-# The following need to be cleaned up for proper variable substitution; this is a one-off test
-BRANCH=spack-stack-automation
+UFSWM_BRANCH=${UFSWM_BRANCH:-develop}
+UFSWM_URL=${UFSWM_URL:-"https://github.com/ufs-community/ufs-weather-model.git"}
 
-git clone -b ${BRANCH} --single-branch --recurse-submodules https://github.com/rickgrubin-noaa/ufs-weather-model.git
+git clone -b ${BRANCH} --single-branch --recurse-submodules ${UFSWM_URL}
 cd ufs-weather-model/tests
 
-# -r ==> rocoto ; not strictly necessary, can run without
-./rt.sh -a epic -k -r -n "control_c48 intel"
+# rt.sh will parse arguments passed to it
+./rt.sh  "${@}"
 
 rc = $?
 return rc
-
