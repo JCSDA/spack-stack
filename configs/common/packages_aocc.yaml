@@ -13,3 +13,7 @@ packages:
   py-numpy:
     require:
     - '^openblas'
+  # ISSUE HERE
+  ip:
+    require:
+    - '%gcc'
