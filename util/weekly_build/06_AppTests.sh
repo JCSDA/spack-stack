@@ -16,5 +16,5 @@ for compiler in $COMPILERS; do
 done
 
 if [ "$TEST_UFSWM" == ON ]; then
-  ./apptests/test_ufswm.sh $*
+  ./apptests/test_ufswm.sh
 fi

@@ -10,11 +10,12 @@ cd ${RUNDIR}
 UFSWM_BRANCH=${UFSWM_BRANCH:-develop}
 UFSWM_URL=${UFSWM_URL:-"https://github.com/ufs-community/ufs-weather-model.git"}
 
-git clone -b ${BRANCH} --single-branch --recurse-submodules ${UFSWM_URL}
+git clone --single-branch --recurse-submodules ${UFSWM_URL} -b ${UFSWM_BRANCH}
 cd ufs-weather-model/tests
 
 # rt.sh will parse arguments passed to it
-./rt.sh  "${@}"
+RT_ARGS=${RT_ARGS:-"-a ${BATCHACCOUNT:?} -n 'control_c48 intel'"}
+./rt.sh $RT_ARGS
 
 rc = $?
 return rc
