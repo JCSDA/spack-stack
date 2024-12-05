@@ -2,6 +2,8 @@
 
 set -ex
 
+if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
+
 cd $RUNDIR/$RUNID
 
 set +x
@@ -9,12 +11,16 @@ set +x
 set -x
 
 for compiler in $COMPILERS; do
-  cd $RUNDIR/$RUNID/envs/build-${compiler/@/-}
-  spack env activate .
-  spack module lmod refresh -y
-  spack stack setup-meta-modules
+  for template in $TEMPLATES; do
+    envname=build-$template-${compiler/@/-}
+    envdir=$RUNDIR/$RUNID/envs/$envname
+    cd $envdir
+    spack env activate .
+    spack module lmod refresh -y
+    spack stack setup-meta-modules
+  done
 done
 
 if [ "$TEST_UFSWM" == ON ]; then
-  ./apptests/test_ufswm.sh
+  . $(dirname $0)/apptests/test_ufswm.sh
 fi

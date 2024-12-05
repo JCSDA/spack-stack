@@ -26,3 +26,4 @@ PACKAGES_TO_TEST="libpng libaec jasper w3emc g2c"
 PACKAGES_TO_INSTALL="ufs-weather-model-env global-workflow-env gsi-env madis"
 PADDED_LENGTH=140
 TEST_UFSWM=ON
+BATCHACCOUNT=NCEPLIBS-DEV
