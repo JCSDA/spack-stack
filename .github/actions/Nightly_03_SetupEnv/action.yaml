@@ -1,0 +1,11 @@
+name: Nightly 03 Setup Env
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 03 Setup Env
+    shell: bash
+    run: |
+      RUNID=$(<RUNID_SAVE.log)
+      cd util/weekly_build
+      ./03_SetupEnv.sh ${RUNID} ${BASEDIR} ${PLATFORM}

@@ -1,0 +1,11 @@
+name: Nightly 07 Cleanup
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 07 Cleanup
+    shell: bash
+    run: |
+      RUNID=$(<RUNID_SAVE.log)
+      cd util/weekly_build
+      ./05_BuildCache.sh ${RUNID} ${BASEDIR} ${PLATFORM}

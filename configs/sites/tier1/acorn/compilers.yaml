@@ -6,10 +6,7 @@ compilers:
       cxx: CC
       f77: ftn
       fc: ftn
-    flags:
-      cflags: -static-libgcc -static-libstdc++ -Bstatic -lstdc++ -Bdynamic -lm -lpthread
-      cxxflags: -static-libgcc -static-libstdc++ -Bstatic -lstdc++ -Bdynamic -lm -lpthread
-      fflags: -static-libgcc -static-libstdc++ -Bstatic -lstdc++ -Bdynamic -lm -lpthread
+    flags: {}
     operating_system: sles15
     modules:
     - PrgEnv-intel/8.5.0
@@ -30,10 +27,7 @@ compilers:
       cxx: CC
       f77: ftn
       fc: ftn
-    flags:
-      cflags: -static-libgcc -static-libstdc++ -Bstatic -lstdc++ -Bdynamic -lm -lpthread
-      cxxflags: -static-libgcc -static-libstdc++ -Bstatic -lstdc++ -Bdynamic -lm -lpthread
-      fflags: -static-libgcc -static-libstdc++ -Bstatic -lstdc++ -Bdynamic -lm -lpthread
+    flags: {}
     operating_system: sles15
     modules:
     - PrgEnv-intel/8.5.0
