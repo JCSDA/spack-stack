@@ -1,0 +1,11 @@
+name: Nightly 05 Build Cache
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 05 Build Cache
+    shell: bash
+    run: |
+      RUNID=$(<RUNID_SAVE.log)
+      cd util/weekly_build
+      ./05_BuildCache.sh ${RUNID} ${BASEDIR} ${PLATFORM}
