@@ -1,18 +1,3 @@
 mirrors:
-  local-source:
-    fetch:
-      url: file:///p/cwfs/projects/NEPTUNE/spack-stack/source-cache
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
-    push:
-      url: file:///p/cwfs/projects/NEPTUNE/spack-stack/source-cache
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
+  local-source: file:///p/cwfs/projects/NEPTUNE/spack-stack/source-cache
+  local-binary: file:///p/cwfs/projects/NEPTUNE/spack-stack/build-cache

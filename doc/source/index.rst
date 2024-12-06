@@ -19,6 +19,7 @@ Table of contents
    Utilities
    KnownIssues
    MaintainersSection
+   AutomatedBuilds
    Documentation
    Acronyms
    Glossary
