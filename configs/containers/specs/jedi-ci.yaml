@@ -8,7 +8,7 @@
     bacio@2.4.1,
     bison@3.8.2,
     bufr@12.1.0,
-    bufr-query@0.0.2,
+    bufr-query@0.0.4,
     ecbuild@3.7.2,
     eccodes@2.33.0,
     ecflow@5.11.4,
