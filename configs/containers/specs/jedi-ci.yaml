@@ -24,7 +24,7 @@
     gsibec@1.2.1,
     hdf@4.2.15,
     hdf5@1.14.3,
-    ip@5.0.0,
+    ip@5.1.0,
     jasper@2.0.32,
     jedi-cmake@1.4.0,
     libpng@1.6.37,
