@@ -123,7 +123,7 @@ packages:
   hdf-eos2:
     require: '@2.20v1.00'
   ip:
-    require: '@5.0.0 precision=4,d,8'
+    require: '@5.1.0 precision=4,d,8'
   ip2:
     require: '@1.1.2'
   jasper:
