@@ -22,7 +22,7 @@ packages:
   bufr:
     require: '@12.1.0 +python'
   bufr-query:
-    require: '@0.0.2 +python'
+    require: '@0.0.4 +python'
   cairo:
     require: '+pic'
   cdo:

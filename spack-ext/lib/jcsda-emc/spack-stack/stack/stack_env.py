@@ -207,6 +207,16 @@ class StackEnv(object):
         destination = os.path.join(env_site_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
+    def get_upstream_realpaths(self, upstream_path):
+        spack_yaml_path = os.path.realpath(os.path.join(upstream_path, "../spack.yaml"))
+        with open(spack_yaml_path, "r") as f:
+            spack_yaml = syaml.load_config(f)
+        upstream_paths = [upstream_path]
+        if "upstreams" in spack_yaml["spack"].keys():
+            entries = spack_yaml["spack"]["upstreams"]
+            for entry in entries.items():
+                upstream_paths += self.get_upstream_realpaths(entry[1]["install_tree"])
+        return upstream_paths
 
     def write(self):
         """Write environment out to a spack.yaml in <env_dir>/<name>.
@@ -280,10 +290,10 @@ class StackEnv(object):
                 "common": os.path.join(self.env_dir(), "common"),
                 "site": os.path.join(self.env_dir(), "site"),
             }
-            for upstream_path in self.upstreams:
-                upstream_path = upstream_path[0]
-                # spack doesn't handle "~/" correctly, this fixes it:
-                upstream_path = os.path.expanduser(upstream_path)
+            all_upstreams = []
+            for upstream in self.upstreams:
+                all_upstreams.extend(self.get_upstream_realpaths(upstream[0]))
+            for upstream_path in all_upstreams:
                 if not os.path.basename(os.path.normpath(upstream_path)) == "install":
                     logging.warning(
                         "WARNING: Upstream path '%s' is not an 'install' directory!"
@@ -298,7 +308,7 @@ class StackEnv(object):
                 if path_parts:
                     name = path_parts["spack_stack_ver"] + "-" + path_parts["env_name"]
                 else:
-                    name = os.path.basename(upstream_path)
+                    name = os.path.realpath(os.path.join(upstream_path, ".."))
                 upstream = "upstreams:%s:install_tree:'%s'" % (name, upstream_path)
                 logging.info("Adding upstream path '%s'" % upstream_path)
                 spack.config.add(upstream, scope=env_scope)
@@ -319,12 +329,20 @@ class StackEnv(object):
                              f"'{upstream_path}' do not match! Verify that you are using the same "
                               "version of spack-stack, or really, really know what you are doing.")
                         )
+            new_envrepo = os.path.join(self.env_dir(), "envrepo")
+            for upstream_path in all_upstreams[::-1]:
+                envrepo_path = os.path.realpath(os.path.join(upstream_path, "../envrepo"))
+                if os.path.isdir(envrepo_path):
+                    shutil.copytree(envrepo_path, new_envrepo, dirs_exist_ok=True)
+            if os.path.isdir(new_envrepo):
+                repo_cfg = "repos:[$env/envrepo]"
+                spack.config.add(repo_cfg, scope=env_scope)
 
         if self.modifypkg:
             logging.info("Creating custom repo with packages %s" % ", ".join(self.modifypkg))
             env_repo_path = os.path.join(env_dir, "envrepo")
             env_pkgs_path = os.path.join(env_repo_path, "packages")
-            os.makedirs(env_pkgs_path, exist_ok=False)
+            os.makedirs(env_pkgs_path, exist_ok=True)
             with open(os.path.join(env_repo_path, "repo.yaml"), "w") as f:
                 f.write("repo:\n  namespace: envrepo")
             repo_paths = spack.config.get("repos")
@@ -338,6 +356,7 @@ class StackEnv(object):
                             pkg_path,
                             os.path.join(env_pkgs_path, pkg_name),
                             ignore=shutil.ignore_patterns("__pycache__"),
+                            dirs_exist_ok=True,
                         )
                         pkg_found = True
                         # Use the first repo where the package exists:
