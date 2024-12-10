@@ -1,19 +1,19 @@
 packages:
   all:
-    compiler:: [oneapi@2024.2.1,gcc@11.4.1]
+    compiler:: [oneapi@2025.0.0, gcc@11.5.0]
     providers:
       mpi:: [intel-oneapi-mpi]
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+    - spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.0
       prefix: /opt/intel/oneapi
   intel-oneapi-mkl:
     externals:
-    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
+    - spec: intel-oneapi-mkl@2025.0%oneapi@2025.0.0
       prefix: /opt/intel/oneapi
   intel-oneapi-runtime:
     externals:
-    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+    - spec: intel-oneapi-runtime@2025.0.0%oneapi@2025.0.0
       prefix: /opt/intel/oneapi
