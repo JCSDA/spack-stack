@@ -177,11 +177,11 @@ packages:
   # ninja - when adding information here, also check Discover site config
   odc:
     require: '@1.5.2 ~fortran'
-  # 2024/12/10: prefer openblas 0.3.28 so that it builds with flang-new from LLVM 19.1.4
-  # but need to allow openblas 0.3.24 if other packages require it (e.g. in unified env)
+  # Todo: update to 0.3.28 so that it builds with 'clang'. Check
+  # packages_clang.yaml where we are overwriting openblas for now.
   openblas:
-    prefer:
-    - '@0.3.28'
+    require:
+    - '@0.3.24'
   openmpi:
     require: '~internal-hwloc +two_level_namespace'
   openssl:
