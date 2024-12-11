@@ -1,17 +1,19 @@
 packages:
   all:
     target: [core2]
-### Modification of common packages
-  esmf:
-    variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich
-  # Need to force spack to build python with ssl variant when using older openssl from OS
-  python:
-    require: "+ssl"
-  # py-scipy 1.12 does not build with intel on Derecho, pin to 1.11.4
-  # use same version with gcc for consistency on the machine
-  py-scipy:
-    require:
-    - '@1.11.4'
+# DH* TRY WITHOUT ALL OF THIS
+#### Modification of common packages
+#  esmf:
+#    variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich
+#  # Need to force spack to build python with ssl variant when using older openssl from OS
+#  python:
+#    require: "+ssl"
+#  # py-scipy 1.12 does not build with intel on Derecho, pin to 1.11.4
+#  # use same version with gcc for consistency on the machine
+#  py-scipy:
+#    require:
+#    - '@1.11.4'
+# *DH
 ### All other external packages listed alphabetically
   autoconf:
     externals:
