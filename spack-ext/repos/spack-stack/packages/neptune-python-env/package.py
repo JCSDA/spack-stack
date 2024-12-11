@@ -20,6 +20,7 @@ class NeptunePythonEnv(BundlePackage):
     version("1.5.0")
 
     variant("xnrl", default=False, description="Build non-pulic XNRL")
+    variant("cylc", default=False, description="Build cylc")
 
     depends_on("neptune-env", type="run")
     # Enable the Python variant for ESMF
@@ -39,5 +40,8 @@ class NeptunePythonEnv(BundlePackage):
 
     with when("+xnrl"):
         depends_on("py-xnrl", type="run")
+
+    with when("+cylc"):
+        depends_on("py-cylc-flow", type="run")
 
     # There is no need for install() since there is no code.
