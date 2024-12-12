@@ -41,12 +41,12 @@ packages:
     require:
     - '@5.11.4 +ui'
   eckit:
-    require: '@1.27.0 linalg=eigen,lapack compression=lz4,bzip2'
+    require: '@1.28.3 linalg=eigen,lapack compression=lz4,bzip2'
   ecmwf-atlas:
-    require: '@0.38.1 +fckit +trans +tesselation +fftw'
+    require: '@0.40.0 +fckit +trans +tesselation +fftw'
   ectrans:
     require:
-    - '@1.2.0'
+    - '@1.5.0'
   eigen:
     require: '@3.4.0'
   # Attention - when updating the version also check the common modules.yaml
@@ -68,11 +68,11 @@ packages:
     prefer:
     - '+python'
   fckit:
-    require: '@0.11.0 +eckit'
+    require: '@0.13.2 +eckit'
   fftw:
     require: '@3.3.10'
   fiat:
-    require: '@1.2.0'
+    require: '@1.4.1'
   flex:
     # Pin version to avoid duplicates
     require: '@2.6.4'
