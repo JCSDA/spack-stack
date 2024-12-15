@@ -1,0 +1,6 @@
+packages:
+  grep:
+    buildable: false
+    externals:
+    - spec: grep@3.11
+      prefix: /usr
