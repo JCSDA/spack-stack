@@ -61,6 +61,7 @@ jobs:
               --exclude bison --exclude openssl \
               --exclude curl --exclude python \
               --exclude gmake
+          spack external find --scope system grep
           spack external find --scope system sed
           spack external find --scope system perl
           spack external find --scope system wget
