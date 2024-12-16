@@ -245,6 +245,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
        --exclude bison --exclude openssl \
        --exclude python --exclude gettext \
        --exclude m4
+   spack external find --scope system grep
    spack external find --scope system perl
    spack external find --scope system wget
 
@@ -536,6 +537,9 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
        --exclude cmake \
        --exclude curl --exclude openssl \
        --exclude openssh --exclude python
+   spack external find --scope system grep
+   spack external find --scope system sed
+   spack external find --scope system perl
    spack external find --scope system wget
 
    # Note - only needed for running JCSDA's
