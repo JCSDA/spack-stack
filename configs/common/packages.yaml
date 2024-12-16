@@ -26,8 +26,6 @@ packages:
   cairo:
     require: '+pic'
   cdo:
-    prefer:
-    - '@2.4.4 ~openmp'
     require:
     - any_of: ['@2.3.0 ~openmp']
       when: '%intel@2021:'
