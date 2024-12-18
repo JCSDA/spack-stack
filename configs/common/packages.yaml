@@ -228,35 +228,11 @@ packages:
     require: '~mpi'
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
-     require: '@3.7.4'
-<<<<<<< Updated upstream
-=======
-  #py-meson-python:
-  #   require: '@0.15.0'
->>>>>>> Stashed changes
+    require: '@3.7.4'
   # Variant ~mpi not working for latest py-netcdf4
   # https://github.com/spack/spack/issues/47652
   py-netcdf4:
     require: '@1.7.1 +mpi'
-<<<<<<< Updated upstream
-  py-pandas:
-    require: '+excel'
-=======
-  # py-numpy@1.26 causes many build problems with older Python packages
-  # also check Nautilus site config when making changes here
-  # https://github.com/JCSDA/spack-stack/issues/1276
-  #py-numpy:
-  #  require:
-  #  - '@:1.23.5'
-  # Sigh, it's complicated. With py-cython@3 (needed to avoid duplicate packages),
-  # pandas must be 2.2 or later. For those versions, the +excel variant adds dependencies
-  # on py-python-calamina, py-maturin, and rust (full rust, not just rust-bootstrap).
-  # @climbfuji thinks we can live without the excel variant ...
-  #py-pandas:
-  #  require: '+excel'
-  #py-pybind11:
-  #  require: '@2.11.0'
->>>>>>> Stashed changes
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'
