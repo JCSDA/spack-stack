@@ -545,7 +545,11 @@ The following instructions install a new spack environment on a pre-configured s
    git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
    cd spack-stack
 
-   # Ensure Python 3.8+ is available and the default before sourcing spack
+   # Ensure Python 3.6+ is available and the default before sourcing spack.
+   # Note this is only used for building the environment. Once the
+   # environment is built, spack-stack provides the proper python
+   # executable which needs to be utilized to build applications with the
+   # newly created environment.
 
    # Sources Spack from submodule and sets ${SPACK_STACK_DIR}
    source setup.sh

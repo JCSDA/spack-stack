@@ -1,0 +1,28 @@
+packages:
+  all:
+    providers:
+      blas: [openblas]
+      fftw-api: [fftw]
+      lapack: [openblas]
+  ectrans:
+    require:
+    - '~mkl +fftw'
+  gsibec:
+    require:
+    - '~mkl'
+  py-numpy:
+    require:
+    - '^openblas'
+  # clang@19 requires openblas@0.3.28 - with this, we can'this
+  # build all the Python dependencies as of 2024/12/11 due to
+  # version conflicts.
+  openblas:
+    require::
+    - '@0.3.28'
+  # ip@5 doesn't build with clang@19 compilers (flang-new)
+  # https://github.com/NOAA-EMC/NCEPLIBS-ip/issues/263
+  # but requiring %gcc doesn't work when using openblas
+  #ip:
+  #  require:
+  #  #- '~openmp'
+  #  - '%gcc'
