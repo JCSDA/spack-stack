@@ -89,10 +89,11 @@ packages:
     externals:
     - spec: gawk@4.2.1
       prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.6
-      prefix: /usr
+  # Don't use, incomplete installation
+  #libtool:
+  #  externals:
+  #  - spec: libtool@2.4.6
+  #    prefix: /usr
   findutils:
     externals:
     - spec: findutils@4.6.0
