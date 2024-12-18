@@ -55,7 +55,7 @@ packages:
   esmf:
     require:
     - '~xerces ~pnetcdf +shared +external-parallelio'
-    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0b06 snapshot=b06']
+    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0b10 snapshot=b10']
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
@@ -177,8 +177,11 @@ packages:
   # ninja - when adding information here, also check Discover site config
   odc:
     require: '@1.5.2 ~fortran'
+  # Todo: update to 0.3.28 so that it builds with 'clang'. Check
+  # packages_clang.yaml where we are overwriting openblas for now.
   openblas:
-    require: '@0.3.24'
+    require:
+    - '@0.3.24'
   openmpi:
     require: '~internal-hwloc +two_level_namespace'
   openssl:
