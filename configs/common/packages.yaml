@@ -151,11 +151,6 @@ packages:
   mapl:
     require: '@2.46.3 ~shared ~f2py'
     variants: '+pflogger'
-  # To avoid duplicate packages being built
-  #meson:
-  #  require:
-  #  - '@1.5.1:'
-  # If making changes here, also check the Discover site configs and the CI workflows
   met:
     require: '@11.1.1 +python +grib2'
   metplus:
@@ -211,9 +206,6 @@ packages:
     require: '~tiff'
   python:
     require: '@3.11.7'
-  #py-attrs:
-  #  # https://github.com/JCSDA/spack-stack/issues/740
-  #  require: '@21.4.0'
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin
@@ -235,34 +227,15 @@ packages:
     require: '@3.8.0'
   py-h5py:
     require: '~mpi'
-  ## To avoid duplicate packages
-  #py-jinja2:
-  #  require: '@3.1.2'
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
      require: '@3.7.4'
-  #py-meson-python:
-  #   require: '@0.15.0'
-  # Comment out for now until build problems are solved
-  # https://github.com/jcsda/spack-stack/issues/522
-  # see also ewok-env virtual package and container
-  # README.md
-  #py-mysql-connector-python:
-  #  require: '@8.0.32'
   # Variant ~mpi not working for latest py-netcdf4
   # https://github.com/spack/spack/issues/47652
   py-netcdf4:
     require: '@1.7.1 +mpi'
-  # py-numpy@1.26 causes many build problems with older Python packages
-  # also check Nautilus site config when making changes here
-  # https://github.com/JCSDA/spack-stack/issues/1276
-  #py-numpy:
-  #  require:
-  #  - '@:1.23.5'
   py-pandas:
     require: '+excel'
-  #py-pybind11:
-  #  require: '@2.11.0'
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'
@@ -271,8 +244,6 @@ packages:
     require: '@69'
   py-setuptools-rust:
     require: '+rust_bootstrap'
-  #py-shapely:
-  #  require: '@1.8.0'
   py-torch:
     require: '+custom-protobuf ~mkldnn'
   # To avoid duplicate packages
@@ -308,5 +279,4 @@ packages:
   wrf-io:
     require: '@1.2.0'
   zstd:
-    #require: '@1.5.2 +programs'
-    require: '+programs'
+    require: '@1.5.6 +programs'
