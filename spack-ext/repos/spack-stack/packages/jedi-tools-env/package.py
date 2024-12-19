@@ -25,7 +25,7 @@ class JediToolsEnv(BundlePackage):
     # depends_on("aws-parallelcluster", type="run")
     depends_on("py-click", type="run")
     depends_on("py-openpyxl", type="run")
-    depends_on("py-pandas +excel", type="run")
+    depends_on("py-pandas", type="run")
     depends_on("py-pygithub", type="run")
     depends_on("py-scipy", type="run")
     depends_on("py-sphinx", type="run")
