@@ -25,7 +25,7 @@
     # DH* Remove this section to switch to intel-oneapi-mkl
     ectrans:
       require::
-      - '@1.5.0 ~mkl +fftw'
+      - '@1.2.0 ~mkl +fftw'
     gsibec:
       require::
       - '@1.2.1 ~mkl'
