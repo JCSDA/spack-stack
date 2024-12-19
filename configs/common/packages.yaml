@@ -234,6 +234,10 @@ packages:
   py-netcdf4:
     require: '@1.7.1 +mpi'
   # To avoid duplicate packages
+  py-numpy:
+    require:
+    - '@1.26'
+  # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'
   # Pin the py-setuptools version to avoid duplicate Python packages
