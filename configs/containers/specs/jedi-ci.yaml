@@ -34,25 +34,24 @@
     netcdf-fortran@4.6.1,
     parallelio@2.6.2 +pnetcdf,
     parallel-netcdf@1.12.3,
-    py-eccodes@1.5.0,
-    py-f90nml@1.4.3,
-    py-gitpython@3.1.40,
-    py-h5py@3.11.0,
-    py-numpy@1.23.5,
-    py-pandas@1.5.3,
+    py-eccodes,
+    py-f90nml,
+    py-gitpython,
+    py-h5py,
+    py-numpy,
+    py-pandas,
     py-pip,
-    py-pyyaml@6.0,
-    py-scipy@1.12.0,
-    py-shapely@1.8.0,
-    py-xarray@2023.7.0,
-    sp@2.5.0,
+    py-pyyaml,
+    py-scipy,
+    py-shapely,
+    py-xarray,
     udunits@2.2.28,
     w3emc@2.10.0,
-    nco@5.1.6,
+    nco,
     esmf@8.6.1,
     mapl@2.46.3,
-    zlib-ng@2.1.5,
-    zstd@1.5.2,
+    zlib-ng,
+    zstd,
     odc@1.5.2,
     shumlib@macos_clang_linux_intel_port,
     awscli-v2@2.13.22,
@@ -64,6 +63,6 @@
     jq@1.6 ]
     # Notes:
     # 1. Don't build CRTM by default so that it gets built in the JEDI bundles
-    # 2. Comment out for now until build problems are solved
-    #    https://github.com/jcsda/spack-stack/issues/522
-    #    py-mysql-connector-python@8.0.32
+    # 2. Avoid pinning packages to specific versions/variants unless absolutely
+    #    needed, because config/common/packages.yaml does that already (removal
+    #    of pinned versions in the above list is work in progress, DH 2024/12/18)

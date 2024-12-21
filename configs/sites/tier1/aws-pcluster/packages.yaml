@@ -27,6 +27,10 @@ packages:
     externals:
     - spec: gawk@5.1.0
       prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.7
+      prefix: /usr
   tar:
     externals:
     - spec: tar@1.34
