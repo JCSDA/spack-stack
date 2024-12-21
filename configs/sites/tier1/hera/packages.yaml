@@ -62,6 +62,10 @@ packages:
     externals:
     - spec: gmake@3.82
       prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
+      prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.2

@@ -74,6 +74,11 @@ spack:
       externals:
       - spec: git-lfs@3.0.2
         prefix: /usr
+    grep:
+      buildable: false
+      externals:
+      - spec: grep@3.7
+        prefix: /usr
     mysql:
       buildable: false
       externals:

@@ -43,6 +43,10 @@ packages:
     externals:
     - spec: gmake@4.2.1
       prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
+      prefix: /usr
   hwloc:
     externals:
     - spec: hwloc@2.2.0
