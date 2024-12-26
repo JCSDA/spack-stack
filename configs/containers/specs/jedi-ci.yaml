@@ -38,7 +38,6 @@
     py-f90nml,
     py-gitpython,
     py-h5py,
-    py-numpy,
     py-pandas,
     py-pip,
     py-pyyaml,
@@ -54,7 +53,7 @@
     zstd,
     odc@1.5.2,
     shumlib@macos_clang_linux_intel_port,
-    awscli-v2@2.13.22,
+    awscli-v2,
     py-globus-cli@3.16.0,
     py-fortranformat@2.0.0,
     # Added for new CI system 2024/04/30
