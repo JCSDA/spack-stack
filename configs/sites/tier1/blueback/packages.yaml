@@ -1,4 +1,22 @@
 packages:
+# Modification of common packages
+  # Use system zlib instead of spack-built zlib-ng
+  all:
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    # For TDS tusk
+    - spec: zlib@1.2.11
+      prefix: /usr
+    # For TDS cole
+    #- spec: zlib@1.2.13
+    #  prefix: /usr
+
+# All other packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69

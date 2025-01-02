@@ -1,4 +1,18 @@
 packages:
+# Modification of common packages
+  # Use system zlib instead of spack-built zlib-ng
+  all:
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+
+# All other packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -41,12 +55,12 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.39.2+tcltk
-      prefix: /software8/depot/git-2.39.2
+    - spec: git@2.43.5+tcltk
+      prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@3.3.0
-      prefix: /software8/depot/git-2.39.2
+    - spec: git-lfs@3.4.1
+      prefix: /usr
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -59,10 +73,11 @@ packages:
     externals:
     - spec: groff@1.22.3
       prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.6
-      prefix: /usr
+  # Do not use external libtool, incomplete install
+  #libtool:
+  #  externals:
+  #  - spec: libtool@2.4.6
+  #    prefix: /usr
   m4:
     externals:
     - spec: m4@1.4.18
