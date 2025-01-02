@@ -160,14 +160,14 @@ The following is required for building new spack environments with Intel on this
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.21!
+   # or cray-mpich-ucx/8.1.26!
    # There is a bug in the modulefile that prevents
    # spack from setting the environment for its
    # build steps when the module is already
    # loaded. Instead, let spack load it when the
    # package requires it.
    #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.21
+   #module load cray-mpich-ucx/8.1.26
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
@@ -184,14 +184,14 @@ The following is required for building new spack environments with Intel oneAPI 
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.21!
+   # or cray-mpich-ucx/8.1.26!
    # There is a bug in the modulefile that prevents
    # spack from setting the environment for its
    # build steps when the module is already
    # loaded. Instead, let spack load it when the
    # package requires it.
    #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.21
+   #module load cray-mpich-ucx/8.1.26
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
@@ -208,14 +208,14 @@ The following is required for building new spack environments with GNU on this p
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.21!
+   # or cray-mpich-ucx/8.1.26!
    # There is a bug in the modulefile that prevents
    # spack from setting the environment for its
    # build steps when the module is already
    # loaded. Instead, let spack load it when the
    # package requires it.
    #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.21
+   #module load cray-mpich-ucx/8.1.26
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
