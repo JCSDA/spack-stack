@@ -532,6 +532,28 @@ Linux/macOS default configs
 The Linux and macOS configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
 
 
+.. _Preconfigured_Sites_AWS_Ubuntu2404:
+
+----------------
+AWS Ubuntu 24.04
+----------------
+
+To build consult the `README.md` in the `sites/tier2/aws-ubuntu2404`.
+
+This image can contain GCC and Intel compilers. It is strongly suggested that if you are to use either environment, it is suggested to separate environments into their own terminal. 
+
+
+.. _Preconfigured_Sites_AWS_Rocky8:
+
+----------
+AWS Rocky8
+----------
+
+To build consult the `README.md` in the `sites/tier2/aws-rocky8`.
+
+This image can contain GCC and Intel compilers. It is strongly suggested that if you are to use either environment, it is suggested to separate environments into their own terminal.
+
+
 .. _Configurable_Sites_CreateEnv:
 
 ========================
