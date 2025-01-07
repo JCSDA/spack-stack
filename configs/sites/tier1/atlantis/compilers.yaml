@@ -54,3 +54,26 @@ compilers:
       append_path:
         CPATH: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/opt/compiler/include/intel64/
     extra_rpaths: []
+#- compiler:
+#    spec: oneapi@2025.0.3
+#    paths:
+#      cc: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/icx
+#      cxx: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/icpx
+#      f77: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/ifx
+#      fc: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/ifx
+#    flags: {}
+#    operating_system: rhel8
+#    target: x86_64
+#    modules:
+#    - umf/0.9.1
+#    - compiler-rt/2025.0.1
+#    - tbb/2022.0
+#    - compiler-intel-llvm/2025.0.1
+#    environment:
+#      prepend_path:
+#        PATH: /cm/local/apps/gcc/11.2.0/bin
+#        CPATH: /cm/local/apps/gcc/11.2.0/include
+#        LD_LIBRARY_PATH: /cm/shared/apps/slurm/21.08.8/lib64:/cm/shared/apps/slurm/21.08.8/lib64/slurm:/gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0
+#      append_path:
+#        CPATH: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/opt/compiler/include/intel64
+#    extra_rpaths: []
