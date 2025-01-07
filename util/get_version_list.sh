@@ -4,6 +4,9 @@
 # wiki-formatted table to be inserted into the spack-stack wiki.
 # Only reports packages directly used by *-env metapackages.
 # Uses SPACK_ENV by default to derive list of installed packages.
+# The entire output can be copied and pasted into the wiki page at
+# https://github.com/JCSDA/spack-stack/wiki/Package-versions
+# noting that <SITE> should be replaced by the appropriate site name.
 
 # Usage:
 #  $ . setup.sh
