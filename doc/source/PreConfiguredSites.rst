@@ -160,14 +160,14 @@ The following is required for building new spack environments with Intel on this
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.21!
+   # or cray-mpich-ucx/8.1.26!
    # There is a bug in the modulefile that prevents
    # spack from setting the environment for its
    # build steps when the module is already
    # loaded. Instead, let spack load it when the
    # package requires it.
    #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.21
+   #module load cray-mpich-ucx/8.1.26
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
@@ -184,14 +184,14 @@ The following is required for building new spack environments with Intel oneAPI 
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.21!
+   # or cray-mpich-ucx/8.1.26!
    # There is a bug in the modulefile that prevents
    # spack from setting the environment for its
    # build steps when the module is already
    # loaded. Instead, let spack load it when the
    # package requires it.
    #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.21
+   #module load cray-mpich-ucx/8.1.26
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
@@ -208,14 +208,14 @@ The following is required for building new spack environments with GNU on this p
    module unload cray-mpich
    module unload craype-network-ofi
    # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.21!
+   # or cray-mpich-ucx/8.1.26!
    # There is a bug in the modulefile that prevents
    # spack from setting the environment for its
    # build steps when the module is already
    # loaded. Instead, let spack load it when the
    # package requires it.
    #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.21
+   #module load cray-mpich-ucx/8.1.26
    module load libfabric/1.12.1.2.2.1
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
@@ -530,6 +530,28 @@ Linux/macOS default configs
 ------------------------------
 
 The Linux and macOS configurations are **not** meant to be used as is, as user setups and package versions vary considerably. Instructions for adding this information can be found in :numref:`Section %s <NewSiteConfigs>`.
+
+
+.. _Preconfigured_Sites_AWS_Ubuntu2404:
+
+----------------
+AWS Ubuntu 24.04
+----------------
+
+To build consult the `README.md` in the `sites/tier2/aws-ubuntu2404`.
+
+This image can contain GCC and Intel compilers. It is strongly suggested that if you are to use either environment, it is suggested to separate environments into their own terminal. 
+
+
+.. _Preconfigured_Sites_AWS_Rocky8:
+
+----------
+AWS Rocky8
+----------
+
+To build consult the `README.md` in the `sites/tier2/aws-rocky8`.
+
+This image can contain GCC and Intel compilers. It is strongly suggested that if you are to use either environment, it is suggested to separate environments into their own terminal.
 
 
 .. _Configurable_Sites_CreateEnv:

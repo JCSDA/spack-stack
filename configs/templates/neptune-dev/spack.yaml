@@ -15,3 +15,9 @@ spack:
     - matrix:
       - [$packages]
       - [$compilers]
+      exclude:
+      # Skip neptune-python-env with Intel Classic due to problems
+      # with new versions of py-numpy, py-scipy, ...
+      - neptune-python-env%intel
+      # Same for LLVM compilers
+      - neptune-python-env%clang

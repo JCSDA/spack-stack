@@ -28,6 +28,7 @@ class GlobalWorkflowEnv(BundlePackage):
     depends_on("bacio")
     depends_on("g2")
     depends_on("g2tmpl")
+    depends_on("gh")
     depends_on("w3nco")
     depends_on("w3emc")
     depends_on("sp", when="^ip@:4")

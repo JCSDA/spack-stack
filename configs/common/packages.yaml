@@ -145,6 +145,10 @@ packages:
     require: '@2.1.0'
   libpng:
     require: '@1.6.37 +pic'
+  # libtirpc +gssapi doesn't build with oneapi@2025
+  # https://github.com/JCSDA/spack-stack/issues/1441
+  libtirpc:
+    require: '~gssapi'
   # Newest version of magics needed for oneapi compilers
   magics:
     require: "@4.15.3:"
