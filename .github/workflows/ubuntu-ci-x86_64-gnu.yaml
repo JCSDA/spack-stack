@@ -51,7 +51,8 @@ jobs:
           # Set up spack-stack
           source ./setup.sh
 
-          declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev")
+          #declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev")
+          declare -a TEMPLATES=("cylc-dev")
           for TEMPLATE in "${TEMPLATES[@]}"; do
             if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
               export ENVNAME=ue-gcc-11.4.0-buildcache
@@ -106,7 +107,7 @@ jobs:
               set +e
               spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
               spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
-              set +e
+              set -e
               echo "Packages in spack binary cache:"
               spack buildcache list
             fi
