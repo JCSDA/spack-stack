@@ -59,7 +59,8 @@ jobs:
           # Find external packages
           spack external find --scope system \
               --exclude bison --exclude openssl \
-              --exclude curl --exclude python
+              --exclude curl --exclude python \
+              --exclude meson
           spack external find --scope system grep
           spack external find --scope system sed
           spack external find --scope system perl
