@@ -51,8 +51,7 @@ jobs:
           # Set up spack-stack
           source ./setup.sh
 
-          #declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev")
-          declare -a TEMPLATES=("cylc-dev")
+          declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev")
           for TEMPLATE in "${TEMPLATES[@]}"; do
             if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
               export ENVNAME=ue-gcc-11.4.0-buildcache
