@@ -13,7 +13,7 @@ spack:
 
   view:
     cylc:
-      root: $SPACK_ENV/view-pys
+      root: view
       select: [^python]
       link: run
       link_type: symlink
