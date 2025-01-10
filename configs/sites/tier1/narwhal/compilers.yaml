@@ -48,10 +48,16 @@ compilers::
   - compiler:
       spec: gcc@10.3.0
       paths:
+        # Still need Cray wrappers for most environments
         cc: cc
         cxx: CC
         f77: ftn
         fc: ftn
+        # For cylc-dev, can't use Cray wrappers
+        #cc: /opt/cray/pe/gcc/10.3.0/snos/bin/gcc
+        #cxx: /opt/cray/pe/gcc/10.3.0/snos/bin/g++
+        #f77: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
+        #fc: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
       flags: {}
       operating_system: sles15
       modules:
