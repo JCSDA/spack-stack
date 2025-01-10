@@ -1,11 +1,12 @@
 # Template for CYLC (flow, rose, GUI). Supported with GCC only.
 # Creates a view that allows users to define (manually for now)
-# simple environments with just PATH and CYLC_PYTHONPATH set:
+# simple wrappers for cylc that can be aliased as "cylc":
 #
-# #!/bin/bash
-# export VIEWDIR=/path/to/env/view-pys
-# export PATH=$VIEWDIR/bin:$PATH
-# export CYLC_PYTHONPATH=$VIEWDIR/lib/python3.11/site-packages
+##!/bin/bash
+##CYLC_INSTALL_DIR=/path/to/env/view/bin
+##PATH=${CYLC_INSTALL_DIR}:$PATH
+##unset PYTHONPATH
+##cylc "$@"
 #
 spack:
   concretizer:
