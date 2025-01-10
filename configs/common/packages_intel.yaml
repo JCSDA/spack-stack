@@ -30,6 +30,9 @@ packages:
   boost:
     require:
     - '%gcc'
+  qt:
+    require:
+    - '%gcc'
   ecflow:
     require:
     - '%gcc'
