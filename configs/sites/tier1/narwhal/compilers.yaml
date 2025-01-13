@@ -53,7 +53,7 @@ compilers::
         cxx: CC
         f77: ftn
         fc: ftn
-        # For cylc-dev, can't use Cray wrappers
+        # For cylc-dev, can't use Cray wrappers (https://github.com/spack/spack/issues/48515)
         #cc: /opt/cray/pe/gcc/10.3.0/snos/bin/gcc
         #cxx: /opt/cray/pe/gcc/10.3.0/snos/bin/g++
         #f77: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran

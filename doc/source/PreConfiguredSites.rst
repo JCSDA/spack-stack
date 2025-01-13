@@ -26,11 +26,14 @@ The following naming conventions are used on all fully-supported (tier 1) sites.
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
 | ``neptune-dev``                  | NEPTUNE standalone environment (with xNRL Python)       | ``ne``            | ``ne-oneapi-2024.2.1``       |
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
+| ``cylc-dev``                     | Environment for running cylc (separate from other envs) | ``ce``            | ``ce-gcc-10.3.0``            |
++----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
 | ``gsi-addon-dev``                | GSI addon (chained) environment on top of unified env.  | ``gsi``           | ``gsi-gcc-13.3.0``           |
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
 | ``unified-dev`` with new ESMF    | Unified environment with new ESMF (chained from ``ue``) | ``ue-esmf870b99`` | ``ue-esmf870b99-aocc-4.2.0`` |
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
 
+To support users who consistently want the latest release, on NOAA RDHPCS tier 1 platforms, soft links pointing to the modulefiles associated with the latest release of the Unified Environment are provided under the main spack-stack directory. The usage consists of ``module use /path/to/spack-stack/latest-ue-<compiler>``, and then loading the spack-stack meta-modules as usual. These soft links should be updated when each release is finalized.
 
 .. _Preconfigured_Sites_Tier1:
 
@@ -562,6 +565,8 @@ Create local environment
 
 The following instructions install a new spack environment on a pre-configured site. Instructions for creating a new site config on a configurable system (i.e. a generic Linux or macOS system) can be found in :numref:`Section %s <NewSiteConfigs>`. The options for the ``spack stack`` extension are explained in :numref:`Section %s <SpackStackExtension>`.
 
+The following instructions apply to the basic environments (``unified-dev``, ``skylab-dev``, ``neptune-dev``). Add-on (i.e. chained) environments and the ``cylc`` environment require special instructions (see below).
+
 .. code-block:: console
 
    git clone --recurse-submodules https://github.com/jcsda/spack-stack.git
@@ -614,8 +619,6 @@ The following instructions install a new spack environment on a pre-configured s
    # Check permissions for systems where non-owning users/groups need access
    ${SPACK_STACK_DIR}/util/check_permissions.sh
 
-To support users who consistently want the latest release, on NOAA RDHPCS tier 1 platforms, soft links pointing to the modulefiles associated with the latest release of the Unified Environment are provided under the main spack-stack directory. The usage consists of ``module use /path/to/spack-stack/latest-ue-<compiler>``, and then loading the spack-stack meta-modules as usual. These soft links should be updated when each release is finalized.
-
 .. note::
   You may want to capture the output from :code:`spack concretize` and :code:`spack install` comands in log files.
   For example:
@@ -624,6 +627,33 @@ To support users who consistently want the latest release, on NOAA RDHPCS tier 1
 
     spack concretize 2>&1 | tee log.concretize
     spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
+
+For installing chained environments, the user is referred to section :numref:`%s <Add_Test_Packages>`.
+
+The ``cylc`` environment is another special environment. This environment is not chained, thus the instructions provided above until and including the ``spack install`` step still apply. The following differences apply:
+
+1. The ``cylc`` environment can only be built with a reasonably recent version of the GNU compilers (``gcc`` version ``10`` or later, as long as spack-stack in general supports the version; see :numref:`%s <NewSiteConfigs>` for a compiler compatibility matrix). Further, on Cray systems, ensure that the Cray compiler wrappers are not used (see the comment in configs/sites/tier1/narwhal/compilers.yaml). Note that, as long as the ``cylc`` environment does not use MPI (which is currently the case), it is not necessary to toggle the ``wrappers`` variant for the external ``cray-mpich`` package when using the compilers without the Cray wrappers.
+
+2. Instead of creating ``tcl`` or ``lmod`` modules and the associated meta-modules, this environment creates a spack environment view in ``envs/env-name/view``. In order to use the ``cylc`` installation provided in that view, the user is advised to create a ``cylc-wrapper`` that looks the following bash script, and then create an alias ``cylc`` pointing to the wrapper script. This approach ensures that the environment in which ``cylc`` operates is encapsulated from the environment that users or ``cylc`` tasks operate in.
+
+.. code-block:: bash
+
+   > cat cylc-wrapper
+
+   #!/bin/bash
+
+   # Define environment variable CYLC_INSTALL_PREFIX here,
+   # pointing to /path/to/spack-stack/envs/env-name/view,
+   # or make sure the user did set it before calling the wrapper
+   [ -z ${CYLC_INSTALL_PREFIX} ] && echo "CYLC_INSTALL_PREFIX not set!" && exit 1
+
+   PATH=${CYLC_INSTALL_PREFIX}/bin:$PATH
+   unset PYTHONPATH
+   cylc "$@"
+
+   > alias
+   
+   alias cylc='/path/to/cylc-wrapper'
 
 
 .. _Preconfigured_Sites_ExtendingEnvironments:
