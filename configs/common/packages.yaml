@@ -76,6 +76,10 @@ packages:
     #  message: "Extra ESMF compile options for GCC"
     prefer:
     - '+python'
+  # To avoid duplicate packages (concretizer bug?)
+  expat:
+    require:
+    - '~libbsd'
   fckit:
     require: '@0.13.2 +eckit'
   fftw:
