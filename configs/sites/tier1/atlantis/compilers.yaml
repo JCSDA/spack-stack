@@ -16,7 +16,8 @@ compilers:
       prepend_path:
         PATH: /cm/local/apps/gcc/11.2.0/bin
         CPATH: /cm/local/apps/gcc/11.2.0/include
-        LD_LIBRARY_PATH: /cm/shared/apps/slurm/21.08.8/lib64:/cm/shared/apps/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin
+        #LD_LIBRARY_PATH: /cm/shared/apps/slurm/21.08.8/lib64:/cm/shared/apps/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
+        LD_LIBRARY_PATH: /cm/shared/apps/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
     extra_rpaths: []
 - compiler:
     spec: gcc@11.2.0
@@ -44,15 +45,14 @@ compilers:
     target: x86_64
     modules:
     - intel-oneapi-2024.2.1
+    - tbb/2021.13
     - compiler-rt/2024.2.1
     - compiler/2024.2.1
     environment:
       prepend_path:
         PATH: /cm/local/apps/gcc/11.2.0/bin
         CPATH: /cm/local/apps/gcc/11.2.0/include
-        LD_LIBRARY_PATH: /cm/shared/apps/slurm/21.08.8/lib64:/cm/shared/apps/slurm/21.08.8/lib64/slurm:/cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024
-      append_path:
-        CPATH: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/opt/compiler/include/intel64/
+        LD_LIBRARY_PATH: /cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
     extra_rpaths: []
 #- compiler:
 #    spec: oneapi@2025.0.3
@@ -73,7 +73,5 @@ compilers:
 #      prepend_path:
 #        PATH: /cm/local/apps/gcc/11.2.0/bin
 #        CPATH: /cm/local/apps/gcc/11.2.0/include
-#        LD_LIBRARY_PATH: /cm/shared/apps/slurm/21.08.8/lib64:/cm/shared/apps/slurm/21.08.8/lib64/slurm:/gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0
-#      append_path:
-#        CPATH: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/opt/compiler/include/intel64
+#        LD_LIBRARY_PATH: /cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
 #    extra_rpaths: []
