@@ -1,4 +1,17 @@
 packages:
+  # For addressing https://github.com/JCSDA/spack-stack/issues/1355
+  #   Use system zlib instead of spack-built zlib-ng
+  all:
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+
   autoconf:
     externals:
     - spec: autoconf@2.69
