@@ -223,6 +223,14 @@ The following is required for building new spack environments with GNU on this p
    module unload cray-libsci
    module load cray-libsci/23.05.1.4
 
+.. warning::
+   After the successful build of a spack-stack environment, a utility script ``util/narwhal/fix_libsci.sh`` must be run to replace references to an old version of ``libsci`` in several shared libraries. See https://github.com/JCSDA/spack-stack/pull/1449 and https://github.com/JCSDA/spack-stack/issues/1447 for more information.
+
+.. code-block:: console
+
+   # After running 'spack install' (or after 'spack stack setup-meta-modules')
+   ./util/narwhal/fix_libsci.sh 2>&1 | tee log.ENV_NAME_HERE.fix_libsci.001
+
 
 .. _Preconfigured_Sites_Nautilus:
 
