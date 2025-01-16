@@ -16,7 +16,6 @@ compilers:
       prepend_path:
         PATH: /cm/local/apps/gcc/11.2.0/bin
         CPATH: /cm/local/apps/gcc/11.2.0/include
-        #LD_LIBRARY_PATH: /cm/shared/apps/slurm/21.08.8/lib64:/cm/shared/apps/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
         LD_LIBRARY_PATH: /cm/shared/apps/intel/oneapi/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
     extra_rpaths: []
 - compiler:
