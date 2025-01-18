@@ -256,7 +256,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Check for duplicate packages
-    ./util/show_duplicate_packages.py -d log.concretize.${env_name}.001
+    ./util/show_duplicate_packages.py -i crtm -i esmf -d log.concretize.${env_name}.001
 
     # In developer mode, update local source cache
     if [[ "${create_buildcache}" == "true"* ]]; then
