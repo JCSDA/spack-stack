@@ -19,24 +19,18 @@ SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
 
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
-    #SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.6.0" "gcc@11.2.0")
-    #SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
-    SPACK_STACK_BATCH_COMPILERS=("gcc@11.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.6.0" "gcc@11.2.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     ;;
   narwhal)
-    #SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "intel@2021.10.0" "gcc@10.3.0")
-    #SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
-    SPACK_STACK_BATCH_COMPILERS=("gcc@10.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "intel@2021.10.0" "gcc@10.3.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     ;;
   nautilus)
-    #SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.5.0" "gcc@11.2.1")
-    #SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
-    SPACK_STACK_BATCH_COMPILERS=("gcc@11.2.1")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.5.0" "gcc@11.2.1")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     ;;
   # DH*
@@ -56,7 +50,7 @@ esac
 ##################################################################################################
 
 echo "\n"
-echo "Welcome to SPACK-STACK BATCH INSTALL"
+echo "Welcome to NRL SPACK-STACK BATCH INSTALL"
 echo
 
 if [[ ! -e "setup.sh" || ! -e ".spackstack" ]]; then
@@ -331,5 +325,7 @@ done
 
 # Remove any module snapshots
 rm -vf ${module_snapshot}
+
+echo "NRL SPACK-STACK BATCH INSTALL SUCCESSFUL"
 
 exit 0
