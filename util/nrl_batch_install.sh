@@ -111,6 +111,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
+    elif [[ "${template}" == "unified-dev" && ! "${compiler_name}" == "intel" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler}"
+      continue
     fi
     echo "Processing template ${template} with compiler ${compiler}"
 
@@ -134,6 +137,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     [[ "${create_buildcache}" == "true"* ]] && env_name=${env_name}-buildcache
     env_dir=${PWD}/envs/${env_name}
 
+    # Bail out if the environment already exists
+    if [[ -d ${env_dir} ]]; then
+      echo "ERROR, environment ${env_dir} already exists"
+      exit 1
+    fi
+
     # Reset environment
     echo "Resetting environment ..."
     case ${host} in
@@ -149,10 +158,11 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         fi
         # Unloading modules on Narwhal always throws an error:
         # environment: line 0: unalias: mpirun: not found
-    set +e
+        set +e
+        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
         module purge
-    module restore -f ${module_snapshot}
-    set -e
+        module restore -f ${module_snapshot}
+        set -e
         umask 0022
         set +e
         case ${compiler} in
@@ -281,6 +291,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     esac
     spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.001
 
+    # Run another spack install without redirects to catch build errors
+    spack install
+
     # In developer mode, update local binary cache
     if [[ "${create_buildcache}" == "true"* ]]; then
       spack buildcache push -u ${binary_mirror_path}
@@ -325,6 +338,34 @@ done
 
 # Remove any module snapshots
 rm -vf ${module_snapshot}
+
+# Note. Add in the xargs stuff
+# Repair permissions for environments
+case ${host} in
+  atlantis)
+    find ./ -type d -print0 | xargs --null chmod a+rx
+    find ./ -type f -executable -print0 | xargs --null chmod a+rx
+    find ./ -type f -print0 | xargs --null chmod a+r
+    ;;
+  narwhal)
+    nice -n 19 lfs find ./ -type d -print0 | xargs --null chmod a+rx
+    nice -n 19 find ./ -type f -executable -print0 | xargs --null chmod a+rx
+    nice -n 19 lfs find ./ -type f -print0 | xargs --null chmod a+r
+    ;;
+  nautilus)
+    nice -n 19 lfs find ./ -type d -print0 | xargs --null chmod a+rx
+    nice -n 19 find ./ -type f -executable -print0 | xargs --null chmod a+rx
+    nice -n 19 lfs find ./ -type f -print0 | xargs --null chmod a+r
+    ;;
+  # DH*
+  blackpearl)
+    ;;
+  # *DH
+  *)
+    echo "ERROR, xargs-chmod command not configured for ${host}"
+    exit 1
+    ;;
+esac
 
 echo "NRL SPACK-STACK BATCH INSTALL SUCCESSFUL"
 
