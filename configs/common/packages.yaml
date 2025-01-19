@@ -31,6 +31,9 @@ packages:
       when: '%intel@2021:'
       message: '2.3.0 is the last version to use C++17, use with Intel Classic'
     - any_of: ['@2.3.0 ~openmp']
+      when: '%gcc@:10'
+      message: 2.3.0 is the last version to use C++17, use with GCC 10 and earlier
+    - any_of: ['@2.3.0 ~openmp']
       when: '%apple-clang@:14'
       message: '2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier'
     - any_of: ['@2.0.5 ~openmp']
