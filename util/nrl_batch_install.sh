@@ -111,7 +111,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    elif [[ "${template}" == "unified-dev" && ! "${compiler_name}" == "intel" ]]; then
+    elif [[ "${template}" == "unified-dev" &&  "${compiler_name}" == "intel" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     fi
