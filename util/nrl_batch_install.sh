@@ -235,6 +235,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                            2>&1 | tee log.create.${env_name}.001
     spack env activate -p ${env_dir}
 
+    # Workaround for building cylc environment on Narwhal: We need to use GNU
+    # compilers without the Cray wrappers. Until we can come up with a smarter
+    # solution, use this.
+    if [[ ${host} == "narwhal" && ${template} == "cylc-dev" ]]; then
+      echo "Applying workaround for ${template} on ${host}"
+      cp -av configs/sites/tier1/narwhal/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
+    fi
+
     # Check that the site has mirrors configured for local source and binary caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
     result=$(spack mirror list | grep local-source) || \
