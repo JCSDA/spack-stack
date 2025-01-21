@@ -32,11 +32,19 @@ setenv("MPI_F77", "@MPIF77@")
 setenv("MPI_F90", "@MPIF90@")
 
 -- intel specific mpi wrapper environment variables
-setenv("I_MPI_CC",  os.getenv("CC"))
-setenv("I_MPI_CXX", os.getenv("CXX"))
-setenv("I_MPI_F77", os.getenv("F77"))
-setenv("I_MPI_F90", os.getenv("FC"))
-setenv("I_MPI_FC",  os.getenv("FC"))
+local i_mpi_cc = os.getenv("CC")
+local i_mpi_cxx = os.getenv("CXX")
+local i_mpi_f77 = os.getenv("F77") or ""
+local i_mpi_f90 = os.getenv("FC")
+local i_mpi_fc = os.getenv("FC")
+
+if i_mpi_cc and i_mpi_cxx and i_mpi_f90 and i_mpi_fc then
+  setenv("I_MPI_CC", i_mpi_cc)
+  setenv("I_MPI_CXX", i_mpi_cxx)
+  setenv("I_MPI_F77", i_mpi_f77)
+  setenv("I_MPI_F90", i_mpi_f90)
+  setenv("I_MPI_FC",  i_mpi_fc)
+end
 
 -- compiler flags and other environment variables
 @COMPFLAGS@
