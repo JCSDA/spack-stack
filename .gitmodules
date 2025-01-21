@@ -1,8 +1,8 @@
 [submodule "spack"]
   path = spack
-  url = https://github.nrlmry.navy.mil/jcsda/spack
-  branch = release/neptune-1.5
+  url = https://github.com/jcsda/spack
+  branch = spack-stack-dev
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
-  url = https://github.nrlmry.navy.mil/jcsda/cmakemodules
-  branch = release/neptune-1.5
+  url = https://github.com/noaa-emc/cmakemodules
+  branch = v1.3.0
