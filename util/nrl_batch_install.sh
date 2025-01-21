@@ -4,8 +4,8 @@ set -e
 
 # Developer switch: create buildcaches instead of deploying environments ["true"|"false"]
 # The default "false" means to deploy environments using existing buildcaches (installer mode)
-#SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
-SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
+SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
+#SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
 
 # A value of SPACK_STACK_BATCH_CREATE_BUILDCACHE == "true" enters developer mode. In this
 # mode, one must choose between reusing existing buildcaches or rebuilding from scratch.
@@ -36,8 +36,12 @@ case ${SPACK_STACK_BATCH_HOST} in
   # DH*
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0" "aocc@4.2.0")
-    #SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
-    SPACK_STACK_BATCH_TEMPLATES=("cylc-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    ;;
+  bounty)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2025.0.0" "gcc@13.3.1" "aocc@5.0.0" "clang@19.1.4")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     ;;
   # *DH
@@ -107,15 +111,28 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
   for template in "${SPACK_STACK_BATCH_TEMPLATES[@]}"; do
 
     echo
-    # Add excluded combinations of compiler and template here
+    #############################################################
+    # Add excluded combinations of compilers and templates here #
+    #############################################################
+    # cylc-dev only with gcc
     if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
+    # unified-env not with intel
     elif [[ "${template}" == "unified-dev" &&  "${compiler_name}" == "intel" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler}"
+      continue
+    # With clang, only neptune-dev
+    elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler}"
+      continue
+    # With aocc, only neptune-dev
+    elif [[ "${compiler_name}" == "aocc" && ! "${template}" == "neptune-dev" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     fi
     echo "Processing template ${template} with compiler ${compiler}"
+    #############################################################
 
     # Build environment name. Prefices are defined here
     case ${template} in
@@ -212,6 +229,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
       # DH*
       blackpearl)
+        ulimit -s unlimited
+        ;;
+      bounty)
         ulimit -s unlimited
         ;;
       # *DH
@@ -328,6 +348,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         # DH*
         blackpearl)
           ;;
+        bounty)
+          ;;
         # *DH
         *)
           echo "ERROR, post-install scripts not configured for ${host}"
@@ -367,6 +389,8 @@ case ${host} in
     ;;
   # DH*
   blackpearl)
+    ;;
+  bounty)
     ;;
   # *DH
   *)
