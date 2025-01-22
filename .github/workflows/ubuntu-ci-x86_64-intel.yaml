@@ -59,7 +59,8 @@ jobs:
           # Find external packages
           spack external find --scope system \
               --exclude bison --exclude openssl \
-              --exclude curl --exclude python
+              --exclude curl --exclude python \
+              --exclude meson
           spack external find --scope system grep
           spack external find --scope system sed
           spack external find --scope system perl
@@ -144,7 +145,7 @@ jobs:
             set +e
             spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
             spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
-            set +e
+            set -e
             echo "Packages in spack binary cache:"
             spack buildcache list
           fi

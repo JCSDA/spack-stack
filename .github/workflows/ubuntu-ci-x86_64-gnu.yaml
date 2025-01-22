@@ -51,12 +51,14 @@ jobs:
           # Set up spack-stack
           source ./setup.sh
 
-          declare -a TEMPLATES=("unified-dev" "skylab-dev")
+          declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev")
           for TEMPLATE in "${TEMPLATES[@]}"; do
             if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
               export ENVNAME=ue-gcc-11.4.0-buildcache
             elif [[ "${TEMPLATE}" == *"skylab-dev"* ]]; then
               export ENVNAME=se-gcc-11.4.0-buildcache
+            elif [[ "${TEMPLATE}" == *"cylc-dev"* ]]; then
+              export ENVNAME=ce-gcc-11.4.0-buildcache
             fi
             echo "Creating environment ${ENVNAME} from template ${TEMPLATE}"
 
@@ -68,7 +70,8 @@ jobs:
             # Find external packages
             spack external find --scope system \
                 --exclude bison --exclude openssl \
-                --exclude curl --exclude python
+                --exclude curl --exclude python \
+                --exclude meson
             spack external find --scope system grep
             spack external find --scope system sed
             spack external find --scope system perl
@@ -104,7 +107,7 @@ jobs:
               set +e
               spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
               spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
-              set +e
+              set -e
               echo "Packages in spack binary cache:"
               spack buildcache list
             fi
@@ -113,20 +116,22 @@ jobs:
             # This allows us to "spin up" builds that altogether take longer than
             # six hours, and/or fail later in the build process.
 
-            # base-env
-            echo "base-env ..."
-            spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
-            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
+            if [[ "${TEMPLATE}" == *"unified-dev"* || "${TEMPLATE}" == *"skylab-dev"* ]]; then
+              # base-env
+              echo "base-env ..."
+              spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
+              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
 
-            # jedi-base-env
-            echo "jedi-base-env ..."
-            spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
-            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+              # jedi-base-env
+              echo "jedi-base-env ..."
+              spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
+              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
 
-            # jedi-ufs-env
-            echo "jedi-ufs-env ..."
-            spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-ufs-env
-            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
+              # jedi-ufs-env
+              echo "jedi-ufs-env ..."
+              spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-ufs-env
+              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
+            fi
 
             # the rest
             echo "${TEMPLATE} ..."

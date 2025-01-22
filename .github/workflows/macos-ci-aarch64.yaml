@@ -111,7 +111,7 @@ jobs:
             set +e
             spack mirror add local-binary file:///Users/ec2-user/spack-stack/build-cache/
             spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
-            set +e
+            set -e
             echo "Packages in spack binary cache:"
             spack buildcache list
           fi

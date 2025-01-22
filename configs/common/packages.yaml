@@ -31,6 +31,9 @@ packages:
       when: '%intel@2021:'
       message: '2.3.0 is the last version to use C++17, use with Intel Classic'
     - any_of: ['@2.3.0 ~openmp']
+      when: '%gcc@:10'
+      message: 2.3.0 is the last version to use C++17, use with GCC 10 and earlier
+    - any_of: ['@2.3.0 ~openmp']
       when: '%apple-clang@:14'
       message: '2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier'
     - any_of: ['@2.0.5 ~openmp']
@@ -64,7 +67,7 @@ packages:
   esmf:
     require:
     - '~xerces ~pnetcdf +shared +external-parallelio'
-    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0b10 snapshot=b10']
+    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none']
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
@@ -76,6 +79,10 @@ packages:
     #  message: "Extra ESMF compile options for GCC"
     prefer:
     - '+python'
+  # To avoid duplicate packages (concretizer bug?)
+  expat:
+    require:
+    - '~libbsd'
   fckit:
     require: '@0.13.2 +eckit'
   fftw:
@@ -145,6 +152,10 @@ packages:
     require: '@2.1.0'
   libpng:
     require: '@1.6.37 +pic'
+  # libtirpc +gssapi doesn't build with oneapi@2025
+  # https://github.com/JCSDA/spack-stack/issues/1441
+  libtirpc:
+    require: '~gssapi'
   # Newest version of magics needed for oneapi compilers
   magics:
     require: "@4.15.3:"
@@ -214,10 +225,9 @@ packages:
   # Avoid full rust dependency: version 43+ requires py-maturin
   py-cryptography:
     require: '@:42 +rust_bootstrap'
-  # Introduced in https://github.com/JCSDA/spack-stack/pull/894, pin py-cython
-  # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
+  # Pin py-cython to avoid duplicate packages
   py-cython:
-    require: '@0.29.36'
+    require: '@3'
   # As long as we need the "delayed" variant for py-dask,
   # we are restricted to version 2021.03.0 (last one that has it)
   # and newer than 2021.01.0 because of these issues:
@@ -232,13 +242,15 @@ packages:
     require: '~mpi'
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
-     require: '@3.7.4'
+    require: '@3.7.4'
   # Variant ~mpi not working for latest py-netcdf4
   # https://github.com/spack/spack/issues/47652
   py-netcdf4:
     require: '@1.7.1 +mpi'
-  py-pandas:
-    require: '+excel'
+  # To avoid duplicate packages
+  py-numpy:
+    require:
+    - '@1.26'
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'

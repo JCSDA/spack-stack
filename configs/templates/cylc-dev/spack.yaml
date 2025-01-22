@@ -1,0 +1,33 @@
+# Template for CYLC (flow, rose, GUI). Supported with GCC only.
+# Creates a view that allows users to define (manually for now)
+# simple wrappers for cylc that can be aliased as "cylc":
+#
+##!/bin/bash
+##CYLC_INSTALL_DIR=/path/to/env/view/bin
+##PATH=${CYLC_INSTALL_DIR}:$PATH
+##unset PYTHONPATH
+##cylc "$@"
+#
+spack:
+  concretizer:
+    unify: true
+
+  view:
+    cylc:
+      root: view
+      select: [^python]
+      link: run
+      link_type: symlink
+  include: []
+
+  definitions:
+  - compilers: ['%gcc']
+  - packages:
+    - py-cylc-flow@8.3.6
+    - py-cylc-rose@1.4.2
+    - py-cylc-uiserver@1.5.1
+
+  specs:
+  - matrix:
+    - [$packages]
+    - [$compilers]

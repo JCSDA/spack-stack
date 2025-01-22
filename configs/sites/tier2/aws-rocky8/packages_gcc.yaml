@@ -1,0 +1,5 @@
+packages:
+  all:
+    compiler:: [gcc@11.2.1]
+    providers:
+      mpi:: [openmpi@4.1.6]
