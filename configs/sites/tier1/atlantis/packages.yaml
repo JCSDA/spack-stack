@@ -25,10 +25,6 @@ packages:
     externals:
     - spec: binutils@2.30.117
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.30
