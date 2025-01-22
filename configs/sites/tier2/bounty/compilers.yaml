@@ -1,27 +1,71 @@
 compilers:
 - compiler:
-    spec: gcc@=11.4.0
+    spec: gcc@=11.5.0
     paths:
       cc: /usr/bin/gcc
       cxx: /usr/bin/g++
       f77: /usr/bin/gfortran
       fc: /usr/bin/gfortran
     flags: {}
-    operating_system: ubuntu22.04
+    operating_system: almalinux9
     target: x86_64
     modules: []
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@=12.3.0
+    spec: gcc@=13.3.1
     paths:
-      cc: /usr/bin/gcc-12
-      cxx: /usr/bin/g++-12
-      f77: /usr/bin/gfortran-12
-      fc: /usr/bin/gfortran-12
+      cc: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+      cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+      f77: /opt/rh/gcc-toolset-13/root/usr/bin/gfortran
+      fc: /opt/rh/gcc-toolset-13/root/usr/bin/gfortran
     flags: {}
-    operating_system: ubuntu22.04
+    operating_system: almalinux9
     target: x86_64
     modules: []
     environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: oneapi@=2025.0.0
+    paths:
+      cc: /opt/intel/oneapi/compiler/2025.0/bin/icx
+      cxx: /opt/intel/oneapi/compiler/2025.0/bin/icpx
+      f77: /opt/intel/oneapi/compiler/2025.0/bin/ifx
+      fc: /opt/intel/oneapi/compiler/2025.0/bin/ifx
+    flags: {}
+    operating_system: almalinux9
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: clang@=19.1.4
+    paths:
+      cc: /home/dom/prod/llvm-19.1.4/bin/clang
+      cxx: /home/dom/prod/llvm-19.1.4/bin/clang++
+      f77: /home/dom/prod/llvm-19.1.4/bin/flang-new
+      fc: /home/dom/prod/llvm-19.1.4/bin/flang-new
+    flags: {}
+    operating_system: almalinux9
+    target: x86_64
+    modules: []
+    environment:
+      append_path:
+        LD_LIBRARY_PATH: /home/dom/prod/llvm-19.1.4/lib
+    extra_rpaths: [/home/dom/prod/llvm-19.1.4/lib]
+- compiler:
+    spec: aocc@=5.0.0
+    paths:
+      cc: /home/dom/prod/aocc-5.0.0/bin/clang
+      cxx: /home/dom/prod/aocc-5.0.0/bin/clang++
+      f77: /home/dom/prod/aocc-5.0.0/bin/flang
+      fc: /home/dom/prod/aocc-5.0.0/bin/flang
+    flags: {}
+    operating_system: almalinux9
+    target: x86_64
+    modules: []
+    environment: {}
+      #append_path:
+        # For libquadmath etc
+        # NEEDED? LD_LIBRARY_PATH: /usr/lib/gcc/x86_64-redhat-linux/11
     extra_rpaths: []

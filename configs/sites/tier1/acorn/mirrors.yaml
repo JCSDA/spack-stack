@@ -1,0 +1,3 @@
+mirrors:
+  local-source: file:///lfs/h1/emc/nceplibs/noscrub/spack-stack/cache
+  local-binary: file:///lfs/h1/emc/nceplibs/noscrub/spack-stack/cache

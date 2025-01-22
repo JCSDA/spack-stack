@@ -3,7 +3,6 @@ packages:
     compiler:: [oneapi@2024.2.1,gcc@11.4.1]
     providers:
       mpi:: [intel-oneapi-mpi]
-
   mpi:
     buildable: False
   intel-oneapi-mpi:

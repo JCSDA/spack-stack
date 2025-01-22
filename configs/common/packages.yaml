@@ -22,11 +22,23 @@ packages:
   bufr:
     require: '@12.1.0 +python'
   bufr-query:
-    require: '@0.0.2 +python'
+    require: '@0.0.4 +python'
   cairo:
     require: '+pic'
   cdo:
-    require: '@2.3.0 ~openmp'
+    require:
+    - any_of: ['@2.3.0 ~openmp']
+      when: '%intel@2021:'
+      message: '2.3.0 is the last version to use C++17, use with Intel Classic'
+    - any_of: ['@2.3.0 ~openmp']
+      when: '%gcc@:10'
+      message: 2.3.0 is the last version to use C++17, use with GCC 10 and earlier
+    - any_of: ['@2.3.0 ~openmp']
+      when: '%apple-clang@:14'
+      message: '2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier'
+    - any_of: ['@2.0.5 ~openmp']
+      when: '%intel@:2020'
+      message: '2.0.5 is the last version to use C++14, use with Intel Classic 2020 and earlier'
   cmake:
     version: ['3.27.9']
     require: '+ownlibs'
@@ -41,9 +53,9 @@ packages:
     require:
     - '@5.11.4 +ui'
   eckit:
-    require: '@1.27.0 linalg=eigen,lapack compression=lz4,bzip2'
+    require: '@1.28.3 linalg=eigen,lapack compression=lz4,bzip2'
   ecmwf-atlas:
-    require: '@0.38.1 +fckit +trans +tesselation +fftw'
+    require: '@0.40.0 +fckit +trans +tesselation +fftw'
   ectrans:
     require:
     - '@1.2.0'
@@ -55,7 +67,7 @@ packages:
   esmf:
     require:
     - '~xerces ~pnetcdf +shared +external-parallelio'
-    - any_of: ['@=8.6.1 snapshot=none', '@=8.7.0 snapshot=none']
+    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none']
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
@@ -67,12 +79,16 @@ packages:
     #  message: "Extra ESMF compile options for GCC"
     prefer:
     - '+python'
+  # To avoid duplicate packages (concretizer bug?)
+  expat:
+    require:
+    - '~libbsd'
   fckit:
-    require: '@0.11.0 +eckit'
+    require: '@0.13.2 +eckit'
   fftw:
     require: '@3.3.10'
   fiat:
-    require: '@1.2.0'
+    require: '@1.4.1'
   flex:
     # Pin version to avoid duplicates
     require: '@2.6.4'
@@ -95,7 +111,7 @@ packages:
   gcc-runtime:
     require: '%gcc'
   gfsio:
-    require: '@1.4.1'
+    require: '@1.4.2'
   #git-lfs:
     # Assume git-lfs is provided, hard to install
     # because of dependencies on go/go-bootstrap.
@@ -123,7 +139,7 @@ packages:
   hdf-eos2:
     require: '@2.20v1.00'
   ip:
-    require: '@5.0.0 precision=4,d,8'
+    require: '@5.1.0 precision=4,d,8'
   ip2:
     require: '@1.1.2'
   jasper:
@@ -131,22 +147,21 @@ packages:
   jedi-cmake:
     require: '@1.4.0'
   landsfcutil:
-    require: '@2.4.1'
+    require: '@2.4.2'
   libjpeg-turbo:
     require: '@2.1.0'
   libpng:
     require: '@1.6.37 +pic'
+  # libtirpc +gssapi doesn't build with oneapi@2025
+  # https://github.com/JCSDA/spack-stack/issues/1441
+  libtirpc:
+    require: '~gssapi'
   # Newest version of magics needed for oneapi compilers
   magics:
     require: "@4.15.3:"
   mapl:
     require: '@2.46.3 ~shared ~f2py'
     variants: '+pflogger'
-  # To avoid duplicate packages being built
-  meson:
-    require:
-    - '@1.5.1:'
-  # If making changes here, also check the Discover site configs and the CI workflows
   met:
     require: '@11.1.1 +python +grib2'
   metplus:
@@ -156,7 +171,7 @@ packages:
   mpich:
     require: '~hwloc'
   nco:
-    require: '@5.1.6 ~doc'
+    require: '@5.2.4 ~doc'
   # ncview - when adding information here, also check Orion
   # and Discover site configs
   nemsio:
@@ -177,8 +192,11 @@ packages:
   # ninja - when adding information here, also check Discover site config
   odc:
     require: '@1.5.2 ~fortran'
+  # Todo: update to 0.3.28 so that it builds with 'clang'. Check
+  # packages_clang.yaml where we are overwriting openblas for now.
   openblas:
-    require: '@0.3.24'
+    require:
+    - '@0.3.24'
   openmpi:
     require: '~internal-hwloc +two_level_namespace'
   openssl:
@@ -199,17 +217,14 @@ packages:
     require: '~tiff'
   python:
     require: '@3.11.7'
-  py-attrs:
-    # https://github.com/JCSDA/spack-stack/issues/740
-    require: '@21.4.0'
   py-cartopy:
     require: '+plotting'
+  # Avoid full rust dependency: version 43+ requires py-maturin
   py-cryptography:
-    require: '+rust_bootstrap'
-  # Introduced in https://github.com/JCSDA/spack-stack/pull/894, pin py-cython
-  # to avoid duplicate packages being built (cylc dependencies soft-want @3:)
+    require: '@:42 +rust_bootstrap'
+  # Pin py-cython to avoid duplicate packages
   py-cython:
-    require: '@0.29.36'
+    require: '@3'
   # As long as we need the "delayed" variant for py-dask,
   # we are restricted to version 2021.03.0 (last one that has it)
   # and newer than 2021.01.0 because of these issues:
@@ -222,42 +237,25 @@ packages:
     require: '@3.8.0'
   py-h5py:
     require: '~mpi'
-  ## To avoid duplicate packages
-  #py-jinja2:
-  #  require: '@3.1.2'
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
-     require: '@3.7.4'
-  py-meson-python:
-     require: '@0.15.0'
-  # Comment out for now until build problems are solved
-  # https://github.com/jcsda/spack-stack/issues/522
-  # see also ewok-env virtual package and container
-  # README.md
-  #py-mysql-connector-python:
-  #  require: '@8.0.32'
+    require: '@3.7.4'
+  # Variant ~mpi not working for latest py-netcdf4
+  # https://github.com/spack/spack/issues/47652
   py-netcdf4:
-    require: '@1.5.8 ~mpi'
-  # py-numpy@1.26 causes many build problems with older Python packages
-  # also check Nautilus site config when making changes here
-  # https://github.com/JCSDA/spack-stack/issues/1276
+    require: '@1.7.1 +mpi'
+  # To avoid duplicate packages
   py-numpy:
     require:
-    - '@:1.23.5'
-  py-pandas:
-    require: '+excel'
-  py-pybind11:
-    require: '@2.11.0'
+    - '@1.26'
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'
   # Pin the py-setuptools version to avoid duplicate Python packages
   py-setuptools:
-    require: '@63.4.3'
+    require: '@69'
   py-setuptools-rust:
     require: '+rust_bootstrap'
-  py-shapely:
-    require: '@1.8.0'
   py-torch:
     require: '+custom-protobuf ~mkldnn'
   # To avoid duplicate packages
@@ -293,4 +291,4 @@ packages:
   wrf-io:
     require: '@1.2.0'
   zstd:
-    require: '@1.5.2 +programs'
+    require: '@1.5.6 +programs'

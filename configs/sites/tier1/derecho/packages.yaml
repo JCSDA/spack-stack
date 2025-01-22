@@ -1,17 +1,18 @@
 packages:
   all:
     target: [core2]
+
 ### Modification of common packages
+  # Tell esmf that this is not a 'normal' Cray ...
   esmf:
-    variants: ~xerces ~pnetcdf snapshot=none ~shared +external-parallelio esmf_os=Linux esmf_comm=mpich
-  # Need to force spack to build python with ssl variant when using older openssl from OS
-  python:
-    require: "+ssl"
+    require:
+    - 'esmf_os=Linux esmf_comm=mpich'
   # py-scipy 1.12 does not build with intel on Derecho, pin to 1.11.4
   # use same version with gcc for consistency on the machine
   py-scipy:
     require:
     - '@1.11.4'
+
 ### All other external packages listed alphabetically
   autoconf:
     externals:
@@ -62,6 +63,10 @@ packages:
   gmake:
     externals:
     - spec: gmake@4.2.1
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
       prefix: /usr
   groff:
     externals:

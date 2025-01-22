@@ -12,6 +12,15 @@ packages:
   gettext:
     require:
     - '@:0.21'
+  go:
+    require:
+    - '%gcc'
+  go-bootstrap:
+    require:
+    - '%gcc'
+  gh:
+    require:
+    - '%gcc'
   gsibec:
     require:
     - '+mkl'
@@ -21,6 +30,12 @@ packages:
   boost:
     require:
     - '%gcc'
+  qt:
+    require:
+    - '%gcc'
   ecflow:
+    require:
+    - '%gcc'
+  pixman:
     require:
     - '%gcc'

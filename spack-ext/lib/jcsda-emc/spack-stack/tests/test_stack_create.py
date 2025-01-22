@@ -179,27 +179,71 @@ def test_compilers():
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_upstream():
+    base_env = os.path.join(test_dir, "base_env/install/")
+    os.makedirs(os.path.join(base_env, ".spack-db/"), exist_ok=True)
+    base_env_spack_yaml_path = os.path.realpath(os.path.join(base_env, "../spack.yaml"))
+    f_base_env = open(base_env_spack_yaml_path, "w")
+    f_base_env.write("spack:\n  dummytag: dummyvalue")
+    f_base_env.close()
     stack_create(
         "create",
         "env",
         "--site",
         "hera",
         "--name",
-        "upstream_test",
+        "chainedA",
         "--dir",
         test_dir,
         "--compiler",
         "gcc",
         "--upstream",
-        "/test/path/to/upstream/env",
+        base_env,
     )
-    spack_yaml_path = os.path.join(test_dir, "upstream_test", "spack.yaml")
+    spack_yaml_path = os.path.join(test_dir, "chainedA", "spack.yaml")
     with open(spack_yaml_path, "r") as f:
         spack_yaml_txt = f.read()
-    assert "install_tree: /test/path/to/upstream/env" in spack_yaml_txt
+    assert f"install_tree: {base_env}" in spack_yaml_txt
     assert (
         "repos: [$env/envrepo]" not in spack_yaml_txt
     ), "--modify-pkg functionality modified spack.yaml without being called"
+
+
+@pytest.mark.extension("stack")
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_layered_upstreams():
+    os.makedirs(os.path.join(test_dir, "chainedA/install/.spack-db/"))
+    os.makedirs(os.path.join(test_dir, "base_env/envrepo/"))
+    os.makedirs(os.path.join(test_dir, "chainedA/envrepo/"))
+    f_base_env_envrepo_file_path = os.path.join(test_dir, "base_env/envrepo/file")
+    f_chainedA_envrepo_file_path = os.path.join(test_dir, "chainedA/envrepo/file")
+    f_base_env_envrepo_file = open(f_base_env_envrepo_file_path, "w")
+    f_chainedA_envrepo_file = open(f_chainedA_envrepo_file_path, "w")
+    f_base_env_envrepo_file.write("bad")
+    f_chainedA_envrepo_file.write("good")
+    f_base_env_envrepo_file.close()
+    f_chainedA_envrepo_file.close()
+    stack_create(
+        "create",
+        "env",
+        "--site",
+        "hera",
+        "--name",
+        "chainedB",
+        "--dir",
+        test_dir,
+        "--compiler",
+        "gcc",
+        "--upstream",
+        os.path.join(test_dir, "chainedA/install/")
+    )
+    spack_yaml_path = os.path.join(test_dir, "chainedB", "spack.yaml")
+    with open(spack_yaml_path, "r") as f:
+        spack_yaml_txt = f.read()
+    assert "/base_env/install/" in spack_yaml_txt
+    assert "/chainedA/install/" in spack_yaml_txt
+    file_path = os.path.join(test_dir, "chainedB/envrepo/file")
+    with open(file_path, "r") as f:
+        assert "good" in f.read()
 
 
 @pytest.mark.extension("stack")

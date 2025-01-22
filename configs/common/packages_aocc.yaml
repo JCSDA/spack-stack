@@ -13,3 +13,7 @@ packages:
   py-numpy:
     require:
     - '^openblas'
+  # ip@5 doesn't build with aocc@4 compilers
+  ip:
+    require:
+    - '%gcc'

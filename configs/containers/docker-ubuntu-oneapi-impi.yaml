@@ -1,0 +1,315 @@
+spack:
+  concretizer:
+    unify: true
+
+  config:
+    checksum: false
+    build_jobs: 2
+    connect_timeout: 60
+
+  compilers:
+  - compiler:
+      spec: gcc@=13.4.0
+      paths:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        f77: /usr/bin/gfortran
+        fc: /usr/bin/gfortran
+      flags: {}
+      operating_system: ubuntu24.04
+      target: x86_64
+      modules: []
+      environment: {}
+      extra_rpaths: []
+  - compiler:
+      spec: oneapi@=2024.2.1
+      paths:
+        cc: /opt/intel/oneapi/compiler/2024.2/bin/icx
+        cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx
+        #f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx
+        #fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx
+        f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort
+        fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort
+      flags: {}
+      operating_system: ubuntu24.04
+      target: x86_64
+      modules: []
+      environment:
+        # change to append_path once relevant PR is merged
+        append_path:
+          CPATH: /opt/intel/oneapi/compiler/2024.2/opt/compiler/include/intel64
+      extra_rpaths: []
+
+  # Basic package config from configs/common/packages.yaml
+  # Additional package config for container
+  packages:
+    all:
+      require: '%oneapi'
+      target: [core2]
+      compiler: [oneapi@2024.2.1, gcc@13.4.0]
+      providers:
+        mpi: [intel-oneapi-mpi@2021.13]
+    autoconf:
+      externals:
+      - spec: autoconf@2.71
+        prefix: /usr
+    automake:
+      externals:
+      - spec: automake@1.16.5
+        prefix: /usr
+    binutils:
+      externals:
+      - spec: binutils@2.38
+        prefix: /usr
+    bison:
+      require:
+      - '%gcc'
+    coreutils:
+      externals:
+      - spec: coreutils@8.32
+        prefix: /usr
+    diffutils:
+      buildable: false
+      externals:
+      - spec: diffutils@3.8
+        prefix: /usr
+    ectrans:
+      require:
+      - '+mkl ~fftw'
+    git:
+      buildable: false
+      externals:
+      - spec: git@2.34.1~tcltk
+        prefix: /usr
+    git-lfs:
+      buildable: false
+      externals:
+      - spec: git-lfs@3.0.2
+        prefix: /usr
+    gmake:
+      externals:
+      - spec: gmake@4.3
+        prefix: /usr
+    gsibec:
+      require:
+      - '+mkl'
+    # Building icu4c with oneapi intel causes segfault.
+    icu4c:
+      require:
+      - '%gcc'
+    intel-oneapi-mkl:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mkl@2024.2
+        prefix: /opt/intel/oneapi
+    intel-oneapi-mpi:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+        prefix: /opt/intel/oneapi
+    intel-oneapi-tbb:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-tbb@2021.13
+        prefix: /opt/intel/oneapi
+    mpi:
+      buildable: False
+    libmd:
+      require:
+      - '%gcc'
+    libbsd:
+      require:
+      - '%gcc'
+    llvm:
+      buildable: false
+      externals:
+      - spec: llvm@14.0.6
+    mysql:
+      buildable: false
+      externals:
+      - spec: mysql@8.0.40
+        prefix: /usr
+    pkg-config:
+      externals:
+      - spec: pkg-config@0.29.2
+        prefix: /usr
+    py-pynacl:
+      buildable: false
+      externals:
+      - spec: py-pynacl@1.5.0
+        prefix: /usr
+    py-numpy:
+      require:
+      - '^intel-oneapi-mkl'
+    tar:
+      externals:
+      - spec: tar@1.34
+        prefix: /usr
+    wget:
+      buildable: false
+      externals:
+      - spec: wget@1.21.2
+        prefix: /usr
+    gettext:
+      externals:
+      - spec: gettext@0.21
+        prefix: /usr
+
+  specs: []
+
+  container:
+
+    # Select the format of the recipe e.g. docker,
+    # singularity or anything else that is currently supported
+    format: docker
+
+    # Sets the base images for the stages where Spack builds and installs.
+    images:
+      os: ubuntu:24.04
+      spack:
+        url: https://github.com/jcsda/spack
+        ref: spack-stack-dev
+        resolve_sha: true
+
+    # Whether or not to strip binaries
+    strip: false
+
+    ## Additional system packages that are needed at runtime
+    os_packages:
+      build:
+      - autoconf
+      - automake
+      - autopoint
+      - bc
+      - cpp-13
+      - cmake
+      - flex
+      - g++-13
+      - gcc-13
+      - gettext
+      - gfortran-13
+      - git
+      - git-lfs
+      - gpg
+      - libgomp1
+      - llvm-14
+      - mysql-server
+      - pkg-config
+      - qtbase5-dev
+      - qt5-qmake
+      - libqt5svg5-dev
+      - qt5dxcb-plugin
+      - libcurl4-openssl-dev
+      - wget
+
+      final:
+      - autopoint
+      - bc
+      - cpp-13
+      - g++-13
+      - gcc-13
+      - gettext
+      - gfortran-13
+      - git
+      - git-lfs
+      - gpg
+      - libgomp1
+      - llvm-14
+      - make
+      - mysql-server
+      - pkg-config
+      - qtbase5-dev
+      - qt5-qmake
+      - libqt5svg5-dev
+      - qt5dxcb-plugin
+      - libcurl4-openssl-dev
+      - wget
+      # Implicitly included in build step
+      - build-essential
+      - ca-certificates
+      - curl
+      - file
+      - gnupg2
+      - iproute2
+      - locales
+      - python3
+      - python3-pip
+      - python3-setuptools
+      - unzip
+      - vim
+      - nano
+      - less
+
+    # Extra instructions
+    extra_instructions:
+      pre_build: |
+        # Copy the spack-stack extension repo into the spack code
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
+        # Register spack-stack extension repo
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
+        # Install Intel compilers and MPI library
+        RUN apt update && apt install apt-utils && \
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+        apt update && \
+        apt install intel-oneapi-compiler-dpcpp-cpp-2024.2 intel-oneapi-compiler-fortran-2024.2 intel-oneapi-mpi-devel-2021.13 intel-oneapi-tbb-devel-2021.13 intel-oneapi-mkl-devel-2024.2 -y && \
+        # Intel package versions reported by apt cache policy
+        #   compiler - 2024.2.1
+        #   fortran  - 2024.2.1
+        #   mpi      - 2021.13.1
+        #   tbb      - 2021.13.1
+        #   mkl      - 2024.2.2
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
+        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
+        rm /usr/bin/cpp && ln -s /usr/bin/cpp-13 /usr/bin/cpp && \
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
+        rm -rf /var/lib/apt/lists/*
+      pre_final: |
+        # Set environment variables for installing tzdata
+        ENV DEBIAN_FRONTEND=noninteractive
+        ENV TZ=Etc/UTC
+        ENV CC=icx
+        ENV CXX=icpx
+        ENV FC=ifort
+      build: |
+        # Put output of spack find into a file
+        RUN cd /opt/spack-environment && \
+        spack env activate -d . && \
+        spack find 2>&1 | tee /root/spack_find.out
+      final: |
+        # Install Intel compilers and MPI library and pynacl
+        RUN apt update  && apt install apt-utils && \
+        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+        apt update && \
+        apt install intel-oneapi-compiler-dpcpp-cpp-2024.2 intel-oneapi-compiler-fortran-2024.2 intel-oneapi-mpi-devel-2021.13 intel-oneapi-tbb-devel-2021.13 intel-oneapi-mkl-devel-2024.2 -y && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
+        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
+        rm /usr/bin/cpp && ln -s /usr/bin/cpp-13 /usr/bin/cpp && \
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
+        rm -rf /var/lib/apt/lists/* && \
+        /opt/views/view/bin/pip3 install pynacl
+        # Copy spack find output from builder
+        COPY --from=builder /root/spack_find.out /root/spack_find.out
+        # Make a non-root user:nonroot / group:nonroot for running MPI
+        RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
+        echo "source /opt/intel/oneapi/setvars.sh" >> /etc/bash.bashrc && \
+        echo "ulimit -s unlimited" >> /etc/bash.bashrc && \
+        echo "ulimit -v unlimited" >> /etc/bash.bashrc && \
+        echo "export CC=icx" >> /etc/bash.bashrc && \
+        echo "export CXX=icpx" >> /etc/bash.bashrc && \
+        echo "export FC=ifort" >> /etc/bash.bashrc && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/oneapi-*/jedi-cmake-*)" >> /etc/bash.bashrc && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig && \
+        # Replicate gitconfig for nonroot user.
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
+        chown -R nonroot:nonroot /home/nonroot/.gitconfig
+
+    # Labels for the image
+    labels:
+      app: ""
+      mpi: "intel-oneapi-mpi"

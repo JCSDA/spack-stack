@@ -7,9 +7,9 @@ Known Issues
 General
 ==============================
 
-1. ``gcc@13`` (``gcc``, ``g++``, ``gfortran``) and ``apple-clang@15`` (``clang``, ``clang++``) not yet supported
+1. ``python`` on Cray is non-functional: Could not find platform dependent libraries <exec_prefix>
 
-   Our software stack doesn't build with ``gcc@13`` yet. This is also true when combining the LLVM or Apple ``clang`` compiler with ``gfortran@13``. We also don't support the latest release of ``apple-clang@15`` with Xcode 15.3 yet, and with Xcode 15.0 a workaround is described in :numref:`Section %s <NewSiteConfigs>`.
+   This problem and the solution to unset the environment variable ``CONFIG_SITE`` before building spack-stack environments is described in https://github.com/spack/spack/issues/40110 and https://github.com/spack/spack/issues/42132.
 
 2. Build errors for ``mapl@2.35.2`` with ``mpich@4.1.1``
 
@@ -19,23 +19,15 @@ General
 
    On some systems, ``ecflow_server`` gets confused by multiple hostnames, e.g. ``localhost`` and ``MYORG-L-12345``. The ``ecflow_start.sh`` script reports the hostname it wants to use. This name (or both) must be in ``/etc/hosts`` in the correct address line, often the loopback address (``127.0.0.1``).
 
-4. Installation of duplicate packages ``ecbuild``, ``hdf5``
-
-   One reason for this is an external ``cmake@3.20`` installation, which confuses the concretizer when building a complex environment such as the ``skylab-dev`` or ```unified-dev`` environment. For certain packages (and thus their dependencies), a newer version than ``cmake@3.20`` is required, for others ``cmake@3.20`` works, and spack then thinks that it needs to build two identical versions of the same package with different versions of ``cmake``. The solution is to remove any external ``cmake@3.20`` package (and best also earlier versions) in the site config and run the concretization step again. Another reason on Ubuntu 20 is the presence of external ``openssl`` packages, which should be removed before re-running the concretization step.
-
-5. Installation of duplicate package ``nco``
-
-   We tracked this down to multiple versions of ``bison`` being used. The best solution is to remove external ``bison`` versions earlier than 3.8 from the site config (``packages.yaml``).
-
-6. Installing/using graphical applications after switching user using ``sudo su``
+4. Installing/using graphical applications after switching user using ``sudo su``
 
    When using a role account to install spack-stack, it is sometimes necessary to run graphical applications such as the ``qt`` online installer. The following website describes in detail how this can be done: https://www.thegeekdiary.com/how-to-set-x11-forwarding-export-remote-display-for-users-who-switch-accounts-using-sudo/
 
-7. ``==> Error: the key "core_compilers" must be set in modules.yaml`` during ``spack module [lmod|tcl] refresh``
+5. ``==> Error: the key "core_compilers" must be set in modules.yaml`` during ``spack module [lmod|tcl] refresh``
 
    This error usually indicates that the wrong module type is used in the ``spack module ... refresh`` command. For example, the system is configured for ``lmod``, but the command used is ``spack module tcl refresh``.
 
-8. Runtime segmentation faults for applications with ``intel@2021.10.0``: ``Relink `/opt/intel/oneapi/compiler/2024.0/lib/libirc.so' with `/lib/x86_64-linux-gnu/libc.so.6' for IFUNC symbol `memmove' - Segmentation fault (core dumped)``.
+6. Runtime segmentation faults for applications with ``intel@2021.10.0``: ``Relink `/opt/intel/oneapi/compiler/2024.0/lib/libirc.so' with `/lib/x86_64-linux-gnu/libc.so.6' for IFUNC symbol `memmove' - Segmentation fault (core dumped)``.
 
    This problem is caused by a bad library in the Intel oneAPI installation. The solution is to fix the library using patchelf, which requires write access to the oneAPI installation: First, verify that ``ldd /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` says it is statically linked (it isn't). Then, run: ``patchelf --add-needed libc.so.6 /opt/intel/oneapi/compiler/2024.0/lib/libirc.so`` and your application should run rightaway (no need to recompile).
 
