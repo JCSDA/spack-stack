@@ -19,29 +19,29 @@ SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
 
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.6.0" "gcc@11.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@11.2.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     ;;
   narwhal)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "intel@2021.10.0" "gcc@10.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "gcc@10.3.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     ;;
   nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.5.0" "gcc@11.2.1")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@11.2.1")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     ;;
   # DH*
   blackpearl)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0" "aocc@4.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     ;;
   bounty)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@2025.0.0" "gcc@13.3.1" "aocc@5.0.0" "clang@19.1.4")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2025.0.0" "gcc@13.3.1")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     ;;
   # *DH
