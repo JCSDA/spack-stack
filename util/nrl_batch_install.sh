@@ -358,6 +358,11 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       esac
     fi
 
+    # In installer mode, create a log file with a list of all installed packages
+    if [[ "${create_buildcache}" == "false" ]]; then
+      spack find 2>&1 | tee log.installed_packages.${env_name}.001
+    fi
+
     # Clean up
     spack clean -a
     spack env deactivate
