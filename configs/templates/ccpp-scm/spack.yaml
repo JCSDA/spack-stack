@@ -20,4 +20,5 @@ spack:
   - sp
   - w3emc
   - py-f90nml
-
+  - py-numpy
+  - py-netcdf4
