@@ -2,16 +2,28 @@
 
 set -e
 
-# Developer switch: create buildcaches instead of deploying environments ["true"|"false"]
-# The default "false" means to deploy environments using existing buildcaches (installer mode)
+# DH* NOT YET IMPLEMENTED. LEAVING THE COMMENT IN CASE WE NEED TO IMPLEMENT LATER,
+# OTHERWISE I WILL REMOVE THE COMMENT LATER.
+# Uncomment and set this variable to full path on the system (directory must exist
+# and mut be writeable by the current user). This is the location where environments
+# will be deployed, e.g. SPACK_STACK_ENVIRONMENT_DIR=/path/to/envs means that the
+# environments a, b, and c will be deployed in /path/to/envs/{a,b,c}. Not that this
+# option only applies in "installer" mode (see next comment).
+#SPACK_STACK_ENVIRONMENT_DIR=
+# *DH
+
+# Developer switch: create buildcaches instead of deploying environments ["true"|"false"].
+# The default "false" means to deploy environments using existing buildcaches (installer mode).
 #SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
 SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
 
 # A value of SPACK_STACK_BATCH_CREATE_BUILDCACHE == "true" enters developer mode. In this
 # mode, one must choose between reusing existing buildcaches or rebuilding from scratch.
-# This variable is meaningless in installer mode (SPACK_STACK_BATCH_CREATE_BUILDCACHE== "false")
+# This variable is meaningless in installer mode (SPACK_STACK_BATCH_CREATE_BUILDCACHE== "false").
 SPACK_STACK_BATCH_REUSE_EXISTING_BUILDCACHE="true"
 #SPACK_STACK_BATCH_REUSE_EXISTING_BUILDCACHE="false"
+
+##################################################################################################
 
 # Remove domain name suffices and digits to determine hostname
 SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1)
