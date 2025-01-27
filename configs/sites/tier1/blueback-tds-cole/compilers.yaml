@@ -1,0 +1,37 @@
+compilers::
+  - compiler:
+      spec: oneapi@2024.2.1
+      paths:
+        cc: /p/work1/heinzell/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icx
+        cxx: /p/work1/heinzell/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icpx
+        f77: /p/work1/heinzell/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+        fc: /p/work1/heinzell/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+      flags: {}
+      operating_system: sles15
+      modules:
+      - PrgEnv-intel/8.5.0
+      - intel/2024.2.1
+      - cray-libsci/24.03.0
+      - libfabric/1.20.1
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.03.0/INTEL/2023.2/x86_64/lib'
+      extra_rpaths: []
+  - compiler:
+      spec: gcc@12.3.0
+      paths:
+        cc: /usr/bin/gcc-12
+        cxx: /usr/bin/g++-12
+        f77: /usr/bin/gfortran-12
+        fc: /usr/bin/gfortran-12
+      flags: {}
+      operating_system: sles15
+      modules:
+      - PrgEnv-gnu/8.5.0
+      - gcc-native/12.3
+      - cray-libsci/24.03.0
+      - libfabric/1.20.1
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.03.0/GNU/12.3/x86_64/lib'
+      extra_rpaths: []

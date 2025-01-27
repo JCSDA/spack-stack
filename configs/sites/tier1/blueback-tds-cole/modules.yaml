@@ -1,0 +1,7 @@
+modules:
+  default:
+    enable::
+    - tcl
+    tcl:
+      include:
+      - python

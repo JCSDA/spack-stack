@@ -160,7 +160,7 @@ packages:
   magics:
     require: "@4.15.3:"
   mapl:
-    require: '@2.46.3 ~shared ~f2py'
+    require: '@2.53.0 ~shared ~f2py'
     variants: '+pflogger'
   met:
     require: '@11.1.1 +python +grib2'

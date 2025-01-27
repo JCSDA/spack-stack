@@ -120,7 +120,7 @@ function fix_permissions() {
 
 ##################################################################################################
 
-echo "\n"
+echo 
 echo "Welcome to NRL SPACK-STACK BATCH INSTALL"
 echo
 
@@ -169,7 +169,6 @@ case ${SPACK_STACK_BATCH_CREATE_BUILDCACHE} in
     exit 1
     ;;
 esac
-
 
 # Loop through all compilers and templates for this host
 for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
