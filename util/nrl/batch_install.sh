@@ -65,17 +65,26 @@ function fix_permissions() {
   case ${host} in
     atlantis)
       nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      set +e
       nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      set -e
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     narwhal)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      set +e
       nice -n 19 find     ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      set -e
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     nautilus)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      set +e
       nice -n 19 find     ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      set -e
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     # DH*
@@ -309,16 +318,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     # mirror locally, then synchronize with shared bootstrap mirror. In
     # installer mode, configure bootstrap mirror.
     if [[ "${create_buildcache}" == "true"* ]]; then
-      tmp_bootstrap_mirror=${PWD}/tmp-bootstrap-mirror-${env_name}
-      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror} ..."
-      rm -fr ${tmp_bootstrap_mirror}
-      if [[ -d ${tmp_bootstrap_mirror} ]]; then
-        echo "ERROR, directory ${tmp_bootstrap_mirror} already exists"
+      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
+      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
+      rm -fr ${tmp_bootstrap_mirror_path}
+      if [[ -d ${tmp_bootstrap_mirror_path} ]]; then
+        echo "ERROR, directory ${tmp_bootstrap_mirror_path} already exists"
         exit 1
       fi
-      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
-      rsync -av ${tmp_bootstrap_mirror}/ ${bootstrap_mirror_path}/
-      rm -fr ${tmp_bootstrap_mirror}
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
+      rsync -av ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
       spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
     fi
@@ -439,9 +448,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # When creating or updating buildcaches, fix permissions for mirrors.
     if [[ "${create_buildcache}" == "true"* ]]; then
-      fix_permissions(${host}, ${bootstrap_mirror_path})
-      fix_permissions(${host}, ${binary_mirror_path})
-      fix_permissions(${host}, ${source_mirror_path})
+      fix_permissions ${host} ${bootstrap_mirror_path}
+      fix_permissions ${host} ${binary_mirror_path}
+      fix_permissions ${host} ${source_mirror_path}
     fi
     
     # Clean up
@@ -457,7 +466,7 @@ rm -vf ${module_snapshot}
 
 # Repair permissions for environments if in installer mode
 if [[ "${create_buildcache}" == "false" ]]; then
-  fix_permissions(${host}, ".")
+  fix_permissions ${host} ${PWD}
 fi
 
 echo "NRL SPACK-STACK BATCH INSTALL SUCCESSFUL"
