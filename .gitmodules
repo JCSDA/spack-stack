@@ -1,7 +1,8 @@
 [submodule "spack"]
   path = spack
   url = https://github.nrlmry.navy.mil/jcsda/spack
-  branch = release/neptune-1.5
+  #branch = release/neptune-1.5
+  branch = feature/sprel15_bootstrap_mirror
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.nrlmry.navy.mil/jcsda/cmakemodules
