@@ -14,8 +14,8 @@ set -e
 
 # Developer switch: create buildcaches instead of deploying environments ["true"|"false"].
 # The default "false" means to deploy environments using existing buildcaches (installer mode).
-#SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
-SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
+SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
+#SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
 
 # A value of SPACK_STACK_BATCH_CREATE_BUILDCACHE == "true" enters developer mode. In this
 # mode, one must choose between reusing existing buildcaches or rebuilding from scratch.
