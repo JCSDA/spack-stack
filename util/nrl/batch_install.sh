@@ -4,8 +4,8 @@ set -e
 
 # Developer switch: create buildcaches instead of deploying environments ["true"|"false"]
 # The default "false" means to deploy environments using existing buildcaches (installer mode)
-SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
-#SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
+#SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
+SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
 
 # A value of SPACK_STACK_BATCH_CREATE_BUILDCACHE == "true" enters developer mode. In this
 # mode, one must choose between reusing existing buildcaches or rebuilding from scratch.
@@ -22,27 +22,32 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@11.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="NOTCONFIGURED"
     ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "gcc@10.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     ;;
   nautilus)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@11.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     ;;
   # DH*
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     ;;
   bounty)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2025.0.0" "gcc@13.3.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     ;;
   # *DH
   *)
@@ -50,6 +55,41 @@ case ${SPACK_STACK_BATCH_HOST} in
     exit 1
     ;;
 esac
+
+##################################################################################################
+
+function fix_permissions() {
+  host=$1
+  dir=$2
+  echo "Repairing permissions for directory ${dir} on ${host} ..."
+  case ${host} in
+    atlantis)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    narwhal)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      nice -n 19 find     ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    nautilus)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      nice -n 19 find     ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    # DH*
+    blackpearl)
+      ;;
+    bounty)
+      ;;
+    # *DH
+    *)
+      echo "ERROR, xargs-chmod command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+}
 
 ##################################################################################################
 
@@ -64,6 +104,7 @@ fi
 
 host=${SPACK_STACK_BATCH_HOST}
 module_choice=${SPACK_STACK_MODULE_CHOICE}
+bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
 
 # For Cray systems, capture the default=current environment (loaded modules)
 # so that it can be restored between building stacks for different compilers
@@ -101,6 +142,7 @@ case ${SPACK_STACK_BATCH_CREATE_BUILDCACHE} in
     exit 1
     ;;
 esac
+
 
 # Loop through all compilers and templates for this host
 for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
@@ -263,6 +305,34 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       cp -av configs/sites/tier1/narwhal/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
     fi
 
+    # Bootstrapping/bootstrap mirrors. In developer mode, create bootstrap
+    # mirror locally, then synchronize with shared bootstrap mirror. In
+    # installer mode, configure bootstrap mirror.
+    if [[ "${create_buildcache}" == "true"* ]]; then
+      tmp_bootstrap_mirror=${PWD}/tmp-bootstrap-mirror-${env_name}
+      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror} ..."
+      rm -fr ${tmp_bootstrap_mirror}
+      if [[ -d ${tmp_bootstrap_mirror} ]]; then
+        echo "ERROR, directory ${tmp_bootstrap_mirror} already exists"
+        exit 1
+      fi
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
+      rsync -av ${tmp_bootstrap_mirror}/ ${bootstrap_mirror_path}/
+      rm -fr ${tmp_bootstrap_mirror}
+      # Update buildcache index
+      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
+    fi
+
+    if [[ "${create_buildcache}" == "false" || "${create_buildcache}" == "true-reuse" ]]; then
+      echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
+      if [[ ! -d ${bootstrap_mirror_path} ]]; then
+        echo "ERROR, directory ${bootstrap_mirror_path} not found"
+        exit 1
+      fi
+      spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+      spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+    fi
+
     # Check that the site has mirrors configured for local source and binary caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
     result=$(spack mirror list | grep local-source) || \
@@ -279,6 +349,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${create_buildcache}" == "true"* ]]; then
       spack config add config:install_tree:padded_length:200
     fi
+
+    # Bootstrap spack explicitly
+    echo "Bootstrapping spack ..."
+    spack bootstrap now 2>&1 | tee log.bootstrap.${env_name}.001
 
     # Concretize environment, and check that spack.lock is created
     spack concretize --force --fresh 2>&1 | tee log.concretize.${env_name}.001
@@ -363,6 +437,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       spack find 2>&1 | tee log.installed_packages.${env_name}.001
     fi
 
+    # When creating or updating buildcaches, fix permissions for mirrors.
+    if [[ "${create_buildcache}" == "true"* ]]; then
+      fix_permissions(${host}, ${bootstrap_mirror_path})
+      fix_permissions(${host}, ${binary_mirror_path})
+      fix_permissions(${host}, ${source_mirror_path})
+    fi
+    
     # Clean up
     spack clean -a
     spack env deactivate
@@ -374,35 +455,10 @@ done
 # Remove any module snapshots
 rm -vf ${module_snapshot}
 
-# Note. Add in the xargs stuff
-# Repair permissions for environments
-case ${host} in
-  atlantis)
-    find ./ -type d -print0 | xargs --null chmod a+rx
-    find ./ -type f -executable -print0 | xargs --null chmod a+rx
-    find ./ -type f -print0 | xargs --null chmod a+r
-    ;;
-  narwhal)
-    nice -n 19 lfs find ./ -type d -print0 | xargs --null chmod a+rx
-    nice -n 19 find ./ -type f -executable -print0 | xargs --null chmod a+rx
-    nice -n 19 lfs find ./ -type f -print0 | xargs --null chmod a+r
-    ;;
-  nautilus)
-    nice -n 19 lfs find ./ -type d -print0 | xargs --null chmod a+rx
-    nice -n 19 find ./ -type f -executable -print0 | xargs --null chmod a+rx
-    nice -n 19 lfs find ./ -type f -print0 | xargs --null chmod a+r
-    ;;
-  # DH*
-  blackpearl)
-    ;;
-  bounty)
-    ;;
-  # *DH
-  *)
-    echo "ERROR, xargs-chmod command not configured for ${host}"
-    exit 1
-    ;;
-esac
+# Repair permissions for environments if in installer mode
+if [[ "${create_buildcache}" == "false" ]]; then
+  fix_permissions(${host}, ".")
+fi
 
 echo "NRL SPACK-STACK BATCH INSTALL SUCCESSFUL"
 
