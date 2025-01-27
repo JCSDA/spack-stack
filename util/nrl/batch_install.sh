@@ -63,6 +63,7 @@ function fix_permissions() {
   dir=$2
   executables=$3
   echo "Repairing permissions for directory ${dir} on ${host} ..."
+  set +e
   case ${host} in
     atlantis)
       nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
@@ -102,6 +103,7 @@ function fix_permissions() {
       exit 1
       ;;
   esac
+  set -e
 }
 
 ##################################################################################################
