@@ -22,7 +22,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@11.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
-    SPACK_STACK_BOOTSTRAP_MIRROR="NOTCONFIGURED"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "gcc@10.3.0")
@@ -61,30 +61,34 @@ esac
 function fix_permissions() {
   host=$1
   dir=$2
+  executables=$3
   echo "Repairing permissions for directory ${dir} on ${host} ..."
   case ${host} in
     atlantis)
       nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
-      # In case the find command returns no executables
-      set +e
-      nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-      set -e
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     narwhal)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
-      set +e
-      nice -n 19 find     ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-      set -e
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     nautilus)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
-      set +e
-      nice -n 19 find     ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-      set -e
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     # DH*
@@ -447,10 +451,11 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # When creating or updating buildcaches, fix permissions for mirrors.
+    # Mirrors do not contain executables, therefore skip looking for them.
     if [[ "${create_buildcache}" == "true"* ]]; then
-      fix_permissions ${host} ${bootstrap_mirror_path}
-      fix_permissions ${host} ${binary_mirror_path}
-      fix_permissions ${host} ${source_mirror_path}
+      fix_permissions ${host} ${bootstrap_mirror_path} 0
+      fix_permissions ${host} ${binary_mirror_path} 0
+      fix_permissions ${host} ${source_mirror_path} 0
     fi
     
     # Clean up
@@ -466,7 +471,8 @@ rm -vf ${module_snapshot}
 
 # Repair permissions for environments if in installer mode
 if [[ "${create_buildcache}" == "false" ]]; then
-  fix_permissions ${host} ${PWD}
+  # Also search for exectuables
+  fix_permissions ${host} ${PWD} 1
 fi
 
 echo "NRL SPACK-STACK BATCH INSTALL SUCCESSFUL"
