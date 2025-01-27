@@ -13,9 +13,9 @@ compilers:
     - intel/2023.2
     environment:
       prepend_path:
-        PATH: /opt/gcc/13.3/bin
-        LD_LIBRARY_PATH: /opt/intel/oneapi/2023.2/compiler/2023.2.0/linux/compiler/lib/intel64_lin:/opt/gcc/13.3/lib64:/opt/gcc/13.3/lib
-        CPATH: /opt/gcc/13.3/include
+        PATH: /opt/gcc/10.2.0/bin
+        LD_LIBRARY_PATH: /opt/intel/oneapi/2023.2/compiler/2023.2.0/linux/compiler/lib/intel64_lin:/opt/gcc/10.2.0/lib64:/opt/gcc/10.2.0/lib
+        CPATH: /opt/gcc/10.2.0/include
     extra_rpaths: []
 - compiler:
     spec: gcc@=13.3.0
@@ -29,6 +29,20 @@ compilers:
     target: x86_64
     modules:
     - gcc/13.3
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=10.2.0
+    paths:
+      cc: /opt/gcc/10.2.0/bin/gcc
+      cxx: /opt/gcc/10.2.0/bin/g++
+      f77: /opt/gcc/10.2.0/bin/gfortran
+      fc: /opt/gcc/10.2.0/bin/gfortran
+    flags: {}
+    operating_system: rocky8
+    target: x86_64
+    modules:
+    - gcc/10.2
     environment: {}
     extra_rpaths: []
 - compiler:

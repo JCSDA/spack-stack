@@ -8,10 +8,16 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
-      - neptune-env +espc                           ^esmf@=8.8.0b10
-      - neptune-python-env +xnrl ^neptune-env +espc ^esmf@=8.8.0b10
+      - neptune-env +espc                           ^esmf@=8.8.0
+      - neptune-python-env +xnrl ^neptune-env +espc ^esmf@=8.8.0
 
   specs:
     - matrix:
       - [$packages]
       - [$compilers]
+      exclude:
+      # Skip neptune-python-env with Intel Classic due to problems
+      # with new versions of py-numpy, py-scipy, ...
+      - neptune-python-env%intel
+      # Same for LLVM compilers
+      - neptune-python-env%clang

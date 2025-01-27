@@ -12,6 +12,15 @@ packages:
   gettext:
     require:
     - '@:0.21'
+  go:
+    require:
+    - '%gcc'
+  go-bootstrap:
+    require:
+    - '%gcc'
+  gh:
+    require:
+    - '%gcc'
   gsibec:
     require:
     - '+mkl'
@@ -19,6 +28,9 @@ packages:
     require:
     - '^intel-oneapi-mkl'
   boost:
+    require:
+    - '%gcc'
+  qt:
     require:
     - '%gcc'
   ecflow:

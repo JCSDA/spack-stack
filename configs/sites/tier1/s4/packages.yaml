@@ -1,12 +1,15 @@
 packages:
   all:
-    compiler:: [intel@2021.10.0,gcc@13.3.0]
+    compiler:: [intel@2021.10.0,gcc@10.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.10.0]
       # Remove the next three lines to switch to intel-oneapi-mkl
       blas:: [openblas]
       fftw-api:: [fftw]
       lapack:: [openblas]
+    # spack concretizer gets confused and wants an AVX512 architecture for some packages
+    require:
+      - 'arch=linux-rocky8-skylake'
 
 ### MPI, Python, MKL
   mpi:
@@ -28,13 +31,13 @@ packages:
   # Remove this section to switch to intel-oneapi-mkl
   ectrans:
     require::
-    - '@1.5.0 ~mkl +fftw'
+    - '@1.2.0 ~mkl +fftw'
   gsibec:
     require::
     - '@1.2.1 ~mkl'
   py-numpy:
     require::
-    - '@:1.23 ^openblas'
+    - '^openblas'
 
 ### All other external packages listed alphabetically
   autoconf:
@@ -77,10 +80,11 @@ packages:
     externals:
     - spec: cpio@2.12
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.61.1+gssapi+ldap+nghttp2
-      prefix: /usr
+  # OS curl/openssl cause problems 
+  #curl:
+  #  externals:
+  #  - spec: curl@7.61.1+gssapi+ldap+nghttp2
+  #    prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.6
@@ -125,6 +129,10 @@ packages:
     externals:
     - spec: go@1.21.13
       prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
+      prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.3
@@ -145,10 +153,11 @@ packages:
     externals:
     - spec: openssh@8.0p1
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@1.1.1k
-      prefix: /usr
+  # OS curl/openssl cause problems
+  #openssl:
+  #  externals:
+  #  - spec: openssl@1.1.1k
+  #    prefix: /usr
   perl:
     externals:
     - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
@@ -157,14 +166,11 @@ packages:
     externals:
     - spec: pkgconf@1.4.2
       prefix: /usr
-  # TODO - installing via spack-stack works, for example for
-  # spack-stack-1.8.0, but would be good if we didn't have to.
-  # https://github.com/JCSDA/spack-stack/issues/1329
-  #qt:
-  #  buildable: False
-  #  externals:
-  #  - spec: qt@5.9.7
-  #    prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr
   rsync:
     externals:
     - spec: rsync@3.1.3

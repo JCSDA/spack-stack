@@ -70,6 +70,10 @@ packages:
     externals:
     - spec: go@1.16.13
       prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
+      prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.2
