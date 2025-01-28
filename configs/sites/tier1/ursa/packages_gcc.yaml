@@ -1,0 +1,13 @@
+packages:
+  all:
+    compiler:: [gcc@9.2.0]
+    providers:
+      mpi:: [openmpi@4.1.6]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.6~atomics~cuda~cxx~cxx_exceptions~gpfs~internal-hwloc~internal-libevent~internal-pmix~java+legacylaunchers~lustre~memchecker~openshmem~orterunprefix+pmi+romio+rsh~singularity+static+vt+wrapper-rpath fabrics=ucx schedulers=slurm
+      modules:
+      - gnu/9.2.0
+      - openmpi/4.1.6_gnu9.2.0

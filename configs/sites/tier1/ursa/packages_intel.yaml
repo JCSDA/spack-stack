@@ -1,0 +1,37 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.1]
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.13.1]
+      # Remove the next three lines to switch to intel-oneapi-mkl
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
+  mpi:
+    buildable: False
+  intel-oneapi-mpi:
+    externals:
+    - spec: intel-oneapi-mpi@2021.13.1%oneapi@2024.2.1
+      modules:
+      - intel-oneapi-mpi/2021.13.1
+      prefix: /apps/spack-2024-09/linux-rocky9-x86_64/oneapi-2024.2.1
+  intel-oneapi-mkl:
+    # Remove buildable: False and uncomment externals section below to use intel-oneapi-mkl
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2024.2.1%oneapi@2024.2.1
+      prefix: /apps/spack-2024-09/linux-rocky9-x86_64/oneapi-2024.2.1
+  # DH* Remove this section to switch to intel-oneapi-mkl
+  ectrans:
+    require::
+    - '@1.2.0 ~mkl +fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@:1.25 ^openblas'
+  # *DH
+  zlib-ng:
+    require:
+      - '~shared'
