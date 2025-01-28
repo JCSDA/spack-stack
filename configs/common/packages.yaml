@@ -58,7 +58,7 @@ packages:
     require: '@0.40.0 +fckit +trans +tesselation +fftw'
   ectrans:
     require:
-    - '@1.2.0'
+    - '@1.5.0'
   eigen:
     require: '@3.4.0'
   # Attention - when updating the version also check the common modules.yaml
