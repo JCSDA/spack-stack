@@ -2,16 +2,28 @@
 
 set -e
 
-# Developer switch: create buildcaches instead of deploying environments ["true"|"false"]
-# The default "false" means to deploy environments using existing buildcaches (installer mode)
+# DH* NOT YET IMPLEMENTED. LEAVING THE COMMENT IN CASE WE NEED TO IMPLEMENT LATER,
+# OTHERWISE I WILL REMOVE THE COMMENT LATER.
+# Uncomment and set this variable to full path on the system (directory must exist
+# and mut be writeable by the current user). This is the location where environments
+# will be deployed, e.g. SPACK_STACK_ENVIRONMENT_DIR=/path/to/envs means that the
+# environments a, b, and c will be deployed in /path/to/envs/{a,b,c}. Not that this
+# option only applies in "installer" mode (see next comment).
+#SPACK_STACK_ENVIRONMENT_DIR=
+# *DH
+
+# Developer switch: create buildcaches instead of deploying environments ["true"|"false"].
+# The default "false" means to deploy environments using existing buildcaches (installer mode).
 SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
 #SPACK_STACK_BATCH_CREATE_BUILDCACHE="true"
 
 # A value of SPACK_STACK_BATCH_CREATE_BUILDCACHE == "true" enters developer mode. In this
 # mode, one must choose between reusing existing buildcaches or rebuilding from scratch.
-# This variable is meaningless in installer mode (SPACK_STACK_BATCH_CREATE_BUILDCACHE== "false")
+# This variable is meaningless in installer mode (SPACK_STACK_BATCH_CREATE_BUILDCACHE== "false").
 SPACK_STACK_BATCH_REUSE_EXISTING_BUILDCACHE="true"
 #SPACK_STACK_BATCH_REUSE_EXISTING_BUILDCACHE="false"
+
+##################################################################################################
 
 # Remove domain name suffices and digits to determine hostname
 SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1)
@@ -22,27 +34,32 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.6.0" "gcc@11.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "intel@2021.10.0" "gcc@10.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     ;;
   nautilus)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "intel@2021.5.0" "gcc@11.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     ;;
   # DH*
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0" "aocc@4.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     ;;
   bounty)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2025.0.0" "gcc@13.3.1" "aocc@5.0.0" "clang@19.1.4")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     ;;
   # *DH
   *)
@@ -50,6 +67,56 @@ case ${SPACK_STACK_BATCH_HOST} in
     exit 1
     ;;
 esac
+
+##################################################################################################
+
+function fix_permissions() {
+  host=$1
+  dir=$2
+  executables=$3
+  echo "Repairing permissions for directory ${dir} on ${host} ..."
+  set +e
+  case ${host} in
+    atlantis)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    narwhal)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    nautilus)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    # DH*
+    blackpearl)
+      ;;
+    bounty)
+      ;;
+    # *DH
+    *)
+      echo "ERROR, xargs-chmod command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+  set -e
+}
 
 ##################################################################################################
 
@@ -64,6 +131,7 @@ fi
 
 host=${SPACK_STACK_BATCH_HOST}
 module_choice=${SPACK_STACK_MODULE_CHOICE}
+bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
 
 # For Cray systems, capture the default=current environment (loaded modules)
 # so that it can be restored between building stacks for different compilers
@@ -101,6 +169,7 @@ case ${SPACK_STACK_BATCH_CREATE_BUILDCACHE} in
     exit 1
     ;;
 esac
+
 
 # Loop through all compilers and templates for this host
 for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
@@ -263,6 +332,34 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       cp -av configs/sites/tier1/narwhal/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
     fi
 
+    # Bootstrapping/bootstrap mirrors. In developer mode, create bootstrap
+    # mirror locally, then synchronize with shared bootstrap mirror. In
+    # installer mode, configure bootstrap mirror.
+    if [[ "${create_buildcache}" == "true"* ]]; then
+      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
+      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
+      rm -fr ${tmp_bootstrap_mirror_path}
+      if [[ -d ${tmp_bootstrap_mirror_path} ]]; then
+        echo "ERROR, directory ${tmp_bootstrap_mirror_path} already exists"
+        exit 1
+      fi
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
+      rsync -av ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      rm -fr ${tmp_bootstrap_mirror_path}
+      # Update buildcache index
+      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
+    fi
+
+    if [[ "${create_buildcache}" == "false" || "${create_buildcache}" == "true-reuse" ]]; then
+      echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
+      if [[ ! -d ${bootstrap_mirror_path} ]]; then
+        echo "ERROR, directory ${bootstrap_mirror_path} not found"
+        exit 1
+      fi
+      spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+      spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+    fi
+
     # Check that the site has mirrors configured for local source and binary caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
     result=$(spack mirror list | grep local-source) || \
@@ -280,6 +377,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       spack config add config:install_tree:padded_length:200
     fi
 
+    # Bootstrap spack explicitly
+    echo "Bootstrapping spack ..."
+    spack bootstrap now 2>&1 | tee log.bootstrap.${env_name}.001
+
     # Concretize environment, and check that spack.lock is created
     spack concretize --force --fresh 2>&1 | tee log.concretize.${env_name}.001
     if [[ ! -e ${env_dir}/spack.lock ]]; then
@@ -294,11 +395,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${create_buildcache}" == "true"* ]]; then
       echo "Updating local source cache ..."
       spack mirror create -a -d ${source_mirror_path}
-    fi
-
-    # Update the buildcache index if it already contains packages
-    if [[ -e ${binary_mirror_path}/build_cache ]]; then
-      spack buildcache update-index local-binary
     fi
 
     # Install the environment with the correct flags
@@ -358,6 +454,19 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       esac
     fi
 
+    # In installer mode, create a log file with a list of all installed packages
+    if [[ "${create_buildcache}" == "false" ]]; then
+      spack find 2>&1 | tee log.installed_packages.${env_name}.001
+    fi
+
+    # When creating or updating buildcaches, fix permissions for mirrors.
+    # Mirrors do not contain executables, therefore skip looking for them.
+    if [[ "${create_buildcache}" == "true"* ]]; then
+      fix_permissions ${host} ${bootstrap_mirror_path} 0
+      fix_permissions ${host} ${binary_mirror_path} 0
+      fix_permissions ${host} ${source_mirror_path} 0
+    fi
+    
     # Clean up
     spack clean -a
     spack env deactivate
@@ -369,35 +478,11 @@ done
 # Remove any module snapshots
 rm -vf ${module_snapshot}
 
-# Note. Add in the xargs stuff
-# Repair permissions for environments
-case ${host} in
-  atlantis)
-    find ./ -type d -print0 | xargs --null chmod a+rx
-    find ./ -type f -executable -print0 | xargs --null chmod a+rx
-    find ./ -type f -print0 | xargs --null chmod a+r
-    ;;
-  narwhal)
-    nice -n 19 lfs find ./ -type d -print0 | xargs --null chmod a+rx
-    nice -n 19 find ./ -type f -executable -print0 | xargs --null chmod a+rx
-    nice -n 19 lfs find ./ -type f -print0 | xargs --null chmod a+r
-    ;;
-  nautilus)
-    nice -n 19 lfs find ./ -type d -print0 | xargs --null chmod a+rx
-    nice -n 19 find ./ -type f -executable -print0 | xargs --null chmod a+rx
-    nice -n 19 lfs find ./ -type f -print0 | xargs --null chmod a+r
-    ;;
-  # DH*
-  blackpearl)
-    ;;
-  bounty)
-    ;;
-  # *DH
-  *)
-    echo "ERROR, xargs-chmod command not configured for ${host}"
-    exit 1
-    ;;
-esac
+# Repair permissions for environments if in installer mode
+if [[ "${create_buildcache}" == "false" ]]; then
+  # Also search for exectuables
+  fix_permissions ${host} ${PWD} 1
+fi
 
 echo "NRL SPACK-STACK BATCH INSTALL SUCCESSFUL"
 
