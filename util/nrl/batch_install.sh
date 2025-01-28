@@ -397,11 +397,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       spack mirror create -a -d ${source_mirror_path}
     fi
 
-    # Update the buildcache index if it already contains packages
-    if [[ -e ${binary_mirror_path}/build_cache ]]; then
-      spack buildcache update-index local-binary
-    fi
-
     # Install the environment with the correct flags
     case ${create_buildcache} in
       "false")
