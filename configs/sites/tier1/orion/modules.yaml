@@ -5,3 +5,4 @@ modules:
     lmod:
       include:
       - python
+      - openssl
