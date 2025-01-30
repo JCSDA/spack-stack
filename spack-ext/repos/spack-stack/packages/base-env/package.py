@@ -38,5 +38,8 @@ class BaseEnv(BundlePackage):
     # Python
     depends_on("python@3.7:", type="run")
     depends_on("py-pip", type="run")
+    depends_on("py-wheel", type="run")
+    depends_on("py-setuptools", type="run")
+    depends_on("py-setuptools-scm", type="run")
 
     # There is no need for install() since there is no code.

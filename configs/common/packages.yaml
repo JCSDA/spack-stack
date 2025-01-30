@@ -31,6 +31,9 @@ packages:
       when: '%intel@2021:'
       message: '2.3.0 is the last version to use C++17, use with Intel Classic'
     - any_of: ['@2.3.0 ~openmp']
+      when: '%gcc@:10'
+      message: 2.3.0 is the last version to use C++17, use with GCC 10 and earlier
+    - any_of: ['@2.3.0 ~openmp']
       when: '%apple-clang@:14'
       message: '2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier'
     - any_of: ['@2.0.5 ~openmp']
@@ -55,7 +58,7 @@ packages:
     require: '@0.40.0 +fckit +trans +tesselation +fftw'
   ectrans:
     require:
-    - '@1.2.0'
+    - '@1.5.0'
   eigen:
     require: '@3.4.0'
   # Attention - when updating the version also check the common modules.yaml
@@ -157,7 +160,7 @@ packages:
   magics:
     require: "@4.15.3:"
   mapl:
-    require: '@2.46.3 ~shared ~f2py'
+    require: '@2.53.0 ~shared ~f2py'
     variants: '+pflogger'
   met:
     require: '@11.1.1 +python +grib2'
@@ -212,8 +215,11 @@ packages:
     require: '@2.1.1'
   proj:
     require: '~tiff'
+  # Turn off crypt variant for Python; this leads to build errors
+  # with Intel in py-cryptography unless external curl and openssl
+  # are removed, which itself is problematic.
   python:
-    require: '@3.11.7'
+    require: '@3.11.7 ~crypt'
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin

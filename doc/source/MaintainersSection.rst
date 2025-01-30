@@ -90,7 +90,7 @@ For certain limited use cases, we need to provide ``mysql`` through spack-stack.
 ..  _MaintainersSection_Texlive:
 
 ------------------------------
-Texlive (TeX/LaTeX)
+Texlive (TeX/LaTeX; optional)
 ------------------------------
 
 Building ``texlive`` isn't straightforward as it has many dependencies. Since it is only used to generated documentation for ``spack-stack`` (and other projects), i.e. not to compile any code, it makes no sense to build it with ``spack``. We therefore require ``texlive`` or any other compatible TeX/LaTeX distribution as an external package.
@@ -324,7 +324,7 @@ The newly created local mirror should be listed at the top, which means that spa
 Spack mirrors for air-gapped systems
 ------------------------------------
 
-The procedure is similar to using spack mirrors for local reuse, but a few additional steps are needed in between.
+The procedure for creating source caches is similar to using spack mirrors for local reuse, but a few additional steps are needed in between. The steps to create a mirror for bootstrapping spack on an air-gapped system are described in the next section.
 
 1. On the air-gapped system: Create an environment as usual, activate it and run the concretization step (``spack concretize``), but do not start the installation yet.
 
@@ -357,6 +357,43 @@ The procedure is similar to using spack mirrors for local reuse, but a few addit
    The newly created local mirror should be listed at the top, which means that spack will search this directory first.
 
 7. On the air-gapped system: Proceed with the installation as usual.
+
+----------------------------------------
+Bootstrap mirrors for air-gapped systems
+----------------------------------------
+
+To use spack on an air-gapped system, the first step is to create a mirror that allows spack to bootstrap from. The logic is similar to that for creating source caches for spack installations. On a system with access to the internet, a series of commands is run to create a bootstrap mirror. The bootstrap mirror is then copied over to the air-gapped system and registered so that spack can use it.
+
+1. On the system with access to the internet, and using the same version of spack-stack (and its spack submodule) as on the air-gapped target system:
+
+.. code-block:: console
+
+   # After running "source setup.sh" in the spack-stack top-level directory
+
+   # Create bootstrap mirror
+   spack bootstrap mirror --binary-packages ./bootstrap-mirror
+
+2. Transfer ``./bootstrap-mirror`` to the air-gapped system, preferably to the same location inside the spack-stack top-level directory (i.e. ``${SPACK_STACK_DIR}/bootstrap-mirror/``).
+
+3. On the air-gapped system, run the following series of commands:
+
+.. code-block:: console
+
+   # After running "source setup.sh" in the spack-stack top-level directory
+
+   # Register bootstrap mirror
+   spack bootstrap add --trust local-sources /absolute/path/to/spack-stack/bootstrap-mirror/metadata/sources
+   spack bootstrap add --trust local-binaries /absolute/path/to/spack-stack/bootstrap-mirror/metadata/sources
+
+   # Update the boostrap binary cache index (silent response to this command means success)
+   spack buildcache update-index /absolute/path/to/spack-stack/bootstrap-mirror/bootstrap_cache
+
+4. Bootstrap spack explicitly before creating environments and check the status. There may be error messages along the way, but as long as the command completes and ``spack bootstrap status`` shows ``PASS`` for both ``Core Functionalities`` and ``Binary packages``, it was successful.
+
+.. code-block:: console
+
+   spack bootstrap now
+   spack bootstrap status
 
 ==============================
 Testing new packages
