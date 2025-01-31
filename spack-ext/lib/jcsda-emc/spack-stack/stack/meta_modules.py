@@ -695,7 +695,7 @@ def setup_meta_modules():
 
                     # Compiler wrapper environment variables
                     if "intel" in mpi_name and compiler_name == "oneapi":
-                        substitutes["MPICC"] = os.path.join("mpiicx")
+                        substitutes["MPICC"]  = os.path.join("mpiicx")
                         substitutes["MPICXX"] = os.path.join("mpiicpx")
                         if "ifx" in SUBSTITUTES_SAVE["FC"] and not "ifort" in SUBSTITUTES_SAVE["FC"]:
                             substitutes["MPIF77"] = os.path.join("mpiifx")
@@ -706,15 +706,20 @@ def setup_meta_modules():
                         else:
                             raise Exception(f"For {mpi_name}, cannot determine MPI wrapper from FC={SUBSTITUTES_SAVE['FC']}")
                     elif "intel" in mpi_name and compiler_name == "intel":
-                        substitutes["MPICC"] = os.path.join("mpiicc")
+                        substitutes["MPICC"]  = os.path.join("mpiicc")
                         substitutes["MPICXX"] = os.path.join("mpiicpc")
                         substitutes["MPIF77"] = os.path.join("mpiifort")
                         substitutes["MPIF90"] = os.path.join("mpiifort")
                     else:
-                        substitutes["MPICC"] = os.path.join("mpicc")
+                        substitutes["MPICC"]  = os.path.join("mpicc")
                         substitutes["MPICXX"] = os.path.join("mpic++")
                         substitutes["MPIF77"] = os.path.join("mpif77")
                         substitutes["MPIF90"] = os.path.join("mpif90")
+                    # Also set the direct compiler environment variables
+                    substitutes["CC"]  = SUBSTITUTES_SAVE["CC"]
+                    substitutes["CXX"] = SUBSTITUTES_SAVE["CXX"]
+                    substitutes["F77"] = SUBSTITUTES_SAVE["F77"]
+                    substitutes["FC"]  = SUBSTITUTES_SAVE["FC"]
 
                     # Spack mpi+compiler module hierarchy
                     modulepath = os.path.join(
