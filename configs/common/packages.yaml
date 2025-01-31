@@ -288,6 +288,7 @@ packages:
     require: '@2.10.0 precision=4,d,8 +extradeps'
   w3nco:
     require: '@2.4.1'
+  # See macOS site config for wgrib2 version/variant overrides
   wgrib2:
     require:
     - '@3.5.0'

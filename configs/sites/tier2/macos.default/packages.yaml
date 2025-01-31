@@ -9,6 +9,7 @@ packages:
     buildable: false
   libiconv:
     buildable: false
-  #wgrib2:
-  #  require:
-  #  - '~openmp'
+  wgrib2:
+    require::
+    - '@3.1.1'
+    - '~openmp'
