@@ -117,13 +117,13 @@ packages:
   #  externals:
   #  - spec: libtirpc@1.3.3
   #    prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/libtirpc-1.3.3-fpds3yq6y26a4svyiblqe6ram5js4rxf
-  libx11:
-    externals:
-    - spec: libx11@1.7.0
-      prefix: /usr
-  libxaw:
-    externals:
-    - spec: libxaw@1.0.13
+  #libx11:
+  #  externals:
+  #  - spec: libx11@1.7.0
+  #    prefix: /usr
+  #libxaw:
+  #  externals:
+  #  - spec: libxaw@1.0.13
   #    prefix: /usr
   #  - spec: libxaw@1.0.16
   #    prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/libxaw-1.0.16-i6i72n5zsfwifptwhjkuvqinzf6f3yqs
@@ -135,22 +135,22 @@ packages:
   #  externals:
   #  - spec: libxext@1.3.4
   #    prefix: /usr
-  libxcb:
-    externals:
-    - spec: libxcb@1.13.1
-      prefix: /usr
-  libxmu:
-    externals:
-    - spec: libxmu@1.1.3
-      prefix: /usr
-  libxpm:
-    externals:
-    - spec: libxpm@3.5.13
-      prefix: /usr
-  libxt:
-    externals:
-    - spec: libxt@1.2.0
-      prefix: /usr
+  #libxcb:
+  #  externals:
+  #  - spec: libxcb@1.13.1
+  #    prefix: /usr
+  #libxmu:
+  #  externals:
+  #  - spec: libxmu@1.1.3
+  #    prefix: /usr
+  #libxpm:
+  #  externals:
+  #  - spec: libxpm@3.5.13
+  #    prefix: /usr
+  #libxt:
+  #  externals:
+  #  - spec: libxt@1.2.0
+  #    prefix: /usr
   # lustre:
   #   externals:
   #   - spec: lustre@2.12.5_ddn18
