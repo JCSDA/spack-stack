@@ -2,16 +2,6 @@
 
 set -e
 
-# DH* NOT YET IMPLEMENTED. LEAVING THE COMMENT IN CASE WE NEED TO IMPLEMENT LATER,
-# OTHERWISE I WILL REMOVE THE COMMENT LATER.
-# Uncomment and set this variable to full path on the system (directory must exist
-# and mut be writeable by the current user). This is the location where environments
-# will be deployed, e.g. SPACK_STACK_ENVIRONMENT_DIR=/path/to/envs means that the
-# environments a, b, and c will be deployed in /path/to/envs/{a,b,c}. Not that this
-# option only applies in "installer" mode (see next comment).
-#SPACK_STACK_ENVIRONMENT_DIR=
-# *DH
-
 # Developer switch: create buildcaches instead of deploying environments ["true"|"false"].
 # The default "false" means to deploy environments using existing buildcaches (installer mode).
 SPACK_STACK_BATCH_CREATE_BUILDCACHE="false"
@@ -36,6 +26,12 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     ;;
+  cole)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@12.3.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
+    ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "gcc@10.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
@@ -48,7 +44,12 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     ;;
-  # DH*
+  tusk)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "gcc@12.1.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
+    ;;
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
@@ -61,7 +62,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     ;;
-  # *DH
   *)
     echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
     exit 1
@@ -84,6 +84,16 @@ function fix_permissions() {
       fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
+    cole)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
     narwhal)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
@@ -104,12 +114,20 @@ function fix_permissions() {
       fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
-    # DH*
+    tusk)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
     blackpearl)
       ;;
     bounty)
       ;;
-    # *DH
     *)
       echo "ERROR, xargs-chmod command not configured for ${host}"
       exit 1
@@ -136,9 +154,25 @@ bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
 # For Cray systems, capture the default=current environment (loaded modules)
 # so that it can be restored between building stacks for different compilers
 case ${host} in
+  atlantis)
+    ;;
+  cole)
+    module_snapshot=${PWD}/spack-stack.default-modules
+    module snapshot -f ${module_snapshot}
+    ;;
   narwhal)
     module_snapshot=${PWD}/spack-stack.default-modules
     module snapshot -f ${module_snapshot}
+    ;;
+  nautilus)
+    ;;
+  tusk)
+    module_snapshot=${PWD}/spack-stack.default-modules
+    module snapshot -f ${module_snapshot}
+    ;;
+  blackpearl)
+    ;;
+  bounty)
     ;;
 esac
 
@@ -235,6 +269,51 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         umask 0022
         module purge
         ;;
+      cole)
+        # Check if snapshot to restore default environment exists, then restore
+        if [[ ! -e ${module_snapshot} ]]; then
+          echo "ERROR, ${module_snapshot} not found for resetting environment"
+          exit 1
+        fi
+        # Unloading modules on Narwhal always throws an error:
+        # environment: line 0: unalias: mpirun: not found
+        set +e
+        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
+        module purge
+        module restore -f ${module_snapshot}
+        set -e
+        umask 0022
+        set +e
+        case ${compiler} in
+          oneapi@2024.2.1)
+            module purge
+            module load PrgEnv-intel/8.5.0
+            module unload intel
+            module load intel/2024.2.1
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.20.1
+            module unload cray-libsci
+            module load cray-libsci/24.03.0
+            ;;
+          gcc@12.3.0)
+            module purge
+            module load PrgEnv-gnu/8.5.0
+            module unload gcc
+            module load gcc-native/12.3
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.20.1
+            module unload cray-libsci
+            module load cray-libsci/24.03.0
+            ;;
+          *)
+            echo "ERROR, compiler ${compiler} not configured for resetting environment"
+            exit 1
+            ;;
+        esac
+        set -e
+        ;;
       narwhal)
         # Check if snapshot to restore default environment exists, then restore
         if [[ ! -e ${module_snapshot} ]]; then
@@ -290,19 +369,62 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             ;;
         esac
         set -e
-    ;;
+        ;;
       nautilus)
         umask 0022
         module purge
         ;;
-      # DH*
+      tusk)
+        # Check if snapshot to restore default environment exists, then restore
+        if [[ ! -e ${module_snapshot} ]]; then
+          echo "ERROR, ${module_snapshot} not found for resetting environment"
+          exit 1
+        fi
+        # Unloading modules on Narwhal always throws an error:
+        # environment: line 0: unalias: mpirun: not found
+        set +e
+        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
+        module purge
+        module restore -f ${module_snapshot}
+        set -e
+        umask 0022
+        set +e
+        case ${compiler} in
+          oneapi@2024.2.0)
+            module purge
+            module load PrgEnv-intel/8.4.0
+            module unload intel
+            module load intel/2024.2
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.12.1.2.2.1
+            module unload cray-libsci
+            module load cray-libsci/23.05.1.4
+            ;;
+          gcc@12.1.0)
+            module purge
+            module load PrgEnv-gnu/8.4.0
+            module unload gcc
+            module load gcc/12.1.0
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.12.1.2.2.1
+            module unload cray-libsci
+            module load cray-libsci/23.05.1.4
+            ;;
+          *)
+            echo "ERROR, compiler ${compiler} not configured for resetting environment"
+            exit 1
+            ;;
+        esac
+        set -e
+        ;;
       blackpearl)
         ulimit -s unlimited
         ;;
       bounty)
         ulimit -s unlimited
         ;;
-      # *DH
       *)
         echo "ERROR, host ${host} not configured for resetting environment"
         exit 1
@@ -335,18 +457,23 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     # mirror locally, then synchronize with shared bootstrap mirror. In
     # installer mode, configure bootstrap mirror.
     if [[ "${create_buildcache}" == "true"* ]]; then
-      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
-      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
-      rm -fr ${tmp_bootstrap_mirror_path}
-      if [[ -d ${tmp_bootstrap_mirror_path} ]]; then
-        echo "ERROR, directory ${tmp_bootstrap_mirror_path} already exists"
-        exit 1
+      # We cannot create mirrors on air-gapped systems
+      if [[  "${host}" == "cole" || "${host}" == "tusk" ]]; then
+        echo "Skip creating bootstrap mirror on air-gapped system ${host}"
+      else
+        tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
+        echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
+        rm -fr ${tmp_bootstrap_mirror_path}
+        if [[ -d ${tmp_bootstrap_mirror_path} ]]; then
+          echo "ERROR, directory ${tmp_bootstrap_mirror_path} already exists"
+          exit 1
+        fi
+        spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
+        rsync -av ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+        rm -fr ${tmp_bootstrap_mirror_path}
+        # Update buildcache index
+        spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
       fi
-      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
-      rsync -av ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
-      rm -fr ${tmp_bootstrap_mirror_path}
-      # Update buildcache index
-      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
     fi
 
     if [[ "${create_buildcache}" == "false" || "${create_buildcache}" == "true-reuse" ]]; then
@@ -392,8 +519,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # In developer mode, update local source cache
     if [[ "${create_buildcache}" == "true"* ]]; then
-      echo "Updating local source cache ..."
-      spack mirror create -a -d ${source_mirror_path}
+      # We cannot create mirrors on air-gapped systems
+      if [[  "${host}" == "cole" || "${host}" == "tusk" ]]; then
+        echo "Skip updating local source cache on air-gapped system ${host}"
+      else
+        echo "Updating local source cache ..."
+        spack mirror create -a -d ${source_mirror_path}
+      fi
     fi
 
     # Update the buildcache index if it already contains packages
@@ -440,17 +572,19 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       case ${host} in
         atlantis)
           ;;
+        cole)
+          ;;
         narwhal)
           ./util/narwhal/fix_libsci.sh 2>&1 | tee log.fix_libsci.${env_name}.001
           ;;
         nautilus)
           ;;
-        # DH*
+        tusk)
+          ;;
         blackpearl)
           ;;
         bounty)
           ;;
-        # *DH
         *)
           echo "ERROR, post-install scripts not configured for ${host}"
           exit 1
