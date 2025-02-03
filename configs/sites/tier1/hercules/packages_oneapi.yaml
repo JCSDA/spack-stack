@@ -1,0 +1,52 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.1]
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.13]
+      # Remove the next three lines to switch to intel-oneapi-mkl
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
+  mpi:
+    buildable: False
+  intel-oneapi-mpi:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+      modules:
+      - spack-managed-x86-64_v3
+      - intel-oneapi-compilers/2024.2.1
+      - intel-oneapi-mpi@2021.13.1
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-3pv63eugwmse2xpeglxib4dr2oeb42g2
+
+  intel-oneapi-mkl:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2024.2.1
+      modules:
+      - spack-managed-x86-64_v3
+      - intel-oneapi-mkl/2024.2.1
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-mkl-2024.2.1-aeiool3i5jj4newwifvkhow5almp67rt
+
+  intel-oneapi-runtime:
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/oneapi-2024.2.1/intel-oneapi-runtime-2024.2.1-hl5zgdjaldynq35dq3yotclfy2vblybx
+      modules:
+      - spack-managed-x86-64_v3
+      - intel-oneapi-compilers/2024.2.1
+      - intel-oneapi-runtime/2024.2.1
+
+  ectrans:
+    require::
+    - '@1.5.0 ~mkl +fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@1.26'
+    - '^openblas'
+  py-scipy:
+    require:
+      '%gcc'
