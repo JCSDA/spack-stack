@@ -28,7 +28,7 @@ class UfsWeatherModelEnv(BundlePackage):
 
     depends_on("fms", type="run")
     depends_on("bacio", type="run")
-    depends_on("crtm@2.4.0.1", type="run")
+    depends_on("crtm", type="run")
     depends_on("g2", type="run")
     depends_on("g2tmpl", type="run")
     depends_on("ip", type="run")
