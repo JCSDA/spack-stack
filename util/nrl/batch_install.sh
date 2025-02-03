@@ -93,6 +93,12 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     ;;
+  cole)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@12.3.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
+    ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "gcc@10.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
@@ -104,6 +110,12 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
+    ;;
+  tusk)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.0" "gcc@12.1.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
     ;;
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0")
@@ -139,6 +151,16 @@ function fix_permissions() {
       fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
+    cole)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
     narwhal)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
@@ -150,6 +172,16 @@ function fix_permissions() {
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     nautilus)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    tusk)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
       if [[ ${executables} -eq 1 ]]; then
@@ -224,9 +256,25 @@ fi
 # For Cray systems, capture the default=current environment (loaded modules)
 # so that it can be restored between building stacks for different compilers
 case ${host} in
+  atlantis)
+    ;;
+  cole)
+    module_snapshot=${PWD}/spack-stack.default-modules
+    module snapshot -f ${module_snapshot}
+    ;;
   narwhal)
     module_snapshot=${PWD}/spack-stack.default-modules
     module snapshot -f ${module_snapshot}
+    ;;
+  nautilus)
+    ;;
+  tusk)
+    module_snapshot=${PWD}/spack-stack.default-modules
+    module snapshot -f ${module_snapshot}
+    ;;
+  blackpearl)
+    ;;
+  bounty)
     ;;
 esac
 
@@ -295,6 +343,51 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         umask 0022
         module purge
         ;;
+      cole)
+        # Check if snapshot to restore default environment exists, then restore
+        if [[ ! -e ${module_snapshot} ]]; then
+          echo "ERROR, ${module_snapshot} not found for resetting environment"
+          exit 1
+        fi
+        # Unloading modules on Narwhal always throws an error:
+        # environment: line 0: unalias: mpirun: not found
+        set +e
+        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
+        module purge
+        module restore -f ${module_snapshot}
+        set -e
+        umask 0022
+        set +e
+        case ${compiler} in
+          oneapi@2024.2.1)
+            module purge
+            module load PrgEnv-intel/8.5.0
+            module unload intel
+            module load intel/2024.2.1
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.20.1
+            module unload cray-libsci
+            module load cray-libsci/24.03.0
+            ;;
+          gcc@12.3.0)
+            module purge
+            module load PrgEnv-gnu/8.5.0
+            module unload gcc
+            module load gcc-native/12.3
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.20.1
+            module unload cray-libsci
+            module load cray-libsci/24.03.0
+            ;;
+          *)
+            echo "ERROR, compiler ${compiler} not configured for resetting environment"
+            exit 1
+            ;;
+        esac
+        set -e
+        ;;
       narwhal)
         # Check if snapshot to restore default environment exists, then restore
         if [[ ! -e ${module_snapshot} ]]; then
@@ -354,6 +447,51 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       nautilus)
         umask 0022
         module purge
+        ;;
+      tusk)
+        # Check if snapshot to restore default environment exists, then restore
+        if [[ ! -e ${module_snapshot} ]]; then
+          echo "ERROR, ${module_snapshot} not found for resetting environment"
+          exit 1
+        fi
+        # Unloading modules on Narwhal always throws an error:
+        # environment: line 0: unalias: mpirun: not found
+        set +e
+        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
+        module purge
+        module restore -f ${module_snapshot}
+        set -e
+        umask 0022
+        set +e
+        case ${compiler} in
+          oneapi@2024.2.0)
+            module purge
+            module load PrgEnv-intel/8.4.0
+            module unload intel
+            module load intel/2024.2
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.12.1.2.2.1
+            module unload cray-libsci
+            module load cray-libsci/23.05.1.4
+            ;;
+          gcc@12.1.0)
+            module purge
+            module load PrgEnv-gnu/8.4.0
+            module unload gcc
+            module load gcc/12.1.0
+            module unload cray-mpich
+            module unload craype-network-ofi
+            module load libfabric/1.12.1.2.2.1
+            module unload cray-libsci
+            module load cray-libsci/23.05.1.4
+            ;;
+          *)
+            echo "ERROR, compiler ${compiler} not configured for resetting environment"
+            exit 1
+            ;;
+        esac
+        set -e
         ;;
       blackpearl)
         ulimit -s unlimited
@@ -496,10 +634,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       case ${host} in
         atlantis)
           ;;
+        cole)
+          ;;
         narwhal)
           ./util/narwhal/fix_libsci.sh 2>&1 | tee log.fix_libsci.${env_name}.001
           ;;
         nautilus)
+          ;;
+        tusk)
           ;;
         blackpearl)
           ;;
