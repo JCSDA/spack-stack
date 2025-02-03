@@ -134,7 +134,7 @@ jobs:
 
           # Concretize and check for duplicates
           spack concretize 2>&1 | tee log.concretize.intel-2021.10.0-buildcache
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.10.0-buildcache -i fms -i crtm -i esmf -i mapl
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.10.0-buildcache -i fms -i crtm -i crtm-fix -i esmf -i mapl
 
           # Add and update source cache
           spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
@@ -201,7 +201,7 @@ jobs:
 
           # Concretize and check for duplicates
           spack concretize --force 2>&1 | tee log.concretize.intel-2021.10.0
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.10.0 -i fms -i crtm -i esmf -i mapl
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.intel-2021.10.0 -i fms -i crtm -i crtm-fix -i esmf -i mapl
 
           # Add binary cache back in
           spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
