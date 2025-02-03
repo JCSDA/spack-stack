@@ -58,7 +58,7 @@ packages:
     require: '@0.40.0 +fckit +trans +tesselation +fftw'
   ectrans:
     require:
-    - '@1.2.0'
+    - '@1.5.0'
   eigen:
     require: '@3.4.0'
   # Attention - when updating the version also check the common modules.yaml
@@ -215,8 +215,11 @@ packages:
     require: '@2.1.1'
   proj:
     require: '~tiff'
+  # Turn off crypt variant for Python; this leads to build errors
+  # with Intel in py-cryptography unless external curl and openssl
+  # are removed, which itself is problematic.
   python:
-    require: '@3.11.7'
+    require: '@3.11.7 ~crypt'
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin

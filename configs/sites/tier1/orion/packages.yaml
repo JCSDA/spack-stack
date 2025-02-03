@@ -1,4 +1,17 @@
 packages:
+  # For addressing https://github.com/JCSDA/spack-stack/issues/1355
+  #   Use system zlib instead of spack-built zlib-ng
+  all:
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -23,10 +36,11 @@ packages:
     externals:
     - spec: cmake@3.20.2
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.76.1+gssapi+ldap+nghttp2
-      prefix: /usr
+  # Don't use issues with openssl
+  #curl:
+  #  externals:
+  #  - spec: curl@7.76.1+gssapi+ldap+nghttp2
+  #    prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.7
@@ -80,10 +94,11 @@ packages:
     externals:
     - spec: openssh@8.7p1
       prefix: /usr
-  openssl:
-    externals:
-    - spec: openssl@3.0.1
-      prefix: /usr
+  # Don't use, issues with py-cryptography
+  #openssl:
+  #  externals:
+  #  - spec: openssl@3.0.1
+  #    prefix: /usr
   perl:
     externals:
     - spec: perl@5.32.1~cpanm+opcode+open+shared+threads
@@ -107,4 +122,8 @@ packages:
   tar:
     externals:
     - spec: tar@1.34
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.21.1
       prefix: /usr
