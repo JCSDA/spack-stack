@@ -243,10 +243,10 @@ packages:
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
     require: '@3.7.4'
-  # Variant ~mpi not working for latest py-netcdf4
-  # https://github.com/spack/spack/issues/47652
+  # https://github.com/Unidata/netcdf4-python/issues/1389
+  # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
   py-netcdf4:
-    require: '@1.7.1 +mpi'
+    require: '@1.7.1 ~mpi'
   # To avoid duplicate packages
   py-numpy:
     require:
@@ -288,9 +288,10 @@ packages:
     require: '@2.10.0 precision=4,d,8 +extradeps'
   w3nco:
     require: '@2.4.1'
+  # See macOS site config for wgrib2 version/variant overrides
   wgrib2:
     require:
-    - '@3.1.1'
+    - '@3.5.0'
   wrf-io:
     require: '@1.2.0'
   zstd:
