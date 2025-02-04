@@ -11,5 +11,5 @@ packages:
     buildable: false
   wgrib2:
     require::
-    - '@3.1.1'
+    - '@3.4.0'
     - '~openmp'
