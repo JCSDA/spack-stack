@@ -48,6 +48,7 @@ packages:
     - '~mkl'
   py-numpy:
     require::
+    - '@1.26'
     - '^openblas'
   zlib-ng:
     require:
