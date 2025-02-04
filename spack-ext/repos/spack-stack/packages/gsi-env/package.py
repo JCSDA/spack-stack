@@ -29,7 +29,7 @@ class GsiEnv(BundlePackage):
     depends_on("sfcio")
     depends_on("nemsio")
     depends_on("wrf-io")
-    depends_on("crtm@2.4.0.1")
+    depends_on("crtm")
     depends_on("ncio")
     depends_on("gsi-ncdiag")
 
