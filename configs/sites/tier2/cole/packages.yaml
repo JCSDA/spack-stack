@@ -34,10 +34,6 @@ packages:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@8.0.1+gssapi+ldap+nghttp2
-      prefix: /usr
   cvs:
     externals:
     - spec: cvs@1.12.12
@@ -103,10 +99,6 @@ packages:
       prefix: /usr
     - spec: openssh@9.8p1a
       prefix: /usr/local/krb5
-  openssl:
-    externals:
-    - spec: openssl@1.1.1l-fips
-      prefix: /usr
   perl:
     externals:
     - spec: perl@5.26.1~cpanm+opcode+open+shared+threads
