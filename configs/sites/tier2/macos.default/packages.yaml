@@ -10,5 +10,6 @@ packages:
   libiconv:
     buildable: false
   wgrib2:
-    require:
+    require::
+    - '@3.4.0'
     - '~openmp'
