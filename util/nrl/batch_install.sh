@@ -361,6 +361,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         case ${compiler} in
           oneapi@2024.2.1)
             module purge
+            module use /p/work1/heinzell/spack-stack/oneapi-2024.2.1/modulefiles
             module load PrgEnv-intel/8.5.0
             module unload intel
             module load intel/2024.2.1
