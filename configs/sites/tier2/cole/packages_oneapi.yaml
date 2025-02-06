@@ -1,0 +1,25 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.1,gcc@12.3.0]
+    providers:
+      mpi:: [cray-mpich@8.1.29]
+  mpi:
+    buildable: False
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.29%oneapi@2024.2.1 ~wrappers
+      modules:
+      - cray-mpich/8.1.29
+      - craype-network-ofi
+  intel-oneapi-mkl:
+    externals:
+    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
+      prefix: /p/work1/heinzell/spack-stack/oneapi-2024.2.1
+  intel-oneapi-tbb:
+    externals:
+    - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.1
+      prefix: /p/work1/heinzell/spack-stack/oneapi-2024.2.1
+  intel-oneapi-runtime:
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+      prefix: /p/work1/heinzell/spack-stack/oneapi-2024.2.1

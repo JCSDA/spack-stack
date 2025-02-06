@@ -24,10 +24,10 @@ copyright = '2025 '
 author = 'Dominikus Heinzeller, Alexander Richert, Evan Parker, Steve Herbener, Steve Grace, Cameron Book, Ratko Vasic, Natalie Perlin, Rick Grubin'
 
 # The short X.Y version
-version = '1.9'
+version = 'dev'
 
 # The full version, including alpha/beta/rc tags
-release = '1.9.0'
+release = 'develop'
 
 numfig = True
 
