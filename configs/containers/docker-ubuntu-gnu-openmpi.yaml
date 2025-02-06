@@ -176,6 +176,12 @@ spack:
       final: |
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
+        # Set defaults for compilers and build utilities.
+        RUN update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
+        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
+        ln -s /usr/bin/cpp-13 /usr/bin/cpp
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
         echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
@@ -183,8 +189,6 @@ spack:
         echo "export CC=gcc" >> /home/nonroot/.bashrc && \
         echo "export CXX=g++" >> /home/nonroot/.bashrc && \
         echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
-        # Needed by py-llvmlite
-        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         mkdir /home/nonroot/.pmix && \
         echo "rmaps_default_mapping_policy=:oversubscribe" >> /home/nonroot/.pmix/mca-params.conf && \
