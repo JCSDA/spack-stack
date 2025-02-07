@@ -32,10 +32,6 @@ packages:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.20.2
-      prefix: /usr
   # Don't use issues with openssl
   #curl:
   #  externals:

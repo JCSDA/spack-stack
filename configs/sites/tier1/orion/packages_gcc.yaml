@@ -8,6 +8,7 @@ packages:
   openmpi:
     externals:
     - spec: openmpi@4.1.4%gcc@12.2.0 ~atomics~cuda~cxx~cxx_exceptions~gpfs~internal-hwloc~internal-libevent~internal-pmix~java~legacylaunchers~lustre~memchecker~openshmem~orterunprefix+pmi+romio+rsh~singularity+static+vt+wrapper-rpath fabrics=none romio-filesystem=none schedulers=slurm
+      prefix: /apps/spack-managed/gcc-12.2.0/openmpi-4.1.4-tgam5l5paaiwksys4r7nc5xocwm33iv4
       modules:
       - gcc/12.2.0
       - openmpi/4.1.4
