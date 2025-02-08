@@ -24,6 +24,7 @@ spack:
     # Various crtm tags (list all to avoid duplicate packages)
     - crtm@2.4.0.1
     - crtm@v2.4.1-jedi
+    - crtm@3.1.1-build1
 
     # Various esmf tags (list all to avoid duplicate packages)
     - esmf@=8.6.1 snapshot=none

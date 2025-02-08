@@ -36,10 +36,6 @@ class NceplibsEnv(BundlePackage):
     depends_on("w3emc")
     depends_on("w3nco")
     depends_on("wrf-io")
-    # Currently, wgrib2 doesn't build with oneapi,
-    # but there isn't a "when not" option in spack yet
-    depends_on("wgrib2", when="%apple-clang")
-    depends_on("wgrib2", when="%gcc")
-    depends_on("wgrib2", when="%intel")
+    depends_on("wgrib2")
 
     # There is no need for install() since there is no code.

@@ -39,15 +39,11 @@ class GlobalWorkflowEnv(BundlePackage):
     depends_on("landsfcutil")
     depends_on("sigio")
     depends_on("bufr")
-    # Currently, wgrib2 doesn't build with oneapi,
-    # but there isn't a "when not" option in spack yet
-    depends_on("wgrib2", when="%apple-clang")
-    depends_on("wgrib2", when="%gcc")
-    depends_on("wgrib2", when="%intel")
+    depends_on("wgrib2")
     depends_on("met")
     depends_on("metplus")
     depends_on("gsi-ncdiag")
-    depends_on("crtm@2.4.0.1")
+    depends_on("crtm")
     depends_on("py-wxflow", when="+python")
 
     # There is no need for install() since there is no code.
