@@ -26,9 +26,7 @@ packages:
     - spec: bash@5.1.8
       prefix: /usr
   berkeley-db:
-  # not installed per: dnf list installed|grep -i db-devel
     externals:
-    #- spec: berkeley-db@5.3.21
     - spec: berkeley-db@18.1.40
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/berkeley-db-18.1.40-tetbmt6446oglhqm4dnhpybup6ltpnno
   binutils:
@@ -47,7 +45,6 @@ packages:
     externals:
     - spec: doxygen@1.11.0+graphviz~mscgen
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/doxygen-1.11.0-dbhxblaakcrhvmlrbgixvapnagjb2vkx
-  #     - ecflow/5.11.4
   file:
     externals:
     - spec: file@5.39
