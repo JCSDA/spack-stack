@@ -12,6 +12,12 @@ packages:
       modules:
       - openmpi/4.1.6
 
+  ectrans:
+    require::
+    - '~mkl +fftw'
+  gsibec:
+    require::
+    - '~mkl'
   py-numpy:
     require::
     - '@1.26'
