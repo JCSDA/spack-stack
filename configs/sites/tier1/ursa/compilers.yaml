@@ -20,6 +20,7 @@ compilers:
         F77: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/ifort
         FC: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/ifort
     extra_rpaths: []
+
 - compiler:
     spec: gcc@=11.4.1
     paths:
