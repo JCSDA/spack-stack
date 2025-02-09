@@ -52,3 +52,6 @@ spack:
     - ai-env%oneapi
     - jedi-tools-env%intel
     - jedi-tools-env%oneapi
+    # Skip neptune-python-env with Intel Classic due to problems
+    # with new versions of py-numpy, py-scipy, ...
+    - neptune-python-env%intel
