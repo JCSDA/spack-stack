@@ -50,3 +50,6 @@ packages:
   py-scipy:
     require:
       '%gcc'
+  zlib-ng:
+    require:
+    - '~shared'

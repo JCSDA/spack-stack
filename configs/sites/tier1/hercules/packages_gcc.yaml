@@ -12,7 +12,17 @@ packages:
       modules:
       - gcc/12.2.0
       - openmpi/4.1.4
+
+  ectrans:
+    require::
+    - '~mkl +fftw'
+  gsibec:
+    require::
+    - '~mkl'
   py-numpy:
     require::
     - '@1.26'
     - '^openblas'
+  zlib-ng:
+    require:
+    - '~shared'
