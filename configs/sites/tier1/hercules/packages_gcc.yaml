@@ -10,5 +10,5 @@ packages:
     - spec: openmpi@4.1.4%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
         schedulers=slurm
       modules:
-      - gcc/12.2.0  
+      - gcc/12.2.0
       - openmpi/4.1.4
