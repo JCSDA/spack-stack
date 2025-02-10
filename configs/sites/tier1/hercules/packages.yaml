@@ -15,10 +15,10 @@ packages:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
-  #curl:
-  #  externals:
-  #  - spec: curl@7.76.1+gssapi+ldap+nghttp2
-  #    prefix: /usr
+  curl:
+    externals:
+    - spec: curl@7.76.1+gssapi+ldap+nghttp2
+      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.7
