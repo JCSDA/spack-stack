@@ -1,21 +1,13 @@
 packages:
   all:
-    #compiler:: [gcc@14.2.0]
-    compiler:: [gcc@11.3.1]
+    compiler:: [gcc@12.2.0]
     providers:
-      #mpi:: [openmpi@4.1.6]
       mpi:: [openmpi@4.1.4]
   mpi:
     buildable: False
   openmpi:
     externals:
-    - spec: openmpi@4.1.4%gcc@11.3.1~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
-      prefix: /apps/spack-managed/gcc-11.3.1/openmpi-4.1.4-zabolhazla2ahsroedlyt2pu4mkp7o3q
+    - spec: openmpi@4.1.4%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath schedulers=slurm
       modules:
+      - gcc/12.2.0  
       - openmpi/4.1.4
-    #- spec: openmpi@4.1.6%gcc@14.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
-    #  prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/openmpi-4.1.6-awzgueipsaecmty57kpycopknhad3xbe 
-    #  modules:
-    #  - spack-managed-x86-64_v3/v1.0
-    #  - gcc/14.2.0
-    #  - openmpi/4.1.6
