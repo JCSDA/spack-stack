@@ -15,10 +15,6 @@ compilers:
         PATH: '/usr/bin'
         LD_LIBRARY_PATH: '/usr/lib:/usr/lib64'
         CPATH: '/usr/include/c++/11/x86_64-redhat-linux'
-      # Override system module settings (set to ifx)
-      #set:
-      #  F77: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/ifort
-      #  FC: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/ifort
     extra_rpaths: []
 
 - compiler:
