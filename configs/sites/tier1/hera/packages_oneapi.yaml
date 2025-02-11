@@ -38,3 +38,6 @@ packages:
   zlib-ng:
     require:
       - '~shared'
+  cdo:
+    require:
+      - '@2.3.0'
