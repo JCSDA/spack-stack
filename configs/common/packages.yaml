@@ -264,6 +264,9 @@ packages:
   # To avoid duplicate packages
   py-urllib3:
     require: '@1.26.12'
+  # To avoid duplicate packages
+  py-versioneer:
+    require: '@0.28'
   qt:
     require: '@5'
   scotch:

@@ -131,6 +131,16 @@ jobs:
               echo "jedi-ufs-env ..."
               spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-ufs-env
               spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
+
+            elif [[ "${TEMPLATE}" == *"cylc-dev"* ]]; then
+              # Workaround for not being able to install rust from build-cache, see 
+              # https://github.com/spack/spack/issues/48971
+              echo "rust dependencies ..."
+              spack install --verbose --source --no-check-signature --only=dependencies rust 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}.001.rust-dependencies
+
+              # rust from source
+              echo "rust (from source) ..."
+              spack install --verbose --source --no-cache rust 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}.002.rust
             fi
 
             # the rest
