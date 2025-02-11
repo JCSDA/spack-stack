@@ -22,10 +22,6 @@ packages:
     externals:
     - spec: bzip2@1.0.6
       prefix: /usr
-  cdo:
-    externals:
-    - spec: cdo@2.3.0
-      prefix: /apps/cdo/2.3.0/gnu_13.2.0
   cpio:
     externals:
     - spec: cpio@2.11
