@@ -25,7 +25,7 @@ The instructions below are for GNU (`gcc`), since this is the easiest and best s
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Nvidia HPC SDK (nvcc, nvc++, nvfortran)   | 12.3 (Nvidia HPC SDK 24.3) [#fn3]_                                   | ``nvhpc@``                |
+| Nvidia HPC SDK (nvcc, nvc++, nvfortran)   | 12.6 (Nvidia HPC SDK 24.9) [#fn3]_                                   | ``nvhpc@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 
 .. rubric:: Footnotes
@@ -642,7 +642,7 @@ Creating a new environment with Nvidia compilers
 .. warning::
    Support for Nvidia compilers is experimental and limited to a small subset of packages of the unified environment. The Nvidia compilers are known for their bugs and flaws, and many packages simply don't build. The strategy for building environments with Nvidia is therefore the opposite of what it is with other supported compilers.
 
-In order to build environments with the Nvidia compilers, a different approach is needed than for our main compilers (GNU, Intel). Since many packages do not build with the Nvidia compilers, the idea is to provide as many packages as possible as external packages or build them with ``gcc``. Because our spack extension ``spack stack setup-meta-modules`` does not support combiniations of modules built with different compilers, packages not being built with the Nvidia compilers need to fulfil the two following criteria:
+In order to build environments with the Nvidia compilers, a different approach is needed than for our main compilers (GNU, Intel). Since many packages do not build with the Nvidia compilers, the idea is to provide as many packages as possible as external packages or build them with ``gcc``. Because our spack extension ``spack stack setup-meta-modules`` was only recently updated to support combinations of modules built with different compilers, and these instructions have NOT yet been updated accordingly, we are still subject to former restrictions that packages not being built with the Nvidia compilers need to fulfil the two following criteria:
 
 1. The package is used as a utility to build or run the code, but not linked into the application (this may be overly restrictive, but it ensures that the application will be able to leverage all of Nvidia's features, for example run on GPUs).
 
@@ -652,7 +652,9 @@ In order to build environments with the Nvidia compilers, a different approach i
 
     b. The package is built with another compiler (typically ``gcc``) within the same environment, and no modulefile is generated for the package. The spack modulefile generator in this case ensures that other packages that depend on this particular package have the necessary paths in their own modules. If the ``gcc`` compiler itself requires additional ``PATH``, ``LD_LIBRARY_PATH``, ... variables to be set, then these can be set in the spack compiler config for the Nvidia compiler (similar to how we configure the ``gcc`` backend for the Intel compiler).
 
-With all of that in mind, the following instructions were used on an Amazon Web Services EC2 instance running Ubuntu 22.04 to build an environment based on template ``jedi-mpas-nvidia-dev``. These instructions follow the one-off setup instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` and replace the instructions in Section :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv>`.
+With the recently-added support for building packages with different compilers, we will be able to clean up these instructions to use the Nvidia compiler where possible and fall back to the GNU compiler where necessary, and reduce the need to install packages from the package manager. These instructions will be updated with these improvements.
+
+With all of that in mind, the following instructions were tested on an Azure VM running Ubuntu 24.04 to build an environment based on template ``jedi-mpas-nvidia-dev``. These instructions follow the one-off setup instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` and replace the instructions in Section :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv>`. The instructions worked as of spack-stack commit ``26901af``, but are very fragile w.r.t. changes in the underlying OS, the Nvidia HPC SDK version, and the spack-stack version.
 
 1. Follow the instructions in :numref:`Section %s <NewSiteConfigs_Linux_Ubuntu_Prerequisites>` to install the basic packages. In addition, install the following packages using `apt`:
 
@@ -662,9 +664,12 @@ With all of that in mind, the following instructions were used on an Amazon Web 
    apt update
    apt install -y cmake
    apt install -y pkg-config
+   apt install -y libtool
+   apt install -y libbsd-dev
+   apt install -y python3-dev
    exit
 
-2. Download the latest version of the Nvidia HPC SDK following the instructions on the Nvidia website. For ``nvhpc@24.3``:
+2. Download the latest version of the Nvidia HPC SDK following the instructions on the Nvidia website. For ``nvhpc@24.9``:
 
 .. code-block:: console
 
@@ -672,16 +677,24 @@ With all of that in mind, the following instructions were used on an Amazon Web 
    echo 'deb [signed-by=/usr/share/keyrings/nvidia-hpcsdk-archive-keyring.gpg] https://developer.download.nvidia.com/hpc-sdk/ubuntu/amd64 /' | sudo tee /etc/apt/sources.list.d/nvhpc.list
    sudo su
    apt update
-   apt-get install -y nvhpc-24-3
+   apt install -y nvhpc-24-9
    exit
 
-3. Load the correct module shipped with ``nvhpc-24-3``. Note that this is only required for ``spack`` to detect the compiler and ``openmpi`` library during the environment configuration below. It is not required when using the new environment to compile code.
+Optionally, to run code that may use the CUDA runtime libraries, also install:
+
+.. code-block:: console
+   sudo su
+   apt install -y ubuntu-drivers-common
+   ubuntu-drivers install nvidia:550
+   exit
+
+3. Load the correct module shipped with ``nvhpc-24-9``. Note that this is only required for ``spack`` to detect the compiler and ``openmpi`` library during the environment configuration below. It is not required when using the new environment to compile code.
 
 .. code-block:: console
 
    module purge
    module use /opt/nvidia/hpc_sdk/modulefiles
-   module load nvhpc-openmpi3/24.3
+   module load nvhpc-openmpi3/24.9
 
 4. Clone spack-stack (selecting your desired spack-stack branch) and its dependencies and activate the spack-stack tool.
 
@@ -719,8 +732,8 @@ With all of that in mind, the following instructions were used on an Amazon Web 
    spack external find --scope system openmpi
    spack external find --scope system python
    spack external find --scope system curl
-   spack external find --scope system pkg-config
    spack external find --scope system cmake
+   spack external find --scope system xz
 
 8. Find compilers, add to site config's ``compilers.yaml``
 
@@ -745,23 +758,35 @@ With all of that in mind, the following instructions were used on an Amazon Web 
          zlib-api: [zlib]
          blas: [nvhpc]
        compiler:
-       - nvhpc@24.3
+       - nvhpc@24.9
      nvhpc:
        externals:
-       - spec: nvhpc@24.3 %nvhpc
+       - spec: nvhpc@24.9 %nvhpc
          modules:
-         - nvhpc/24.3
+         - nvhpc/24.9
        buildable: false
      python:
        buildable: false
        require:
-       - '@3.10.12'
+       - '@3.12.3'
      curl:
        buildable: false
      cmake:
        buildable: false
      pkg-config:
        buildable: false
+     libbsd:
+       buildable: false
+     xz:
+       buildable: false
+
+Then, add the following code block to ``envs/jedi-mpas-nvidia-env/site/packages.yaml`` (because ``spack external find`` doesn't appear to work for this library):
+
+.. code-block:: console
+   libbsd:
+     externals:
+     - spec: libbsd@0.12.1
+       prefix: /usr
 
 11. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu instructions above.
 
@@ -794,3 +819,6 @@ concretizer log must be inspected to ensure that all packages being built are bu
    spack stack setup-meta-modules
 
 15. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/jedi-mpas-nvidia-env/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+
+.. warning::
+   The instructions above may help to build spack-stack with the Nvidia compilers. Testing of building and running JEDI is ongoing; initial results suggest some of the low-level JEDI software components can be compiled with the Nvidia compilers, but many ctests segfault.

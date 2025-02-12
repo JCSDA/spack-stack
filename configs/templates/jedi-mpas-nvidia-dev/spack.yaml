@@ -17,7 +17,7 @@ spack:
   - git-lfs
   - wget
   - curl
-  - pkg-config
+  - pkgconf
   - python
 
   # Several packages are commented out and not removed from the list;
@@ -26,13 +26,12 @@ spack:
   # Packages built with nvhpc
   - zlib-api %nvhpc
   - hdf5 %nvhpc
-  - netcdf-c %nvhpc ~blosc ~dap ~zstd
+  - netcdf-c %nvhpc ~blosc ~zstd
   - netcdf-fortran %nvhpc
   - parallel-netcdf %nvhpc
   - parallelio %nvhpc
-  #- nccmp
+  - nccmp %nvhpc ^netcdf-c %nvhpc ~blosc ~zstd
 
-  - blas
   - boost %nvhpc
   #- bufr
   - ecbuild %nvhpc
@@ -49,6 +48,6 @@ spack:
   #- nlohmann-json
   #- nlohmann-json-schema-validator
   #- odc
+  - openblas
   - sp %nvhpc
   - udunits %nvhpc
-  - jasper %nvhpc

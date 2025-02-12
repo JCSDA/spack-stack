@@ -1,0 +1,43 @@
+compilers::
+  - compiler:
+      spec: oneapi@2024.2.1
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      flags: {}
+      operating_system: sles15
+      modules:
+      - PrgEnv-intel/8.5.0
+      - intel/2024.2.1
+      - cray-libsci/24.03.0
+      - libfabric/1.20.1
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.03.0/INTEL/2023.2/x86_64/lib'
+        set:
+          CONFIG_SITE: ''
+          CRAY_CPU_TARGET: x86-genoa
+      extra_rpaths: []
+  - compiler:
+      spec: gcc@12.3.0
+      paths:
+        cc: cc
+        cxx: CC
+        f77: ftn
+        fc: ftn
+      flags: {}
+      operating_system: sles15
+      modules:
+      - PrgEnv-gnu/8.5.0
+      - gcc-native/12.3
+      - cray-libsci/24.03.0
+      - libfabric/1.20.1
+      environment:
+        prepend_path:
+          LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.03.0/GNU/12.3/x86_64/lib'
+        set:
+          CONFIG_SITE: ''
+          CRAY_CPU_TARGET: x86-genoa
+      extra_rpaths: []
