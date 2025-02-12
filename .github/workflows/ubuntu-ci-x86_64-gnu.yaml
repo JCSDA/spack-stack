@@ -137,6 +137,7 @@ jobs:
               # https://github.com/spack/spack/issues/48971
               echo "rust dependencies ..."
               spack install --verbose --source --no-check-signature --only=dependencies rust 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}.001.rust-dependencies
+
               # rust from source
               echo "rust (from source) ..."
               spack install --verbose --source --no-cache rust 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}.002.rust
