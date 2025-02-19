@@ -1,0 +1,24 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.1,gcc@13.3.0]
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.13]
+      # Remove the next three lines to switch to intel-oneapi-mkl
+      blas:: [openblas]
+      fftw-api:: [fftw]
+      lapack:: [openblas]
+  intel-oneapi-mpi:
+    buildable: False
+  intel-oneapi-mkl:
+    buildable: False
+  ectrans:
+    require::
+    - '@1.5.0 ~mkl +fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@:1.26.4 ^openblas'
+  gmake:
+    buildable: False
