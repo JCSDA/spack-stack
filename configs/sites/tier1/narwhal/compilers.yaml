@@ -6,7 +6,8 @@ compilers::
         cxx: CC
         f77: ftn
         fc: ftn
-      flags: {}
+      flags:
+        ldflags: -L /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
       operating_system: sles15
       modules:
       - PrgEnv-intel/8.4.0
@@ -20,7 +21,8 @@ compilers::
           LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib:/opt/cray/pe/gcc/10.3.0/snos/lib:/opt/cray/pe/gcc/10.3.0/snos/lib64'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
-      extra_rpaths: []
+      extra_rpaths:
+      - /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
   - compiler:
       spec: oneapi@2024.2.0
       paths:
@@ -28,7 +30,8 @@ compilers::
         cxx: CC
         f77: ftn
         fc: ftn
-      flags: {}
+      flags:
+        ldflags: -L /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
       operating_system: sles15
       modules:
       - PrgEnv-intel/8.4.0
@@ -44,7 +47,8 @@ compilers::
           CPATH: '/opt/intel/oneapi_2024.2.0.634/compiler/2024.2/opt/compiler/include/intel64'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
-      extra_rpaths: []
+      extra_rpaths:
+      - /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
   - compiler:
       spec: gcc@10.3.0
       paths:
@@ -58,7 +62,8 @@ compilers::
         #cxx: /opt/cray/pe/gcc/10.3.0/snos/bin/g++
         #f77: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
         #fc: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
-      flags: {}
+      flags:
+        ldflags: -L /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
       operating_system: sles15
       modules:
       - PrgEnv-gnu/8.4.0
@@ -70,4 +75,5 @@ compilers::
           LD_LIBRARY_PATH: '/opt/cray/libfabric/1.12.1.2.2.1/lib64:/opt/cray/pe/libsci/23.05.1.4/GNU/10.3/x86_64/lib'
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
-      extra_rpaths: []
+      extra_rpaths:
+      - /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
