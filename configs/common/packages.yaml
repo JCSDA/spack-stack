@@ -223,6 +223,8 @@ packages:
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin
+  # DH* 20250214 No longer needed?
+  # https://github.com/JCSDA/spack-stack/pull/1519
   py-cryptography:
     require: '@:42 +rust_bootstrap'
   # Pin py-cython to avoid duplicate packages
@@ -243,6 +245,8 @@ packages:
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
     require: '@3.7.4'
+  py-maturin:
+    require: '+rust_bootstrap'
   # https://github.com/Unidata/netcdf4-python/issues/1389
   # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
   py-netcdf4:
@@ -251,6 +255,8 @@ packages:
   py-numpy:
     require:
     - '@1.26'
+  py-rpds-py:
+    require: '+rust_bootstrap'
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'
