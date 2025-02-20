@@ -72,12 +72,6 @@ UW (Univ. of Wisconsin) S4
    ...
 
 ==============================
-NAVY HPCMP Narwhal
-==============================
-
-1. On Narwhal (like on any other Cray), the spack build environment depends on the currently loaded modules. It is therefore necessary to build separate environments for different compilers while having the correct modules for that setup loaded.
-
-==============================
 macOS
 ==============================
 
