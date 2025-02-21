@@ -163,9 +163,9 @@ packages:
     require: '@2.53.0 ~shared ~f2py'
     variants: '+pflogger'
   met:
-    require: '@11.1.1 +python +grib2'
+    require: '@12.0.1 +python +grib2'
   metplus:
-    require: '@5.1.0'
+    require: '@6.0.0'
   metis:
     require: '+int64 +real64'
   mpich:
