@@ -592,6 +592,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ ${host} == "narwhal" && ${template} == "cylc-dev" ]]; then
       echo "Applying workaround for ${template} on ${host}"
       cp -av configs/sites/tier1/narwhal/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
+    elif [[ ${host} == "blueback" && ${template} == "cylc-dev" ]]; then
+      echo "Applying workaround for ${template} on ${host}"
+      cp -av configs/sites/tier1/blueback/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
     fi
 
     # Update bootstrap mirror if requested

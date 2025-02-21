@@ -7,7 +7,7 @@ packages:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.30%gcc@13.2.0 +wrappers
+    - spec: cray-mpich@8.1.30%gcc@13.2.0 ~wrappers
       modules:
       - cray-mpich/8.1.30
       - craype-network-ofi

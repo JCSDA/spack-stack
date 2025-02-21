@@ -2,10 +2,10 @@ compilers::
 - compiler:
     spec: gcc@=13.3.0
     paths:
-      cc: /usr/bin/gcc
-      cxx: /usr/bin/g++
-      f77: /usr/bin/gfortran
-      fc: /usr/bin/gfortran
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
     operating_system: sles15
     target: x86_64
@@ -24,10 +24,10 @@ compilers::
 - compiler:
     spec: oneapi@=2024.2.1
     paths:
-      cc: /p/app/intel/oneapi-combined/compiler/2024.2/bin/icx
-      cxx: /p/app/intel/oneapi-combined/compiler/2024.2/bin/icpx
-      f77: /p/app/intel/oneapi-combined/compiler/2024.2/bin/ifort
-      fc: /p/app/intel/oneapi-combined/compiler/2024.2/bin/ifort
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
     flags: {}
     operating_system: sles15
     target: x86_64
@@ -46,10 +46,10 @@ compilers::
 #- compiler:
 #    spec: oneapi@=2025.0.4
 #    paths:
-#      cc: /p/app/intel/oneapi-combined/compiler/2025.0/bin/icx
-#      cxx: /p/app/intel/oneapi-combined/compiler/2025.0/bin/icpx
-#      f77: /p/app/intel/oneapi-combined/compiler/2025.0/bin/ifx
-#      fc: /p/app/intel/oneapi-combined/compiler/2025.0/bin/ifx
+#      cc: cc
+#      cxx: CC
+#      f77: ftn
+#      fc: ftn
 #    flags: {}
 #    operating_system: sles15
 #    target: x86_64

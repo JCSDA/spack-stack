@@ -1,0 +1,23 @@
+compilers::
+- compiler:
+    spec: gcc@=13.3.0
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules:
+    - PrgEnv-gnu/8.5.0
+    - gcc-native/13.2
+    - cray-libsci/24.07.0
+    - libfabric/1.20.1
+    environment:
+      prepend_path:
+        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.07.0/GNU/12.3/x86_64/lib'
+      set:
+        CONFIG_SITE: ''
+        CRAY_CPU_TARGET: x86-genoa
+    extra_rpaths: []
