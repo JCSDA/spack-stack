@@ -94,7 +94,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.2.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@2024.2.1" "gcc@13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -390,10 +390,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             module unload cray-libsci
             module load cray-libsci/24.07.0
             ;;
-          gcc@13.2.0)
+          gcc@13.3.0)
             module purge
             module load PrgEnv-gnu/8.5.0
             module unload gcc
+            # Confusing: the module is called gcc-native/13.2,
+            # but the actual version of the compiler is 13.3
             module load gcc-native/13.2
             module unload cray-mpich
             module unload craype-network-ofi
