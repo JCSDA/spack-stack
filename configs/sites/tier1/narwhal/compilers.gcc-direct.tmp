@@ -7,8 +7,6 @@ compilers::
         cxx: /opt/cray/pe/gcc/10.3.0/snos/bin/g++
         f77: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
         fc: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
-      flags:
-        ldflags: -L /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
       operating_system: sles15
       modules:
       - PrgEnv-gnu/8.4.0
@@ -21,4 +19,4 @@ compilers::
         set:
           CRAYPE_LINK_TYPE: 'dynamic'
       extra_rpaths:
-      - /opt/cray/pe/libsci/23.05.1.4/INTEL/2022.2/x86_64/lib
+      - /opt/cray/pe/libsci/23.05.1.4/GNU/10.3/x86_64/lib
