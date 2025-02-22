@@ -29,10 +29,6 @@ packages:
     externals:
     - spec: coreutils@8.30
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@7.61.1
-      prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.6
