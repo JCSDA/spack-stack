@@ -26,10 +26,6 @@ packages:
     externals:
     - spec: binutils@2.43.1~gold+headers
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
   cmake:
     externals:
     - spec: cmake@3.20.4
