@@ -369,7 +369,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           echo "ERROR, ${module_snapshot} not found for resetting environment"
           exit 1
         fi
-        # Unloading modules on Narwhal always throws an error:
+        # Unloading modules on Blueback always throws an error:
         # environment: line 0: unalias: mpirun: not found
         set +e
         echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
@@ -416,7 +416,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           echo "ERROR, ${module_snapshot} not found for resetting environment"
           exit 1
         fi
-        # Unloading modules on Narwhal always throws an error:
+        # Unloading modules on Cole always throws an error:
         # environment: line 0: unalias: mpirun: not found
         set +e
         echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
@@ -494,11 +494,11 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             module unload cray-libsci
             module load cray-libsci/23.05.1.4
             ;;
-          gcc@10.3.0)
+          gcc@12.2.0)
             module purge
             module load PrgEnv-gnu/8.4.0
             module unload gcc
-            module load gcc/10.3.0
+            module load gcc/12.2.0
             module unload cray-mpich
             module unload craype-network-ofi
             module load libfabric/1.12.1.2.2.1
@@ -522,7 +522,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           echo "ERROR, ${module_snapshot} not found for resetting environment"
           exit 1
         fi
-        # Unloading modules on Narwhal always throws an error:
+        # Unloading modules on Tusk always throws an error:
         # environment: line 0: unalias: mpirun: not found
         set +e
         echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."

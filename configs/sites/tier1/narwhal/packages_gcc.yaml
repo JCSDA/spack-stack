@@ -1,13 +1,18 @@
 packages:
   all:
-    compiler:: [gcc@10.3.0]
+    compiler:: [gcc@12.2.0]
     providers:
       mpi:: [cray-mpich@8.1.26]
   mpi:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.26%gcc@10.3.0 ~wrappers
+    - spec: cray-mpich@8.1.26%gcc@12.2.0 ~wrappers
       modules:
       - cray-mpich-ucx/8.1.26
       - craype-network-ucx
+  # Turn off valgrind variant for py-torch because
+  # of linker issues with Cray GNU compiler
+  py-torch:
+    require:
+    - '~valgrind'
