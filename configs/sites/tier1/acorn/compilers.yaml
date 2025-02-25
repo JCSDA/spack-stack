@@ -21,7 +21,7 @@ compilers:
         CONFIG_SITE: ''
     extra_rpaths: []
 - compiler:
-    spec: intel@2022.0.2.262
+    spec: intel@2022.2.0.262
     paths:
       cc: cc
       cxx: CC
