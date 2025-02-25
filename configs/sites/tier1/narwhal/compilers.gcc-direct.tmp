@@ -7,6 +7,7 @@ compilers::
         cxx: /opt/cray/pe/gcc/12.2.0/snos/bin/g++
         f77: /opt/cray/pe/gcc/12.2.0/snos/bin/gfortran
         fc: /opt/cray/pe/gcc/12.2.0/snos/bin/gfortran
+      flags: {}
       operating_system: sles15
       modules:
       - PrgEnv-gnu/8.4.0
