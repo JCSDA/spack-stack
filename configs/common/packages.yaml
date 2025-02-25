@@ -184,11 +184,11 @@ packages:
     require: '@1.1.2'
   netcdf-c:
     # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
-    require: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip build_system=autotools'
+    require: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=autotools'
   netcdf-cxx4:
     require: '@4.3.1'
   netcdf-fortran:
-    require: '@4.6.1'
+    require: '@4.6.1 +parallel_tests'
   # ninja - when adding information here, also check Discover site config
   odc:
     require: '@1.5.2 ~fortran'
