@@ -11,8 +11,13 @@ packages:
       modules:
       - cray-mpich-ucx/8.1.26
       - craype-network-ucx
+  # Require node-js earlier than 21 to prevent compile
+  # errors with Cray GNU compiler 12.2.0
+  node-js:
+    require:
+      - '@:20'
   # Turn off valgrind variant for py-torch because
-  # of linker issues with Cray GNU compiler
+  # of linker issues with Cray GNU compiler 12.2.0
   py-torch:
     require:
     - '~valgrind'
