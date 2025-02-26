@@ -30,8 +30,9 @@
       require::
       - '@1.2.1 ~mkl'
     py-numpy:
-      require:
+      require::
       - '^[virtuals=lapack,blas] openblas'
+      - '@1.26'
       - '%gcc'
     # *DH
     eckit:
