@@ -151,85 +151,12 @@ The following is required for building new spack environments with any supported
 NAVY HPCMP Narwhal
 ------------------------------
 
-The following is required for building new spack environments with Intel on this platform.. Don't use ``module purge`` on Narwhal!
+The following is required for building new spack environments with any supported compiler on this platform.
 
 .. code-block:: console
 
    umask 0022
-   module unload PrgEnv-cray
-   module load PrgEnv-intel/8.4.0
-   module unload intel
-   module load intel-classic/2023.2.0
-   module unload cray-mpich
-   module unload craype-network-ofi
-   # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.26!
-   # There is a bug in the modulefile that prevents
-   # spack from setting the environment for its
-   # build steps when the module is already
-   # loaded. Instead, let spack load it when the
-   # package requires it.
-   #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.26
-   module load libfabric/1.12.1.2.2.1
-   module unload cray-libsci
-   module load cray-libsci/23.05.1.4
-
-The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Narwhal!
-
-.. code-block:: console
-
-   umask 0022
-   module unload PrgEnv-cray
-   module load PrgEnv-intel/8.4.0
-   module unload intel
-   module load intel/2024.2
-   module unload cray-mpich
-   module unload craype-network-ofi
-   # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.26!
-   # There is a bug in the modulefile that prevents
-   # spack from setting the environment for its
-   # build steps when the module is already
-   # loaded. Instead, let spack load it when the
-   # package requires it.
-   #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.26
-   module load libfabric/1.12.1.2.2.1
-   module unload cray-libsci
-   module load cray-libsci/23.05.1.4
-
-The following is required for building new spack environments with GNU on this platform.. Don't use ``module purge`` on Narwhal!
-
-.. code-block:: console
-
-   umask 0022
-   module unload PrgEnv-cray
-   module load PrgEnv-gnu/8.4.0
-   module unload gcc
-   module load gcc/10.3.0
-   module unload cray-mpich
-   module unload craype-network-ofi
-   # Warning. Do not load craype-network-ucx
-   # or cray-mpich-ucx/8.1.26!
-   # There is a bug in the modulefile that prevents
-   # spack from setting the environment for its
-   # build steps when the module is already
-   # loaded. Instead, let spack load it when the
-   # package requires it.
-   #module load craype-network-ucx
-   #module load cray-mpich-ucx/8.1.26
-   module load libfabric/1.12.1.2.2.1
-   module unload cray-libsci
-   module load cray-libsci/23.05.1.4
-
-.. warning::
-   After the successful build of a spack-stack environment, a utility script ``util/narwhal/fix_libsci.sh`` must be run to replace references to an old version of ``libsci`` in several shared libraries. See https://github.com/JCSDA/spack-stack/pull/1449 and https://github.com/JCSDA/spack-stack/issues/1447 for more information.
-
-.. code-block:: console
-
-   # After running 'spack install' (or after 'spack stack setup-meta-modules')
-   ./util/narwhal/fix_libsci.sh 2>&1 | tee log.ENV_NAME_HERE.fix_libsci.001
+   module purge
 
 
 .. _Preconfigured_Sites_Nautilus:
@@ -252,17 +179,12 @@ The following is required for building new spack environments with any supported
 NAVY HPCMP Blueback
 ------------------------------
 
-The following is required for building new spack environments with Intel oneAPI on this platform.. Don't use ``module purge`` on Blueback!
+The following is required for building new spack environments with any supported compiler on this platform.
 
 .. code-block:: console
 
    umask 0022
-   # This section will be updated when Blueback becomes available.
-
-The following is required for building new spack environments with GNU on this platform.. Don't use ``module purge`` on Blueback!
-
-   umask 0022
-   # This section will be updated when Blueback becomes available.
+   module purge
 
 
 .. _Preconfigured_Sites_Derecho:
