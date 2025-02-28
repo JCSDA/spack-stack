@@ -104,7 +104,7 @@ packages:
     require:
     - '@3.5.1'
   g2c:
-    require: '@1.9.0'
+    require: '@2.1.0'
   g2tmpl:
     require:
     - '@1.13.0'
