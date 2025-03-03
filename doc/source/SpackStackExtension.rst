@@ -19,15 +19,15 @@ The full list of options for creating environments is:
 
 .. code-block:: console
 
-   spack stack create env [--template TEMPLATE] [--specs [SPECS [SPECS ...]]] [--name NAME] [--dir DIR] [--overwrite] [--packages PACKAGES] [--site SITE] [--prefix PREFIX] [--envs-file ENVS_FILE] [--upstream UPSTREAM]
+   spack stack create env [--template TEMPLATE] [--compiler COMPILER] [--name NAME] [--dir DIR] [--site SITE] [--prefix PREFIX] [--upstream UPSTREAM] [--modify-pkg MODIFY_PKG]
 
-Here, ``TEMPLATE`` corresponds to a pre-defined list of specs (see :numref:`Section %s <EnvironmentsTemplates>`), ``SITE`` to a pre-configured or a configurable site (see :numref:`Section %s <Preconfigured_Sites>`). For all other options, consult the output of ``spack stack create env -h``.
+Here, ``TEMPLATE`` corresponds to a pre-defined list of specs (see :numref:`Section %s <EnvironmentsTemplates>`), ``SITE`` to a pre-configured or a configurable site (see :numref:`Section %s <Preconfigured_Sites>`). For all other options, consult the output of ``spack stack create env -h`` and the additional information in :numref:`Section %s <CreatingEnvironment>`.
 
 The full list of options for creating containers is:
 
 .. code-block:: console
 
-   spack stack create ctr [--container CONTAINER] [--dir DIR] [--overwrite] [--specs NAME] 
+   spack stack create ctr [--container CONTAINER] [--dir DIR] [--specs NAME] 
 
 ``CONTAINER`` corresponds to a pre-defined container recipe and ``SPECS`` to a list of packages to be installed (see :numref:`Section %s <BuildingContainers>`). For all other options, consult the output of ``spack stack create ctr -h``.
 
@@ -37,4 +37,4 @@ Following a successful creation of an environment (not a container), and the gen
 
    spack stack setup-meta-modules
 
-This step completes the environment generation and outputs a ``Core`` directory to screen that must be added to the module path (``module use .../Core``) as shown in :numref:`Section %s <UsingSpackEnvironments>`.
+This step completes the environment generation and creates a ``Core`` directory that must be added to the module path (``module use .../Core``) as shown in :numref:`Section %s <UsingSpackEnvironments>`.

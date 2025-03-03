@@ -211,7 +211,7 @@ This environment enables working with spack and building new software environmen
 Creating a new environment
 --------------------------
 
-Remember to activate the ``lua`` module environment and have MacTeX in your search path, if applicable. It is also recommended to increase the stacksize limit to 65Kb using ``ulimit -S -s unlimited``.
+Remember to activate the ``lua`` module environment and have MacTeX in your search path, if applicable. It is also recommended to increase the stacksize limit to 65Kb using ``ulimit -S -s unlimited``. For further information on the various arguments used in the instructions below, see :numref:`Sections %s <NewSiteConfigs_macOS> and :numref:`%s <NewSiteConfigs_Linux>`.
 
 1. You will need to clone spack-stack (selecting your desired spack-stack branch) and its dependencies and activate the spack-stack tool. It is also a good idea to save the directory in your environment for later use.
 
