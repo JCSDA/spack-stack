@@ -39,6 +39,9 @@ class NeptunePythonEnv(BundlePackage):
     depends_on("py-pytest", type="run")
     depends_on("py-fortranformat", type="run")
 
+    depends_on("met", type="run")
+    depends_on("metplus", type="run")
+
     with when("+xnrl"):
         depends_on("py-xnrl", type="run")
 

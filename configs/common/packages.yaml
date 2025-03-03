@@ -163,9 +163,9 @@ packages:
     require: '@2.53.0 ~shared ~f2py'
     variants: '+pflogger'
   met:
-    require: '@11.1.1 +python +grib2'
+    require: '@12.0.1 +python +grib2'
   metplus:
-    require: '@5.1.0'
+    require: '@6.0.0'
   metis:
     require: '+int64 +real64'
   mpich:
@@ -184,11 +184,11 @@ packages:
     require: '@1.1.2'
   netcdf-c:
     # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
-    require: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip build_system=autotools'
+    require: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=autotools'
   netcdf-cxx4:
     require: '@4.3.1'
   netcdf-fortran:
-    require: '@4.6.1'
+    require: '@4.6.1 +parallel_tests'
   # ninja - when adding information here, also check Discover site config
   odc:
     require: '@1.5.2 ~fortran'
@@ -223,6 +223,8 @@ packages:
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin
+  # DH* 20250214 No longer needed?
+  # https://github.com/JCSDA/spack-stack/pull/1519
   py-cryptography:
     require: '@:42 +rust_bootstrap'
   # Pin py-cython to avoid duplicate packages
@@ -243,6 +245,8 @@ packages:
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
     require: '@3.7.4'
+  py-maturin:
+    require: '+rust_bootstrap'
   # https://github.com/Unidata/netcdf4-python/issues/1389
   # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
   py-netcdf4:
@@ -251,6 +255,8 @@ packages:
   py-numpy:
     require:
     - '@1.26'
+  py-rpds-py:
+    require: '+rust_bootstrap'
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'
@@ -264,6 +270,9 @@ packages:
   # To avoid duplicate packages
   py-urllib3:
     require: '@1.26.12'
+  # To avoid duplicate packages
+  py-versioneer:
+    require: '@0.28'
   qt:
     require: '@5'
   scotch:

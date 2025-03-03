@@ -41,3 +41,7 @@
       externals:
       - spec: grep@3.1
         prefix: /usr
+    netcdf-c:
+      require:: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip ~parallel_tests build_system=autotools'
+    netcdf-fortran:
+      require:: '@4.6.1 ~parallel_tests'

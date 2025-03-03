@@ -16,7 +16,7 @@ KEEP_WEEKLY_BUILD_DIR="YES"
 PADDED_LENGTH=200
 
 # package test / install settings (future use)
-# PACKAGES_TO_TEST="libpng libaec jasper w3emc g2c"
+PACKAGES_TO_TEST="libpng libaec jasper w3emc g2c netcdf-c netcdf-fortran"
 # PACKAGES_TO_INSTALL="ufs-weather-model-env"
 
 TEST_UFSWM=ON
