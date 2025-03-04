@@ -536,6 +536,8 @@ EMC RedHat Enterprise Linux 8
 **NEEDS UPDATING**
 
 
+.. _Preconfigured_Sites_Linux_macOS_default:
+
 ------------------------------
 Linux/macOS default configs
 ------------------------------
@@ -549,7 +551,7 @@ The Linux and macOS configurations are **not** meant to be used as is, as user s
 AWS Ubuntu 24.04
 ----------------
 
-To build consult the `README.md` in the `sites/tier2/aws-ubuntu2404`.
+To build consult the ``README.md`` in the ``sites/tier2/aws-ubuntu2404``.
 
 This image can contain GCC and Intel compilers. It is strongly suggested that if you are to use either environment, it is suggested to separate environments into their own terminal. 
 
@@ -560,10 +562,22 @@ This image can contain GCC and Intel compilers. It is strongly suggested that if
 AWS Rocky8
 ----------
 
-To build consult the `README.md` in the `sites/tier2/aws-rocky8`.
+To build consult the ``README.md`` in the ``sites/tier2/aws-rocky8``.
 
 This image can contain GCC and Intel compilers. It is strongly suggested that if you are to use either environment, it is suggested to separate environments into their own terminal.
 
+
+.. _Preconfigured_Sites_Azure_Ubuntu2404_Nvidia:
+
+----------------------------------------
+Azure Ubuntu 24.04 with Nvidia compilers
+----------------------------------------
+
+This site config describes a minimal spack-stack install suitable for an Ubuntu 24.04 VM with Nvidia HPC SDK 25.1. For instructions on setting up the VM before building spack-stack, consult the ``README.md`` in the ``sites/tier2/ubuntu2404-nvhpc``.
+
+This configuration is experimental.
+
+Today, this configuration installs many low-level packages using the operating system's package manager, to reduce the burden of compiling these with the Nvidia compiler. In the future, we should evolve this site config to build more packages from spack-stack, either using the Nvidia compiler or falling back to the GNU compilers.
 
 .. _Configurable_Sites_CreateEnv:
 
