@@ -108,5 +108,3 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
-  zlib:
-     require: [~shared]
