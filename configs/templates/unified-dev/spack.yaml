@@ -35,7 +35,7 @@ spack:
     # Mapl with various esmf tags
     - mapl@2.53.0 ^esmf@8.6.1
     - mapl@2.53.0 ^esmf@8.8.0
-    
+
     # Various esmf tags (list all to avoid duplicate packages)
     - esmf@=8.6.1 snapshot=none
     - esmf@=8.8.0 snapshot=none
