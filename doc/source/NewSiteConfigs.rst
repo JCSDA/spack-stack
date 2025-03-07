@@ -231,10 +231,11 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
    cd envs/unified-env.mymacos/
    spack env activate [-p] .
 
-3. Still in the environment directory, temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``site``
+3. Still in the environment directory, temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``site`` und unset ``SPACK_DISABLE_LOCAL_CONFIG``.
 
 .. code-block:: console
    
+   unset SPACK_DISABLE_LOCAL_CONFIG
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
 
 4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
@@ -312,10 +313,11 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 .. note::
   Apple is aware of this issue (Apple ticket number FB13208302) and working on a solution, so this is a temporary workaround that will be removed once the linker/loader issues are repaired.
 
-6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
+6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable and restore the ``SPACK_DISABLE_LOCAL_CONFIG`` variable!
 
 .. code-block:: console
 
+   export SPACK_DISABLE_LOCAL_CONFIG=true
    unset SPACK_SYSTEM_CONFIG_PATH
 
 7. Set default compiler and MPI library (make sure to use the correct ``apple-clang`` version for your system and the desired ``openmpi`` version)
@@ -523,10 +525,11 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    cd envs/unified-env.mylinux/
    spack env activate [-p] .
 
-3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mylinux/site``
+3. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/unified-env.mylinux/site`` and unset ``SPACK_DISABLE_LOCAL_CONFIG``
 
 .. code-block:: console
 
+   unset SPACK_DISABLE_LOCAL_CONFIG
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
 
 4. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
@@ -555,10 +558,11 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
    spack compiler find --scope system
 
-6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable!
+6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable and restore the ``SPACK_DISABLE_LOCAL_CONFIG`` variable!
 
 .. code-block:: console
 
+   export SPACK_DISABLE_LOCAL_CONFIG=true
    unset SPACK_SYSTEM_CONFIG_PATH
 
 7. Set default compiler and MPI library (make sure to use the correct ``gcc`` version for your system and the desired ``openmpi`` version)
@@ -714,10 +718,11 @@ Optionally, to run code that may use the CUDA runtime libraries, also install:
    cd envs/jedi-mpas-nvidia-env/
    spack env activate [-p] .
 
-6. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-mpas-nvidia-env/site``
+6. Temporarily set environment variable ``SPACK_SYSTEM_CONFIG_PATH`` to modify site config files in ``envs/jedi-mpas-nvidia-env/site`` and unset ``SPACK_DISABLE_LOCAL_CONFIG``
 
 .. code-block:: console
 
+   unset SPACK_DISABLE_LOCAL_CONFIG
    export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
 
 7. Find external packages, add to site config's ``packages.yaml``. If an external's bin directory hasn't been added to ``$PATH``, need to prefix command.
@@ -741,10 +746,11 @@ Optionally, to run code that may use the CUDA runtime libraries, also install:
 
    spack compiler find --scope system
 
-9. Unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable
+9. Unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable and restore the ``SPACK_DISABLE_LOCAL_CONFIG`` variable
 
 .. code-block:: console
 
+   export SPACK_DISABLE_LOCAL_CONFIG=true
    unset SPACK_SYSTEM_CONFIG_PATH
 
 10. Add the following block to ``envs/jedi-mpas-nvidia-env/spack.yaml`` (pay attention to the correct indendation, it should be at the same level as ``specs:``):

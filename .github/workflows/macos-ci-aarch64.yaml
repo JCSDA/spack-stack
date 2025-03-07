@@ -63,6 +63,8 @@ jobs:
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site macos.default --template unified-dev --name ${ENVNAME} --compiler apple-clang
           spack env activate ${ENVDIR}
+
+          unset SPACK_DISABLE_LOCAL_CONFIG
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
@@ -83,7 +85,8 @@ jobs:
           # Find compilers
           spack compiler find --scope system
 
-          export -n SPACK_SYSTEM_CONFIG_PATH
+          export SPACK_DISABLE_LOCAL_CONFIG=true
+          unset SPACK_SYSTEM_CONFIG_PATH
 
           # For buildcaches
           spack config add config:install_tree:padded_length:200
