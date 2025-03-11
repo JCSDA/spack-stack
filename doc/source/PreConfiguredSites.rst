@@ -474,9 +474,9 @@ The following is required for building new spack environments with any supported
 NOAA RDHPCS Jet
 ------------------------------
 
-Support for spack-stack on ``jet`` will cease on June 30, 2025. No new spack-stack installations will be performed as of January 1, 2025.
+.. warning::
 
-The most recent spack-stack version on ``jet`` is v1.8.0. Users wishing to use stacks newer than 1.8.0 will need to test on other machines or install themselves.
+Support for ``spack-stack`` on ``jet`` will cease on June 30, 2025. No new ``spack-stack`` installations will be performed as of January 1, 2025. The most recent ``spack-stack version`` on ``jet`` is ``v1.8.0``. Users wishing to use stacks newer than ``v1.8.0`` will need to use other hosts or install themselves.
 
 .. _Preconfigured_Sites_S4:
 
