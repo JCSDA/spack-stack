@@ -42,10 +42,6 @@ packages:
     externals:
     - spec: findutils@4.8.0
       prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.6.4+lex
-      prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.2.1
