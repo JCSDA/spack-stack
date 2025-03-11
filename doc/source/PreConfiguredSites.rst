@@ -48,7 +48,7 @@ Pre-configured sites (tier 1)
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Hercules              | GCC, Intel         | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 | MSU                 +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Orion                 | GCC, Intel         | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
+|                     | Orion                 | Intel              | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Discover SCU16        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/``             | JCSDA           |
 | NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -99,6 +99,8 @@ The following is required for building new spack environments with any supported
    # To access /apps/contrib/spack-stack directory, first login to orion-devel-1 or orion-devel-2 login node.
    # Then sudo to role-epic account.
    module purge
+   module load stack-oneapi/2024.2.1
+   module load stack-intel-oneapi-mpi/2021.13
 
 ``spack-stack`` module files on **orion** require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable ``MODULEPATH`` in such a way that it prevents the expected loading of ``spack-stack`` modules. This is only necessary for *Intel oneAPI* environment module files.
 
@@ -132,8 +134,10 @@ The following is required for building new spack environments with any supported
    # To access /apps/contrib/spack-stack directory, first login to hercules-devel-1 or hercules-devel-2 login node.
    # Then sudo to role-epic account.
    module purge
+   module load stack-oneapi/2024.2.1
+   module load stack-intel-oneapi-mpi/2021.13
 
-   ``spack-stack`` module files on **orion** require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable ``MODULEPATH`` in such a way that it prevents the expected loading of ``spack-stack`` modules. This is only necessary for *Intel oneAPI* environment module files.
+``spack-stack`` module files on **hercules** require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable ``MODULEPATH`` in such a way that it prevents the expected loading of ``spack-stack`` modules. This is only necessary for *Intel oneAPI* environment module files.
 
 .. code-block:: console
 
@@ -475,7 +479,6 @@ NOAA RDHPCS Jet
 ------------------------------
 
 .. warning::
-
 Support for ``spack-stack`` on ``jet`` will cease on June 30, 2025. No new ``spack-stack`` installations will be performed as of January 1, 2025. The most recent ``spack-stack version`` on ``jet`` is ``v1.8.0``. Users wishing to use stacks newer than ``v1.8.0`` will need to use other hosts or install themselves.
 
 .. _Preconfigured_Sites_S4:
