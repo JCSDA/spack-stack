@@ -17,7 +17,7 @@ packages:
       modules:
       - spack-managed-x86-64_v3
       - intel-oneapi-compilers/2024.2.1
-      - intel-oneapi-mpi@2021.13.1
+      - intel-oneapi-mpi/2021.13.1
 
   intel-oneapi-mkl:
     buildable: False

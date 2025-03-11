@@ -22,6 +22,3 @@ packages:
     require::
     - '@1.26'
     - '^openblas'
-  zlib-ng:
-    require:
-    - '~shared'

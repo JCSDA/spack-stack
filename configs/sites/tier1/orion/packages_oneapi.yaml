@@ -16,7 +16,7 @@ packages:
       modules:
       - spack-managed-x86-64_v3
       - intel-oneapi-compilers/2024.2.1
-      - intel-oneapi-mpi@2021.13.1
+      - intel-oneapi-mpi/2021.13.1
       prefix: /apps/spack-managed-x86_64_v3-v1.0/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-3pv63eugwmse2xpeglxib4dr2oeb42g2
 
   intel-oneapi-mkl:

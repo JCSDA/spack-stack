@@ -100,6 +100,24 @@ The following is required for building new spack environments with any supported
    # Then sudo to role-epic account.
    module purge
 
+Spack-stack module files on orion require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable MODULEPATH in such a way that it prevents the expected loading of spack-stack modules. This is only necessary for Intel oneAPI environment module files.
+
+.. code-block:: console
+   
+   # Edit /path/to/env/install/modulefiles/Core/stack-oneapi/<version>.lua
+   # Change:
+   # load("spack-managed-x86-64_v3")
+   # load("intel-oneapi-compilers/2024.2.1")
+   # prereq("spack-managed-x86-64_v3")
+
+to
+
+.. code-block:: console
+
+   # -- load("spack-managed-x86-64_v3")
+   # prepend_path("MODULEPATH", "/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles")
+   # load("intel-oneapi-compilers/2024.2.1")
+   # -- prereq("spack-managed-x86-64_v3"
 
 .. _Preconfigured_Sites_Hercules:
 
@@ -111,7 +129,7 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
+   # To access /apps/contrib/spack-stack directory/, first login to hercules-devel-1 or hercules-devel-2 login node.
    # Then sudo to role-epic account.
    module purge
 
@@ -438,12 +456,9 @@ The following is required for building new spack environments with any supported
 NOAA RDHPCS Jet
 ------------------------------
 
-The following is required for building new spack environments with any supported compiler on this platform.
+Support for spack-stack on ``jet`` will cease on June 30, 2025. No new spack-stack installations will be performed as of January 1, 2025.
 
-.. code-block:: console
-
-   module purge
-
+The most recent spack-stack version on ``jet`` is v1.8.0. Users wishing to use stacks newer than 1.8.0 will need to test on other machines or install themselves.
 
 .. _Preconfigured_Sites_S4:
 
