@@ -96,11 +96,11 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   # To access /apps/contrib/spack-stack directory/, first login to orion-devel-1 or orion-devel-2 login node.
+   # To access /apps/contrib/spack-stack directory, first login to orion-devel-1 or orion-devel-2 login node.
    # Then sudo to role-epic account.
    module purge
 
-Spack-stack module files on orion require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable MODULEPATH in such a way that it prevents the expected loading of spack-stack modules. This is only necessary for Intel oneAPI environment module files.
+``spack-stack`` module files on **orion** require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable ``MODULEPATH`` in such a way that it prevents the expected loading of ``spack-stack`` modules. This is only necessary for *Intel oneAPI* environment module files.
 
 .. code-block:: console
    
@@ -129,10 +129,28 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   # To access /apps/contrib/spack-stack directory/, first login to hercules-devel-1 or hercules-devel-2 login node.
+   # To access /apps/contrib/spack-stack directory, first login to hercules-devel-1 or hercules-devel-2 login node.
    # Then sudo to role-epic account.
    module purge
 
+   ``spack-stack`` module files on **orion** require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable ``MODULEPATH`` in such a way that it prevents the expected loading of ``spack-stack`` modules. This is only necessary for *Intel oneAPI* environment module files.
+
+.. code-block:: console
+
+   # Edit /path/to/env/install/modulefiles/Core/stack-oneapi/<version>.lua
+   # Change:
+   # load("spack-managed-x86-64_v3")
+   # load("intel-oneapi-compilers/2024.2.1")
+   # prereq("spack-managed-x86-64_v3")
+
+to
+
+.. code-block:: console
+
+   # -- load("spack-managed-x86-64_v3")
+   # prepend_path("MODULEPATH", "/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles")
+   # load("intel-oneapi-compilers/2024.2.1")
+   # -- prereq("spack-managed-x86-64_v3"
 
 .. _Preconfigured_Sites_Discover_SCU16:
 
