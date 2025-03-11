@@ -133,9 +133,21 @@ The following is required for building new spack environments with any supported
 
    # To access /apps/contrib/spack-stack directory, first login to hercules-devel-1 or hercules-devel-2 login node.
    # Then sudo to role-epic account.
+
+.. code-block:: console
+
+   # Intel oneAPI stack
    module purge
    module load stack-oneapi/2024.2.1
    module load stack-intel-oneapi-mpi/2021.13
+
+.. code-block:: console
+
+   # GCC  stack
+   module purge
+   module load stack-gcc/12.2.0
+   module load stack-openmpi/4.1.4
+
 
 ``spack-stack`` module files on **hercules** require a one-time modification before they will properly load. These module files rely on a system-provided module file that alters the environment variable ``MODULEPATH`` in such a way that it prevents the expected loading of ``spack-stack`` modules. This is only necessary for *Intel oneAPI* environment module files.
 
@@ -479,7 +491,7 @@ NOAA RDHPCS Jet
 ------------------------------
 
 .. warning::
-Support for ``spack-stack`` on ``jet`` will cease on June 30, 2025. No new ``spack-stack`` installations will be performed as of January 1, 2025. The most recent ``spack-stack version`` on ``jet`` is ``v1.8.0``. Users wishing to use stacks newer than ``v1.8.0`` will need to use other hosts or install themselves.
+    Support for ``spack-stack`` on ``jet`` will cease on June 30, 2025. No new ``spack-stack`` installations will be performed as of January 1, 2025. The most recent ``spack-stack version`` on ``jet`` is ``v1.8.0``. Users wishing to use stacks newer than ``v1.8.0`` will need to use other hosts or install themselves.
 
 .. _Preconfigured_Sites_S4:
 
