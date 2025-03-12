@@ -63,6 +63,7 @@ Pre-configured sites (tier 1)
 |                     | Gaea C6               | Intel              | ``/ncrc/proj/epic/spack-stack/c6/``                    | EPIC / NOAA-EMC |
 | NOAA (RDHPCS)       +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Hera                  | GCC, Intel         | ``/contrib/spack-stack/``                              | EPIC / NOAA-EMC |
+|                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Ursa                  | GCC, Intel         | ``/contrib/spack-stack/``                              | EPIC / NOAA-EMC |
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Jet                   | GCC, Intel         | ``/contrib/spack-stack``                               | EPIC / NOAA-EMC |
@@ -521,6 +522,19 @@ The following is required for building new spack environments with any supported
 .. note::
    On Hera, a dedicated node exists for ``ecflow`` server jobs (``hecflow01``). Users starting ``ecflow_server`` on the regular login nodes will see their servers being killed every few minutes, and may be barred from accessing the system.
 
+
+------------------------------
+NOAA RDHPCS Ursa
+------------------------------
+
+The following is required for building new spack environments with any supported compiler on this platform.
+
+.. code-block:: console
+
+   module purge
+
+.. note::
+   On Ursa, a dedicated node exists for ``ecflow`` server jobs is not currently available. It is expected that a dedicated node for ``ecflow`` will be available when Ursa is available as a production host.
 
 .. _Preconfigured_Sites_Jet:
 
