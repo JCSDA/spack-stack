@@ -123,7 +123,7 @@ and
 
 .. code-block:: console
 
-   # Edit /path/to/env/install/modulefiles/oneapi/<version/stack-intel-oneapi-mpi/<version>.lua
+   # Edit /path/to/env/install/modulefiles/oneapi/<version>/stack-intel-oneapi-mpi/<version>.lua
    # Change:
    # -- prerequisite modules
    # load("spack-managed-x86-64_v3")
@@ -183,7 +183,7 @@ and
 
 .. code-block:: console
 
-   # Edit /path/to/env/install/modulefiles/oneapi/<version/stack-intel-oneapi-mpi/<version>.lua
+   # Edit /path/to/env/install/modulefiles/oneapi/<version>/stack-intel-oneapi-mpi/<version>.lua
    # Change:
    # -- prerequisite modules
    # load("spack-managed-x86-64_v3")
