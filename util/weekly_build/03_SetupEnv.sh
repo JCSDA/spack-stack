@@ -12,11 +12,11 @@ set -x
 
 for compiler in $COMPILERS; do
   for template in $TEMPLATES; do
-    envname=build-$template-${compiler/@/-}
+    [[ ${compiler} == *"@="* ]] && envname=build-$template-${compiler/@=/-} || envname=build-$template-${compiler/@/-}
     envdir=$RUNDIR/$RUNID/envs/$envname
     echo "Setting up environment $envname in $envdir"
     rm -rf $envdir
-    spack stack create env --name build-${template}-${compiler/@/-} --template $template --site $PLATFORM --compiler $compiler
+    spack stack create env --name $envname --template $template --site $PLATFORM --compiler $compiler
     cd $envdir
     spack env activate .
     spack config add "config:install_tree:padded_length:${PADDED_LENGTH:-200}"

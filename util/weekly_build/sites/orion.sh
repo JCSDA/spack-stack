@@ -26,3 +26,5 @@ UFSWM_URL="https://github.com/ufs-community/ufs-weather-model.git"
 # rt.sh parameters / arguments
 BATCHACCOUNT=epic
 RT_ARGS="-k -r"
+
+FIND_CMD="find"
