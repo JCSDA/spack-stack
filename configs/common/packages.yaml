@@ -71,14 +71,13 @@ packages:
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
+    - '+python'
     #- any_of: ['']
     #  when: "%gcc"
     #  message: "Extra ESMF compile options for GCC"
     #- any_of: ['']
     #  when: "%apple-clang"
     #  message: "Extra ESMF compile options for GCC"
-    prefer:
-    - '+python'
   # To avoid duplicate packages (concretizer bug?)
   expat:
     require:
@@ -139,7 +138,7 @@ packages:
   hdf-eos2:
     require: '@2.20v1.00'
   ip:
-    require: '@5.1.0 precision=4,d,8'
+    require: '@5.3.0 precision=4,d,8'
   ip2:
     require: '@1.1.2'
   jasper:
@@ -163,9 +162,9 @@ packages:
     require: '@2.53.0 ~shared ~f2py'
     variants: '+pflogger'
   met:
-    require: '@11.1.1 +python +grib2'
+    require: '@12.0.1 +python +grib2'
   metplus:
-    require: '@5.1.0'
+    require: '@6.0.0'
   metis:
     require: '+int64 +real64'
   mpich:
@@ -184,11 +183,11 @@ packages:
     require: '@1.1.2'
   netcdf-c:
     # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
-    require: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip build_system=autotools'
+    require: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=autotools'
   netcdf-cxx4:
     require: '@4.3.1'
   netcdf-fortran:
-    require: '@4.6.1'
+    require: '@4.6.1 +parallel_tests'
   # ninja - when adding information here, also check Discover site config
   odc:
     require: '@1.5.2 ~fortran'
@@ -223,6 +222,8 @@ packages:
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin
+  # DH* 20250214 No longer needed?
+  # https://github.com/JCSDA/spack-stack/pull/1519
   py-cryptography:
     require: '@:42 +rust_bootstrap'
   # Pin py-cython to avoid duplicate packages
@@ -243,6 +244,8 @@ packages:
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
     require: '@3.7.4'
+  py-maturin:
+    require: '+rust_bootstrap'
   # https://github.com/Unidata/netcdf4-python/issues/1389
   # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
   py-netcdf4:
@@ -251,6 +254,8 @@ packages:
   py-numpy:
     require:
     - '@1.26'
+  py-rpds-py:
+    require: '+rust_bootstrap'
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'

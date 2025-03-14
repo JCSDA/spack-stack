@@ -24,11 +24,7 @@ packages:
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.43.1
-      prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.20.4
+    - spec: binutils@2.43.1~gold+headers
       prefix: /usr
   coreutils:
     externals:
@@ -36,7 +32,7 @@ packages:
       prefix: /usr
   cvs:
     externals:
-    - spec: cvs@1.12.12
+    - spec: cvs@1.12.13
       prefix: /usr
   diffutils:
     externals:
@@ -64,7 +60,7 @@ packages:
       prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@3.0.2
+    - spec: git-lfs@3.3.0
       prefix: /usr
   gmake:
     externals:
@@ -86,19 +82,10 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
-  mysql:
-    buildable: False
-    externals:
-    - spec: mysql@8.0.31
-      prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
-      modules:
-      - mysql/8.0.31
   openssh:
     externals:
     - spec: openssh@8.4p1
       prefix: /usr
-    - spec: openssh@9.8p1a
-      prefix: /usr/local/krb5
   perl:
     externals:
     - spec: perl@5.26.1~cpanm+opcode+open+shared+threads
@@ -121,10 +108,6 @@ packages:
   subversion:
     externals:
     - spec: subversion@1.14.1
-      prefix: /usr
-  swig:
-    externals:
-    - spec: swig@3.0.12
       prefix: /usr
   tar:
     externals:

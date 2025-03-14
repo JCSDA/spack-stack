@@ -65,6 +65,8 @@ jobs:
             export ENVDIR=$PWD/envs/${ENVNAME}
             spack stack create env --site linux.default --template ${TEMPLATE} --name ${ENVNAME} --compiler gcc
             spack env activate ${ENVDIR}
+
+            unset SPACK_DISABLE_LOCAL_CONFIG
             export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
             # Find external packages
@@ -82,7 +84,8 @@ jobs:
             # Find compilers
             spack compiler find --scope system
 
-            export -n SPACK_SYSTEM_CONFIG_PATH
+            export SPACK_DISABLE_LOCAL_CONFIG=true
+            unset SPACK_SYSTEM_CONFIG_PATH
 
             # For buildcaches
             spack config add config:install_tree:padded_length:200
@@ -131,16 +134,6 @@ jobs:
               echo "jedi-ufs-env ..."
               spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-ufs-env
               spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
-
-            elif [[ "${TEMPLATE}" == *"cylc-dev"* ]]; then
-              # Workaround for not being able to install rust from build-cache, see 
-              # https://github.com/spack/spack/issues/48971
-              echo "rust dependencies ..."
-              spack install --verbose --source --no-check-signature --only=dependencies rust 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}.001.rust-dependencies
-
-              # rust from source
-              echo "rust (from source) ..."
-              spack install --verbose --source --no-cache rust 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}.002.rust
             fi
 
             # the rest

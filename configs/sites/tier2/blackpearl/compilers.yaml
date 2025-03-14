@@ -30,20 +30,33 @@ compilers:
     paths:
       cc: /opt/intel/oneapi/2024.2/bin/icx
       cxx: /opt/intel/oneapi/2024.2/bin/icpx
-      # https://github.com/JCSDA/spack-stack/issues/1279
       f77: /opt/intel/oneapi/2024.2/bin/ifort
       fc: /opt/intel/oneapi/2024.2/bin/ifort
-      #f77: /opt/intel/oneapi/2024.2/bin/ifx
-      #fc: /opt/intel/oneapi/2024.2/bin/ifx
     flags: {}
     operating_system: oracle9
     target: x86_64
     modules: []
     environment:
-      # change to append_path once relevant PR is merged
       append_path:
         CPATH: /opt/intel/oneapi/compiler/2024.2/opt/compiler/include/intel64
     extra_rpaths: []
+# DH* change to 2025.x.y
+- compiler:
+    spec: oneapi@=2024.1.2
+    paths:
+      cc: /opt/intel/oneapi/2024.1/bin/icx
+      cxx: /opt/intel/oneapi/2024.1/bin/icpx
+      f77: /opt/intel/oneapi/2024.1/bin/ifx
+      fc: /opt/intel/oneapi/2024.1/bin/ifx
+    flags: {}
+    operating_system: oracle9
+    target: x86_64
+    modules: []
+    environment:
+      append_path:
+        CPATH: /opt/intel/oneapi/compiler/2024.1/opt/compiler/include/intel64
+    extra_rpaths: []
+# *DH
 - compiler:
     spec: aocc@=4.2.0
     paths:

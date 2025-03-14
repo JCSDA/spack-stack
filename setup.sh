@@ -7,11 +7,11 @@ echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 
 source ${SPACK_STACK_DIR:?}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
+
 # Avoid using ~/.spack directory for caching, bootstrap, etc.
-if [ "$(uname)" != "Darwin" ]; then
-  export SPACK_USER_CACHE_PATH=$SPACK_ROOT/user_cache
-  echo "Changing bootstrap path to $(spack bootstrap root '$spack/bootstrap')"
-fi
+export SPACK_DISABLE_LOCAL_CONFIG=true
+export SPACK_USER_CACHE_PATH=$SPACK_ROOT/user_cache
+echo "Changing bootstrap path to $(spack bootstrap root '$spack/bootstrap')"
 
 # Get the current hash of the spack-stack code
 export SPACK_STACK_HASH=`git rev-parse --short HEAD`

@@ -54,6 +54,8 @@ jobs:
           export ENVDIR=$PWD/envs/${ENVNAME}
           spack stack create env --site linux.default --template unified-dev --name ${ENVNAME} --compiler intel
           spack env activate ${ENVDIR}
+
+          unset SPACK_DISABLE_LOCAL_CONFIG
           export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
           # Find external packages
@@ -98,16 +100,12 @@ jobs:
           echo "    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0 +classic-names" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
-          # Add external Intel MKL and oneAPI runtime
+          # Add external Intel MKL
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "  intel-oneapi-mkl:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "    - spec: intel-oneapi-mkl@2023.2.0%intel@2021.10.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          #echo "  intel-oneapi-runtime:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          #echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          #echo "    - spec: intel-oneapi-runtime@2023.2.0%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          #echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
           # Add external qt@5 to build ecflow
           echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
@@ -117,7 +115,8 @@ jobs:
           echo "    - spec: qt@5.15.3" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
           echo "      prefix: /usr" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
-          export -n SPACK_SYSTEM_CONFIG_PATH
+          export SPACK_DISABLE_LOCAL_CONFIG=true
+          unset SPACK_SYSTEM_CONFIG_PATH
 
           # For buildcaches
           spack config add config:install_tree:padded_length:200
