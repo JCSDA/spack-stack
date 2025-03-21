@@ -106,6 +106,7 @@ packages:
       prefix: /usr
   libtirpc:
     variants: ~gssapi
+  # This package is currently incomplete (no headers), but still works
   libxaw:
     externals:
     - spec: libxaw@1.10.13
@@ -149,6 +150,7 @@ packages:
     externals:
     - spec: qt@5.15.2
       prefix: /ncrc/proj/epic/spack-stack/qt-5.15.2/5.15.2/gcc_64
+      modules: [qt/5.15.2]
   rdma-core:
     externals:
     - spec: rdma-core@37.0
