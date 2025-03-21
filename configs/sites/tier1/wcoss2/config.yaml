@@ -1,0 +1,5 @@
+config:
+  build_jobs: 6
+  template_dirs:
+  - $env/site/templates
+  - $spack/share/spack/templates

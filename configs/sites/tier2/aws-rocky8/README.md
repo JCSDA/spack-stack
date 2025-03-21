@@ -12,7 +12,7 @@ aws ec2 run-instances \
    --key-name YOUR-KEYPAIR \
    --block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-05fb00e35af5550e7","VolumeSize":150,"VolumeType":"gp3","Throughput":125}}' \
    --network-interfaces '{"SubnetId":"subnet-00575f6b8ccc2005d","AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-0436b207bc220df08"]}' \
-   --tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"rocky8-spack-stack-gcc-intel"},{"Key":"User","Value":$(whoami)}]}' \
+   --tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"rocky8-spack-stack-1.9-gcc-oneapi"}]}' \
    --metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
    --private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":false,"EnableResourceNameDnsAAAARecord":false}' \
    --count "1" 
@@ -72,12 +72,12 @@ tmux new -s setup
 sudo su -
 
 # Compilers
-dnf install gcc-toolset-11-gcc-c++ \
+dnf install -y gcc-toolset-11-gcc-c++ \
         gcc-toolset-11-gcc-gfortran \
         gcc-toolset-11-gdb
 
 #Install other requirements.
-dnf install binutils-devel \
+dnf install -y binutils-devel \
         m4 \
         wget \
         git \
@@ -90,8 +90,7 @@ dnf install binutils-devel \
         automake \
         xorg-x11-xauth \
         xterm \
-        perl-IPC-Cmd \
-        pearl-core \
+        perl \
         gettext-devel \
         texlive \
         tcl-devel \
@@ -102,11 +101,10 @@ dnf install binutils-devel \
         qt5-qtbase-devel \
         qt5-qtsvg \
         qt5-qtsvg-devel \
-        autoconf2.7x \
         libxml2 libxml2-devel
 
 # Python develop.
-dnf install python3-devel
+dnf install -y python3-devel
 
 # Enable gcc toolset. This is needed for later builds. Once lmod is installed
 # this will be configured as a pass-through module.
@@ -126,12 +124,16 @@ service sshd restart
 ```bash
 dnf config-manager --set-enabled crb
 
-dnf install mysql-server mysql-devel
+dnf install -y mysql-server mysql-devel
 sudo systemctl start mysqld.service
 sudo systemctl enable mysqld
 
 # Use the mysql server.
-mysql -u root
+sudo mysql -u root
+USE mysql;
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
+FLUSH PRIVILEGES;
+EXIT;
 exit
 ```
 
@@ -266,7 +268,7 @@ spack config add "packages:ewok-env:variants:+mysql"
 # Concretize and install
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
-spack install --fail-fast -j 16 2>&1 | tee log.install
+spack install --fail-fast -j 12 2>&1 | tee log.install
 
 # Install modules
 spack module lmod refresh
@@ -280,49 +282,42 @@ EOF
 </details>
 
 <details>
-<summary><b>Intel Installation</b></summary>
+<summary><b>Intel OneAPI Installation</b></summary>
 
-#### Install Intel Compiler
+#### Install Intel OneAPI Compiler
 
 ```bash
 rm -rf /opt/intel
 rm -rf /var/intel
 
-mkdir -p /opt/intel/src
-pushd /opt/intel/src
+tee > /tmp/oneAPI.repo << EOF
+[oneAPI]
+name=Intel® oneAPI repository
+baseurl=https://yum.repos.intel.com/oneapi
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+EOF
 
-# Download Intel install assets.
-wget -O cpp-compiler.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/d85fbeee-44ec-480a-ba2f-13831bac75f7/l_dpcpp-cpp-compiler_p_2023.2.3.12_offline.sh
-wget -O fortran-compiler.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/0ceccee5-353c-4fd2-a0cc-0aecb7492f87/l_fortran-compiler_p_2023.2.3.13_offline.sh
-wget -O tbb.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/c95cd995-586b-4688-b7e8-2d4485a1b5bf/l_tbb_oneapi_p_2021.10.0.49543_offline.sh
-wget -O mpi.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/4f5871da-0533-4f62-b563-905edfb2e9b7/l_mpi_oneapi_p_2021.10.0.49374_offline.sh
-wget -O math.sh https://registrationcenter-download.intel.com/akdlm/IRC_NAS/adb8a02c-4ee7-4882-97d6-a524150da358/l_onemkl_p_2023.2.0.49497_offline.sh
+sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
 
-# Install the Intel assets.
-sh cpp-compiler.sh -a --silent --eula accept 2>&1 | tee install.cpp-compiler.log
-sh fortran-compiler.sh -a --silent --eula accept | tee install.fortran-compiler.log
-sh tbb.sh -a --silent --eula accept | tee install.tbb.log
-sh mpi.sh -a --silent --eula accept | tee install.mpi.log
-sh math.sh -a --silent --eula accept | tee install.math.log
-
-popd
+dnf install -y intel-oneapi-compiler-dpcpp-cpp-2024.2 intel-oneapi-compiler-fortran-2024.2 intel-oneapi-mpi-devel-2021.13 intel-oneapi-tbb-devel-2021.13 intel-oneapi-mkl-devel-2024.2
 ```
 
-#### Create Intel Environment
+#### Create Intel OneAPI Environment
 ```bash
 tmux -s intel
 sudo su -
-module load gcc-toolset
+scl enable gcc-toolset bash
 
-source /opt/intel/oneapi/compiler/2023.2.3/env/vars.sh
-source /opt/intel/oneapi/mpi/2021.10.0/env/vars.sh
 source /opt/intel/oneapi/setvars.sh
 
 cd /opt/spack-stack
 source ./setup.sh
 
-spack stack create env --site linux.default --template unified-dev --name unified-env-intel --compiler intel
-cd envs/unified-env-intel
+spack stack create env --site linux.default --template unified-dev --name unified-env-oneapi --compiler oneapi
+cd envs/unified-env-oneapi
 spack env activate -p .
 
 export SPACK_SYSTEM_CONFIG_PATH="${PWD}/site"
@@ -337,10 +332,35 @@ spack external find --scope system grep
 # No external find for pre-installed intel-oneapi-mpi (from pcluster AMI),
 # and no way to add object entry to list using "spack config add".
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@11.2.1
+      prefix: /usr
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@11.2.1
+      prefix: /usr
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /opt/intel/oneapi
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.10.0%intel@2021.10.0
+    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+      prefix: /opt/intel/oneapi
+  intel-oneapi-tbb:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-tbb@2021.13
+      prefix: /opt/intel/oneapi
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime%oneapi@2024.2.1
       prefix: /opt/intel/oneapi
 EOF
 
@@ -356,27 +376,12 @@ EOF
 
 spack compiler find --scope system
 
-export -n SPACK_SYSTEM_CONFIG_PATH
+unset SPACK_SYSTEM_CONFIG_PATH
 
 # spack config add "packages:mpi:buildable:False"
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.10.0]"
-spack config add "packages:all:compiler:[intel@2021.10.0, gcc@11.2.1]"
+spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.13]"
+spack config add "packages:all:compiler:[oneapi@2024.2.1, gcc@11.2.1]"
 
-# Edit envs/unified-intel/spack.yaml.
-# 1) Find this line:
-#      compilers: ['%aocc', '%apple-clang', '%gcc', '%intel']
-# 2) Delete all compilers except for your target compiler. In the case of intel
-#    the line should look like this:
-#      compilers: ['%intel']
-
-# edit envs/unified-env/site/compilers.yaml and replace the following line in the **Intel** compiler section:
-#     environment: {}
-# -->
-#     environment:
-#       prepend_path:
-#         PATH: /opt/rh/gcc-toolset-11/root/usr/bin
-#         LD_LIBRARY_PATH: '/opt/intel/oneapi/compiler/2023.2.3/linux/compiler/lib/intel64_lin:/usr/lib:/usr/lib64'
-#         CPATH: /opt/rh/gcc-toolset-11/root/usr/include
 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
@@ -421,13 +426,13 @@ ctest
 </details>
 
 <details>
-<summary>Intel</summary>
+<summary>Intel OneAPI</summary>
 
 ```bash
 # Example given for building jedi-bundle
-module use /opt/spack-stack/envs/unified-dev-intel/install/modulefiles/Core
-module load stack-intel/2021.10.0
-module load stack-intel-oneapi-mpi/2021.10.0
+module use /opt/spack-stack/envs/unified-dev-oneapi/install/modulefiles/Core
+module load stack-oneapi/2024.2.1
+module load stack-intel-oneapi-mpi/2021.13
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env

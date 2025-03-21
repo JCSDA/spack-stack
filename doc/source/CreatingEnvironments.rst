@@ -16,6 +16,7 @@ The argument *<compiler>* is used to specify the primary (preferred) compiler fo
 
    . <path to spack-stack directory>/setup.sh
 
+   # If <compiler> contains a version, other versions of the same compiler will be removed from site/compilers.yaml unless --keep-all-comilers is set
    spack stack create env --site <site name> --template <template name> --name <environment name> --compiler <compiler>
 
    cd ${SPACK_STACK_DIR}/envs/<environment name>/

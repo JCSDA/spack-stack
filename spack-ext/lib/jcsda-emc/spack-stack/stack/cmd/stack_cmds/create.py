@@ -145,6 +145,12 @@ def setup_env_parser(subparser):
         help="""Compiler to use. Must be a supported compiler for this site.""",
     )
 
+    subparser.add_argument(
+        "--keep-all-compilers",
+        action='store_true',
+        help="Do not filter site/compilers.yaml (default is filter out different compiler versions of the same name)"
+    )
+
 
 def setup_create_parser(subparser):
     sp = subparser.add_subparsers(metavar="SUBCOMMAND", dest="env_type")
@@ -180,6 +186,7 @@ def dict_from_args(args):
     dict["upstreams"] = args.upstream
     dict["modifypkg"] = args.modify_pkg
     dict["compiler"] = args.compiler
+    dict["keep_all_compilers"] = args.keep_all_compilers
 
     return dict
 

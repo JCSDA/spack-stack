@@ -1,0 +1,162 @@
+packages:
+  all:
+    compiler: [nvhpc@25.1, gcc@13.3.0]
+    providers:
+      mpi: [openmpi@3.1.5]
+      blas: [nvhpc@25.1]
+      zlib-api: [zlib]
+  nvhpc:
+    externals:
+    - spec: nvhpc@25.1
+      modules:
+      - nvhpc/25.1
+    buildable: false
+  mpi:
+    buildable: False
+  blas:
+    buildable: False
+
+  # Installed by apt as when following the Ubuntu NVHPC instructions
+  # - standard Ubuntu packages
+  # - plus packages: cmake, pkg-config, libtool, python3-dev
+  autoconf:
+    externals:
+    - spec: autoconf@2.71
+      prefix: /usr
+    buildable: False
+  automake:
+    externals:
+    - spec: automake@1.16.5
+      prefix: /usr
+    buildable: False
+  binutils:
+    externals:
+    - spec: binutils@2.42+gold~headers
+      prefix: /usr
+    buildable: False
+  cmake:
+    externals:
+    - spec: cmake@3.28.3
+      prefix: /usr
+    buildable: False
+  coreutils:
+    externals:
+    - spec: coreutils@9.4
+      prefix: /usr
+    buildable: False
+  curl:
+    externals:
+    - spec: curl@8.5.0+gssapi+ldap+nghttp2
+      prefix: /usr
+    buildable: False
+  diffutils:
+    externals:
+    - spec: diffutils@3.10
+      prefix: /usr
+    buildable: False
+  findutils:
+    externals:
+    - spec: findutils@4.9.0
+      prefix: /usr
+    buildable: False
+  gawk:
+    externals:
+    - spec: gawk@5.2.1
+      prefix: /usr
+    buildable: False
+  gettext:
+    externals:
+    - spec: gettext@0.21
+      prefix: /usr
+    buildable: False
+  git:
+    externals:
+    - spec: git@2.43.0~tcltk
+      prefix: /usr
+    buildable: False
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.4.1
+      prefix: /usr
+    buildable: False
+  # TODO: spack-stack won't accept the system version, must build own
+  #gmake:
+  #  externals:
+  #  - spec: gmake@4.3
+  #    prefix: /usr
+  #  buildable: False
+  grep:
+    externals:
+    - spec: grep@3.11
+      prefix: /usr
+    buildable: False
+  groff:
+    externals:
+    - spec: groff@1.23.0
+      prefix: /usr
+    buildable: False
+  libtool:
+    externals:
+    - spec: libtool@2.4.7
+      prefix: /usr
+    buildable: False
+  m4:
+    externals:
+    - spec: m4@1.4.19
+      prefix: /usr
+    buildable: False
+  ninja:
+    externals:
+    - spec: ninja@1.11.1
+      prefix: /usr
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.7
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/25.1/comm_libs/12.6/hpcx/hpcx-2.21/ompi
+    buildable: False
+  perl:
+    externals:
+    - spec: perl@5.38.2~cpanm+opcode+open+shared+threads
+      prefix: /usr
+    buildable: False
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.8.1
+      prefix: /usr
+    buildable: False
+  pkg-config:
+    buildable: False
+  python:
+    externals:
+    - spec: python@3.12.3+bz2+crypt+ctypes+dbm+lzma~nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
+      prefix: /usr
+    require:
+    - '@3.12.3'
+    buildable: False
+  sed:
+    externals:
+    - spec: sed@4.9
+      prefix: /usr
+    buildable: False
+  tar:
+    externals:
+    - spec: tar@1.35
+      prefix: /usr
+    buildable: False
+  texlive:
+    externals:
+    - spec: texlive@20230313
+      prefix: /usr
+    buildable: False
+  wget:
+    externals:
+    - spec: wget@1.21.4
+      prefix: /usr
+    buildable: False
+  xz:
+    externals:
+    - spec: xz@5.4.5
+      prefix: /usr
+    buildable: False
+

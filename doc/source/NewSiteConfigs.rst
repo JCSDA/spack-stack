@@ -25,7 +25,7 @@ The instructions below are for GNU (`gcc`), since this is the easiest and best s
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 | LLVM clang (clang, clang++, w/ gfortran)  | 10.0.0 to 14.0.3                                                     | ``clang@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
-| Nvidia HPC SDK (nvcc, nvc++, nvfortran)   | 12.6 (Nvidia HPC SDK 24.9) [#fn3]_                                   | ``nvhpc@``                |
+| Nvidia HPC SDK (nvcc, nvc++, nvfortran)   | 12.6 (Nvidia HPC SDK 25.1) [#fn3]_                                   | ``nvhpc@``                |
 +-------------------------------------------+----------------------------------------------------------------------+---------------------------+
 
 .. rubric:: Footnotes
@@ -37,7 +37,7 @@ The instructions below are for GNU (`gcc`), since this is the easiest and best s
   Note that ``apple-clang@14.x`` and ``apple-clang@15.x`` compiler versions are fully supported, and when using ``apple-clang@15.x`` the :ref:`workaround noted below<apple-clang-15-workaround>` is required.
 
 .. [#fn3]
-  Support for Nvidia compilers is experimental and limited to a subset of packages. Please refer to :numref:`Section %s <NewSiteConfigs_Linux_CreateEnv_Nvidia>` below.
+  Support for Nvidia compilers is experimental and limited to a subset of packages. Please refer to the tier2 site config from :numref:`Section %s <Preconfigured_Sites_Azure_Ubuntu2404_Nvidia>`.
 
 ..  _NewSiteConfigs_macOS:
 
@@ -636,7 +636,6 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
    spack stack setup-meta-modules
 
 14. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
-
 
 ..  _NewSiteConfigs_Linux_CreateEnv_Nvidia:
 

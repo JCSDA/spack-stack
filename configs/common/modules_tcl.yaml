@@ -236,7 +236,7 @@ modules:
         environment:
           set:
             'WGRIB2_INC': '{prefix}/include'
-            'WGRIB2_LIB': '{prefix}/lib/libwgrib2.a'
+            'WGRIB2_LIB': '{prefix}/lib64/libwgrib2.so'
             'WGRIB2': '{prefix}/bin/wgrib2'
       wrf-io:
         environment:

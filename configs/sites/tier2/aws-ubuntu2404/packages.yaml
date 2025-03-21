@@ -1,11 +1,11 @@
 packages:
   mysql:
     externals:
-    - spec: mysql@8.0.37
+    - spec: mysql@8.0.41
       prefix: /usr
   wget:
     externals:
-    - spec: wget@1.21.2
+    - spec: wget@1.21.4
       prefix: /usr
   binutils:
     externals:
@@ -17,11 +17,11 @@ packages:
       prefix: /usr
   diffutils:
     externals:
-    - spec: diffutils@3.8
+    - spec: diffutils@3.10
       prefix: /usr
   findutils:
     externals:
-    - spec: findutils@4.8.0
+    - spec: findutils@4.9.0
       prefix: /usr
   gawk:
     externals:
@@ -49,11 +49,11 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.34.1~tcltk
+    - spec: git@2.43.0~tcltk
       prefix: /usr
   git-lfs:
     externals:
-    - spec: git-lfs@3.0.2
+    - spec: git-lfs@3.4.1
       prefix: /usr
   gmake:
     externals:
@@ -65,15 +65,15 @@ packages:
       prefix: /usr
   libtool:
     externals:
-    - spec: libtool@2.4.6
+    - spec: libtool@2.4.7
       prefix: /usr
   m4:
     externals:
-    - spec: m4@1.4.18
+    - spec: m4@1.4.19
       prefix: /usr
   perl:
     externals:
-    - spec: perl@5.34.0~cpanm+opcode+open+shared+threads
+    - spec: perl@5.38.2~cpanm+opcode+open+shared+threads
       prefix: /usr
   pkg-config:
     externals:
@@ -86,7 +86,7 @@ packages:
       prefix: /usr
   sed:
     externals:
-    - spec: sed@4.8
+    - spec: sed@4.9
       prefix: /usr
   lcms:
     externals:

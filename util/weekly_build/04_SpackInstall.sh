@@ -20,7 +20,7 @@ INSTALL_OPTS="--show-log-on-error --fail-fast $cache_flag $INSTALL_OPTS"
 
 for compiler in $COMPILERS; do
   for template in $TEMPLATES; do
-    envname=build-$template-${compiler/@/-}
+    [[ ${compiler} == *"@="* ]] && envname=build-$template-${compiler/@=/-} || envname=build-$template-${compiler/@/-}
     envdir=$RUNDIR/$RUNID/envs/$envname
     echo "Building environment $envname in $envdir"
     cd $envdir

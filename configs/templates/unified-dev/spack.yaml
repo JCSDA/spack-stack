@@ -24,13 +24,17 @@ spack:
     - neptune-env           ^esmf@=8.8.0
     - neptune-python-env    ^esmf@=8.8.0
     - soca-env
-    - ufs-srw-app-env       ^esmf@=8.6.1 ^crtm@=3.1.1-build1
-    - ufs-weather-model-env ^esmf@=8.6.1 ^crtm@=3.1.1-build1
+    - ufs-srw-app-env       ^esmf@=8.8.0 ^crtm@=3.1.1-build1
+    - ufs-weather-model-env ^esmf@=8.8.0 ^crtm@=3.1.1-build1
 
     # Various crtm tags (list all to avoid duplicate packages)
     - crtm@2.4.0.1
     - crtm@v2.4.1-jedi
     - crtm@3.1.1-build1
+
+    # Mapl with various esmf tags
+    - mapl@2.53.0 ^esmf@8.6.1
+    - mapl@2.53.0 ^esmf@8.8.0
 
     # Various esmf tags (list all to avoid duplicate packages)
     - esmf@=8.6.1 snapshot=none

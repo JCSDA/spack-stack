@@ -1,0 +1,22 @@
+name: Nightly 08 Scrubber
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 08 Scrubber
+    shell: bash
+    run: |
+      cd ${BASEDIR}
+      pwd
+      # Avoid BASEDIR being deleted
+      touch .
+      # Search for files older than 7 days in in directories 202YMMDD
+      for dir in 202?????; do
+        echo "Scrubbing files older than 7 days in directory ${dir} ..."
+        find ./${dir} -type f -mtime +7 -print0 | xargs -0 rm -f || true
+      done
+      # Search for empty directories older than 7 days in in directories 202YMMDD
+      for dir in 202?????; do
+        echo "Scrubbing empty directories older than 7 days in directory ${dir} ..."
+        find ./${dir} -type d -mtime +7 -empty -print0 | xargs -0 rmdir || true
+      done

@@ -16,6 +16,7 @@
         - libfabric
         - craype-network-ofi
         - cray-mpich/8.1.9
+        - cray-pals
     intel-oneapi-mkl:
       # Remove buildable: False and configure+uncomment externals section below to use intel-oneapi-mkl
       buildable: False
@@ -32,8 +33,7 @@
     py-numpy:
       require::
       - '^[virtuals=lapack,blas] openblas'
-      - '@1.26'
-      - '%gcc'
+      - '@1.26 %gcc'
     # *DH
     eckit:
       require:

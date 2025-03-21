@@ -32,10 +32,6 @@ packages:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
-  cmake:
-    externals:
-    - spec: cmake@3.20.2
-      prefix: /usr
   # Don't use issues with openssl
   #curl:
   #  externals:
@@ -107,10 +103,6 @@ packages:
     externals:
     - spec: pkgconf@1.7.3
       prefix: /usr
-  qt:
-    externals:
-    - spec: qt@5.15.8
-      prefix:  /apps/spack-managed/gcc-11.3.1/qt-5.15.8-d47tsna6f5dylcpblkfgw4gpn2cucihd
   sed:
     externals:
     - spec: sed@4.8

@@ -12,7 +12,7 @@ set -x
 
 for compiler in $COMPILERS; do
   for template in $TEMPLATES; do
-    envname=build-$template-${compiler/@/-}
+    [[ ${compiler} == *"@="* ]] && envname=build-$template-${compiler/@=/-} || envname=build-$template-${compiler/@/-}
     envdir=$RUNDIR/$RUNID/envs/$envname
     cd $envdir
     spack env activate .

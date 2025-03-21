@@ -97,6 +97,11 @@ spack:
     icu4c:
       require:
       - '%gcc'
+    intel-oneapi-runtime:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+        prefix: /opt/intel/oneapi
     intel-oneapi-mkl:
       buildable: false
       externals:

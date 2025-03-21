@@ -7,8 +7,22 @@ packages:
     buildable: False
   openmpi:
     externals:
-    - spec: openmpi@4.1.4%gcc@12.2.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi+static~wrapper-rpath
-        schedulers=slurm
+    - spec: openmpi@4.1.4%gcc@12.2.0 ~atomics~cuda~cxx~cxx_exceptions~gpfs~internal-hwloc~internal-libevent~internal-pmix~java~legacylaunchers~lustre~memchecker~openshmem~orterunprefix+pmi+romio+rsh~singularity+static+vt+wrapper-rpath fabrics=none romio-filesystem=none schedulers=slurm  
+      prefix: /apps/spack-managed/gcc-12.2.0/openmpi-4.1.4-hf3dkf6r56x3klzcgs3u7esgt3fhnk63
       modules:
       - gcc/12.2.0
       - openmpi/4.1.4
+
+  ectrans:
+    require::
+    - '~mkl +fftw'
+  gsibec:
+    require::
+    - '~mkl'
+  py-numpy:
+    require::
+    - '@1.26'
+    - '^openblas'
+  zlib-ng:
+    require:
+    - '~shared'

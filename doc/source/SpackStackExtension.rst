@@ -19,7 +19,7 @@ The full list of options for creating environments is:
 
 .. code-block:: console
 
-   spack stack create env [--template TEMPLATE] [--compiler COMPILER] [--name NAME] [--dir DIR] [--site SITE] [--prefix PREFIX] [--upstream UPSTREAM] [--modify-pkg MODIFY_PKG]
+   spack stack create env [--template TEMPLATE] [--compiler COMPILER] [--name NAME] [--dir DIR] [--site SITE] [--prefix PREFIX] [--upstream UPSTREAM] [--modify-pkg MODIFY_PKG] [--keep-all-compilers]
 
 Here, ``TEMPLATE`` corresponds to a pre-defined list of specs (see :numref:`Section %s <EnvironmentsTemplates>`), ``SITE`` to a pre-configured or a configurable site (see :numref:`Section %s <Preconfigured_Sites>`). For all other options, consult the output of ``spack stack create env -h`` and the additional information in :numref:`Section %s <CreatingEnvironment>`.
 
