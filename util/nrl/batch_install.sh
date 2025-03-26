@@ -108,7 +108,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@2025.0.4" "gcc@=13.3.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.4" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
