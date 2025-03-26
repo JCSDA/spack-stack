@@ -1,0 +1,25 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.1, gcc@12.2.0]
+    providers:
+      mpi:: [cray-mpich@8.1.29]
+  mpi:
+    buildable: False
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.29%oneapi@2024.2.1 +wrappers
+      modules:
+      - craype/2.7.20
+      - cray-mpich/8.1.29
+      - libfabric/1.15.2.0
+      - cray-pals/1.2.11
+  intel-oneapi-runtime:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+      prefix: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2024.2.1
+  intel-oneapi-mkl:
+    # No intel-oneapi-mkl installed on Derecho, install via spack.
+    # Prefer the version that Intel releases with the above compiler
+    prefer:
+    - '@2024.2'

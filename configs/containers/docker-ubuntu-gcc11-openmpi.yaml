@@ -1,0 +1,219 @@
+spack:
+  concretizer:
+    unify: true
+
+  config:
+    checksum: false
+    build_jobs: 2
+    connect_timeout: 60
+
+  compilers:
+  - compiler:
+      spec: gcc@11.4.0
+      paths:
+        cc: /usr/bin/gcc
+        cxx: /usr/bin/g++
+        f77: /usr/bin/gfortran
+        fc: /usr/bin/gfortran
+      flags: {}
+      operating_system: ubuntu24.04
+      modules: []
+      environment: {}
+      extra_rpaths: []
+
+  # Basic package config from configs/common/packages.yaml
+  # Additional package config for container
+  packages:
+    all:
+      require: '%gcc'
+      target: [x86_64]
+      providers:
+        mpi: [openmpi@5.0.5]
+      compiler: [gcc@11.4.0]
+    gcc:
+      buildable: false
+      externals:
+      - spec: gcc@11.4.0
+        prefix: /usr
+    gcc-runtime:
+      buildable: false
+      externals:
+      - spec: gcc-runtime@11.4.0
+        prefix: /usr
+    diffutils:
+      buildable: false
+      externals:
+      - spec: diffutils@3.8
+        prefix: /usr
+    git:
+      buildable: false
+      externals:
+      - spec: git@2.34.1~tcltk
+        prefix: /usr
+    git-lfs:
+      buildable: false
+      externals:
+      - spec: git-lfs@3.0.2
+        prefix: /usr
+    llvm:
+      buildable: false
+      externals:
+      - spec: llvm@14.0.6
+        prefix: /usr
+    mysql:
+      buildable: false
+      externals:
+      - spec: mysql@8.0.40
+        prefix: /usr
+    qt:
+      buildable: false
+      externals:
+      - spec: qt@5.15.3
+        prefix: /usr
+      version: [5.15.3]
+    wget:
+      buildable: false
+      externals:
+      - spec: wget@1.21.2
+        prefix: /usr
+
+  specs: []
+
+  container:
+
+    # Select the format of the recipe e.g. docker,
+    # singularity or anything else that is currently supported
+    format: docker
+    # How to use:
+    #$ spack containerize > Dockerfile
+    #$ sudo docker build -t myimage .
+    #$ sudo docker run -it myimage
+
+    #format: singularity
+    # How to use:
+    #$ spack containerize > singularity.def
+    #$ sudo singularity build singularity.sif singularity.def
+
+    # Sets the base images for the stages where Spack builds the
+    # software or where the software gets installed after being built..
+    images:
+      os: ubuntu:24.04
+      spack:
+        url: https://github.com/jcsda/spack
+        ref: spack-stack-dev
+        resolve_sha: true
+
+    # Whether or not to strip binaries
+    strip: false
+
+    ## Additional system packages that are needed at runtime
+    os_packages:
+      build:
+      - bc
+      - cpp-11
+      - g++-11
+      - gcc-11
+      - gfortran-11
+      - git
+      - git-lfs
+      - llvm-14
+      - make
+      - mysql-server
+      - qtbase5-dev
+      - qt5-qmake
+      - libqt5svg5-dev
+      - qt5dxcb-plugin
+      - wget
+
+      final:
+      - bc
+      - cpp-11
+      - g++-11
+      - gcc-11
+      - gfortran-11
+      - git
+      - git-lfs
+      - llvm-14
+      - make
+      - mysql-server
+      - qtbase5-dev
+      - qt5-qmake
+      - libqt5svg5-dev
+      - qt5dxcb-plugin
+      - wget
+      - ca-certificates
+      - curl
+      - file
+      - gnupg2
+      - iproute2
+      - locales
+      - unzip
+      - vim
+      - nano
+      - less
+
+    # Extra instructions
+    extra_instructions:
+      pre_build: |
+        # Copy the spack-stack extension repo into the spack code
+        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
+        # Register spack-stack extension repo
+        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults && \
+        update-alternatives --remove-all cpp && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 100 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
+        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100 && \
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100
+      pre_final: |
+        # Set environment variables for installing tzdata
+        ENV DEBIAN_FRONTEND=noninteractive
+        ENV TZ=Etc/UTC
+        ENV CC=gcc
+        ENV CXX=g++
+        ENV FC=gfortran
+      build: |
+        # Put output of spack find into a file
+        RUN cd /opt/spack-environment && \
+        spack env activate -d . && \
+        spack find 2>&1 | tee /root/spack_find.out
+      final: |
+        # Copy spack find output from builder
+        COPY --from=builder /root/spack_find.out /root/spack_find.out
+        # Make a non-root user:nonroot / group:nonroot for running MPI
+        RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
+        echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
+        echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
+        echo "export CC=gcc" >> /home/nonroot/.bashrc && \
+        echo "export CXX=g++" >> /home/nonroot/.bashrc && \
+        echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
+        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 100 && \
+        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 && \
+        update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
+        update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100 && \
+        # Needed by py-llvmlite
+        update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
+        mkdir /home/nonroot/.pmix && \
+        echo "rmaps_default_mapping_policy=:oversubscribe" >> /home/nonroot/.pmix/mca-params.conf && \
+        chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.pmix
+        # Replicate settings for root user
+        RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
+        echo "ulimit -v unlimited" >> /root/.bashrc && \
+        echo "export CC=gcc" >> /root/.bashrc && \
+        echo "export CXX=g++" >> /root/.bashrc && \
+        echo "export FC=gfortran" >> /root/.bashrc && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig && \
+        mkdir /root/.pmix && \
+        echo "rmaps_default_mapping_policy=:oversubscribe" >> /root/.pmix/mca-params.conf
+        # Also set necessary environment variables for openmpi and jedi-cmake.
+        RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
+        echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
+        echo "export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe" >> /root/.bashrc && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/gcc-*/jedi-cmake-*)" >> /root/.bashrc
+
+    # Labels for the image
+    labels:
+      app: ""
+      mpi: "openmpi"

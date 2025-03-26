@@ -1,0 +1,31 @@
+compilers:
+- compiler:
+    spec: oneapi@=2024.2.1
+    paths:
+      cc: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/icx
+      cxx: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/icpx
+      f77: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/ifort
+      fc: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2024.2.1-oqhstbmawnrsdw472p4pjsopj547o6xs/compiler/2024.2/bin/ifort
+    flags: {}
+    operating_system: rocky9
+    modules:
+    - intel-oneapi-compilers/2024.2.1
+    environment:
+      prepend_path:
+        PATH: '/usr/bin'
+        LD_LIBRARY_PATH: '/usr/lib:/usr/lib64'
+        CPATH: '/usr/include/c++/11/x86_64-redhat-linux'
+    extra_rpaths: []
+
+- compiler:
+    spec: gcc@11.4.1
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc:  /usr/bin/gfortran
+    flags: {}
+    operating_system: rocky9
+    modules: []
+    environment: {}
+    extra_rpaths: []

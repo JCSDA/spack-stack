@@ -15,3 +15,8 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2023.2.0%intel@2021.10.0
       prefix: /usr/local/intel/oneapi/2021
+  wget:
+    buildable: False
+    externals:
+    - spec: wget@1.20.3
+      prefix: /usr

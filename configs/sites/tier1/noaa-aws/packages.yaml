@@ -49,7 +49,7 @@ packages:
       prefix: /usr
   groff:
     externals:
-    - spec: groff@1.21
+    - spec: groff@1.22.3
       prefix: /usr
   hwloc:
     externals:
@@ -112,5 +112,3 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
-  zlib:
-     require: [~shared]
