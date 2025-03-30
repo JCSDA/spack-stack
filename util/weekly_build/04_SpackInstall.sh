@@ -31,9 +31,11 @@ for compiler in $COMPILERS; do
       mirrorpath=$(spack mirror list | awk "{if (\$1==\"$SOURCE_CACHE\") print \$NF}")
     fi
     mirrorpath=${mirrorpath#file://}
-    spack_wrapper log.fetch mirror create --dependencies \
+    if [ "$SKIP_FETCH" != YES ]; then
+      spack_wrapper log.fetch mirror create --dependencies \
         --directory ${mirrorpath?"Source mirror path could not be determined. Check site's mirrors.yaml."} \
         ${PACKAGES_TO_INSTALL:---all}
+    fi
     # Just install the packages we're testing (+dependencies):
     if [[ ! -z "${PACKAGES_TO_TEST}" ]]; then
       spack_install_wrapper log.install-and-test install $INSTALL_OPTS --test root $PACKAGES_TO_TEST

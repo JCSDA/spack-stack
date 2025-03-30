@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SPACK_STACK_DIR=$(dirname $(dirname ${SCRIPT_DIR}))
+
 set -e
 
 ##################################################################################################
@@ -9,36 +12,36 @@ set -e
 usage() {
   set +x
   echo
-  echo "Usage: $0 -b <BUILD_DIR> | -i <INSTALL_DIR> | -r <role> | -c <BUILDCACHE_DIR>"
+  echo "Usage: $0 -r <ROLE> -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>]"
   echo
-  echo "  -b  Build environments in BUILD_DIR and update build caches"
-  echo "  -i  Install environments in INSTALL_DIR using build caches"
   echo "  -r  Set role, can be 'ops' or 'dev'"
-  echo "  -c  Provide location of build caches as BUILDCACHE_DIR"
-  echo "      Must be set if and only if role is 'ops'"
-  echo "  -u  Flag to update bootstrap and source caches"
-  echo "      Can be set if and only if role is 'dev' and"
-  echo "      '-b' is used (i.e. cannot be used with '-i')"
+  echo "  -m  Set mode, can be 'build' or 'install';"
+  echo "      build: build environments and update build caches;"
+  echo "      install: install environments using build caches"
+  echo "  -d  Build or install environments in ENV_DIRS;"
+  echo "      if not set, the default location is used"
+  echo "  -c  Provide location of build caches as BUILDCACHE_DIR;"
+  echo "      if not set, authoritative build caches are used"
+  echo "  -u  Flag to update bootstrap and source caches;"
+  echo "      requires role 'dev' and mode 'build'"
   echo "  -h  display this help"
   echo
 }
 
-while getopts b:c:i:r:hu flag
+while getopts r:m:d:c:uh flag
 do
   case "${flag}" in
-    b)
-      SPACK_STACK_MODE="build"
-      SPACK_STACK_ENVIRONMENT_DIRS=${OPTARG}
-      ;;
-    c)
-      SPACK_STACK_BUILDCACHE_DIR=${OPTARG}
-      ;;
-    i)
-      SPACK_STACK_MODE="install"
-      SPACK_STACK_ENVIRONMENT_DIRS=${OPTARG}
-      ;;
     r)
       SPACK_STACK_ROLE=${OPTARG}
+      ;;
+    m)
+      SPACK_STACK_MODE=${OPTARG}
+      ;;
+    d)
+      SPACK_STACK_ENVIRONMENT_DIRS=$(readlink -f ${OPTARG})
+      ;;
+    c)
+      SPACK_STACK_BUILDCACHE_DIR=$(readlink -f ${OPTARG})
       ;;
     u)
       SPACK_STACK_UPDATE_DEV_CACHES="true"
@@ -50,54 +53,42 @@ do
   esac
 done
 
-# Default for updating extra caches (bootstrap, source) is 'false'
-SPACK_STACK_UPDATE_DEV_CACHES=${SPACK_STACK_UPDATE_DEV_CACHES:-false}
-
-echo ""
 echo "INFO: $0 options:"
 echo "  SPACK_STACK_ROLE:                            ${SPACK_STACK_ROLE:-not set}"
 echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set}"
-echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-not set}"
-echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-not set}"
+echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
+echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
-echo ""
 
-if [[ ${SPACK_STACK_ROLE} == "ops" ]]; then
-  if [[ -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
-    echo "ERROR, SPACK_STACK_BUILDCACHE_DIR not defined. Provide -c BUILDCACHE_DIR as argument when role is 'ops'."
-    exit 1
-  fi
-  if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
-    echo "ERROR, SPACK_STACK_UPDATE_DEV_CACHES must not be set if role is 'ops'."
-    exit 1
-  fi
-elif [[ ${SPACK_STACK_ROLE} == "dev" ]]; then
-  if [[ ! -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
-    echo "ERROR, SPACK_STACK_BUILDCACHE_DIR must not be set if role is 'dev'."
-    exit 1
-  fi
-else
+if [[ -z ${SPACK_STACK_ROLE} ]]; then
+  echo "ERROR, SPACK_STACK_ROLE not defined. Provide -r ROLE as argument"
+  exit 1
+elif [[ ! ${SPACK_STACK_ROLE} == "dev" && ! ${SPACK_STACK_ROLE} == "ops" ]]; then
   echo "ERROR, invalid role '${SPACK_STACK_ROLE}'"
   exit 1
 fi
 
-if [[ ${SPACK_STACK_MODE} == "build" ]]; then
-  if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
-    echo "ERROR, SPACK_STACK_ENVIRONMENT_DIRS not defined. Provide -b BUILD_DIR as argument."
-    exit 1
-  fi
-elif [[ ${SPACK_STACK_MODE} == "install" ]]; then
-  if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
-    echo "ERROR, SPACK_STACK_ENVIRONMENT_DIRS not defined. Provide -i INSTALL_DIR as argument."
-    exit 1
-  fi
-  if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
-    echo "ERROR, dev caches can only be updated with '-b', not with '-i'."
-    exit 1
-  fi
-else
+if [[ -z ${SPACK_STACK_MODE} ]]; then
+  echo "ERROR, SPACK_STACK_MODE not defined. Provide -m MODE as argument"
+  exit 1
+elif [[ ! ${SPACK_STACK_MODE} == "build" && ! ${SPACK_STACK_MODE} == "install" ]]; then
   echo "ERROR, invalid mode '${SPACK_STACK_MODE}'"
   exit 1
+fi
+
+# Role ops cannot write to the default (authoritative) build cache
+if [[ ${SPACK_STACK_ROLE} == "ops" && ${SPACK_STACK_MODE} == "build" && -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
+  echo "ERROR, SPACK_STACK_BUILDCACHE_DIR not defined. Provide -c BUILDCACHE_DIR"
+  echo "as argument when role is 'ops' and mode is 'build'"
+  exit 1
+fi
+
+# Updating bootstrap and source caches requires role dev and mode build
+if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
+  if [[ ! ${SPACK_STACK_ROLE} == "dev" || ! ${SPACK_STACK_MODE} == "build" ]]; then
+    echo "ERROR, SPACK_STACK_UPDATE_DEV_CACHES requires role 'dev' and mode 'build'"
+    exit 1
+  fi
 fi
 
 ##################################################################################################
@@ -117,7 +108,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@2025.0.4" "gcc@=13.3.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.4" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -267,7 +258,13 @@ mkdir -p ${environment_dirs}
 
 if [[ ! -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
   buildcache_dir=${SPACK_STACK_BUILDCACHE_DIR}
-  mkdir -p ${buildcache_dir}
+  if [[ "${SPACK_STACK_MODE}" == "install" && ! -d ${buildcache_dir} ]]; then
+    echo "ERROR, build cache ${buildcache_dir} not found,"
+    echo "must exist before installing environments"
+    exit 1
+  else
+    mkdir -p ${buildcache_dir}
+  fi
 fi
 
 if [[ "${SPACK_STACK_MODE}" == "install" ]]; then
@@ -398,12 +395,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         module purge
         case ${compiler} in
           oneapi@=2025.0.3)
-            echo "ERROR, MODULE USE STATEMENT MISSING"
+            echo "ERROR, MODULE USE STATEMENT MISSING - DO WE NEED ONE?"
             exit 1
             ;;
-          oneapi@=2025.0.4)
-            module use /neptune_diagnostics/spack-stack/oneapi-2025.0.1/modulefiles
-            ;;
+          #oneapi@=2025.0.4)
+          #  module use /neptune_diagnostics/spack-stack/oneapi-2025.0.1/modulefiles
+          #  ;;
         esac
         ;;
       blueback)
@@ -569,11 +566,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       nautilus)
         umask 0022
         module purge
-        case ${compiler} in
-          oneapi@=2025.0.0)
-            echo "ERROR, MODULE USE STATEMENT IS MISSING"
-            exit 1
-        esac
         ;;
       tusk)
         # Check if snapshot to restore default environment exists, then restore
@@ -831,7 +823,7 @@ esac
 # Repair permissions for environments if in installer mode
 if [[ "${update_build_cache}" == "false" ]]; then
   # Also search for exectuables
-  fix_permissions ${host} ${PWD} 1
+  fix_permissions ${host} ${environment_dirs} 1
 fi
 
 echo "SUCCESS"

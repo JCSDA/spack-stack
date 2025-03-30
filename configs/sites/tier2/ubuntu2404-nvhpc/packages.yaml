@@ -1,21 +1,9 @@
 packages:
-  all:
-    compiler: [nvhpc@25.1, gcc@13.3.0]
-    providers:
-      mpi: [openmpi@3.1.5]
-      blas: [nvhpc@25.1]
-      zlib-api: [zlib]
   nvhpc:
-    externals:
-    - spec: nvhpc@25.1
-      modules:
-      - nvhpc/25.1
-    buildable: false
-  mpi:
-    buildable: False
-  blas:
-    buildable: False
-
+   externals:
+    - spec: nvhpc@25.1~mpi
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/25.1
+   buildable: False
   # Installed by apt as when following the Ubuntu NVHPC instructions
   # - standard Ubuntu packages
   # - plus packages: cmake, pkg-config, libtool, python3-dev
@@ -112,8 +100,8 @@ packages:
     buildable: False
   openmpi:
     externals:
-    - spec: openmpi@4.1.7
-      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/25.1/comm_libs/12.6/hpcx/hpcx-2.21/ompi
+    - spec: openmpi@4.1.5
+      prefix: /opt/nvidia/hpc_sdk/Linux_x86_64/25.1/comm_libs/12.6/openmpi4/openmpi-4.1.5
     buildable: False
   perl:
     externals:

@@ -139,18 +139,6 @@ Note that, for official installations of new environments on any supported platf
     
    spack install --source --verbose
 
-.. _MaintainersSection_Discover_SCU16:
-
-------------------------------
-NASA Discover SCU16
-------------------------------
-
-On Discover SCU16, ``qt`` needs to be installed as a one-off before spack can be used. When using the GNU compiler, it is also necessary to build your own ``openmpi`` or other MPI library, which requires adapting the installation to the network hardware and ``slurm`` scheduler.
-
-qt (qt@5)
-   The default ``qt@5`` in ``/usr`` is incomplete and thus insufficient for building ``ecflow``. After loading/unloading the modules as shown below, refer to 
-   :numref:`Section %s <MaintainersSection_Qt5>` to install ``qt@5.15.2`` in ``/discover/swdev/jcsda/spack-stack/scu16/qt-5.15.2`` (note: it is currently installed in ``/discover/swdev/jcsda/spack-stack/qt-5.15.2``; an upcoming large system update will require is to rebuild anyway).
-
 .. _MaintainersSection_Discover_SCU17:
 
 ------------------------------
