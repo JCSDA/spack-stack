@@ -53,47 +53,24 @@ compilers:
         CPATH: /cm/local/apps/gcc/11.2.0/include
         LD_LIBRARY_PATH: /cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
     extra_rpaths: []
-# DH* GPFS ISSUE
-#- compiler:
-#    spec: oneapi@2025.0.3
-#    paths:
-#      cc: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/icx
-#      cxx: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/icpx
-#      f77: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/ifx
-#      fc: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/ifx
-#    flags: {}
-#    operating_system: rhel8
-#    target: x86_64
-#    modules:
-#    - umf/0.9.1
-#    - compiler-rt/2025.0.1
-#    - tbb/2022.0
-#    - compiler-intel-llvm/2025.0.1
-#    environment:
-#      prepend_path:
-#        PATH: /cm/local/apps/gcc/11.2.0/bin
-#        CPATH: /cm/local/apps/gcc/11.2.0/include
-#        LD_LIBRARY_PATH: /cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
-#    extra_rpaths: []
 - compiler:
-    spec: oneapi@2025.0.4
+    spec: oneapi@2025.0.3
     paths:
-      cc: /neptune_diagnostics/spack-stack/oneapi-2025.0.1/compiler/2025.0/bin/icx
-      cxx: /neptune_diagnostics/spack-stack/oneapi-2025.0.1/compiler/2025.0/bin/icpx
-      f77: /neptune_diagnostics/spack-stack/oneapi-2025.0.1/compiler/2025.0/bin/ifx
-      fc: /neptune_diagnostics/spack-stack/oneapi-2025.0.1/compiler/2025.0/bin/ifx
+      cc: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/icx
+      cxx: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/icpx
+      f77: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/ifx
+      fc: /gpfs/neptune/spack-stack/oneapi-2025.0.3/compiler/2025.0/bin/ifx
     flags: {}
     operating_system: rhel8
     target: x86_64
     modules:
     - umf/0.9.1
-    - compiler-rt/2025.0.4
+    - compiler-rt/2025.0.1
     - tbb/2022.0
-    - compiler-intel-llvm/2025.0.4
+    - compiler-intel-llvm/2025.0.1
     environment:
       prepend_path:
         PATH: /cm/local/apps/gcc/11.2.0/bin
         CPATH: /cm/local/apps/gcc/11.2.0/include
         LD_LIBRARY_PATH: /cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
     extra_rpaths: []
-# *DH
