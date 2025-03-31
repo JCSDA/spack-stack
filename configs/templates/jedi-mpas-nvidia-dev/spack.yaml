@@ -48,6 +48,7 @@ spack:
   - eckit
   - ecmwf-atlas
   - eigen
+  - ectrans
   - fckit
   - fftw
   - flex
