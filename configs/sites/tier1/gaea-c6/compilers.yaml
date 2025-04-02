@@ -20,7 +20,6 @@ compilers:
       prepend_path:
         LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.07.0/INTEL/2023.2/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12'
       set:
-        #CRAYPE_LINK_TYPE: 'dynamic'
         # OpenSUSE on Gaea C5 sets CONFIG_SITE so
         # Automake-based builds are installed in lib64
         # which confuses some packages.
