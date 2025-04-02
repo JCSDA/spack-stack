@@ -26,7 +26,7 @@ packages:
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.41-150100.7.46.1
+    - spec: binutils@2.43-150100.7.49.1
       prefix: /usr
   cmake:
     buildable: false
