@@ -1,9 +1,6 @@
 packages:
   all:
-    # DH* GPFS ISSUE
-    #compiler:: [oneapi@2024.2.1, oneapi@2025.0.3, gcc@11.2.0]
-    compiler:: [oneapi@2024.2.1, oneapi@2025.0.4, gcc@11.2.0]
-    # *DH
+    compiler:: [oneapi@2024.2.1, oneapi@2025.0.3, gcc@11.2.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.13, intel-oneapi-mpi@2021.14]
   mpi:
@@ -15,50 +12,31 @@ packages:
       modules:
       - mpi/2021.13
       - slurm
-    # DH* GPFS ISSUE
-    #- spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.3
-    #  prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
-    #  modules:
-    #  - mpi/2021.14
-    #  - slurm
-    - spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.4
-      prefix: /neptune_diagnostics/spack-stack/oneapi-2025.0.1
+    - spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.3
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
       modules:
       - mpi/2021.14
       - slurm
-    # *DH
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2024.2
       prefix: /cm/shared/apps/intel/oneapi-2024.2.1
       modules:
       - mkl/2024.2
-    # DH* GPFS ISSUE
-    #- spec: intel-oneapi-mkl@2025.0
-    #  prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
-    #  modules:
-    #  - mkl/2025.0
-    - spec: intel-oneapi-mkl@2025.0%oneapi@2025.0.4
-      prefix: /neptune_diagnostics/spack-stack/oneapi-2025.0.1
+    - spec: intel-oneapi-mkl@2025.0
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
       modules:
       - mkl/2025.0
-    # *DH
   intel-oneapi-tbb:
     externals:
     - spec: intel-oneapi-tbb@2021.13
       prefix: /cm/shared/apps/intel/oneapi-2024.2.1
       modules:
       - tbb/2021.13
-    # DH* GPFS ISSUE TODO ADD NFS VERSION
-    #- spec: intel-oneapi-tbb@2022.0
-    #  prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
-    #  modules:
-    #  - tbb/2022.0
-    - spec: intel-oneapi-tbb@2022.0%oneapi@2025.0.4
-      prefix: /neptune_diagnostics/spack-stack/oneapi-2025.0.1
+    - spec: intel-oneapi-tbb@2022.0
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
       modules:
       - tbb/2022.0
-    # *DH
   intel-oneapi-runtime:
     externals:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
@@ -67,15 +45,8 @@ packages:
       - intel-oneapi-2024.2.1
       - tbb/2021.13
       - compiler-rt/2024.2.1
-    # DH* GPFS ISSUE TODO ADD NFS VERSION
-    #- spec: intel-oneapi-runtime@2025.0.0%oneapi@2025.0.0
-    #  prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
-    #  modules:
-    #  - tbb/2022.0
-    #  - compiler-rt/2025.0.1
-    - spec: intel-oneapi-runtime@2025.0.4%oneapi@2025.0.4
-      prefix: /neptune_diagnostics/spack-stack/oneapi-2025.0.1
+    - spec: intel-oneapi-runtime@2025.0.0%oneapi@2025.0.0
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
       modules:
       - tbb/2022.0
-      - compiler-rt/2025.0.4
-    # *DH
+      - compiler-rt/2025.0.1
