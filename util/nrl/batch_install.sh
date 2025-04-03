@@ -390,12 +390,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       atlantis)
         umask 0022
         module purge
-        case ${compiler} in
-          # DH* DO WE NEED THIS? oneapi@=2025.0.3)
-          #  echo "ERROR, MODULE USE STATEMENT MISSING - DO WE NEED ONE?"
-          #  exit 1
-          #  ;;
-        esac
         ;;
       blueback)
         # Check if snapshot to restore default environment exists, then restore
