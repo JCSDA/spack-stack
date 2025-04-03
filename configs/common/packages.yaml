@@ -204,7 +204,7 @@ packages:
   openssl:
     require: '+shared'
   p4est:
-    require: '@2.8'
+    require: '@2.8.7'
   parallelio:
     require: '@2.6.2 +pnetcdf'
   parallel-netcdf:
