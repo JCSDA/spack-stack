@@ -99,10 +99,7 @@ SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
 
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
-    # DH* GPFS ISSUE
-    #SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.3" "intel@=2021.6.0" "gcc@=11.2.0")
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.4" "intel@=2021.6.0" "gcc@=11.2.0")
-    # *DH
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.3" "intel@=2021.6.0" "gcc@=11.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
@@ -393,15 +390,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       atlantis)
         umask 0022
         module purge
-        case ${compiler} in
-          oneapi@=2025.0.3)
-            echo "ERROR, MODULE USE STATEMENT MISSING - DO WE NEED ONE?"
-            exit 1
-            ;;
-          #oneapi@=2025.0.4)
-          #  module use /neptune_diagnostics/spack-stack/oneapi-2025.0.1/modulefiles
-          #  ;;
-        esac
         ;;
       blueback)
         # Check if snapshot to restore default environment exists, then restore
