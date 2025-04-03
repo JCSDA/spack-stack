@@ -58,7 +58,7 @@ packages:
       prefix: /usr
   flex:
     externals:
-    - sec: flex@2.6.4
+    - spec: flex@2.6.4
       prefix: /usr
   gawk:
     externals:
