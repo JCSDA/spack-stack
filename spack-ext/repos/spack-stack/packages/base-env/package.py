@@ -25,6 +25,7 @@ class BaseEnv(BundlePackage):
     depends_on("git", type="run")
     depends_on("wget", type="run")
     depends_on("curl", type="run")
+    depends_on("cloc", type="run")
 
     # I/O
     depends_on("zlib-api", type="run")
