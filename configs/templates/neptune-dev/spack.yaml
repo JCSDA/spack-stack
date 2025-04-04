@@ -8,9 +8,9 @@ spack:
   definitions:
   - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
   - packages:
-      - neptune-env +espc ^esmf@=8.8.0
+      - neptune-env +espc ^esmf@=8.9.0b05 snapshot=b05
       # Comment out for Cole and Tusk or any other air-gapped system:
-      - neptune-python-env +xnrl ^neptune-env +espc ^esmf@=8.8.0
+      - neptune-python-env +xnrl ^neptune-env +espc ^esmf@=8.9.0b05 snapshot=b05
 
   specs:
     - matrix:
