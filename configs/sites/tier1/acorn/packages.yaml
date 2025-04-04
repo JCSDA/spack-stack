@@ -1,4 +1,6 @@
   packages:
+    ip:
+      require: '+alltests'
     git:
       buildable: false
       externals:

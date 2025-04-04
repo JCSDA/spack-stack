@@ -12,7 +12,7 @@ packages:
   awscli-v2:
     require: '~examples'
   bacio:
-    require: '@2.4.1'
+    require: '@2.6.0'
   bison:
     require: '@3.4:'
   # 1.85 incompatible with ecflow@5.11.4 - use latest 'good version'
