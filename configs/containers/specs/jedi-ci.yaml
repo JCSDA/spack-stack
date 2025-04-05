@@ -5,7 +5,7 @@
     ewok-env@1.0.0,
     jedi-fv3-env@1.0.0,
     jedi-mpas-env@1.0.0,
-    bacio@2.4.1,
+    bacio@2.6.0,
     bison@3.8.2,
     bufr@12.1.0,
     bufr-query@0.0.4,

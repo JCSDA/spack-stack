@@ -45,7 +45,7 @@ packages:
       - intel-oneapi-2024.2.1
       - tbb/2021.13
       - compiler-rt/2024.2.1
-    - spec: intel-oneapi-runtime@2025.0.0%oneapi@2025.0.0
+    - spec: intel-oneapi-runtime@2025.0.3%oneapi@2025.0.3
       prefix: /gpfs/neptune/spack-stack/oneapi-2025.0.3
       modules:
       - tbb/2022.0
