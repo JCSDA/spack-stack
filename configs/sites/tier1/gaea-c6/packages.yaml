@@ -127,7 +127,7 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.36
-      prefix: /ncrc/proj/epic/spack-stack/mysql-8.0.36
+      prefix: /ncrc/proj/epic/spack-stack/c6/installs/mysql/8.0.36
       modules: [mysql/8.0.36]
   ncurses:
     externals:
@@ -147,10 +147,11 @@ packages:
     - spec: pkg-config@0.29.2
       prefix: /usr
   qt:
+    buildable: False
     externals:
-    - spec: qt@5.15.2
-      prefix: /ncrc/proj/epic/spack-stack/qt-5.15.2/5.15.2/gcc_64
-      modules: [qt/5.15.2]
+    - spec: qt@5.12.6
+      prefix: /ncrc/proj/epic/spack-stack/c6/installs/qt5/qt-5.12.6/qtbase
+      modules: [qt/5.12.6]
   rdma-core:
     externals:
     - spec: rdma-core@37.0
