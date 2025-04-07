@@ -42,7 +42,7 @@ echo "Installing with $n_instances instances and $n_threads threads in environme
 
 for i in $(seq $n_instances); do
   cmd="spack install -j $n_threads $*"
-  echo $cmd | tee ${SPACK_ENV}/log.install.proc${i}
+  echo $cmd | tee --append ${SPACK_ENV}/log.install.proc${i}
   $cmd &>> ${SPACK_ENV}/log.install.proc${i} & pids+=($!)
 done
 

@@ -36,11 +36,11 @@ for compiler in $COMPILERS; do
         --directory ${mirrorpath?"Source mirror path could not be determined. Check site's mirrors.yaml."} \
         ${PACKAGES_TO_INSTALL:---all}
     fi
-    # Just install the packages we're testing (+dependencies):
-    if [[ ! -z "${PACKAGES_TO_TEST}" ]]; then
-      spack_install_wrapper log.install-and-test install $INSTALL_OPTS --test root $PACKAGES_TO_TEST
+    # Install test packages; do not use build cache for tested packages:
+    if [[ ( ! -z "${PACKAGES_TO_TEST}" ) && ( "$DISABLE_TESTING" != YES ) ]]; then
+      spack_install_wrapper log.install-and-test install $INSTALL_OPTS --use-buildcache package:never,dependencies:auto --overwrite --yes-to-all --test root $PACKAGES_TO_TEST
     fi
-    # Install the rest of the stack as usual:
+    # Install the whole stack
     spack_install_wrapper log.install install $INSTALL_OPTS $PACKAGES_TO_INSTALL
   done
 done
