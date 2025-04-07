@@ -12,7 +12,7 @@ packages:
   awscli-v2:
     require: '~examples'
   bacio:
-    require: '@2.4.1'
+    require: '@2.6.0'
   bison:
     require: '@3.4:'
   # 1.85 incompatible with ecflow@5.11.4 - use latest 'good version'
@@ -40,15 +40,18 @@ packages:
       when: '%intel@:2020'
       message: '2.0.5 is the last version to use C++14, use with Intel Classic 2020 and earlier'
   cmake:
-    version: ['3.27.9']
-    require: '+ownlibs'
+    require:
+    - '@3.29:'
+    - '+ownlibs'
   # Attention - when updating also check the various jcsda-emc-bundles env packages
   crtm:
     require: '+fix'
   ecbuild:
     require: '@3.7.2'
   eccodes:
-    require: '@2.33.0 +png +tools'
+    require:
+    - '@2.33.0'
+    - '+netcdf +png +tools'
   ecflow:
     require:
     - '@5.11.4 +ui'
@@ -67,7 +70,7 @@ packages:
   esmf:
     require:
     - '~xerces ~pnetcdf +shared +external-parallelio'
-    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none']
+    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0b05 snapshot=b05']
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
@@ -201,7 +204,7 @@ packages:
   openssl:
     require: '+shared'
   p4est:
-    require: '@2.8'
+    require: '@2.8.7'
   parallelio:
     require: '@2.6.2 +pnetcdf'
   parallel-netcdf:

@@ -4,6 +4,9 @@ packages:
       blas: [intel-oneapi-mkl]
       fftw-api: [intel-oneapi-mkl]
       lapack: [intel-oneapi-mkl]
+  cmake:
+    require:
+    - '%gcc'
   ectrans:
     require:
     - '+mkl ~fftw'

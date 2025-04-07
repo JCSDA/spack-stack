@@ -38,6 +38,7 @@ The ShellSetup.sh script points to a script in the sites/ subdirectory based on 
  - ``$SOURCE_CACHE``: Name of or path to (beginning with '\file://') source cache directory. Defaults to 'local-source' mirror defined in site's mirrors.yaml.
  - ``$PADDED_LENGTH``: Padded length setting for Spack build cache generation. It should be as long as possible without the build failing.
  - ``$KEEP_WEEKLY_BUILD_DIR``: Set to 'YES' to use a persistent directory structure for automated builds.
+ - ``$DISABLE_TESTING``: Set to 'YES' to switch off build-time package testing regardless of whether ``$PACKAGES_TO_TEST`` is set.
 
 ------------------------------
 Setting up weekly builds: cron
