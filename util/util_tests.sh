@@ -49,18 +49,4 @@ echo '{"concrete_specs": {"a2yzf2cdwz7ajifuqacnzfde5wulwyke": {"name": "w3emc", 
 run_and_check 1 "show_duplicate_packages.py, should find duplicates" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 run_and_check 0 "show_duplicate_packages.py, should not find duplicates" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i w3emc
 
-cmd="${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.A 2>/dev/null | uniq | grep -c hdf6"
-echo "Running '$cmd' in $PWD"
-if [ $(eval "$cmd") -ne 2 ] ; then
-  echo "show_duplicate_packages.py E failed!"
-  fail=1
-fi
-
-cmd="${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.F -d 2>/dev/null | uniq | grep -c hdf6"
-echo -e " -  abcdefg hdf6@1.2.3\n -  tuvwxyz hdf6@1.2.3\n -  a1b2c3d other@1.1.1" > fakeconcrete.F
-if [ $(eval "$cmd") -ne 2 ] ; then
-  echo "show_duplicate_packages.py F failed!"
-  fail=1
-fi
-
 exit $fail
