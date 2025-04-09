@@ -41,6 +41,13 @@ packages:
     externals:
     - spec: doxygen@1.11.0+graphviz~mscgen
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/doxygen-1.11.0-dbhxblaakcrhvmlrbgixvapnagjb2vkx
+  ecflow:
+    buildable: False
+    externals:
+    - spec: ecflow@5.11.4
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/ecflow-5.11.4-a5ggcmayx6yesbqgbacifgvkstamchoy
+      modules:
+      - ecflow/5.11.4
   file:
     externals:
     - spec: file@5.39
@@ -106,10 +113,22 @@ packages:
     externals:
     - spec: openjdk@1.8.0.412.b08-2
       prefix: /usr
+  openssl:
+      buildable: False
+      externals:
+      - spec: openssl@3.0.7
+        prefix: /usr
   pkg-config:
     externals:
     - spec: pkg-config@1.7.3
       prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@5.15.14
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/qt-5.15.14-at4e3ixmq44lwb7mn2gqjcd3gbg5omjq
+      modules:
+      - qt/5.15.14
   rsync:
     externals:
     - spec: rsync@3.2.3
