@@ -18,4 +18,4 @@ cd ufs-weather-model/tests
 ./rt.sh $RT_ARGS -a ${BATCHACCOUNT:?} -n 'control_c48 intel'
 
 rc = $?
-return rc
+return $rc

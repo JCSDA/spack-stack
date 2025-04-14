@@ -19,7 +19,7 @@ PADDED_LENGTH=200
 PACKAGES_TO_TEST="libpng libaec jasper w3emc g2c netcdf-c netcdf-fortran"
 # PACKAGES_TO_INSTALL="ufs-weather-model-env"
 
-TEST_UFSWM=ON
+TEST_UFSWM=${TEST_UFSWM:-"ON"}
 UFSWM_BRANCH=develop
 UFSWM_URL="https://github.com/ufs-community/ufs-weather-model.git"
 
