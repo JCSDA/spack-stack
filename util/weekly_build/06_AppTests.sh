@@ -21,6 +21,6 @@ for compiler in $COMPILERS; do
   done
 done
 
-if [ "$TEST_UFSWM" == ON ]; then
-  . $(dirname $0)/apptests/test_ufswm.sh
+if [ "$TEST_UFSWM" == "ON" ]; then
+  . ${WORK_DIR:-$(dirname $0)}/apptests/test_ufswm.sh
 fi
