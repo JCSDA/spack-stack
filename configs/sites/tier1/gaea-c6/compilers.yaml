@@ -6,17 +6,19 @@ compilers:
       cxx: CC
       f77: ftn
       fc: ftn
+    flags:
+      cflags: "-gcc-name=/usr/bin/gcc-12"
+      cxxflags: "-gxx-name=/usr/bin/g++-12 -gcc-name=/usr/bin/gcc-12 -static-libstdc++"
+      fflags: "-gcc-name=/usr/bin/gcc-12"
     operating_system: sles15
     modules:
     - PrgEnv-intel/8.5.0
     - intel-classic/2023.2.0
     - craype/2.7.30
     - libfabric/1.20.1
-    flags:
-      cflags: "-gcc-name=/usr/bin/gcc-12"
-      cxxflags: "-gxx-name=/usr/bin/g++-12 -gcc-name=/usr/bin/gcc-12 -static-libstdc++"
-      fflags: "-gcc-name=/usr/bin/gcc-12"
     environment:
+      prepend_path:
+        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.07.0/INTEL/2023.2/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12'
       set:
         # OpenSUSE on Gaea C6 sets CONFIG_SITE so
         # Automake-based builds are installed in lib64
@@ -33,6 +35,9 @@ compilers:
     flags: {}
     operating_system: sles15
     modules:
-    - gcc-native-mixed/12.3
+    - PrgEnv-gnu/8.5.0
+    - gcc-native/12.3
+    - craype/2.7.30
+    - libfabric/1.20.1 
     environment: {}
     extra_rpaths: []
