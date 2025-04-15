@@ -100,7 +100,7 @@ The following is required for building new spack environments with any supported
    # Then sudo to role-epic account.
 
    module purge
-   export MODULEPATH=/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles:$MODULEPATH
+   module load spack-managed-x86-64_v3/v1.0
    
 .. _Preconfigured_Sites_Hercules:
 
@@ -116,7 +116,7 @@ The following is required for building new spack environments with any supported
    # Then sudo to role-epic account.
 
    module purge
-   export MODULEPATH=/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles:$MODULEPATH
+   module load spack-managed-x86-64_v3/v1.0
 
 
 .. _Preconfigured_Sites_Discover_SCU17:
