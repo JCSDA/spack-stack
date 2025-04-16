@@ -1,43 +1,17 @@
 packages:
+  # For addressing https://github.com/JCSDA/spack-stack/issues/1355
+  #   Use system zlib instead of spack-built zlib-ng
   all:
-    compiler:: [intel@2023.2.0] # todo: add gcc here
     providers:
-      mpi:: [cray-mpich@8.1.29]
-      # Remove the next three lines to switch to intel-oneapi-mkl
-      blas:: [openblas]
-      fftw-api:: [fftw]
-      lapack:: [openblas]
-
-### MPI, Python, MKL
-  mpi:
+      zlib-api:: [zlib]
+  zlib-api:
     buildable: False
-  cray-mpich:
+  zlib:
+    buildable: False
     externals:
-    - spec: cray-mpich@8.1.29%intel@2023.2.0~wrappers
-      modules:
-      - craype-network-ofi
-      - cray-mpich/8.1.29
-  intel-oneapi-mkl:
-    # Remove buildable: False and configure+uncomment externals section below to use intel-oneapi-mkl
-    buildable: False
-    #externals:
-    #- spec: intel-oneapi-mkl@2022.0.2%intel@2023.2.0
-    #  prefix: /apps/oneapi
+    - spec: zlib@1.2.13
+      prefix: /usr
 
-### Modification of common packages
-  # DH* Remove this section to switch to intel-oneapi-mkl
-  ectrans:
-    require::
-    - '@1.2.0 ~mkl +fftw'
-  gsibec:
-    require::
-    - '@1.2.1 ~mkl'
-  py-numpy:
-    require::
-    - '^openblas'
-  # *DH
-
-### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -52,8 +26,13 @@ packages:
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.41
+    - spec: binutils@2.41-150100.7.46.1
       prefix: /usr
+  cmake:
+    buildable: false
+    externals:
+    - spec: cmake@3.27.9
+      modules: [cmake/3.27.9]
   coreutils:
     externals:
     - spec: coreutils@8.32
@@ -65,10 +44,6 @@ packages:
   diffutils:
     externals:
     - spec: diffutils@3.6
-      prefix: /usr
-  dos2unix:
-    externals:
-    - spec: dos2unix@7.4.0
       prefix: /usr
   file:
     externals:
@@ -118,19 +93,16 @@ packages:
       prefix: /usr
   hwloc:
     externals:
-    - spec: hwloc@2.9.0
+    - spec: hwloc@2.6.0a1
       prefix: /usr
   # This package is currently incomplete (no headers), but still works
   krb5:
     externals:
     - spec: krb5@1.20.1
-      #prefix: /usr/lib/mit
       prefix: /usr
   libfuse:
     externals:
     - spec: libfuse@2.9.7
-      prefix: /usr
-    - spec: libfuse@3.10.5
       prefix: /usr
   libtirpc:
     variants: ~gssapi
@@ -141,15 +113,8 @@ packages:
       prefix: /usr
   libxml2:
     externals:
-    - spec: libxml2@2.10.3
+    - spec: libxml2@2.9.7
       prefix: /usr
-  # This package is currently incomplete (no headers) and doesn't work
-  # for us. But it's only needed to build libxaw, for which we can use
-  # the existing (incomplete) installation in /usr, see above
-  #libxpm:
-  #  externals:
-  #  - spec: libxpm@4.11.0
-  #    prefix: /usr
   lustre:
     externals:
     - spec: lustre@2.15.0.2_rc2_cray_113_g62287d0
@@ -162,14 +127,15 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.36
-      prefix: /autofs/ncrc-svm1_proj/epic/spack-stack/mysql-8.0.36
+      prefix: /ncrc/proj/epic/spack-stack/c6/installs/mysql/8.0.36
+      modules: [mysql/8.0.36]
   ncurses:
     externals:
     - spec: ncurses@6.1.20180317+termlib abi=6
       prefix: /usr
   openjdk:
     externals:
-    - spec: openjdk@11.0.22
+    - spec: openjdk@11.0.16_8-suse-150000.3.83.1-x8664
       prefix: /usr
   perl:
     externals:
@@ -181,12 +147,14 @@ packages:
     - spec: pkg-config@0.29.2
       prefix: /usr
   qt:
+    buildable: False
     externals:
-    - spec: qt@5.15.2
-      prefix: /ncrc/proj/epic/spack-stack/qt-5.15.2/5.15.2/gcc_64
+    - spec: qt@5.12.6
+      prefix: /ncrc/proj/epic/spack-stack/c6/installs/qt5/qt-5.12.6/qtbase
+      modules: [qt/5.12.6]
   rdma-core:
     externals:
-    - spec: rdma-core@42.0
+    - spec: rdma-core@37.0
       prefix: /usr
   rsync:
     externals:
@@ -199,14 +167,6 @@ packages:
   sed:
     externals:
     - spec: sed@4.4
-      prefix: /usr
-  slurm:
-    externals:
-    - spec: slurm@24.05.0
-      prefix: /usr
-  subversion:
-    externals:
-    - spec: subversion@1.14.1
       prefix: /usr
   tar:
     externals:

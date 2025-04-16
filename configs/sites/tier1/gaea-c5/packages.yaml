@@ -1,44 +1,17 @@
 packages:
+  # For addressing https://github.com/JCSDA/spack-stack/issues/1355
+  #   Use system zlib instead of spack-built zlib-ng
   all:
-    compiler:: [intel@2023.1.0] # todo: add gcc here
     providers:
-      mpi:: [cray-mpich@8.1.25]
-      # Remove the next three lines to switch to intel-oneapi-mkl
-      blas:: [openblas]
-      fftw-api:: [fftw]
-      lapack:: [openblas]
-
-### MPI, Python, MKL
-  mpi:
+      zlib-api:: [zlib]
+  zlib-api:
     buildable: False
-  cray-mpich:
+  zlib:
+    buildable: False
     externals:
-    - spec: cray-mpich@8.1.25%intel@2023.1.0~wrappers
-      prefix: /opt/cray/pe/mpich/8.1.25/ofi/intel/19.0
-      modules:
-      - craype-network-ofi
-      - cray-mpich/8.1.25
-  intel-oneapi-mkl:
-    # Remove buildable: False and configure+uncomment externals section below to use intel-oneapi-mkl
-    buildable: False
-    #externals:
-    #- spec: intel-oneapi-mkl@2022.0.2%intel@2023.1.0
-    #  prefix: /apps/oneapi
+    - spec: zlib@1.2.13
+      prefix: /usr
 
-### Modification of common packages
-  # DH* Remove this section to switch to intel-oneapi-mkl
-  ectrans:
-    require::
-    - '@1.2.0 ~mkl +fftw'
-  gsibec:
-    require::
-    - '@1.2.1 ~mkl'
-  py-numpy:
-    require::
-    - '^openblas'
-  # *DH
-
-### All other external packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -53,33 +26,24 @@ packages:
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.37.20211103
+    - spec: binutils@2.43-150100.7.49.1
       prefix: /usr
-  # Don't use, it's missing the headers
-  #bzip2:
-  #  externals:
-  #  - spec: bzip2@1.0.6
-  #    prefix: /usr
   cmake:
     buildable: false
     externals:
-    - spec: cmake@3.23.1
-      modules: [cmake/3.23.1]
+    - spec: cmake@3.27.9
+      modules: [cmake/3.27.9]
   coreutils:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
   cpio:
     externals:
-    - spec: cpio@2.12
+    - spec: cpio@2.13
       prefix: /usr
   diffutils:
     externals:
     - spec: diffutils@3.6
-      prefix: /usr
-  dos2unix:
-    externals:
-    - spec: dos2unix@7.4.0
       prefix: /usr
   file:
     externals:
@@ -108,8 +72,8 @@ packages:
   git:
     buildable: false
     externals:
-    - spec: git@2.35.2
-      modules: [git/2.35.2]
+    - spec: git@2.42.0
+      modules: [git/2.42.0]
   git-lfs:
     buildable: false
     externals:
@@ -125,7 +89,7 @@ packages:
       prefix: /usr
   groff:
     externals:
-    - spec: groff@1.22.3
+    - spec: groff@1.22.4
       prefix: /usr
   hwloc:
     externals:
@@ -134,14 +98,11 @@ packages:
   # This package is currently incomplete (no headers), but still works
   krb5:
     externals:
-    - spec: krb5@1.16.3
-      #prefix: /usr/lib/mit
+    - spec: krb5@1.20.1
       prefix: /usr
   libfuse:
     externals:
     - spec: libfuse@2.9.7
-      prefix: /usr
-    - spec: libfuse@3.6.1
       prefix: /usr
   libtirpc:
     variants: ~gssapi
@@ -154,13 +115,6 @@ packages:
     externals:
     - spec: libxml2@2.9.7
       prefix: /usr
-  # This package is currently incomplete (no headers) and doesn't work
-  # for us. But it's only needed to build libxaw, for which we can use
-  # the existing (incomplete) installation in /usr, see above
-  #libxpm:
-  #  externals:
-  #  - spec: libxpm@4.11.0
-  #    prefix: /usr
   lustre:
     externals:
     - spec: lustre@2.15.0.2_rc2_cray_113_g62287d0
@@ -172,9 +126,9 @@ packages:
   mysql:
     buildable: False
     externals:
-    - spec: mysql@8.0.31
-      prefix: /lustre/f2/dev/wpo/role.epic/contrib/spack-stack/c5/mysql-8.0.31
-      modules: [mysql/8.0.31]
+    - spec: mysql@8.0.36
+      prefix: /ncrc/proj/epic/spack-stack/mysql-8.0.36
+      modules: [mysql/8.0.36]
   ncurses:
     externals:
     - spec: ncurses@6.1.20180317+termlib abi=6
@@ -196,13 +150,14 @@ packages:
     externals:
     - spec: qt@5.15.2
       prefix: /ncrc/proj/epic/spack-stack/qt-5.15.2/5.15.2/gcc_64
+      modules: [qt/5.15.2]
   rdma-core:
     externals:
     - spec: rdma-core@37.0
       prefix: /usr
   rsync:
     externals:
-    - spec: rsync@3.1.3
+    - spec: rsync@3.2.3
       prefix: /usr
   ruby:
     externals:
@@ -212,21 +167,9 @@ packages:
     externals:
     - spec: sed@4.4
       prefix: /usr
-  slurm:
-    externals:
-    - spec: slurm@21.08.8
-      prefix: /usr
-  subversion:
-    externals:
-    - spec: subversion@1.10.6
-      prefix: /usr
   tar:
     externals:
     - spec: tar@1.34
-      prefix: /usr
-  texinfo:
-    externals:
-    - spec: texinfo@6.5
       prefix: /usr
   wget:
     externals:
