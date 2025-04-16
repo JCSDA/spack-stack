@@ -221,7 +221,7 @@ packages:
   # with Intel in py-cryptography unless external curl and openssl
   # are removed, which itself is problematic.
   python:
-    require: '@3.11.7 ~crypt'
+    require: '@3.11.11 ~crypt'
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin
