@@ -132,7 +132,7 @@ class StackEnv(object):
             #
             default_in_data = default_in_yaml[section]
             update_in_data = update_in_yaml[section]
-            result_data = spack.config.merge_yaml(default_in_data, update_in_data)
+            result_data = spack.schema.merge_yaml(default_in_data, update_in_data)
             result_out_yaml = OrderedDict()
             result_out_yaml[section] = result_data
             # Write file, but sanitize the output.
@@ -391,7 +391,7 @@ class StackEnv(object):
         for section in spack.config.SECTION_SCHEMAS.keys():
             original = original_sections.get(section, {})
             existing = spack.config.get(section, scope=env_scope)
-            new = spack.config.merge_yaml(existing, original)
+            new = spack.schema.merge_yaml(existing, original)
             if existing and section in existing:
                 spack.config.set(section, new[section], env_scope)
 
