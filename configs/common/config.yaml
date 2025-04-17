@@ -28,3 +28,6 @@ config:
 
   # Timeout in seconds for web requests (curl/urllib)
   connect_timeout: 60
+
+  # Install deprecated packages (need for py-werkzeug@0.15.3, DH 20250417)
+  deprecated: true
