@@ -41,7 +41,6 @@ compilers:
     operating_system: rocky9
     target: x86_64
     modules:
-    - spack-managed-x86-64_v3
     - intel-oneapi-compilers/2024.2.1
     environment:
       set:
