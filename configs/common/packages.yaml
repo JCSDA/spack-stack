@@ -120,6 +120,11 @@ packages:
     # Note: Uncommenting this entry will break
     # the container builds.
     #require: '@2.11.0'
+  # https://github.com/spack/spack/issues/49358
+  # https://github.com/spack/spack/pull/44323
+  glib:
+    require:
+    - '@:2.78.3'
   # To avoid duplicate packages being built
   gmake:
     require:
