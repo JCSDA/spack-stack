@@ -143,10 +143,6 @@ packages:
     externals:
     - spec: sed@4.8
       prefix: /usr
-  tar:
-    externals:
-    - spec: tar@1.34
-      prefix: /usr
   texinfo:
     externals:
     - spec: texinfo@7.1
