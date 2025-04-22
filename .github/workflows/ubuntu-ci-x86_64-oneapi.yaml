@@ -220,8 +220,7 @@ jobs:
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneapi-2024.2.0.unified-env
 
           # Check shared libraries
-          # DH* TURN OFF FOR NOW TO PROCEED WITH TESTING
-          # ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+          ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
 
           # Create modules
           spack clean -a
