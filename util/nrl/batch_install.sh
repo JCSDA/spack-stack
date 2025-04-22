@@ -24,11 +24,13 @@ usage() {
   echo "      if not set, authoritative build caches are used"
   echo "  -u  Flag to update bootstrap and source caches;"
   echo "      requires role 'dev' and mode 'build'"
+  echo "  -e  Continue builds/install in existing environments;"
+  echo "      by default, exit with an error if already exist"
   echo "  -h  display this help"
   echo
 }
 
-while getopts r:m:d:c:uh flag
+while getopts r:m:d:c:uhe flag
 do
   case "${flag}" in
     r)
@@ -46,6 +48,9 @@ do
     u)
       SPACK_STACK_UPDATE_DEV_CACHES="true"
       ;;
+    e)
+      SPACK_STACK_IGNORE_ENV_EXIST="true"
+      ;;
     *)
       usage
       exit 1
@@ -59,6 +64,7 @@ echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set
 echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
+echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
 
 if [[ -z ${SPACK_STACK_ROLE} ]]; then
   echo "ERROR, SPACK_STACK_ROLE not defined. Provide -r ROLE as argument"
@@ -292,6 +298,8 @@ else
   exit 1
 fi
 
+ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
+
 # For Cray systems, capture the default=current environment (loaded modules)
 # so that it can be restored between building stacks for different compilers
 case ${host} in
@@ -380,8 +388,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # Bail out if the environment already exists
     if [[ -d ${env_dir} ]]; then
-      echo "ERROR, environment ${env_dir} already exists"
-      exit 1
+      if [[ ${ignore_env_exist} == "true" ]]; then
+        env_exists="true"
+      else
+        echo "ERROR, environment ${env_dir} already exists"
+        exit 1
+      fi
+    else
+      env_exists="false"
     fi
 
     # Reset environment
@@ -619,12 +633,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     source setup.sh
     spack clean -a
 
-    spack stack create env --name=${env_name} \
-                           --site=${host} \
-                           --compiler=${compiler_name}@=${compiler_version} \
-                           --template=${template} \
-                           --dir=${environment_dirs} \
-                           2>&1 | tee log.create.${env_name}.001
+    if [[ ! ${env_exists} == "true" ]]; then
+      spack stack create env --name=${env_name} \
+                             --site=${host} \
+                             --compiler=${compiler_name}@=${compiler_version} \
+                             --template=${template} \
+                             --dir=${environment_dirs} \
+                             2>&1 | tee log.create.${env_name}.001
+    fi
     spack env activate -p ${env_dir}
 
     # Workaround for building cylc environment on Narwhal: We need to use GNU
@@ -659,8 +675,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       echo "ERROR, directory ${bootstrap_mirror_path} not found"
       exit 1
     fi
-    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
-    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources || true
+    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries || true
 
     # Check that the site has mirrors configured for local source and build caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
