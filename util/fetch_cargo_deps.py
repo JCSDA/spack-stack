@@ -87,7 +87,8 @@ for spec in env.all_specs():
             print("  ... not found, installing cargo/rustup from remote")
             cargo_install = Executable(os.path.join(this_dir, "install_rust.sh"))
             cargo_install_cache_path = os.path.join(spack_stack_dir, "cache", "rust-install")
-            shutil.rmtree(cargo_install_cache_path)
+            if os.path.isdir(cargo_install_cache_path):
+                shutil.rmtree(cargo_install_cache_path)
             os.makedirs(cargo_install_cache_path)
             cargo_install(cargo_install_cache_path)
             shutil.rmtree(cargo_install_cache_path)

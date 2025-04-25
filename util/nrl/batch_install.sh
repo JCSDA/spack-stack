@@ -259,7 +259,8 @@ fi
 host=${SPACK_STACK_BATCH_HOST}
 module_choice=${SPACK_STACK_MODULE_CHOICE}
 bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
-export CARGO_HOME=${SPACK_STACK_CARGO_MIRROR}
+cargo_mirror_path=${SPACK_STACK_CARGO_MIRROR}
+export CARGO_HOME=${cargo_mirror_path}
 
 if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
   environment_dirs=${PWD}/envs
@@ -809,6 +810,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
     if [[ "${update_build_cache}" == "true" ]]; then
       fix_permissions ${host} ${binary_mirror_path} 0
+    fi
+    if [[ "${update_cargo_mirror}" == "true" ]]; then
+      fix_permissions ${host} ${cargo_mirror_path} 0
     fi
 
     # Clean up
