@@ -14,6 +14,7 @@
 # Modified by Dom Heinzeller, April 2025
 #
 
+import shutil
 import sys
 import os
 
