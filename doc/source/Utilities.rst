@@ -53,6 +53,13 @@ The util/parallel_install.sh utility runs parallel installations by launching mu
 .. note::
    The parallel_install.sh utility runs all installation instances on a single node, therefore be respectful of other users and of system usage policies, such as computing limits on HPC login nodes.
 
+-------------------------------------
+fetch_cargo_deps.py / install_rust.sh
+-------------------------------------
+
+**MISSING**
+
+
 .. _Acorn_Utilities:
 
 ------------------------------
