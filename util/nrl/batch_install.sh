@@ -109,36 +109,42 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.4" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   cole)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=12.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "intel@=2021.10.0" "gcc@=12.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   nautilus)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.0" "intel@=2021.5.0" "gcc@=11.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   tusk)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.1.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   blackpearl)
     # DH* TODO UPDATE oneifx@=2024.1.2 to oneifx@=2025.x.y
@@ -146,12 +152,14 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   bounty)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.0" "gcc@=13.3.1" "aocc@=5.0.0" "clang@=19.1.4")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   *)
     echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
@@ -251,6 +259,7 @@ fi
 host=${SPACK_STACK_BATCH_HOST}
 module_choice=${SPACK_STACK_MODULE_CHOICE}
 bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
+export CARGO_HOME=${SPACK_STACK_CARGO_MIRROR}
 
 if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
   environment_dirs=${PWD}/envs
@@ -272,19 +281,23 @@ fi
 
 if [[ "${SPACK_STACK_MODE}" == "install" ]]; then
   update_bootstrap_mirror="false"
+  update_cargo_mirror="false"
   update_source_cache="false"
   update_build_cache="false"
   reuse_build_cache="true"
 elif [[ "${SPACK_STACK_MODE}" == "build" ]]; then
   if [[ "${SPACK_STACK_ROLE}" == "ops" ]]; then
     update_bootstrap_mirror="false"
+    update_cargo_mirror="false"
     update_source_cache="false"
   elif [[ "${SPACK_STACK_ROLE}" == "dev" ]]; then
     if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
       update_bootstrap_mirror="true"
+      update_cargo_mirror="true"
       update_source_cache="true"
     else
       update_bootstrap_mirror="false"
+      update_cargo_mirror="false"
       update_source_cache="false"
     fi
   else
@@ -664,7 +677,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         exit 1
       fi
       spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
-      rsync -av ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
       rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
       spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
@@ -722,6 +735,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${update_source_cache}" == "true"* ]]; then
       echo "Updating local source cache ..."
       spack mirror create -a -d ${source_mirror_path}
+    fi
+
+    # Update local cargo mirror if requested
+    if [[ "${update_cargo_mirror}" == "true"* ]]; then
+      echo "Updating local cargo mirror ..."
+      ./util/fetch_cargo_deps.py
     fi
 
     # Install the environment with the correct flags
