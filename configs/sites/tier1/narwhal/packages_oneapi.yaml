@@ -7,7 +7,7 @@ packages:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.26%oneapi@2024.2.0 ~wrappers
+    - spec: cray-mpich@8.1.26~wrappers%oneapi@2024.2.0
       modules:
       - cray-mpich-ucx/8.1.26
       - craype-network-ucx

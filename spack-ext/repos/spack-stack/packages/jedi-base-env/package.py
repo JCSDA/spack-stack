@@ -66,7 +66,7 @@ class JediBaseEnv(BundlePackage):
     depends_on("py-xarray", type="run")
 
     conflicts(
-        "%gcc platform=darwin",
+        "platform=darwin %gcc",
         msg="jedi-base-env does not build with gcc on macOS, use apple-clang",
     )
 
