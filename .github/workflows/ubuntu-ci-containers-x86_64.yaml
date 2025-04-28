@@ -61,7 +61,7 @@ jobs:
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-gcc-openmpi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
           elif [[ $DOW == 3 || $DOW == 6 ]]; then
-            export CONTAINER=${{ inputs.container || 'docker-ubuntu-intel-impi' }}
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-oneapi-impi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
           else
             # Day 7: The Sabbath of rest (but do some house keeping later on)
