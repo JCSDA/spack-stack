@@ -53,12 +53,14 @@ The util/parallel_install.sh utility runs parallel installations by launching mu
 .. note::
    The parallel_install.sh utility runs all installation instances on a single node, therefore be respectful of other users and of system usage policies, such as computing limits on HPC login nodes.
 
+.. _Fetch_Cargo_Dependencies:
 -------------------------------------
 fetch_cargo_deps.py / install_rust.sh
 -------------------------------------
 
-**MISSING**
+This utility downloads Rust/Cargo package dependencies and stores them in a local directory for later use during ``spack install``. This is required for installing on systems that do no have access to the internet during the ``spack install`` phase and complements other mirrors such as the spack source mirror.
 
+Run this script in an active, concretized Spack environment to fetch Rust dependencies and store them in ``${CARGO_HOME}. You must either run it with ``spack-python`` or have ``spack-python`` in your ``${PATH}``. Ensure ``${CARGO_HOME}`` has the same value when ``spack install`` is run. For each spec that is a CargoPackage or a PythonPackage with a rust dependency, the script will attempt to fetch all of its cargo dependencies using ``cargo`` if available in the user's environment, but will fall back to installing ``cargo``/``rustup`` from the internet using ``install_rust.sh`` (located in in the same directory as this script).
 
 .. _Acorn_Utilities:
 

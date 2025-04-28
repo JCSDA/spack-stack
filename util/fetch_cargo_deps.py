@@ -63,7 +63,7 @@ for spec in env.all_specs():
             raise SpackError(f"Could not find rust dependency for CargoPackage {spec.name}")
         print(f"Found CargoPackage {spec.name}@{spec.version}/{spec.dag_hash()} with rust dependency {rust_spec.name}")
     elif issubclass(pkg_cls, PythonPackage):
-        for dep in spec.dependencies(): # (deptype=self.get_depflags(spec.package)):
+        for dep in spec.dependencies():
             if "rust" in dep.name:
                 rust_spec = dep
                 break
