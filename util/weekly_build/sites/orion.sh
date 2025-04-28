@@ -1,5 +1,6 @@
 
-COMPILERS=${COMPILERS:-"intel"}
+#COMPILERS=${COMPILERS:-"intel"}
+COMPILERS=${COMPILERS:-"oneapi"}
 TEMPLATES=${TEMPLATES:-"unified-dev"}
 
 function alert_cmd {
