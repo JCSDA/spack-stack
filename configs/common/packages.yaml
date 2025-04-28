@@ -120,6 +120,11 @@ packages:
     # Note: Uncommenting this entry will break
     # the container builds.
     #require: '@2.11.0'
+  # https://github.com/spack/spack/issues/49358
+  # https://github.com/spack/spack/pull/44323
+  glib:
+    require:
+    - '@:2.78.3'
   # To avoid duplicate packages being built
   gmake:
     require:
@@ -221,7 +226,7 @@ packages:
   # with Intel in py-cryptography unless external curl and openssl
   # are removed, which itself is problematic.
   python:
-    require: '@3.11.7 ~crypt'
+    require: '@3.11.11 ~crypt'
   py-cartopy:
     require: '+plotting'
   # Avoid full rust dependency: version 43+ requires py-maturin
