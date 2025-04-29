@@ -58,14 +58,14 @@ class StackContainer:
         if "packages" not in container_yaml["spack"]:
             container_yaml["spack"]["packages"] = {}
 
-        container_yaml["spack"]["packages"] = spack.config.merge_yaml(
+        container_yaml["spack"]["packages"] = spack.schema.merge_yaml(
             container_yaml["spack"]["packages"], packages_yaml["packages"]
         )
 
         if "specs" not in container_yaml["spack"]:
             container_yaml["spack"]["specs"] = {}
 
-        container_yaml["spack"]["specs"] = spack.config.merge_yaml(
+        container_yaml["spack"]["specs"] = spack.schema.merge_yaml(
             container_yaml["spack"]["specs"], specs_yaml["specs"]
         )
 

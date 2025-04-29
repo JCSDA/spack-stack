@@ -68,7 +68,7 @@ class GmaoSwellEnv(BundlePackage):
     # depends_on("py-seaborn", type="run")
 
     conflicts(
-        "%gcc platform=darwin",
+        "platform=darwin %gcc",
         msg="gmao-swell-env does " + "not build with gcc (11?) on macOS (12), use apple-clang",
     )
 

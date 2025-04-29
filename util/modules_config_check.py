@@ -31,6 +31,7 @@ for lmod_or_tcl in ("lmod", "tcl"):
 
 # Removing sections we don't want to compare; note this will
 #  affect line numbers in the diff output
+del(modules["lmod"]["modules"]["default"]["LMOD_OR_TCL"]["core_compilers"])
 del(modules["lmod"]["modules"]["default"]["LMOD_OR_TCL"]["hierarchy"])
 del(modules["tcl"]["modules"]["default"]["LMOD_OR_TCL"]["projections"]["all"])
 del(modules["tcl"]["modules"]["default"]["LMOD_OR_TCL"]["projections"]["^mpi"])
@@ -41,6 +42,10 @@ dump_tcl = syaml.dump_config(modules["tcl"]).split("\n")
 # Remove empty lines 
 dump_lmod = [ x for x in dump_lmod if x.strip() ]
 dump_tcl = [ x for x in dump_tcl if x.strip() ]
+# Remove comments
+dump_lmod = [ x for x in dump_lmod if not x.strip().startswith("#") ]
+dump_tcl = [ x for x in dump_tcl if not x.strip().startswith("#") ]
+# Take the difference
 diff = "\n".join(list(difflib.context_diff(dump_lmod, dump_tcl)))
 if diff:
     print(diff)
