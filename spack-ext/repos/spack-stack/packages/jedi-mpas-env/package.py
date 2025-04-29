@@ -17,6 +17,8 @@ class JediMpasEnv(BundlePackage):
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
+    depends_on("parallel-netcdf", type="run")
+    depends_on("parallelio +pnetcdf", type="run")
     depends_on("metis", type="run")
     depends_on("jasper", type="run")
 

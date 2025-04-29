@@ -32,7 +32,6 @@ class BaseEnv(BundlePackage):
     depends_on("hdf5", type="run")
     depends_on("netcdf-c", type="run")
     depends_on("netcdf-fortran", type="run")
-    depends_on("parallel-netcdf", type="run")
     depends_on("parallelio", type="run")
     depends_on("nccmp", type="run")
 
