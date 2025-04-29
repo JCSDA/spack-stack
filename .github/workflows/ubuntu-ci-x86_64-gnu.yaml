@@ -51,7 +51,7 @@ jobs:
           # Set up spack-stack
           source ./setup.sh
 
-          declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev")
+          declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev" "neptune-dev")
           for TEMPLATE in "${TEMPLATES[@]}"; do
             if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
               export ENVNAME=ue-gcc-11.4.0-buildcache
@@ -59,6 +59,8 @@ jobs:
               export ENVNAME=se-gcc-11.4.0-buildcache
             elif [[ "${TEMPLATE}" == *"cylc-dev"* ]]; then
               export ENVNAME=ce-gcc-11.4.0-buildcache
+            elif [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
+              export ENVNAME=ne-gcc-11.4.0-buildcache
             fi
             echo "Creating environment ${ENVNAME} from template ${TEMPLATE}"
 
