@@ -340,16 +340,18 @@ def setup_meta_modules():
         for version in compiler_dict[name]
     ]
 
-    # Determine core compiler(s) and make sure they are not used (usually something ancient)
-    core_compilers = module_config["default"][module_choice]["core_compilers"]
-    logging.info("  ... core compilers: {}".format(core_compilers))
-    # Check that none of the compilers used for the stack is a core compiler
-    for core_compiler in core_compilers:
-        if any(core_compiler in x for x in flattened_compiler_list):
-            raise Exception(
-                """Not supported: compiler used for environment
-                is in list of core compilers"""
-            )
+    # Core compilers is only a valid options for lmod
+    if module_choice == "lmod":
+        # Determine core compiler(s) and make sure they are not used
+        core_compilers = module_config["default"][module_choice]["core_compilers"]
+        logging.info("  ... core compilers: {}".format(core_compilers))
+        # Check that none of the compilers used for the stack is a core compiler
+        for core_compiler in core_compilers:
+            if any(core_compiler in x for x in flattened_compiler_list):
+                raise Exception(
+                    """Not supported: compiler used for environment
+                    is in list of core compilers"""
+                )
 
     # Prepare meta module directory
     logging.info("Preparing meta module directory ...")

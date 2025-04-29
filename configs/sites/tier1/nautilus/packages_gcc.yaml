@@ -7,7 +7,7 @@ packages:
     buildable: False
   openmpi:
     externals:
-    - spec: openmpi@5.0.1%gcc@11.2.1~cuda~java~memchecker~static~wrapper-rpath fabrics=ucx schedulers=slurm
+    - spec: openmpi@5.0.1~cuda~java~memchecker~static~wrapper-rpath fabrics=ucx schedulers=slurm %gcc@11.2.1
       prefix: /p/app/penguin/openmpi/5.0.1/gcc-8.5.0
       modules:
       - penguin/openmpi/5.0.1/gcc-8.5.0

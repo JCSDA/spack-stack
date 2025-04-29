@@ -5,10 +5,6 @@ modules:
     roots:
       tcl: $env/install/modulefiles
     tcl:
-      # Core compiler is a dummy that is not used to build the stack, do not change.
-      # Hopefully nobody is trying to build software with gcc-4.6 in 2023 ...
-      core_compilers::
-      - gcc@4.6
       projections:
         all: '{compiler.name}/{compiler.version}/{name}/{version}'
         ^mpi: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
