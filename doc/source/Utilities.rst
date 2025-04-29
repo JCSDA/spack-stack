@@ -53,6 +53,15 @@ The util/parallel_install.sh utility runs parallel installations by launching mu
 .. note::
    The parallel_install.sh utility runs all installation instances on a single node, therefore be respectful of other users and of system usage policies, such as computing limits on HPC login nodes.
 
+
+.. _Fetch_Utilities:
+
+------------------------------
+fetch_cargo_deps.py, fetch_go_deps.py
+------------------------------
+
+The fetch_cargo_deps.py and fetch_go_deps.py utilities fetch Rust/Cargo and Go dependencies, respectively. The ``$CARGO_HOME`` and ``$GOMODCACHE`` variables must be set, and the utilities must be run in an active, concretized environment. They will fetch Spack packages of type CargoPackage and GoPackage, respectively, and fetch all dependencies. The utilities will attempt to use each package's ``rust`` or ``go`` dependency for the appropriate executable (``cargo``, ``go``), in which case these utilities must be run after ``rust``/``go`` are installed. They will revert to using system-installed ``rust``/``go`` if available.
+
 .. _Acorn_Utilities:
 
 ------------------------------
