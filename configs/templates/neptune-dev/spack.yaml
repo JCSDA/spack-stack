@@ -22,3 +22,8 @@ spack:
       - neptune-python-env%intel
       # Same for LLVM compilers
       - neptune-python-env%clang
+  packages:
+    # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
+    parallelio:
+      require:
+      - '~pnetcdf'
