@@ -2,5 +2,5 @@
 module load gcc/10.3.0 python/3.11.7
 
 ## Go, Rust repo setup for fetcher scripts
-export GOMODCACHE=${SPACK_STACK_DIR}/gomodcache
-export CARGO_HOME=${SPACK_STACK_DIR}/cargo_home
+export GOMODCACHE=${SPACK_STACK_DIR}/cache/go
+export CARGO_HOME=${SPACK_STACK_DIR}/cache/cargo
