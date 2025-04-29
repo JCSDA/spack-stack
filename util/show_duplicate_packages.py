@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 # Check spack.lock for duplicate packages.
+# Looks for spack.lock in $SPACK_ENV by default, otherwise assumes current directory.
+#
 # Usage:
 #   show_duplicate_packages.py
 #
@@ -10,6 +12,7 @@
 
 import argparse
 import json
+import os
 import re
 import sys
 from collections import defaultdict
@@ -38,7 +41,9 @@ if __name__ == "__main__":
     parser.add_argument("-d", action="store_true", help="Only show duplicates (default output is colorized list of all packages)")
     parser.add_argument("-i", default=[], nargs="*", action="append", help="Ignore package name (e.g., 'hdf5', 'netcdf-c')")
     args = parser.parse_args()
-    with open("spack.lock", "r") as f:
+    spack_env = os.getenv("SPACK_ENV")
+    basedir = spack_env if spack_env else "./"
+    with open(os.path.join(basedir, "spack.lock"), "r") as f:
         json_to_check = f.read()
     ret = show_duplicate_packages(json_to_check, only_show_dups=args.d, ignore_list=args.i)
     sys.exit(ret)
