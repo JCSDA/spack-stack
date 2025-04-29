@@ -113,7 +113,6 @@ compilers:
         # Automake-based builds are installed in lib64
         # which confuses some packages.
         CONFIG_SITE: ''
-        INTEL_COMPILER_TYPE: 'ONEAPI'
     extra_rpaths: []
 - compiler:
     spec: gcc@12.1.0
