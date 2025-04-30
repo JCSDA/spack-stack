@@ -105,7 +105,7 @@ spack stack create env --site ubuntu2404-nvhpc --template jedi-mpas-nvidia-dev -
 cd envs/nvidia-env/
 spack env activate -p .
 spack concretize 2>&1 | tee log.concretize
-${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 spack install --verbose --fail-fast 2>&1 | tee log.install
 spack module lmod refresh
 spack stack setup-meta-modules

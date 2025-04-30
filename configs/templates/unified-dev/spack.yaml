@@ -59,3 +59,8 @@ spack:
     # Skip neptune-python-env with Intel Classic due to problems
     # with new versions of py-numpy, py-scipy, ...
     - neptune-python-env%intel
+  packages:
+    # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
+    parallelio:
+      require:
+      - '+pnetcdf'

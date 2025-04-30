@@ -45,37 +45,8 @@ run_and_check 1 "check_permissions G" ${SPACK_STACK_DIR}/util/check_permissions.
 
 ## Check show_duplicate_packages.py
 cd ${SPACK_STACK_DIR}/util/checks
-echo -e " -  abcdefg hdf6@1.2.3%intel\n -  tuvwxyz hdf6@1.2.3%gcc" > fakeconcrete.A
-run_and_check 1 "show_duplicate_packages.py A1" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.A
-run_and_check 1 "show_duplicate_packages.py A2" "cat fakeconcrete.A | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py"
-run_and_check 0 "show_duplicate_packages.py A3" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -c fakeconcrete.A
-run_and_check 0 "show_duplicate_packages.py A4" "cat fakeconcrete.A | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -c"
-echo -e " -  abcdefg hdf6@1.2.3\n -  tuvwxyz hdf6@1.2.4" > fakeconcrete.B
-run_and_check 1 "show_duplicate_packages.py B1" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.B
-run_and_check 1 "show_duplicate_packages.py B2" "cat fakeconcrete.B | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py"
-echo -e " -  abcdefg hdf6@1.2.3\n[+] abcdefg hdf6@1.2.3" > fakeconcrete.C
-run_and_check 0 "show_duplicate_packages.py C1" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.C
-run_and_check 0 "show_duplicate_packages.py C2" "cat fakeconcrete.C | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py"
-echo -e " -  abcdefg hdf6@1.2.3\n -  tuvwxyz hdf6@1.2.3\n -  hijklmn mypackage@1.1.1\n[+] opqrstu mypackage@1.1.1" > fakeconcrete.D
-run_and_check 0 "show_duplicate_packages.py D1" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.D -i hdf6 -i mypackage
-run_and_check 0 "show_duplicate_packages.py D2" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.D -i mypackage -i hdf6
-run_and_check 0 "show_duplicate_packages.py D3" "cat fakeconcrete.D | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i hdf6 -i mypackage"
-run_and_check 0 "show_duplicate_packages.py D4" "cat fakeconcrete.D | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i mypackage -i hdf6"
-run_and_check 1 "show_duplicate_packages.py D5" "cat fakeconcrete.D | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i hdf6"
-run_and_check 1 "show_duplicate_packages.py D6" "cat fakeconcrete.D | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i mypackage"
-
-cmd="${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.A 2>/dev/null | uniq | grep -c hdf6"
-echo "Running '$cmd' in $PWD"
-if [ $(eval "$cmd") -ne 2 ] ; then
-  echo "show_duplicate_packages.py E failed!"
-  fail=1
-fi
-
-cmd="${SPACK_STACK_DIR}/util/show_duplicate_packages.py fakeconcrete.F -d 2>/dev/null | uniq | grep -c hdf6"
-echo -e " -  abcdefg hdf6@1.2.3\n -  tuvwxyz hdf6@1.2.3\n -  a1b2c3d other@1.1.1" > fakeconcrete.F
-if [ $(eval "$cmd") -ne 2 ] ; then
-  echo "show_duplicate_packages.py F failed!"
-  fail=1
-fi
+echo '{"concrete_specs": {"a2yzf2cdwz7ajifuqacnzfde5wulwyke": {"name": "w3emc", "version": "2.10.0"}, "ks553jzmi3kmx4g76t6mfeb6gpmxa5n4": {"name": "w3emc", "version": "2.11.0"}}}' > spack.lock
+run_and_check 1 "show_duplicate_packages.py, should find duplicates" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
+run_and_check 0 "show_duplicate_packages.py, should not find duplicates" ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i w3emc
 
 exit $fail
