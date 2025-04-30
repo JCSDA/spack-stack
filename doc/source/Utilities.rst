@@ -13,7 +13,7 @@ The utility located at util/show_duplicate_packages.py parses ``spack.lock`` and
 
 .. code-block:: console
 
-   # In $SPACK_ENV, after concretization:
+   # In an active environment ($SPACK_ENV set), after concretization:
    ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 
 In any case, the identification of any duplicates will yield a return code of 1. The ``-i`` option can be invoked multiple times to skip specific package names.
