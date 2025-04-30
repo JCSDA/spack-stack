@@ -507,7 +507,7 @@ The following instructions apply to the basic environments (``unified-dev``, ``s
    emacs site/*.yaml
 
    # Process/concretize the specs; optionally check for duplicate packages
-   spack concretize | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
+   spack concretize | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 
    # Optional step for systems with a pre-configured spack mirror, see below.
 

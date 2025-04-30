@@ -353,7 +353,7 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. code-block:: console
 
    spack concretize 2>&1 | tee log.concretize
-   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
+   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 11. Create lmod module files
@@ -620,7 +620,7 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
 .. code-block:: console
 
    spack concretize 2>&1 | tee log.concretize
-   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
+   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 12. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
@@ -808,7 +808,7 @@ concretizer log must be inspected to ensure that all packages being built are bu
 .. code-block:: console
 
    spack concretize 2>&1 | tee log.concretize
-   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d [-c] log.concretize
+   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
 13. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)

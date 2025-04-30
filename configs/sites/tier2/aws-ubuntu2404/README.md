@@ -196,7 +196,7 @@ spack config add "packages:ewok-env:variants:+mysql"
 
 # Concretize and install
 spack concretize 2>&1 | tee log.concretize
-${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d -c log.concretize
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 spack install --fail-fast -j 12 2>&1 | tee log.install
 
 # Install modules
@@ -307,7 +307,7 @@ spack config add "packages:all:compiler:[oneapi@2024.2.1, gcc@13.3.0]"
 spack config add "packages:gmake:buildable:False"
 
 spack concretize 2>&1 | tee log.concretize
-${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 spack install --fail-fast -j 12 2>&1 | tee log.install
 spack module lmod refresh
 spack stack setup-meta-modules
