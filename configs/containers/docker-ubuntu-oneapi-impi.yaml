@@ -129,6 +129,7 @@ spack:
       buildable: false
       externals:
       - spec: llvm@14.0.6
+        prefix: /usr
     mysql:
       buildable: false
       externals:
@@ -146,6 +147,12 @@ spack:
     py-numpy:
       require:
       - '^intel-oneapi-mkl'
+    qt:
+      buildable: false
+      externals:
+      - spec: qt@5.15.3
+        prefix: /usr
+      version: [5.15.3]
     tar:
       externals:
       - spec: tar@1.34
