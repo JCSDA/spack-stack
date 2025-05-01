@@ -20,6 +20,6 @@ trap_and_run ./01_DirectorySetup.sh $*
 trap_and_run ./02_GetSpackStack.sh $*
 trap_and_run ./03_SetupEnv.sh $*
 trap_and_run ./04_SpackInstall.sh $*
-trap_and_run ./05_BuildCache.sh $*
+#trap_and_run ./05_BuildCache.sh $*
 trap_and_run ./06_AppTests.sh $*
 trap_and_run ./07_Cleanup.sh $*
