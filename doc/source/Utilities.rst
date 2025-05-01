@@ -9,16 +9,14 @@ Miscellaneous utilities
 show_duplicate_packages.py
 ------------------------------
 
-The utility located at util/show_duplicate_packages.py parses the output of ``spack concretize`` and detects duplicates. Usage is as follows:
+The utility located at util/show_duplicate_packages.py parses ``spack.lock`` and detects duplicates. Usage is as follows:
 
 .. code-block:: console
 
-   spack concretize | ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
-   # - OR -
-   spack concretize |& tee log.concretize
-   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py log.concretize
+   # In an active environment ($SPACK_ENV set), after concretization:
+   ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 
-The ``-d`` option shows only a list of the duplicates, as opposed to the default behavior, which is to show a print-out of all packages with colorized duplicates. In any case, the identification of any duplicates will yield a return code of 1. The ``-i`` option can be invoked multiple times to skip specific package names. The ``-c`` option can be used to ignore duplicates associated with different compilers; in an environment with, say, GCC and Intel copies of any given package, those two copies of a package will not be reported as duplicates.
+In any case, the identification of any duplicates will yield a return code of 1. The ``-i`` option can be invoked multiple times to skip specific package names.
 
 .. _Permissions_Checker:
 
@@ -52,6 +50,23 @@ The util/parallel_install.sh utility runs parallel installations by launching mu
 
 .. note::
    The parallel_install.sh utility runs all installation instances on a single node, therefore be respectful of other users and of system usage policies, such as computing limits on HPC login nodes.
+
+.. _Fetch_Cargo_Dependencies:
+-------------------------------------
+fetch_cargo_deps.py / install_rust.sh
+-------------------------------------
+
+This utility downloads Rust/Cargo package dependencies and stores them in a local directory for later use during ``spack install``. This is required for installing on systems that do no have access to the internet during the ``spack install`` phase and complements other mirrors such as the spack source mirror.
+
+Run this script in an active, concretized Spack environment to fetch Rust dependencies and store them in ``${CARGO_HOME}. You must either run it with ``spack-python`` or have ``spack-python`` in your ``${PATH}``. Ensure ``${CARGO_HOME}`` has the same value when ``spack install`` is run. For each spec that is a CargoPackage or a PythonPackage with a rust dependency, the script will attempt to fetch all of its cargo dependencies using ``cargo`` if available in the user's environment, but will fall back to installing ``cargo``/``rustup`` from the internet using ``install_rust.sh`` (located in in the same directory as this script).
+
+.. _Fetch_Go_Dependencies:
+
+----------------
+fetch_go_deps.py
+----------------
+
+The ``fetch_go_deps.py`` utility prefetches Go dependencies, storing them in a local directory for later use during ``spack install``. This is required for installing on systems that do no have access to the internet during the ``spack install`` phase and complements other mirrors such as the spack source mirror. The ``$GOMODCACHE`` variable must be set, and the utility must be run in an active, concretized environment. It will fetch Spack packages of type GoPackage, and fetch all dependencies based on the dependency listings found in those packages. The utilities will attempt to use each package's ``go`` dependency, in which case these utilities must be run after ``go`` is installed. It will revert to using system-installed ``go`` if available.
 
 .. _Acorn_Utilities:
 

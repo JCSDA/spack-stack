@@ -1,13 +1,13 @@
-module load gcc/11.2.0 python/3.8.6
+. ${SPACK_STACK_DIR}/configs/sites/tier1/acorn/setup.sh
 COMPILERS=${COMPILERS:-"intel@2022.2.0.262 intel@19.1.3.304"}
 TEMPLATES=${TEMPLATES:-"unified-dev"}
 function spack_install_wrapper {
   logfile=$1
   shift 2
   spack fetch --missing ${PACKAGES_TO_INSTALL} &> log.fetch
-  if [[ " $* " =~ " global-workflow-env " ]]; then
-    spack config add "config:build_stage:${SPACK_ENV:?}/stage"
-    spack install $INSTALL_OPTS gh
+  if [[ " $($(which spack) dependencies --transitive ${PACKAGES_TO_INSTALL}) " =~ " go " ]]; then
+    /opt/pbs/bin/qsub -N spack-build-cache-$RUNID -j oe -A NCEPLIBS-DEV -l "select=1:ncpus=8:mem=20GB,walltime=$walltime" -q dev -V -Wblock=true -- $(which spack) install go
+    ${SPACK_SPACK_DIR}/util/fetch_go_deps.py
   fi
   spack config add 'config:build_stage:$tempdir/$user/spack-stage'
   if [[ " $* " =~ "-env " ]]; then # for the "real" install step

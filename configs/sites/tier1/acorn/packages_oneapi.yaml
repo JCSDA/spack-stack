@@ -1,0 +1,37 @@
+  packages:
+    all:
+      compiler:: [oneapi@2024.2]
+      providers:
+        mpi:: [cray-mpich@8.1.29]
+        # Remove the next three lines to switch to intel-oneapi-mkl
+        blas:: [openblas]
+        fftw-api:: [fftw]
+        lapack:: [openblas]
+    gcc-runtime:
+      require: '%gcc@12.1.0'
+    mpi:
+      buildable: False
+    cray-mpich:
+      externals:
+      - spec: cray-mpich@8.1.29~wrappers
+        modules:
+        - libfabric
+        - craype-network-ofi
+        - cray-mpich/8.1.29
+        - cray-pals
+    intel-oneapi-mkl:
+      # Remove buildable: False and configure+uncomment externals section below to use intel-oneapi-mkl
+      buildable: False
+      #externals:
+      #- spec: intel-oneapi-mkl@2022.0.2%intel@2021.5.0
+      #  prefix: /apps/oneapi
+    # DH* Remove this section to switch to intel-oneapi-mkl
+    ectrans:
+      require::
+      - '@1.2.0 ~mkl +fftw'
+    gsibec:
+      require::
+      - '@1.2.1 ~mkl'
+    py-numpy:
+      require::
+      - '^[virtuals=lapack,blas] openblas'
