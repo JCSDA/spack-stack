@@ -41,3 +41,8 @@ spack:
     exclude:
     # py-torch in ai-env doesn't build with Intel
     - ai-env%intel
+  packages:
+    # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
+    parallelio:
+      require:
+      - '+pnetcdf'

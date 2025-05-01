@@ -1,14 +1,14 @@
 name: ubuntu-ci-container-x86_64-build
 on:
   # Uncomment this to test for PRs (but do not submit)
-  #pull_request:
+  # pull_request:
   #  paths-ignore:
   #    - 'configs/sites/**'
   #    - 'doc/**'
   #    - '**.md'
   #    - '.github/ISSUE_TEMPLATE/*'
   #    - '.gitignore'
-  #
+  
   schedule:
     - cron: '0 8 * * *'
   workflow_dispatch:
@@ -57,11 +57,14 @@ jobs:
           if [[ $DOW == 1 || $DOW == 4 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-clang-mpich' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
-          elif [[ $DOW == 2 || $DOW == 5 ]]; then
+          elif [[ $DOW == 2 ]]; then
             export CONTAINER=${{ inputs.container || 'docker-ubuntu-gcc-openmpi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
+          elif [[ $DOW == 5 ]]; then
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-gcc11-openmpi' }}
+            export SPECS=${{ inputs.specs || 'jedi-ci' }}
           elif [[ $DOW == 3 || $DOW == 6 ]]; then
-            export CONTAINER=${{ inputs.container || 'docker-ubuntu-intel-impi' }}
+            export CONTAINER=${{ inputs.container || 'docker-ubuntu-oneapi-impi' }}
             export SPECS=${{ inputs.specs || 'jedi-ci' }}
           else
             # Day 7: The Sabbath of rest (but do some house keeping later on)
