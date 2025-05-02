@@ -272,8 +272,10 @@ packages:
     require: '@69'
   py-setuptools-rust:
     require: '+rust_bootstrap'
+  # When making changes here, also check the tier2/blackpearl/packages.yaml
   py-torch:
-    require: '+custom-protobuf ~mkldnn'
+    require:
+    - '+custom-protobuf ~mkldnn'
   # To avoid duplicate packages
   py-urllib3:
     require: '@1.26.12'

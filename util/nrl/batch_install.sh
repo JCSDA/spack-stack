@@ -141,8 +141,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
     ;;
   blackpearl)
-    # DH* TODO UPDATE oneifx@=2024.1.2 to oneifx@=2025.x.y
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2024.1.2" "gcc@=13.3.0" "aocc@=4.2.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.1.0" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
