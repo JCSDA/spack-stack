@@ -9,7 +9,7 @@ echo "Current directory, in which ufs-weather-model will be cloned: $PWD"
 UFSWM_BRANCH=${UFSWM_BRANCH:-develop}
 UFSWM_URL=${UFSWM_URL:-"https://github.com/ufs-community/ufs-weather-model.git"}
 
-# dprefix may be set elsewhere
+# allow override of UFS WM default location for dprefix
 dprefix=${dprefix:-${WORK_DIR:-$(dirname $0)}}
 
 if [ ! -d ufs-weather-model ]; then
