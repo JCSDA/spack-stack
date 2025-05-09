@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [oneapi@2024.2.1,gcc@13.3.0]
+    compiler:: [oneapi@2024.2.1, gcc@13.3.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.13]
       # Remove the next three lines to switch to intel-oneapi-mkl
@@ -8,12 +8,15 @@ packages:
       fftw-api:: [fftw]
       lapack:: [openblas]
   intel-oneapi-runtime:
-    buildable: false
+    buildable: False
     externals:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
       prefix: /opt/intel/oneapi
   intel-oneapi-mpi:
     buildable: False
+    externals:
+    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+      prefix: /opt/intel/oneapi
   intel-oneapi-mkl:
     buildable: False
   ectrans:
