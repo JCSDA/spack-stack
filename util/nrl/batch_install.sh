@@ -133,7 +133,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.0" "intel@=2021.5.0" "gcc@=11.2.1")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.1.1" "gcc@=11.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -366,6 +366,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       continue
     # unified-env not with intel
     elif [[ "${template}" == "unified-dev" &&  "${compiler_name}" == "intel" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler}"
+      continue
+    # With oneapi@2025.1.x, cannot build unified-dev (odc build error - reported upstream but need new tag)
+    elif [[ "${compiler_name}" == "clang" && "${compiler_version}" == "2025.1"* && ! "${template}" == "neptune-dev" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     # With clang, only neptune-dev
