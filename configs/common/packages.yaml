@@ -141,7 +141,7 @@ packages:
   hdf:
     require: '@4.2.15 +external-xdr ~fortran ~netcdf'
   hdf5:
-    require: '@1.14.3 +hl +fortran +mpi +threadsafe ~szip'
+    require: '@1.14.5 +hl +fortran +mpi +threadsafe ~szip'
   # Newer versions of hdf-eos2 require manual downloading, avoid
   hdf-eos2:
     require: '@2.20v1.00'
