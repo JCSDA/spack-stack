@@ -368,7 +368,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     elif [[ "${template}" == "unified-dev" &&  "${compiler_name}" == "intel" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    # With oneapi@2025.1.x, cannot build unified-dev (odc build error - reported upstream but need new tag)
+    # With oneapi@2025.1.x, cannot build unified-dev (odc build error):
+    # https://github.com/ecmwf/odc/issues/37
     elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && ! "${template}" == "neptune-dev" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
