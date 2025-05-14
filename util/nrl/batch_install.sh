@@ -109,48 +109,56 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.4" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   cole)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=12.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "intel@=2021.10.0" "gcc@=12.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.0" "intel@=2021.5.0" "gcc@=11.2.1")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.1.1" "gcc@=11.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   tusk)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.1.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.1.0" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   bounty)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.0" "gcc@=13.3.1" "aocc@=5.0.0" "clang@=19.1.4")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   *)
     echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
@@ -250,6 +258,8 @@ fi
 host=${SPACK_STACK_BATCH_HOST}
 module_choice=${SPACK_STACK_MODULE_CHOICE}
 bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
+cargo_mirror_path=${SPACK_STACK_CARGO_MIRROR}
+export CARGO_HOME=${cargo_mirror_path}
 
 if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
   environment_dirs=${PWD}/envs
@@ -271,19 +281,23 @@ fi
 
 if [[ "${SPACK_STACK_MODE}" == "install" ]]; then
   update_bootstrap_mirror="false"
+  update_cargo_mirror="false"
   update_source_cache="false"
   update_build_cache="false"
   reuse_build_cache="true"
 elif [[ "${SPACK_STACK_MODE}" == "build" ]]; then
   if [[ "${SPACK_STACK_ROLE}" == "ops" ]]; then
     update_bootstrap_mirror="false"
+    update_cargo_mirror="false"
     update_source_cache="false"
   elif [[ "${SPACK_STACK_ROLE}" == "dev" ]]; then
     if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
       update_bootstrap_mirror="true"
+      update_cargo_mirror="true"
       update_source_cache="true"
     else
       update_bootstrap_mirror="false"
+      update_cargo_mirror="false"
       update_source_cache="false"
     fi
   else
@@ -351,6 +365,11 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       continue
     # unified-env not with intel
     elif [[ "${template}" == "unified-dev" &&  "${compiler_name}" == "intel" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler}"
+      continue
+    # With oneapi@2025.1.x, cannot build unified-dev (odc build error):
+    # https://github.com/ecmwf/odc/issues/37
+    elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && ! "${template}" == "neptune-dev" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     # With clang, only neptune-dev
@@ -663,7 +682,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         exit 1
       fi
       spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
-      rsync -av ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
       rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
       spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
@@ -715,12 +734,18 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Check for duplicate packages
-    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -d log.concretize.${env_name}.001
+    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl
 
     # Update local source cache if requested
     if [[ "${update_source_cache}" == "true"* ]]; then
       echo "Updating local source cache ..."
       spack mirror create -a -d ${source_mirror_path}
+    fi
+
+    # Update local cargo mirror if requested
+    if [[ "${update_cargo_mirror}" == "true"* ]]; then
+      echo "Updating local cargo mirror ..."
+      ./util/fetch_cargo_deps.py
     fi
 
     # Install the environment with the correct flags
@@ -789,6 +814,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
     if [[ "${update_build_cache}" == "true" ]]; then
       fix_permissions ${host} ${binary_mirror_path} 0
+    fi
+    if [[ "${update_cargo_mirror}" == "true" ]]; then
+      fix_permissions ${host} ${cargo_mirror_path} 0
     fi
 
     # Clean up

@@ -88,3 +88,46 @@ compilers:
         # which confuses some packages.
         CONFIG_SITE: ''
     extra_rpaths: []
+- compiler:
+    spec: oneapi@2024.2.1
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags: {}
+    operating_system: sles15
+    modules:
+    - PrgEnv-intel/8.5.0
+    - craype/2.7.17
+    - intel-oneapi/2024.2
+    - libfabric
+    environment:
+      prepend_path:
+        PATH: /opt/cray/pe/gcc/12.1.0/bin
+        LD_LIBRARY_PATH: /opt/cray/pe/gcc/12.1.0/snos/lib64
+        LIBRARY_PATH: /opt/cray/pe/gcc/12.1.0/snos/lib64
+        CPATH: /opt/cray/pe/gcc/12.1.0/snos/include
+      set:
+        # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so
+        # Automake-based builds are installed in lib64
+        # which confuses some packages.
+        CONFIG_SITE: ''
+    extra_rpaths: []
+- compiler:
+    spec: gcc@12.1.0
+    paths:
+      cc: /opt/cray/pe/gcc/12.1.0/bin/gcc
+      cxx: /opt/cray/pe/gcc/12.1.0/bin/g++
+      f77: /opt/cray/pe/gcc/12.1.0/bin/gfortran
+      fc: /opt/cray/pe/gcc/12.1.0/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    modules: []
+    environment:
+      set:
+        # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so
+        # Automake-based builds are installed in lib64
+        # which confuses some packages.
+        CONFIG_SITE: ''
+    extra_rpaths: []

@@ -2,6 +2,13 @@
 # Portable way to get current directory
 SPACK_STACK_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
+hostname=$(hostname)
+case $hostname in
+  alogin*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/acorn/setup.sh
+    ;;
+esac
+
 export SPACK_STACK_DIR
 echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 

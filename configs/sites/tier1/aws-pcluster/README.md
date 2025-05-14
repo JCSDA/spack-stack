@@ -348,7 +348,7 @@ spack env activate -p .
 #      compilers: [%intel']
 
 spack concretize 2>&1 | tee log.concretize.001
-${SPACK_STACK_DIR}/util/show_duplicate_packages.py -d log.concretize.001
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 spack install -j 12 --verbose 2>&1 | tee log.install.001
 spack module lmod refresh
 spack stack setup-meta-modules
@@ -434,7 +434,7 @@ and remove entries for meson, ninja, hdf5, cmake and remove the external
 9. Concretize and install
 ```
 spack concretize 2>&1 | tee log.concretize.unified-env.001
-./util/show_duplicate_packages.py -d log.concretize.unified-env.001
+./util/show_duplicate_packages.py
 spack install --verbose 2>&1 | tee log.install.unified-env.001
 spack module lmod refresh
 spack stack setup-meta-modules
