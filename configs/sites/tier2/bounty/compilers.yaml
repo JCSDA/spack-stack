@@ -39,20 +39,20 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: clang@=19.1.4
+    spec: clang@=20.1.4
     paths:
-      cc: /home/dom/prod/llvm-19.1.4/bin/clang
-      cxx: /home/dom/prod/llvm-19.1.4/bin/clang++
-      f77: /home/dom/prod/llvm-19.1.4/bin/flang-new
-      fc: /home/dom/prod/llvm-19.1.4/bin/flang-new
+      cc: /home/dom/prod/llvm-20.1.4/view/bin/clang
+      cxx: /home/dom/prod/llvm-20.1.4/view/bin/clang++
+      f77: /home/dom/prod/llvm-20.1.4/view/bin/flang-new
+      fc: /home/dom/prod/llvm-20.1.4/view/bin/flang-new
     flags: {}
     operating_system: almalinux9
     target: x86_64
     modules: []
     environment:
       append_path:
-        LD_LIBRARY_PATH: /home/dom/prod/llvm-19.1.4/lib
-    extra_rpaths: [/home/dom/prod/llvm-19.1.4/lib]
+        LD_LIBRARY_PATH: /home/dom/prod/llvm-20.1.4/view/lib
+    extra_rpaths: [/home/dom/prod/llvm-20.1.4/view/lib]
 - compiler:
     spec: aocc@=5.0.0
     paths:
