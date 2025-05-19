@@ -198,7 +198,7 @@ packages:
     require: '@4.6.1 +parallel_tests'
   # ninja - when adding information here, also check Discover site config
   odc:
-    require: '@1.5.2 ~fortran'
+    require: '@1.6.1 ~fortran'
   # Todo: update to 0.3.28 so that it builds with 'clang'. Check
   # packages_clang.yaml where we are overwriting openblas for now.
   openblas:
