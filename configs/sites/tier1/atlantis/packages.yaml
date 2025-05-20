@@ -92,6 +92,10 @@ packages:
     externals:
     - spec: pkgconf@1.4.2
       prefix: /usr
+  slurm:
+    externals:
+    - spec: slurm@21.08.8 +pmix
+      prefix: /cm/shared/apps/slurm/current
   subversion:
     externals:
     - spec: subversion@1.10.2
