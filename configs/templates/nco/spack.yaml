@@ -19,7 +19,7 @@ spack:
   - cdo
   - cfitsio
   - cmake
-  - crtm
+  - crtm@=2.4.0.1
   - curl
   - ecflow ^boost%gcc
   - eckit
