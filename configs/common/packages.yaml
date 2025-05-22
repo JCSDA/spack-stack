@@ -172,7 +172,8 @@ packages:
   met:
     require:
     - '@12.0.1'
-    - '+python +grib2'
+    - '+python'
+    - '+grib2'
   metplus:
     require: '@6.0.0'
   metis:
