@@ -24,6 +24,12 @@ packages:
     require: '%gcc'
   libbsd:
     require: '%gcc'
+  met:
+    require:
+    - '+shared-intel'
+  parallel-netcdf:
+    require:
+    - '+shared-intel'
   qt:
     require:
     - '%gcc'
