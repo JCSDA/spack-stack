@@ -34,13 +34,22 @@ spack:
     - esmf@=8.6.1 snapshot=none
     - esmf@=8.8.0 snapshot=none
 
+    # Used for building documentation
+    - jedi-tools-env
+
   specs:
   - matrix:
     - [$packages]
     - [$compilers]
     exclude:
+
+    # Exclude Intel and OneAPI variants
+    - jedi-tools-env%intel
+    - jedi-tools-env%oneapi
+    
     # py-torch in ai-env doesn't build with Intel
     - ai-env%intel
+    - ai-env%oneapi
   packages:
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:
