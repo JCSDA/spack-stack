@@ -14,14 +14,14 @@ spack:
   specs:
   - awscli
   - bacio
-  - boost %intel
+  - boost
   - bufr
   - cdo
   - cfitsio
   - cmake
   - crtm@=2.4.0.1
   - curl
-  - ecflow ^boost%gcc
+  - ecflow
   - eckit
   - ecmwf-atlas
   - eigen

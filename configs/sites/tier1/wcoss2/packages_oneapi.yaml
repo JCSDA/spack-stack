@@ -1,0 +1,45 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.1]
+  gcc-runtime:
+    require: '%gcc@12.1.0'
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.29~wrappers
+      modules:
+      - libfabric
+      - craype-network-ofi
+      - cray-mpich/8.1.29
+      - cray-pals
+  bison:
+    require: ['%gcc']
+  cairo:
+    require: ['+fc']
+  ectrans:
+    require::
+    - '@1.2.0 ~mkl +fftw'
+  elfutils:
+    require: ['@0.191']
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  subversion:
+    require: ['%gcc']
+  cmake:
+    require: ['%gcc']
+  proj:
+    require: ['@9.4.1']
+  libtiff:
+    require: ['build_system=cmake']
+  icu4c:
+    require: ['%gcc']
+  ninja:
+    require: ['~re2c %gcc']
+  pixman:
+    require: ['build_system=meson']
+  apr:
+    require: ['@:1.6', '%gcc']
+  glib:
+    require: ['%gcc']
+  zlib-ng:
+    require: ['cflags="-static-intel"', 'cxxflags="-static-intel"']
