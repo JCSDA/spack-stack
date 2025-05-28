@@ -26,3 +26,5 @@ packages:
       require: ['%gcc']
     ecflow:
       require:: ['@5.11.4', '+ui', '^boost %gcc', '%intel']
+    py-numpy:
+      require: ['%gcc']
