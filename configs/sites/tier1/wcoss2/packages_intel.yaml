@@ -23,5 +23,6 @@ packages:
     ### Package settings.
     #
     harfbuzz:
-      require:
-      - '%gcc'
+      require: ['%gcc']
+    ecflow:
+      require:: ['@5.11.4', '+ui', '^boost %gcc', '%intel']
