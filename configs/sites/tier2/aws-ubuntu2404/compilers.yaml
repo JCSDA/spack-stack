@@ -13,7 +13,7 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@11.4.0
+    spec: gcc@13.3.0
     paths:
       cc: /usr/bin/gcc
       cxx: /usr/bin/g++
