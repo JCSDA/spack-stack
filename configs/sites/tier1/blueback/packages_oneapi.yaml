@@ -33,3 +33,7 @@ packages:
       prefix: /p/app/intel/oneapi-combined
     - spec: intel-oneapi-runtime@2025.0.4%oneapi@2025.0.4
       prefix: /p/app/intel/oneapi-combined
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@13.3.0
+      prefix: /usr

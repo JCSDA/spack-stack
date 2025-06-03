@@ -11,3 +11,7 @@ packages:
       modules:
       - cray-mpich/8.1.32
       - craype-network-ofi
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@13.3.0
+      prefix: /usr
