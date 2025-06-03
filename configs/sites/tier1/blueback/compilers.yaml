@@ -10,13 +10,13 @@ compilers::
     operating_system: sles15
     target: x86_64
     modules:
-    - PrgEnv-gnu/8.5.0
+    - PrgEnv-gnu/8.6.0
     - gcc-native/13.2
-    - cray-libsci/24.07.0
-    - libfabric/1.20.1
+    - cray-libsci/25.03.0
+    - libfabric/1.22.0
     environment:
       prepend_path:
-        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.07.0/GNU/12.3/x86_64/lib'
+        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.03.0/GNU/13.2/x86_64/lib'
       set:
         CONFIG_SITE: ''
         CRAY_CPU_TARGET: x86-genoa
@@ -32,13 +32,13 @@ compilers::
     operating_system: sles15
     target: x86_64
     modules:
-    - PrgEnv-intel/8.5.0
+    - PrgEnv-intel/8.6.0
     - intel-oneapi/2024.2
-    - cray-libsci/24.07.0
-    - libfabric/1.20.1
+    - cray-libsci/25.03.0
+    - libfabric/1.22.0
     environment:
       prepend_path:
-        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.07.0/INTEL/2023.2/x86_64/lib'
+        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.03.0/INTEL/2025.0/x86_64/lib'
       set:
         CONFIG_SITE: ''
         CRAY_CPU_TARGET: x86-genoa
@@ -54,15 +54,15 @@ compilers::
     operating_system: sles15
     target: x86_64
     modules:
-    - PrgEnv-intel/8.5.0
+    - PrgEnv-intel/8.6.0
     - intel-oneapi/2025.0
-    - cray-libsci/24.07.0
-    - libfabric/1.20.1
+    - cray-libsci/25.03.0
+    - libfabric/1.22.0
     environment:
       prepend_path:
         # The Cray compiler module does not include llvm-ar and other tools in the path
         PATH: '/p/app/intel/oneapi-combined/compiler/2025.0/bin/compiler'
-        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.07.0/INTEL/2023.2/x86_64/lib'
+        LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.03.0/INTEL/2025.0/x86_64/lib'
       set:
         CONFIG_SITE: ''
         CRAY_CPU_TARGET: x86-genoa
