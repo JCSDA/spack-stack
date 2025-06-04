@@ -29,5 +29,8 @@ class GeosGcmEnv(BundlePackage):
     depends_on("pflogger", type="run")
     #
     depends_on("py-numpy", type="run")
+    depends_on("py-pyyaml", type="run")
+    depends_on("py-ruamel-yaml", type="run")
+    depends_on("udunits", type="run")
 
     # There is no need for install() since there is no code.
