@@ -12,10 +12,10 @@ class GeosGcmEnv(BundlePackage):
     homepage = "https://gmao.gsfc.nasa.gov/GEOS_systems"
     git = "https://github.com/GEOS-ESM/GEOSgcm"
 
-    maintainers("climbfuji", "mathomp4", "danholdaway")
+    maintainers("climbfuji", "mathomp4")
 
     # Current version
-    version("1.0.0")
+    version("1.1.0")
 
     depends_on("base-env", type="run")
     depends_on("blas", type="run")
