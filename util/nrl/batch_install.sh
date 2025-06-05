@@ -105,7 +105,7 @@ SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
 
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.3" "intel@=2021.6.0" "gcc@=11.2.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.3" "gcc@=11.2.0" "clang@=20.1.5")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
@@ -126,7 +126,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   narwhal)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "intel@=2021.10.0" "gcc@=12.2.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -154,7 +154,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   bounty)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.0" "gcc@=13.3.1" "aocc@=5.0.0" "clang@=19.1.4")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.1.1" "gcc@=13.3.1" "clang@=20.1.5")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
@@ -363,21 +363,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    # unified-env not with intel
-    elif [[ "${template}" == "unified-dev" &&  "${compiler_name}" == "intel" ]]; then
-      echo "Skipping template ${template} with compiler ${compiler}"
-      continue
-    # With oneapi@2025.1.x, cannot build unified-dev (odc build error):
-    # https://github.com/ecmwf/odc/issues/37
-    elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && ! "${template}" == "neptune-dev" ]]; then
-      echo "Skipping template ${template} with compiler ${compiler}"
-      continue
     # With clang, only neptune-dev
     elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    # With aocc, only neptune-dev
-    elif [[ "${compiler_name}" == "aocc" && ! "${template}" == "neptune-dev" ]]; then
+    # FMS compiler ICE: https://github.com/NOAA-GFDL/FMS/issues/1680
+    elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && "${template}" == "unified-dev" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     fi
@@ -441,38 +432,38 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         case ${compiler} in
           oneapi@=2024.2.1)
             module purge
-            module load PrgEnv-intel/8.5.0
+            module load PrgEnv-intel/8.6.0
             module unload intel
             module load intel-oneapi/2024.2
             module unload cray-mpich
             module unload craype-network-ofi
-            module load libfabric/1.20.1
+            module load libfabric/1.22.0
             module unload cray-libsci
-            module load cray-libsci/24.07.0
+            module load cray-libsci/25.03.0
             ;;
           oneapi@=2025.0.4)
             module purge
-            module load PrgEnv-intel/8.5.0
+            module load PrgEnv-intel/8.6.0
             module unload intel
             module load intel-oneapi/2025.0
             module unload cray-mpich
             module unload craype-network-ofi
-            module load libfabric/1.20.1
+            module load libfabric/1.22.0
             module unload cray-libsci
-            module load cray-libsci/24.07.0
+            module load cray-libsci/25.03.0
             ;;
           gcc@=13.3.0)
             module purge
-            module load PrgEnv-gnu/8.5.0
+            module load PrgEnv-gnu/8.6.0
             module unload gcc
             # Confusing: the module is called gcc-native/13.2,
             # but the actual version of the compiler is 13.3
             module load gcc-native/13.2
             module unload cray-mpich
             module unload craype-network-ofi
-            module load libfabric/1.20.1
+            module load libfabric/1.22.0
             module unload cray-libsci
-            module load cray-libsci/24.07.0
+            module load cray-libsci/25.03.0
             ;;
           *)
             echo "ERROR, compiler ${compiler} not configured for resetting environment"
@@ -548,17 +539,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             module load PrgEnv-intel/8.4.0
             module unload intel
             module load intel/2024.2
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.12.1.2.2.1
-            module unload cray-libsci
-            module load cray-libsci/23.05.1.4
-            ;;
-          intel@=2021.10.0)
-            module purge
-            module load PrgEnv-intel/8.4.0
-            module unload intel
-            module load intel-classic/2023.2.0
             module unload cray-mpich
             module unload craype-network-ofi
             module load libfabric/1.12.1.2.2.1
