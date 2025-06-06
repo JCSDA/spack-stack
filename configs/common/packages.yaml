@@ -74,11 +74,15 @@ packages:
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
+    - any_of: ['+python']
+      when: "%gcc"
+    - any_of: ['+python']
+      when: "%intel"
+    - any_of: ['+python']
+      when: "%oneapi"
     - any_of: ['~python']
       when: "%clang"
-      message: "Disable python variant for ESMF because mpi4py doesn't build with clang"    #- any_of: ['']
-    prefer:
-    - '+python'
+      message: "Disable python variant for ESMF because mpi4py doesn't build with clang" 
   # To avoid duplicate packages (concretizer bug?)
   expat:
     require:
