@@ -11,14 +11,8 @@ packages:
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/openmpi-4.1.6-auzmzlihoo7n6g254nqkguxtzrdzkyqv
       modules:
       - openmpi/4.1.6
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@11.4.1%gcc@11.4.1
+      prefix: /usr
 
-  ectrans:
-    require::
-    - '~mkl +fftw'
-  gsibec:
-    require::
-    - '~mkl'
-  py-numpy:
-    require::
-    - '@1.26'
-    - '^openblas'
