@@ -3,7 +3,7 @@ packages:
   ### Set compilers & MPI provider for metamodule generation.
   #
   all:
-    compiler:: [oneapi@2024.2.1,gcc]
+    compiler:: [oneapi@2024.2.1]
     providers:
       mpi:: [cray-mpich]
   gcc-runtime:
