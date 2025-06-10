@@ -160,7 +160,7 @@ packages:
   magics:
     require: "@4.15.3:"
   mapl:
-    require: '@2.53.0 ~shared ~f2py'
+    require: '@2.53 ~shared ~f2py'
     variants: '+pflogger'
   met:
     require: '@11.1.1 +python +grib2'
@@ -265,9 +265,11 @@ packages:
   py-urllib3:
     require: '@1.26.12'
   qt:
-    require: '@5'
+    require:
+    - '@5'
   scotch:
-    require: '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps'
+    require:
+    - '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps'
   sfcio:
     require: '@1.4.2'
   shumlib:
