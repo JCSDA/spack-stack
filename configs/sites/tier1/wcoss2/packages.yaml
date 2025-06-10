@@ -114,4 +114,4 @@
     crtm:                                                     
       require: ['@2.4.0.1 +fix']
     scotch:
-      require: ['@7.0.7 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps build_system=cmake']
+      require:: ['@7.0.7 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps build_system=cmake']
