@@ -413,6 +413,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       atlantis)
         umask 0022
         module purge
+        case ${compiler} in
+          clang@=20.1.5)
+	    module use /gpfs/neptune/spack-stack/llvm-20.1.5/modulefiles
+	    module use /gpfs/neptune/spack-stack/openmpi-5.0.6/llvm-20.1.5/modulefiles
+	    ;;
+	esac
         ;;
       blueback)
         # Check if snapshot to restore default environment exists, then restore
