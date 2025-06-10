@@ -71,6 +71,8 @@
     gsibec:
       require::
       - '@1.2.1 ~mkl'
+    icu4c:
+      require: ['%gcc']
     libffi:
       require:
       - any_of: ['@3.3']
@@ -92,7 +94,7 @@
       require:
       - any_of: ['@0.29.36']
         when: '%intel'
-    py-numpy:
+    py-numpy::
       require::
       - '^[virtuals=lapack,blas] openblas'
       - '@1.26'
