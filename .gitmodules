@@ -1,7 +1,7 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = spack-stack-1.9.2rc1
+  url = https://github.com/AlexanderRichert-NOAA/spack
+  branch = 192rc2
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
