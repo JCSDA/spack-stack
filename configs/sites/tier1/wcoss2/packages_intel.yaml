@@ -33,5 +33,8 @@ packages:
       - 'cflags="-no-ipo" cxxflags="-no-ipo"'
       - '^boost %gcc'
       - '%intel'
-    py-numpy:
-      require: ['%gcc']
+    py-numpy::
+      require::
+      - '^[virtuals=lapack,blas] openblas'
+      - '@1.26'
+      - '%gcc'
