@@ -1,6 +1,11 @@
 packages:
+  #
+  ### Set compilers & MPI provider for metamodule generation.
+  #
   all:
     compiler:: [oneapi@2024.2.1]
+    providers:
+      mpi:: [cray-mpich]
   gcc-runtime:
     require: '%gcc@12.1.0'
   cray-mpich:
@@ -31,8 +36,6 @@ packages:
     require: ['@9.4.1']
   libtiff:
     require: ['build_system=cmake']
-  icu4c:
-    require: ['%gcc']
   ninja:
     require: ['~re2c %gcc']
   pixman:
@@ -43,3 +46,7 @@ packages:
     require: ['%gcc']
   zlib-ng:
     require: ['cflags="-static-intel"', 'cxxflags="-static-intel"']
+  py-numpy::
+    require::
+    - '^[virtuals=lapack,blas] openblas'
+    - '@1.26'

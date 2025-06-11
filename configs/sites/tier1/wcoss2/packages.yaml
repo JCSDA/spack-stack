@@ -71,6 +71,8 @@
     gsibec:
       require::
       - '@1.2.1 ~mkl'
+    icu4c:
+      require: ['%gcc']
     libffi:
       require:
       - any_of: ['@3.3']
@@ -92,10 +94,6 @@
       require:
       - any_of: ['@0.29.36']
         when: '%intel'
-    py-numpy:
-      require::
-      - '^[virtuals=lapack,blas] openblas'
-      - '@1.26'
     py-pandas:
       'require:': ~excel #   minimize dependencies
     py-scipy:
@@ -116,4 +114,4 @@
     crtm:                                                     
       require: ['@2.4.0.1 +fix']
     scotch:
-      require: ['@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps build_system=cmake']
+      require:: ['@7.0.7 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps build_system=cmake']
