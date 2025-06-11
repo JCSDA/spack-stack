@@ -2,4 +2,8 @@ packages:
   all:
     compiler:: [gcc@13.3.1]
     providers:
-      mpi:: [openmpi@5.0.5]
+      mpi:: [openmpi@5.0.6]
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@13.3.1%gcc@13.3.1
+      prefix: /opt/rh/gcc-toolset-13/root/usr

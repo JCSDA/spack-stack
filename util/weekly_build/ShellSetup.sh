@@ -33,7 +33,7 @@ function spack_install_wrapper {
 }
 
 # Include platform-dependent configuration
-. $(dirname $0)/sites/${PLATFORM}.sh
+. ${WORK_DIR:-$(dirname $0)}/sites/${PLATFORM}.sh
 
 SOURCE_CACHE=${SOURCE_CACHE:-local-source}
 BUILD_CACHE=${BUILD_CACHE:-local-binary}

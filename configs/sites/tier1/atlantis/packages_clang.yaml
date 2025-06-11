@@ -1,0 +1,15 @@
+packages:
+  all:
+    compiler:: [clang@20.1.5]
+    providers:
+      mpi:: [openmpi@5.0.6]
+  mpi:
+    buildable: False
+  openmpi:
+    buildable: False
+    externals:
+    - spec: openmpi@5.0.6 %clang@20.1.5
+      modules:
+      - slurm
+      - openmpi/5.0.6
+

@@ -1,4 +1,12 @@
 packages:
+  # Modification of common packages
+
+  # Pin py-torch to 2.5.1 to avoid build errors with 2.6.0
+  py-torch:
+    require:
+        - '@2.5.1'
+
+  # All other packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69

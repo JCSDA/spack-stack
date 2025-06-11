@@ -9,13 +9,16 @@ echo "Current directory, in which ufs-weather-model will be cloned: $PWD"
 UFSWM_BRANCH=${UFSWM_BRANCH:-develop}
 UFSWM_URL=${UFSWM_URL:-"https://github.com/ufs-community/ufs-weather-model.git"}
 
+# allow override of UFS WM default location for dprefix
+dprefix=${dprefix:-${WORK_DIR:-$(dirname $0)}}
+
 if [ ! -d ufs-weather-model ]; then
   git clone --recurse-submodules --single-branch --depth 1 --shallow-submodules ${UFSWM_URL} -b ${UFSWM_BRANCH}
 fi
 cd ufs-weather-model/tests
 
 # rt.sh will parse arguments passed to it
-./rt.sh $RT_ARGS -a ${BATCHACCOUNT:?} -n 'control_c48 intel'
+./rt.sh $RT_ARGS -a ${BATCHACCOUNT:?} -l ${WORK_DIR:-$(dirname $0)}/apptests/rt.conf
 
-rc = $?
+rc=$?
 return $rc

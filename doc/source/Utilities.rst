@@ -24,7 +24,7 @@ In any case, the identification of any duplicates will yield a return code of 1.
 check_permissions.sh
 ------------------------------
 
-The utility located at util/check_permissions.sh can be run inside any spack-stack environment directory intended for multiple users (i.e., on an HPC or cloud platform). It will return errors if the environment directory is inaccessible to non-owning users and groups (i.e., if o+rx not set), as well as if any directories or files have permissions that make them inaccessible to other users.
+The utility located at ``util/check_permissions.sh`` can be run inside any spack-stack environment directory intended for multiple users (i.e., on an HPC or cloud platform). It will return errors if the environment directory is inaccessible to non-owning users and groups (i.e., if o+rx not set), as well as if any directories or files have permissions that make them inaccessible to other users.
 
 .. _LDD_Checker:
 
@@ -32,13 +32,27 @@ The utility located at util/check_permissions.sh can be run inside any spack-sta
 ldd_check.py (Linux only)
 ------------------------------
 
-The util/ldd_check.py utility should be run for new installations to ensure that no shared library or executable that uses shared libraries is missing a shared library dependency. If the script returns a warning for a given file, this may indicate that Spack's RPATH substitution has not been properly applied. In some instances, missing library dependencies may not indicate a problem, such as a library that is intended to be found through $LD_LIBRARY_PATH after, say, a compiler or MPI environment module is loaded. Though these paths should probably also be RPATH-ified, such instances of harmless missing dependencies may be ignored with ldd_check.py's ``--ignore`` option by specifying a Python regular expression to be excluded from consideration (see example below), or can be permanently whitelisted by modifying the ``whitelist`` variable at the top of the ldd_check.py script itself (in which case please submit a PR). The script searches the 'install/' subdirectory of a given path and runs ``ldd`` on all shared objects. The base path to be search can be specified as a lone positional argument, and by default is the current directory. In practice, this should be ``$SPACK_ENV`` for the environment in question. This utility is available for Linux only.
+The ``util/ldd_check.py`` utility should be run for new installations to ensure that no shared library or executable that uses shared libraries is missing a shared library dependency. If the script returns a warning for a given file, this may indicate that Spack's RPATH substitution has not been properly applied. In some instances, missing library dependencies may not indicate a problem, such as a library that is intended to be found through $LD_LIBRARY_PATH after, say, a compiler or MPI environment module is loaded. Though these paths should probably also be RPATH-ified, such instances of harmless missing dependencies may be ignored with ldd_check.py's ``--ignore`` option by specifying a Python regular expression to be excluded from consideration (see example below), or can be permanently whitelisted by modifying the ``whitelist`` variable at the top of the ldd_check.py script itself (in which case please submit a PR). The script searches the 'install/' subdirectory of a given path and runs ``ldd`` on all shared objects. The base path to be search can be specified as a lone positional argument, and by default is the current directory. In practice, this should be ``$SPACK_ENV`` for the environment in question. This utility is available for Linux only.
 
 .. code-block:: console
 
-   cd $SPACK_ENV && ../../util/ldd_check.py
+   cd ${SPACK_ENV} && ../../util/ldd_check.py
    # - OR -
    util/ldd_check.py $SPACK_ENV --ignore '^libfoo.+' # check for missing shared dependencies, but ignore missing libfoo*
+
+.. _Libirc_Checker:
+
+------------------------------
+check_libirc.sh (Linux only)
+------------------------------
+
+The ``util/check_libirc.sh`` utility should be run for new installations with Intel oneAPI (``icx``, ``icpx``, ``ifort`` or ``ifx``). In an active environment after a successful ``spack install``, execute the following command to check if any of the shared libraries or executables is linked to ``libirc.so``. See https://github.com/JCSDA/spack-stack/issues/1436 for some background context and why we want need to avoid ``libirc.so``. If ``libirc.so`` is linked to a shared library or executable in a spack-stack environment, please create an issue in the spack-stack GitHub repository (https://github.com/JCSDA/spack-stack/issues). For downstream applications, see the spack-stack wiki (https://github.com/JCSDA/spack-stack/wiki/Intel-oneAPI-compilers-and-libirc.so).
+
+.. code-block:: console
+
+   cd ${SPACK_ENV} && ../../util/check_libirc.sh
+   # - OR -
+   cd ${SPACK_STACK_DIR} && ./check_libirc.sh
 
 .. _Parallel_Install:
 

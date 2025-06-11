@@ -74,3 +74,22 @@ compilers:
         CPATH: /cm/local/apps/gcc/11.2.0/include
         LD_LIBRARY_PATH: /cm/local/apps/gcc/11.2.0/lib64:/cm/local/apps/gcc/11.2.0/lib
     extra_rpaths: []
+- compiler:
+    spec: clang@20.1.5
+    paths:
+      cc: /gpfs/neptune/spack-stack/llvm-20.1.5/bin/clang
+      cxx: /gpfs/neptune/spack-stack/llvm-20.1.5/bin/clang++
+      f77: /gpfs/neptune/spack-stack/llvm-20.1.5/bin/flang-new
+      fc: /gpfs/neptune/spack-stack/llvm-20.1.5/bin/flang-new
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - llvm/20.1.5
+    environment:
+      append_path:
+        LD_LIBRARY_PATH: /gpfs/neptune/spack-stack/llvm-20.1.5/lib:/gpfs/neptune/spack-stack/llvm-20.1.5/lib/x86_64-unknown-linux-gnu
+      prepend_path:
+        MODULEPATH: /gpfs/neptune/spack-stack/openmpi-5.0.6/llvm-20.1.5/modulefiles:/gpfs/neptune/spack-stack/llvm-20.1.5/modulefiles
+    extra_rpaths: [/gpfs/neptune/spack-stack/llvm-20.1.5/lib, /gpfs/neptune/spack-stack/llvm-20.1.5/lib/x86_64-unknown-linux-gnu ]
+

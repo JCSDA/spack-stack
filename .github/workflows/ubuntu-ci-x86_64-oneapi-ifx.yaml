@@ -182,6 +182,9 @@ jobs:
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneifx-2024.2.0-buildcache.unified-env
           spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
 
+          # Check for libirc.so in shared libraries (returns 1=error if found)
+          ${SPACK_STACK_DIR}/util/check_libirc.sh
+
           # Remove binary cache for next round of concretization
           if [ "$USE_BINARY_CACHE" = true ] ; then
             spack mirror rm local-binary
@@ -221,6 +224,9 @@ jobs:
 
           # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
+
+          # Check for libirc.so in shared libraries (returns 1=error if found)
+          ${SPACK_STACK_DIR}/util/check_libirc.sh
 
           # Create modules
           spack clean -a

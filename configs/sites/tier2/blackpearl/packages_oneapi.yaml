@@ -1,29 +1,25 @@
 packages:
   all:
-    # DH* TODO UPDATE to 2025.x.y (MPI, ... TOO)
-    compiler:: [oneapi@2024.2.1, oneapi@2024.1.2, gcc@11.4.1]
+    compiler:: [oneapi@2024.2.1, oneapi@2025.1.0, gcc@11.4.1]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.13, intel-oneapi-mpi@2021.12]
+      mpi:: [intel-oneapi-mpi@2021.13, intel-oneapi-mpi@2021.15]
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
       prefix: /opt/intel/oneapi
-    # DH* CHANGE TO 2025.x.y
-    - spec: intel-oneapi-mpi@2021.12%oneapi@2024.1.2
+    - spec: intel-oneapi-mpi@2021.15%oneapi@2025.1.0
       prefix: /opt/intel/oneapi
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
       prefix: /opt/intel/oneapi
-    # DH* CHANGE TO 2025.x.y
-    - spec: intel-oneapi-mkl@2024.1%oneapi@2024.1.2
+    - spec: intel-oneapi-mkl@2025.1%oneapi@2025.1.0
       prefix: /opt/intel/oneapi
   intel-oneapi-runtime:
     externals:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
       prefix: /opt/intel/oneapi
-    # DH* CHANGE TO 2025.x.y
-    - spec: intel-oneapi-runtime@2024.1.2%oneapi@2024.1.2
+    - spec: intel-oneapi-runtime@2025.1.0%oneapi@2025.1.0
       prefix: /opt/intel/oneapi
