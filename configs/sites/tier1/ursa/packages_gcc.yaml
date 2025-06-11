@@ -8,7 +8,7 @@ packages:
   openmpi:
     externals:
     - spec: openmpi@4.1.6~atomics~cuda~cxx~cxx_exceptions~gpfs~internal-hwloc~internal-libevent~internal-pmix~java+legacylaunchers~lustre~memchecker~openshmem~orterunprefix+pmi+romio+rsh~singularity+static+vt+wrapper-rpath fabrics=ucx schedulers=slurm
-      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/openmpi-4.1.6-auzmzlihoo7n6g254nqkguxtzrdzkyqv
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/openmpi-4.1.6-2dkf6t23iyw4xodxruh72yvmrhhvyoms
       modules:
       - openmpi/4.1.6
   gcc-runtime:
