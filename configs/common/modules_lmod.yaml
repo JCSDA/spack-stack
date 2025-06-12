@@ -138,6 +138,8 @@ modules:
           ^esmf@8.9.0b08+debug snapshot=b08: 'esmf-8.9.0b08-debug'
           ^esmf@8.9.0b09~debug snapshot=b09: 'esmf-8.9.0b09'
           ^esmf@8.9.0b09+debug snapshot=b09: 'esmf-8.9.0b09-debug'
+          ^esmf@8.9.0b11~debug snapshot=b11: 'esmf-8.9.0b11'
+          ^esmf@8.9.0b11+debug snapshot=b11: 'esmf-8.9.0b11-debug'
       openmpi:
         environment:
           set:
