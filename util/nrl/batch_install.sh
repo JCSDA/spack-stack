@@ -393,15 +393,21 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
       blueback)
         umask 0022
+        set +e
         module purge
+        set -e
         ;;
       cole)
         umask 0022
+        set +e
         module purge
+        set -e
         ;;
       narwhal)
         umask 0022
+        set +e
         module purge
+        set -e
         ;;
       nautilus)
         umask 0022
@@ -409,7 +415,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
       tusk)
         umask 0022
+        set +e
         module purge
+        set -e
         ;;
       blackpearl)
         ulimit -s unlimited
