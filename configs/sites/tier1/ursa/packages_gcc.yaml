@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [gcc@11.4.1]
+    compiler:: [gcc@12.4.0]
     providers:
       mpi:: [openmpi@4.1.6]
   mpi:
@@ -13,6 +13,5 @@ packages:
       - openmpi/4.1.6
   gcc-runtime:
     externals:
-    - spec: gcc-runtime@11.4.1%gcc@11.4.1
+    - spec: gcc-runtime@12.4.0%gcc@12.4.0
       prefix: /usr
-
