@@ -23,9 +23,9 @@ spack:
   definitions:
   - compilers: ['%gcc']
   - packages:
-    - py-cylc-flow@8.3.6
-    - py-cylc-rose@1.4.2
-    - py-cylc-uiserver@1.5.1
+    - py-cylc-flow@8.4.2
+    - py-cylc-rose@1.5.1
+    - py-cylc-uiserver@1.6.1
 
   specs:
   - matrix:
