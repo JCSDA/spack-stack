@@ -33,3 +33,6 @@ packages:
   qt:
     require:
     - '%gcc'
+  scotch:
+    require:
+    - '%gcc'
