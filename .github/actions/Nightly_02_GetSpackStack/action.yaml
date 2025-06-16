@@ -7,5 +7,7 @@ runs:
     shell: bash
     run: |
       RUNID=$(<RUNID_SAVE.log)
+      SPACK_STACK_BRANCH=$(<SPACK_STACK_BRANCH_SAVE.log)
+      echo "Using SPACK_STACK_BRANCH '${SPACK_STACK_BRANCH}'"
       cd util/weekly_build
       ./02_GetSpackStack.sh ${RUNID} ${BASEDIR} ${PLATFORM}
