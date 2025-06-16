@@ -1,0 +1,4 @@
+mirrors:
+  # DH* 20250616 TEMPORARY PATHS!
+  local-source: file:///p/work1/heinzell/spst-jean/source-cache
+  local-binary: file:///p/work1/heinzell/spst-jean/build-cache
