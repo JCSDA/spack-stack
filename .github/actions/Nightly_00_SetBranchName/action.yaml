@@ -1,0 +1,17 @@
+name: Nightly 00 Set Branch Name
+
+runs:
+  using: "composite"
+  steps:
+  - name: Nightly 00 Set Branch Name
+    shell: bash
+    run: |
+      if [ "${{ github.event_name }}" == "pull_request" ]; then
+        echo "SPACK_STACK_BRANCH=${{ github.head_ref }}" >> $GITHUB_ENV
+        echo "${{ github.head_ref }}" > SPACK_STACK_BRANCH_SAVE.log
+      elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+        echo "ci" > SPACK_STACK_BRANCH_SAVE.log
+      else
+        echo "Error, cannot determine branch name for github event ${{ github.event_name }}"
+        exit 1
+      fi

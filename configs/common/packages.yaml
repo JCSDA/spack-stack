@@ -70,7 +70,7 @@ packages:
   esmf:
     require:
     - '~xerces ~pnetcdf +shared +external-parallelio'
-    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0b09 snapshot=b09']
+    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0b11 snapshot=b11']
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
@@ -169,7 +169,7 @@ packages:
   magics:
     require: "@4.15.3:"
   mapl:
-    require: '@2.53.0 ~shared ~f2py'
+    require: '@2.53 ~shared ~f2py'
     variants: '+pflogger'
   met:
     require:
@@ -285,9 +285,11 @@ packages:
   py-versioneer:
     require: '@0.28'
   qt:
-    require: '@5'
+    require:
+    - '@5'
   scotch:
-    require: '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps'
+    require:
+    - '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps'
   sfcio:
     require: '@1.4.2'
   shumlib:

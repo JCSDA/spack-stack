@@ -20,6 +20,7 @@ class NeptuneEnv(BundlePackage):
     version("1.5.0")
 
     variant("espc", default=False, description="Build ESPC dependencies")
+    variant("debug", default=False, description="Build debug version of selected dependencies")
 
     depends_on("base-env", type="run")
 
@@ -32,7 +33,8 @@ class NeptuneEnv(BundlePackage):
     depends_on("p4est", type="run")
     depends_on("w3emc", type="run")
     depends_on("ip", type="run")
-    depends_on("esmf", type="run")
+    depends_on("esmf ~debug", type="run", when="~debug")
+    depends_on("esmf +debug", type="run", when="+debug")
     depends_on("nco", type="run")
     depends_on("mct", type="run")
 
