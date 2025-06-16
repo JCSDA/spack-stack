@@ -1,0 +1,17 @@
+packages:
+  all:
+    compiler:: [gcc@10.2.0]
+    providers:
+      mpi:: [openmpi@4.1.1cray-mpich@8.1.32]
+  mpi:
+    buildable: False
+  cray-mpich:
+    externals:
+    - spec: openmpi@4.1.1%gcc@10.2.0
+      modules:
+      - Master
+      - prgenv-gnu-openmpi/10.2.0-4.1.1
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@10.2.0%gcc@10.2.0
+      prefix: /p/app/compilers/gcc/10.2.0
