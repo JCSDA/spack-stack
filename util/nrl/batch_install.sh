@@ -313,35 +313,6 @@ fi
 
 ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
 
-# For Cray systems, capture the default=current environment (loaded modules)
-# so that it can be restored between building stacks for different compilers
-case ${host} in
-  atlantis)
-    ;;
-  blueback)
-    module_snapshot=${PWD}/spack-stack.default-modules
-    module snapshot -f ${module_snapshot}
-    ;;
-  cole)
-    module_snapshot=${PWD}/spack-stack.default-modules
-    module snapshot -f ${module_snapshot}
-    ;;
-  narwhal)
-    module_snapshot=${PWD}/spack-stack.default-modules
-    module snapshot -f ${module_snapshot}
-    ;;
-  nautilus)
-    ;;
-  tusk)
-    module_snapshot=${PWD}/spack-stack.default-modules
-    module snapshot -f ${module_snapshot}
-    ;;
-  blackpearl)
-    ;;
-  bounty)
-    ;;
-esac
-
 # Loop through all compilers and templates for this host
 for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
@@ -415,158 +386,27 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         module purge
         case ${compiler} in
           clang@=20.1.5)
-	    module use /gpfs/neptune/spack-stack/llvm-20.1.5/modulefiles
-	    module use /gpfs/neptune/spack-stack/openmpi-5.0.6/llvm-20.1.5/modulefiles
-	    ;;
-	esac
-        ;;
-      blueback)
-        # Check if snapshot to restore default environment exists, then restore
-        if [[ ! -e ${module_snapshot} ]]; then
-          echo "ERROR, ${module_snapshot} not found for resetting environment"
-          exit 1
-        fi
-        # Unloading modules on Blueback always throws an error:
-        # environment: line 0: unalias: mpirun: not found
-        set +e
-        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
-        module purge
-        module restore -f ${module_snapshot}
-        set -e
-        umask 0022
-        set +e
-        case ${compiler} in
-          oneapi@=2024.2.1)
-            module purge
-            module load PrgEnv-intel/8.6.0
-            module unload intel
-            module load intel-oneapi/2024.2
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.22.0
-            module unload cray-libsci
-            module load cray-libsci/25.03.0
-            ;;
-          oneapi@=2025.0.4)
-            module purge
-            module load PrgEnv-intel/8.6.0
-            module unload intel
-            module load intel-oneapi/2025.0
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.22.0
-            module unload cray-libsci
-            module load cray-libsci/25.03.0
-            ;;
-          gcc@=13.3.0)
-            module purge
-            module load PrgEnv-gnu/8.6.0
-            module unload gcc
-            # Confusing: the module is called gcc-native/13.2,
-            # but the actual version of the compiler is 13.3
-            module load gcc-native/13.2
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.22.0
-            module unload cray-libsci
-            module load cray-libsci/25.03.0
-            ;;
-          *)
-            echo "ERROR, compiler ${compiler} not configured for resetting environment"
-            exit 1
+            module use /gpfs/neptune/spack-stack/llvm-20.1.5/modulefiles
+            module use /gpfs/neptune/spack-stack/openmpi-5.0.6/llvm-20.1.5/modulefiles
             ;;
         esac
+        ;;
+      blueback)
+        umask 0022
+        set +e
+        module purge
         set -e
         ;;
       cole)
-        # Check if snapshot to restore default environment exists, then restore
-        if [[ ! -e ${module_snapshot} ]]; then
-          echo "ERROR, ${module_snapshot} not found for resetting environment"
-          exit 1
-        fi
-        # Unloading modules on Cole always throws an error:
-        # environment: line 0: unalias: mpirun: not found
-        set +e
-        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
-        module purge
-        module restore -f ${module_snapshot}
-        set -e
         umask 0022
         set +e
-        case ${compiler} in
-          oneapi@=2024.2.1)
-            module purge
-            module use /p/work1/heinzell/spack-stack/oneapi-2024.2.1/modulefiles
-            module load PrgEnv-intel/8.5.0
-            module unload intel
-            module load intel/2024.2.1
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.20.1
-            module unload cray-libsci
-            module load cray-libsci/24.03.0
-            ;;
-          gcc@=12.3.0)
-            module purge
-            module load PrgEnv-gnu/8.5.0
-            module unload gcc
-            module load gcc-native/12.3
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.20.1
-            module unload cray-libsci
-            module load cray-libsci/24.03.0
-            ;;
-          *)
-            echo "ERROR, compiler ${compiler} not configured for resetting environment"
-            exit 1
-            ;;
-        esac
+        module purge
         set -e
         ;;
       narwhal)
-        # Check if snapshot to restore default environment exists, then restore
-        if [[ ! -e ${module_snapshot} ]]; then
-          echo "ERROR, ${module_snapshot} not found for resetting environment"
-          exit 1
-        fi
-        # Unloading modules on Narwhal always throws an error:
-        # environment: line 0: unalias: mpirun: not found
-        set +e
-        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
-        module purge
-        module restore -f ${module_snapshot}
-        set -e
         umask 0022
         set +e
-        case ${compiler} in
-          oneapi@=2024.2.0)
-            module purge
-            module load PrgEnv-intel/8.4.0
-            module unload intel
-            module load intel/2024.2
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.12.1.2.2.1
-            module unload cray-libsci
-            module load cray-libsci/23.05.1.4
-            ;;
-          gcc@=12.2.0)
-            module purge
-            module load PrgEnv-gnu/8.4.0
-            module unload gcc
-            module load gcc/12.2.0
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.12.1.2.2.1
-            module unload cray-libsci
-            module load cray-libsci/23.05.1.4
-            ;;
-          *)
-            echo "ERROR, compiler ${compiler} not configured for resetting environment"
-            exit 1
-            ;;
-        esac
+        module purge
         set -e
         ;;
       nautilus)
@@ -574,48 +414,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         module purge
         ;;
       tusk)
-        # Check if snapshot to restore default environment exists, then restore
-        if [[ ! -e ${module_snapshot} ]]; then
-          echo "ERROR, ${module_snapshot} not found for resetting environment"
-          exit 1
-        fi
-        # Unloading modules on Tusk always throws an error:
-        # environment: line 0: unalias: mpirun: not found
-        set +e
-        echo "Please ignore warning 'environment: line 0: unalias: mpirun: not found' ..."
-        module purge
-        module restore -f ${module_snapshot}
-        set -e
         umask 0022
         set +e
-        case ${compiler} in
-          oneapi@=2024.2.0)
-            module purge
-            module load PrgEnv-intel/8.4.0
-            module unload intel
-            module load intel/2024.2
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.12.1.2.2.1
-            module unload cray-libsci
-            module load cray-libsci/23.05.1.4
-            ;;
-          gcc@=12.1.0)
-            module purge
-            module load PrgEnv-gnu/8.4.0
-            module unload gcc
-            module load gcc/12.1.0
-            module unload cray-mpich
-            module unload craype-network-ofi
-            module load libfabric/1.12.1.2.2.1
-            module unload cray-libsci
-            module load cray-libsci/23.05.1.4
-            ;;
-          *)
-            echo "ERROR, compiler ${compiler} not configured for resetting environment"
-            exit 1
-            ;;
-        esac
+        module purge
         set -e
         ;;
       blackpearl)
@@ -812,30 +613,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
   done
 
 done
-
-# Remove module snapshots for Cray systems
-case ${host} in
-  atlantis)
-    ;;
-  blueback)
-    rm -vf ${module_snapshot}
-    ;;
-  cole)
-    rm -vf ${module_snapshot}
-    ;;
-  narwhal)
-    rm -vf ${module_snapshot}
-    ;;
-  nautilus)
-    ;;
-  tusk)
-    rm -vf ${module_snapshot}
-    ;;
-  blackpearl)
-    ;;
-  bounty)
-    ;;
-esac
 
 # Repair permissions for environments if in installer mode
 if [[ "${update_build_cache}" == "false" ]]; then
