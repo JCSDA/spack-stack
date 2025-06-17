@@ -19,7 +19,3 @@ packages:
     externals:
     - spec: intel-oneapi-tbb@2021.9.0%intel@2021.9.0
       prefix: /p/app/compilers/x86_64/el8/intel/oneapi
-  gcc-runtime:
-    externals:
-    - spec: gcc-runtime@10.2.0%gcc@10.2.0
-      prefix: /p/app/compilers/gcc/10.2.0

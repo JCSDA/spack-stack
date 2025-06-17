@@ -24,7 +24,3 @@ packages:
     externals:
     - spec: intel-oneapi-runtime@2025.0.4%oneapi@2025.0.4
       prefix: /p/app/compilers/intel/2025.0.1.47
-  gcc-runtime:
-    externals:
-    - spec: gcc-runtime@10.2.0%gcc@10.2.0
-      prefix: /p/app/compilers/gcc/10.2.0
