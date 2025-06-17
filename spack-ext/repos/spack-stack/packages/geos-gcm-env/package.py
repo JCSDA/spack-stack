@@ -12,10 +12,10 @@ class GeosGcmEnv(BundlePackage):
     homepage = "https://gmao.gsfc.nasa.gov/GEOS_systems"
     git = "https://github.com/GEOS-ESM/GEOSgcm"
 
-    maintainers("climbfuji", "mathomp4", "danholdaway")
+    maintainers("climbfuji", "mathomp4", "Dooruk")
 
     # Current version
-    version("1.0.0")
+    version("1.1.0")
 
     depends_on("base-env", type="run")
     depends_on("blas", type="run")
@@ -29,5 +29,8 @@ class GeosGcmEnv(BundlePackage):
     depends_on("pflogger", type="run")
     #
     depends_on("py-numpy", type="run")
+    depends_on("py-pyyaml", type="run")
+    depends_on("py-ruamel-yaml", type="run")
+    depends_on("udunits", type="run")
 
     # There is no need for install() since there is no code.

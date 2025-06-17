@@ -48,7 +48,7 @@
     w3emc@2.10.0,
     nco,
     esmf@8.8.0,
-    mapl@2.53.0,
+    mapl@2.53.4,
     zlib-ng,
     zstd,
     odc@1.6.1,

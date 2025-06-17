@@ -14,7 +14,7 @@ set +e
 module purge
 umask 0022
 
-SPACK_STACK_URL=https://github.nrlmry.navy.mil/JCSDA/spack-stack
-SPACK_STACK_BRANCH=ci
+SPACK_STACK_URL=${SPACK_STACK_URL:-https://github.nrlmry.navy.mil/JCSDA/spack-stack}
+SPACK_STACK_BRANCH=${SPACK_STACK_BRANCH:-ci}
 KEEP_WEEKLY_BUILD_DIR="YES"
 FIND_CMD="lfs find"
