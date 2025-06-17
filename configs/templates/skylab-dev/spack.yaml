@@ -49,6 +49,10 @@ spack:
     # py-torch in ai-env doesn't build with Intel
     - ai-env%intel
     - ai-env%oneapi
+
+    # Skip incompatible CRTM versions with oneapi
+    - crtm@2.4.0.1%oneapi
+
   packages:
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:

@@ -60,6 +60,8 @@ spack:
     # Skip neptune-python-env with Intel Classic due to problems
     # with new versions of py-numpy, py-scipy, ...
     - neptune-python-env%intel
+    # Skip incompatible CRTM versions with oneapi
+    - crtm@2.4.0.1%oneapi
   packages:
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:
