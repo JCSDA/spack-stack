@@ -21,7 +21,7 @@ class GmaoSwellEnv(BundlePackage):
     depends_on("jedi-base-env", type="run")
 
     # Add CRTM 2.4.0
-    depends_on("crtm@v2.4-jedi.2", type="run")
+    depends_on("crtm", type="run")
 
     # Additional dependencies for JEDI used by swell
     depends_on("fms", type="run")
