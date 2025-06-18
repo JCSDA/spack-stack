@@ -1,0 +1,61 @@
+packages:
+  intel:
+    externals:
+    - spec: intel@2021.13.1
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2
+      extra_attributes:
+        compilers:
+          fortran: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2/bin/ifort
+  openblas:
+    externals:
+    - spec: openblas@0.3.15
+      prefix: /usr
+  intel-oneapi-compilers-classic:
+    externals:
+    - spec: intel-oneapi-compilers-classic@2021.13.1
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2
+      extra_attributes:
+        compilers:
+          fortran: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2/bin/ifort
+  gcc:
+    externals:
+    - spec: gcc@12.2.1 languages='c,c++,fortran'
+      prefix: /opt/rh/gcc-toolset-12/root/usr
+      extra_attributes:
+        compilers:
+          c: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+          cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+          fortran: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
+  libfabric:
+    externals:
+    - spec: libfabric@1.20.1 fabrics=mlx,psm3,shm,tcp,verbs
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1/mpi/2021.13/opt/mpi/libfabric
+  krb5:
+    externals:
+    - spec: krb5@1.21.3-HPCMP_RELEASE_20240805
+      prefix: /usr/local/krb5
+  openssh:
+    externals:
+    - spec: openssh@9.9p2a
+      prefix: /usr/local/krb5
+  rdma-core:
+    externals:
+    - spec: rdma-core@56.0
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.38.17~gold~headers
+      prefix: /opt/rh/gcc-toolset-12/root/usr
+  zlib:
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+  intel-oneapi-compilers:
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.1
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2
+      extra_attributes:
+        compilers:
+          c: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2/bin/icx
+          cxx: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2/bin/icpx
+          fortran: /p/app/unsupported/intel/oneapi/2024.2.1/compiler/2024.2/bin/ifx
