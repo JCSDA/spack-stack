@@ -10,7 +10,7 @@ packages:
     - spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.4
       modules:
       - Master
-      - prgenv-intel-intelmpi/2023.1.0-2021.9.0
+      - prgenv-intel-intelmpi/2025.0.1.47-2021.14
       - mpi/2021.14
   intel-oneapi-mkl:
     externals:
