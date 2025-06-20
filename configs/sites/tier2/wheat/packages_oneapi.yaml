@@ -1,27 +1,33 @@
 packages:
   all:
-    compiler:: [oneapi@2025.0.4, gcc@11.2.1]
+    compiler:: [oneapi@2024.2.1, gcc@12.2.1]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.14]
+      mpi:: [intel-oneapi-mpi@2021.13]
   mpi:
     buildable: False
   intel-oneapi-mpi:
     externals:
-    - spec: intel-oneapi-mpi@2021.14%oneapi@2025.0.4
-      prefix: /p/app/compilers/intel/2025.0.1.47
+    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
       modules:
-      - Master
-      - prgenv-intel-intelmpi/2025.0.1.47-2021.14
-      - mpi/2021.14
+    - gcc/12.2.1
+    - intel/2024.2.1/tbb/latest
+    - intel/2024.2.1/compiler-rt/2024.2.1
+    - intel/2024.2.1/ifort/2024.2.1
+    - intel/2024.2.1/mpi/2021.13
   intel-oneapi-mkl:
     externals:
-    - spec: intel-oneapi-mkl@2025.0%oneapi@2025.0.4
-      prefix: /p/app/compilers/intel/2025.0.1.47
+    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
   intel-oneapi-tbb:
     externals:
-    - spec: intel-oneapi-tbb@2022.0%oneapi@2025.0.4
-      prefix: /p/app/compilers/intel/2025.0.1.47
+    - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.1
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
   intel-oneapi-runtime:
     externals:
-    - spec: intel-oneapi-runtime@2025.0.4%oneapi@2025.0.4
-      prefix: /p/app/compilers/intel/2025.0.1.47
+    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@12.2.1%gcc@12.2.1
+      prefix: /opt/rh/gcc-toolset-12/root/usr
