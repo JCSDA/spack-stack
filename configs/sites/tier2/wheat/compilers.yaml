@@ -1,17 +1,4 @@
-compilers:
-- compiler:
-    spec: gcc@=12.2.1
-    paths:
-      cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
-      cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
-      f77: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
-      fc: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
-    flags: {}
-    operating_system: rhel8
-    target: x86_64
-    modules: []
-    environment: {}
-    extra_rpaths: []
+compilers::
 - compiler:
     spec: oneapi@=2024.2.1
     paths:
@@ -22,6 +9,24 @@ compilers:
     flags: {}
     operating_system: rhel8
     target: x86_64
-    modules: []
+    modules:
+    - gcc/12.2.1
+    - intel/2024.2.1/tbb/latest
+    - intel/2024.2.1/compiler-rt/2024.2.1
+    - intel/2024.2.1/ifort/2024.2.1
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=12.2.1
+    paths:
+      cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+      cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+      f77: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
+      fc: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - gcc/12.2.1
     environment: {}
     extra_rpaths: []
