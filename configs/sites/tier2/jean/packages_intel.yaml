@@ -8,6 +8,7 @@ packages:
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.9.0%intel@2021.9.0
+      prefix: /p/app/compilers/x86_64/el8/intel/oneapi
       modules:
       - Master
       - prgenv-intel-intelmpi/2023.1.0-2021.9.0
@@ -19,3 +20,7 @@ packages:
     externals:
     - spec: intel-oneapi-tbb@2021.9.0%intel@2021.9.0
       prefix: /p/app/compilers/x86_64/el8/intel/oneapi
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@10.2.0%gcc@10.2.0
+      prefix: /p/app/compilers/gcc/10.2.0

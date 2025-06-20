@@ -25,10 +25,10 @@ packages:
     externals:
     - spec: binutils@2.30.125~gold~headers
       prefix: /usr
-  bison:
-    externals:
-    - spec: bison@3.0.4
-      prefix: /usr
+  #bison:
+  #  externals:
+  #  - spec: bison@3.0.4
+  #    prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@8.30
@@ -88,10 +88,10 @@ packages:
   #  externals:
   #  - spec: openssl@1.1.1k
   #    prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
-      prefix: /usr
+  #perl:
+  #  externals:
+  #  - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+  #    prefix: /usr
   pkgconf:
     externals:
     - spec: pkgconf@1.4.2
