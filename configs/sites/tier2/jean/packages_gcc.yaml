@@ -2,15 +2,16 @@ packages:
   all:
     compiler:: [gcc@10.2.0]
     providers:
-      mpi:: [openmpi@4.1.1%gcc@10.2.0]
+      mpi:: [intel-oneapi-mpi@2021.3.0]
   mpi:
     buildable: False
-  cray-mpich:
+  intel-oneapi-mpi:
     externals:
-    - spec: openmpi@4.1.1%gcc@10.2.0
+    - spec: intel-oneapi-mpi@2021.3.0 generic-names=true %gcc@10.2.0
+      prefix: /p/app/compilers/intel/2021.3.0
       modules:
       - Master
-      - prgenv-gnu-openmpi/10.2.0-4.1.1
+      - prgenv-gnu-intelmpi/10.2.0-2021.3.0
   gcc-runtime:
     externals:
     - spec: gcc-runtime@10.2.0%gcc@10.2.0
