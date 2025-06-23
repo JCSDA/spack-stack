@@ -66,11 +66,15 @@ Pre-configured sites (tier 1)
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Jet                   | GCC, Intel         | ``/contrib/spack-stack``                               | EPIC / NOAA-EMC |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Narwhal               | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+|                     | Narwhal               | GCC, oneAPI        | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| U.S. Navy (HPCMP)   | Nautilus              | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+| U.S. Navy (HPCMP)   | Nautilus              | GCC, oneAPI        | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Blueback (earlyaccess)| GCC, oneAPI        | (experimental only)                                    | NRL             |
+|                     | Blueback              | GCC, oneAPI        | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
++---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
+| ARL                 | Jean                  | oneAPI             | MISSING                                                | NRL             |
++---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
+| ERDC                | Wheat                 | oneAPI             | MISSING                                                | NRL             |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | Univ. of Wisconsin  | S4                    | Intel              | ``/data/prod/jedi/spack-stack/``                       | SSEC            |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -173,6 +177,36 @@ The following is required for building new spack environments with any supported
 
    umask 0022
    module purge
+
+
+.. _Preconfigured_Sites_Jean:
+
+------------------------------
+ARL DH* TODO HPCMP Jean
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.
+
+.. code-block:: console
+
+   umask 0022
+   module purge
+   # DH* TODO UPDATE
+   module use /p/work1/heinzell/oneapi-2024.2.1/modulefiles
+
+
+------------------------------
+EDRC DH* TODO HPCMP Wheat
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.
+
+.. code-block:: console
+
+   umask 0022
+   module purge
+   # DH* TODO UPDATE
+   module use /p/work1/heinzell/oneapi-2024.2.1/modulefiles
 
 
 .. _Preconfigured_Sites_Derecho:
