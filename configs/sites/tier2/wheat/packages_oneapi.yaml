@@ -1,6 +1,6 @@
 packages:
   all:
-    compiler:: [oneapi@2024.2.1, gcc@12.2.1]
+    compiler:: [oneapi@2024.2.1, gcc@10.3.1]
     providers:
       mpi:: [intel-oneapi-mpi@2021.13]
   mpi:
@@ -8,26 +8,26 @@ packages:
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
-      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
+      prefix: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
-    - gcc/12.2.1
-    - intel/2024.2.1/tbb/latest
-    - intel/2024.2.1/compiler-rt/2024.2.1
-    - intel/2024.2.1/ifort/2024.2.1
-    - intel/2024.2.1/mpi/2021.13
+      #- gcc/10.3.1
+      - intel/2024.2.1/tbb/latest
+      - intel/2024.2.1/compiler-rt/2024.2.1
+      - intel/2024.2.1/ifort/2024.2.1
+      - intel/2024.2.1/mpi/2021.13
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
-      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
+      prefix: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1
   intel-oneapi-tbb:
     externals:
     - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.1
-      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
+      prefix: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1
   intel-oneapi-runtime:
     externals:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
-      prefix: /p/app/unsupported/intel/oneapi/2024.2.1
+      prefix: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1
   gcc-runtime:
     externals:
-    - spec: gcc-runtime@12.2.1%gcc@12.2.1
-      prefix: /opt/rh/gcc-toolset-12/root/usr
+    - spec: gcc-runtime@10.3.1%gcc@10.3.1
+      prefix: /opt/rh/gcc-toolset-10/root/usr

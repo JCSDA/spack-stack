@@ -1,17 +1,17 @@
 packages:
   all:
-    compiler:: [gcc@12.2.1]
+    compiler:: [gcc@10.3.1]
     providers:
       mpi:: [openmpi@4.1.7]
   mpi:
     buildable: False
   openmpi:
     externals:
-    - spec: openmpi@4.1.1%gcc@12.2.1
+    - spec: openmpi@4.1.1%gcc@10.3.1
       prefix: /p/app/unsupported/openmpi/4.1.7
       modules:
       - openmpi/4.1.7
   gcc-runtime:
     externals:
-    - spec: gcc-runtime@12.2.1%gcc@12.2.1
-      prefix: /opt/rh/gcc-toolset-12/root/usr
+    - spec: gcc-runtime@10.3.1%gcc@10.3.1
+      prefix: /opt/rh/gcc-toolset-10/root/usr
