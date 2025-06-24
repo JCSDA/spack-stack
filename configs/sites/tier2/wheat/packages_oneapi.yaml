@@ -10,11 +10,7 @@ packages:
     - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
       prefix: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
-      #- gcc/10.3.1
-      - intel/2024.2.1/tbb/latest
-      - intel/2024.2.1/compiler-rt/2024.2.1
-      - intel/2024.2.1/ifort/2024.2.1
-      - intel/2024.2.1/mpi/2021.13
+      - mpi/2021.13
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.1
