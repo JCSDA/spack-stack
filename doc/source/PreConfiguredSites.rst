@@ -72,10 +72,6 @@ Pre-configured sites (tier 1)
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Blueback              | GCC, oneAPI        | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| ARL                 | Jean                  | oneAPI             | MISSING                                                | NRL             |
-+---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| ERDC                | Wheat                 | oneAPI             | MISSING                                                | NRL             |
-+---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | Univ. of Wisconsin  | S4                    | Intel              | ``/data/prod/jedi/spack-stack/``                       | SSEC            |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | **Cloud platforms**                                                                                                                         |
@@ -177,36 +173,6 @@ The following is required for building new spack environments with any supported
 
    umask 0022
    module purge
-
-
-.. _Preconfigured_Sites_Jean:
-
-------------------------------
-ARL DH* TODO HPCMP Jean
-------------------------------
-
-The following is required for building new spack environments with Intel oneAPI on this platform.
-
-.. code-block:: console
-
-   umask 0022
-   module purge
-   # DH* TODO UPDATE
-   module use /p/work1/heinzell/oneapi-2024.2.1/modulefiles
-
-
-------------------------------
-EDRC DH* TODO HPCMP Wheat
-------------------------------
-
-The following is required for building new spack environments with Intel oneAPI on this platform.
-
-.. code-block:: console
-
-   umask 0022
-   module purge
-   # DH* TODO UPDATE
-   module use /p/work1/heinzell/oneapi-2024.2.1/modulefiles
 
 
 .. _Preconfigured_Sites_Derecho:
@@ -415,6 +381,15 @@ Blackpearl
 Blackpearl is an Oracle Linux 9 installation running under Windows Subsystem for Linux (WSL2) on Windows 11. This is the development system of one of the spack-stack developers and maybe useful as an example configuration for users with a similar setup.
 
 
+.. _Preconfigured_Sites_Bounty:
+
+------------------------------
+Bounty
+------------------------------
+
+Bounty is an Alma Linux 9 installation running under Windows Subsystem for Linux (WSL2) on Windows 11. This is the development system of one of the spack-stack developers and maybe useful as an example configuration for users with a similar setup.
+
+
 .. _Preconfigured_Sites_Casper:
 
 ------------------------------
@@ -433,6 +408,34 @@ The following is required for building new spack environments with any supported
    module load ncarenv/23.10
    module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
    module load ecflow/5.8.4
+
+
+.. _Preconfigured_Sites_Jean:
+
+------------------------------
+ARL HPCMP Jean
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.
+
+.. code-block:: console
+
+   umask 0022
+   module purge
+   module use /p/work1/heinzell/oneapi-2024.2.1/modulefiles
+
+
+------------------------------
+ERDC HPCMP Wheat
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.
+
+.. code-block:: console
+
+   umask 0022
+   module purge
+   module use /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
 
 
 .. _Preconfigured_Sites_EMC_RHEL:
