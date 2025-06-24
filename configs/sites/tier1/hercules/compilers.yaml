@@ -42,16 +42,18 @@ compilers:
         I_MPI_EXTRA_FILESYSTEM: 'ON'
     extra_rpaths: []
 - compiler:
-    spec: gcc@12.2.0
+    spec: gcc@13.3.0
     paths:
-      cc: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gcc
-      cxx: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/g++
-      f77: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gfortran
-      fc: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gfortran
+      cc: /apps/contrib/spack-stack/gnu/installs/gnu/13.3.0/bin/gcc
+      cxx: /apps/contrib/spack-stack/gnu/installs/gnu/13.3.0/bin/g++
+      f77: /apps/contrib/spack-stack/gnu/installs/gnu/13.3.0/bin/gfortran
+      fc: /apps/contrib/spack-stack/gnu/installs/gnu/13.3.0/bin/gfortran
     flags: {}
     operating_system: rocky9
     target: x86_64
     modules:
-    - gcc/12.2.0
-    environment: {}
+    - gnu/13.3.0
+    environment:
+      prepend_path:
+        MODULEPATH: '/apps/contrib/spack-stack/modulefiles'
     extra_rpaths: []
