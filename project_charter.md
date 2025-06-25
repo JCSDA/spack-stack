@@ -33,10 +33,10 @@ spack-stack repo.
 
 Organization | Code Manager(s)
 -------------|----------------
-NOAA EMC | Alex Richert, Hang Lei, Ed Hartnett
-JCSDA | Steve Herbener, TBD
-EPIC | Cam Book, Natalie Perlin, Ratko Vasic
-NRL | Dom Heinzeller, Sarah King
+NOAA EMC | Alex Richert
+JCSDA | Steve Grace, Evan Parker
+EPIC | Rick Grubin, Ratko Vasic
+NRL | Dom Heinzeller
 
 ## Project Process
 
