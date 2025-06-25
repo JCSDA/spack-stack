@@ -11,9 +11,9 @@ spack:
     - ewok-env +ecflow ~cylc
     - ai-env
     - geos-gcm-env          ^esmf@=8.6.1
-    - global-workflow-env   ^esmf@=8.6.1 ^crtm@=3.1.1-build1
-    - gmao-swell-env
-    - gsi-env ^crtm@=3.1.1-build1
+    - global-workflow-env   ^esmf@=8.6.1 ^crtm@=3.1.2
+    - gmao-swell-env                     ^crtm@=v2.4.1-jedi.2
+    - gsi-env                            ^crtm@=3.1.2
     - jedi-fv3-env
     - jedi-geos-env         ^esmf@=8.6.1
     - jedi-mpas-env
@@ -24,13 +24,13 @@ spack:
     - neptune-env           ^esmf@=8.9.0b11
     - neptune-python-env    ^esmf@=8.9.0b11
     - soca-env
-    - ufs-srw-app-env       ^esmf@=8.8.0 ^crtm@=3.1.1-build1
-    - ufs-weather-model-env ^esmf@=8.8.0 ^crtm@=3.1.1-build1
+    - ufs-srw-app-env       ^esmf@=8.8.0 ^crtm@=3.1.2
+    - ufs-weather-model-env ^esmf@=8.8.0 ^crtm@=3.1.2
 
     # Various crtm tags (list all to avoid duplicate packages)
     - crtm@2.4.0.1
-    - crtm@v2.4.1-jedi
-    - crtm@3.1.1-build1
+    - crtm@v2.4.1-jedi.2
+    - crtm@3.1.2
 
     # Mapl with various esmf tags
     - mapl@2.53.0 ^esmf@8.6.1
@@ -60,6 +60,8 @@ spack:
     # Skip neptune-python-env with Intel Classic due to problems
     # with new versions of py-numpy, py-scipy, ...
     - neptune-python-env%intel
+    # Skip incompatible CRTM versions with oneapi
+    - crtm@2.4.0.1%oneapi
   packages:
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:

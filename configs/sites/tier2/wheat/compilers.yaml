@@ -1,0 +1,54 @@
+compilers::
+- compiler:
+    spec: oneapi@=2024.2.1
+    paths:
+      cc: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icx
+      cxx: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icpx
+      f77: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+      fc: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    #- gcc/10.3.1
+    - tbb/2021.13
+    - compiler-rt/2024.2.1
+    - compiler/2024.2.1
+    - ifort/2024.2.1
+    environment:
+      prepend_path:
+        PATH: /opt/rh/gcc-toolset-10/root/usr/bin
+        CPATH: /opt/rh/gcc-toolset-10/root/usr/include
+        LD_LIBRARY_PATH: /opt/rh/gcc-toolset-10/root/usr/lib:/opt/rh/gcc-toolset-10/root/usr/lib64
+        MODULEPATH: /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
+    extra_rpaths: []
+# Cannot use as preferred compiler: see PR description for Nautilus
+# in https://github.com/JCSDA/spack-stack/pull/1449
+#- compiler:
+#    spec: gcc@=12.2.1
+#    paths:
+#      cc: /opt/rh/gcc-toolset-12/root/usr/bin/gcc
+#      cxx: /opt/rh/gcc-toolset-12/root/usr/bin/g++
+#      f77: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
+#      fc: /opt/rh/gcc-toolset-12/root/usr/bin/gfortran
+#    flags: {}
+#    operating_system: rhel8
+#    target: x86_64
+#    modules:
+#    - gcc/12.2.1
+#    environment: {}
+#    extra_rpaths: []
+- compiler:
+    spec: gcc@=10.3.1
+    paths:
+      cc: /opt/rh/gcc-toolset-10/root/usr/bin/gcc
+      cxx: /opt/rh/gcc-toolset-10/root/usr/bin/g++
+      f77: /opt/rh/gcc-toolset-10/root/usr/bin/gfortran
+      fc: /opt/rh/gcc-toolset-10/root/usr/bin/gfortran
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - gcc/10.3.1
+    environment: {}
+    extra_rpaths: []

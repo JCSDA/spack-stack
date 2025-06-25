@@ -1,0 +1,39 @@
+compilers::
+- compiler:
+    spec: oneapi@=2024.2.1
+    paths:
+      cc: /p/work1/heinzell/oneapi-2024.2.1/compiler/2024.2/bin/icx
+      cxx: /p/work1/heinzell/oneapi-2024.2.1/compiler/2024.2/bin/icpx
+      f77: /p/work1/heinzell/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+      fc: /p/work1/heinzell/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - Master
+    - tbb/2021.13
+    - compiler-rt/2024.2.1
+    - compiler/2024.2.1
+    - ifort/2024.2.1
+    environment:
+      prepend_path:
+        PATH: '/p/app/compilers/gcc/10.2.0/bin'
+        CPATH: '/p/app/compilers/gcc/10.2.0/include'
+        LD_LIBRARY_PATH: '/p/app/compilers/gcc/10.2.0/lib:/p/app/compilers/gcc/10.2.0/lib64'
+        MODULEPATH: /p/work1/heinzell/oneapi-2024.2.1/modulefiles
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=10.2.0
+    paths:
+      cc: /p/app/compilers/gcc/10.2.0/bin/gcc
+      cxx: /p/app/compilers/gcc/10.2.0/bin/g++
+      f77: /p/app/compilers/gcc/10.2.0/bin/gfortran
+      fc: /p/app/compilers/gcc/10.2.0/bin/gfortran
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - Master
+    - prgenv-gnu-intelmpi/10.2.0-2021.3.0
+    environment: {}
+    extra_rpaths: []

@@ -65,7 +65,7 @@ def get_name_and_version_from_spec(spec):
     (spec_name, spec_version) = spec.split("@", 1)
     # Strip off any compiler/provider specification or variants from the spec version
     spec_version = (
-        spec_version.split("+")[0].split("~")[0].split("-")[0].split("%")[0].split("^")[0].strip()
+        spec_version.split("+")[0].split("~")[0].split("-")[0].split("%")[0].split("^")[0].strip().split(" ")[0].strip()
     )
     return (spec_name, spec_version)
 

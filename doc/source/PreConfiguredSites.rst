@@ -66,11 +66,11 @@ Pre-configured sites (tier 1)
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Jet                   | GCC, Intel         | ``/contrib/spack-stack``                               | EPIC / NOAA-EMC |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Narwhal               | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+|                     | Narwhal               | GCC, oneAPI        | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| U.S. Navy (HPCMP)   | Nautilus              | GCC, Intel, oneAPI | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
+| U.S. Navy (HPCMP)   | Nautilus              | GCC, oneAPI        | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 |                     +-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Blueback (earlyaccess)| GCC, oneAPI        | (experimental only)                                    | NRL             |
+|                     | Blueback              | GCC, oneAPI        | ``/p/app/projects/NEPTUNE/spack-stack/``               | NRL             |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | Univ. of Wisconsin  | S4                    | Intel              | ``/data/prod/jedi/spack-stack/``                       | SSEC            |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -381,6 +381,15 @@ Blackpearl
 Blackpearl is an Oracle Linux 9 installation running under Windows Subsystem for Linux (WSL2) on Windows 11. This is the development system of one of the spack-stack developers and maybe useful as an example configuration for users with a similar setup.
 
 
+.. _Preconfigured_Sites_Bounty:
+
+------------------------------
+Bounty
+------------------------------
+
+Bounty is an Alma Linux 9 installation running under Windows Subsystem for Linux (WSL2) on Windows 11. This is the development system of one of the spack-stack developers and maybe useful as an example configuration for users with a similar setup.
+
+
 .. _Preconfigured_Sites_Casper:
 
 ------------------------------
@@ -399,6 +408,34 @@ The following is required for building new spack environments with any supported
    module load ncarenv/23.10
    module use /glade/work/epicufsrt/contrib/spack-stack/casper/modulefiles
    module load ecflow/5.8.4
+
+
+.. _Preconfigured_Sites_Jean:
+
+------------------------------
+ARL HPCMP Jean
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.
+
+.. code-block:: console
+
+   umask 0022
+   module purge
+   module use /p/work1/heinzell/oneapi-2024.2.1/modulefiles
+
+
+------------------------------
+ERDC HPCMP Wheat
+------------------------------
+
+The following is required for building new spack environments with Intel oneAPI on this platform.
+
+.. code-block:: console
+
+   umask 0022
+   module purge
+   module use /p/global/Projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
 
 
 .. _Preconfigured_Sites_EMC_RHEL:

@@ -1,0 +1,107 @@
+packages:
+  # Modification of common packages
+  # Use system zlib instead of spack-built zlib-ng
+  all:
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+
+# All other packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.16.1
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.30.125~gold~headers
+      prefix: /usr
+  #bison:
+  #  externals:
+  #  - spec: bison@3.0.4
+  #    prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.30
+      prefix: /usr
+  #curl:
+  #  externals:
+  #  - spec: curl@7.61.1+gssapi+ldap+nghttp2
+  #    prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.6.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.1+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.43.5~tcltk
+      prefix: /usr
+  # DH* external git-lfs missing
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.0p1
+      prefix: /usr
+    #- spec: openssh@10.0p2a
+    #  prefix: /usr/local/krb5
+  #openssl:
+  #  externals:
+  #  - spec: openssl@1.1.1k
+  #    prefix: /usr
+  #perl:
+  #  externals:
+  #  - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+  #    prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.4.2
+      prefix: /usr
+  # DH* external qt5 missing
+  sed:
+    externals:
+    - spec: sed@4.5
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
