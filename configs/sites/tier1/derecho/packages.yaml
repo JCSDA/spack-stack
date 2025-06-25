@@ -1,8 +1,17 @@
 packages:
+# Modification of common packages
   all:
     target: [core2]
-
-### Modification of common packages
+    # Use system zlib instead of spack-built zlib-ng
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
   # Tell esmf that this is not a 'normal' Cray ...
   esmf:
     require:
