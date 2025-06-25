@@ -2,6 +2,15 @@ packages:
   all:
     # To support hecflow01
     target: [haswell]
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
   autoconf:
     externals:
     - spec: autoconf@2.69
