@@ -1,0 +1,117 @@
+packages:
+# Modification of common packages
+  # Use system zlib instead of spack-built zlib-ng
+  all:
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+
+# All other packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.16.1
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.30.117
+      prefix: /usr
+  # Need to comment out for scotch (wants 3.4:),
+  # but how do we deal with oneapi installations?
+  # bison doesn't build with oneAPI.
+  #bison:
+  #  externals:
+  #  - spec: bison@3.0.4
+  #    prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.30
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.6.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.1+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.43.5~tcltk
+      prefix: /usr
+  #git-lfs:
+  #  externals:
+  #  - spec: git-lfs@2.13.3
+  #    prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  #mysql:
+  #  externals:
+  #  - spec: mysql@8.0.31
+  #    prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
+  #    modules:
+  #    - mysql/8.0.31
+  #perl:
+  #  externals:
+  #  - spec: perl@5.26.3~cpanm+open+shared+threads
+  #    prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.4.2
+      prefix: /usr
+  #qt:
+  #  buildable: False
+  #  externals:
+  #  - spec: qt@5.15.3
+  #    prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.5
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.19.5
+      prefix: /usr

@@ -43,3 +43,49 @@ compilers:
         CONFIG_SITE: ''
       unset: [PYTHONPATH]
     extra_rpaths: []
+- compiler:
+    spec: oneapi@2024.2.1
+    paths:
+      cc: cc
+      cxx: CC
+      f77: ftn
+      fc: ftn
+    flags:
+      cflags: '--gcc-toolchain=/opt/cray/pe/gcc/12.1.0/snos/'
+      fflags: '-gcc-name=/opt/cray/pe/gcc/12.1.0/snos/bin/gcc -gxx-name=/opt/cray/pe/gcc/12.1.0/snos/bin/g++'
+      cxxflags: '--gcc-toolchain=/opt/cray/pe/gcc/12.1.0/snos/'
+    operating_system: sles15
+    modules:
+    - PrgEnv-intel/8.3.3
+    - craype/2.7.17
+    - intel-oneapi/2024.2
+    - libfabric
+    environment:
+      prepend_path:
+        PATH: /opt/cray/pe/gcc/12.1.0/snos/bin
+        LD_LIBRARY_PATH: /opt/cray/pe/gcc/12.1.0/snos/lib64
+        LIBRARY_PATH: /opt/cray/pe/gcc/12.1.0/snos/lib64
+        CPATH: /opt/cray/pe/gcc/12.1.0/snos/include
+      set:
+        # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so
+        # Automake-based builds are installed in lib64
+        # which confuses some packages.
+        CONFIG_SITE: ''
+    extra_rpaths: []
+- compiler:
+    spec: gcc@12.1.0
+    paths:
+      cc: /opt/cray/pe/gcc/12.1.0/snos/bin/gcc
+      cxx: /opt/cray/pe/gcc/12.1.0/snos/bin/g++
+      f77: /opt/cray/pe/gcc/12.1.0/snos/bin/gfortran
+      fc: /opt/cray/pe/gcc/12.1.0/snos/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    modules: []
+    environment:
+      set:
+        # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so
+        # Automake-based builds are installed in lib64
+        # which confuses some packages.
+        CONFIG_SITE: ''
+    extra_rpaths: []

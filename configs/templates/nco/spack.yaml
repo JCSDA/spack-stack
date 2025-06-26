@@ -14,18 +14,18 @@ spack:
   specs:
   - awscli
   - bacio
-  - boost %intel
+  - boost
   - bufr
   - cdo
   - cfitsio
   - cmake
-  - crtm
+  - crtm@=2.4.0.1
   - curl
-  - ecflow ^boost%gcc
+  - ecflow
   - eckit
   - ecmwf-atlas
   - eigen
-  - esmf
+  - esmf@8.8.0
   - fckit
   - fms
   - g2
@@ -53,7 +53,7 @@ spack:
   - libxml2
   - libxrender
   - madis
-  - mapl
+  - mapl@2.53.4 ^esmf@8.8.0
   - mbedtls
   - met
   - metis
