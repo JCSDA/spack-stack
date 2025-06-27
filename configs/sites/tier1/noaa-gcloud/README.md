@@ -1,6 +1,6 @@
 # Provisiong ParallelWorks GCP clusters
 
-## Steps to perform before installing spack-stack version 1.8.0
+## Steps to perform before installing spack-stack version 1.9.2
 
 sudo su -
 chmod 777 /contrib
@@ -8,7 +8,7 @@ yum install -y qt5-qtbase-devel
 yum install -y qt5-qtsvg-devel
 
 
-## Steps to install spack-stack version 1.8.0
+## Steps to install spack-stack version 1.9.2
 
 sudo su -
 chmod 777 /contrib
@@ -17,16 +17,16 @@ module purge
 module unuse /opt/cray/craype/default/modulefiles
 module unuse /opt/cray/modulefiles
 module load gnu
-module load intel/2023.2.0
-module load impi/2023.2.0 
+module load intel/2024.2.1
+module load impi/2024.2.1
 module unload gnu
 
 cd /contrib/spack-stack-rocky8/
-git clone --recursive https://github.com/JCSDA/spack-stack -b release/1.8.0 spack-stack-1.8.0
-cd spack-stack-1.8.0
+git clone --recursive https://github.com/JCSDA/spack-stack -b release/1.9.0 spack-stack-1.9.2
+cd spack-stack-1.9.2
 . setup.sh
-spack stack create env --name ue-intel-2021.10.0 --template unified-dev --site noaa-gcloud --compiler intel
-cd envs/ue-intel-2021.10.0
+spack stack create env --name ue-oneapi-2024.2.1 --template unified-dev --site noaa-gcloud --compiler oneapi
+cd envs/ue-oneapi-2024.2.1
 spack env activate .
 spack concretize 2>&1 | tee log.concretize
 spack install --verbose 2>&1 | tee log.install
@@ -38,10 +38,10 @@ spack stack setup-meta-modules
 sudo su -
 chmod 777 /contrib
 
-cd /contrib/spack-stack-rocky8/spack-stack-1.8.0
+cd /contrib/spack-stack-rocky8/spack-stack-1.9.2
 . setup.sh
-spack stack create env --name gsi-intel-2021.10.0 --template gsi-addon-dev --site noaa-gcloud --upstream /contrib/spack-stack-rocky8/spack-stack-1.8.0/envs/ue-intel-2021.10.0/install --compiler intel
-cd envs/gsi-intel-2021.10.0
+spack stack create env --name gsi-oneapi-2024.2.1 --template gsi-addon-dev --site noaa-gcloud --upstream /contrib/spack-stack-rocky8/spack-stack-1.9.2/envs/ue-oneapi-2024.2.1/install --compiler oneapi
+cd envs/gsi-oneapi-2024.2.1
 spack concretize 2>&1 | tee log.concretize
 spack install --verbose 2>&1 | tee log.install
 spack module lmod refresh --upstream-modules
