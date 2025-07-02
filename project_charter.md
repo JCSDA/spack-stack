@@ -33,7 +33,7 @@ spack-stack repo.
 
 Organization | Code Manager(s)
 -------------|----------------
-NOAA EMC | Alex Richert
+NOAA EMC | Alex Richert, Hang Lei
 JCSDA | Steve Grace, Evan Parker
 EPIC | Rick Grubin, Ratko Vasic
 NRL | Dom Heinzeller
