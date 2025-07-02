@@ -36,7 +36,7 @@ Organization | Code Manager(s)
 NOAA EMC | Alex Richert, Hang Lei
 JCSDA | Steve Grace, Evan Parker
 EPIC | Rick Grubin, Ratko Vasic
-NRL | Dom Heinzeller
+NRL | Dom Heinzeller, Sarah King
 
 ## Project Process
 
