@@ -49,7 +49,10 @@ apt upgrade -y
 apt install -y build-essential g++-11 gcc-11 gfortran-11 g++-12 gcc-12 gfortran-12 g++-13 gcc-13 gfortran-13 make cmake automake autoconf apt-utils
 
 #Install other requirements.
-apt install -y cpp-11 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev mysql-server libtool flex
+apt install -y cpp-11 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev mysql-server libtool flex llvm-14
+
+# Set llvm config.
+update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 10
 
 # Editors
 apt install -y vim nano 
@@ -227,12 +230,46 @@ apt install intel-oneapi-compiler-dpcpp-cpp-2024.2 intel-oneapi-compiler-fortran
 exit
 ```
 
+#### Setup OneAPI Modules
+
+```bash
+sudo su -
+# Create all modulefiles.
+/opt/intel/oneapi/modulefiles-setup.sh --output-dir=/opt/intel/oneapi/modulefiles
+
+# Add the oneapi module files to lmod init (confirm that this file does not exist)
+cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
+module use /opt/intel/oneapi/modulefiles
+EOF
+
+# Create combined module file.
+mkdir /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/
+cat << 'EOF' >> /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/2024.2.1
+#%Module1.0
+##
+## intel-oneapi-full-env/2024.2.1
+## Intel oneAPI full module environment
+
+proc ModulesHelp { } {
+    puts stderr "intel-oneapi-full-env defines the entire module set used for spack-stack intel builds"
+}
+module-whatis "intel-oneapi-full-env defines the entire module set used for spack-stack intel builds"
+module load tbb/2021.13
+module load compiler-rt/2024.2.1
+module load compiler/2024.2.1
+module load ifort/2024.2.1
+module load mpi/2021.13
+module load mkl/2024.2
+module load compiler-intel-llvm/2024.2.1
+EOF
+```
+
 #### Install Intel OneAPI Spack-Stack Environment
 
 ```bash
 sudo su -
 
-source /opt/intel/oneapi/setvars.sh
+module load intel-oneapi-full-env/2024.2.1
 
 cd /opt/spack-stack
 source ./setup.sh
@@ -256,12 +293,12 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   gcc:
     buildable: false
     externals:
-    - spec: gcc@13.3.0
+    - spec: gcc@11.4.0
       prefix: /usr
   gcc-runtime:
     buildable: false
     externals:
-    - spec: gcc-runtime@13.3.0
+    - spec: gcc-runtime@11.4.0
       prefix: /usr
   intel-oneapi-mkl:
     buildable: false
@@ -297,13 +334,17 @@ EOF
 
 spack compiler find --scope system
 
-# Replace ifx with ifort
+# Edit site/compilers.yaml
+pico ${PWD}/site/compilers.yaml
+#  1) Replace ifx with ifort.
+#  2) Add "- intel-oneapi-full-env/2024.2.1" to the modules section for oneapi.
+#  3) Disable gcc compilers other than 11.4.0
 sed -i 's/ifx/ifort/g' ${PWD}/site/compilers.yaml
 
 unset SPACK_SYSTEM_CONFIG_PATH
 
 spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.13]"
-spack config add "packages:all:compiler:[oneapi@2024.2.1, gcc@13.3.0]"
+spack config add "packages:all:compiler:[oneapi@2024.2.1, gcc@11.4.0]"
 spack config add "packages:gmake:buildable:False"
 
 spack concretize 2>&1 | tee log.concretize
@@ -353,7 +394,7 @@ ctest
 
 ```bash
 # Re-source the intel OneAPI environment
-source /opt/intel/oneapi/setvars.sh
+module load intel-oneapi-full-env/2024.2.1
 
 # Example given for building jedi-bundle
 module use /opt/spack-stack/envs/unified-env-oneapi/install/modulefiles/Core

@@ -7,17 +7,22 @@ assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+## Description
 
-**To Reproduce**
-Steps to reproduce the behavior:
+_A clear and concise description of what the bug is._
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+## To Reproduce
 
-**System:**
-What system(s) are you running the code on?
+_Steps to reproduce the behavior._
 
-**Additional context**
-Add any other context about the problem here.
+## Expected behavior
+
+_A clear and concise description of what you expected to happen._
+
+## System, compiler, code, ...
+
+_What system(s) are you running the code on? Which compiler? Which version of the code? Any other details you can provide?_
+
+## Additional context
+
+_Add any other context about the problem here._

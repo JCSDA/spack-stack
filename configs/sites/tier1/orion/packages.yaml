@@ -9,9 +9,10 @@ packages:
   zlib:
     buildable: False
     externals:
-    - spec: zlib@1.2.11
-      prefix: /usr
-
+    - spec: zlib@1.2.13
+      prefix: /apps/spack-managed/gcc-11.3.1/zlib-1.2.13-ltp4c3zzde3zi3gf7x4b7c7nj5ww4i4g
+      modules:
+      - zlib/1.2.13
   autoconf:
     externals:
     - spec: autoconf@2.69

@@ -9,11 +9,12 @@ compilers:
     flags: {}
     operating_system: ubuntu24.04
     target: x86_64
-    modules: []
+    modules:
+    - intel-oneapi-full-env/2024.2.1
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@13.3.0
+    spec: gcc@11.4.0
     paths:
       cc: /usr/bin/gcc
       cxx: /usr/bin/g++

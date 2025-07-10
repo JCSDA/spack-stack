@@ -92,3 +92,8 @@ packages:
     externals:
     - spec: lcms@2.13.1
       prefix: /usr
+  llvm:
+    buildable: false
+    externals:
+    - spec: llvm@14.0.6
+      prefix: /usr
