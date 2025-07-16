@@ -31,7 +31,8 @@ packages:
           CPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/include
           FPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/include
           MANPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/share/man
-  # MAT: I cannot figure out how to get hdf-eos2 to build with GCC 14 on NAS
+  # MAT: I cannot figure out how to get hdf-eos2 to build with GCC on NAS
+  #      When I try, it dies with an error trying to *patch* the code!
   #      This turns off the variants of met that need it
   met:
     variants::
