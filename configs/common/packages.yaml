@@ -274,7 +274,7 @@ packages:
     require: '@69'
   py-setuptools-rust:
     require: '+rust_bootstrap'
-  # When making changes here, also check the tier2/blackpearl/packages.yaml
+  # When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
   py-torch:
     require:
     - '+custom-protobuf ~mkldnn'
