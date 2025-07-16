@@ -13,8 +13,3 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
       prefix: /nobackup/gmao_SIteam/intel/oneapi
-  wget:
-    buildable: False
-    externals:
-    - spec: wget@1.19.5
-      prefix: /usr
