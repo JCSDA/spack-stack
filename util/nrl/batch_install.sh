@@ -391,7 +391,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             ;;
           gcc@=13.4.0)
             module use /gpfs/neptune/spack-stack/gcc-13.4.0/modulefiles
-            module use /gpfs/neptune/spack-stack/openmpi-5.0.6/gcc-13.4.0/modulefiles
             ;;
         esac
         ;;
