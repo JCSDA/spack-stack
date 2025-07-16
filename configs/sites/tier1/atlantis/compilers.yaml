@@ -31,7 +31,7 @@ compilers:
     modules:
     - gcc/11.2.0
     environment: {}
-    # For compiling parallel-netcdf; Bright must have removed some symbolic links require for OpenMPI 4.1.5a1 ...
+    # For compiling parallel-netcdf; Bright must have removed some symbolic links required for OpenMPI 4.1.5a1 ...
     extra_rpaths: [/gpfs/neptune/spack-stack/openmpi-4.1.5-fix-lib]
 - compiler:
     spec: gcc@13.4.0
@@ -48,7 +48,7 @@ compilers:
     environment:
       prepend_path:
         MODULEPATH: /gpfs/neptune/spack-stack/openmpi-5.0.6/gcc-13.4.0/modulefiles:/gpfs/neptune/spack-stack/gcc-13.4.0/modulefiles
-    # For compiling parallel-netcdf; Bright must have removed some symbolic links require for OpenMPI 4.1.5a1 ...
+    # For compiling parallel-netcdf; Bright must have removed some symbolic links required for OpenMPI 4.1.5a1 ...
     extra_rpaths: [/gpfs/neptune/spack-stack/openmpi-4.1.5-fix-lib]
 - compiler:
     spec: oneapi@2024.2.1
