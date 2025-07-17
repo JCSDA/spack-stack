@@ -153,12 +153,18 @@ The following is required for building new spack environments with any supported
 NAVY HPCMP Nautilus
 ------------------------------
 
-The following is required for building new spack environments with any supported compiler on this platform.
+The following is required for building new spack environments with any supported compiler on this platform. For ``gcc@13.4.0``, see the additional instructions below.
 
 .. code-block:: console
 
    umask 0022
    module purge
+
+For ``gcc@13.4.0``, further run:
+
+.. code-block:: console
+
+   module use /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/modulefiles
 
 
 .. _Preconfigured_Sites_Blueback:
