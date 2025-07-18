@@ -17,6 +17,8 @@ umask 0022
 if [[ "${COMPILERS}" == "clang@=20.1.5" ]]; then
   module use /gpfs/neptune/spack-stack/llvm-20.1.5/modulefiles
   module use /gpfs/neptune/spack-stack/openmpi-5.0.6/llvm-20.1.5/modulefiles
+elif [[ "${COMPILERS}" == "gcc@=13.4.0" ]]; then
+  module use /gpfs/neptune/spack-stack/gcc-13.4.0/modulefiles
 fi
 
 SPACK_STACK_URL=${SPACK_STACK_URL:-https://github.nrlmry.navy.mil/JCSDA/spack-stack}
