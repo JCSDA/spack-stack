@@ -48,4 +48,4 @@ packages:
     - '^openblas'
   py-scipy:
     require:
-    - %gcc'
+    - '%gcc'
