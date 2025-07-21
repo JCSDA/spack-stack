@@ -3,9 +3,6 @@ packages:
     compiler:: [oneapi@2024.2.1, gcc@12.3.0]
     providers:
       mpi:: [cray-mpich@8.1.32]
-      blas:: [openblas]
-      fftw-api:: [fftw]
-      lapack:: [openblas]
 
 ### MPI, Python, MKL
   mpi:
@@ -25,6 +22,9 @@ packages:
       prefix: /opt/intel/oneapi/compiler/2024.2
   intel-oneapi-mkl:
     buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2023.2.0%oneapi@2024.2.1
+      prefix: /opt/intel/oneapi
 
 ### Modification of common packages
   bison:
@@ -32,7 +32,7 @@ packages:
     - '%gcc'
   ectrans:
     require::
-    - '@1.2.0 ~mkl +fftw'
+    - '@1.2.0 +mkl ~fftw'
   gsibec:
     require::
     - '@1.2.1 ~mkl'
