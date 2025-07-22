@@ -1,0 +1,3 @@
+repo:
+  namespace: spack_stack
+  api: v2.0
