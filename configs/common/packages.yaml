@@ -307,7 +307,7 @@ packages:
     require: '@10.0.10'
   # Need extradeps for grib-utils, enable by default to avoid duplicate packages
   w3emc:
-    require: '@2.12.0 precision=4,d,8 +extradeps'
+    require: '@2.12.0 precision=4,d,8'
   w3nco:
     require: '@2.4.1'
   # See macOS site config for wgrib2 version/variant overrides
