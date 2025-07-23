@@ -7,7 +7,7 @@ packages:
       jpeg: [libjpeg-turbo]
       pkgconfig: [pkg-config]
       yacc: [bison]
-      zlib-api: [zlib-ng]
+      zlib-api: [zlib]
   #
   awscli-v2:
     require: '~examples'
@@ -231,11 +231,6 @@ packages:
     require: '@3.11.11 ~crypt'
   py-cartopy:
     require: '+plotting'
-  # Avoid full rust dependency: version 43+ requires py-maturin
-  # DH* 20250214 No longer needed?
-  # https://github.com/JCSDA/spack-stack/pull/1519
-  py-cryptography:
-    require: '@:42 +rust_bootstrap'
   # Pin py-cython to avoid duplicate packages
   py-cython:
     require: '@3'
@@ -254,8 +249,6 @@ packages:
   # https://github.com/JCSDA/spack-stack/issues/1276
   py-matplotlib:
     require: '@3.7.4'
-  py-maturin:
-    require: '+rust_bootstrap'
   # https://github.com/Unidata/netcdf4-python/issues/1389
   # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
   py-netcdf4:
@@ -264,16 +257,12 @@ packages:
   py-numpy:
     require:
     - '@1.26'
-  py-rpds-py:
-    require: '+rust_bootstrap'
   # To avoid duplicate packages
   py-ruamel-yaml:
     require: '@0.17.16'
   # Pin the py-setuptools version to avoid duplicate Python packages
   py-setuptools:
     require: '@69'
-  py-setuptools-rust:
-    require: '+rust_bootstrap'
   # When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
   py-torch:
     require:
