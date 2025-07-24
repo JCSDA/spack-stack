@@ -1,8 +1,8 @@
 packages:
   all:
-    compiler:: [intel@2021.5.0,gcc@9.2.0]
+    compiler:: [oneapi@2024.2.1]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.5.1]
+      mpi:: [intel-oneapi-mpi@2021.13]
       # Remove the next three lines to switch to intel-oneapi-mkl
       blas:: [openblas]
       fftw-api:: [fftw]
@@ -10,10 +10,12 @@ packages:
   mpi:
     buildable: False
   intel-oneapi-mpi:
+    buildable: False
     externals:
-    - spec: intel-oneapi-mpi@2021.5.1%intel@2021.5.0 +classic-names
+    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
       modules:
-      - impi/2022.1.2
+      - intel/2024.2.1
+      - impi/2024.2.1
       prefix: /apps/oneapi
   intel-oneapi-mkl:
     # Remove buildable: False and uncomment externals section below to use intel-oneapi-mkl
@@ -30,8 +32,12 @@ packages:
     - '@1.2.1 ~mkl'
   py-numpy:
     require::
+    - '@1.26'
     - '^openblas'
   # *DH
   zlib-ng:
     require:
       - '~shared'
+  cdo:
+    require:
+      - '@2.3.0'

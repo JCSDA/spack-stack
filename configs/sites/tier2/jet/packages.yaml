@@ -42,10 +42,6 @@ packages:
     externals:
     - spec: findutils@4.5.11
       prefix: /usr
-  flex:
-    externals:
-    - spec: flex@2.5.37+lex
-      prefix: /usr
   gawk:
     externals:
     - spec: gawk@4.0.2
@@ -66,10 +62,6 @@ packages:
     externals:
     - spec: gmake@3.82
       prefix: /usr
-  go:
-    externals:
-    - spec: go@1.16.13
-      prefix: /usr
   grep:
     externals:
     - spec: grep@3.1
@@ -84,7 +76,7 @@ packages:
       prefix: /usr
   openjdk:
     externals:
-    - spec: openjdk@1.8.0_322-b06
+    - spec: openjdk@1.8.0_312-b07
       prefix: /usr
   krb5:
     externals:
@@ -97,10 +89,10 @@ packages:
   libxpm:
     externals:
     - spec: libxpm@4.11.0
-      prefix: usr/
+      prefix: /usr
   lustre:
     externals:
-    - spec: lustre@2.12.6_ddn62
+    - spec: lustre@2.14.0_ddn168
       prefix: /usr
   m4:
     externals:
@@ -110,9 +102,13 @@ packages:
     buildable: False
     externals:
     - spec: mysql@8.0.31
-      prefix: /lfs4/HFIP/hfv3gfs/role.epic/apps/mysql-8.0.31
+      prefix: /contrib/spack-stack/installs/mysql-8.0.31
       modules:
       - mysql/8.0.31
+  ncurses:
+    externals:
+    - spec: ncurses@5.9.20130511+termlib abi=5
+      prefix: /usr
   perl:
     externals:
     - spec: perl@5.16.3~cpanm+shared+threads
@@ -122,7 +118,6 @@ packages:
     - spec: pkg-config@0.27.1
       prefix: /usr
   qt:
-    buildable: false
     externals:
     - spec: qt@5.12.6
       prefix: /contrib/spack-stack/installs/qt-5.12.6/qtbase
@@ -146,9 +141,17 @@ packages:
     externals:
     - spec: texinfo@5.1
       prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20130530
+      prefix: /usr
   wget:
     externals:
     - spec: wget@1.14
+      prefix: /usr
+  xz:
+    externals:
+    - spec: xz@5.2.2
       prefix: /usr
   zip:
     externals:
