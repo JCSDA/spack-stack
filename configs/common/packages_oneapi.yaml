@@ -1,12 +1,27 @@
 packages:
+  # Allow certain packages to be built with GCC as long as they only use
+  # C and/or C++. Because Fortran compilers are not ABI compatible, we
+  # need to force spack to use one and only one compiler (Intel oneAPI)
+  c:
+    require:
+    - one_of: ["intel-oneapi-compilers", "gcc"]
+    prefer:
+    - "intel-oneapi-compilers"
+  cxx:
+    require:
+    - one_of: ["intel-oneapi-compilers", "gcc"]
+    prefer:
+    - "intel-oneapi-compilers"
+  fortran:
+    require:
+    - "intel-oneapi-compilers"
   all:
+    require:
+    - '%[when=%c]oneapi %[when=%cxx]oneapi %[when=%fortran]oneapi'
     providers:
       blas: [intel-oneapi-mkl]
       fftw-api: [intel-oneapi-mkl]
       lapack: [intel-oneapi-mkl]
-  cmake:
-    require:
-    - '%gcc'
   ectrans:
     require:
     - '+mkl ~fftw'
@@ -17,13 +32,20 @@ packages:
     require:
     - '^intel-oneapi-mkl'
   bison:
-    require: '%gcc'
+    require:
+    - '%gcc'
+  cmake:
+    require:
+    - '%gcc'
   gmake:
-    require: '%gcc'
+    require:
+    - '%gcc'
   libmd:
-    require: '%gcc'
+    require:
+    - '%gcc'
   libbsd:
-    require: '%gcc'
+    require:
+    - '%gcc'
   met:
     require:
     - '+shared-intel'

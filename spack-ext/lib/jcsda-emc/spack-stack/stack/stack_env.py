@@ -171,7 +171,11 @@ class StackEnv(object):
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
         # Merge or copy common package config(s)
         packages_yaml_path = os.path.join(common_path, "packages.yaml")
-        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{self.compiler.split('@')[0]}.yaml")
+        if not "@" in self.compiler:
+            raise Exception("Invalid value for self.compiler, '@' not found. " + \
+                "Expected: 'name@version' or 'name@=version'")
+        compiler_name, compiler_version = self.compiler.replace("@=", "@").split('@')
+        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{compiler_name}.yaml")
         destination = os.path.join(env_common_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -204,7 +208,13 @@ class StackEnv(object):
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
         # Merge or copy site package config(s)
         packages_yaml_path = os.path.join(env_path, "packages.yaml")
-        packages_compiler_yaml_path = os.path.join(env_path, f"packages_{self.compiler.split('@')[0]}.yaml")
+        if not "@" in self.compiler:
+            raise Exception("Invalid value for self.compiler, '@' not found. " + \
+                "Expected: 'name@version' or 'name@=version'")
+        compiler_name, compiler_version = self.compiler.replace("@=", "@").split('@')
+        packages_compiler_yaml_path = os.path.join(env_path, f"packages_{compiler_name}-{compiler_version}.yaml")
+        if not os.path.exists(packages_compiler_yaml_path):
+            raise Exception(f"File {packages_compiler_yaml_path} not found. ")
         destination = os.path.join(env_site_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -249,9 +259,12 @@ class StackEnv(object):
         # Copy site config first so that it takes precedence in env
         if self.site != "none":
             self._copy_site_includes()
-            # By default remove all other versions of the specified compiler
-            if not self.keepallcompilers and "@" in self.compiler:
-                self.filter_site_compilers(os.path.join(env_dir, "site", "compilers.yaml"), self.compiler)
+            # DH*
+            print("WARNING, filter_site_compilers currently commented out")
+            ## By default remove all other versions of the specified compiler
+            #if not self.keepallcompilers and "@" in self.compiler:
+            #    self.filter_site_compilers(os.path.join(env_dir, "site", "compilers.yaml"), self.compiler)
+            # *DH
 
         # Copy common include files
         self._copy_common_includes()
@@ -283,8 +296,8 @@ class StackEnv(object):
                 original_sections[key] = copy.deepcopy(section)
 
         # Commonly used config settings
-        compiler = f"packages:all:prefer:['%{self.compiler}']"
-        spack.config.add(compiler, scope=env_scope)
+        #compiler = f"packages:all:prefer:['%{self.compiler}']"
+        #spack.config.add(compiler, scope=env_scope)
         # Also update compiler definitions if matrices are used
         # DH I am too stupid to do this the "spack way" ...
         definitions = spack.config.get("definitions", scope=env_scope)
