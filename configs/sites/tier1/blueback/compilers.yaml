@@ -42,6 +42,8 @@ compilers::
       set:
         CONFIG_SITE: ''
         CRAY_CPU_TARGET: x86-genoa
+        # Force ifort not ifx
+        INTEL_COMPILER_TYPE: 'RECOMMENDED'
     extra_rpaths: []
 - compiler:
     spec: oneapi@=2025.0.4

@@ -305,9 +305,14 @@ packages:
   # Note - we can remove upp from stack at some point?
   upp:
     require: '@10.0.10'
-  # Need extradeps for grib-utils, enable by default to avoid duplicate packages
+  # Need extradeps for grib-utils, which ties us to w3ecm@:2.11
   w3emc:
-    require: '@2.10.0 precision=4,d,8 +extradeps'
+    require:
+    - '@:2.11.0'
+    - 'precision=4,d,8 +extradeps'
+    # https://github.com/NOAA-EMC/NCEPLIBS-w3emc/issues/246
+    - one_of: ['@2.10.0']
+      when: "%clang"
   w3nco:
     require: '@2.4.1'
   # See macOS site config for wgrib2 version/variant overrides
