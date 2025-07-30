@@ -4,6 +4,9 @@ packages:
       blas: [intel-oneapi-mkl]
       fftw-api: [intel-oneapi-mkl]
       lapack: [intel-oneapi-mkl]
+  antlr:
+    require:
+    - '%gcc'
   cmake:
     require:
     - '%gcc'
@@ -40,5 +43,8 @@ packages:
     require:
     - '%gcc'
   pixman:
+    require:
+    - '%gcc'
+  nco:
     require:
     - '%gcc'

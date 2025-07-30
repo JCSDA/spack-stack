@@ -31,6 +31,9 @@ packages:
   py-numpy:
     require:
     - '^intel-oneapi-mkl'
+  antlr:
+    require:
+    - '%gcc'
   bison:
     require:
     - '%gcc'
@@ -49,6 +52,9 @@ packages:
   met:
     require:
     - '+shared-intel'
+  nco:
+    require:
+    - '%gcc'
   parallel-netcdf:
     require:
     - '+shared-intel'
