@@ -13,19 +13,19 @@ packages:
   mpi:
     buildable: False
   # Intel oneAPI MPI
-  #intel-oneapi-mpi:
-  #  externals:
-  #  - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
-  #    prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-ss72gbndvat3oz22sa6lhmlbjkeabrn4
-  #    modules:
-  #    - intel-oneapi-mpi/2021.13.1
-  # NVIDIA HPC-X
-  hpcx-mpi:
+  intel-oneapi-mpi:
     externals:
-    - spec: hpcx-mpi@2.18.1%oneapi@2024.2.1
-      prefix: /apps/hpcx-v2.18.1-gcc-mlnx_ofed-redhat9-cuda12-x86_64/ompi-oneapi2024
+    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-ss72gbndvat3oz22sa6lhmlbjkeabrn4
       modules:
-      - hpc-x/2.18.1-oneapi2024
+      - intel-oneapi-mpi/2021.13.1
+  # NVIDIA HPC-X
+  #hpcx-mpi:
+  #  externals:
+  #  - spec: hpcx-mpi@2.18.1%oneapi@2024.2.1
+  #    prefix: /apps/hpcx-v2.18.1-gcc-mlnx_ofed-redhat9-cuda12-x86_64/ompi-oneapi2024
+  #    modules:
+  #    - hpc-x/2.18.1-oneapi2024
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2024.2.1%oneapi@2024.2.1
