@@ -171,6 +171,8 @@ packages:
   mapl:
     require: '@2.53 ~shared ~f2py'
     variants: '+pflogger'
+  # Note: Please check the sites/tier1/nas/packages_gcc.yaml if
+  #       this is changed, as it has a custom variant combination
   met:
     require:
     - '@12.0.1'
