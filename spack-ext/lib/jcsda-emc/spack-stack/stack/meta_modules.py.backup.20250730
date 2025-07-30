@@ -361,20 +361,18 @@ def setup_meta_modules():
         if not compiler.external:
             raise Exception(f"spack-built compiler {compiler} not yet supported")
 
-        # Use existing modules for external mpi providers; otherwise, use spack-built module
-        if compiler.external and compiler.external_modules:
-            raise Exception(f"UNTESTED XYZ MODULES: {compiler.external_modules}")
-            for module in compiler.external_modules:
-                substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-                substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
-        else:
-            module = "{}/{}".format(compiler.name, compiler.version)
-            substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-            substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
-        substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
-        substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
-        logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
-        logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"]))
+        #### Check if the external package has a prefix
+        ###if compiler.prefix:
+        ###    prefix = compiler.prefix
+        ###    # Workaround for intel-oneapi-mpi. Because of the way this package
+        ###    # is configured in spack, the prefix may be incomplete
+        ###    if compiler.name == "intel-oneapi-compilers" or "intel-oneapi-compilers-classic":
+        ###        if not os.path.isdir(os.path.join(prefix, "bin")):
+        ###            prefix = os.path.join(prefix, "compiler", str(compiler.version))
+        ###    if not os.path.isdir(os.path.join(prefix, "bin")):
+        ###        raise Exception("Invalid prefix for external compiler: {prefix}")
+        ###else:
+        ###    prefix = None
 
         # Compiler environment variables; names are lowercase in spack
         substitutes["CC"] = compiler.extra_attributes["compilers"]["c"]
@@ -395,6 +393,17 @@ def setup_meta_modules():
                 )
         substitutes["COMPFLAGS"] = substitutes["COMPFLAGS"].rstrip("\n")
         logging.debug("  ... ... COMPFLAGS: {}".format(substitutes["COMPFLAGS"]))
+
+        if compiler.external_modules:
+            raise Exception(f"UNTESTED XYZ MODULES: {compiler.external_modules}")
+            # Existing non-spack modules to load
+            for module in compiler.external_modules:
+                substitutes["MODULELOADS"] += module_load_command(module_choice, module)
+                substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
+        substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
+        substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
+        logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
+        logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"]))
 
         # Environment variables; case-sensitive in spack
         if "environment" in compiler.extra_attributes.keys():
@@ -540,20 +549,106 @@ def setup_meta_modules():
             )
 
             substitutes = SUBSTITUTES_TEMPLATE.copy()
-            # Use existing modules for external mpi providers; otherwise, use spack-built module
-            if mpi_provider.external and mpi_provider.external_modules:
-                raise Exception(f"UNTESTED XYZ MPI MODULES: {mpi_provider.external_modules}")
-                for module in mpi_provider.external_modules:
-                    substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-                    substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
+            #
+            if mpi_provider.external:
+                # Check if the external package has a prefix
+                if mpi_provider.prefix:
+                    prefix = mpi_provider.prefix
+                    # Workaround for intel-oneapi-mpi. Because of the way this package
+                    # is configured in spack, the prefix may be incomplete
+                    if mpi_provider.name == "intel-oneapi-mpi":
+                        if not os.path.isdir(os.path.join(prefix, "bin")):
+                            prefix = os.path.join(prefix, "mpi", str(mpi_provider.version))
+                    if not os.path.isdir(os.path.join(prefix, "bin")):
+                        raise Exception("Invalid prefix for external MPI provider: {prefix}")
+                    # Replace "-" in mpi_provider.name with "_" for _ROOT environment variable
+                    substitutes["MPIROOT"] = setenv_command(
+                        module_choice, mpi_provider.name.replace("-", "_") + "_ROOT", prefix
+                    )
+                    logging.debug(
+                        "  ... ... MPIROOT: {}".format(substitutes["MPIROOT"]).rstrip("\n")
+                    )
+                else:
+                    prefix = None
+
+                # Check if the external package has modules
+                if mpi_provider.external_modules:
+                    raise Exception(f"UNTESTED XYZ MPI MODULES: {mpi_provider.external_modules}")
+                    # Existing non-spack modules to load
+                    for module in mpi_provider.external_modules:
+                        substitutes["MODULELOADS"] += module_load_command(
+                            module_choice, module
+                        )
+                        substitutes["MODULEPREREQS"] += module_prereq_command(
+                            module_choice, module
+                        )
+                    substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
+                    substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
+                    logging.debug(
+                        "  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"])
+                    )
+                    logging.debug(
+                        "  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"])
+                    )
+                # If no modules, then the external package must have a prefix
+                elif prefix:
+                    # PATH and compiler wrapper environment variables
+                    bindir = os.path.join(prefix, "bin")
+                    if os.path.isdir(bindir):
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, "PATH", bindir
+                        )
+                    # LD_LIBRARY_PATH AND PKG_CONFIG_PATH
+                    libdir = os.path.join(prefix, "lib")
+                    if os.path.isdir(libdir):
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, "LD_LIBRARY_PATH", libdir
+                        )
+                    pkgconfigdir = os.path.join(libdir, "pkgconfig")
+                    if os.path.isdir(pkgconfigdir):
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, "PKG_CONFIG_PATH", pkgconfigdir
+                        )
+                    lib64dir = os.path.join(prefix, "lib64")
+                    if os.path.isdir(lib64dir):
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, "LD_LIBRARY_PATH", lib64dir
+                        )
+                    pkgconfig64dir = os.path.join(lib64dir, "pkgconfig")
+                    if os.path.isdir(pkgconfig64dir):
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, "PKG_CONFIG_PATH", pkgconfig64dir
+                        )
+                    # MANPATH
+                    mandir = os.path.join(prefix, "share/man")
+                    if os.path.isdir(mandir):
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, "MANPATH", mandir
+                        )
+                    # ACLOCAL_PATH
+                    aclocaldir = os.path.join(prefix, "share/aclocal")
+                    if os.path.isdir(aclocaldir):
+                        substitutes["ENVVARS"] += prepend_path_command(
+                            module_choice, "ACLOCAL_PATH", aclocaldir
+                        )
+                else:
+                    raise Exception(f"Neither prefix nor modules configured for external MPI provider {mpi_provider}")
             else:
+                # Simple workaround for now - depend on spack building the mpi module
+                # and load it with the wrapper, don't set any of the other substitutes
                 module = "{}/{}".format(mpi_provider.name, mpi_provider.version)
-                substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-                substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
-            substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
-            substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
-            logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
-            logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"]))
+                substitutes["MODULELOADS"] += module_load_command(
+                    module_choice, module.split("-")[0]
+                ).rstrip("\n")
+                substitutes["MODULEPREREQS"] += module_prereq_command(
+                    module_choice, module.split("-")[0]
+                ).rstrip("\n")
+                logging.debug(
+                    "  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"])
+                )
+                logging.debug(
+                    "  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"])
+                )
 
             # Compiler wrapper environment variables
             if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":

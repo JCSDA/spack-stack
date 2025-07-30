@@ -8,19 +8,27 @@ local pkgNameVer = myModuleFullName()
 family("MetaCompiler")
 
 -- conflicts
+-- old names as of July 2025 - deprecate at some point later
 conflict("stack-aocc")
 conflict("stack-apple-clang")
 conflict("stack-clang")
 conflict("stack-gcc")
 conflict("stack-intel")
 conflict("stack-oneapi")
+-- new names as of July 2025
+-- ??? # conflict stack-aocc 
+-- ??? # conflict stack-apple-clang
+conflict("stack-llvm")
+conflict("stack-gcc")
+conflict("stack-intel-oneapi-compilers-classic")
+conflict("stack-intel-oneapi-compilers")
+
+-- spack compiler module hierarchy
+@MODULEPATHS@
 
 -- prerequisite modules
 @MODULELOADS@
 @MODULEPREREQS@
-
--- spack compiler module hierarchy
-@MODULEPATHS@
 
 -- compiler environment variables
 setenv("F77", "@F77@")
