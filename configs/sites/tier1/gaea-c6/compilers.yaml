@@ -23,7 +23,6 @@ compilers:
         # Automake-based builds are installed in lib64
         # which confuses some packages.
         CONFIG_SITE: ''
-    #extra_rpaths: []
     extra_rpaths:
       - /opt/intel/oneapi/compiler/2024.2/lib
 - compiler:
@@ -73,6 +72,5 @@ compilers:
     environment: {}
       prepend_path:
         LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/24.07.0/INTEL/2023.2/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12:/opt/intel/oneapi/compiler/2024.2/lib'
-    #extra_rpaths: []
     extra_rpaths:
       - /opt/intel/oneapi/compiler/2024.2/lib
