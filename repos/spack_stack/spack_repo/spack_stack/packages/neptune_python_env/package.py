@@ -22,6 +22,10 @@ class NeptunePythonEnv(BundlePackage):
 
     variant("xnrl", default=False, description="Build non-pulic XNRL")
 
+    #depends_on("c", type="run")
+    #depends_on("cxx", type="run")
+    #depends_on("fortran", type="run")
+
     depends_on("neptune-env", type="run")
     # Enable the Python variant for ESMF
     depends_on("esmf +python", type="run")
@@ -36,12 +40,12 @@ class NeptunePythonEnv(BundlePackage):
     depends_on("py-pyyaml", type="run")
     depends_on("py-regionmask", type="run")
     depends_on("py-scipy", type="run")
-    depends_on("py-xarray", type="run")
+    #depends_on("py-xarray", type="run")
     depends_on("py-pytest", type="run")
     depends_on("py-fortranformat", type="run")
 
-    depends_on("met", type="run")
-    depends_on("metplus", type="run")
+    #depends_on("met", type="run")
+    #depends_on("metplus", type="run")
 
     with when("+xnrl"):
         depends_on("py-xnrl", type="run")

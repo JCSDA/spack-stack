@@ -21,13 +21,16 @@ packages:
   # 1.85 incompatible with ecflow@5.11.4 - use latest 'good version'
   boost:
     require:
-    - '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
+    - '@1.84'
+    - '~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
   bufr:
     require:
-    - '@12.1.0 +python'
+    - '@12.1.0
+    - '+python'
   bufr-query:
     require:
-    - '@0.0.4 +python'
+    - '@0.0.4
+    - '+python'
   cairo:
     require: '+pic'
   cdo:
@@ -61,13 +64,16 @@ packages:
     - '+netcdf +png +tools'
   ecflow:
     require:
-    - '@5.11.4 +ui'
+    - '@5.11.4'
+    - '+ui'
   eckit:
     require:
-    - '@1.28.3 linalg=eigen,lapack compression=lz4,bzip2'
+    - '@1.28.3'
+    - 'linalg=eigen,lapack compression=lz4,bzip2'
   ecmwf-atlas:
     require:
-    - '@0.40.0 +fckit +trans +tesselation +fftw'
+    - '@0.40.0'
+    - '+fckit +trans +tesselation +fftw'
   ectrans:
     require:
     - '@1.5.0'
@@ -79,27 +85,28 @@ packages:
   # Also, check the acorn and derecho site configs which have esmf modifications.
   esmf:
     require:
-    - '~xerces ~pnetcdf +shared +external-parallelio'
+    - '~xerces ~pnetcdf +shared +external-parallelio +python'
     - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0b12 snapshot=b12']
     - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
       when: "%intel"
       message: "Extra ESMF compile options for Intel"
-    - any_of: ['+python']
-      when: "%gcc"
-    - any_of: ['+python']
-      when: "%intel"
-    - any_of: ['+python']
-      when: "%oneapi"
-    - any_of: ['~python']
-      when: "%clang"
-      message: "Disable python variant for ESMF because mpi4py doesn't build with clang" 
+    #- any_of: ['+python']
+    #  when: "%gcc"
+    #- any_of: ['+python']
+    #  when: "%intel"
+    #- any_of: ['+python']
+    #  when: "%oneapi"
+    #- any_of: ['~python']
+    #  when: "%clang"
+    #  message: "Disable python variant for ESMF because mpi4py doesn't build with clang" 
   # To avoid duplicate packages (concretizer bug?)
   expat:
     require:
     - '~libbsd'
   fckit:
     require:
-    - '@0.13.2 +eckit'
+    - '@0.13.2'
+    - '+eckit'
   fftw:
     require:
     - '@3.3.10'
@@ -129,10 +136,9 @@ packages:
   g2tmpl:
     require:
     - '@1.13.0'
-  # DH* NEEDED???
-  #gcc-runtime:
-  #  require:
-  #  - '%gcc'
+  gcc-runtime:
+    require:
+    - '%gcc'
   gfsio:
     require:
     - '@1.4.2'
@@ -142,15 +148,15 @@ packages:
     # Note: Uncommenting this entry will break
     # the container builds.
     #require: '@2.11.0'
-  # https://github.com/spack/spack/issues/49358
-  # https://github.com/spack/spack/pull/44323
-  glib:
-    require:
-    - '@:2.78.3'
-  # To avoid duplicate packages being built
-  gmake:
-    require:
-    - one_of: ['@=4.2.1', '@=4.4.1']
+  ## https://github.com/spack/spack/issues/49358
+  ## https://github.com/spack/spack/pull/44323
+  #glib:
+  #  require:
+  #  - '@:2.78.3'
+  ## To avoid duplicate packages being built
+  #gmake:
+  #  require:
+  #  - one_of: ['@=4.2.1', '@=4.4.1']
   grib-util:
     require:
     - '@1.4.0'
@@ -160,12 +166,13 @@ packages:
   gsi-ncdiag:
     require:
     - '@1.1.2'
-  gsl-lite:
-    require:
-    - '@0.37.0'
+  #gsl-lite:
+  #  require:
+  #  - '@0.37.0'
   hdf:
     require:
-    - '@4.2.15 +external-xdr ~fortran ~netcdf'
+    - '@4.2.15'
+    - '+external-xdr ~fortran ~netcdf'
   hdf5:
     require:
     - '@1.14.5'
@@ -174,27 +181,35 @@ packages:
   hdf-eos2:
     require:
     - '@2.20v1.00'
+  intel-oneapi-compilers-runtime:
+    require:
+    - '%oneapi'
+  intel-oneapi-compilers-classic-runtime:
+    require:
+    - '%intel'
   ip:
     require:
-    - '@5.4.0 precision=4,d,8'
+    - '@5.4.0'
+    - 'precision=4,d,8'
   ip2:
     require:
     - '@1.1.2'
-  jasper:
-    require:
-    - '@2.0.32'
+  #jasper:
+  #  require:
+  #  - '@2.0.32'
   jedi-cmake:
     require:
     - '@1.4.0'
   landsfcutil:
     require:
     - '@2.4.2'
-  libjpeg-turbo:
-    require:
-    - '@2.1.0'
+  #libjpeg-turbo:
+  #  require:
+  #  - '@2.1.0'
   libpng:
     require:
-    - '@1.6.37 +pic'
+    - '@1.6.37'
+    - '+pic'
   # libtirpc +gssapi doesn't build with oneapi@2025
   # https://github.com/JCSDA/spack-stack/issues/1441
   libtirpc:
@@ -206,13 +221,12 @@ packages:
     - '@4.15.3:'
   mapl:
     require:
-    - '@2.53 ~shared ~f2py +pflogger'
-    #variants: '+pflogger'
+    - '@2.53'
+    - '~shared ~f2py +pflogger'
   met:
     require:
     - '@12.0.1'
-    - '+python'
-    - '+grib2'
+    - '+python +grib2'
   metplus:
     require:
     - '@6.0.0'
@@ -240,19 +254,21 @@ packages:
     require:
     - '@1.1.2'
   netcdf-c:
-    # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
     require:
-    - '@4.9.2 +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=autotools'
+    - '@4.9.2'
+    - '+dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=autotools'
   netcdf-cxx4:
     require:
     - '@4.3.1'
   netcdf-fortran:
     require:
-    - '@4.6.1 +parallel_tests'
+    - '@4.6.1'
+    - '+parallel_tests'
   # ninja - when adding information here, also check Discover site config
   odc:
     require:
-    - '@1.6.1 ~fortran'
+    - '@1.6.1'
+    - '~fortran'
   openmpi:
     require:
     - '~internal-hwloc +two_level_namespace'
@@ -265,6 +281,7 @@ packages:
   parallelio:
     require:
     - '@2.6.2'
+  # DH* CAN WE UPDATE? NEED A NEW SHARED-INTEL PATCH?
   parallel-netcdf:
     require:
     - '@1.12.3'
@@ -285,68 +302,71 @@ packages:
   # are removed, which itself is problematic.
   python:
     require:
-    - '@3.11 ~crypt'
+    - '@3.11'
+    - '~crypt'
   py-cartopy:
     require:
     - '+plotting'
-  # Pin py-cython to avoid duplicate packages
-  py-cython:
-    require:
-    - '@3'
-  # As long as we need the "delayed" variant for py-dask,
-  # we are restricted to version 2021.03.0 (last one that has it)
-  # and newer than 2021.01.0 because of these issues:
-  # https://github.com/JCSDA/spack-stack/issues/1216
-  # https://github.com/pydata/xarray/issues/8917
-  py-dask:
-    require:
-    - '@2021.3.0'
-  # To avoid duplicate packages
-  py-flit-core:
-    require:
-    - '@3.8.0'
+  ## Pin py-cython to avoid duplicate packages
+  #py-cython:
+  #  require:
+  #  - '@3'
+  ## As long as we need the "delayed" variant for py-dask,
+  ## we are restricted to version 2021.03.0 (last one that has it)
+  ## and newer than 2021.01.0 because of these issues:
+  ## https://github.com/JCSDA/spack-stack/issues/1216
+  ## https://github.com/pydata/xarray/issues/8917
+  #py-dask:
+  #  require:
+  #  - '@2021.3.0'
+  ## To avoid duplicate packages
+  #py-flit-core:
+  #  require:
+  #  - '@3.8.0'
   py-h5py:
     require:
     - '~mpi'
   # https://github.com/JCSDA/spack-stack/issues/1276
-  py-matplotlib:
-    require:
-    - '@3.7.4'
+  #py-matplotlib:
+  #  require:
+  #  - '@3.7.4'
   # https://github.com/Unidata/netcdf4-python/issues/1389
   # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
   py-netcdf4:
     require:
-    - '@1.7.1 ~mpi'
-  # To avoid duplicate packages
-  py-numpy:
-    require:
-    - '@1.26'
-  # To avoid duplicate packages
-  py-ruamel-yaml:
-    require:
-    - '@0.17.16'
-  # Pin the py-setuptools version to avoid duplicate Python packages
-  py-setuptools:
-    require:
-    - '@69'
-  # When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
+    - '@1.7.2'
+    - '~mpi'
+  ## To avoid duplicate packages
+  #py-numpy:
+  #  require:
+  #  - '@1.26'
+  ## To avoid duplicate packages
+  #py-ruamel-yaml:
+  #  require:
+  #  - '@0.17.16'
+  ## Pin the py-setuptools version to avoid duplicate Python packages
+  #py-setuptools:
+  #  require:
+  #  - '@69'
+  ## When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
   py-torch:
     require:
     - '+custom-protobuf ~mkldnn'
-  # To avoid duplicate packages
-  py-urllib3:
-    require:
-    - '@1.26.12'
-  # To avoid duplicate packages
-  py-versioneer:
-    require:
-    - '@0.28'
+  ## To avoid duplicate packages
+  #py-urllib3:
+  #  require:
+  #  - '@1.26.12'
+  ## To avoid duplicate packages
+  #py-versioneer:
+  #  require:
+  #  - '@0.28'
   qt:
     require:
     - '@5'
   scotch:
     require:
-    - '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps'
+    - '@7.0.4'
+    - '+mpi+metis~shared~threads~mpi_thread+noarch+esmumps'
   sfcio:
     require:
     - '@1.4.2'
@@ -358,7 +378,8 @@ packages:
     - '@2.3.3'
   sp:
     require:
-    - '@2.5.0 precision=4,d,8'
+    - '@2.5.0'
+    - 'precision=4,d,8'
   udunits:
     require:
     - '@2.2.28'
@@ -372,7 +393,8 @@ packages:
   # Need extradeps for grib-utils, enable by default to avoid duplicate packages
   w3emc:
     require:
-    - '@2.10.0 precision=4,d,8 +extradeps'
+    - '@2.10.0'
+    - 'precision=4,d,8 +extradeps'
   w3nco:
     require:
     - '@2.4.1'
@@ -385,4 +407,5 @@ packages:
     - '@1.2.0'
   zstd:
     require:
-    - '@1.5.6 +programs'
+    - '@1.5.7'
+    - '+programs'

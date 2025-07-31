@@ -23,6 +23,10 @@ class NeptuneEnv(BundlePackage):
     variant("espc", default=False, description="Build ESPC dependencies")
     variant("debug", default=False, description="Build debug version of selected dependencies")
 
+    #depends_on("c", type="run")
+    #depends_on("cxx", type="run")
+    #depends_on("fortran", type="run")
+
     depends_on("base-env", type="run")
 
     depends_on("blas", type="run")

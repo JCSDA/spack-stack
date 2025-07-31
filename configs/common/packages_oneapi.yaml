@@ -22,42 +22,58 @@ packages:
       blas: [intel-oneapi-mkl]
       fftw-api: [intel-oneapi-mkl]
       lapack: [intel-oneapi-mkl]
-  ectrans:
-    require:
-    - '+mkl ~fftw'
-  gsibec:
-    require:
-    - '+mkl'
-  py-numpy:
-    require:
-    - '^intel-oneapi-mkl'
   antlr:
     require:
     - '%gcc'
   bison:
     require:
     - '%gcc'
+  boost:
+    require:
+    - '%oneapi'
   cmake:
     require:
     - '%gcc'
+  ectrans:
+    require:
+    - '+mkl ~fftw'
   gmake:
+    require:
+    - '%gcc'
+  gsibec:
+    require:
+    - '+mkl'
+  libbsd:
     require:
     - '%gcc'
   libmd:
     require:
     - '%gcc'
-  libbsd:
-    require:
-    - '%gcc'
   met:
     require:
     - '+shared-intel'
+  netcdf-c:
+    require:
+    - '%oneapi'
+  netcdf-cxx:
+    require:
+    - '%oneapi'
   nco:
     require:
     - '%gcc'
+  p4est:
+    require:
+    - '%oneapi'
   parallel-netcdf:
     require:
     - '+shared-intel'
+  python:
+    require:
+    - '%oneapi'
+  py-numpy:
+    require:
+    - '%oneapi'
+    - '^intel-oneapi-mkl'
   qt:
     require:
     - '%gcc'
