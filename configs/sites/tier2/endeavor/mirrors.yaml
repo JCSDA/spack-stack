@@ -1,0 +1,3 @@
+mirrors:
+  local-source: file:///global/panfs05/users/Xdheinz/spack-stack/source-cache
+  local-binary: file:///global/panfs05/users/Xdheinz/spack-stack/build-cache

@@ -1,0 +1,40 @@
+compilers:
+- compiler:
+    spec: gcc@=7.5.0
+    paths:
+      cc: /usr/bin/gcc
+      cxx: /usr/bin/g++
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=13.3.1
+    paths:
+      cc: /usr/bin/gcc-13
+      cxx: /usr/bin/g++-13
+      f77: /usr/bin/gfortran-13
+      fc: /usr/bin/gfortran-13
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: oneapi@=2025.1.3
+    paths:
+      cc: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3/compiler/2025.1/bin/icx
+      cxx: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3/compiler/2025.1/bin/icpx
+      f77: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3/compiler/2025.1/bin/ifx
+      fc: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3/compiler/2025.1/bin/ifx
+    flags: {}
+    operating_system: sles15
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
