@@ -26,19 +26,6 @@ compilers:
     environment: {}
     extra_rpaths: []
 - compiler:
-    spec: gcc@=14.2.0
-    paths:
-      cc: /usr/bin/gcc-14
-      cxx: /usr/bin/g++-14
-      f77: /usr/bin/gfortran-14
-      fc: /usr/bin/gfortran-14
-    flags: {}
-    operating_system: sles15
-    target: x86_64
-    modules: []
-    environment: {}
-    extra_rpaths: []
-- compiler:
     spec: oneapi@=2025.1.3
     paths:
       cc: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3/compiler/2025.1/bin/icx
