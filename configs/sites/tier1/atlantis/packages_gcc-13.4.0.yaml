@@ -1,0 +1,28 @@
+packages:
+  mpi:
+    buildable: False
+  openmpi:
+    buildable: False
+    externals:
+    - spec: openmpi@4.1.5 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm %gcc@=13.4.0
+      # Note: slurm must be loaded before openmpi on Atlantis
+      modules:
+      - slurm
+      - openmpi/mlnx/gcc/64/4.1.5a1
+  gcc:
+    externals:
+    - spec: gcc@13.4.0 languages:='c,c++,fortran'
+      prefix: /gpfs/neptune/spack-stack/gcc-13.4.0
+      extra_attributes:
+        compilers:
+          c: /gpfs/neptune/spack-stack/gcc-13.4.0/bin/gcc
+          cxx: /gpfs/neptune/spack-stack/gcc-13.4.0/bin/g++
+          fortran: /gpfs/neptune/spack-stack/gcc-13.4.0/bin/gfortran
+        extra_rpaths:
+        # For compiling parallel-netcdf; Bright must have removed
+        # some symbolic links required for OpenMPI 4.1.5a1 ...
+        - /gpfs/neptune/spack-stack/openmpi-4.1.5-fix-lib
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@13.4.0%gcc@13.4.0
+      prefix: /gpfs/neptune/spack-stack/gcc-13.4.0
