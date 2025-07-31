@@ -1,0 +1,15 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.0,gcc@12.3.0]
+    providers:
+      mpi:: [mpt@2.30]
+  mpi:
+    buildable: False
+  mpt:
+    externals:
+    - spec: mpt@2.30%oneapi@=2024.2.0
+      prefix: /nasa/hpe/mpt/2.30_rhel810
+  intel-oneapi-mkl:
+    externals:
+    - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
