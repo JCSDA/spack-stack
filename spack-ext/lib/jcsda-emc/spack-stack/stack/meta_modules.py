@@ -211,10 +211,11 @@ def setup_meta_modules():
     logging.info(f"  ... compilers: {compilers}")
 
     # To remove compiler prefices from tcl modulefiles, we need
-    # a mock compiler "none@none" for external packages
-    if module_choice == "tcl":
-        mock_compiler_list = [x.name+"@"+str(x.version) for x in compilers] + ["none@none"]
-        logging.debug(f"  ... mock_compiler_list: {mock_compiler_list}")
+    # a mock compiler "none@none" for external packages. Also
+    # need a list for lmod to check core compiler
+    #if module_choice == "tcl":
+    mock_compiler_list = [x.name+"@"+str(x.version) for x in compilers] + ["none@none"]
+    logging.debug(f"  ... mock_compiler_list: {mock_compiler_list}")
 
     mpi_providers = q.providers_for("mpi")
     if not len(mpi_providers)==1:
@@ -228,7 +229,7 @@ def setup_meta_modules():
         logging.info("  ... core compilers: {}".format(core_compilers))
         # Check that none of the compilers used for the stack is a core compiler
         for core_compiler in core_compilers:
-            if any(core_compiler in x for x in flattened_compiler_list):
+            if any(core_compiler in x for x in mock_compiler_list):
                 raise Exception(
                     """Not supported: compiler used for environment
                     is in list of core compilers"""
@@ -363,7 +364,6 @@ def setup_meta_modules():
 
         # Use existing modules for external mpi providers; otherwise, use spack-built module
         if compiler.external and compiler.external_modules:
-            raise Exception(f"UNTESTED XYZ MODULES: {compiler.external_modules}")
             for module in compiler.external_modules:
                 substitutes["MODULELOADS"] += module_load_command(module_choice, module)
                 substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
@@ -542,7 +542,6 @@ def setup_meta_modules():
             substitutes = SUBSTITUTES_TEMPLATE.copy()
             # Use existing modules for external mpi providers; otherwise, use spack-built module
             if mpi_provider.external and mpi_provider.external_modules:
-                raise Exception(f"UNTESTED XYZ MPI MODULES: {mpi_provider.external_modules}")
                 for module in mpi_provider.external_modules:
                     substitutes["MODULELOADS"] += module_load_command(module_choice, module)
                     substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
