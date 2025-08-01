@@ -23,10 +23,6 @@ class NeptuneEnv(BundlePackage):
     variant("espc", default=False, description="Build ESPC dependencies")
     variant("debug", default=False, description="Build debug version of selected dependencies")
 
-    #depends_on("c", type="run")
-    #depends_on("cxx", type="run")
-    #depends_on("fortran", type="run")
-
     depends_on("base-env", type="run")
 
     depends_on("blas", type="run")
@@ -38,14 +34,14 @@ class NeptuneEnv(BundlePackage):
     depends_on("p4est", type="run")
     depends_on("w3emc", type="run")
     depends_on("ip", type="run")
-    depends_on("esmf ~debug", type="run", when="~debug")
-    depends_on("esmf +debug", type="run", when="+debug")
+    depends_on("esmf@8.9.0b12 ~debug ~python snapshot=b12", type="run", when="~debug")
+    depends_on("esmf@8.9.0b12 +debug ~python snapshot=b12", type="run", when="+debug")
     depends_on("nco", type="run")
     depends_on("mct", type="run")
 
     with when("+espc"):
-        depends_on("fftw", type="build")
-        depends_on("netlib-lapack", type="build")
+        depends_on("fftw", type="run")
+        depends_on("netlib-lapack", type="run")
 
     # Basic Python dependencies that are always needed
     depends_on("py-f90nml", type="run")

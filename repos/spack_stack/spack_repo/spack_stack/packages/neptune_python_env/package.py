@@ -47,7 +47,7 @@ class NeptunePythonEnv(BundlePackage):
     #depends_on("met", type="run")
     #depends_on("metplus", type="run")
 
-    with when("+xnrl"):
-        depends_on("py-xnrl", type="run")
+    #with when("+xnrl"):
+    #    depends_on("py-xnrl", type="run")
 
     # There is no need for install() since there is no code.
