@@ -90,6 +90,27 @@ def prepend_path_command(module_choice, key, value):
         return "prepend-path {{{}}} {{{}}}\n".format(key, value)
 
 
+def envmod_command(module_choice, action, env_name, env_values):
+    if action == "set":
+        module_action = "setenv"
+    elif action == "unset":
+        module_action = "unsetenv"
+    elif action == "append_path":
+        if module_choice == "lmod":
+            module_action = "append_path"
+        else:
+            module_action = "append-path"
+    elif action == "prepend_path":
+        if module_choice == "lmod":
+            module_action = "prepend_path"
+        else:
+            module_action = "prepend-path"
+    if module_choice == "lmod":
+        return f'{module_action}("{env_name}", "{env_values}")\n'#.format(module_action, env_name, env_values)
+    else:
+        return f"{module_action} {{{env_name}}} {{{env_values}}}\n"#.format(module_action, env_name, env_values)
+
+
 def module_load_command(module_choice, module):
     if module_choice == "lmod":
         return 'load("{}")\n'.format(module)
@@ -149,6 +170,48 @@ def substitute_config_vars(config_str):
     return config_str
 
 
+def remove_compiler_prefices_from_tcl_modulefiles(modulepath, compiler_list, mpi_provider):
+    """Remove compiler and mpi prefices from tcl modulefiles in modulepath"""
+    logging.info(f"  ... ... removing compiler/mpi prefices from tcl modulefiles in {modulepath}")
+    module_replace_patterns = ["is-loaded", "module load", "depends-on"]
+    # sed syntax differs on macOS
+    if sys.platform == "darwin":
+        sed_syntax_fix = "''"
+    else:
+        sed_syntax_fix = ""
+    for root, ddir, files in os.walk(modulepath):
+        for ffile in files:
+            filepath = os.path.join(root, ffile)
+            logging.debug(f"  ... ... ... {filepath}")
+            # First, compiler-only dependent modules
+            # These can depend on other compilers than the
+            # compiler this MPI was built with, loop over all
+            for pattern in module_replace_patterns:
+                for compiler in compiler_list:
+                    (compiler_name, compiler_version) = compiler.split("@")
+                    cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
+                        pattern, compiler_name, compiler_version, filepath, sed_syntax_fix
+                    )
+                    status = os.system(cmd)
+                    if not status == 0:
+                        raise Exception(f"Error while calling '{cmd}'")
+                    # If mpi_provider is not None, also do compiler+mpi-dependent modules
+                    if not mpi_provider:
+                        continue
+                    cmd = "sed -i {6} 's#{0} {1}/{2}/{3}/{4}/#{0} #g' {5}".format(
+                        pattern,
+                        mpi_provider.name,
+                        mpi_provider.version,
+                        compiler_name,
+                        compiler_version,
+                        filepath,
+                        sed_syntax_fix,
+                    )
+                    status = os.system(cmd)
+                    if not status == 0:
+                        raise Exception(f"Error while calling '{cmd}'")
+
+
 def setup_meta_modules():
     # Find currently active spack environment, activate here
     logging.info("Configuring active spack environment ...")
@@ -180,14 +243,14 @@ def setup_meta_modules():
     module_choice = module_config["default"]["enable"][0]
     logging.info("  ... configured to use {} modules".format(module_choice))
 
-    # Need to set a few variables when tcl modules are used
-    if module_choice == "tcl":
-        module_replace_patterns = ["is-loaded", "module load", "depends-on"]
-        # sed syntax differs on macOS
-        if sys.platform == "darwin":
-            sed_syntax_fix = "''"
-        else:
-            sed_syntax_fix = ""
+    ## Need to set a few variables when tcl modules are used
+    #if module_choice == "tcl":
+    #    module_replace_patterns = ["is-loaded", "module load", "depends-on"]
+    #    # sed syntax differs on macOS
+    #    if sys.platform == "darwin":
+    #        sed_syntax_fix = "''"
+    #    else:
+    #        sed_syntax_fix = ""
 
     # Top-level module directory
     module_dir = substitute_config_vars(module_config["default"]["roots"][module_choice])
@@ -214,8 +277,8 @@ def setup_meta_modules():
     # a mock compiler "none@none" for external packages. Also
     # need a list for lmod to check core compiler
     #if module_choice == "tcl":
-    mock_compiler_list = [x.name+"@"+str(x.version) for x in compilers] + ["none@none"]
-    logging.debug(f"  ... mock_compiler_list: {mock_compiler_list}")
+    compiler_list = [x.name+"@"+str(x.version) for x in compilers] + ["none@none"]
+    logging.debug(f"  ... compiler_list: {compiler_list}")
 
     mpi_providers = q.providers_for("mpi")
     if not len(mpi_providers)==1:
@@ -229,7 +292,7 @@ def setup_meta_modules():
         logging.info("  ... core compilers: {}".format(core_compilers))
         # Check that none of the compilers used for the stack is a core compiler
         for core_compiler in core_compilers:
-            if any(core_compiler in x for x in mock_compiler_list):
+            if any(core_compiler in x for x in compiler_list):
                 raise Exception(
                     """Not supported: compiler used for environment
                     is in list of core compilers"""
@@ -300,18 +363,25 @@ def setup_meta_modules():
     # Create compiler modules
     logging.info("Creating compiler modules ...")
 
+    # Initialize saved substitutes to None (populate for preferred compiler later)
+    COMPILER_SUBSTITUTES_SAVE = None
+
     # Collect and save modulepaths for the preferred compiler
     MODULEPATHS_SAVE = []
 
-    # Append modulepath for external specs
+    # Append modulepath for external specs and for specs without compiler dependencies
     modulepath_save = os.path.join(module_dir, "none", "none")
     if not os.path.isdir(modulepath_save):
         os.makedirs(modulepath_save)
     logging.info("  ... appending {} to MODULEPATHS_SAVE".format(modulepath_save))
     MODULEPATHS_SAVE.append(modulepath_save)
-
-    # Initialize saved substitutes to None (populate for preferred compiler later)
-    COMPILER_SUBSTITUTES_SAVE = None
+    # For tcl modules remove the compiler prefices from the module contents
+    if module_choice == "tcl":
+        remove_compiler_prefices_from_tcl_modulefiles(
+            modulepath_save,
+            compiler_list,
+            mpi_provider = None
+        )
 
     for compiler in compilers:
         logging.info(f"  ... configuring compiler {compiler.name}@{compiler.version}")
@@ -324,27 +394,11 @@ def setup_meta_modules():
 
         # For tcl modules remove the compiler prefices from the module contents
         if module_choice == "tcl":
-            logging.info(
-                "  ... ... removing compiler prefices from tcl modulefiles in {}".format(
-                    modulepath_save
-                )
+            remove_compiler_prefices_from_tcl_modulefiles(
+                modulepath_save,
+                compiler_list,
+                mpi_provider = None
             )
-
-            for root, ddir, files in os.walk(modulepath_save):
-                for ffile in files:
-                    filepath = os.path.join(root, ffile)
-                    logging.debug(
-                        "  ... ... ... removing compiler prefices in {}".format(filepath)
-                    )
-                    for pattern in module_replace_patterns:
-                        for tmp_compiler in mock_compiler_list:
-                            (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
-                            cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
-                                pattern, tmp_compiler_name, tmp_compiler_version, filepath, sed_syntax_fix
-                            )
-                            status = os.system(cmd)
-                            if not status == 0:
-                                raise Exception("Error while calling '{}'".format(cmd))
 
         # The remainder of the loop is only needed for the preferred compiler
         if not compiler.name in preferred_compiler:
@@ -398,6 +452,15 @@ def setup_meta_modules():
 
         # Environment variables; case-sensitive in spack
         if "environment" in compiler.extra_attributes.keys():
+            for action in compiler.extra_attributes["environment"].keys():
+                for env_name in compiler.extra_attributes["environment"][action]:
+                    env_values = compiler.extra_attributes["environment"][action][env_name]
+                    substitutes["ENVVARS"] += envmod_command(
+                        module_choice,
+                        action,
+                        env_name,
+                        env_values
+                    )
             # DH* CAN WE SIMPLIFY THIS WITH A LOOP AND A GENERIC FUNCTION?
             # append_path
             if "append_path" in compiler.extra_attributes["environment"].keys():
@@ -456,14 +519,27 @@ def setup_meta_modules():
         if compiler == compilers[-1]:
             COMPILER_SUBSTITUTES_SAVE = substitutes
 
-    del MODULEPATHS_SAVE
-
     # Collect and save modulepaths for MPI with preferred compiler
     MODULEPATHS_SAVE = []
 
     # Create mpi modules - as of July 2025, only one
     # MPI provider is allowed (for the preferred compiler)
     for mpi_provider in mpi_providers:
+
+        # Append modulepath for external specs and specs without compiler dependencies
+        modulepath_save = os.path.join(module_dir, mpi_provider.name, str(mpi_provider.version), "none", "none")
+        if not os.path.isdir(modulepath_save):
+            os.makedirs(modulepath_save)
+        logging.info("  ... appending {} to MODULEPATHS_SAVE".format(modulepath_save))
+        MODULEPATHS_SAVE.append(modulepath_save)
+
+        # For tcl modules remove the compiler/mpi prefices from the module contents
+        if module_choice == "tcl":
+            remove_compiler_prefices_from_tcl_modulefiles(
+                modulepath_save,
+                compiler_list,
+                mpi_provider = mpi_provider
+            )
 
         for compiler in compilers:
             logging.info(
@@ -483,49 +559,11 @@ def setup_meta_modules():
 
             # For tcl modules remove the compiler/mpi prefices from the module contents
             if module_choice == "tcl":
-                logging.info(
-                    "  ... ... removing compiler/mpi prefices from tcl modulefiles in {}".format(
-                        modulepath_save
-                    )
+                remove_compiler_prefices_from_tcl_modulefiles(
+                    modulepath_save,
+                    compiler_list,
+                    mpi_provider = mpi_provider
                 )
-                for root, ddir, files in os.walk(modulepath_save):
-                    for ffile in files:
-                        filepath = os.path.join(root, ffile)
-                        logging.debug(
-                            "  ... ... ... removing compiler/mpi prefices in {}".format(
-                                filepath
-                            )
-                        )
-                        # First, compiler-only dependent modules
-                        # These can depend on other compilers than the
-                        # compiler this MPI was built with, loop over all
-                        for pattern in module_replace_patterns:
-                            for tmp_compiler in mock_compiler_list:
-                                (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
-                                cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
-                                    pattern, tmp_compiler_name, tmp_compiler_version, filepath, sed_syntax_fix
-                                )
-                                status = os.system(cmd)
-                                if not status == 0:
-                                    raise Exception("Error while calling '{}'".format(cmd))
-                        # Then, compiler+mpi-dependent modules
-                        # By definition, these can only depend on the compiler that
-                        # this MPI was built with - no need to loop over all compilers
-                        for pattern in module_replace_patterns:
-                            for tmp_compiler in mock_compiler_list:
-                                (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
-                                cmd = "sed -i {6} 's#{0} {1}/{2}/{3}/{4}/#{0} #g' {5}".format(
-                                    pattern,
-                                    mpi_provider.name,
-                                    mpi_provider.version,
-                                    tmp_compiler_name,
-                                    tmp_compiler_version,
-                                    filepath,
-                                    sed_syntax_fix,
-                                )
-                                status = os.system(cmd)
-                                if not status == 0:
-                                    raise Exception("Error while calling '{}'".format(cmd))
 
             # The remainder of the loop is only needed for the preferred compiler
             if not compiler.name in preferred_compiler:
@@ -604,8 +642,5 @@ def setup_meta_modules():
             with open(mpi_module_file, "w") as f:
                 f.write(module_content)
             logging.info("  ... writing {}".format(mpi_module_file))
-
-    del COMPILER_SUBSTITUTES_SAVE
-    del MODULEPATHS_SAVE
 
     logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))
