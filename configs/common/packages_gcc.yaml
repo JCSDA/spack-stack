@@ -1,26 +1,26 @@
 packages:
-  c:
-    require:
-    - "gcc"
-  cxx:
-    require:
-    - "gcc"
-  fortran:
-    require:
-    - "gcc"
-  all:
-    require:
-    - '%[when=%c]gcc %[when=%cxx]gcc %[when=%fortran]gcc'
-    providers:
-      blas: [openblas]
-      fftw-api: [fftw]
-      lapack: [openblas]
-  ectrans:
-    require:
-    - '~mkl +fftw'
-  gsibec:
-    require:
-    - '~mkl'
-  py-numpy:
-    require:
-    - '^openblas'
+    c:
+      require:
+      - 'gcc'
+    cxx:
+      require:
+      - 'gcc'
+    fortran:
+      require:
+      - 'gcc'
+    all:
+      require:
+      - '%[when=%c]gcc %[when=%cxx]gcc %[when=%fortran]gcc'
+      providers:
+        blas: [openblas]
+        fftw-api: [fftw]
+        lapack: [openblas]
+    ectrans:
+      require:
+      - ~mkl +fftw
+    gsibec:
+      require:
+      - ~mkl
+    py-numpy:
+      require:
+      - '^openblas'
