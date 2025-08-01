@@ -28,7 +28,6 @@ conflict("stack-intel-oneapi-compilers")
 
 -- prerequisite modules
 @MODULELOADS@
-@MODULEPREREQS@
 
 -- compiler environment variables
 setenv("F77", "@F77@")

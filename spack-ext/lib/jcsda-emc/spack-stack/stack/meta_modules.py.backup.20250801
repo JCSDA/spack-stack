@@ -39,6 +39,7 @@ MODULE_FILE_EXTENSION = {
 
 SUBSTITUTES_TEMPLATE = {
     "MODULELOADS": "",
+    "MODULEPREREQS": "",
     "MODULEPATHS": "",
     "CC": "",
     "CXX": "",
@@ -53,7 +54,6 @@ SUBSTITUTES_TEMPLATE = {
 }
 
 
-# DH* TODO: IMPORT THIS FROM SPACK, THEY MAINTAIN THE SAME DICTIONARY
 COMPILER_TRANSLATION_TABLE = {
     "gcc" : "gcc",
     "clang" : "llvm",
@@ -90,43 +90,29 @@ def prepend_path_command(module_choice, key, value):
         return "prepend-path {{{}}} {{{}}}\n".format(key, value)
 
 
-def envmod_command(module_choice, action, env_name, env_values):
-    if action == "set":
-        module_action = "setenv"
-    elif action == "unset":
-        module_action = "unsetenv"
-    elif action == "append_path":
-        if module_choice == "lmod":
-            module_action = "append_path"
-        else:
-            module_action = "append-path"
-    elif action == "prepend_path":
-        if module_choice == "lmod":
-            module_action = "prepend_path"
-        else:
-            module_action = "prepend-path"
-    if module_choice == "lmod":
-        return f'{module_action}("{env_name}", "{env_values}")\n'#.format(module_action, env_name, env_values)
-    else:
-        return f"{module_action} {{{env_name}}} {{{env_values}}}\n"#.format(module_action, env_name, env_values)
-
-
 def module_load_command(module_choice, module):
     if module_choice == "lmod":
-        return f"""load("{module}")
-prereq("{module}")\n"""
+        return 'load("{}")\n'.format(module)
     else:
-        return f"""if {{ [ module-info mode load ] && ![ is-loaded {module} ] }} {{
-    module load {module}
-}}\n"""
+        return """if {{ [ module-info mode load ] && ![ is-loaded {0} ] }} {{
+    module load {0}
+}}\n""".format(
+            module
+        )
+
+
+def module_prereq_command(module_choice, module):
+    if module_choice == "lmod":
+        return 'prereq("{}")\n'.format(module)
+    else:
+        return ""
 
 
 def modulepath_prepend_command(module_choice, modulepath):
-    return envmod_command(module_choice, "prepend_path", "MODULEPATH", modulepath)
-    #if module_choice == "lmod":
-    #    return 'prepend_path("MODULEPATH", "{}")\n'.format(modulepath)
-    #else:
-    #    return "prepend-path {{MODULEPATH}} {{{}}}\n".format(modulepath)
+    if module_choice == "lmod":
+        return 'prepend_path("MODULEPATH", "{}")\n'.format(modulepath)
+    else:
+        return "prepend-path {{MODULEPATH}} {{{}}}\n".format(modulepath)
 
 
 def substitute_config_vars(config_str):
@@ -163,89 +149,6 @@ def substitute_config_vars(config_str):
     return config_str
 
 
-def get_preferred_compiler():
-    """DH* 20250730 - DO WE NEED BOTH WAYS TO DETERMINE THE PREFERRED COMPILER?
-    # MAYBE KEEP FOR NOW UNTIL WE KNOW BETTER WHAT IS NEEDED AND WHAT NOT. TODO:
-    UPDATE DOCSTRING"""
-    # Method 1
-    try:
-        preferred_compilers = spack.config.get("packages")["all"]["require"]
-    except:
-        raise Exception(
-            """Unable to detect preferred compiler from environment.
-            Does the environment have the config entry 'packages:all:require?'"""
-        )
-    if len(preferred_compilers)>1:
-        raise Exception(f"Invalid value for packages:all:require is {preferred_compilers}")
-    match = re.search(r'%\[when=%fortran\](\S+)', preferred_compilers[0])
-    if match and match.group(1) in COMPILER_TRANSLATION_TABLE.keys():
-        preferred_compiler_v1 = COMPILER_TRANSLATION_TABLE[match.group(1)]
-    else:
-        raise Exception(f"Invalid value for packages:all:require {preferred_compilers[0]}")
-    # Method 2
-    try:
-        preferred_compilers = spack.config.get("packages")["fortran"]["require"]
-    except:
-        raise Exception(
-            """Unable to detect preferred compiler from environment.
-            Does the environment have the config entry 'packages:fortran:require?'"""
-        )
-    if len(preferred_compilers)>1:
-        raise Exception(f"Invalid value for packages:fortran:require is {preferred_compilers}")
-    if preferred_compilers[0] in COMPILER_TRANSLATION_TABLE.values():
-        preferred_compiler_v2 = preferred_compilers[0]
-    else:
-        raise Exception(f"Invalid value for packages:fortran:require {preferred_compilers[0]}")
-    if preferred_compiler_v1 == preferred_compiler_v2:
-        preferred_compiler = preferred_compiler_v1
-        del preferred_compilers
-        del preferred_compiler_v1
-        del preferred_compiler_v2
-    else:
-        raise Exception(f"Multiple preferred compilers in spack config: {preferred_compiler_v1} vs {preferred_compiler_v2}")
-    return preferred_compiler
-
-
-def remove_compiler_prefices_from_tcl_modulefiles(modulepath, compiler_list, mpi_provider):
-    """Remove compiler and mpi prefices from tcl modulefiles in modulepath"""
-    logging.info(f"  ... ... removing compiler/mpi prefices from tcl modulefiles in {modulepath}")
-    module_replace_patterns = ["is-loaded", "module load", "depends-on"]
-    # sed syntax differs on macOS
-    if sys.platform == "darwin":
-        sed_syntax_fix = "''"
-    else:
-        sed_syntax_fix = ""
-    for root, ddir, files in os.walk(modulepath):
-        for ffile in files:
-            filepath = os.path.join(root, ffile)
-            logging.debug(f"  ... ... ... {filepath}")
-            for pattern in module_replace_patterns:
-                for compiler in compiler_list:
-                    # First, compiler-dependent modules
-                    (compiler_name, compiler_version) = compiler.split("@")
-                    cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
-                        pattern, compiler_name, compiler_version, filepath, sed_syntax_fix
-                    )
-                    status = os.system(cmd)
-                    if not status == 0:
-                        raise Exception(f"Error while calling '{cmd}'")
-                    # If mpi_provider is not None, also do compiler+mpi-dependent modules
-                    if not mpi_provider:
-                        continue
-                    cmd = "sed -i {6} 's#{0} {1}/{2}/{3}/{4}/#{0} #g' {5}".format(
-                        pattern,
-                        mpi_provider.name,
-                        mpi_provider.version,
-                        compiler_name,
-                        compiler_version,
-                        filepath,
-                        sed_syntax_fix,
-                    )
-                    status = os.system(cmd)
-                    if not status == 0:
-                        raise Exception(f"Error while calling '{cmd}'")
-
-
 def setup_meta_modules():
     # Find currently active spack environment, activate here
     logging.info("Configuring active spack environment ...")
@@ -277,6 +180,15 @@ def setup_meta_modules():
     module_choice = module_config["default"]["enable"][0]
     logging.info("  ... configured to use {} modules".format(module_choice))
 
+    # Need to set a few variables when tcl modules are used
+    if module_choice == "tcl":
+        module_replace_patterns = ["is-loaded", "module load", "depends-on"]
+        # sed syntax differs on macOS
+        if sys.platform == "darwin":
+            sed_syntax_fix = "''"
+        else:
+            sed_syntax_fix = ""
+
     # Top-level module directory
     module_dir = substitute_config_vars(module_config["default"]["roots"][module_choice])
     if not os.path.isabs(module_dir):
@@ -285,7 +197,7 @@ def setup_meta_modules():
         module_dir = os.path.realpath(module_dir)
     logging.info(f"  ... module directory: {module_dir}")
 
-    # Get all specs and determine compilers
+    # Get all specs and determine compilers and mpi providers
     hashes = env.all_hashes()
     specs = spack.store.STORE.db.query(hashes=hashes)
     q = ProviderIndex(specs=specs, repository=spack.repo.PATH)
@@ -299,46 +211,29 @@ def setup_meta_modules():
     logging.info(f"  ... compilers: {compilers}")
 
     # To remove compiler prefices from tcl modulefiles, we need
-    # a mock compiler "none@none" for external packages. We also
-    # need this a list for lmod to check the core compiler, but we
-    # don't need the mock compiler.
-    if module_choice == "lmod":
-        compiler_list = [x.name+"@"+str(x.version) for x in compilers]
-    else:
-        compiler_list = [x.name+"@"+str(x.version) for x in compilers] + ["none@none"]
-    logging.debug(f"  ... compiler_list: {compiler_list}")
+    # a mock compiler "none@none" for external packages. Also
+    # need a list for lmod to check core compiler
+    #if module_choice == "tcl":
+    mock_compiler_list = [x.name+"@"+str(x.version) for x in compilers] + ["none@none"]
+    logging.debug(f"  ... mock_compiler_list: {mock_compiler_list}")
 
-    # Core compilers is only a valid options for lmod
-    if module_choice == "lmod":
-        # Determine core compiler(s) and make sure they are not used
-        core_core_compilers = module_config["default"][module_choice]["core_compilers"]
-        logging.info("  ... core compilers: {}".format(core_compilers))
-        # Check that none of the compilers used for the stack is a core compiler
-        for core_compiler in core_compilers:
-            if any(core_compiler in x for x in compiler_list):
-                raise Exception("Not supported: spack-stack compilers in core compilers")
-
-    # Determine the preferred compiler and sort the list of compilers so that
-    # the preferred compiler comes last. This is so that all other compilers
-    # populate the MODULEPATHS_SAVE list before the preferred compiler
-    # takes it and adds it to the stack-COMPILER metamodule. Likewise, we need
-    # to save the list of compiler substitutions from the preferred compiler
-    # so that we have access to it when we build the MPI meta module.
-    preferred_compiler = get_preferred_compiler()
-    logging.info("  ... preferred compiler: {}".format(preferred_compiler))
-
-    # Sort the list using a custom key
-    def custom_sort_key(entry):
-        # Return a tuple where the first element is 1 if the entry contains the word, else 0
-        # The second element is the entry itself for natural sorting within groups
-        return (1 if preferred_compiler in entry else 0, entry)
-    compilers = sorted(compilers, key=custom_sort_key)
-
-   # Get mpi providers (currently only one mpi provider is supported)
     mpi_providers = q.providers_for("mpi")
     if not len(mpi_providers)==1:
         raise Exception(f"Expected exactly one MPI provider, but got {mpi_providers}")
     logging.info(f"  ... mpi_providers: {mpi_providers}")
+
+    # Core compilers is only a valid options for lmod
+    if module_choice == "lmod":
+        # Determine core compiler(s) and make sure they are not used
+        core_compilers = module_config["default"][module_choice]["core_compilers"]
+        logging.info("  ... core compilers: {}".format(core_compilers))
+        # Check that none of the compilers used for the stack is a core compiler
+        for core_compiler in core_compilers:
+            if any(core_compiler in x for x in mock_compiler_list):
+                raise Exception(
+                    """Not supported: compiler used for environment
+                    is in list of core compilers"""
+                )
 
     # Prepare meta module directory
     logging.info("Preparing meta module directory ...")
@@ -347,28 +242,99 @@ def setup_meta_modules():
         os.mkdir(meta_module_dir)
     logging.info("  ... meta module directory : {}".format(meta_module_dir))
 
+
+    # DH* 20250730 - DO WE NEED BOTH WAYS TO DETERMINE THE PREFERRED COMPILER?
+    # MAYBE KEEP FOR NOW UNTIL WE KNOW BETTER WHAT IS NEEDED AND WHAT NOT.
+
+    # Determine the preferred compiler and sort the list of compilers so that
+    # the preferred compiler comes last. This is so that all other compilers
+    # populate the MODULEPATHS_SAVE list before the preferred compiler
+    # takes it and adds it to the stack-COMPILER metamodule. Likewise, we need
+    # to save the list of compiler substitutions from the preferred compiler
+    # so that we have access to it when we build the MPI meta module.
+    try:
+        preferred_compilers = spack.config.get("packages")["all"]["require"]
+    except:
+        raise Exception(
+            """Unable to detect preferred compiler from environment.
+            Does the environment have the config entry 'packages:all:require?'"""
+        )
+    if len(preferred_compilers)>1:
+        raise Exception(f"Invalid value for packages:all:require is {preferred_compilers}")
+    match = re.search(r'%\[when=%fortran\](\S+)', preferred_compilers[0])
+    if match and match.group(1) in COMPILER_TRANSLATION_TABLE.keys():
+        preferred_compiler_v1 = COMPILER_TRANSLATION_TABLE[match.group(1)]
+    else:
+        raise Exception(f"Invalid value for packages:all:require {preferred_compilers[0]}")
+
+    try:
+        preferred_compilers = spack.config.get("packages")["fortran"]["require"]
+    except:
+        raise Exception(
+            """Unable to detect preferred compiler from environment.
+            Does the environment have the config entry 'packages:fortran:require?'"""
+        )
+    if len(preferred_compilers)>1:
+        raise Exception(f"Invalid value for packages:fortran:require is {preferred_compilers}")
+    if preferred_compilers[0] in COMPILER_TRANSLATION_TABLE.values():
+        preferred_compiler_v2 = preferred_compilers[0]
+    else:
+        raise Exception(f"Invalid value for packages:fortran:require {preferred_compilers[0]}")
+    if preferred_compiler_v1 == preferred_compiler_v2:
+        preferred_compiler = preferred_compiler_v1
+        del preferred_compilers
+        del preferred_compiler_v1
+        del preferred_compiler_v2
+    else:
+        raise Exception(f"Multiple preferred compilers in spack config: {preferred_compiler_v1} vs {preferred_compiler_v2}")
+    logging.info("  ... preferred compiler: {}".format(preferred_compiler))
+    # *DH 20250730
+
+    # Sort the list using a custom key
+    def custom_sort_key(entry):
+        # Return a tuple where the first element is 1 if the entry contains the word, else 0
+        # The second element is the entry itself for natural sorting within groups
+        return (1 if preferred_compiler in entry else 0, entry)
+    compilers = sorted(compilers, key=custom_sort_key)
+
     # Create compiler modules
     logging.info("Creating compiler modules ...")
-
-    # Initialize saved substitutes to None (populate for preferred compiler later)
-    COMPILER_SUBSTITUTES_SAVE = None
 
     # Collect and save modulepaths for the preferred compiler
     MODULEPATHS_SAVE = []
 
-    # For tcl, append modulepath for external specs and for specs without
-    # compiler dependencies; remove the compiler prefices from the moduless
+    # Append modulepath for external specs and specs without compiler dependencies
+    modulepath_save = os.path.join(module_dir, "none", "none")
+    if not os.path.isdir(modulepath_save):
+        os.makedirs(modulepath_save)
+    logging.info("  ... appending {} to MODULEPATHS_SAVE".format(modulepath_save))
+    MODULEPATHS_SAVE.append(modulepath_save)
+    # For tcl modules remove the compiler prefices from the module contents
     if module_choice == "tcl":
-        modulepath_save = os.path.join(module_dir, "none", "none")
-        if not os.path.isdir(modulepath_save):
-            os.makedirs(modulepath_save)
-        logging.info("  ... appending {} to MODULEPATHS_SAVE".format(modulepath_save))
-        MODULEPATHS_SAVE.append(modulepath_save)
-        remove_compiler_prefices_from_tcl_modulefiles(
-            modulepath_save,
-            compiler_list,
-            mpi_provider = None
+        logging.info(
+            "  ... ... removing compiler prefices from tcl modulefiles in {}".format(
+                modulepath_save
+            )
         )
+
+        for root, ddir, files in os.walk(modulepath_save):
+            for ffile in files:
+                filepath = os.path.join(root, ffile)
+                logging.debug(
+                    "  ... ... ... removing compiler prefices in {}".format(filepath)
+                )
+                for pattern in module_replace_patterns:
+                    for tmp_compiler in mock_compiler_list:
+                        (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
+                        cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
+                            pattern, tmp_compiler_name, tmp_compiler_version, filepath, sed_syntax_fix
+                        )
+                        status = os.system(cmd)
+                        if not status == 0:
+                            raise Exception("Error while calling '{}'".format(cmd))
+
+    # Initialize saved substitutes to None (populate for preferred compiler later)
+    COMPILER_SUBSTITUTES_SAVE = None
 
     for compiler in compilers:
         logging.info(f"  ... configuring compiler {compiler.name}@{compiler.version}")
@@ -381,11 +347,27 @@ def setup_meta_modules():
 
         # For tcl modules remove the compiler prefices from the module contents
         if module_choice == "tcl":
-            remove_compiler_prefices_from_tcl_modulefiles(
-                modulepath_save,
-                compiler_list,
-                mpi_provider = None
+            logging.info(
+                "  ... ... removing compiler prefices from tcl modulefiles in {}".format(
+                    modulepath_save
+                )
             )
+
+            for root, ddir, files in os.walk(modulepath_save):
+                for ffile in files:
+                    filepath = os.path.join(root, ffile)
+                    logging.debug(
+                        "  ... ... ... removing compiler prefices in {}".format(filepath)
+                    )
+                    for pattern in module_replace_patterns:
+                        for tmp_compiler in mock_compiler_list:
+                            (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
+                            cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
+                                pattern, tmp_compiler_name, tmp_compiler_version, filepath, sed_syntax_fix
+                            )
+                            status = os.system(cmd)
+                            if not status == 0:
+                                raise Exception("Error while calling '{}'".format(cmd))
 
         # The remainder of the loop is only needed for the preferred compiler
         if not compiler.name in preferred_compiler:
@@ -407,11 +389,15 @@ def setup_meta_modules():
         if compiler.external and compiler.external_modules:
             for module in compiler.external_modules:
                 substitutes["MODULELOADS"] += module_load_command(module_choice, module)
+                substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
         else:
             module = "{}/{}".format(compiler.name, compiler.version)
             substitutes["MODULELOADS"] += module_load_command(module_choice, module)
+            substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
         substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
+        substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
         logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
+        logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"]))
 
         # Compiler environment variables; names are lowercase in spack
         substitutes["CC"] = compiler.extra_attributes["compilers"]["c"]
@@ -433,17 +419,38 @@ def setup_meta_modules():
         substitutes["COMPFLAGS"] = substitutes["COMPFLAGS"].rstrip("\n")
         logging.debug("  ... ... COMPFLAGS: {}".format(substitutes["COMPFLAGS"]))
 
-        # Environment variables
+        # Environment variables; case-sensitive in spack
         if "environment" in compiler.extra_attributes.keys():
-            for action in compiler.extra_attributes["environment"].keys():
-                for env_name in compiler.extra_attributes["environment"][action]:
-                    env_values = compiler.extra_attributes["environment"][action][env_name]
-                    substitutes["ENVVARS"] += envmod_command(
-                        module_choice,
-                        action,
-                        env_name,
-                        env_values
+            # DH* CAN WE SIMPLIFY THIS WITH A LOOP AND A GENERIC FUNCTION?
+            # append_path
+            if "append_path" in compiler.extra_attributes["environment"].keys():
+                for env_name in compiler.extra_attributes["environment"]["append_path"]:
+                    env_values = compiler.extra_attributes["environment"]["append_path"][env_name]
+                    substitutes["ENVVARS"] += append_path_command(
+                        module_choice, env_name, env_values
                     )
+            # prepend_path
+            if "prepend_path" in compiler.extra_attributes["environment"].keys():
+                for env_name in compiler.extra_attributes["environment"]["prepend_path"]:
+                    env_values = compiler.extra_attributes["environment"]["prepend_path"][env_name]
+                    substitutes["ENVVARS"] += prepend_path_command(
+                        module_choice, env_name, env_values
+                    )
+            # set
+            if "set" in compiler.extra_attributes["environment"].keys():
+                for env_name in compiler.extra_attributes["environment"]["set"]:
+                    env_values = compiler.extra_attributes["environment"]["set"][env_name]
+                    substitutes["ENVVARS"] += setenv_command(
+                        module_choice, env_name, env_values
+                    )
+            # unset
+            if "unset" in compiler.extra_attributes["environment"].keys():
+                for env_name in compiler.extra_attributes["environment"]["unset"]:
+                    env_values = compiler.extra_attributes["environment"]["unset"][env_name]
+                    substitutes["ENVVARS"] += unsetenv_command(
+                        module_choice, env_name, env_values
+                    )
+            # *DH
         substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
         logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
 
@@ -467,31 +474,72 @@ def setup_meta_modules():
         with open(compiler_module_file, "w") as f:
             f.write(module_content)
         logging.info("  ... writing {}".format(compiler_module_file))
-
         # If this is the last compiler in the list (i.e. the preferred compiler),
-        # then save the substitutes for later when building the MPI meta module
+        # then save the substitutes for later use for building the MPI meta module.
         if compiler == compilers[-1]:
             COMPILER_SUBSTITUTES_SAVE = substitutes
+
+    del MODULEPATHS_SAVE
 
     # Collect and save modulepaths for MPI with preferred compiler
     MODULEPATHS_SAVE = []
 
-    # Create mpi modules - currently, only one mpi provider is allowed
+    # Create mpi modules - as of July 2025, only one
+    # MPI provider is allowed (for the preferred compiler)
     for mpi_provider in mpi_providers:
 
-        # For tcl, append modulepath for external specs and for specs without
-        # compiler dependencies; remove the compiler/mpi prefices from the moduless
+        # Append modulepath for external specs and specs without compiler dependencies
+        modulepath_save = os.path.join(module_dir, mpi_provider.name, str(mpi_provider.version), "none", "none")
+        if not os.path.isdir(modulepath_save):
+            os.makedirs(modulepath_save)
+        logging.info("  ... appending {} to MODULEPATHS_SAVE".format(modulepath_save))
+        MODULEPATHS_SAVE.append(modulepath_save)
+
+        # For tcl modules remove the compiler/mpi prefices from the module contents
         if module_choice == "tcl":
-            modulepath_save = os.path.join(module_dir, mpi_provider.name, str(mpi_provider.version), "none", "none")
-            if not os.path.isdir(modulepath_save):
-                os.makedirs(modulepath_save)
-            logging.info("  ... appending {} to MODULEPATHS_SAVE".format(modulepath_save))
-            MODULEPATHS_SAVE.append(modulepath_save)
-            remove_compiler_prefices_from_tcl_modulefiles(
-                modulepath_save,
-                compiler_list,
-                mpi_provider = mpi_provider
+            logging.info(
+                "  ... ... removing no-compiler/mpi prefices from tcl modulefiles in {}".format(
+                    modulepath_save
+                )
             )
+            for root, ddir, files in os.walk(modulepath_save):
+                for ffile in files:
+                    filepath = os.path.join(root, ffile)
+                    logging.debug(
+                        "  ... ... ... removing no-compiler/mpi prefices in {}".format(
+                            filepath
+                        )
+                    )
+                    # First, compiler-only dependent modules
+                    # These can depend on other compilers than the
+                    # compiler this MPI was built with, loop over all
+                    for pattern in module_replace_patterns:
+                        for tmp_compiler in mock_compiler_list:
+                            (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
+                            cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
+                                pattern, tmp_compiler_name, tmp_compiler_version, filepath, sed_syntax_fix
+                            )
+                            status = os.system(cmd)
+                            if not status == 0:
+                                raise Exception("Error while calling '{}'".format(cmd))
+                    # Then, compiler+mpi-dependent modules
+                    # By definition, these can only depend on the compiler that
+                    # this MPI was built with - no need to loop over all compilers
+                    for pattern in module_replace_patterns:
+                        for tmp_compiler in mock_compiler_list:
+                            (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
+                            cmd = "sed -i {6} 's#{0} {1}/{2}/{3}/{4}/#{0} #g' {5}".format(
+                                pattern,
+                                mpi_provider.name,
+                                mpi_provider.version,
+                                tmp_compiler_name,
+                                tmp_compiler_version,
+                                filepath,
+                                sed_syntax_fix,
+                            )
+                            status = os.system(cmd)
+                            if not status == 0:
+                                raise Exception("Error while calling '{}'".format(cmd))
 
         for compiler in compilers:
             logging.info(
@@ -511,11 +559,49 @@ def setup_meta_modules():
 
             # For tcl modules remove the compiler/mpi prefices from the module contents
             if module_choice == "tcl":
-                remove_compiler_prefices_from_tcl_modulefiles(
-                    modulepath_save,
-                    compiler_list,
-                    mpi_provider = mpi_provider
+                logging.info(
+                    "  ... ... removing compiler/mpi prefices from tcl modulefiles in {}".format(
+                        modulepath_save
+                    )
                 )
+                for root, ddir, files in os.walk(modulepath_save):
+                    for ffile in files:
+                        filepath = os.path.join(root, ffile)
+                        logging.debug(
+                            "  ... ... ... removing compiler/mpi prefices in {}".format(
+                                filepath
+                            )
+                        )
+                        # First, compiler-only dependent modules
+                        # These can depend on other compilers than the
+                        # compiler this MPI was built with, loop over all
+                        for pattern in module_replace_patterns:
+                            for tmp_compiler in mock_compiler_list:
+                                (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
+                                cmd = "sed -i {4} 's#{0} {1}/{2}/#{0} #g' {3}".format(
+                                    pattern, tmp_compiler_name, tmp_compiler_version, filepath, sed_syntax_fix
+                                )
+                                status = os.system(cmd)
+                                if not status == 0:
+                                    raise Exception("Error while calling '{}'".format(cmd))
+                        # Then, compiler+mpi-dependent modules
+                        # By definition, these can only depend on the compiler that
+                        # this MPI was built with - no need to loop over all compilers
+                        for pattern in module_replace_patterns:
+                            for tmp_compiler in mock_compiler_list:
+                                (tmp_compiler_name, tmp_compiler_version) = tmp_compiler.split("@")
+                                cmd = "sed -i {6} 's#{0} {1}/{2}/{3}/{4}/#{0} #g' {5}".format(
+                                    pattern,
+                                    mpi_provider.name,
+                                    mpi_provider.version,
+                                    tmp_compiler_name,
+                                    tmp_compiler_version,
+                                    filepath,
+                                    sed_syntax_fix,
+                                )
+                                status = os.system(cmd)
+                                if not status == 0:
+                                    raise Exception("Error while calling '{}'".format(cmd))
 
             # The remainder of the loop is only needed for the preferred compiler
             if not compiler.name in preferred_compiler:
@@ -534,11 +620,15 @@ def setup_meta_modules():
             if mpi_provider.external and mpi_provider.external_modules:
                 for module in mpi_provider.external_modules:
                     substitutes["MODULELOADS"] += module_load_command(module_choice, module)
+                    substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
             else:
                 module = "{}/{}".format(mpi_provider.name, mpi_provider.version)
                 substitutes["MODULELOADS"] += module_load_command(module_choice, module)
+                substitutes["MODULEPREREQS"] += module_prereq_command(module_choice, module)
             substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
+            substitutes["MODULEPREREQS"] = substitutes["MODULEPREREQS"].rstrip("\n")
             logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
+            logging.debug("  ... ... MODULEPREREQS: {}".format(substitutes["MODULEPREREQS"]))
 
             # Compiler wrapper environment variables
             if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
@@ -590,5 +680,8 @@ def setup_meta_modules():
             with open(mpi_module_file, "w") as f:
                 f.write(module_content)
             logging.info("  ... writing {}".format(mpi_module_file))
+
+    del COMPILER_SUBSTITUTES_SAVE
+    del MODULEPATHS_SAVE
 
     logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))

@@ -20,7 +20,6 @@ conflict("stack-openmpi")
 
 -- prerequisite modules
 @MODULELOADS@
-@MODULEPREREQS@
 
 -- mpi wrapper environment variables
 setenv("MPICC",  "@MPICC@")
