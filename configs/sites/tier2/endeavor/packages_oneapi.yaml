@@ -1,0 +1,23 @@
+packages:
+  all:
+    compiler:: [oneapi@2025.1.3, gcc@13.3.1]
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.14]
+  mpi:
+    buildable: False
+  intel-oneapi-mpi:
+    externals:
+    - spec: intel-oneapi-mpi@2021.15%oneapi@2025.1.3
+      prefix: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3
+  intel-oneapi-mkl:
+    externals:
+    - spec: intel-oneapi-mkl@2025.1%oneapi@2025.1.3
+      prefix: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3
+  intel-oneapi-tbb:
+    externals:
+    - spec: intel-oneapi-tbb@2022.1%oneapi@2025.1.3
+      prefix: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3
+  intel-oneapi-runtime:
+    externals:
+    - spec: intel-oneapi-runtime@2025.1.3%oneapi@2025.1.3
+      prefix: /global/panfs05/admin5/opt/intel/oneAPI/2025.1.3

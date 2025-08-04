@@ -14,6 +14,10 @@ set +e
 module purge
 umask 0022
 
+if [[ "${COMPILERS}" == "gcc@=13.4.0" ]]; then
+  module use /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/modulefiles
+fi
+
 SPACK_STACK_URL=${SPACK_STACK_URL:-https://github.nrlmry.navy.mil/JCSDA/spack-stack}
 SPACK_STACK_BRANCH=${SPACK_STACK_BRANCH:-ci}
 KEEP_WEEKLY_BUILD_DIR="YES"
