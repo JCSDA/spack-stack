@@ -178,10 +178,11 @@ def get_preferred_compiler():
     if len(preferred_compilers)>1:
         raise Exception(f"Invalid value for packages:all:require is {preferred_compilers}")
     match = re.search(r'%\[when=%fortran\](\S+)', preferred_compilers[0])
-    if match and match.group(1) in COMPILER_TRANSLATION_TABLE.keys():
-        preferred_compiler_v1 = COMPILER_TRANSLATION_TABLE[match.group(1)]
+    # Translate legacy names (intel, oneapi, ...) to new names (intel-oneapi-compilers-classic, ...)
+    if match and match.group(1) in spack.aliases.LEGACY_COMPILER_TO_BUILTIN.keys():
+        preferred_compiler_v1 = spack.aliases.LEGACY_COMPILER_TO_BUILTIN[match.group(1)]
     else:
-        raise Exception(f"Invalid value for packages:all:require {preferred_compilers[0]}")
+        preferred_compiler_v1 = match.group(1)
     # Method 2
     try:
         preferred_compilers = spack.config.get("packages")["fortran"]["require"]
@@ -192,10 +193,7 @@ def get_preferred_compiler():
         )
     if len(preferred_compilers)>1:
         raise Exception(f"Invalid value for packages:fortran:require is {preferred_compilers}")
-    if preferred_compilers[0] in COMPILER_TRANSLATION_TABLE.values():
-        preferred_compiler_v2 = preferred_compilers[0]
-    else:
-        raise Exception(f"Invalid value for packages:fortran:require {preferred_compilers[0]}")
+    preferred_compiler_v2 = preferred_compilers[0]
     if preferred_compiler_v1 == preferred_compiler_v2:
         preferred_compiler = preferred_compiler_v1
         del preferred_compilers
