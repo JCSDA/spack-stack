@@ -36,6 +36,7 @@ modules:
       - googletest
       - hwloc
       - inputproto
+      - intel-oneapi-runtime
       - kbproto
       - libaec
       - libbsd
