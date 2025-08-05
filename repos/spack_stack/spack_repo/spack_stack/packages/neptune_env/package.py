@@ -34,8 +34,8 @@ class NeptuneEnv(BundlePackage):
     depends_on("p4est", type="run")
     depends_on("w3emc", type="run")
     depends_on("ip", type="run")
-    depends_on("esmf@8.9.0b12 ~debug ~python snapshot=b12", type="run", when="~debug")
-    depends_on("esmf@8.9.0b12 +debug ~python snapshot=b12", type="run", when="+debug")
+    depends_on("esmf@8.9.0b12 ~debug snapshot=b12", type="run", when="~debug")
+    depends_on("esmf@8.9.0b12 +debug snapshot=b12", type="run", when="+debug")
     depends_on("nco", type="run")
     depends_on("mct", type="run")
 
