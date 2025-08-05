@@ -50,4 +50,5 @@ compilers:
         PATH: /usr/bin
         LD_LIBRARY_PATH: /usr/lib:/usr/lib64
         CPATH: '/usr/include/c++/11:/usr/include/c++/11/x86_64-redhat-linux'
+        MODULEPATH: '/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core'
     extra_rpaths: []
