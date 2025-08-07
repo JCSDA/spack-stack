@@ -28,6 +28,7 @@ packages:
     bison:
       require:
       - '%gcc'
+    # Not sure this is still needed?
     boost:
       require:
       - '%oneapi'
@@ -52,40 +53,27 @@ packages:
     met:
       require:
       - +shared-intel
+    # Not sure this is still needed?
     netcdf-c:
       require:
       - '%oneapi'
+    # Not sure this is still needed?
     netcdf-cxx:
       require:
       - '%oneapi'
     nco:
       require:
       - '%gcc'
+    # Not sure this is still needed?
     p4est:
       require:
       - '%oneapi'
     parallel-netcdf:
       require:
       - +shared-intel
-    python:
-      require:
-      - '%gcc'
-    py-cython:
-      require:
-      - '%gcc'
     py-numpy:
       require:
-      - '%gcc'
       - '^intel-oneapi-mkl'
-    py-pandas:
-      require:
-      - '%gcc'
-    py-scipy:
-      require:
-      - '%gcc'
-    py-xarray:
-      require:
-      - '%gcc'
     qt:
       require:
       - '%gcc'
