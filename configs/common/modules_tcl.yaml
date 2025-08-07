@@ -74,6 +74,7 @@ modules:
       - perl
       - pkgconf
       - pkg-config
+      - py-cython
       - qt
       - randrproto
       - readline
