@@ -34,10 +34,6 @@ packages:
     externals:
     - spec: coreutils@8.32
       prefix: /usr
-  curl:
-    externals:
-    - spec: curl@8.1.2+gssapi+ldap+nghttp2
-      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/curl/8.1.2/gcc/7.5.0/uq6y
   cvs:
     externals:
     - spec: cvs@1.12.13
@@ -56,14 +52,12 @@ packages:
       prefix: /usr
   git:
     externals:
-    - spec: git@2.41.0+tcltk
-      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/git/2.41.0/gcc/7.5.0/jgni
-    - spec: git@2.35.3+tcltk
-      prefix: /usr
+    - spec: git@2.47.0
+      prefix: /glade/u/apps/casper/24.12/spack/opt/spack/git/2.47.0/gcc/12.4.0/cn62
   git-lfs:
     externals:
-    - spec: git-lfs@3.3.0
-      prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/git-lfs/3.3.0/gcc/7.5.0/u3kh
+    - spec: git-lfs@3.5.1
+      prefix: /glade/u/apps/casper/24.12/spack/opt/spack/git-lfs/3.5.1/gcc/12.4.0/aivb
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -107,6 +101,9 @@ packages:
     buildable: False
     externals:
     - spec: qt@5.14.2
+      # Newer versions don't work, some headers are missing
+      #prefix: /glade/u/apps/casper/24.12/spack/opt/spack/qt/5.14.2/gcc/12.4.0/6suc
+      #prefix: /glade/u/apps/casper/24.12/spack/opt/spack/qt/5.14.2/gcc/12.4.0/axtw
       prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/qt/5.14.2/gcc/7.5.0/eqcj
   sed:
     externals:

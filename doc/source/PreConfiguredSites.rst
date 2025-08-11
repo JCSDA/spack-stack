@@ -206,12 +206,7 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   module purge
-   # ignore that the sticky module ncarenv/... is not unloaded
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load ncarenv/23.09
-   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-
+   module --force purge
 
 .. _Preconfigured_Sites_Acorn:
 
