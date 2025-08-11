@@ -1,23 +1,7 @@
 packages:
-    # Allow certain packages to be built with GCC as long as they only use
-    # C and/or C++. Because Fortran compilers are not ABI compatible, we
-    # need to force spack to use one and only one compiler (Intel oneAPI)
-    c:
-      require:
-      - one_of: ['intel-oneapi-compilers', 'gcc']
-      prefer:
-      - 'intel-oneapi-compilers'
-    cxx:
-      require:
-      - one_of: ['intel-oneapi-compilers', 'gcc']
-      prefer:
-      - 'intel-oneapi-compilers'
-    fortran:
-      require:
-      - 'intel-oneapi-compilers'
     all:
-      require:
-      - '%[when=%c]oneapi %[when=%cxx]oneapi %[when=%fortran]oneapi'
+      prefer:
+      - '%oneapi'
       providers:
         blas: [intel-oneapi-mkl]
         fftw-api: [intel-oneapi-mkl]
@@ -28,10 +12,6 @@ packages:
     bison:
       require:
       - '%gcc'
-    # Not sure this is still needed?
-    boost:
-      require:
-      - '%oneapi'
     cmake:
       require:
       - '%gcc'
@@ -44,6 +24,9 @@ packages:
     gsibec:
       require:
       - +mkl
+    ip:
+      require:
+      - '^intel-oneapi-mkl'
     libbsd:
       require:
       - '%gcc'
@@ -53,21 +36,9 @@ packages:
     met:
       require:
       - +shared-intel
-    # Not sure this is still needed?
-    netcdf-c:
-      require:
-      - '%oneapi'
-    # Not sure this is still needed?
-    netcdf-cxx:
-      require:
-      - '%oneapi'
     nco:
       require:
       - '%gcc'
-    # Not sure this is still needed?
-    p4est:
-      require:
-      - '%oneapi'
     parallel-netcdf:
       require:
       - +shared-intel
@@ -77,6 +48,4 @@ packages:
     qt:
       require:
       - '%gcc'
-    scotch:
-      require:
-      - '%gcc'
+

@@ -26,24 +26,24 @@ class NeptunePythonEnv(BundlePackage):
     # Enable the Python variant for ESMF
     depends_on("esmf +python", type="run")
 
-    #depends_on("py-arch", type="run")
-    #depends_on("py-h5py", type="run")
-    #depends_on("py-netcdf4", type="run")
-    #depends_on("py-pandas", type="run")
-    #depends_on("py-pycodestyle", type="run")
-    #depends_on("py-pybind11", type="run")
-    #depends_on("py-pyhdf", type="run")
-    #depends_on("py-pyyaml", type="run")
-    #depends_on("py-regionmask", type="run")
-    #depends_on("py-scipy", type="run")
-    ##depends_on("py-xarray", type="run")
-    #depends_on("py-pytest", type="run")
-    #depends_on("py-fortranformat", type="run")
+    depends_on("py-arch", type="run")
+    depends_on("py-h5py", type="run")
+    depends_on("py-netcdf4", type="run")
+    depends_on("py-pandas", type="run")
+    depends_on("py-pycodestyle", type="run")
+    depends_on("py-pybind11", type="run")
+    depends_on("py-pyhdf", type="run")
+    depends_on("py-pyyaml", type="run")
+    depends_on("py-regionmask", type="run")
+    depends_on("py-scipy", type="run")
+    depends_on("py-xarray", type="run")
+    depends_on("py-pytest", type="run")
+    depends_on("py-fortranformat", type="run")
 
-    #depends_on("met", type="run")
-    #depends_on("metplus", type="run")
+    depends_on("met", type="run")
+    depends_on("metplus", type="run")
 
-    #with when("+xnrl"):
-    #    depends_on("py-xnrl", type="run")
+    with when("+xnrl"):
+        depends_on("py-xnrl", type="run")
 
     # There is no need for install() since there is no code.

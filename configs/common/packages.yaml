@@ -236,7 +236,7 @@ packages:
     netcdf-c:
       require:
       - '@4.9.2'
-      - +dap +mpi ~parallel-netcdf ~szip +parallel_tests
+      - +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=cmake
     netcdf-cxx4:
       require:
       - '@4.3.1'
@@ -255,6 +255,7 @@ packages:
     openssl:
       require:
       - +shared
+      - '@3'
     p4est:
       require:
       - '@2.8.7'
@@ -320,7 +321,10 @@ packages:
     #py-numpy:
     #  require:
     #  - '@1.26'
-    ## To avoid duplicate packages
+    # To avoid duplicate packages
+    py-python-dateutil:
+      require:
+      - '@2'
     #py-ruamel-yaml:
     #  require:
     #  - '@0.17.16'

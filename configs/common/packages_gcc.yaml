@@ -1,16 +1,7 @@
 packages:
-    c:
-      require:
-      - 'gcc'
-    cxx:
-      require:
-      - 'gcc'
-    fortran:
-      require:
-      - 'gcc'
     all:
-      require:
-      - '%[when=%c]gcc %[when=%cxx]gcc %[when=%fortran]gcc'
+      prefer:
+      - '%gcc'
       providers:
         blas: [openblas]
         fftw-api: [fftw]
@@ -21,6 +12,9 @@ packages:
     gsibec:
       require:
       - ~mkl
+    ip:
+      require:
+      - '^openblas'
     py-numpy:
       require:
       - '^openblas'
