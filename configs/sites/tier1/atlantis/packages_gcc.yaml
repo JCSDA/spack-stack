@@ -2,14 +2,14 @@ packages:
   all:
     compiler:: [gcc@13.4.0]
     providers:
-      mpi:: [openmpi@4.1.5]
+      mpi:: [openmpi@4.1.8]
   mpi:
     buildable: False
   openmpi:
     buildable: False
     externals:
-    - spec: openmpi@4.1.5 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath fabrics=ucx schedulers=slurm %gcc@=13.4.0
+    - spec: openmpi@4.1.8 %gcc@=13.4.0
       # Note: slurm must be loaded before openmpi on Atlantis
       modules:
       - slurm
-      - openmpi/mlnx/gcc/64/4.1.5a1
+      - openmpi/4.1.8
