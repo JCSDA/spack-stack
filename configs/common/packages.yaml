@@ -82,7 +82,7 @@ packages:
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
       require:
-      - ~xerces ~pnetcdf +shared +external-parallelio
+      - ~xerces ~pnetcdf +shared +external-parallelio +python
       - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0b12 snapshot=b12']
       - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
         when: '%intel'
@@ -125,6 +125,11 @@ packages:
     gcc-runtime:
       require:
       - '%gcc'
+    # This version builds with Intel oneAPI compilers, newer/older versions don't
+    gdal:
+      require:
+      - '@3.10.2'
+    # *DH
     gfsio:
       require:
       - '@1.4.2'
@@ -288,6 +293,10 @@ packages:
     py-cartopy:
       require:
       - +plotting
+    # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
+    py-cryptography:
+      require:
+      - '@42'
     ## Pin py-cython to avoid duplicate packages
     #py-cython:
     #  require:
@@ -321,6 +330,10 @@ packages:
     #py-numpy:
     #  require:
     #  - '@1.26'
+    # This version builds with Intel oneAPI compilers, newer versions don't
+    py-pyogrio:
+      require:
+      - '@0.9.0'
     # To avoid duplicate packages
     py-python-dateutil:
       require:
@@ -328,10 +341,10 @@ packages:
     #py-ruamel-yaml:
     #  require:
     #  - '@0.17.16'
-    ## Pin the py-setuptools version to avoid duplicate Python packages
-    #py-setuptools:
-    #  require:
-    #  - '@69'
+    # Pin the py-setuptools version to avoid duplicate Python packages
+    py-setuptools:
+      require:
+      - '@69'
     ## When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
     py-torch:
       require:
