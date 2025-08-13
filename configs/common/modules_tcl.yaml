@@ -75,6 +75,7 @@ modules:
       - pkgconf
       - pkg-config
       - py-cython
+      - py-poetry-core
       - qt
       - randrproto
       - readline
