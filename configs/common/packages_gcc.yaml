@@ -9,9 +9,6 @@ packages:
     ectrans:
       require:
       - ~mkl +fftw
-    gsibec:
-      require:
-      - ~mkl
     ip:
       require:
       - '^openblas'

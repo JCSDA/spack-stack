@@ -330,6 +330,12 @@ packages:
     #py-numpy:
     #  require:
     #  - '@1.26'
+    # DH* 20250813
+    # To avoid duplicate packages
+    py-poetry-core:
+      require:
+      - '@1.7'
+    # *DH 20250813
     # This version builds with Intel oneAPI compilers, newer versions don't
     py-pyogrio:
       require:

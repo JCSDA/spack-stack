@@ -21,9 +21,6 @@ packages:
     gmake:
       require:
       - '%gcc'
-    gsibec:
-      require:
-      - +mkl
     ip:
       require:
       - '^intel-oneapi-mkl'
