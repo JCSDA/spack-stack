@@ -50,7 +50,9 @@ Pre-configured sites (tier 1)
 | MSU                 +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Orion                 | oneAPI             | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-| NASA                | Discover SCU17        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/``             | JCSDA           |
+|                     | Discover SCU17        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/``             | JCSDA           |
+| NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+|                     | NAS                   | GCC, Intel         | ``/nobackup/gmao_SIteam/spack-stack/``                 | GMAO            |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | NCAR-Wyoming        + Derecho               | GCC, Intel         | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/`` | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -133,6 +135,19 @@ The following is required for building new spack environments with any supported
    module use /discover/swdev/gmao_SIteam/modulefiles-SLES15
    module use /discover/swdev/jcsda/spack-stack/scu17/modulefiles
 
+.. _Preconfigured_Sites_NAS:
+
+------------------------------
+NASA NAS
+------------------------------
+
+The following is required for building new spack environments with any supported compiler on this platform.
+
+.. code-block:: console
+
+   module purge
+   module use /nobackup/gmao_SIteam/modulefiles
+
 .. _Preconfigured_Sites_Narwhal:
 
 ------------------------------
@@ -191,12 +206,7 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   module purge
-   # ignore that the sticky module ncarenv/... is not unloaded
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load ncarenv/23.09
-   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-
+   module --force purge
 
 .. _Preconfigured_Sites_Acorn:
 

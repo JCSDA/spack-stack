@@ -208,6 +208,8 @@ packages:
       require:
       - '@2.53'
       - ~shared ~f2py +pflogger
+    # Note: Please check the sites/tier1/nas/packages_gcc.yaml if
+    #       this is changed, as it has a custom variant combination
     met:
       require:
       - '@12.0.1'
@@ -224,8 +226,7 @@ packages:
     nco:
       require:
       - ~doc
-    # ncview - when adding information here, also check Orion
-    # and Discover site configs
+    # ncview - check Orion and Discover site configs
     nemsio:
       require:
       - '@2.5.4'

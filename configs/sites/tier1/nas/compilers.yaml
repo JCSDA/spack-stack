@@ -1,0 +1,57 @@
+compilers:
+- compiler:
+    spec: oneapi@=2024.2.0
+    paths:
+      cc: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icx
+      cxx: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icpx
+      f77: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
+      fc: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - comp-intel/2024.2.0-ifort
+    environment:
+      prepend_path:
+        PATH: '/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin'
+        CPATH: '/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/include'
+        LD_LIBRARY_PATH: '/nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64'
+      set:
+        MPI_COLL_REPRODUCIBLE: 'yes'
+        MPI_MEMMAP_OFF: 'yes'
+        MPI_XPMEM_ENABLED: 'yes'
+        MPI_LAUNCH_TIMEOUT: '40'
+        MPI_COMM_MAX: '1024'
+        MPI_GROUP_MAX: '1024'
+        MPI_BUFS_PER_PROC: '256'
+      unset:
+        - MPI_NUM_MEMORY_REGIONS
+        - SUPPRESS_XPMEM_TRIM_THRESH
+        - PMI_RANK
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=12.3.0
+    paths:
+      cc: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gcc
+      cxx: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/g++
+      f77: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gfortran
+      fc: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gfortran
+    flags: {}
+    operating_system: rhel8
+    target: x86_64
+    modules:
+    - comp-gcc/12.3.0-TOSS4
+    environment:
+      set:
+        OMPI_MCA_mpi_preconnect_all: 1
+        OMPI_MCA_coll_tuned_bcast_algorithm: 7
+        OMPI_MCA_coll_tuned_scatter_algorithm: 2
+        OMPI_MCA_coll_tuned_reduce_scatter_algorithm: 3
+        OMPI_MCA_coll_tuned_allreduce_algorithm: 3
+        OMPI_MCA_coll_tuned_allgather_algorithm: 4
+        OMPI_MCA_coll_tuned_allgatherv_algorithm: 3
+        OMPI_MCA_coll_tuned_gather_algorithm: 1
+        OMPI_MCA_coll_tuned_barrier_algorithm: 0
+        OMPI_MCA_coll_tuned_use_dynamic_rules: 1
+        OMPI_MCA_sharedfp: '^lockedfile,individual'
+    extra_rpaths: []

@@ -1,21 +1,31 @@
 packages:
   all:
-    compiler:: [oneapi@2024.2.1,gcc@11.4.1]
+    compiler:: [oneapi@2024.2.1,gcc@12.4.0]
     providers:
-      mpi:: [intel-oneapi-mpi@2021.13]
+      # Intel oneAPI MPI
+      #mpi:: [intel-oneapi-mpi@2021.13]
+      # NVIDIA HPC-X
+      mpi:: [hpcx-mpi@2.18.1]
       # Change as appropriate to switch to intel-oneapi-mkl
       blas:: [openblas]
       fftw-api:: [fftw]
       lapack:: [openblas]
   mpi:
     buildable: False
+  # Intel oneAPI MPI
   intel-oneapi-mpi:
-    buildable: False
     externals:
     - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-ss72gbndvat3oz22sa6lhmlbjkeabrn4
       modules:
       - intel-oneapi-mpi/2021.13.1
-      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-ss72gbndvat3oz22sa6lhmlbjkeabrn4
+  # NVIDIA HPC-X
+  #hpcx-mpi:
+  #  externals:
+  #  - spec: hpcx-mpi@2.18.1%oneapi@2024.2.1
+  #    prefix: /apps/hpcx-v2.18.1-gcc-mlnx_ofed-redhat9-cuda12-x86_64/ompi-oneapi2024
+  #    modules:
+  #    - hpc-x/2.18.1-oneapi2024
   intel-oneapi-mkl:
     externals:
     - spec: intel-oneapi-mkl@2024.2.1%oneapi@2024.2.1
@@ -30,6 +40,6 @@ packages:
       - compiler-rt/2024.2.1
   gcc-runtime:
     externals:
-    - spec: gcc-runtime@11.4.1%gcc@11.4.1
+    - spec: gcc-runtime@12.4.0%gcc@12.4.0
       prefix: /usr
 
