@@ -9,7 +9,6 @@ packages:
     buildable: False
     externals:
     - spec: openmpi@4.1.8 %gcc@=13.4.0
-      # Note: slurm must be loaded before openmpi on Atlantis
+      prefix: /gpfs/neptune/spack-stack/openmpi-4.1.8/gcc-13.4.0
       modules:
-      - slurm
       - openmpi/4.1.8
