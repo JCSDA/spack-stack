@@ -15,7 +15,6 @@ packages:
       modules:
       - hpc-x/2.18.1-oneapi2024
       prefix: /apps/hpcx-v2.18.1-gcc-mlnx_ofed-redhat9-cuda12-x86_64/ompi-oneapi2024
-    buildable: False
   intel-oneapi-runtime:
     externals:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
