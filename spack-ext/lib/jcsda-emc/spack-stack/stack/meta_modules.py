@@ -304,8 +304,6 @@ def setup_meta_modules():
     specs = spack.store.STORE.db.query(hashes=hashes)
     q = ProviderIndex(specs=specs, repository=spack.repo.PATH)
 
-    print(f"DH DEBUG: specs = {specs}")
-
     c_providers = q.providers_for("c")
     cxx_providers = q.providers_for("cxx")
     fortran_providers = q.providers_for("fortran")
