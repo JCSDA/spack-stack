@@ -321,7 +321,7 @@ def setup_meta_modules():
     # Core compilers is only a valid options for lmod
     if module_choice == "lmod":
         # Determine core compiler(s) and make sure they are not used
-        core_core_compilers = module_config["default"][module_choice]["core_compilers"]
+        core_compilers = module_config["default"][module_choice]["core_compilers"]
         logging.info("  ... core compilers: {}".format(core_compilers))
         # Check that none of the compilers used for the stack is a core compiler
         for core_compiler in core_compilers:
