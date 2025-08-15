@@ -9,7 +9,7 @@ spack:
   - neptune-env ~debug +espc ^esmf@=8.9.0b12 snapshot=b12
   - neptune-env +debug +espc ^esmf@=8.9.0b12 snapshot=b12
   - neptune-python-env +xnrl ^neptune-env ~debug +espc ^esmf@=8.9.0b12 snapshot=b12
-  - jedi-neptune-env
+  - jedi-neptune-env ^neptune-env ~debug +espc ^esmf@=8.9.0b12 snapshot=b12
   - crtm@3.1.2
   - crtm@v2.4.1-jedi.2
 

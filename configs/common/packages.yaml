@@ -16,6 +16,7 @@ packages:
       - '@3.4:'
     boost:
       require:
+      - '@1.84.0'
       - ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log
       - ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization
       - +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
@@ -310,17 +311,18 @@ packages:
     #py-dask:
     #  require:
     #  - '@2021.3.0'
-    ## To avoid duplicate packages
-    #py-flit-core:
-    #  require:
-    #  - '@3.8.0'
+    # To avoid duplicate packages
+    py-flit-core:
+      require:
+      - '@3.8.0'
     py-h5py:
       require:
       - ~mpi
     # https://github.com/JCSDA/spack-stack/issues/1276
-    #py-matplotlib:
-    #  require:
-    #  - '@3.7.4'
+    py-matplotlib:
+      require:
+      - '@3.7.4'
+      #- '@3.8.0'
     # https://github.com/Unidata/netcdf4-python/issues/1389
     # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
     py-netcdf4:
