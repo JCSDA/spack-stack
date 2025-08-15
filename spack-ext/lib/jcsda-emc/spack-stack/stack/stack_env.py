@@ -211,7 +211,7 @@ class StackEnv(object):
         packages_yaml_path = os.path.join(site_path, "packages.yaml")
         packages_compiler_yaml_path = os.path.join(site_path, f"packages_{self.compiler}.yaml")
         if not os.path.exists(packages_compiler_yaml_path):
-            logging.warning("  {packages_compiler_yaml_path} not found, please check if this is correct")
+            logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
         destination = os.path.join(env_site_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 

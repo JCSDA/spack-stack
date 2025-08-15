@@ -52,28 +52,28 @@ packages:
     - '%gcc'
   gcc:
     externals:
-    - spec: gcc@13.2.1 languages:='c,c++,fortran'
-      prefix: /opt/rh/gcc-toolset-13/root/usr
+    - spec: gcc@11.5.0 languages:='c,c++,fortran'
+      prefix: /usr
       extra_attributes:
         compilers:
-          c: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
-          cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
-          fortran: /opt/rh/gcc-toolset-13/root/usr/bin/gfortran
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
   gcc-runtime:
     externals:
-    - spec: gcc-runtime@13.2.1%gcc@13.2.1
-      prefix: /opt/rh/gcc-toolset-13/root/usr
+    - spec: gcc-runtime@11.5.0 %gcc@11.5.0
+      prefix: /usr
   mpi:
     buildable: false
   openmpi:
     externals:
-    - spec: openmpi@4.1.8 %gcc@13.2.1
-      prefix: /opt/rh/gcc-toolset-13/root/usr
+    - spec: openmpi@4.1.8 %gcc@11.5.0
+      prefix: /usr
   python:
     buildable: false
     externals:
     - spec: python@3.11.11
-      prefix: /opt/rh/gcc-toolset-13/root/usr
+      prefix: /usr
 """
     site_packages_yaml = os.path.join(env_dir, "site", "packages.yaml")
     if os.path.exists(site_packages_yaml):
@@ -86,7 +86,7 @@ packages:
 
     spack_stack_cmd("setup-meta-modules")
 
-    expected_comp_meta_module = os.path.join(module_dir, "Core", "stack-gcc", "13.2.1")
+    expected_comp_meta_module = os.path.join(module_dir, "Core", "stack-gcc", "11.5.0")
     assert(
         os.path.exists(expected_comp_meta_module),
         f"Expected module {expected_comp_meta_module} not found"
