@@ -10,6 +10,9 @@ packages:
   gsibec:
     require:
     - '~mkl'
+  ip:
+    require:
+    - '~openmp'
   py-numpy:
     require:
     - '^openblas'

@@ -171,10 +171,11 @@ class StackEnv(object):
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
         # Merge or copy common package config(s)
         packages_yaml_path = os.path.join(common_path, "packages.yaml")
-        if not "@" in self.compiler:
-            raise Exception("Invalid value for self.compiler, '@' not found. " + \
-                "Expected: 'name@version' or 'name@=version'")
-        compiler_name, compiler_version = self.compiler.replace("@=", "@").split('@')
+        if "@" in self.compiler:
+            compiler_name, compiler_version = self.compiler.replace("@=", "@").split('@')
+        else:
+            compiler_name = self.compiler
+            compiler_version = None
         packages_compiler_yaml_path = os.path.join(common_path, f"packages_{compiler_name}.yaml")
         destination = os.path.join(env_common_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
@@ -194,7 +195,7 @@ class StackEnv(object):
 
         site_name = "site"
         self.includes.append(site_name)
-        env_path = self.site_configs_dir()
+        site_path = self.site_configs_dir()
         env_site_dir = os.path.join(self.env_dir(), site_name)
         logging.info(f"Copying site includes from {self.site_configs_dir()} ...\n  ... to {env_site_dir}")
         shutil.copytree(
@@ -202,19 +203,15 @@ class StackEnv(object):
         )
         # Merge or copy site module config(s)
         lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
-        modules_yaml_path = os.path.join(env_path, "modules.yaml")
-        modules_yaml_modulesys_path = os.path.join(env_path, f"modules_{lmod_or_tcl}.yaml")
+        modules_yaml_path = os.path.join(site_path, "modules.yaml")
+        modules_yaml_modulesys_path = os.path.join(site_path, f"modules_{lmod_or_tcl}.yaml")
         destination = os.path.join(env_site_dir, "modules.yaml")
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
-        # Merge or copy site package config(s)
-        packages_yaml_path = os.path.join(env_path, "packages.yaml")
-        if not "@" in self.compiler:
-            raise Exception("Invalid value for self.compiler, '@' not found. " + \
-                "Expected: 'name@version' or 'name@=version'")
-        compiler_name, compiler_version = self.compiler.replace("@=", "@").split('@')
-        packages_compiler_yaml_path = os.path.join(env_path, f"packages_{compiler_name}-{compiler_version}.yaml")
+        # Merge or copy site package config(s), issue a warning if compiler-dependent package config doesn't exist
+        packages_yaml_path = os.path.join(site_path, "packages.yaml")
+        packages_compiler_yaml_path = os.path.join(site_path, f"packages_{self.compiler}.yaml")
         if not os.path.exists(packages_compiler_yaml_path):
-            raise Exception(f"File {packages_compiler_yaml_path} not found. ")
+            logging.warning("  {packages_compiler_yaml_path} not found, please check if this is correct")
         destination = os.path.join(env_site_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -357,15 +354,20 @@ class StackEnv(object):
             with open(os.path.join(env_repo_path, "repo.yaml"), "w") as f:
                 f.write("repo:\n  namespace: envrepo")
             repo_paths = spack.config.get("repos")
-            repo_paths = [p.replace("$spack/", spack.paths.spack_root + "/") for p in repo_paths]
+            repo_paths = [p.replace("${SPACK_STACK_DIR}", os.getenv("SPACK_STACK_DIR")) for p in repo_paths.values()]
             for pkg_name in self.modifypkg:
                 pkg_found = False
                 for repo_path in repo_paths:
-                    pkg_path = os.path.join(repo_path, "packages", pkg_name)
+                    # Replace dashes with underscores
+                    pkg_subdir = pkg_name.replace("-","_")
+                    # Prepend leading digits with underscores
+                    pkg_subdir = '_' + pkg_subdir if pkg_subdir[0].isdigit() else pkg_subdir
+                    pkg_path = os.path.join(repo_path, "packages", pkg_subdir)
+                    # Copy package to env repo
                     if os.path.exists(pkg_path):
                         shutil.copytree(
                             pkg_path,
-                            os.path.join(env_pkgs_path, pkg_name),
+                            os.path.join(env_pkgs_path, pkg_subdir),
                             ignore=shutil.ignore_patterns("__pycache__"),
                             dirs_exist_ok=True,
                         )
