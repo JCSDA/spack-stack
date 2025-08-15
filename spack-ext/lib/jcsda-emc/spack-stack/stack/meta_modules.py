@@ -212,7 +212,11 @@ def get_preferred_compiler():
         )
     if len(preferred_compilers)>1:
         raise Exception(f"Invalid value for packages:all:prefer is {preferred_compilers}")
-    preferred_compiler = preferred_compilers[0]
+    preferred_compiler_legacy_name = preferred_compilers[0].replace('%','')
+    if preferred_compiler_legacy_name in spack.aliases.LEGACY_COMPILER_TO_BUILTIN.keys():
+        preferred_compiler = spack.aliases.LEGACY_COMPILER_TO_BUILTIN[preferred_compiler_legacy_name]
+    else:
+        preferred_compiler = preferred_compiler_legacy_name
     return preferred_compiler
 
 

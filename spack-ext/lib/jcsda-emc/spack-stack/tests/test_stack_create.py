@@ -1,5 +1,6 @@
-import shutil
 import os
+import re
+import shutil
 
 import pytest
 
@@ -35,11 +36,18 @@ def all_templates():
 def all_sites():
     site_path = stack_path("configs", "sites")
     if site_path:
+        #sites = {}
         sites = []
         _, tiers, _ = next(os.walk(site_path))
         for tier in tiers:
             _, tier_sites, _ = next(os.walk(stack_path("configs", "sites", tier)))
-            sites += list(tier_sites)
+            for site in tier_sites:
+                _, _, files_in_site_dir = next(os.walk(stack_path("configs", "sites", tier, site)))
+                compilers = []
+                for file in files_in_site_dir:
+                    if file.startswith("packages_") and file.endswith(".yaml"):
+                        compilers.append(file.replace("packages_", "").replace(".yaml", ""))
+                sites.append([site, compilers])
         return sites
     else:
         return None
@@ -91,18 +99,24 @@ def test_apps(template):
 def test_sites(site):
     if not site:
         return
+    name = site[0]
+    compilers = site[1]
+    # Assign dummy gcc compiler for sites without packages_*.yaml
+    if not compilers:
+        compilers = ["gcc"]
     if os.path.exists(test_dir):
         shutil.rmtree(test_dir)
-    stack_create(
-        "create",
-        "env",
-        "--site",
-        site,
-        "--dir",
-        test_dir,
-        "--compiler",
-        "gcc"
-    )
+    for compiler in compilers:
+        stack_create(
+            "create",
+            "env",
+            "--site",
+            name,
+            "--dir",
+            test_dir,
+            "--compiler",
+            compiler
+        )
 
 
 @pytest.mark.extension("stack")
@@ -151,7 +165,7 @@ def test_modules():
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_compilers():
-    for compiler in ["gcc", "oneapi"]:
+    for compiler in ["gcc-13.2.1", "oneapi-2025.1.0"]:
         if os.path.exists(test_dir):
             shutil.rmtree(test_dir)
         stack_create(
@@ -166,14 +180,21 @@ def test_compilers():
             "--compiler",
             compiler
         )
-        packages_yaml_path = os.path.join(test_dir, "compiler_test", "site", "packages.yaml")
-        with open(packages_yaml_path, "r") as f:
-            packages_yaml_txt = f.read()
-        assert f"{compiler}@" in packages_yaml_txt
-        env_yaml_path = os.path.join(test_dir, "compiler_test", "spack.yaml")
-        with open(env_yaml_path, "r") as f:
-            env_yaml_txt = f.read()
-        assert f"%{compiler}" in env_yaml_txt
+        legacy_compiler_name, compiler_version = (
+            lambda m: (compiler[:m.start()], compiler[m.start()+1:]) if m else (compiler, ''))(re.search(r'-(?=\d)', compiler)
+        )
+        if legacy_compiler_name in spack.aliases.LEGACY_COMPILER_TO_BUILTIN.keys():
+            builtin_compiler_name = spack.aliases.LEGACY_COMPILER_TO_BUILTIN[legacy_compiler_name]
+        else:
+            builtin_compiler_name = legacy_compiler_name
+        site_packages_yaml_path = os.path.join(test_dir, "compiler_test", "site", "packages.yaml")
+        with open(site_packages_yaml_path, "r") as f:
+            site_packages_yaml = f.read()
+        assert f"{builtin_compiler_name}@{compiler_version}" in site_packages_yaml
+        common_packages_yaml_path = os.path.join(test_dir, "compiler_test", "common", "packages.yaml")
+        with open(common_packages_yaml_path, "r") as f:
+            common_packages_yaml = f.read()
+        assert f"%{legacy_compiler_name}" in common_packages_yaml
 
 
 @pytest.mark.extension("stack")
@@ -275,7 +296,7 @@ def test_modifypkg():
         custom_hdf5_path
     ), "'--modify-pkg hdf5' failed to create custom package.py"
     custom_ufswm_path = os.path.join(
-        test_dir, "modifypkg_test/envrepo/packages/ufs-weather-model-env/package.py"
+        test_dir, "modifypkg_test/envrepo/packages/ufs_weather_model_env/package.py"
     )
     assert os.path.exists(
         custom_ufswm_path
@@ -288,14 +309,16 @@ def test_modifypkg():
         hdf5_spack_path, "package.py"
     ), "Incorrect hdf5 location in modifypkg_test"
     ufswm_spack_path = spack_cmd(
-        "--env-dir", env_dir, "location", "--package-dir", "ufs-weather-model-env", output=str
+        "--env-dir", env_dir, "location", "--package-dir", "ufs_weather_model_env", output=str
     ).strip()
     assert custom_ufswm_path == os.path.join(
         ufswm_spack_path, "package.py"
     ), "Incorrect ufs-weather-model-env location in modifypkg_test"
     netcdfc_spack_path = spack_cmd(
-        "--env-dir", env_dir, "location", "--package-dir", "netcdf-c", output=str
+        "--env-dir", env_dir, "location", "--package-dir", "netcdf_c", output=str
     ).strip()
+    print("DH DEBUG 1:", os.path.join(spack.config.get("repos")['builtin'], "packages/netcdf_c"))
+    print("DH DEBUG 2:", netcdfc_spack_path)
     assert (
-        os.path.join(spack.paths.packages_path, "packages/netcdf-c") == netcdfc_spack_path
+        os.path.join(spack.config.get("repos")['builtin'].replace("${SPACK_STACK_DIR}", os.getenv("SPACK_STACK_DIR")), "packages/netcdf_c") == netcdfc_spack_path
     ), "Incorrect netcdf-c location in modifypkg_test"
