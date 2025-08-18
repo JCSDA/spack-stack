@@ -59,12 +59,12 @@ packages:
   gcc:
     externals:
     - spec: gcc@11.2.0 languages:='c,c++'
-      prefix: /usr
+      prefix: /cm/local/apps/gcc/11.2.0
       extra_attributes:
         compilers:
-          c: /cm/local/apps/gcc/11.2.0/gcc
-          cxx: /cm/local/apps/gcc/11.2.0/g++
-          fortran: /cm/local/apps/gcc/11.2.0/gfortran
+          c: /cm/local/apps/gcc/11.2.0/bin/gcc
+          cxx: /cm/local/apps/gcc/11.2.0/bin/g++
+          fortran: /cm/local/apps/gcc/11.2.0/bin/gfortran
   gcc-runtime:
     externals:
     - spec: gcc-runtime@11.2.0%gcc@11.2.0
