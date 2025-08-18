@@ -49,6 +49,19 @@ def spack_hash():
     return get_git_revision_short_hash(spack.paths.spack_root)
 
 
+def compiler_name_and_version_from_string(compiler):
+    """Return compiler name and version from a string that
+    contains name and version separated by - (as opposed
+    to @), e.g. gcc-13.3.1. If not version is provided,
+    return the name and "None" for the version."""
+    compiler_name, compiler_version = (
+            lambda m: (compiler[:m.start()], compiler[m.start()+1:]) if m else (compiler, ''))(re.search(r'-(?=\d)', compiler)
+        )
+    if not compiler_version:
+        compiler_version = None
+    return (compiler_name, compiler_version)
+
+
 class StackEnv(object):
     """Represents a spack.yaml environment based on different
     configurations of sites and specs. Uses the Spack library
@@ -171,12 +184,10 @@ class StackEnv(object):
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
         # Merge or copy common package config(s)
         packages_yaml_path = os.path.join(common_path, "packages.yaml")
-        if "@" in self.compiler:
-            compiler_name, compiler_version = self.compiler.replace("@=", "@").split('@')
-        else:
-            compiler_name = self.compiler
-            compiler_version = None
+        (compiler_name, _) = compiler_name_and_version_from_string(self.compiler)
         packages_compiler_yaml_path = os.path.join(common_path, f"packages_{compiler_name}.yaml")
+        if not os.path.exists(packages_compiler_yaml_path):
+            logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
         destination = os.path.join(env_common_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
