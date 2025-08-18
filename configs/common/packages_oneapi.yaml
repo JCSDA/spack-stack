@@ -30,6 +30,9 @@ packages:
   parallel-netcdf:
     require:
     - '+shared-intel'
+  py-maturin:
+    require:
+    - '%gcc'
   qt:
     require:
     - '%gcc'
