@@ -30,7 +30,7 @@ packages:
       prefix: /opt/intel/oneapi
   gcc:
     externals:
-    - spec: gcc@11.4.1 languages:='c,c++,fortran'
+    - spec: gcc@11.4.1 languages:='c,c++'
       prefix: /usr
       extra_attributes:
         compilers:
