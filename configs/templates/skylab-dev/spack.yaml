@@ -14,12 +14,12 @@ spack:
     - jedi-fv3-env
     - jedi-geos-env         ^esmf@=8.6.1
     - jedi-mpas-env
-    - jedi-neptune-env      ^esmf@=8.9.0b12
+    - jedi-neptune-env      ^esmf@=8.9.0
     - jedi-tools-env
     - jedi-ufs-env          ^esmf@=8.8.0
     - jedi-um-env
-    - neptune-env           ^esmf@=8.9.0b12
-    - neptune-python-env    ^esmf@=8.9.0b12
+    - neptune-env           ^esmf@=8.9.0
+    - neptune-python-env    ^esmf@=8.9.0
     - soca-env
 
     # Various crtm tags (list all to avoid duplicate packages)
@@ -32,9 +32,9 @@ spack:
     - mapl@2.53.4 ^esmf@8.8.0
 
     # Various esmf tags (list all to avoid duplicate packages)
-    - esmf@=8.6.1 snapshot=none
-    - esmf@=8.8.0 snapshot=none
-    - esmf@=8.9.0b12 snapshot=b12
+    - esmf@=8.6.1
+    - esmf@=8.8.0
+    - esmf@=8.9.0
 
   specs:
   - matrix:
