@@ -5,9 +5,11 @@ title: '[RELEASE] release-x.y.z tasks'
 labels: ''
 assignees:
 # EPIC
+- @natalie-perlin
 - @ratkovasic-noaa
 - @rickgrubin-noaa
 # JCSDA
+- @ashley314
 - @eap
 # NASA
 - @mathomp4
