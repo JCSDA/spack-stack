@@ -293,7 +293,7 @@ packages:
   # See macOS site config for wgrib2 version/variant overrides
   wgrib2:
     require:
-    - '@3.6.0'
+    - '@3.6.0 +ipolates +netcdf'
   wrf-io:
     require: '@1.2.0'
   zstd:
