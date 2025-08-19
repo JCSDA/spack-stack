@@ -42,10 +42,12 @@ packages:
     - spec: gawk@4.2.1
       prefix: /usr
   git:
+    buildable: False
     externals:
     - spec: git@2.43.5+tcltk
       prefix: /usr
   git-lfs:
+    buildable: False
     externals:
     - spec: git-lfs@3.4.1
       prefix: /usr
