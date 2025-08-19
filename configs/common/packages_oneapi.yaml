@@ -39,6 +39,9 @@ packages:
     parallel-netcdf:
       require:
       - +shared-intel
+    py-maturin:
+      require:
+      - '%gcc'
     py-numpy:
       require:
       - '^intel-oneapi-mkl'

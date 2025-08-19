@@ -401,6 +401,9 @@ packages:
     upp:
       require:
       - '@10.0.10'
+    uwtools:
+      require:
+      - '@2.7.2'
     # Need extradeps for grib-utils, enable by default to avoid duplicate packages
     w3emc:
       require:
