@@ -1,7 +1,9 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = release/1.9.0
+  url = https://github.com/rickgrubin-noaa/spack
+  branch = wgrib2-netcdf
+  #url = https://github.com/jcsda/spack
+  #branch = release/1.9.0
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
