@@ -308,6 +308,8 @@ packages:
   # Note - we can remove upp from stack at some point?
   upp:
     require: '@10.0.10'
+  uwtools:
+    require: '@2.7.2'
   # Need extradeps for grib-utils, which ties us to w3ecm@:2.11
   w3emc:
     require:

@@ -39,9 +39,6 @@ packages:
   gsibec:
     require::
     - '@1.2.1 ~mkl'
-  py-maturin:
-    require:
-    - '%gcc'
   py-numpy:
     require::
     - '@1.26'
