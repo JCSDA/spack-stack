@@ -50,9 +50,9 @@ Pre-configured sites (tier 1)
 | MSU                 +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Orion                 | Intel              | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Discover SCU16        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/``             | JCSDA           |
-| NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Discover SCU17        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/``             | JCSDA           |
+| NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+|                     | NAS                   | GCC, Intel         | ``/nobackup/gmao_SIteam/spack-stack/``                 | GMAO            |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | NCAR-Wyoming        + Derecho               | GCC, Intel         | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/`` | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -207,21 +207,6 @@ to
    # prereq("intel-oneapi-compilers/2024.2.1")
    # prereq("intel-oneapi-mpi/2021.13.1")
 
-.. _Preconfigured_Sites_Discover_SCU16:
-
-------------------------------
-NASA Discover SCU16
-------------------------------
-
-The following is required for building new spack environments with any supported compiler on this platform.
-
-.. code-block:: console
-
-   module purge
-   module use /discover/swdev/gmao_SIteam/modulefiles-SLES12
-   module use /discover/swdev/jcsda/spack-stack/scu16/modulefiles
-   module load miniconda/3.9.7
-
 .. _Preconfigured_Sites_Discover_SCU17:
 
 ------------------------------
@@ -235,6 +220,19 @@ The following is required for building new spack environments with any supported
    module purge
    module use /discover/swdev/gmao_SIteam/modulefiles-SLES15
    module use /discover/swdev/jcsda/spack-stack/scu17/modulefiles
+
+.. _Preconfigured_Sites_NAS:
+
+------------------------------
+NASA NAS
+------------------------------
+
+The following is required for building new spack environments with any supported compiler on this platform.
+
+.. code-block:: console
+
+   module purge
+   module use /nobackup/gmao_SIteam/modulefiles
 
 .. _Preconfigured_Sites_Narwhal:
 
