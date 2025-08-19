@@ -347,6 +347,11 @@ packages:
     py-python-dateutil:
       require:
       - '@2'
+    # To avoid duplicate packages
+    py-requests:
+      require:
+      - '@2.32.3'
+    # To avoid duplicate packages
     py-ruamel-yaml:
       require:
       - '@0.17.16'
@@ -358,10 +363,10 @@ packages:
     py-torch:
       require:
       - +custom-protobuf ~mkldnn
-    ## To avoid duplicate packages
-    #py-urllib3:
-    #  require:
-    #  - '@1.26.12'
+    # To avoid duplicate packages
+    py-urllib3:
+      require:
+      - '@1.26.12'
     ## To avoid duplicate packages
     #py-versioneer:
     #  require:
