@@ -1,4 +1,14 @@
 packages:
+  all:
+    providers:
+      zlib-api:: [zlib]
+  zlib-api:
+    buildable: False
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
   bash:
     externals:
     - spec: bash@4.4.20
