@@ -292,6 +292,13 @@ packages:
       require:
       - '@3.11'
       - ~crypt
+    # Not sure about the exact version requirements, but earlier
+    # versions (definitely 4.5.3 and earlier) don't work with newer
+    # py-setuptools (version 68 and later) because of a breaking
+    # change: error in beautifulsoup4 setup command: use_2to3 is invalid
+    py-beautifulsoup4:
+      require:
+      - '@4.12.3:'
     py-cartopy:
       require:
       - +plotting
