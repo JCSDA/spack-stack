@@ -1,5 +1,13 @@
 packages:
-  all:
-    compiler:: [clang@20.1.5]
-    providers:
-      mpi:: [openmpi@5.0.6]
+  mpi:
+    require:
+    - "openmpi@=5.0.8"
+  llvm:
+    externals:
+    - spec: llvm@20.1.5 +flang ~libomptarget
+      prefix: /home/dom/prod/llvm-20.1.5
+      extra_attributes:
+        compilers:
+          c: /home/dom/prod/llvm-20.1.5/bin/clang
+          cxx: /home/dom/prod/llvm-20.1.5/bin/clang++
+          fortran: /home/dom/prod/llvm-20.1.5/bin/flang-new
