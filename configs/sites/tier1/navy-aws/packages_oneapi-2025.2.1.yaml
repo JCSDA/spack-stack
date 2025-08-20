@@ -40,8 +40,8 @@ packages:
       modules:
       - tbb/2022.2
   intel-oneapi-runtime:
-    ### ??? # LINK TO BUG REPORT HERE
-    buildable: false
+    # LINK TO BUG REPORT HERE
+    #buildable: false
     externals:
     - spec: intel-oneapi-runtime@2025.2.1
       prefix: /cm/shared/apps/intel/oneapi-2025.2.1

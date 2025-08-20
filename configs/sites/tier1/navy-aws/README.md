@@ -1,5 +1,7 @@
 # Provisiong NRL ParallelWorks AWS clusters
 
+TODO UPDATE 20250820 !!!
+
 ## Steps to perform before installing spack-stack develop as of 2024/11/24
 
 Note. Some of these packages may already be installed, but for the sake of completeness, they are listed here.

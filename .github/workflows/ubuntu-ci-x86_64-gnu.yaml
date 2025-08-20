@@ -116,7 +116,7 @@ jobs:
             # Add binary cache if requested
             if [ "$USE_BINARY_CACHE" = true ] ; then
               set +e
-              spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+              spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache-new-spack-v1/
               spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
               set -e
               echo "Packages in spack binary cache:"
