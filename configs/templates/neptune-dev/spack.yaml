@@ -10,7 +10,7 @@ spack:
   - packages:
       - neptune-env ~debug +espc ^esmf@=8.9.0b12 snapshot=b12
       - neptune-env +debug +espc ^esmf@=8.9.0b12 snapshot=b12
-      - neptune-python-env +xnrl ^neptune-env ~debug +espc ^esmf@=8.9.0b12 snapshot=b12
+      - neptune-python-env ^neptune-env ~debug +espc ^esmf@=8.9.0b12 snapshot=b12
 
   specs:
     - matrix:
