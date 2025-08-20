@@ -1,8 +1,5 @@
 packages:
   # Modification of common packages
-  # Prevent building zlib, zlib-ng
-  zlib-api:
-    buildable: false
 
   # All other packages listed alphabetically
   autoconf:
@@ -221,7 +218,7 @@ packages:
     externals:
     - spec: zip@3.0
       prefix: /usr
-  zlib:
-    externals:
-    - spec: zlib@1.2.11
-      prefix: /usr
+  #zlib:
+  #  externals:
+  #  - spec: zlib@1.2.11
+  #    prefix: /usr
