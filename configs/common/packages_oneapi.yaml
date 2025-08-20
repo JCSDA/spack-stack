@@ -48,4 +48,8 @@ packages:
     qt:
       require:
       - '%gcc'
-
+    # Prevent issues with fault Intel libraries
+    # when using tar etc by building zlib-api with gcc
+    zlib-api:
+      require:
+      - '%gcc'
