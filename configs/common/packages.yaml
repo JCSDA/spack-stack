@@ -325,6 +325,11 @@ packages:
     py-h5py:
       require:
       - ~mpi
+    # Needed to fix issues of older versions (e.g. 1.13.0) with newer Python and
+    # newer python packages: "ValueError: Unknown classifier in field project.classifiers ..."
+    py-hatchling:
+      require:
+      - '@1.27:'
     # https://github.com/JCSDA/spack-stack/issues/1276
     py-matplotlib:
       require:
