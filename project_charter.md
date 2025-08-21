@@ -24,6 +24,7 @@ in installing the large number of packages managed by spack-stack.
 - The UCAR Joint Center for Satellite Data Assimilation (JCSDA)
 - The Earth Prediction Innovation Center (EPIC)
 - The U.S. Naval Research Laboratory (NRL)
+- The NASA Global Modeling and Assimilation Office, (GMAO)
 
 Each stakeholder will designate a small number of developers to assist
 in spack-stack development by becoming a code manager of the
@@ -34,9 +35,10 @@ spack-stack repo.
 Organization | Code Manager(s)
 -------------|----------------
 NOAA EMC | Alex Richert, Hang Lei
-JCSDA | Steve Grace, Evan Parker
+JCSDA | Ashley Griffin, Evan Parker
 EPIC | Rick Grubin, Ratko Vasic
-NRL | Dom Heinzeller, Sarah King
+NRL | Dom Heinzeller, TBD
+NASA | Matthew Thompson, TBD
 
 ## Project Process
 
@@ -81,11 +83,11 @@ install on their systems (see https://spack-stack.readthedocs.io/en/latest/PreCo
 Any stakeholder can perform a release at any time.
 
 The release process:
-* Create a GitHub issue explaining the reason for the release, and to notify all other stakeholders.
+* Create a GitHub issue using the release task list template
 * Unless it is a patch release (increasing the z in x.y.z,), create a project board for the release at https://github.com/JCSDA/spack-stack/projects.
 * Designate any issues that must be fixed before release by assigning it to the epic and the project board, and ensure their completion.
 * Install the release tags (or the final version of the release branches to allow for last-minute site config updates) on all supported platforms.
-* Update the documentation and create release tags for the spack-stack repo and the spack submodule.
+* Update the documentation and create release tags for the spack-stack repo and the spack and spack-packages submodules.
 * Update the GitHub Release Notes.
 * Perform the release on GitHub.
 
@@ -158,14 +160,17 @@ _Sole exception_
 `esmf@8.4.2 + mapl@2.35.2` works with `esmf@8.5.0 + mapl@2.35.2` because auto-generated module name for mapl is `mapl/2.35.2-esmf-8.5.0`
 
 #### Also to consider
+
 Our spack environments are large and complex. Adding more and more packages to the same environment between releases increases the risk of spack concretization errors (rebuilding existing libraries against new dependencies, unintended updates to existing libraries, duplicate packages, …)
 
 Spack-stack unified environments serve multiple applications at the same time: `ufs-weather-model`, `ufs-srw-app`, `skylab` (`jedi-fv3`, `soca`, `ewok`), `jedi-mpas`, `jedi-neptune`, `jedi-um`, `jedi-ufs`, etc. - for each of these, developers may potentially request several package installations “between releases”.
 
 ### Handling library updates for applications
+
 We need to consider two types of installations: test installations and official updates
 
 #### Test installations
+
 Test installations can be requested as part of issues (which should be mandatory for pull requests anyway). These can be more frequent than official updates.
 Issues can be in the application (e.g. `ufs-weather-model` repo) or in spack-stack, clearly describing the need and with a reasonable timeline.
 
@@ -180,6 +185,7 @@ module load fms/2023.02
 The advantage is that it is obvious to the developer, the reviewers and the code managers that a library update in a PR is not officially rolled out everywhere yet. Further, there is no risk to corrupt official spack-stack installations with frequent test installs. 
 
 #### Official updates / patch releases
+
 Official updates should be limited in frequency and are only allowed after full acceptance testing (see test installations above).
 
 Updates that will generate module duplicates require a completely new spack-stack installation. Making these kinds of updates between releases should be the absolute exception when it is really urgent (critical bugs or security issues). We roll out a new spack-stack release every three months anyway!
@@ -189,6 +195,7 @@ Official updates need to be made consistently across all platforms. There shall 
 Since official updates require coordination across all platforms, the timeline for these installs must be more generous than for test installs.
 
 ## Lifetime of spack-stack installations
+
 Regular, full releases of spack-stack are made every three months around the end of February, May, August, and November.
 
 spack-stack developers are committed to maintaining a rolling stock of the last four releases, i.e. one year's worth of spack-stack releases. Under special circumstances (e.g. operational implementations that require long-term support, long-running official retrospectives), selected releases may be kept longer. Maintenance in this context refers to addressing bugs or recompiling in the event of an intrusive update to the system. Adding new functionality or new packages is in general limited to the current and future releases. Modifications to past releases that do not impact existing installations, such as the addition of chained environments/custom Spack repositories, or new templates or site configurations, may be considered on a case-by-case basis."
