@@ -99,11 +99,6 @@ jobs:
             # Add additional variants for MET packages, different from config/common/packages.yaml
             spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
-            # Turn off variant xnrl for neptune-python-env because xnrl is not publicly available
-            if [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
-              sed -i 's/+xnrl/~xnrl/g' ${ENVDIR}/spack.yaml
-            fi
-
             # Concretize and check for duplicates
             spack concretize 2>&1 | tee log.concretize.gnu-11.4.0-buildcache
             ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env
