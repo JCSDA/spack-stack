@@ -350,8 +350,8 @@ def setup_meta_modules():
 
    # Get mpi providers (currently only one mpi provider is supported)
     mpi_providers = q.providers_for("mpi")
-    if not len(mpi_providers)==1:
-        raise Exception(f"Expected exactly one MPI provider, but got {mpi_providers}")
+    if len(mpi_providers)>1:
+        raise Exception(f"Expected no or one MPI provider, but got {mpi_providers}")
     logging.info(f"  ... mpi_providers: {mpi_providers}")
 
     # Prepare meta module directory
