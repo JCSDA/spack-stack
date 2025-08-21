@@ -1,3 +1,5 @@
+# Template for grand, unified environment
+#
 spack:
   concretizer:
     unify: when_possible
@@ -18,7 +20,7 @@ spack:
   - jedi-neptune-env      ^esmf@=8.9.0
   #- jedi-tools-env
   - jedi-ufs-env          ^esmf@=8.8.0
-  - jedi-um-env
+  #- jedi-um-env
   - neptune-env           ^esmf@=8.9.0
   - neptune-python-env    ^esmf@=8.9.0
   - soca-env
@@ -26,7 +28,6 @@ spack:
   - ufs-weather-model-env ^esmf@=8.8.0 ^crtm@=3.1.2
 
   # Various crtm tags (list all to avoid duplicate packages)
-  #- crtm@2.4.0.1
   - crtm@v2.4.1-jedi.2
   - crtm@3.1.2
 
@@ -43,7 +44,11 @@ spack:
   - madis@4.5
 
   packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:
       require:
-      - '+pnetcdf'
+      - +pnetcdf

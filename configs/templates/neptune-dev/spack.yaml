@@ -1,3 +1,5 @@
+# Template for NEPTUNE development
+#
 spack:
   concretizer:
     unify: when_possible
@@ -12,9 +14,12 @@ spack:
   - jedi-neptune-env   ^neptune-env ~debug +espc ^esmf@=8.9.0
   - crtm@3.1.2
   - crtm@v2.4.1-jedi.2
-  - esmf@8.9.0
 
   packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:
       require:

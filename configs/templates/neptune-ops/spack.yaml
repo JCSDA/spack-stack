@@ -1,0 +1,21 @@
+# Template for NEPTUNE operations
+#
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+  - neptune-env ~debug +espc ^esmf@=8.9.0
+
+  packages:
+    # Turn off python variant for esmf
+    esmf:
+      require:
+      - ~python
+    # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
+    parallelio:
+      require:
+      - ~pnetcdf
