@@ -32,7 +32,7 @@ jobs:
 
       - name: prepare-directories
         run: |
-          mkdir -p /home/ubuntu/spack-stack/build-cache/
+          mkdir -p /home/ubuntu/spack-stack/build-cache-new-spack-v1/
           mkdir -p /home/ubuntu/spack-stack/source-cache/
 
       - name: create-buildcache
@@ -117,7 +117,7 @@ jobs:
             if [ "$USE_BINARY_CACHE" = true ] ; then
               set +e
               spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache-new-spack-v1/
-              spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+              spack buildcache update-index local-binary
               set -e
               echo "Packages in spack binary cache:"
               spack buildcache list
@@ -131,23 +131,23 @@ jobs:
               # base-env
               echo "base-env ..."
               spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
-              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
+              spack buildcache create -u local-binary base-env
 
               # jedi-base-env
               echo "jedi-base-env ..."
               spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
-              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+              spack buildcache create -u local-binary jedi-base-env
 
               # jedi-ufs-env
               echo "jedi-ufs-env ..."
               spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-ufs-env
-              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
+              spack buildcache create -u local-binary jedi-ufs-env
             fi
 
             # the rest
             echo "${TEMPLATE} ..."
             spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}
-            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
+            spack buildcache create -u local-binary
 
             # Remove binary cache for next round of concretization
             if [ "$USE_BINARY_CACHE" = true ] ; then
@@ -181,7 +181,7 @@ jobs:
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env
 
           # Add binary cache back in
-          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache-new-spack-v1/
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
