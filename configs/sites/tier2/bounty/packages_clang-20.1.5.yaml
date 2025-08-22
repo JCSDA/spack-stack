@@ -11,3 +11,5 @@ packages:
           c: /home/dom/prod/llvm-20.1.5/bin/clang
           cxx: /home/dom/prod/llvm-20.1.5/bin/clang++
           fortran: /home/dom/prod/llvm-20.1.5/bin/flang-new
+        extra_rpaths:
+        - /home/dom/prod/llvm-20.1.5/lib
