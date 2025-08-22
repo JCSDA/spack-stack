@@ -53,3 +53,5 @@ packages:
     zlib:
       require:
       - '%gcc'
+    zlib-ng:
+      buildable: False
