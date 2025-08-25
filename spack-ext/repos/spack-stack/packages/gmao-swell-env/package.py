@@ -49,11 +49,7 @@ class GmaoSwellEnv(BundlePackage):
     depends_on("py-pyyaml", type="run")
     depends_on("py-ruamel-yaml", type="run")
     depends_on("py-ruamel-yaml-clib", type="run")
-    # Note that the +delayed option is for compatibility
-    # with the py-xnrl package (this restricts py-dask
-    # to certain versions, since the newest versions
-    # don't have that option anymore.
-    depends_on("py-dask +delayed", type="run")
+    depends_on("py-dask", type="run")
 
     # Future dependencies needed
     # depends_on("py-bokeh", type="run")
