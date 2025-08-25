@@ -15,8 +15,7 @@ packages:
         compilers:
           c: /contrib/oneapi/2024.2.1/compiler/2024.2/bin/icx
           cxx: /contrib/oneapi/2024.2.1/compiler/2024.2/bin/icpx
-          fortran: /contrib/oneapi/2024.2.1/compiler/2024.2/bin/ifx
-
+          fortran: /contrib/oneapi/2024.2.1/compiler/2024.2/bin/ifort
   intel-oneapi-mpi:
     buildable: false
     externals:
