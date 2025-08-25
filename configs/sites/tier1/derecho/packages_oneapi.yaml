@@ -1,23 +1,37 @@
 packages:
   all:
-    compiler:: [oneapi@2024.2.1, gcc@12.2.0]
+    compiler:: [oneapi@2024.2.1, gcc@12.4.0]
     providers:
       mpi:: [cray-mpich@8.1.29]
   mpi:
-    buildable: False
+    buildable: true
   cray-mpich:
     externals:
     - spec: cray-mpich@8.1.29%oneapi@2024.2.1 +wrappers
       modules:
-      - craype/2.7.20
-      - cray-mpich/8.1.29
+      - intel/2024.2.1
+      - ncarenv/24.12
+      - craype/2.7.31
       - libfabric/1.15.2.0
-      - cray-pals/1.2.11
+      environment:
+        prepend_path:
+          PATH: '/opt/cray/pe/pals/1.2.12/bin'
+          PKG_CONFIG_PATH: '/opt/cray/pe/pals/1.2.12/lib/pkgconfig'
+          MANPATH: '/opt/cray/pe/pals/1.2.12/man'
+          PE_PALS_PKGCONFIG_LIBS: 'libpals'
+          PE_PKGCONFIG_PRODUCTS: 'PE_PALS'
+        set:
+          # https://github.com/JCSDA/spack-stack/issues/957
+          FI_CXI_RX_MATCH_MODE: 'hybrid'
+          # https://github.com/JCSDA/spack-stack/issues/1012
+          I_MPI_EXTRA_FILESYSTEM: 'ON'
+          I_MPI_OFI_LIBRARY: '/opt/cray/libfabric/1.15.2.0/lib64/libfabric.so.1'
+        extra_rpaths: []
   intel-oneapi-runtime:
     buildable: False
     externals:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
-      prefix: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2024.2.1
+      prefix: /glade/u/apps/casper/24.12/spack/opt/spack/intel-oneapi-compilers/2024.2.1/gcc/12.4.0/iq3b/compiler/2024.2
   intel-oneapi-mkl:
     # No intel-oneapi-mkl installed on Derecho, install via spack.
     # Prefer the version that Intel releases with the above compiler
