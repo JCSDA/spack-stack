@@ -108,6 +108,7 @@ The following is required for building new spack environments with any supported
    
    # Edit /path/to/env/install/modulefiles/Core/stack-oneapi/<version>.lua
    # Change:
+   # -- prerequisite modules
    # load("spack-managed-x86-64_v3")
    # load("intel-oneapi-compilers/2024.2.1")
    # prereq("spack-managed-x86-64_v3")
@@ -116,10 +117,10 @@ to
 
 .. code-block:: console
 
-   # -- load("spack-managed-x86-64_v3")
+   # -- prerequisite modules
    # prepend_path("MODULEPATH", "/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles")
    # load("intel-oneapi-compilers/2024.2.1")
-   # -- prereq("spack-managed-x86-64_v3"
+   # prereq("intel-oneapi-compilers/2024.2.1")
 
 and
 
@@ -140,11 +141,7 @@ to
 .. code-block:: console
 
    # -- prerequisite modules
-   # -- load("spack-managed-x86-64_v3")
-   # load("intel-oneapi-compilers/2024.2.1")
    # load("intel-oneapi-mpi/2021.13.1")
-   # -- prereq("spack-managed-x86-64_v3")
-   # prereq("intel-oneapi-compilers/2024.2.1")
    # prereq("intel-oneapi-mpi/2021.13.1")
 
 .. _Preconfigured_Sites_Hercules:
@@ -168,6 +165,7 @@ The following is required for building new spack environments with any supported
 
    # Edit /path/to/env/install/modulefiles/Core/stack-oneapi/<version>.lua
    # Change:
+   # -- prerequisite modules
    # load("spack-managed-x86-64_v3")
    # load("intel-oneapi-compilers/2024.2.1")
    # prereq("spack-managed-x86-64_v3")
@@ -176,10 +174,10 @@ to
 
 .. code-block:: console
 
-   # -- load("spack-managed-x86-64_v3")
+   # -- prerequisite modules
    # prepend_path("MODULEPATH", "/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles")
    # load("intel-oneapi-compilers/2024.2.1")
-   # -- prereq("spack-managed-x86-64_v3"
+   # prereq("intel-oneapi-compilers/2024.2.1")
 
 and
 
@@ -200,11 +198,7 @@ to
 .. code-block:: console
 
    # -- prerequisite modules
-   # -- load("spack-managed-x86-64_v3")
-   # load("intel-oneapi-compilers/2024.2.1")
    # load("intel-oneapi-mpi/2021.13.1")
-   # -- prereq("spack-managed-x86-64_v3")
-   # prereq("intel-oneapi-compilers/2024.2.1")
    # prereq("intel-oneapi-mpi/2021.13.1")
 
 .. _Preconfigured_Sites_Discover_SCU16:
