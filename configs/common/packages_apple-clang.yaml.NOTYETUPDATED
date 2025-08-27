@@ -12,6 +12,7 @@ packages:
     - '~mkl'
   ip:
     require:
+    - '^openblas'
     - '~openmp'
   py-numpy:
     require:

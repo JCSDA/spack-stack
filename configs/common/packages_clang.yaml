@@ -1,7 +1,14 @@
 packages:
-    all:
+    c:
       prefer:
-      - '%clang'
+      - clang
+    cxx:
+      prefer:
+      - clang
+    fortran:
+      prefer:
+      - clang
+    all:
       providers:
         blas: [openblas]
         fftw-api: [fftw]
@@ -12,6 +19,7 @@ packages:
     ip:
       require:
       - '^openblas'
+      - '~openmp'
     py-numpy:
       require:
       - '^openblas'

@@ -17,3 +17,4 @@ packages:
   ip:
     require:
     - '%gcc'
+    - '^openblas'
