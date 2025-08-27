@@ -16,6 +16,7 @@ packages:
           fortran: /gpfs/neptune/spack-stack/llvm-21.1.0/bin/flang-new
         extra_rpaths:
         - /gpfs/neptune/spack-stack/llvm-21.1.0/lib
+  openmpi:
     externals:
     - spec: openmpi@4.1.8
       prefix: /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-21.1.0
