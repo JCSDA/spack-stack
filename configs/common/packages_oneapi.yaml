@@ -1,14 +1,7 @@
 packages:
-    c:
-      prefer:
-      - intel-oneapi-compilers
-    cxx:
-      prefer:
-      - intel-oneapi-compilers
-    fortran:
-      prefer:
-      - intel-oneapi-compilers
     all:
+      prefer:
+      - '%oneapi'
       providers:
         blas: [intel-oneapi-mkl]
         fftw-api: [intel-oneapi-mkl]

@@ -1,14 +1,7 @@
 packages:
-    c:
-      prefer:
-      - gcc
-    cxx:
-      prefer:
-      - gcc
-    fortran:
-      prefer:
-      - gcc
     all:
+      prefer:
+      - '%gcc'
       providers:
         blas: [openblas]
         fftw-api: [fftw]

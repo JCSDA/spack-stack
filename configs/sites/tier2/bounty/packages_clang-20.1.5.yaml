@@ -13,3 +13,4 @@ packages:
           fortran: /home/dom/prod/llvm-20.1.5/bin/flang-new
         extra_rpaths:
         - /home/dom/prod/llvm-20.1.5/lib
+        - /home/dom/prod/llvm-20.1.5/lib/x86_64-unknown-linux-gnu

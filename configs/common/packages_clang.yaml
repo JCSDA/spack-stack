@@ -1,14 +1,7 @@
 packages:
-    c:
-      prefer:
-      - clang
-    cxx:
-      prefer:
-      - clang
-    fortran:
-      prefer:
-      - clang
     all:
+      prefer:
+      - '%clang'
       providers:
         blas: [openblas]
         fftw-api: [fftw]
