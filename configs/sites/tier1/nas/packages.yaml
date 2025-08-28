@@ -1,0 +1,102 @@
+packages:
+  all:
+    target: [x86_64_v3]
+### Modification of common packages
+  # Problems building shared hdf-eos2 with Intel, not needed
+  hdf-eos2:
+    variants: ~shared
+  met:
+    variants: +python +grib2 +graphics +lidar2nc +modis
+### All other external packages listed alphabetically
+  automake:
+    externals:
+    - spec: automake@1.16.1
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.30.125~gold~headers
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.30
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.6.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.1+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gh:
+    externals:
+    - spec: gh@2.78.0
+      prefix: /nobackup/gmao_SIteam/gh/2.78.0
+  git:
+    externals:
+    - spec: git@2.43.5~tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.7.0
+      prefix: /nobackup/gmao_SIteam/git-lfs/3.7.0
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.4.2
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.5
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.14.1
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.19.5
+      prefix: /usr
+  zlib:
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
