@@ -18,6 +18,7 @@ packages:
     externals:
     - spec: gcc-runtime@13.4.0%gcc@13.4.0
       prefix: /gpfs/neptune/spack-stack/gcc-13.4.0
+  openmpi:
     externals:
     - spec: openmpi@4.1.8
       prefix: /gpfs/neptune/spack-stack/openmpi-4.1.8/gcc-13.4.0
