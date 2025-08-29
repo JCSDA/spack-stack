@@ -1,15 +1,16 @@
 packages:
   all:
-    compiler:: [gcc@12.2.0]
+    compiler:: [gcc@12.4.0]
     providers:
-      mpi:: [cray-mpich@8.1.27]
+      mpi:: [cray-mpich@8.1.29]
   mpi:
     buildable: False
   cray-mpich:
     externals:
-    - spec: cray-mpich@8.1.27%gcc@12.2.0 +wrappers
+    - spec: cray-mpich@8.1.29%gcc@12.4.0 +wrappers
       modules:
-      - craype/2.7.20
-      - cray-mpich/8.1.27
+      - craype/2.7.31
+      - ncarenv/24.12
+      - gcc/12.4.0 
       - libfabric/1.15.2.0
-      - cray-pals/1.2.11
+      - cray-mpich/8.1.29
