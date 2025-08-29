@@ -16,10 +16,7 @@ conflict("stack-gcc")
 conflict("stack-intel")
 conflict("stack-oneapi")
 -- new names as of July 2025
--- ??? # conflict stack-aocc 
--- ??? # conflict stack-apple-clang
 conflict("stack-llvm")
-conflict("stack-gcc")
 conflict("stack-intel-oneapi-compilers-classic")
 conflict("stack-intel-oneapi-compilers")
 
