@@ -17,6 +17,7 @@ compilers::
         PATH: '/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/bin'
         CPATH: '/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/include'
         LD_LIBRARY_PATH: '/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/lib:/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/lib64'
+
 - compiler:
     spec: gcc@12.4.0
     paths:
