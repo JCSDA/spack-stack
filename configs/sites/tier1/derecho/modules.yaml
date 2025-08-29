@@ -4,5 +4,4 @@ modules:
     - lmod
     lmod:
       include:
-      - cray-mpich
       - python
