@@ -1,4 +1,4 @@
-name: ubuntu-ci-c6a-x86_64-gnu-build
+name: ubuntu-ci-c6a-x86_64-oneapi-build
 on:
   pull_request:
   workflow_dispatch:
@@ -17,7 +17,7 @@ env:
   SOURCE_CACHE_PATH: /home/ubuntu/spack-stack/source-cache
 
 jobs:
-  ubuntu-ci-c6a-x86_64-gnu-build:
+  ubuntu-ci-c6a-x86_64-oneapi-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
 
     steps:
@@ -57,21 +57,21 @@ jobs:
           # Set up spack-stack
           source ./setup.sh
 
-          declare -a TEMPLATES=("unified-dev" "skylab-dev" "cylc-dev" "neptune-dev")
+          declare -a TEMPLATES=("unified-dev" "skylab-dev" "neptune-dev")
           for TEMPLATE in "${TEMPLATES[@]}"; do
             if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
-              export ENVNAME=ue-gcc-11.4.0-buildcache
+              export ENVNAME=ue-oneapi-2024.2.0-buildcache
             elif [[ "${TEMPLATE}" == *"skylab-dev"* ]]; then
-              export ENVNAME=se-gcc-11.4.0-buildcache
+              export ENVNAME=se-oneapi-2024.2.0-buildcache
             elif [[ "${TEMPLATE}" == *"cylc-dev"* ]]; then
-              export ENVNAME=ce-gcc-11.4.0-buildcache
+              export ENVNAME=ce-oneapi-2024.2.0-buildcache
             elif [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
-              export ENVNAME=ne-gcc-11.4.0-buildcache
+              export ENVNAME=ne-oneapi-2024.2.0-buildcache
             fi
             echo "Creating environment ${ENVNAME} from template ${TEMPLATE}"
 
             export ENVDIR=$PWD/envs/${ENVNAME}
-            spack stack create env --site linux.default --template ${TEMPLATE} --name ${ENVNAME} --compiler gcc
+            spack stack create env --site linux.default --template ${TEMPLATE} --name ${ENVNAME} --compiler oneapi
             spack env activate ${ENVDIR}
 
             unset SPACK_DISABLE_LOCAL_CONFIG
@@ -81,7 +81,7 @@ jobs:
             spack external find --scope system \
                 --exclude bison --exclude openssl \
                 --exclude curl --exclude python \
-                --exclude meson
+                --exclude meson --exclude gmake
             spack external find --scope system grep
             spack external find --scope system sed
             spack external find --scope system perl
@@ -92,6 +92,55 @@ jobs:
             # Find compilers
             spack compiler find --scope system
 
+            # For Intel oneAPI
+            module use /opt/intel/oneapi/modulefiles
+
+            cat << EOF >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+  intel-oneapi-compilers:
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.0
+      prefix: /opt/intel/oneapi
+      modules:
+      - tbb/2021.13
+      - compiler-rt/2024.2.0
+      - compiler/2024.2.0
+      extra_attributes:
+        compilers:
+          c: /opt/intel/oneapi/compiler/2024.2/bin/icx
+          cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx
+          fortran: /opt/intel/oneapi/compiler/2024.2/bin/ifort
+  intel-oneapi-runtime:
+    # LINK TO BUG REPORT HERE
+    #buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.0
+      prefix: /opt/intel/oneapi
+      modules:
+      - tbb/2021.13
+      - compiler-rt/2024.2.0
+  intel-oneapi-tbb:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-tbb@2021.13
+      prefix: /opt/intel/oneapi
+      modules:
+      - tbb/2021.13
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /opt/intel/oneapi
+      modules:
+      - mkl/2024.2
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.13
+      prefix: /opt/intel/oneapi
+      modules:
+      - mpi/2021.13
+            EOF
+
             export SPACK_DISABLE_LOCAL_CONFIG=true
             unset SPACK_SYSTEM_CONFIG_PATH
 
@@ -99,11 +148,21 @@ jobs:
             spack config add config:install_tree:padded_length:200
 
             # Set compiler and MPI specs
-            spack config add "packages:mpi:require:['openmpi@5.0.8']"
-            spack config add "packages:all:prefer:['%gcc']"
+            spack config add "packages:mpi:buildable:False"
+            spack config add "packages:mpi:require:['intel-oneapi-mpi@2021.13']"
+            spack config add "packages:all:prefer:['%oneapi']"
 
             # Add additional variants for MET packages, different from config/common/packages.yaml
             spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+
+            ## Pin gmake to avoid duplicate packages (excluded gmake from spack external find above)
+            #spack config add "packages:gmake:require:'@:4.2'"
+
+            ## Remove wgrib2 from all virtual packages, since it doesn't build with oneAPI
+            #sed -i 's/depends_on("wgrib2")/#depends_on("wgrib2")/g' `grep -lRie wgrib2 spack-ext/`
+
+            # Don't generate ecflow module when using external package
+            spack config add "modules:default:tcl:exclude:[ecflow]"
 
             # Concretize and check for duplicates
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
@@ -156,6 +215,9 @@ jobs:
             spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
             spack buildcache create -u local-binary
 
+            # Check for libirc.so in shared libraries (returns 1=error if found)
+            ${SPACK_STACK_DIR}/util/check_libirc.sh
+
             # Remove binary cache for next round of concretization
             if [ "$USE_BINARY_CACHE" = true ] ; then
               spack mirror rm local-binary
@@ -176,9 +238,9 @@ jobs:
         run: |
           # Set up spack-stack
           source ./setup.sh
-          export BUILDCACHE_ENVNAME=ue-gcc-11.4.0-buildcache
+          export BUILDCACHE_ENVNAME=ue-oneapi-2024.2.0-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
-          export ENVNAME=ue-gcc-11.4.0
+          export ENVNAME=ue-oneapi-2024.2.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
@@ -198,42 +260,27 @@ jobs:
           # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
 
+          # Check for libirc.so in shared libraries (returns 1=error if found)
+          ${SPACK_STACK_DIR}/util/check_libirc.sh
+
           # Create modules
           spack clean -a
           spack module tcl refresh -y
           spack stack setup-meta-modules
           spack env deactivate
 
-          # Test environment chaining
-          echo "Test environment chaining"
-          spack stack create env --name chaintest --template empty --site linux.default --compiler gcc --upstream ${ENVDIR}/install
-          # Retain config from upstream so we don't have to rebuild:
-          cp -r ${ENVDIR}/{site,common} $PWD/envs/chaintest/.
-          spack env activate ${PWD}/envs/chaintest
-          spack add nccmp@1.9.0.1%gcc
-          spack concretize | tee envs/chaintest/log.concretize
-          unwanted_duplicates=$(( cat envs/chaintest/log.concretize | grep -E '^ - ' | grep -Fv 'nccmp@1.9.0.1' || true ) | wc -l)
-          if [ ${unwanted_duplicates} -gt 0 ]; then echo "Environment chaining test failed"; exit 1; fi
-          spack env deactivate
-          echo "Verify 'create env' warnings"
-          echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/site/packages.yaml
-          echo "# nothing" >> ${SPACK_STACK_DIR}/envs/chaintest/common/packages.yaml
-          spack stack create env --name chaintest3 --site linux.default --compiler gcc --upstream ${SPACK_STACK_DIR}/envs/chaintest/install 2>&1 | tee stderr.txt
-          cnt=$(grep -c "WARNING.*do not match" stderr.txt || true)
-          if [ $cnt -lt 3 ]; then echo "Missing 'create env' warnings"; exit 1; fi
-
       - name: test-env
         run: |
           source /etc/profile.d/modules.sh
           module use /home/ubuntu/spack-stack/modulefiles
 
-          export ENVNAME=ue-gcc-11.4.0
+          export ENVNAME=ue-oneapi-2024.2.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           ls -l ${ENVDIR}/install/modulefiles/Core
 
           module use ${ENVDIR}/install/modulefiles/Core
-          module load stack-gcc/11.4.0
-          module load stack-openmpi/5.0.8
+          module load stack-oneapi/2024.2.0
+          module load stack-intel-oneapi-mpi/2021.13
           module available
 
           module load jedi-ufs-env
