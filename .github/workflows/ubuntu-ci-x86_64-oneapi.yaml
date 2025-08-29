@@ -93,6 +93,7 @@ jobs:
             spack compiler find --scope system
 
             # For Intel oneAPI
+            source /usr/share/modules/init/bash
             module use /opt/intel/oneapi/modulefiles
 
             cat .github/workflows/ubuntu-ci-x86_64-oneapi.cfg >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
