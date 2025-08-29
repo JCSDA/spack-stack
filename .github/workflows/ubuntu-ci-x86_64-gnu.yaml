@@ -11,6 +11,11 @@ defaults:
   run:
     shell: bash
 
+env:
+  # DH* REVERT ME AFTER MERGE
+  BUILD_CACHE_PATH: /home/ubuntu/spack-stack/build-cache-new-spack-v1
+  SOURCE_CACHE_PATH: /home/ubuntu/spack-stack/source-cache
+
 jobs:
   ubuntu-ci-c6a-x86_64-gnu-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
@@ -33,8 +38,8 @@ jobs:
       - name: prepare-directories
         run: |
           # DH* REVERT ME AFTER MERGE
-          mkdir -p /home/ubuntu/spack-stack/build-cache-new-spack-v1/
-          mkdir -p /home/ubuntu/spack-stack/source-cache/
+          mkdir -p ${BUILD_CACHE_PATH}
+          mkdir -p ${SOURCE_CACHE_PATH}
 
       - name: create-buildcache
         run: |
