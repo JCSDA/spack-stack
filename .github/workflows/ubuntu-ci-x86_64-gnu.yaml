@@ -32,6 +32,7 @@ jobs:
 
       - name: prepare-directories
         run: |
+          # DH* REVERT ME AFTER MERGE
           mkdir -p /home/ubuntu/spack-stack/build-cache-new-spack-v1/
           mkdir -p /home/ubuntu/spack-stack/source-cache/
 
@@ -110,6 +111,7 @@ jobs:
             # Add binary cache if requested
             if [ "$USE_BINARY_CACHE" = true ] ; then
               set +e
+              # DH* REVERT ME AFTER MERGE
               spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache-new-spack-v1/
               spack buildcache update-index local-binary
               set -e
@@ -175,6 +177,7 @@ jobs:
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env
 
           # Add binary cache back in
+          # DH* REVERT ME AFTER MERGE
           spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache-new-spack-v1/
           echo "Packages in combined spack build caches:"
           spack buildcache list
@@ -221,7 +224,6 @@ jobs:
           module use ${ENVDIR}/install/modulefiles/Core
           module load stack-gcc/11.4.0
           module load stack-openmpi/5.0.8
-          module load stack-python/3.11.11
           module available
 
           module load jedi-ufs-env
