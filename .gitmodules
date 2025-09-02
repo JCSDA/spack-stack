@@ -1,7 +1,9 @@
 [submodule "spack"]
   path = spack
   #url = https://github.com/jcsda/spack
-  #branch = spack-stack-dev
+  ## Temporary, for transition to spack v1 code
+  ##branch = spack-stack-dev
+  #branch = feature/update_to_spack_v1
   url = https://github.com/climbfuji/spack
   branch = feature/update_to_spack_v1p0p0
 [submodule "doc/CMakeModules"]
