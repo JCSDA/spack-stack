@@ -93,7 +93,7 @@ jobs:
             spack compiler find --scope system
 
             # For Intel oneAPI
-            source /usr/share/modules/init/bash
+            source /etc/profile.d/modules.sh
             module use /opt/intel/oneapi/modulefiles
 
             cat .github/workflows/ubuntu-ci-x86_64-oneapi-ifx.cfg >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
@@ -214,6 +214,9 @@ jobs:
           # Install from cache
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
 
+          # For spack-built Intel oneAPI runtime to find libintlc.so.5 etc.
+          export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/2024.2/lib:$LD_LIBRARY_PATH"
+
           # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
 
@@ -229,6 +232,7 @@ jobs:
       - name: test-env
         run: |
           source /etc/profile.d/modules.sh
+          module use /opt/intel/oneapi/modulefiles
           module use /home/ubuntu/spack-stack/modulefiles
 
           export ENVNAME=ue-oneifx-2024.2.0
