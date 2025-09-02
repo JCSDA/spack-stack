@@ -1,4 +1,4 @@
-name: ubuntu-ci-c6a-x86_64-oneapi-build
+name: ubuntu-ci-c6a-x86_64-oneapi-ifx-build
 on:
   pull_request:
   workflow_dispatch:
@@ -17,7 +17,7 @@ env:
   SOURCE_CACHE_PATH: /home/ubuntu/spack-stack/source-cache
 
 jobs:
-  ubuntu-ci-c6a-x86_64-oneapi-build:
+  ubuntu-ci-c6a-x86_64-oneapi-ifx-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
 
     steps:
@@ -60,13 +60,13 @@ jobs:
           declare -a TEMPLATES=("unified-dev" "skylab-dev" "neptune-dev")
           for TEMPLATE in "${TEMPLATES[@]}"; do
             if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
-              export ENVNAME=ue-oneapi-2024.2.0-buildcache
+              export ENVNAME=ue-oneifx-2024.2.0-buildcache
             elif [[ "${TEMPLATE}" == *"skylab-dev"* ]]; then
-              export ENVNAME=se-oneapi-2024.2.0-buildcache
+              export ENVNAME=se-oneifx-2024.2.0-buildcache
             elif [[ "${TEMPLATE}" == *"cylc-dev"* ]]; then
-              export ENVNAME=ce-oneapi-2024.2.0-buildcache
+              export ENVNAME=ce-oneifx-2024.2.0-buildcache
             elif [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
-              export ENVNAME=ne-oneapi-2024.2.0-buildcache
+              export ENVNAME=ne-oneifx-2024.2.0-buildcache
             fi
             echo "Creating environment ${ENVNAME} from template ${TEMPLATE}"
 
@@ -93,53 +93,10 @@ jobs:
             spack compiler find --scope system
 
             # For Intel oneAPI
+            source /usr/share/modules/init/bash
             module use /opt/intel/oneapi/modulefiles
 
-            cat << EOF >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-  intel-oneapi-compilers:
-    externals:
-    - spec: intel-oneapi-compilers@2024.2.0
-      prefix: /opt/intel/oneapi
-      modules:
-      - tbb/2021.13
-      - compiler-rt/2024.2.0
-      - compiler/2024.2.0
-      extra_attributes:
-        compilers:
-          c: /opt/intel/oneapi/compiler/2024.2/bin/icx
-          cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx
-          fortran: /opt/intel/oneapi/compiler/2024.2/bin/ifort
-  intel-oneapi-runtime:
-    # LINK TO BUG REPORT HERE
-    #buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2024.2.0
-      prefix: /opt/intel/oneapi
-      modules:
-      - tbb/2021.13
-      - compiler-rt/2024.2.0
-  intel-oneapi-tbb:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-tbb@2021.13
-      prefix: /opt/intel/oneapi
-      modules:
-      - tbb/2021.13
-  intel-oneapi-mkl:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-mkl@2024.2
-      prefix: /opt/intel/oneapi
-      modules:
-      - mkl/2024.2
-  intel-oneapi-mpi:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-mpi@2021.13
-      prefix: /opt/intel/oneapi
-      modules:
-      - mpi/2021.13
-            EOF
+            cat .github/workflows/ubuntu-ci-x86_64-oneapi-ifx.cfg >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
             export SPACK_DISABLE_LOCAL_CONFIG=true
             unset SPACK_SYSTEM_CONFIG_PATH
@@ -204,10 +161,10 @@ jobs:
               echo "base-env ..."
               spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.${ENVNAME}.base-env
               spack buildcache create -u local-binary base-env
-              # neptune-env
+              # neptune-python-env
               echo "neptune-env ..."
-              spack install --fail-fast --source --no-check-signature neptune-env 2>&1 | tee log.install.${ENVNAME}.neptune-env
-              spack buildcache create -u local-binary neptune-env
+              spack install --fail-fast --source --no-check-signature neptune-python-env 2>&1 | tee log.install.${ENVNAME}.neptune-env
+              spack buildcache create -u local-binary neptune-python-env
             fi
 
             # the rest
@@ -238,9 +195,9 @@ jobs:
         run: |
           # Set up spack-stack
           source ./setup.sh
-          export BUILDCACHE_ENVNAME=ue-oneapi-2024.2.0-buildcache
+          export BUILDCACHE_ENVNAME=ue-oneifx-2024.2.0-buildcache
           export BUILDCACHE_ENVDIR=$PWD/envs/${BUILDCACHE_ENVNAME}
-          export ENVNAME=ue-oneapi-2024.2.0
+          export ENVNAME=ue-oneifx-2024.2.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
@@ -274,7 +231,7 @@ jobs:
           source /etc/profile.d/modules.sh
           module use /home/ubuntu/spack-stack/modulefiles
 
-          export ENVNAME=ue-oneapi-2024.2.0
+          export ENVNAME=ue-oneifx-2024.2.0
           export ENVDIR=$PWD/envs/${ENVNAME}
           ls -l ${ENVDIR}/install/modulefiles/Core
 

@@ -161,10 +161,10 @@ jobs:
               echo "base-env ..."
               spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.${ENVNAME}.base-env
               spack buildcache create -u local-binary base-env
-              # neptune-env
+              # neptune-python-env
               echo "neptune-env ..."
-              spack install --fail-fast --source --no-check-signature neptune-env 2>&1 | tee log.install.${ENVNAME}.neptune-env
-              spack buildcache create -u local-binary neptune-env
+              spack install --fail-fast --source --no-check-signature neptune-python-env 2>&1 | tee log.install.${ENVNAME}.neptune-env
+              spack buildcache create -u local-binary neptune-python-env
             fi
 
             # the rest
