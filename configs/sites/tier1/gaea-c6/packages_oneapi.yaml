@@ -1,0 +1,41 @@
+packages:
+  all:
+    compiler:: [oneapi@2024.2.1, gcc@12.3.0]
+    providers:
+      mpi:: [cray-mpich@8.1.32]
+### MPI, Python, MKL
+  mpi:
+    buildable: False
+  cray-mpich:
+    buildable: False
+    externals:
+    - spec: cray-mpich@8.1.32%oneapi@2024.2.1 ~wrappers
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
+      modules:
+      - cray-mpich/8.1.32
+      - craype-network-ofi
+  intel-oneapi-runtime:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+      prefix: /opt/intel/oneapi/compiler/2024.2
+  intel-oneapi-mkl:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2023.2.0%oneapi@2024.2.1
+      prefix: /opt/intel/oneapi
+
+### Modification of common packages
+  bison:
+    require:
+    - '%gcc'
+  ectrans:
+    require::
+    - '@1.2.0 +mkl ~fftw'
+  gsibec:
+    require::
+    - '@1.2.1 ~mkl'
+  py-numpy:
+    require::
+    - '@1.26'
+    - '^openblas'
