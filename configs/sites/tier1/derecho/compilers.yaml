@@ -2,45 +2,32 @@ compilers::
 - compiler:
     spec: oneapi@2024.2.1
     paths:
-      cc: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2024.2.1/compiler/2024.2/bin/icx
-      cxx: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2024.2.1/compiler/2024.2/bin/icpx
-      f77: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2024.2.1/compiler/2024.2/bin/ifort
-      fc: /glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2024.2.1/compiler/2024.2/bin/ifort
+      cc: /glade/u/apps/casper/24.12/spack/opt/spack/intel-oneapi-compilers/2024.2.1/gcc/12.4.0/iq3b/compiler/2024.2/bin/icx
+      cxx: /glade/u/apps/casper/24.12/spack/opt/spack/intel-oneapi-compilers/2024.2.1/gcc/12.4.0/iq3b/compiler/2024.2/bin/icpx
+      f77: /glade/u/apps/casper/24.12/spack/opt/spack/intel-oneapi-compilers/2024.2.1/gcc/12.4.0/iq3b/compiler/2024.2/bin/ifort
+      fc: /glade/u/apps/casper/24.12/spack/opt/spack/intel-oneapi-compilers/2024.2.1/gcc/12.4.0/iq3b/compiler/2024.2/bin/ifort
     flags: {}
     operating_system: sles15
     target: x86_64
     modules:
-    - ncarenv/23.09
-    - intel-oneapi/2024.2.1
+    - ncarenv/24.12
+    - intel/2024.2.1
     environment:
       prepend_path:
-        PATH: '/opt/cray/pe/gcc/12.2.0/snos/bin'
-        CPATH: '/opt/cray/pe/gcc/12.2.0/snos/include'
-        LD_LIBRARY_PATH: '/opt/cray/pe/gcc/12.2.0/snos/lib:/opt/cray/pe/gcc/12.2.0/snos/lib64'
-      set:
-        # https://github.com/JCSDA/spack-stack/issues/957
-        FI_CXI_RX_MATCH_MODE: 'hybrid'
-        # https://github.com/JCSDA/spack-stack/issues/1012
-        I_MPI_EXTRA_FILESYSTEM: 'ON'
-    extra_rpaths: []
+        PATH: '/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/bin'
+        CPATH: '/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/include'
+        LD_LIBRARY_PATH: '/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/lib:/glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/lib64'
+
 - compiler:
-    spec: gcc@12.2.0
+    spec: gcc@12.4.0
     paths:
-      cc: /opt/cray/pe/gcc/12.2.0/bin/gcc
-      cxx: /opt/cray/pe/gcc/12.2.0/bin/g++
-      f77: /opt/cray/pe/gcc/12.2.0/bin/gfortran
-      fc: /opt/cray/pe/gcc/12.2.0/bin/gfortran
+      cc: /glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/bin/gcc
+      cxx: /glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/bin/g++
+      f77: /glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/bin/gfortran
+      fc: /glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c/bin/gfortran
     flags: {}
     operating_system: sles15
     target: x86_64
     modules:
-    - ncarenv/23.09
-    - gcc/12.2.0
-    environment:
-      prepend_path:
-        # For compiling scotch (which requires Intel MPI) with gcc in the oneapi@2024.2.1 unified environment
-        LD_LIBRARY_PATH: '/glade/u/apps/common/23.08/spack/opt/spack/intel-oneapi-compilers/2024.2.1/compiler/2024.2/lib'
-      set:
-        # https://github.com/JCSDA/spack-stack/issues/957
-        FI_CXI_RX_MATCH_MODE: 'hybrid'
-    extra_rpaths: []
+    - ncarenv/24.12
+    - gcc/12.4.0

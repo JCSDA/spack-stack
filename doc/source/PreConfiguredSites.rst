@@ -50,9 +50,9 @@ Pre-configured sites (tier 1)
 | MSU                 +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Orion                 | Intel              | ``/apps/contrib/spack-stack/``                         | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
-|                     | Discover SCU16        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu16/``             | JCSDA           |
-| NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
 |                     | Discover SCU17        | GCC, Intel         | ``/gpfsm/dswdev/jcsda/spack-stack/scu17/``             | JCSDA           |
+| NASA                +-----------------------+--------------------+--------------------------------------------------------+-----------------+
+|                     | NAS                   | GCC, Intel         | ``/nobackup/gmao_SIteam/spack-stack/``                 | GMAO            |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
 | NCAR-Wyoming        + Derecho               | GCC, Intel         | ``/glade/work/epicufsrt/contrib/spack-stack/derecho/`` | EPIC / JCSDA    |
 +---------------------+-----------------------+--------------------+--------------------------------------------------------+-----------------+
@@ -108,6 +108,7 @@ The following is required for building new spack environments with any supported
    
    # Edit /path/to/env/install/modulefiles/Core/stack-oneapi/<version>.lua
    # Change:
+   # -- prerequisite modules
    # load("spack-managed-x86-64_v3")
    # load("intel-oneapi-compilers/2024.2.1")
    # prereq("spack-managed-x86-64_v3")
@@ -116,10 +117,10 @@ to
 
 .. code-block:: console
 
-   # -- load("spack-managed-x86-64_v3")
+   # -- prerequisite modules
    # prepend_path("MODULEPATH", "/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles")
    # load("intel-oneapi-compilers/2024.2.1")
-   # -- prereq("spack-managed-x86-64_v3"
+   # prereq("intel-oneapi-compilers/2024.2.1")
 
 and
 
@@ -140,11 +141,7 @@ to
 .. code-block:: console
 
    # -- prerequisite modules
-   # -- load("spack-managed-x86-64_v3")
-   # load("intel-oneapi-compilers/2024.2.1")
    # load("intel-oneapi-mpi/2021.13.1")
-   # -- prereq("spack-managed-x86-64_v3")
-   # prereq("intel-oneapi-compilers/2024.2.1")
    # prereq("intel-oneapi-mpi/2021.13.1")
 
 .. _Preconfigured_Sites_Hercules:
@@ -168,6 +165,7 @@ The following is required for building new spack environments with any supported
 
    # Edit /path/to/env/install/modulefiles/Core/stack-oneapi/<version>.lua
    # Change:
+   # -- prerequisite modules
    # load("spack-managed-x86-64_v3")
    # load("intel-oneapi-compilers/2024.2.1")
    # prereq("spack-managed-x86-64_v3")
@@ -176,10 +174,10 @@ to
 
 .. code-block:: console
 
-   # -- load("spack-managed-x86-64_v3")
+   # -- prerequisite modules
    # prepend_path("MODULEPATH", "/apps/spack-managed-x86_64_v3-v1.0/modulefiles/Core:/apps/other/modulefiles:/apps/containers/modulefiles:/apps/licensed/modulefiles")
    # load("intel-oneapi-compilers/2024.2.1")
-   # -- prereq("spack-managed-x86-64_v3"
+   # prereq("intel-oneapi-compilers/2024.2.1")
 
 and
 
@@ -200,27 +198,8 @@ to
 .. code-block:: console
 
    # -- prerequisite modules
-   # -- load("spack-managed-x86-64_v3")
-   # load("intel-oneapi-compilers/2024.2.1")
    # load("intel-oneapi-mpi/2021.13.1")
-   # -- prereq("spack-managed-x86-64_v3")
-   # prereq("intel-oneapi-compilers/2024.2.1")
    # prereq("intel-oneapi-mpi/2021.13.1")
-
-.. _Preconfigured_Sites_Discover_SCU16:
-
-------------------------------
-NASA Discover SCU16
-------------------------------
-
-The following is required for building new spack environments with any supported compiler on this platform.
-
-.. code-block:: console
-
-   module purge
-   module use /discover/swdev/gmao_SIteam/modulefiles-SLES12
-   module use /discover/swdev/jcsda/spack-stack/scu16/modulefiles
-   module load miniconda/3.9.7
 
 .. _Preconfigured_Sites_Discover_SCU17:
 
@@ -235,6 +214,19 @@ The following is required for building new spack environments with any supported
    module purge
    module use /discover/swdev/gmao_SIteam/modulefiles-SLES15
    module use /discover/swdev/jcsda/spack-stack/scu17/modulefiles
+
+.. _Preconfigured_Sites_NAS:
+
+------------------------------
+NASA NAS
+------------------------------
+
+The following is required for building new spack environments with any supported compiler on this platform.
+
+.. code-block:: console
+
+   module purge
+   module use /nobackup/gmao_SIteam/modulefiles
 
 .. _Preconfigured_Sites_Narwhal:
 
@@ -400,12 +392,7 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   module purge
-   # ignore that the sticky module ncarenv/... is not unloaded
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load ncarenv/23.09
-   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-
+   module --force purge
 
 .. _Preconfigured_Sites_Acorn:
 

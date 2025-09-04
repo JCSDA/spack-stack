@@ -42,6 +42,7 @@ spack:
 
     # MADIS for WCOSS2 decoders.
     - madis@4.5
+    - sp@2.5.0
 
   specs:
   - matrix:

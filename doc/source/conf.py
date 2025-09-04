@@ -27,7 +27,7 @@ author = 'Dominikus Heinzeller, Alexander Richert, Evan Parker, Steve Herbener, 
 version = '1.9'
 
 # The full version, including alpha/beta/rc tags
-release = '1.9.1'
+release = '1.9.3'
 
 numfig = True
 
