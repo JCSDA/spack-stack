@@ -1,0 +1,39 @@
+packages:
+  all:
+    compiler:: [gcc@12.3.0]
+    providers:
+      mpi:: [openmpi@4.1.8]
+  mpi:
+    buildable: False
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.8%gcc@=12.3.0~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+lustre
+        fabrics=ucx schedulers=tm
+      prefix: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0
+      environment:
+        set:
+          OPAL_PREFIX: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0
+          UCX_MAX_EAGER_LANES: 1
+          UCX_MAX_RNDV_LANES: 1
+          OMPI_MCA_pml: ucx
+          OMPI_MCA_btl: ^openib
+          OMPI_MCA_oob_tcp_listen_mode: listen_thread
+          OMPI_MCA_oob_tcp_if_include: ib0,ib1
+          OMPI_MCA_btl_tcp_if_include: ib0,ib1
+          OMPI_MCA_opal_warn_on_missing_libcuda: 0
+          UCX_IB_SUBNET_PREFIX: fec0:0000:0000:0008
+          OMPI_MCA_shmem_mmap_enable_nfs_warning: 0
+          OPENMPI: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0
+        prepend_path:
+          PATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/bin
+          LIBRARY_PATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/lib
+          LD_LIBRARY_PATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/lib
+          CPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/include
+          FPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/include
+          MANPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-12.3.0/share/man
+  # MAT: I cannot figure out how to get hdf-eos2 to build with GCC on NAS
+  #      When I try, it dies with an error trying to *patch* the code!
+  #      This turns off the variants of met that need it
+  met:
+    variants::
+      - '+python +grib2 +graphics'
