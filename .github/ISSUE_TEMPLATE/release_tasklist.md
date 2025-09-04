@@ -5,19 +5,19 @@ title: '[RELEASE] release-x.y.z tasks'
 labels: ''
 assignees:
 # EPIC
-- @natalie-perlin
-- @ratkovasic-noaa
-- @rickgrubin-noaa
+- natalie-perlin
+- ratkovasic-noaa
+- rickgrubin-noaa
 # JCSDA
-- @ashley314
-- @eap
+- ashley314
+- eap
 # NASA
-- @mathomp4
+- mathomp4
 # NOAA
-- @alexanderrichert-noaa
-- @hanglei-noaa
+- alexanderrichert-noaa
+- hanglei-noaa
 # NRL
-- @climbfuji
+- climbfuji
 
 ---
 
