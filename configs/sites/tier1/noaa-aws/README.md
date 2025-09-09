@@ -1,6 +1,6 @@
 # Provisiong ParallelWorks AWS clusters
 
-## Steps to perform before installing spack-stack version 1.8.0
+## Steps to perform before installing spack-stack version 1.9.3
 
 sudo su -
 chmod 777 /contrib
@@ -14,24 +14,16 @@ sudo su -
 chmod 777 /contrib
 
 module purge
-module unuse /opt/cray/craype/default/modulefiles
-module unuse /opt/cray/modulefiles
-### For noaa-aws, run the line below as well:
-module unuse /opt/intel/impi/2019.5.281/intel64/modulefiles
-module load gnu
-module load intel/2023.2.0
-module load impi/2023.2.0 
-module unload gnu
 
 cd /contrib/spack-stack-rocky8/
-git clone --recursive https://github.com/JCSDA/spack-stack -b release/1.8.0 spack-stack-1.8.0
-cd spack-stack-1.8.0
+git clone --recursive https://github.com/JCSDA/spack-stack -b release/1.9.0 spack-stack-1.9.3
+cd spack-stack-1.9.3
 . setup.sh
-spack stack create env --name ue-intel-2021.10.0 --template unified-dev --site noaa-aws --compiler intel
-cd envs/ue-intel-2021.10.0
+spack stack create env --name ue-oneapi-2024.2.1 --template unified-dev --site noaa-aws --compiler oneapi
+cd envs/ue-oneapi-2024.2.1
 spack env activate .
 spack concretize 2>&1 | tee log.concretize
-spack install --verbose 2>&1 | tee log.install
+spack install --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install
 spack module lmod refresh -y
 spack stack setup-meta-modules
 
@@ -40,12 +32,12 @@ spack stack setup-meta-modules
 sudo su -
 chmod 777 /contrib
 
-cd /contrib/spack-stack-rocky8/spack-stack-1.8.0
+cd /contrib/spack-stack-rocky8/spack-stack-1.9.3
 . setup.sh
-spack stack create env --name gsi-intel-2021.10.0 --template gsi-addon-dev --site noaa-aws --upstream /contrib/spack-stack-rocky8/spack-stack-1.8.0/envs/ue-intel-2021.10.0/install --compiler intel
-cd envs/gsi-intel-2021.10.0
+spack stack create env --name gsi-oneapi-2024.2.1 --template gsi-addon-dev --site noaa-aws --upstream /contrib/spack-stack-rocky8/spack-stack-1.9.3/envs/ue-oneapi-2024.2.1/install --compiler oneapi
+cd envs/gsi-oneapi-2024.2.1
 spack env activate .
 spack concretize 2>&1 | tee log.concretize
-spack install --verbose 2>&1 | tee log.install
+spack install --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install
 spack module lmod refresh --upstream-modules
 spack stack setup-meta-modules

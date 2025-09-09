@@ -392,7 +392,7 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   module --force purge
+   module purge
 
 .. _Preconfigured_Sites_Acorn:
 
