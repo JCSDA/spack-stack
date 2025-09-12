@@ -16,7 +16,7 @@ packages:
         compilers:
           c: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/bin/icx
           cxx: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/bin/icpx
-          fortran: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/bin/ifx
+          fortran: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/bin/ifort
         environment:
           prepend_path:
             PATH: /cm/local/apps/gcc/11.2.0/bin
