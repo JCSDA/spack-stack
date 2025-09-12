@@ -2,7 +2,7 @@ packages:
   mpi:
     buildable: False
     require:
-    - "openmpi@4.1.1"
+    - "openmpi@4.1.8"
   gcc:
     externals:
     - spec: gcc@13.3.1 languages:='c,c++,fortran'
@@ -25,8 +25,6 @@ packages:
       prefix: /opt/rh/gcc-toolset-13/root
   openmpi:
     externals:
-    - spec: openmpi@4.1.1
-      prefix: /usr/lib64/openmpi
-      modules:
-      - mpi/openmpi-x86_64
+    - spec: openmpi@4.1.8
+      prefix: /project/gcc/openmpi-4.1.8/gcc-13.3.1
 
