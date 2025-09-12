@@ -4,7 +4,7 @@ config:
   # Overrides for spack build and staging areas to speed up builds
   # and avoid errors with hard links on the NFS filesystem /contrib
 
-  build_stage: /work/spack-stack-cache/build_stage
-  test_stage: /work/spack-stack-cache/test_stage
-  source_cache: /work/spack-stack-cache/source_cache
-  misc_cache: /work/spack-stack-cache/misc_cache
+  build_stage: ${HOME}/spack-stack-cache/build_stage
+  test_stage: ${HOME}/spack-stack-cache/test_stage
+  source_cache: ${HOME}/spack-stack-cache/source_cache
+  misc_cache: ${HOME}/spack-stack-cache/misc_cache

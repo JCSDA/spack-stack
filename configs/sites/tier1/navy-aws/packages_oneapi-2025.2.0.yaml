@@ -1,0 +1,64 @@
+packages:
+  mpi:
+    buildable: False
+    require:
+    - "intel-oneapi-mpi@2021.16"
+  intel-oneapi-compilers:
+    externals:
+    - spec: intel-oneapi-compilers@2025.2.0
+      prefix: /project/oneapi/2025.2.0
+      modules:
+      - umf/0.11.0
+      - tbb/2022.2
+      - compiler-rt/2025.2.0
+      - compiler/2025.2.0
+      extra_attributes:
+        compilers:
+          c: /project/oneapi/2025.2.0/compiler/2025.2/bin/icx
+          cxx: /project/oneapi/2025.2.0/compiler/2025.2/bin/icpx
+          fortran: /project/oneapi/2025.2.0/compiler/2025.2/bin/ifx
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.16
+      prefix: /project/oneapi/2025.2.0
+      modules:
+      - mpi/2021.16
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.2
+      prefix: /project/oneapi/2025.2.0
+      modules:
+      - mkl/2025.2
+  intel-oneapi-tbb:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-tbb@2022.2
+      prefix: /project/oneapi/2025.2.0
+      modules:
+      - tbb/2022.2
+  intel-oneapi-runtime:
+    # LINK TO BUG REPORT HERE
+    #buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.2.0
+      prefix: /project/oneapi/2025.2.0
+      modules:
+      - umf/0.11.0
+      - tbb/2022.2
+      - compiler-rt/2025.2.0
+      - compiler/2025.2.0
+  gcc:
+    externals:
+    - spec: gcc@11.5.0 languages:='c,c++'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@11.5.0
+      prefix: /usr
