@@ -1,0 +1,9 @@
+bootstrap:
+  sources:
+  - name: local-binaries
+    metadata: /project/spack-stack/spack-bootstrap-mirror/metadata/binaries
+  - name: local-sources
+    metadata: /project/spack-stack/spack-bootstrap-mirror/metadata/sources
+  trusted:
+    local-sources: true
+    local-binaries: true
