@@ -440,7 +440,7 @@ def setup_meta_modules():
         # Compiler flags; names are lowercase in spack
         if "flags" in compiler.extra_attributes.keys():
             for flag_name in compiler.extra_attributes["flags"].keys():
-                flag_values = compiler["compiler"]["flags"][flag_name]
+                flag_values = compiler.extra_attributes["flags"][flag_name]
                 substitutes["COMPFLAGS"] += setenv_command(
                     module_choice, flag_name.upper(), flag_values
                 )
