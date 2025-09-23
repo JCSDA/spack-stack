@@ -4,6 +4,7 @@ packages:
     require:
     - "cray-mpich@8.1.32"
   gcc:
+    buildable: False
     externals:
     - spec: gcc@13.3.0 languages:='c,c++,fortran'
       prefix: /usr
@@ -23,6 +24,7 @@ packages:
             CONFIG_SITE: ''
             CRAY_CPU_TARGET: x86-genoa
   gcc-runtime:
+    buildable: False
     externals:
     - spec: gcc-runtime@13.3.0
       prefix: /usr
