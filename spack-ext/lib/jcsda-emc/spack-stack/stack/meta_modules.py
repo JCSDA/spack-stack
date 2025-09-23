@@ -554,6 +554,11 @@ def setup_meta_modules():
             substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
             logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
 
+            # Set mpi_ROOT and MPI_ROOT (the latter seems to be needed for Cray)
+            substitutes["MPIROOT"] = setenv_command(module_choice, "mpi_ROOT", mpi_provider.prefix)
+            substitutes["MPIROOT"] += "\n" + setenv_command(module_choice, "MPI_ROOT", mpi_provider.prefix)
+            logging.debug("  ... ... MPIROOT: {}".format(substitutes["MPIROOT"]))
+
             # Compiler wrapper environment variables
             if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
                 substitutes["MPICC"]  = os.path.join("mpiicx")
