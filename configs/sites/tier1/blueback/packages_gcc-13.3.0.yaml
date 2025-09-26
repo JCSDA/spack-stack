@@ -23,11 +23,6 @@ packages:
           set:
             CONFIG_SITE: ''
             CRAY_CPU_TARGET: x86-genoa
-  gcc-runtime:
-    buildable: False
-    externals:
-    - spec: gcc-runtime@13.3.0
-      prefix: /usr
   cray-mpich:
     externals:
     - spec: cray-mpich@8.1.32%gcc@13.3.0 ~wrappers
