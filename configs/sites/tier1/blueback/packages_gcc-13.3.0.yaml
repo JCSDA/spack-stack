@@ -1,31 +1,31 @@
 packages:
   mpi:
-    buildable: False
+    buildable: false
     require:
-    - "cray-mpich@8.1.32"
+    - cray-mpich@8.1.32
   gcc:
-    buildable: False
+    buildable: false
     externals:
     - spec: gcc@13.3.0 languages:='c,c++,fortran'
       prefix: /usr
       modules:
       - PrgEnv-gnu/8.6.0
       - gcc-native/13.2
-      - libfabric/1.22.0
       extra_attributes:
         compilers:
           c: /usr/bin/gcc
           cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran
         environment:
-          prepend_path:
-            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64'
           set:
             CONFIG_SITE: ''
-            CRAY_CPU_TARGET: x86-genoa
+            PE_GCC_EXTERNAL: native
   cray-mpich:
+    buildable: false
     externals:
-    - spec: cray-mpich@8.1.32%gcc@13.3.0 ~wrappers
+    - spec: cray-mpich@8.1.32
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/GNU/12.3
       modules:
-      - cray-mpich/8.1.32
+      - libfabric/1.22.0
       - craype-network-ofi
+      - cray-mpich/8.1.32

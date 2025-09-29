@@ -559,7 +559,8 @@ def setup_meta_modules():
             substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_ROOT", mpi_provider.prefix)
             substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_HOME", mpi_provider.prefix)
             substitutes["MPIROOT"] += setenv_command(module_choice, "MPICH_DIR", mpi_provider.prefix)
-            logging.debug("  ... ... MPIROOT: {}".format(substitutes["MPIROOT"]))
+            for line in substitutes["MPIROOT"].split('\n'):
+                logging.debug("  ... ... MPIROOT: {}".format(line))
 
             # Compiler wrapper environment variables
             if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
