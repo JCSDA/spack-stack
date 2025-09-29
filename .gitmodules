@@ -1,16 +1,16 @@
 [submodule "spack"]
   path = spack
-  #url = https://github.com/jcsda/spack
-  ## Temporary, for transition to spack v1 code
-  ##branch = spack-stack-dev
-  #branch = feature/update_to_spack_v1
-  url = https://github.com/climbfuji/spack
-  branch = feature/update_to_spack_v1p0p0
+  url = https://github.com/jcsda/spack
+  # Temporary, for transition to spack v1 code
+  #branch = spack-stack-dev
+  branch = feature/update_to_spack_v1
 [submodule "doc/CMakeModules"]
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
   branch = v1.3.0
 [submodule "repos/builtin"]
   path = repos/builtin
-  url = https://github.com/jcsda/spack-packages
-  branch = spack-stack-dev
+  #url = https://github.com/jcsda/spack-packages
+  #branch = spack-stack-dev
+  url = https://github.com/climbfuji/spack-packages
+  branch = bugfix/oneapi2025p2_nasa_packages
