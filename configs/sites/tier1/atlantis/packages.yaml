@@ -1,10 +1,7 @@
 packages:
   # Modification of common packages
-
-  ## Pin py-torch to 2.5.1 to avoid build errors with 2.6.0
-  #py-torch:
-  #  require:
-  #  - '@2.5.1'
+  zlib-api:
+    buildable: False
 
   # All other packages listed alphabetically
   autoconf:
@@ -74,11 +71,6 @@ packages:
     externals:
     - spec: openssh@8.0p1
       prefix: /usr
-  # Can no longer use, issues with py-cryptography
-  #openssl:
-  #  externals:
-  #  - spec: openssl@1.1.1k
-  #    prefix: /usr
   pkgconf:
     externals:
     - spec: pkgconf@1.4.2
@@ -103,7 +95,8 @@ packages:
     externals:
     - spec: wget@1.19.5
       prefix: /usr
-  #zlib:
-  #  externals:
-  #  - spec: zlib@1.2.11
-  #    prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr

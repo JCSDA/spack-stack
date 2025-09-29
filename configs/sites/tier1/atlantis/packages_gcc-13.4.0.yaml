@@ -2,7 +2,7 @@ packages:
   mpi:
     buildable: False
     require:
-    - "openmpi@4.1.8"
+    - openmpi@4.1.8
   gcc:
     externals:
     - spec: gcc@13.4.0 languages:='c,c++,fortran'
@@ -14,10 +14,6 @@ packages:
           c: /gpfs/neptune/spack-stack/gcc-13.4.0/bin/gcc
           cxx: /gpfs/neptune/spack-stack/gcc-13.4.0/bin/g++
           fortran: /gpfs/neptune/spack-stack/gcc-13.4.0/bin/gfortran
-  gcc-runtime:
-    externals:
-    - spec: gcc-runtime@13.4.0%gcc@13.4.0
-      prefix: /gpfs/neptune/spack-stack/gcc-13.4.0
   openmpi:
     externals:
     - spec: openmpi@4.1.8
