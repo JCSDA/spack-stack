@@ -554,33 +554,35 @@ def setup_meta_modules():
             substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
             logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
 
-            # Set mpi_ROOT and MPI_ROOT (the latter seems to be needed for Cray)
+            # Set mpi_ROOT, MPI_ROOT,  and other versions of it used by Cray
             substitutes["MPIROOT"] = setenv_command(module_choice, "mpi_ROOT", mpi_provider.prefix)
-            substitutes["MPIROOT"] += "\n" + setenv_command(module_choice, "MPI_ROOT", mpi_provider.prefix)
+            substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_ROOT", mpi_provider.prefix)
+            substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_HOME", mpi_provider.prefix)
+            substitutes["MPIROOT"] += setenv_command(module_choice, "MPICH_DIR", mpi_provider.prefix)
             logging.debug("  ... ... MPIROOT: {}".format(substitutes["MPIROOT"]))
 
             # Compiler wrapper environment variables
             if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
-                substitutes["MPICC"]  = os.path.join("mpiicx")
-                substitutes["MPICXX"] = os.path.join("mpiicpx")
+                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix, "mpiicx")
+                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix, "mpiicpx")
                 if "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and not "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join("mpiifx")
-                    substitutes["MPIF90"] = os.path.join("mpiifx")
+                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpiifx")
+                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpiifx")
                 elif not "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join("mpiifort")
-                    substitutes["MPIF90"] = os.path.join("mpiifort")
+                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpiifort")
+                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpiifort")
                 else:
                     raise Exception(f"For {mpi_provider.name}, cannot determine MPI wrapper from FC={COMPILER_SUBSTITUTES_SAVE['FC']}")
             elif mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers-classic":
-                substitutes["MPICC"]  = os.path.join("mpiicc")
-                substitutes["MPICXX"] = os.path.join("mpiicpc")
-                substitutes["MPIF77"] = os.path.join("mpiifort")
-                substitutes["MPIF90"] = os.path.join("mpiifort")
+                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix, "mpiicc")
+                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix, "mpiicpc")
+                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpiifort")
+                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpiifort")
             else:
-                substitutes["MPICC"]  = os.path.join("mpicc")
-                substitutes["MPICXX"] = os.path.join("mpic++")
-                substitutes["MPIF77"] = os.path.join("mpif77")
-                substitutes["MPIF90"] = os.path.join("mpif90")
+                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix, "mpicc")
+                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix, "mpic++")
+                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpif77")
+                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpif90")
             # Also set the direct compiler environment variables
             substitutes["CC"]  = COMPILER_SUBSTITUTES_SAVE["CC"]
             substitutes["CXX"] = COMPILER_SUBSTITUTES_SAVE["CXX"]
