@@ -1,5 +1,7 @@
 packages:
   # Modification of common packages
+  zlib-api:
+    buildable: False
 
   # All other packages listed alphabetically
   autoconf:
@@ -103,7 +105,8 @@ packages:
     externals:
     - spec: wget@1.21.1
       prefix: /usr
-  #zlib:
-  #  externals:
-  #  - spec: zlib@1.2.11
-  #    prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
