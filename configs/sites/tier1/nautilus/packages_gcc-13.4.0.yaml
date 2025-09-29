@@ -1,0 +1,23 @@
+packages:
+  mpi:
+    buildable: False
+    require:
+    - openmpi@5.0.1
+  gcc:
+    externals:
+    - spec: gcc@13.4.0 languages:='c,c++,fortran'
+      prefix: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0
+      modules:
+      - gcc/13.4.0
+      extra_attributes:
+        compilers:
+          c: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/bin/gcc
+          cxx: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/bin/g++
+          fortran: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/bin/gfortran
+  openmpi:
+    externals:
+    - spec: openmpi@5.0.1
+      prefix: /p/app/penguin/openmpi/5.0.1/gcc-8.5.0
+      modules:
+      - penguin/openmpi/5.0.1/gcc-8.5.0
+      - slurm

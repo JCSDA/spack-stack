@@ -1,21 +1,7 @@
 packages:
-# Modification of common packages
-  # Use system zlib instead of spack-built zlib-ng
-  all:
-    providers:
-      zlib-api:: [zlib]
+  # Modification of common packages
   zlib-api:
     buildable: False
-  zlib:
-    buildable: False
-    externals:
-    - spec: zlib@1.2.11
-      prefix: /usr
-
-  # Pin py-torch to 2.5.1 to avoid build errors with 2.6.0
-  py-torch:
-    require:
-        - '@2.5.1'
 
   # All other packages listed alphabetically
   autoconf:
@@ -108,4 +94,9 @@ packages:
   wget:
     externals:
     - spec: wget@1.19.5
+      prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
       prefix: /usr
