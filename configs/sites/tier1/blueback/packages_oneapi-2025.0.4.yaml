@@ -6,31 +6,31 @@ packages:
   intel-oneapi-runtime:
     buildable: false
     externals:
-    - spec: intel-oneapi-runtime@2025.2.1
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1
+    - spec: intel-oneapi-runtime@2025.0.4
+      prefix: /p/app/intel/oneapi-combined
       modules:
       - PrgEnv-intel/8.6.0
-      - intel-oneapi/2025.2.1
+      - intel-oneapi/2025.0
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.2.1
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1
+    - spec: intel-oneapi-compilers@2025.0.4
+      prefix: /p/app/intel/oneapi-combined
       modules:
       - PrgEnv-intel/8.6.0
-      - intel-oneapi/2025.2.1
+      - intel-oneapi/2025.0
       extra_attributes:
         compilers:
-          c: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1/compiler/2025.2/bin/icx
-          cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1/compiler/2025.2/bin/icpx
-          fortran: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1/compiler/2025.2/bin/ifx
+          c: /p/app/intel/oneapi-combined/compiler/2025.0/bin/icx
+          cxx: /p/app/intel/oneapi-combined/compiler/2025.0/bin/icpx
+          fortran: /p/app/intel/oneapi-combined/compiler/2025.0/bin/ifx
         environment:
           set:
             CONFIG_SITE: ''
   gcc-runtime:
     buildable: false
     externals:
-    - spec: gcc-runtiem@13.3.0
+    - spec: gcc-runtime@13.3.0
       prefix: /usr
       modules:
       - PrgEnv-gnu/8.6.0
@@ -65,5 +65,5 @@ packages:
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.2
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1
+    - spec: intel-oneapi-mkl@2025.0
+      prefix: /p/app/intel/oneapi-combined
