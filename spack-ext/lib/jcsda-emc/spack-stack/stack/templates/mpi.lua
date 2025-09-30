@@ -26,10 +26,6 @@ setenv("MPICC",  "@MPICC@")
 setenv("MPICXX", "@MPICXX@")
 setenv("MPIF77", "@MPIF77@")
 setenv("MPIF90", "@MPIF90@")
-setenv("MPI_CC",  "@MPICC@")
-setenv("MPI_CXX", "@MPICXX@")
-setenv("MPI_F77", "@MPIF77@")
-setenv("MPI_F90", "@MPIF90@")
 
 # underlying compilers for mpi distributions
 setenv("I_MPI_CC",  "@CC@")

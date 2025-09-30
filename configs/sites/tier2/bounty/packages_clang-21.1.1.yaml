@@ -3,6 +3,7 @@ packages:
     require:
     - "openmpi@=5.0.8"
   llvm:
+    buildable: False
     externals:
     - spec: llvm@21.1.1 +flang ~libomptarget
       prefix: /home/dom/prod/llvm-21.1.1

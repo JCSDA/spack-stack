@@ -3,6 +3,15 @@ packages:
     buildable: false
     require:
     - intel-oneapi-mpi@2021.16
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.2.1
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1
+      modules:
+      - tbb/2022.2
+      - umf/0.11.0
+      - compiler-rt/2025.2.1
   intel-oneapi-compilers:
     buildable: false
     externals:
@@ -25,10 +34,17 @@ packages:
         extra_rpaths:
         - /opt/rh/gcc-toolset-11/root/usr/lib64
         - /opt/rh/gcc-toolset-11/root/usr/lib
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@11.2.1
+      prefix: /opt/rh/gcc-toolset-11/root/usr
+      modules:
+      - scl/gcc-toolset-11
   gcc:
     buildable: false
     externals:
-    - spec: gcc@11.2.1 languages:='c,c++,fortran'
+    - spec: gcc@11.2.1 languages:='c,c++'
       prefix: /opt/rh/gcc-toolset-11/root/usr
       modules:
       - scl/gcc-toolset-11

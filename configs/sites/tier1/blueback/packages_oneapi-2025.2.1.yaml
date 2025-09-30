@@ -3,12 +3,21 @@ packages:
     buildable: false
     require:
     - cray-mpich@8.1.32
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.2.1
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1
+      modules:
+      - PrgEnv-intel/8.6.0
+      - intel-oneapi/2025.2.1
   intel-oneapi-compilers:
     buildable: false
     externals:
     - spec: intel-oneapi-compilers@2025.2.1
       prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.2.1
       modules:
+      - PrgEnv-intel/8.6.0
       - intel-oneapi/2025.2.1
       extra_attributes:
         compilers:
@@ -18,10 +27,18 @@ packages:
         environment:
           set:
             CONFIG_SITE: ''
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtiem@13.3.0
+      prefix: /usr
+      modules:
+      - PrgEnv-gnu/8.6.0
+      - gcc-native/13.2
   gcc:
     buildable: false
     externals:
-    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+    - spec: gcc@13.3.0 languages:='c,c++'
       prefix: /usr
       modules:
       - PrgEnv-gnu/8.6.0
