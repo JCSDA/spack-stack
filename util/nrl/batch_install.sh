@@ -160,6 +160,14 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
+  ufe)
+    SPACK_STACK_BATCH_HOST=ursa
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=12.4.0")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/scratch4/NCEPDEV/nems/Dom.Heinzeller/spack-stack-automation/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/scratch4/NCEPDEV/nems/Dom.Heinzeller/spack-stack-automation/cargo-mirror"
+    ;;
   *)
     echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
     exit 1
@@ -235,6 +243,8 @@ function fix_permissions() {
     blackpearl)
       ;;
     bounty)
+      ;;
+    ursa)
       ;;
     *)
       echo "ERROR, xargs-chmod command not configured for ${host}"
@@ -434,6 +444,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       bounty)
         ulimit -s unlimited
         ;;
+      ursa)
+        module purge
+        ;;
       *)
         echo "ERROR, host ${host} not configured for resetting environment"
         exit 1
@@ -592,6 +605,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         blackpearl)
           ;;
         bounty)
+          ;;
+        ursa)
           ;;
         *)
           echo "ERROR, post-install scripts not configured for ${host}"
