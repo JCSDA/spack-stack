@@ -1,7 +1,8 @@
 packages:
   all:
+    # https://github.com/JCSDA/spack-stack/issues/1781
     # To support hecflow01
-    target: [haswell]
+    #target: [haswell]
     providers:
       zlib-api:: [zlib]
   zlib-api:
