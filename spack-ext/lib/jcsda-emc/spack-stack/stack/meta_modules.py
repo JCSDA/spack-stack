@@ -563,27 +563,39 @@ def setup_meta_modules():
                 logging.debug("  ... ... MPIROOT: {}".format(line))
 
             # Compiler wrapper environment variables
+            # Note: This doesn't return the correct names, see
+            # https://github.com/JCSDA/spack-stack/pull/1782#discussion_r2401650644
+            #substitutes["MPICC"] = mpi_provider.prefix.bin.mpicc
+            #substitutes["MPICXX"] = mpi_provider.prefix.bin.mpicxx
+            #substitutes["MPIF77"] = mpi_provider.prefix.bin.mpif77
+            #substitutes["MPIF90"] = mpi_provider.prefix.bin.mpif90
+            ## Special case when using intel-oneapi-compilers with ifort instead of ifx
+            #if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers" and \
+            #        not "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
+            #    substitutes["MPIF77"] = substitutes["MPIF77"].replace("mpiifx", "mpiifort")
+            #    substitutes["MPIF90"] = substitutes["MPIF90"].replace("mpiifx", "mpiifort")
             if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
-                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix, "mpiicx")
-                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix, "mpiicpx")
+                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpiicx")
+                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpiicpx")
                 if "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and not "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpiifx")
-                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpiifx")
+                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpiifx")
+                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpiifx")
                 elif not "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpiifort")
-                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpiifort")
+                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
+                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
                 else:
                     raise Exception(f"For {mpi_provider.name}, cannot determine MPI wrapper from FC={COMPILER_SUBSTITUTES_SAVE['FC']}")
             elif mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers-classic":
-                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix, "mpiicc")
-                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix, "mpiicpc")
-                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpiifort")
-                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpiifort")
+                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpiicc")
+                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpiicpc")
+                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
+                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
             else:
-                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix, "mpicc")
-                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix, "mpic++")
-                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix, "mpif77")
-                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix, "mpif90")
+                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpicc")
+                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpic++")
+                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpif77")
+                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpif90")
+
             # Also set the direct compiler environment variables
             substitutes["CC"]  = COMPILER_SUBSTITUTES_SAVE["CC"]
             substitutes["CXX"] = COMPILER_SUBSTITUTES_SAVE["CXX"]
