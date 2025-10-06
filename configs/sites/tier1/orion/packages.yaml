@@ -91,6 +91,10 @@ packages:
     externals:
     - spec: openssh@8.7p1
       prefix: /usr
+  openssl:
+    externals:
+    - spec: openssl@3.0.1
+      prefix: /usr
   perl:
     externals:
     - spec: perl@5.32.1~cpanm+opcode+open+shared+threads
