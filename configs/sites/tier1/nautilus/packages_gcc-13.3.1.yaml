@@ -2,31 +2,31 @@ packages:
   mpi:
     buildable: False
     require:
-    - openmpi@5.0.1
+    - openmpi@4.1.8
   gcc-runtime:
     buildable: False
     externals:
-    - spec: gcc-runtime@13.4.0
-      prefix: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0
+    - spec: gcc-runtime@13.3.1
+      prefix: /opt/rh/gcc-toolset-13/root/usr
       modules:
-      - gcc/13.4.0
+      - scl/gcc-toolset-13
   gcc:
     buildable: False
     externals:
-    - spec: gcc@13.4.0 languages:='c,c++,fortran'
-      prefix: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0
+    - spec: gcc@13.3.1 languages:='c,c++,fortran'
+      prefix: /opt/rh/gcc-toolset-13/root/usr
       modules:
-      - gcc/13.4.0
+      - scl/gcc-toolset-13
       extra_attributes:
         compilers:
-          c: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/bin/gcc
-          cxx: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/bin/g++
-          fortran: /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/bin/gfortran
+          c: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+          cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+          fortran: /opt/rh/gcc-toolset-13/root/usr/bin/gfortran
   openmpi:
     buildable: False
     externals:
-    - spec: openmpi@5.0.1
-      prefix: /p/app/penguin/openmpi/5.0.1/gcc-8.5.0
+    - spec: openmpi@4.1.8
+      prefix: /p/app/penguin/openmpi/4.1.8/gcc-13.3.1
       modules:
-      - penguin/openmpi/5.0.1/gcc-8.5.0
+      - penguin/openmpi/4.1.8/gcc-13.3.1
       - slurm
