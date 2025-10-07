@@ -12,4 +12,3 @@
   path = repos/builtin
   url = https://github.com/jcsda/spack-packages
   branch = spack-stack-dev
-
