@@ -61,7 +61,6 @@ packages:
       - libfabric/1.22.0
       - craype-network-ofi
       - cray-mpich/8.1.32
-      - craype-network-ofi
   intel-oneapi-mkl:
     buildable: false
     externals:

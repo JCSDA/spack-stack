@@ -1,0 +1,48 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@8.1.26
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@12.2.0
+      prefix: /opt/cray/pe/gcc/12.2.0/snos
+      modules:
+      - PrgEnv-gnu/8.4.0
+      - gcc/12.2.0
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@12.2.0 languages:='c,c++,fortran'
+      prefix: /opt/cray/pe/gcc/12.2.0/snos
+      modules:
+      - PrgEnv-gnu/8.4.0
+      - gcc/12.2.0
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc/12.2.0/snos/bin/gcc
+          cxx: /opt/cray/pe/gcc/12.2.0/snos/bin/g++
+          fortran: /opt/cray/pe/gcc/12.2.0/snos/bin/gfortran
+        environment:
+          set:
+            CONFIG_SITE: ''
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.26
+      prefix: /opt/cray/pe/mpich/8.1.26/ofi/gnu/9.1
+      modules:
+      - libfabric/1.12.1.2.2.1
+      - craype-network-ucx
+      - cray-mpich-ucx/8.1.26
+  # Require node-js earlier than 21 to prevent compile
+  # errors with Cray GNU compiler 12.2.0
+  #node-js:
+  #  require:
+  #    - '@:20'
+  # Turn off valgrind variant for py-torch because
+  # of linker issues with Cray GNU compiler 12.2.0
+  #py-torch:
+  #  require:
+  #  - '~valgrind'
