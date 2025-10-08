@@ -1,7 +1,8 @@
 packages:
   all:
+    # https://github.com/JCSDA/spack-stack/issues/1781
     # To support hecflow01
-    target: [haswell]
+    #target: [haswell]
     providers:
       zlib-api:: [zlib]
   zlib-api:
@@ -110,10 +111,10 @@ packages:
   mysql:
     buildable: False
     externals:
-    - spec: mysql@8.0.31
-      prefix: /scratch1/NCEPDEV/global/spack-stack/apps/mysql-8.0.31
+    - spec: mysql@8.0.36
+      prefix: /contrib/spack-stack/installs/mysql/8.0.36
       modules:
-      - mysql/8.0.31
+      - mysql/8.0.36
   ncurses:
     externals:
     - spec: ncurses@5.9.20130511+termlib abi=5
@@ -129,7 +130,7 @@ packages:
   qt:
     externals:
     - spec: qt@5.12.6
-      prefix: /scratch1/NCEPDEV/nems/role.epic/installs/qt-5.12.6/qtbase
+      prefix: /contrib/spack-stack/installs/qt-5.12.6/qtbase
   rsync:
     externals:
     - spec: rsync@3.1.2

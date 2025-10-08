@@ -15,6 +15,8 @@ packages:
     - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
       prefix: /apps/spack-managed-x86_64_v3-v1.0/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-3pv63eugwmse2xpeglxib4dr2oeb42g2
       modules:
+      - spack-managed-x86-64_v3
+      - intel-oneapi-compilers/2024.2.1
       - intel-oneapi-mpi/2021.13.1
 
   intel-oneapi-mkl:
@@ -23,6 +25,7 @@ packages:
     - spec: intel-oneapi-mkl@2024.2.1
       prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-mkl-2024.2.1-aeiool3i5jj4newwifvkhow5almp67rt
       modules:
+      - spack-managed-x86-64_v3
       - intel-oneapi-mkl/2024.2.1
 
   intel-oneapi-runtime:
@@ -30,6 +33,7 @@ packages:
     - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
       prefix: /apps/spack-managed-x86_64_v3-v1.0/oneapi-2024.2.1/intel-oneapi-runtime-2024.2.1-hl5zgdjaldynq35dq3yotclfy2vblybx
       modules:
+      - spack-managed-x86-64_v3
       - intel-oneapi-compilers/2024.2.1
       - intel-oneapi-runtime/2024.2.1
 
@@ -49,3 +53,6 @@ packages:
   py-scipy:
     require:
     - '%gcc'
+  zlib-ng:
+    require:
+    - '~shared'
