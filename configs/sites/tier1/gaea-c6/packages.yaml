@@ -28,11 +28,6 @@ packages:
     externals:
     - spec: binutils@2.41-150100.7.46.1
       prefix: /usr
-  cmake:
-    buildable: false
-    externals:
-    - spec: cmake@3.27.9
-      modules: [cmake/3.27.9]
   coreutils:
     externals:
     - spec: coreutils@8.32

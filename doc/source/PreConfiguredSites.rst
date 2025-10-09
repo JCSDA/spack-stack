@@ -24,7 +24,7 @@ The following naming conventions are used on all fully-supported (tier 1) sites.
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
 | ``skylab-dev``                   | JEDI/Skylab environment for JEDI, models, EWOK          | ``se``            | ``se-apple-clang-14.0.6``    |
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
-| ``neptune-dev``                  | NEPTUNE standalone environment (with xNRL Python)       | ``ne``            | ``ne-oneapi-2024.2.1``       |
+| ``neptune-dev``                  | NEPTUNE-JEDI standalone environment                     | ``ne``            | ``ne-oneapi-2024.2.1``       |
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
 | ``cylc-dev``                     | Environment for running cylc (separate from other envs) | ``ce``            | ``ce-gcc-10.3.0``            |
 +----------------------------------+---------------------------------------------------------+-------------------+------------------------------+
@@ -206,12 +206,7 @@ The following is required for building new spack environments with any supported
 
 .. code-block:: console
 
-   module purge
-   # ignore that the sticky module ncarenv/... is not unloaded
-   export LMOD_TMOD_FIND_FIRST=yes
-   module load ncarenv/23.09
-   module use /glade/work/epicufsrt/contrib/spack-stack/derecho/modulefiles
-
+   module --force purge
 
 .. _Preconfigured_Sites_Acorn:
 

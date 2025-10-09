@@ -3,7 +3,7 @@
 Overview
 *************************
 
-spack-stack is a collaborative effort between the NOAA Environmental Modeling Center (EMC), the UCAR Joint Center for Satellite Data Assimilation (JCSDA), the Earth Prediction Innovation Center (EPIC), and the U.S. Naval Research Laboratory (NRL). spack-stack is designed to support the various applications of the supporting agencies such as the Unified Forecast System (UFS) or the Joint Effort for Data assimilation Integration (JEDI). The stack can be installed on a range of platforms, from Linux and macOS laptops to HPC systems, and comes pre-configured for many systems. Users can install the necessary packages for a particular application and later add the missing packages for another application without having to rebuild the entire stack.
+spack-stack is a collaborative effort between the NOAA Environmental Modeling Center (EMC), the UCAR Joint Center for Satellite Data Assimilation (JCSDA), the Earth Prediction Innovation Center (EPIC), the U.S. Naval Research Laboratory (NRL), and the NASA Global Modeling and Assimilation Office (GMAO). spack-stack is designed to support the various applications of the supporting agencies such as the Unified Forecast System (UFS) or the Joint Effort for Data assimilation Integration (JEDI). The stack can be installed on a range of platforms, from Linux and macOS laptops to HPC systems, and comes pre-configured for many systems. Users can install the necessary packages for a particular application and later add the missing packages for another application without having to rebuild the entire stack.
 
  `Spack <https://github.com/spack/spack>`_ is a community-supported, multi-platform, Python-based package manager originally developed by the Lawrence Livermore National Laboratory (LLNL; https://computing.llnl.gov/projects/spack-hpc-package-manager). It is provided as a submodule so that a stable version can be referenced. See the `Spack Documentation <https://spack.readthedocs.io/en/latest>`_ for more information.
 
@@ -13,15 +13,7 @@ spack-stack is mainly a collection of Spack configuration files, but provides a 
 
 - ``spack stack setup-meta-modules`` creates compiler, MPI and Python meta-modules for a convenient setup of a user environment using modules (``lua`` and ``tcl``)
 
-spack-stack is maintained by:
-
-- Alex Richert (@AlexanderRichert-NOAA), Hang Lei (@Hang-Lei-NOAA), and Ed Hartnett (@edwardhartnett), NOAA-EMC
-
-- Steve Herbener (@srherbener) and TBD, JCSDA
-
-- Cameron Book (@ulmononian), Natalie Perlin (@natalie-perlin), and Ratko Vasic (@ratkovasic-noaa), EPIC
-
-- Dom Heinzeller (@climbfuji) and Sarah King (@sking112), NRL
+spack-stack is maintained by representatives of the contributing organizations (see `project_charter.md` in this repository for the current list of representatives).
 
 ===============
 Getting started
