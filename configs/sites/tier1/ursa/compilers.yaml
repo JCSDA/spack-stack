@@ -32,4 +32,3 @@ compilers:
       prepend_path:
         CPATH: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/lib/gcc/x86_64-pc-linux-gnu/12.4.0/include
     extra_rpaths: []
-
