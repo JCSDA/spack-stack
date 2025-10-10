@@ -8,9 +8,6 @@ packages:
     externals:
     - spec: intel-oneapi-runtime@2024.2.0
       prefix: /opt/intel/oneapi_2024.2.0.634
-      modules:
-      - PrgEnv-intel/8.4.0
-      - intel/2024.2
   intel-oneapi-compilers:
     buildable: false
     externals:
@@ -66,13 +63,13 @@ packages:
     - spec: cray-mpich@8.1.26
       prefix: /opt/cray/pe/mpich/8.1.26/ofi/intel/2022.1
       modules:
-      - libfabric/1.12.1.2.2.1
       - craype-network-ucx
       - cray-mpich-ucx/8.1.26
+      - libfabric/1.12.1.2.2.1
       extra_attributes:
         extra_rpaths:
         - /opt/cray/libfabric/1.12.1.2.2.1/lib64
-        # /opt/cray/pe/mpich/8.1.26/ofi/intel/2022.1/lib
+        # - /opt/cray/pe/mpich/8.1.26/ofi/intel/2022.1/lib
   intel-oneapi-mkl:
     buildable: false
     externals:
