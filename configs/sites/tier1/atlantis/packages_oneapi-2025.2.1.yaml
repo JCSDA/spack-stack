@@ -22,7 +22,7 @@ packages:
         compilers:
           c: /gpfs/neptune/spack-stack/oneapi-2025.2.1/compiler/2025.2/bin/icx
           cxx: /gpfs/neptune/spack-stack/oneapi-2025.2.1/compiler/2025.2/bin/icpx
-          fortran: /gpfs/neptune/spack-stack/oneapi-2025.2.1/compiler/2025.2/bin/ifort
+          fortran: /gpfs/neptune/spack-stack/oneapi-2025.2.1/compiler/2025.2/bin/ifx
         environment:
           prepend_path:
             PATH: /cm/local/apps/gcc/11.2.0/bin
