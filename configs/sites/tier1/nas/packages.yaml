@@ -40,10 +40,18 @@ packages:
     externals:
     - spec: gawk@4.2.1
       prefix: /usr
+  gh:
+    externals:
+    - spec: gh@2.78.0
+      prefix: /nobackup/gmao_SIteam/gh/2.78.0
   git:
     externals:
     - spec: git@2.43.5~tcltk
       prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.7.0
+      prefix: /nobackup/gmao_SIteam/git-lfs/3.7.0
   gmake:
     externals:
     - spec: gmake@4.2.1
