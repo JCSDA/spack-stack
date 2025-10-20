@@ -90,6 +90,11 @@ modules:
       - xtrans
       - xz
       - yaksa
+      # By default, do not create compiler modules
+      - apple-clang
+      - gcc
+      - intel-oneapi-compilers
+      - llvm
       # By default, do not create MPI modules
       - cray-mpich
       - intel-mpi
