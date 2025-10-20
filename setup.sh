@@ -2,9 +2,9 @@
 # Portable way to get current directory
 SPACK_STACK_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
-hostname=$(hostname)
+hostname=$(hostname -f)
 case $hostname in
-  alogin*)
+  *acorn.wcoss2*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/acorn/setup.sh
     ;;
 esac
