@@ -25,7 +25,7 @@ packages:
           set:
             CONFIG_SITE: ''
         extra_rpaths:
-        - /opt/cray/libfabric/1.12.1.2.2.1/lib64
+        - /opt/cray/libfabric/1.22.0/lib64
   cray-mpich:
     buildable: false
     externals:
@@ -34,10 +34,10 @@ packages:
       modules:
       - craype-network-ucx
       - cray-mpich-ucx/8.1.26
-      - libfabric/1.12.1.2.2.1
+      - libfabric/1.22.0
       extra_attributes:
         extra_rpaths:
-        - /opt/cray/libfabric/1.12.1.2.2.1/lib64
+        - /opt/cray/libfabric/1.22.0/lib64
         # - /opt/cray/pe/mpich/8.1.26/ofi/gnu/9.1/lib
 
   # Require node-js earlier than 21 to prevent compile

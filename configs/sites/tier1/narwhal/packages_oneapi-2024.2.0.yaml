@@ -30,7 +30,7 @@ packages:
             PATH: /opt/cray/pe/gcc/12.2.0/snos/bin
             CPATH: /opt/cray/pe/gcc/12.2.0/snos/include
         extra_rpaths:
-        - /opt/cray/libfabric/1.12.1.2.2.1/lib64
+        - /opt/cray/libfabric/1.22.0/lib64
         - /opt/cray/pe/gcc/12.2.0/snos/lib64
         - /opt/cray/pe/gcc/12.2.0/snos/lib
   gcc-runtime:
@@ -65,10 +65,10 @@ packages:
       modules:
       - craype-network-ucx
       - cray-mpich-ucx/8.1.26
-      - libfabric/1.12.1.2.2.1
+      - libfabric/1.22.0
       extra_attributes:
         extra_rpaths:
-        - /opt/cray/libfabric/1.12.1.2.2.1/lib64
+        - /opt/cray/libfabric/1.22.0/lib64
         # - /opt/cray/pe/mpich/8.1.26/ofi/intel/2022.1/lib
   intel-oneapi-mkl:
     buildable: false
