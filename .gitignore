@@ -4,3 +4,4 @@ __pycache__
 cache
 .vscode
 doc/build
+deploy_logs/

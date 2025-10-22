@@ -3,7 +3,7 @@ import os
 import shutil
 from sys import platform
 
-import llnl.util.tty as tty
+import spack.llnl.util.tty as tty
 
 from spack.extensions.stack.container_env import StackContainer
 from spack.extensions.stack.stack_env import StackEnv, stack_path

@@ -349,13 +349,14 @@ class StackEnv(object):
                               "version of spack-stack, or really, really know what you are doing.")
                         )
             new_envrepo = os.path.join(self.env_dir(), "envrepo")
+            config_envrepo = False
             for upstream_path in all_upstreams[::-1]:
                 envrepo_path = os.path.realpath(os.path.join(upstream_path, "../envrepo"))
                 if os.path.isdir(envrepo_path):
                     shutil.copytree(envrepo_path, new_envrepo, dirs_exist_ok=True)
-            if os.path.isdir(new_envrepo):
-                repo_cfg = "repos:[$env/envrepo]"
-                spack.config.add(repo_cfg, scope=env_scope)
+                    config_envrepo = True
+            if config_envrepo:
+                spack.config.add("repos:[$env/envrepo]", scope=env_scope)
 
         if self.modifypkg:
             logging.info("Creating custom repo with packages %s" % ", ".join(self.modifypkg))
@@ -388,8 +389,16 @@ class StackEnv(object):
                 if not pkg_found:
                     logging.warning(f"WARNING: package '{pkg_name}' could not be found")
             logging.info("Adding custom repo 'envrepo' to env config")
-            repo_cfg = "repos:[$env/envrepo]"
-            spack.config.add(repo_cfg, scope=env_scope)
+            spack.config.add("repos:[$env/envrepo]", scope=env_scope)
+
+        # Copy any envrepo directory associated with the template (i.e., add-on env)
+        if self.template:
+            template_envrepo_path = os.path.join(self.template_path, "envrepo")
+            if os.path.isdir(template_envrepo_path):
+                logging.info(f"Copying envrepo/ from {self.template_path}")
+                target_envrepo_path = os.path.join(env_dir, "envrepo")
+                shutil.copytree(template_envrepo_path, target_envrepo_path, dirs_exist_ok=True)
+                spack.config.add("repos:[$env/envrepo]", scope=env_scope)
 
         # Merge the original spack.yaml template back in
         # so it has the highest precedence

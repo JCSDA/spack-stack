@@ -1,0 +1,75 @@
+packages:
+  ### Compilers / compiler runtimes
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.1 ~envmods
+      modules:
+      - PrgEnv-intel/8.5.0
+      - craype/2.7.17
+      - intel-oneapi/2024.2
+      - libfabric
+      extra_attributes:
+        compilers:
+          c: cc
+          cxx: CC
+          fortran: ftn
+        flags:
+          cflags: '--gcc-toolchain=/opt/cray/pe/gcc/12.1.0/snos'
+          cxxflags: '--gcc-toolchain=/opt/cray/pe/gcc/12.1.0/snos'
+          fflags: '-gcc-name=/opt/cray/pe/gcc/12.1.0/snos/bin/gcc -gxx-name=/opt/cray/pe/gcc/12.1.0/snos/bin/g++'
+        environment:
+          prepend_path:
+            PATH: /opt/cray/pe/gcc/12.1.0/snos/bin
+            LD_LIBRARY_PATH: /opt/cray/pe/gcc/12.1.0/snos/lib64
+            LIBRARY_PATH: /opt/cray/pe/gcc/12.1.0/snos/lib64
+            CPATH: /opt/cray/pe/gcc/12.1.0/snos/include
+          set:
+            CONFIG_SITE: ''
+            INTEL_COMPILER_TYPE: RECOMMENDED
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@12.1.0 languages:='c,c++,fortran'
+      prefix: /opt/cray/pe/gcc/12.1.0/snos/
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc/12.1.0/snos/bin/gcc
+          cxx: /opt/cray/pe/gcc/12.1.0/snos/bin/g++
+          fortran: /opt/cray/pe/gcc/12.1.0/snos/bin/gfortran
+        environment:
+          set:
+            # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so
+            # Automake-based builds are installed in lib64
+            # which confuses some packages.
+            CONFIG_SITE: ''
+  gcc-runtime:
+    require: '%gcc@12.1.0'
+  ### General package/provider settings & MPI external
+  mpi:
+    buildable: false
+    require: ['cray-mpich@8.1.29']
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.29~wrappers
+      prefix: /opt/cray/pe/mpich/8.1.29/ofi/intel/2022.1
+      modules:
+      - libfabric
+      - craype-network-ofi
+      - cray-mpich/8.1.29
+      - cray-pals
+  ### Disable MKL
+  intel-oneapi-mkl:
+    buildable: false
+  blas:
+    require: ['openblas']
+  lapack:
+    require: ['openblas']
+  fftw-api:
+    require: ['fftw']
+  ectrans:
+    require:: ['~mkl', '+fftw']
+  gsibec:
+    require: ['~mkl']
+  py-numpy:
+    require:: ['^[virtuals=lapack,blas] openblas']

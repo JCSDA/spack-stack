@@ -1,0 +1,14 @@
+deployments:
+  - template: "unified-dev"
+    compilers: ["oneapi-2024.2.1"]
+    packages_to_install:
+    - ufs-weather-model-env
+    - global-workflow-env
+    - gsi-env
+    - madis
+    walltime: 03:00:00
+
+batch_config:
+  account: NCEPLIBS-DEV
+  queue: dev
+  default_walltime: 02:00:00
