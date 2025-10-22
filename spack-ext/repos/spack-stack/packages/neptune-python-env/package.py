@@ -24,6 +24,7 @@ class NeptunePythonEnv(BundlePackage):
     depends_on("esmf +python", type="run")
 
     depends_on("py-arch", type="run")
+    depends_on("py-cfgrib", type="run")
     depends_on("py-h5py", type="run")
     depends_on("py-netcdf4", type="run")
     depends_on("py-pandas", type="run")
