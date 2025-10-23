@@ -111,6 +111,7 @@ class StackEnv(object):
         self.upstreams = kwargs.get("upstreams", None)
         self.modifypkg = kwargs.get("modifypkg", None)
         self.keepallcompilers = kwargs.get("keep_all_compilers", None)
+        self.treatwarningsaserrors = kwargs.get("treat_warnings_as_errors", None)
 
         if not self.name:
             # site = self.site if self.site else 'default'
@@ -187,7 +188,10 @@ class StackEnv(object):
         (compiler_name, _) = compiler_name_and_version_from_string(self.compiler)
         packages_compiler_yaml_path = os.path.join(common_path, f"packages_{compiler_name}.yaml")
         if not os.path.exists(packages_compiler_yaml_path):
-            logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
+            if self.treatwarningsaserrors:
+                raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
+            else:
+                logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
         destination = os.path.join(env_common_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -222,7 +226,10 @@ class StackEnv(object):
         packages_yaml_path = os.path.join(site_path, "packages.yaml")
         packages_compiler_yaml_path = os.path.join(site_path, f"packages_{self.compiler}.yaml")
         if not os.path.exists(packages_compiler_yaml_path):
-            logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
+            if self.treatwarningsaserrors:
+                raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
+            else:
+                logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
         destination = os.path.join(env_site_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 

@@ -317,8 +317,24 @@ def test_modifypkg():
     netcdfc_spack_path = spack_cmd(
         "--env-dir", env_dir, "location", "--package-dir", "netcdf_c", output=str
     ).strip()
-    print("DH DEBUG 1:", os.path.join(spack.config.get("repos")['builtin'], "packages/netcdf_c"))
-    print("DH DEBUG 2:", netcdfc_spack_path)
     assert (
         os.path.join(spack.config.get("repos")['builtin'].replace("${SPACK_STACK_DIR}", os.getenv("SPACK_STACK_DIR")), "packages/netcdf_c") == netcdfc_spack_path
     ), "Incorrect netcdf-c location in modifypkg_test"
+
+@pytest.mark.extension("stack")
+@pytest.mark.filterwarnings("ignore::UserWarning")
+def test_treatwarningsaserrors():
+    with pytest.raises(Exception, match="packages_fj.yaml not found"):
+        stack_create(
+            "create",
+            "env",
+            "--site",
+            "blueback",
+            "--name",
+            "treatwarningsaserrors_test",
+            "--dir",
+            test_dir,
+            "--compiler",
+            "fj",
+            "--treat-warnings-as-errors"
+        )
