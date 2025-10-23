@@ -112,8 +112,10 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.4" "gcc@=13.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("gcc@=13.3.0") # oneapi@=2025.2.1
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev") # "unified-dev" "cylc-dev")
+    #SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
+    #SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
@@ -450,23 +452,23 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ ! ${env_exists} == "true" ]]; then
       spack stack create env --name=${env_name} \
                              --site=${host} \
-                             --compiler=${compiler_name}@=${compiler_version} \
+                             --compiler=${compiler_name}-${compiler_version} \
                              --template=${template} \
                              --dir=${environment_dirs} \
                              2>&1 | tee log.create.${env_name}.001
     fi
     spack env activate -p ${env_dir}
 
-    # Workaround for building cylc environment on Narwhal: We need to use GNU
-    # compilers without the Cray wrappers. Until we can come up with a smarter
-    # solution, use this.
-    if [[ ${host} == "narwhal" && ${template} == "cylc-dev" ]]; then
-      echo "Applying workaround for ${template} on ${host}"
-      cp -av configs/sites/tier1/narwhal/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
-    elif [[ ${host} == "blueback" && ${template} == "cylc-dev" ]]; then
-      echo "Applying workaround for ${template} on ${host}"
-      cp -av configs/sites/tier1/blueback/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
-    fi
+    ## Workaround for building cylc environment on Narwhal: We need to use GNU
+    ## compilers without the Cray wrappers. Until we can come up with a smarter
+    ## solution, use this.
+    #if [[ ${host} == "narwhal" && ${template} == "cylc-dev" ]]; then
+    #  echo "Applying workaround for ${template} on ${host}"
+    #  cp -av configs/sites/tier1/narwhal/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
+    #elif [[ ${host} == "blueback" && ${template} == "cylc-dev" ]]; then
+    #  echo "Applying workaround for ${template} on ${host}"
+    #  cp -av configs/sites/tier1/blueback/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
+    #fi
 
     # Update bootstrap mirror if requested
     if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
@@ -574,31 +576,31 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       spack stack setup-meta-modules 2>&1 | tee log.setup-meta-modules.${env_name}.001
     fi
 
-    # In install mode, run post-install scripts if applicable
-    if [[ "${update_build_cache}" == "false" ]]; then
-      case ${host} in
-        atlantis)
-          ;;
-        blueback)
-          ;;
-        cole)
-          ;;
-        narwhal)
-          ;;
-        nautilus)
-          ;;
-        tusk)
-          ;;
-        blackpearl)
-          ;;
-        bounty)
-          ;;
-        *)
-          echo "ERROR, post-install scripts not configured for ${host}"
-          exit 1
-          ;;
-      esac
-    fi
+    ## In install mode, run post-install scripts if applicable
+    #if [[ "${update_build_cache}" == "false" ]]; then
+    #  case ${host} in
+    #    atlantis)
+    #      ;;
+    #    blueback)
+    #      ;;
+    #    cole)
+    #      ;;
+    #    narwhal)
+    #      ;;
+    #    nautilus)
+    #      ;;
+    #    tusk)
+    #      ;;
+    #    blackpearl)
+    #      ;;
+    #    bounty)
+    #      ;;
+    #    *)
+    #      echo "ERROR, post-install scripts not configured for ${host}"
+    #      exit 1
+    #      ;;
+    #  esac
+    #fi
 
     # When creating or updating buildcaches, fix permissions for mirrors.
     # Mirrors do not contain executables, therefore skip looking for them.
