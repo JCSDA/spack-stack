@@ -61,6 +61,10 @@ packages:
       - libfabric/1.22.0
       - craype-network-ofi
       - cray-mpich/8.1.32
+      extra_attributes:
+        environment:
+          prepend_path:
+            CMAKE_PREFIX_PATH: /p/app/projects/NEPTUNE/spack-stack/cmake-findmpi
   intel-oneapi-mkl:
     buildable: false
     externals:

@@ -26,6 +26,8 @@ packages:
             CONFIG_SITE: ''
         extra_rpaths:
         - /opt/cray/libfabric/1.22.0/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib
   cray-mpich:
     buildable: false
     externals:

@@ -38,9 +38,6 @@ packages:
     externals:
     - spec: gcc-runtime@12.2.0
       prefix: /opt/cray/pe/gcc/12.2.0/snos
-      #modules:
-      #- PrgEnv-gnu/8.4.0
-      #- gcc/12.2.0
   gcc:
     buildable: false
     externals:
@@ -57,6 +54,10 @@ packages:
         environment:
           set:
             CONFIG_SITE: ''
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib
   cray-mpich:
     buildable: false
     externals:
