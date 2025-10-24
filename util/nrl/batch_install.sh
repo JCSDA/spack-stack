@@ -475,10 +475,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
       echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
       rm -fr ${tmp_bootstrap_mirror_path}
-      if [[ -d ${tmp_bootstrap_mirror_path} ]]; then
-        echo "ERROR, directory ${tmp_bootstrap_mirror_path} already exists"
-        exit 1
-      fi
       spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
       rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
       rm -fr ${tmp_bootstrap_mirror_path}
@@ -491,8 +487,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       echo "ERROR, directory ${bootstrap_mirror_path} not found"
       exit 1
     fi
-    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources || true
-    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries || true
+    # If the environment already existed, then it is possible that the bootstrap
+    # sources were already added. In this case, ignore errors from these commands.
+    if [[ ${env_exists} == "true" ]]; then
+      set +e
+    fi
+    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+    if [[ ${env_exists} == "true" ]]; then
+      set -e
+    fi
 
     # Check that the site has mirrors configured for local source and build caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
