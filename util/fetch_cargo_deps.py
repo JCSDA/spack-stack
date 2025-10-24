@@ -107,7 +107,7 @@ for spec in env.all_specs():
         else:
             print("  ... not found, creating {{cargo_wrapper}}")
             with open(cargo_wrapper, "w") as f:
-                f.write(f"""#!/usr/bin/env bash
+                f.write(f"""#!/bin/bash
         
 export PATH="{cargo_home}/bin:{default_path}"
 export RUSTUP_HOME="{cargo_home}/rustup"
