@@ -10,5 +10,5 @@
   branch = v1.3.0
 [submodule "repos/builtin"]
   path = repos/builtin
-  url = https://github.com/AlexanderRichert-NOAA/spack-packages
-  branch = misc_nceplibs_oct25
+  url = https://github.com/jcsda/spack-packages
+  branch = spack-stack-dev
