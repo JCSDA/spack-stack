@@ -112,10 +112,8 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("gcc@=13.3.0") # oneapi@=2025.2.1
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev") # "unified-dev" "cylc-dev")
-    #SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
-    #SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
@@ -536,7 +534,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Check for duplicate packages
-    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env
+    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython
 
     # Update local source cache if requested
     if [[ "${update_source_cache}" == "true"* ]]; then
