@@ -263,6 +263,11 @@ packages:
     p4est:
       require:
       - '@2.8.7'
+    # Earlier versions of pango don't build on Blueback because of
+    # a bug in finding the correct Python interpreter from spack.
+    pango:
+      require:
+      - '@1.54:'
     parallelio:
       require:
       - '@2.6.2'
