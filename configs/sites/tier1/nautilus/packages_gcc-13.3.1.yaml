@@ -8,8 +8,6 @@ packages:
     externals:
     - spec: gcc-runtime@13.3.1
       prefix: /opt/rh/gcc-toolset-13/root/usr
-      modules:
-      - scl/gcc-toolset-13
   gcc:
     buildable: False
     externals:

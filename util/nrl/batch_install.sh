@@ -133,7 +133,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.4.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -460,6 +460,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              --compiler=${compiler_name}-${compiler_version} \
                              --template=${template} \
                              --dir=${environment_dirs} \
+                             --treat-warnings-as-errors \
                              2>&1 | tee log.create.${env_name}.001
     fi
     spack env activate -p ${env_dir}
