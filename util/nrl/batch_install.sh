@@ -154,7 +154,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   bounty)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.1.1" "gcc@=13.3.1" "clang@=20.1.5")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1" "clang@=21.1.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"

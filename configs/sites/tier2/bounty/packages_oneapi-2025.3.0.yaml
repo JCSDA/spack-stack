@@ -2,22 +2,22 @@ packages:
   mpi:
     buildable: False
     require:
-    - "intel-oneapi-mpi@2021.16"
+    - "intel-oneapi-mpi@2021.17"
   intel-oneapi-runtime:
     buildable: false
     externals:
-    - spec: intel-oneapi-runtime@2025.2.1
+    - spec: intel-oneapi-runtime@2025.3.0
       prefix: /opt/intel/oneapi
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.2.1
+    - spec: intel-oneapi-compilers@2025.3.0
       prefix: /opt/intel/oneapi
       extra_attributes:
         compilers:
-          c: /opt/intel/oneapi/2025.2/bin/icx
-          cxx: /opt/intel/oneapi/2025.2/bin/icpx
-          fortran: /opt/intel/oneapi/2025.2/bin/ifx
+          c: /opt/intel/oneapi/2025.3/bin/icx
+          cxx: /opt/intel/oneapi/2025.3/bin/icpx
+          fortran: /opt/intel/oneapi/2025.3/bin/ifx
   gcc-runtime:
     buildable: false
     externals:
@@ -36,10 +36,10 @@ packages:
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.16
+    - spec: intel-oneapi-mpi@2021.17
       prefix: /opt/intel/oneapi
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.2
+    - spec: intel-oneapi-mkl@2025.3
       prefix: /opt/intel/oneapi
