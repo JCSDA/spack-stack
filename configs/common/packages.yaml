@@ -122,7 +122,7 @@ packages:
       - '@2.1.0'
     g2tmpl:
       require:
-      - '@1.13.0'
+      - '@1.17.0'
     # This version builds with Intel oneAPI compilers, newer/older versions don't
     gdal:
       require:
@@ -278,7 +278,7 @@ packages:
       - +pic
     prod-util:
       require:
-      - '@2.1.1'
+      - '@2.1.2'
     proj:
       require:
       - ~tiff
@@ -386,8 +386,8 @@ packages:
       - '@5'
     scotch:
       require:
-      - '@7.0.4'
-      - +mpi+metis~shared~threads~mpi_thread+noarch+esmumps
+      - '@7.0.10'
+      - +mpi+metis~shared~threads~mpi_thread+noarch+esmumps+fortran determinism=FIXED_SEED
     sfcio:
       require:
       - '@1.4.2'
