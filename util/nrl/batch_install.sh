@@ -423,11 +423,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       nautilus)
         umask 0022
         module purge
-        case ${compiler} in
-          gcc@=13.4.0)
-            module use /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/modulefiles
-            ;;
-        esac
         ;;
       tusk)
         umask 0022
