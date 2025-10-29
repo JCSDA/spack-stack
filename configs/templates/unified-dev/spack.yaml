@@ -8,7 +8,7 @@ spack:
   include: []
 
   specs:
-  - ewok-env +ecflow ~cylc
+  - ewok-env
   #- ai-env
   - geos-gcm-env          ^esmf@=8.6.1
   - global-workflow-env   ^esmf@=8.6.1 ^crtm@=3.1.2
