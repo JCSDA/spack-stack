@@ -602,6 +602,20 @@ def setup_meta_modules():
             substitutes["F77"] = COMPILER_SUBSTITUTES_SAVE["F77"]
             substitutes["FC"]  = COMPILER_SUBSTITUTES_SAVE["FC"]
 
+            # Environment variables
+            if "environment" in compiler.extra_attributes.keys():
+                for action in compiler.extra_attributes["environment"].keys():
+                    for env_name in compiler.extra_attributes["environment"][action]:
+                        env_values = compiler.extra_attributes["environment"][action][env_name]
+                        substitutes["ENVVARS"] += envmod_command(
+                            module_choice,
+                            action,
+                            env_name,
+                            env_values
+                        )
+            substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
+            logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
+
             # Spack mpi+compiler module hierarchy - append all saved modulepaths
             for modulepath in MODULEPATHS_SAVE:
                 substitutes["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
