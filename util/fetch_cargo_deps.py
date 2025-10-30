@@ -25,7 +25,7 @@ from spack_repo.builtin.build_systems.cargo import CargoPackage
 from spack_repo.builtin.build_systems.python import PythonPackage
 from spack.package_base import PackageBase
 from spack.util.executable import Executable, which
-from llnl.util.filesystem import working_dir
+from spack.llnl.util.filesystem import working_dir
 from spack.store import find
 from spack.util.environment import EnvironmentModifications
 from spack.error import SpackError
@@ -117,6 +117,7 @@ export RUSTUP_HOME="{cargo_home}/rustup"
         cargo_exe = Executable(cargo_wrapper)
 
     env = EnvironmentModifications()
+    env.set("CARGO_HOME", cargo_home)
     if cargo_bin:
         env.prepend_path("PATH", cargo_bin)
     for root, dirs, files in os.walk(pkg.stage.source_path):
