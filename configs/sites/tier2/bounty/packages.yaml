@@ -84,11 +84,10 @@ packages:
     - spec: pkgconf@1.7.3
       prefix: /usr
   qt:
-    # Yet another bug in spack v1 ... grrr ...
-    #buildable: False
+    buildable: False
     externals:
     - spec: qt@5.15.9
-      prefix: /usr/lib64/qt5
+      prefix: /usr
   sed:
     externals:
     - spec: sed@4.8

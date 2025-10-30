@@ -148,7 +148,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     ;;
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.1.0" "gcc@=13.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
@@ -356,6 +356,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         env_name_prefix="ue"
         ;;
       neptune-dev)
+        env_name_prefix="ne"
+        ;;
+      neptune-ops)
         env_name_prefix="ne"
         ;;
       cylc-dev)
