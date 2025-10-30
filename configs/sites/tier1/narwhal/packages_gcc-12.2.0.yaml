@@ -41,14 +41,3 @@ packages:
         extra_rpaths:
         - /opt/cray/libfabric/1.22.0/lib64
         # - /opt/cray/pe/mpich/8.1.26/ofi/gnu/9.1/lib
-
-  # Require node-js earlier than 21 to prevent compile
-  # errors with Cray GNU compiler 12.2.0
-  #node-js:
-  #  require:
-  #    - '@:20'
-  # Turn off valgrind variant for py-torch because
-  # of linker issues with Cray GNU compiler 12.2.0
-  #py-torch:
-  #  require:
-  #  - '~valgrind'
