@@ -87,8 +87,6 @@ packages:
     externals:
     - spec: qt@5.15.2
       prefix: /p/app/projects/NEPTUNE/spack-stack/qt-5.15.2/5.15.2/gcc_64
-      #modules:
-      #- qt/5.15.2
   sed:
     externals:
     - spec: sed@4.4
