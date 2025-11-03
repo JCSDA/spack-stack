@@ -422,7 +422,7 @@ packages:
     # Need extradeps for grib-utils, enable by default to avoid duplicate packages
     w3emc:
       require:
-      - '@2.10.0'
+      - '@2.11.0'
       - precision=4,d,8 +extradeps
     w3nco:
       require:
