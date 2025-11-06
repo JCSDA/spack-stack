@@ -19,9 +19,6 @@ class AdpPreprocessors(MakefilePackage):
 
     maintainers("climbfuji")
 
-    # FIXME: Add the SPDX identifier of the project's license below.
-    # See https://spdx.org/licenses/ for a list. Upon manually verifying
-    # the license, set checked_by to your Github username.
     #license("UNKNOWN", checked_by="github_user1")
 
     # FIXME: Add proper versions and checksums here.
