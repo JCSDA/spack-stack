@@ -11,7 +11,7 @@ from spack.package import *
 
 
 class AdpPreprocessors(MakefilePackage):
-    """FIXME: Put a proper description of your package here."""
+    """Unified, model-agnostic software system that processes atmospheric observations for the Navy's numerical weather prediction data assimilation systems"""
 
     homepage = "https://github.nrlmry.navy.mil/ADP/adp-preprocessors/wiki"
     #git = "https://github.nrlmry.navy.mil/ADP/adp-preprocessors.git"
