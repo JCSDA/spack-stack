@@ -141,6 +141,10 @@ modules:
           ^esmf@8.8.0+debug snapshot=none: 'esmf-8.8.0-debug'
           ^esmf@8.9.0~debug snapshot=none: 'esmf-8.9.0'
           ^esmf@8.9.0+debug snapshot=none: 'esmf-8.9.0-debug'
+      fms:
+        suffixes:
+          constants=GFS: 'gfs_constants'
+          constants=GMAO: 'gmao_constants'
       openmpi:
         environment:
           set:
