@@ -146,7 +146,7 @@ modules:
       fms:
         suffixes:
           constants=GFS: 'gfs_constants'
-          constants=GMAO: 'gmao_constants'
+          constants=GEOS: 'geos_constants'
       openmpi:
         environment:
           set:
