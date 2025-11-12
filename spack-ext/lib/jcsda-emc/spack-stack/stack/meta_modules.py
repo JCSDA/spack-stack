@@ -654,10 +654,10 @@ def setup_meta_modules():
             substitutes["FC"]  = COMPILER_SUBSTITUTES_SAVE["FC"]
 
             # Environment variables
-            if "environment" in compiler.extra_attributes.keys():
-                for action in compiler.extra_attributes["environment"].keys():
-                    for env_name in compiler.extra_attributes["environment"][action]:
-                        env_values = compiler.extra_attributes["environment"][action][env_name]
+            if "environment" in mpi_provider.extra_attributes.keys():
+                for action in mpi_provider.extra_attributes["environment"].keys():
+                    for env_name in mpi_provider.extra_attributes["environment"][action]:
+                        env_values = mpi_provider.extra_attributes["environment"][action][env_name]
                         substitutes["ENVVARS"] += envmod_command(
                             module_choice,
                             action,
