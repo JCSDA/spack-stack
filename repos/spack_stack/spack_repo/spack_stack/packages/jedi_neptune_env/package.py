@@ -18,7 +18,12 @@ class JediNeptuneEnv(BundlePackage):
 
     version("1.0.0")
 
+    variant("adp", default=False, description="Build ADP preprocessors")
+
     depends_on("jedi-base-env", type="run")
     depends_on("neptune-env", type="run")
+
+    with when("+adp"):
+        depends_on("adp-preprocessors", type="run")
 
     # There is no need for install() since there is no code.

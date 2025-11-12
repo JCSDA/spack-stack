@@ -575,21 +575,33 @@ def setup_meta_modules():
             #    substitutes["MPIF77"] = substitutes["MPIF77"].replace("mpiifx", "mpiifort")
             #    substitutes["MPIF90"] = substitutes["MPIF90"].replace("mpiifx", "mpiifort")
             if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
-                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpiicx")
-                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpiicpx")
+                if os.path.exists(os.path.join(mpi_provider.prefix.bin, "mpiicx")):
+                    mpi_provider_prefix = mpi_provider.prefix.bin
+                elif os.path.exists(os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin", "mpiicx")):
+                    mpi_provider_prefix = os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin")
+                else:
+                    raise Exception("Unable to locate 'mpiicx'")
+                substitutes["MPICC"]  = os.path.join(mpi_provider_prefix, "mpiicx")
+                substitutes["MPICXX"] = os.path.join(mpi_provider_prefix, "mpiicpx")
                 if "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and not "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpiifx")
-                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpiifx")
+                    substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifx")
+                    substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifx")
                 elif not "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
-                    substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
+                    substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifort")
+                    substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifort")
                 else:
                     raise Exception(f"For {mpi_provider.name}, cannot determine MPI wrapper from FC={COMPILER_SUBSTITUTES_SAVE['FC']}")
             elif mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers-classic":
-                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpiicc")
-                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpiicpc")
-                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
-                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpiifort")
+                if os.path.exists(os.path.join(mpi_provider.prefix.bin, "mpiicc")):
+                    mpi_provider_prefix = mpi_provider.prefix.bin
+                elif os.path.exists(os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin", "mpiicc")):
+                    mpi_provider_prefix = os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin")
+                else:
+                    raise Exception("Unable to locate 'mpiicc'")
+                substitutes["MPICC"]  = os.path.join(mpi_provider_prefix, "mpiicc")
+                substitutes["MPICXX"] = os.path.join(mpi_provider_prefix, "mpiicpc")
+                substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifort")
+                substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifort")
             else:
                 substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpicc")
                 substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpic++")
