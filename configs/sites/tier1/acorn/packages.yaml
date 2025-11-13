@@ -25,6 +25,10 @@ packages:
   #
   ### Individual package settings
   #
+  curl:
+    require: ['~nghttp2']
+  flex:
+    require: ['@2.6.4']
   gdal:
     require: ['~curl']
   global-workflow-env:
@@ -33,6 +37,8 @@ packages:
     require: ['%gcc']
   libxslt:
     require: ['~crypto']
+  nco:
+    require:: ['%oneapi']
   py-pandas:
     require:: ['~excel']
   subversion:
