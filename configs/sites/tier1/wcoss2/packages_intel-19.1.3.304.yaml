@@ -80,6 +80,7 @@ packages:
   eckit:
     require:: ["@1.23.1"]
   ecmwf-atlas:
+    # I believe 0.39 builds with intel 19 but breaks certain deps
     require:: ['@:0.33', '+fckit', '~trans', '~fftw']
   ectrans:
     require: ['@1.2.0', '+fftw']
