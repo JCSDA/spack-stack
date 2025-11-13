@@ -20,21 +20,12 @@ for lmod_or_tcl in ("lmod", "tcl"):
         yaml_raw = f.read().replace("lmod:", "LMOD_OR_TCL:").replace("tcl:", "LMOD_OR_TCL:")
         modules[lmod_or_tcl] = syaml.load_config(yaml_raw)
 
-# Check subset of projection to ensure keys match
-lmod_projections = modules["lmod"]["modules"]["default"]["LMOD_OR_TCL"]["projections"].keys()
-tcl_projections = modules["tcl"]["modules"]["default"]["LMOD_OR_TCL"]["projections"].keys()
-assert set(lmod_projections) == set(tcl_projections)-{"all", "^mpi"}
-
-for lmod_or_tcl in ("lmod", "tcl"):
-    for key in modules[lmod_or_tcl]["modules"]["default"]["LMOD_OR_TCL"]["projections"].keys():
-        modules[lmod_or_tcl]["modules"]["default"]["LMOD_OR_TCL"]["projections"][key] = "DUMMYVALUE"
-
 # Removing sections we don't want to compare; note this will
-#  affect line numbers in the diff output
+# affect line numbers in the diff output
 del(modules["lmod"]["modules"]["default"]["LMOD_OR_TCL"]["core_compilers"])
 del(modules["lmod"]["modules"]["default"]["LMOD_OR_TCL"]["hierarchy"])
-del(modules["tcl"]["modules"]["default"]["LMOD_OR_TCL"]["projections"]["all"])
-del(modules["tcl"]["modules"]["default"]["LMOD_OR_TCL"]["projections"]["^mpi"])
+del(modules["lmod"]["modules"]["default"]["LMOD_OR_TCL"]["projections"])
+del(modules["tcl"]["modules"]["default"]["LMOD_OR_TCL"]["projections"])
 
 # If sections mismatch, print a diff of the whole configuration
 dump_lmod = syaml.dump_config(modules["lmod"]).split("\n")

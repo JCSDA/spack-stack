@@ -35,7 +35,7 @@ def test_setup_meta_modules():
 
     env_name = "modtest1"
     env_dir = os.path.join(env_root_dir, env_name)
-    module_dir = os.path.join(env_dir, "install", "modulefiles")
+    module_dir = os.path.join(env_dir, "modules")
     if os.path.exists(env_dir):
         shutil.rmtree(env_dir)
 

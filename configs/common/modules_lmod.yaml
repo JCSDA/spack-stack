@@ -3,14 +3,13 @@
 modules:
   default:
     roots:
-      lmod: $env/install/modulefiles
+      lmod: $env/modules
     lmod:
       # Core compiler is a dummy that is not used to build the stack, do not change.
       # Hopefully nobody is trying to build software with gcc-4.6 in 2023 ...
       core_compilers::
       - gcc@4.6
       projections:
-        ecmwf-atlas: 'atlas/{version}'
         nlohmann-json: 'json/{version}'
         nlohmann-json-schema-validator: 'json-schema-validator/{version}'
         libjpeg-turbo: 'libjpeg/{version}'

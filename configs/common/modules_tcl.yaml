@@ -3,12 +3,32 @@
 modules:
   default:
     roots:
-      tcl: $env/install/modulefiles
+      tcl: $env/modules
     tcl:
       projections:
-        all: '{compiler.name}/{compiler.version}/{name}/{version}'
+        # Note: These translations of compiler and MPI library names must match the ALIASES
+        # dictionary in spack-ext/lib/jcsda-emc/spack-stack/stack/meta_modules.py
+        # Defaults
+        '^intel-oneapi-compilers-classic^intel-oneapi-mpi': 'impi/{^mpi.version}/intel/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers-classic^mpi': '{^mpi.name}/{^mpi.version}/intel/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers-classic': 'intel/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers^intel-oneapi-mpi': 'impi/{^mpi.version}/oneapi/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers^mpi': '{^mpi.name}/{^mpi.version}/oneapi/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers': 'oneapi/{compiler.version}/{name}/{version}'
+        ^intel-oneapi-mpi: 'impi/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
         ^mpi: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
-        ecmwf-atlas: '{compiler.name}/{compiler.version}/atlas/{version}'
+        all: '{compiler.name}/{compiler.version}/{name}/{version}'
+        # The special cases - Intel classic compilers
+        'nlohmann-json ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/json/{version}'
+        'nlohmann-json-schema-validator ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/json-schema-validator/{version}'
+        'libjpeg-turbo ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/libjpeg/{version}'
+        'prod-util ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/prod_util/{version}'
+        # The special cases - Intel LLVM compilers
+        'nlohmann-json ^intel-oneapi-compilers': 'oneapi/{compiler.version}/json/{version}'
+        'nlohmann-json-schema-validator ^intel-oneapi-compilers': 'oneapi/{compiler.version}/json-schema-validator/{version}'
+        'libjpeg-turbo ^intel-oneapi-compilers': 'oneapi/{compiler.version}/libjpeg/{version}'
+        'prod-util ^intel-oneapi-compilers': 'oneapi/{compiler.version}/prod_util/{version}'
+        # The special cases - other compilers
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
         libjpeg-turbo: '{compiler.name}/{compiler.version}/libjpeg/{version}'
