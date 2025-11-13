@@ -12,7 +12,7 @@ packages:
     externals:
     - spec: intel-oneapi-compilers@2024.2.1 ~envmods
       modules:
-      - PrgEnv-intel/8.5.0
+      - PrgEnv-intel/8.3.3
       - craype/2.7.17
       - intel-oneapi/2024.2
       - libfabric
@@ -34,6 +34,7 @@ packages:
           set:
             CONFIG_SITE: ''
             INTEL_COMPILER_TYPE: RECOMMENDED
+          unset: [PYTHONPATH]
   gcc:
     buildable: false
     externals:
@@ -50,6 +51,7 @@ packages:
             # Automake-based builds are installed in lib64
             # which confuses some packages.
             CONFIG_SITE: ''
+          unset: [PYTHONPATH]
   gcc-runtime:
     require: '%gcc@12.1.0'
   #
