@@ -226,7 +226,7 @@ for env_dir_basename, deployment in deployments.items():
     # Install packages
     print("... installing", end="")
     if deployment["packages_to_install"]:
-        print(" specs: " +" ".join(deployment["packages_to_install"]))
+        print(" specs: " +" ".join(deployment["packages_to_install"]), end="")
     print(" ...")
     if args.no_scheduler:
         specs = env.all_matching_specs(*(" ".join(deployment["packages_to_install"])))
