@@ -136,6 +136,8 @@ packages:
     #glib:
     #  require:
     #  - '@:2.78.3'
+    global-workflow-env:
+      require: ['+uwtools']
     ## To avoid duplicate packages being built
     #gmake:
     #  require:

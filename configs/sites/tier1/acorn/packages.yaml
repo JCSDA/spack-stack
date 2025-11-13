@@ -45,3 +45,5 @@
         prefix: /usr
     libxslt:
       require: '~crypto'
+    global-workflow-env:
+      require:: ['~uwtools']
