@@ -5,7 +5,7 @@ SPACK_STACK_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && p
 hostname=$(hostname -f)
 case $hostname in
   *acorn.wcoss2*)
-    . ${SPACK_STACK_DIR}/configs/sites/tier1/acorn/setup.sh
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/wcoss2/setup.sh
     ;;
 esac
 
