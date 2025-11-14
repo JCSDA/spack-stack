@@ -2,8 +2,6 @@ packages:
   #
   ### Compilers
   #
-  all:
-    prefer: ['%oneapi@2024.2.1']
   fortran:
     # without this I had some weird concretization; no fortran deps require gcc
     require: 'intel-oneapi-compilers'
