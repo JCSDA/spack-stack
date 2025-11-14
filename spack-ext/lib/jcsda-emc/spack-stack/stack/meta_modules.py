@@ -520,12 +520,14 @@ def setup_meta_modules():
     # Create mpi modules - currently, only one mpi provider is allowed
     for mpi_provider in mpi_providers:
 
+        if module_choice == "lmod":
+            mpi_alias = mpi_provider.name
+        else:
+            mpi_alias = ALIASES[mpi_provider.name]
+
         # For tcl, append modulepath for external specs and for specs without
         # compiler dependencies; remove the compiler/mpi prefices from the moduless
         if module_choice == "tcl":
-
-            # Module paths are short names for tcl modules
-            mpi_alias = ALIASES[mpi_provider.name]
 
             modulepath_save = os.path.join(module_dir, mpi_alias, str(mpi_provider.version), "none", "none")
             if not os.path.isdir(modulepath_save):
@@ -548,7 +550,7 @@ def setup_meta_modules():
 
             # Module paths are short names for tcl modules
             if module_choice == "lmod":
-                mpi_alias = compiler.name
+                compiler_alias = compiler.name
             else:
                 compiler_alias = ALIASES[compiler.name]
 
