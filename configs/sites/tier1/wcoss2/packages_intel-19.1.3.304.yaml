@@ -56,7 +56,8 @@ packages:
   antlr:
     require: ['%intel']
   boost::
-    require: ['@:']
+    require:
+    - any_of: ['@1.84 %gcc', '@1.88 %intel']
   cdo:
     require:
     - "@2.0.5" # 2.0.5 is the last version to use C++14
@@ -70,6 +71,7 @@ packages:
     - '+ui'
     - 'cflags="-no-ipo" cxxflags="-no-ipo"'
     - '%intel'
+    - '^boost@1.84'
   eckit:
     require:: ["@1.23.1"]
   ecmwf-atlas:
@@ -90,7 +92,7 @@ packages:
   gsibec:
     require: ['@1.2.1']
   harfbuzz:
-    require: ['%gcc']
+    require: ['@2.9.1', '%gcc']
   libffi:
     require: ['@3.3']
   libunistring:

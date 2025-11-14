@@ -14,14 +14,14 @@ spack:
   specs:
   - awscli
   - bacio
-  - boost
+  - boost@1.88
   - bufr
   - cdo
   - cfitsio
   - cmake
   - crtm@=3.1.2
   - curl
-  - ecflow ^boost %gcc
+  - ecflow
   - eckit
   - ecmwf-atlas
   - eigen
@@ -81,7 +81,7 @@ spack:
   - sp
   - subversion
   - udunits
-#  - upp
+  - upp ^crtm@=2.4.0.1
   - w3emc
   - w3nco
   - wgrib2

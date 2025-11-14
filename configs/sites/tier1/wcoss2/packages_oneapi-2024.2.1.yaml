@@ -81,6 +81,9 @@ packages:
     require: ['%gcc']
   gsibec:
     require: ['@1.2.1']
+  harfbuzz:
+    require:
+    - any_of: ['@:2.9 %gcc', '@11: %oneapi']
   libtiff:
     require: ['build_system=cmake']
   nco:
