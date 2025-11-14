@@ -73,6 +73,10 @@ packages:
     require: ['+fc']
   cmake:
     require: ['%gcc']
+  ecflow:
+    require::
+    - '@5.11.4'
+    - '+ui'
   eckit:
     require:: ['@:']
   ectrans:
