@@ -21,7 +21,7 @@ spack:
   - cmake
   - crtm@=3.1.2
   - curl
-  - ecflow
+  - ecflow ^boost %gcc
   - eckit
   - ecmwf-atlas
   - eigen
