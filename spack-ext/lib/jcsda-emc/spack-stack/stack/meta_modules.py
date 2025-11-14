@@ -373,6 +373,12 @@ def setup_meta_modules():
         raise Exception(f"Expected no or one MPI provider, but got {mpi_providers}")
     logging.info(f"  ... mpi_providers: {mpi_providers}")
 
+    # To catch errors (invalid compilers, etc) we check that the number of written
+    # stack-* meta modules matches what we expect: One module for the preferred
+    # compiler, and (if applicable) one for each (currently one) MPI provider.
+    number_of_meta_modules_expected = 1 + len(mpi_providers)
+    number_of_meta_modules_written = 0
+
     # Prepare meta module directory
     logging.info("Preparing meta module directory ...")
     meta_module_dir = os.path.join(module_dir, "Core")
@@ -508,6 +514,7 @@ def setup_meta_modules():
         with open(compiler_module_file, "w") as f:
             f.write(module_content)
         logging.info("  ... writing {}".format(compiler_module_file))
+        number_of_meta_modules_written += 1
 
         # If this is the last compiler in the list (i.e. the preferred compiler),
         # then save the substitutes for later when building the MPI meta module
@@ -691,5 +698,10 @@ def setup_meta_modules():
             with open(mpi_module_file, "w") as f:
                 f.write(module_content)
             logging.info("  ... writing {}".format(mpi_module_file))
+            number_of_meta_modules_written += 1
 
-    logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))
+
+    if number_of_meta_modules_written == number_of_meta_modules_expected:
+        logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))
+    else:
+        raise Exception("Metamodule generation NOT successful, check output (invalid compiler?)")
