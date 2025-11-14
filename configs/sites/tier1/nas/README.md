@@ -177,7 +177,7 @@ Then, once that package is built, you can go back to the compute node and run th
 ## Update module files and setup meta-modules
 
 ```
-spack module tcl refresh -y
+spack module tcl refresh -y --delete-tree
 spack stack setup-meta-modules
 ```
 

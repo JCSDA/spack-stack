@@ -41,8 +41,8 @@ spack:
   - esmf@=8.9.0
 
   # Various fms builds
-  - fms@2024.02 precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io
-  - fms@2024.02 precision=32,64 +quad_precision ~gfs_phys +openmp +pic constants=GEOS build_type=Release +deprecated_io
+  - fms +gfs_phys constants=GFS
+  - fms ~gfs_phys constants=GEOS
 
   # MADIS for WCOSS2 decoders.
   - madis@4.5

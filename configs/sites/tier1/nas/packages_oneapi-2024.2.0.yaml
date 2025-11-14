@@ -26,18 +26,6 @@ packages:
             PATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin
             CPATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/include
             LD_LIBRARY_PATH: '/nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64'
-          set:
-            MPI_COLL_REPRODUCIBLE: 'yes'
-            MPI_MEMMAP_OFF: 'yes'
-            MPI_XPMEM_ENABLED: 'yes'
-            MPI_LAUNCH_TIMEOUT: '40'
-            MPI_COMM_MAX: '1024'
-            MPI_GROUP_MAX: '1024'
-            MPI_BUFS_PER_PROC: '256'
-          unset:
-            - MPI_NUM_MEMORY_REGIONS
-            - SUPPRESS_XPMEM_TRIM_THRESH
-            - PMI_RANK
         extra_rpaths:
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib

@@ -163,8 +163,8 @@ modules:
           ^esmf@8.9.0+debug snapshot=none: 'esmf-8.9.0-debug'
       fms:
         suffixes:
-          constants=GFS: 'gfs_constants'
-          constants=GEOS: 'geos_constants'
+          constants=GFS: 'gfs-constants'
+          constants=GEOS: 'geos-constants'
       openmpi:
         environment:
           set:
