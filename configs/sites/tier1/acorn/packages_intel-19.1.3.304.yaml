@@ -53,8 +53,6 @@ packages:
   #
   ### Individual package settings (mostly using GCC and/or old versions on account of Intel 19 being old)
   #
-  antlr:
-    require: ['%intel']
   boost::
     require: ['@:']
   cdo:
