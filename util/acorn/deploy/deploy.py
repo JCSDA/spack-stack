@@ -8,8 +8,9 @@ parser.add_argument('-n', '--no-scheduler', action='store_true', help="Run insta
 parser.add_argument('-x', '--skip-go-rust-handling', action='store_true', help="Skip handling of Go/Rust dep fetching when using parallel job scheduler")
 parser.add_argument('-c', '--concretize-args', type=str, help="Concretize arguments (provide a single string)")
 parser.add_argument('-i', '--install-args', type=str, help="Install arguments (provide a single string)")
-parser.add_argument('-r', '--redeploy-existing', action='store_true', help="Redeploy existing deployments")
+parser.add_argument('-r', '--redeploy-existing', action='store_true', help="Redeploy existing deployments (default is skip existing env dirs)")
 parser.add_argument('-s', '--site', type=str, help='Site name override')
+parser.add_argument('-u', '--until', choices=("create", "concretize", "validate", "fetch", "install"), help='Carry out step up to and including')
 
 parser.add_argument('deployments', nargs='*', help="List of deployments to apply (default is all; specify template+compiler with, e.g., 'unified-dev%oneapi')")
 
@@ -188,6 +189,8 @@ for env_dir_basename, deployment in deployments.items():
                 env.remove(root_spec)
         env.write()
 
+    if args.until == "create": continue
+
     # Concretize environment
     concretize_args = SimpleNamespace(
         test = False, ###
@@ -199,6 +202,8 @@ for env_dir_basename, deployment in deployments.items():
     with redirect_stdout(logfile), redirect_stderr(logfile):
         concretize(None, concretize_args)
 
+    if args.until == "concretize": continue
+
     print("... validating concretization ...")
     # Check for duplicate packages
     with open(os.path.join(env_dir_full_path, "spack.lock"), "r") as f:
@@ -208,13 +213,17 @@ for env_dir_basename, deployment in deployments.items():
     assert ret==0, "Duplicates found! Check spack.lock/show_duplicate_packages.py"
 
     # Fail if there packages that shouldn't be built with GCC are built with GCC:
-    if "allowed_gcc_packages" in deployment:
-        for spec in env.all_specs():
-            for language in ("c", "cxx", "fortran"):
-                if language not in spec: continue
-                compiler_name = spec[language].name
+    all_compilers = set()
+    for spec in env.all_specs():
+        for language in ("c", "cxx", "fortran"):
+            if language not in spec: continue
+            compiler_name = spec[language].name
+            all_compilers.add(compiler_name)
+            if "allowed_gcc_packages" in deployment:
                 is_legal = not (compiler_name == "gcc" and spec.name not in deployment["allowed_gcc_packages"])
                 assert is_legal, f"spec '{spec.name}/{spec.dag_hash()}' to be built with GCC but not in 'allowed_gcc_packages'!"
+
+    if args.until == "validate": continue
 
     # Fetch packages
     print(f"... fetching packages ...")
@@ -222,6 +231,8 @@ for env_dir_basename, deployment in deployments.items():
         logfile.write(f"Fetching {spec.name}@{spec.version}/{spec.dag_hash(length=7)}\n")
         with redirect_stdout(logfile), redirect_stderr(logfile):
             spec.package.do_fetch()
+
+    if args.until == "fetch": continue
 
     # Install packages
     print("... installing", end="")
@@ -255,14 +266,29 @@ for env_dir_basename, deployment in deployments.items():
             )
         run_batch_install(deployments_yaml["batch_config"], deployment, env_dir_full_path, logfile, logfilepath, packages_to_install=deployment["packages_to_install"])
 
+    if args.until == "install": continue
+
     # Generate modules
     print(f"... writing package modules ...")
     subprocess.run(
-        ["spack", "-e", env_dir_full_path, "module", "lmod", "refresh", "--yes-to-all", "--upstream-modules"],
+        ["spack", "--env", env_dir_full_path, "module", "lmod", "refresh", "--yes-to-all", "--upstream-modules"],
         stdout=logfile,
         stderr=logfile,
         check=True,
         text=True,
+    )
+    # Also generate a modules dir with a flat structure, i.e., everything is under Core with no metamodules
+    cfg_hierarchy = "modules:default:lmod:hierarchy::[]"
+    cfg_compilers = "modules:default:lmod:core_compilers::[%s]" % ",".join(all_compilers)
+    cfg_root = "modules:default:roots:lmod:$env/modules_flat"
+    subprocess.run(
+        [
+            "spack", "--env", env_dir_full_path,
+            "--config", cfg_hierarchy,
+            "--config", cfg_compilers,
+            "--config", cfg_root,
+            "module", "lmod", "refresh", "--yes-to-all"
+        ]
     )
 
     # Meta modules
