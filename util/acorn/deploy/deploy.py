@@ -129,6 +129,8 @@ def run_batch_install(batch_config, deployment, env_dir_full_path, logfile, logf
     logfile.write("Launching batch job:\n%s\n" % " ".join(cmd))
     subprocess.run(cmd, stdout=logfile, stderr=logfile, check=True)
 
+assert not os.getenv("SPACK_ENV"), "$SPACK_ENV is set. Reconsider your choices."
+
 # Load deployments.yaml configuration
 site, tier = get_site_and_tier()
 deployments_yaml_path = os.path.join(spack_stack_dir, "configs", "sites", tier, site, "deployments.yaml")
