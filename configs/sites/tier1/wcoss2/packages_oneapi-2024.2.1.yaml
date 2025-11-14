@@ -73,6 +73,8 @@ packages:
     require: ['+fc']
   cmake:
     require: ['%gcc']
+  eckit:
+    require:: ['@:']
   ectrans:
     require:: ['@1.2.0', '+fftw']
   elfutils:
