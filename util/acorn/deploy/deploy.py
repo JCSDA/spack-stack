@@ -6,8 +6,6 @@ parser = argparse.ArgumentParser(description="Your script description")
 
 parser.add_argument('-n', '--no-scheduler', action='store_true', help="Run installation on local node (no job scheduler)")
 parser.add_argument('-x', '--skip-go-rust-handling', action='store_true', help="Skip handling of Go/Rust dep fetching when using parallel job scheduler")
-parser.add_argument('-c', '--concretize-args', type=str, help="Concretize arguments (provide a single string)")
-parser.add_argument('-i', '--install-args', type=str, help="Install arguments (provide a single string)")
 parser.add_argument('-r', '--redeploy-existing', action='store_true', help="Redeploy existing deployments (default is skip existing env dirs)")
 parser.add_argument('-s', '--site', type=str, help='Site name override')
 parser.add_argument('-u', '--until', choices=("create", "concretize", "validate", "fetch", "install"), help='Carry out steps up to and including')
