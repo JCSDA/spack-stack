@@ -21,7 +21,7 @@ packages:
         environment:
           set:
             CONFIG_SITE: ''
-          unset: [PYTHONPATH]
+            PYTHONPATH: ''
   gcc:
     buildable: false
     externals:
@@ -35,7 +35,7 @@ packages:
         environment:
           set:
             CONFIG_SITE: ''
-          unset: [PYTHONPATH]
+            PYTHONPATH: ''
   gcc-runtime:
     require: '%gcc@10.3.0'
   #

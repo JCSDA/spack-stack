@@ -28,6 +28,7 @@ packages:
             CPATH: /opt/cray/pe/gcc/12.1.0/snos/include
           set:
             CONFIG_SITE: ''
+            PYTHONPATH: ''
             INTEL_COMPILER_TYPE: RECOMMENDED
   gcc:
     buildable: false
@@ -41,10 +42,8 @@ packages:
           fortran: /opt/cray/pe/gcc/12.1.0/snos/bin/gfortran
         environment:
           set:
-            # OpenSUSE on WCOSS2 machines sets CONFIG_SITE so
-            # Automake-based builds are installed in lib64
-            # which confuses some packages.
             CONFIG_SITE: ''
+            PYTHONPATH: ''
   gcc-runtime:
     require: '%gcc@12.1.0'
   #

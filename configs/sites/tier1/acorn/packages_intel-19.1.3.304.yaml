@@ -21,7 +21,7 @@ packages:
         environment:
           set:
             CONFIG_SITE: ''
-          unset: [PYTHONPATH]
+            PYTHONPATH: ''
   gcc-runtime:
     require: '%gcc@10.3.0'
   gcc:
@@ -37,6 +37,7 @@ packages:
         environment:
           set:
             CONFIG_SITE: ''
+            PYTHONPATH: ''
   #
   ### Provider settings, including MPI external
   #
