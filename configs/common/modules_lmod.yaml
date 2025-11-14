@@ -23,6 +23,7 @@ modules:
       - berkeley-db
       - bison
       - bzip2
+      - compiler-wrapper
       - diffutils
       - expat
       - findutils
@@ -93,6 +94,7 @@ modules:
       - apple-clang
       - gcc
       - intel-oneapi-compilers
+      - intel-oneapi-compilers-classic
       - llvm
       # By default, do not create MPI modules
       - cray-mpich
