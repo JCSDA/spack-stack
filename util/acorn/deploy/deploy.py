@@ -10,9 +10,9 @@ parser.add_argument('-c', '--concretize-args', type=str, help="Concretize argume
 parser.add_argument('-i', '--install-args', type=str, help="Install arguments (provide a single string)")
 parser.add_argument('-r', '--redeploy-existing', action='store_true', help="Redeploy existing deployments (default is skip existing env dirs)")
 parser.add_argument('-s', '--site', type=str, help='Site name override')
-parser.add_argument('-u', '--until', choices=("create", "concretize", "validate", "fetch", "install"), help='Carry out step up to and including')
+parser.add_argument('-u', '--until', choices=("create", "concretize", "validate", "fetch", "install"), help='Carry out steps up to and including')
 
-parser.add_argument('deployments', nargs='*', help="List of deployments to apply (default is all; specify template+compiler with, e.g., 'unified-dev%oneapi')")
+parser.add_argument('deployments', nargs='*', help="List of deployments to apply (default is all; specify template+compiler with, e.g., 'unified-dev%%oneapi@2024.2.1')")
 
 args = parser.parse_args()
 
