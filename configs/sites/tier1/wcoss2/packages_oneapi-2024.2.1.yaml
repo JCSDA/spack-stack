@@ -81,6 +81,8 @@ packages:
     require: ['@0.191']
   fckit:
     require:: ['@:', '+eckit']
+  gdal:
+    require:: ['~curl']
   glib:
     require: ['%gcc']
   gsibec:
