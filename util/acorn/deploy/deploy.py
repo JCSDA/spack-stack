@@ -150,14 +150,14 @@ for _deployment in deployments_yaml["deployments"]:
             deployment["only_concretize_requested_packages"] = False
         env_dir_basename = get_env_dir_basename(deployment)
         deployments[env_dir_basename] = deployment
-        print(f"Registered deployment: {deployment['template']}/{deployment['compiler']} ({env_dir_basename})")
+        print(f"  Registered deployment: {deployment['template']}/{deployment['compiler']} ({env_dir_basename})")
 
 print("="*30)
 
 # Create and install each deployment
 for env_dir_basename, deployment in deployments.items():
     if not is_deployment_requested(env_dir_basename, deployment, args):
-        print(f"Skipping existing deployment: {deployment['template']}/{deployment['compiler']} ({env_dir_basename})")
+        print(f"Skipping deployment: {deployment['template']}/{deployment['compiler']} ({env_dir_basename})")
         continue
     print("="*30)
     # Create env based on config
@@ -189,20 +189,21 @@ for env_dir_basename, deployment in deployments.items():
                 env.remove(root_spec)
         env.write()
 
-    if args.until == "create": continue
+    if args.until == "create":
+        spack.environment.deactivate()
+        continue
 
     # Concretize environment
-    concretize_args = SimpleNamespace(
-        test = False, ###
-        quiet = False,
-        fresh = True, ###
-        force = True,
-    )
     print(f"... concretizing ...")
     with redirect_stdout(logfile), redirect_stderr(logfile):
-        concretize(None, concretize_args)
+        with env.write_transaction():
+            concretized_specs = env.concretize()
+            env.write()
+        spack.environment.display_specs([concrete for _, concrete in concretized_specs])
 
-    if args.until == "concretize": continue
+    if args.until == "concretize":
+        spack.environment.deactivate()
+        continue
 
     print("... validating concretization ...")
     # Check for duplicate packages
@@ -223,7 +224,9 @@ for env_dir_basename, deployment in deployments.items():
                 is_legal = not (compiler_name == "gcc" and spec.name not in deployment["allowed_gcc_packages"])
                 assert is_legal, f"spec '{spec.name}/{spec.dag_hash()}' to be built with GCC but not in 'allowed_gcc_packages'!"
 
-    if args.until == "validate": continue
+    if args.until == "validate":
+        spack.environment.deactivate()
+        continue
 
     # Fetch packages
     print(f"... fetching packages ...")
@@ -232,7 +235,9 @@ for env_dir_basename, deployment in deployments.items():
         with redirect_stdout(logfile), redirect_stderr(logfile):
             spec.package.do_fetch()
 
-    if args.until == "fetch": continue
+    if args.until == "fetch":
+        spack.environment.deactivate()
+        continue
 
     # Install packages
     print("... installing", end="")
@@ -266,7 +271,9 @@ for env_dir_basename, deployment in deployments.items():
             )
         run_batch_install(deployments_yaml["batch_config"], deployment, env_dir_full_path, logfile, logfilepath, packages_to_install=deployment["packages_to_install"])
 
-    if args.until == "install": continue
+    if args.until == "install":
+        spack.environment.deactivate()
+        continue
 
     # Generate modules
     print(f"... writing package modules ...")
@@ -295,6 +302,8 @@ for env_dir_basename, deployment in deployments.items():
     print(f"... writing metamodules ...")
     setup_meta_modules()
 
+    # Close this deployment's logfile and zero out spack.environment's stored config info
     logfile.close()
+    spack.environment.deactivate()
 
     print(f"... done.")
