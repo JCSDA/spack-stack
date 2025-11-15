@@ -191,6 +191,7 @@ for env_dir_basename, deployment in deployments.items():
 
     if args.until == "create":
         spack.environment.deactivate()
+        logfile.close()
         continue
 
     # Concretize environment
@@ -203,6 +204,7 @@ for env_dir_basename, deployment in deployments.items():
 
     if args.until == "concretize":
         spack.environment.deactivate()
+        logfile.close()
         continue
 
     print("... validating concretization ...")
@@ -226,6 +228,7 @@ for env_dir_basename, deployment in deployments.items():
 
     if args.until == "validate":
         spack.environment.deactivate()
+        logfile.close()
         continue
 
     # Fetch packages
@@ -237,6 +240,7 @@ for env_dir_basename, deployment in deployments.items():
 
     if args.until == "fetch":
         spack.environment.deactivate()
+        logfile.close()
         continue
 
     # Install packages
@@ -273,6 +277,7 @@ for env_dir_basename, deployment in deployments.items():
 
     if args.until == "install":
         spack.environment.deactivate()
+        logfile.close()
         continue
 
     # Generate modules
@@ -303,7 +308,7 @@ for env_dir_basename, deployment in deployments.items():
     setup_meta_modules()
 
     # Close this deployment's logfile and zero out spack.environment's stored config info
-    logfile.close()
     spack.environment.deactivate()
+    logfile.close()
 
     print(f"... done.")
