@@ -7,6 +7,8 @@ packages:
     variants: ~shared
   met:
     variants: +python +grib2 +graphics +lidar2nc +modis
+  zlib-api:
+    buildable: False
 ### All other external packages listed alphabetically
   automake:
     externals:
@@ -20,6 +22,10 @@ packages:
     externals:
     - spec: bison@3.0.4
       prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@4.0.2
+      prefix: /nobackup/gmao_SIteam/cmake/cmake-4.0.2
   coreutils:
     externals:
     - spec: coreutils@8.30
@@ -45,10 +51,12 @@ packages:
     - spec: gh@2.78.0
       prefix: /nobackup/gmao_SIteam/gh/2.78.0
   git:
+    buildable: False
     externals:
     - spec: git@2.43.5~tcltk
       prefix: /usr
   git-lfs:
+    buildable: False
     externals:
     - spec: git-lfs@3.7.0
       prefix: /nobackup/gmao_SIteam/git-lfs/3.7.0
@@ -80,6 +88,11 @@ packages:
     externals:
     - spec: pkgconf@1.4.2
       prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@5.15.18
+      prefix: /nobackup/gmao_SIteam/qt5/5.15.18
   sed:
     externals:
     - spec: sed@4.5
@@ -97,6 +110,7 @@ packages:
     - spec: wget@1.19.5
       prefix: /usr
   zlib:
+    buildable: False
     externals:
     - spec: zlib@1.2.11
       prefix: /usr

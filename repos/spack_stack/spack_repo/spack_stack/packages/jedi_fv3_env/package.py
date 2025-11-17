@@ -18,6 +18,6 @@ class JediFv3Env(BundlePackage):
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
-    depends_on("fms", type="run")
+    depends_on("fms +gfs_phys constants=GFS", type="run")
 
     # There is no need for install() since there is no code.

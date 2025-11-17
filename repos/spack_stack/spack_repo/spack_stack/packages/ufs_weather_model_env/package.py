@@ -27,7 +27,7 @@ class UfsWeatherModelEnv(BundlePackage):
     depends_on("base-env", type="run")
     depends_on("ufs-pyenv", type="run", when="+python")
 
-    depends_on("fms", type="run")
+    depends_on("fms +gfs_phys constants=GFS", type="run")
     depends_on("bacio", type="run")
     depends_on("crtm", type="run")
     depends_on("g2", type="run")
