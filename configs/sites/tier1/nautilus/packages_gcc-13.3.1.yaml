@@ -2,7 +2,7 @@ packages:
   mpi:
     buildable: False
     require:
-    - openmpi@4.1.8
+    - openmpi@5.0.8
   gcc-runtime:
     buildable: False
     externals:
@@ -23,8 +23,14 @@ packages:
   openmpi:
     buildable: False
     externals:
-    - spec: openmpi@4.1.8
-      prefix: /p/app/penguin/openmpi/4.1.8/gcc-13.3.1
+    - spec: openmpi@5.0.8
+      prefix: /p/app/penguin/openmpi/5.0.8/gcc-13.3.1
       modules:
-      - penguin/openmpi/4.1.8/gcc-13.3.1
+      - penguin/openmpi/5.0.8/gcc-13.3.1
       - slurm
+      extra_attributes:
+        environment:
+          set:
+            OMPI_MCA_coll: "^hcoll,cuda"
+            OMPI_MCA_pml: "ucx"
+

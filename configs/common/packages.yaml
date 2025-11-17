@@ -84,7 +84,7 @@ packages:
     esmf:
       require:
       - ~xerces ~pnetcdf +shared +external-parallelio
-      - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0 snapshot=none']
+      - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0 snapshot=none', '@=8.9.1 snapshot=none']
       - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
         when: '%intel'
         message: Extra ESMF compile options for Intel
@@ -305,6 +305,10 @@ packages:
     py-cartopy:
       require:
       - +plotting
+    # Pin py-colorama to avoid duplicate packages, hopefully can be removed soon
+    py-colorama:
+      require:
+      - '@0.4.6'
     # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
     py-cryptography:
       require:
