@@ -1,0 +1,59 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - "mpt@2.30"
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.1
+      prefix: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
+      modules:
+      - comp-intel/2024.2.0-ifort
+  intel-oneapi-compilers:
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.0
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
+      modules:
+      - comp-intel/2024.2.0-ifort
+      extra_attributes:
+        compilers:
+          c: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icx
+          cxx: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icpx
+          fortran: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
+        environment:
+          prepend_path:
+            PATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin
+            CPATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/include
+            LD_LIBRARY_PATH: '/nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64'
+        extra_rpaths:
+        - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64
+        - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@12.3.0%gcc@12.3.0
+      prefix: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4
+  gcc:
+    externals:
+    - spec: gcc@12.3.0 languages:='c,c++'
+      prefix: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4
+      modules:
+      - comp-gcc/12.3.0-TOSS4
+      extra_attributes:
+        compilers:
+          c: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gcc
+          cxx: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/g++
+          fortran: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gfortran
+  mpt:
+    buildable: false
+    externals:
+    - spec: mpt@2.30%oneapi@=2024.2.0
+      prefix: /nasa/hpe/mpt/2.30_rhel810
+      modules:
+      - mpi-hpe/mpt.2.30
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
+      prefix: /nobackup/gmao_SIteam/intel/oneapi

@@ -128,7 +128,7 @@ jobs:
 
             # Concretize and check for duplicates
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
-            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms
 
             # Add and update source cache
             spack mirror add local-source file://${SOURCE_CACHE_PATH}/
@@ -209,7 +209,7 @@ jobs:
 
           # Concretize and check for duplicates
           spack concretize --force 2>&1 | tee log.concretize.${ENVNAME}
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms
 
           # Add binary cache back in
           spack mirror add local-binary file://${BUILD_CACHE_PATH}/

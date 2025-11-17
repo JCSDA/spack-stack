@@ -10,12 +10,12 @@ spack:
   specs:
   - ewok-env
   #- ai-env
-  - geos-gcm-env          ^esmf@=8.6.1
+  - geos-gcm-env          ^esmf@=8.9.0
   - global-workflow-env   ^esmf@=8.6.1 ^crtm@=3.1.2
   - gmao-swell-env                     ^crtm@=v2.4.1-jedi.2
   - gsi-env                            ^crtm@=3.1.2
   - jedi-fv3-env
-  - jedi-geos-env         ^esmf@=8.6.1
+  - jedi-geos-env         ^esmf@=8.9.0
   - jedi-mpas-env
   - jedi-neptune-env      ^esmf@=8.9.1
   #- jedi-tools-env
@@ -39,6 +39,10 @@ spack:
   - esmf@=8.6.1
   - esmf@=8.8.0
   - esmf@=8.9.1
+
+  # Various fms builds
+  - fms +gfs_phys constants=GFS
+  - fms ~gfs_phys constants=GEOS
 
   # MADIS for WCOSS2 decoders.
   - madis@4.5
