@@ -40,6 +40,10 @@ spack:
   - esmf@=8.8.0
   - esmf@=8.9.1
 
+  # Various fms builds
+  - fms +gfs_phys constants=GFS
+  - fms ~gfs_phys constants=GEOS
+
   # MADIS for WCOSS2 decoders.
   - madis@4.5
 

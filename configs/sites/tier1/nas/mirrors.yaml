@@ -1,18 +1,3 @@
 mirrors:
-  local-source:
-    fetch:
-      url: file:///nobackup/gmao_SIteam/spack-stack/source-cache
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
-    push:
-      url: file:///nobackup/gmao_SIteam/spack-stack/source-cache
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
+  local-source: file:///swbuild/gmao_SIteam/spack-stack/source-cache
+  local-binary: file:///swbuild/gmao_SIteam/spack-stack/binary-cache-spack-v1
