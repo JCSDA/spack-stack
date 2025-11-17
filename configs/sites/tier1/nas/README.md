@@ -14,24 +14,6 @@ also want to get a Rome compute node for the rest of the steps.
 git clone --recurse-submodules https://github.com/mathomp4/spack-stack.git -b feature/nas_install_spack_v1 spack-stack-2.0.0-test
 ```
 
-## Update packages (until merged into jscda spack-packages)
-
-I seem to need updates for some packages that are not yet in 
-the jscda spack-packages repo. So we grab them from the spack repo directly.
-
-```
-cd spack-stack-2.0.0-test/repos/builtin
-git remote add upstream https://github.com/spack/spack-packages.git
-git fetch upstream
-git checkout upstream/develop -- packages/gftl
-git checkout upstream/develop -- packages/gftl_shared
-git checkout upstream/develop -- packages/fargparse
-git checkout upstream/develop -- packages/pfunit
-git checkout upstream/develop -- packages/yafyaml
-git checkout upstream/develop -- packages/pflogger
-git checkout upstream/develop -- packages/mpt
-```
-
 ## Grab interactive node
 
 Since NAS limits you to 2 processes on a login node, you'll need to grab an interactive node. For example:
