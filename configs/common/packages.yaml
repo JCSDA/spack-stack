@@ -55,7 +55,7 @@ packages:
       - +fix
     ecbuild:
       require:
-      - '@3.7.2'
+      - '@3.12.0'
     eccodes:
       require:
       - '@2.33.0'
@@ -66,15 +66,15 @@ packages:
       - +ui
     eckit:
       require:
-      - '@1.28.3'
+      - '@1.32.3'
       - linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
       require:
-      - '@0.40.0'
+      - '@0.44.1'
       - +fckit +trans +tesselation +fftw
     ectrans:
       require:
-      - '@1.5.0'
+      - '@1.7.0'
     eigen:
       require:
       - '@3.4.0'
@@ -93,14 +93,14 @@ packages:
       - ~libbsd
     fckit:
       require:
-      - '@0.13.2'
+      - '@0.14.1'
       - +eckit
     fftw:
       require:
       - '@3.3.10'
     fiat:
       require:
-      - '@1.4.1'
+      - '@1.6.1'
     flex:
       require:
       - '@2.6.4'
