@@ -208,7 +208,7 @@ The following is required for building new spack environments with any supported
 NOAA Acorn (WCOSS2 test system)
 -------------------------------
 
-On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed in ``lib64``, breaking the ``lib`` assumption made by some packages. Therefore, ``CONFIG_SITE`` should remain set to empty in ``compilers.yaml``.
+On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed in ``lib64``, breaking the ``lib`` assumption made by some packages. Therefore, ``CONFIG_SITE`` should remain set to empty in the ``intel-oneapi-compilers`` external spec.
 
 For official deployments on ``spack-stack`` on Acorn, be mindful of umask and group ownership, as these can be finicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
 
@@ -548,7 +548,7 @@ The following instructions apply to the basic environments (``unified-dev``, ``s
    cd envs/unified-dev.hera.intel/
    spack env activate [-p] .
 
-   # Optionally edit config files (spack.yaml, packages.yaml compilers.yaml, modules.yaml, ...)
+   # Optionally edit config files (spack.yaml, packages.yaml, modules.yaml, ...)
    emacs spack.yaml
    emacs common/*.yaml
    emacs site/*.yaml
@@ -584,7 +584,7 @@ For installing chained environments, the user is referred to section :numref:`%s
 
 The ``cylc`` environment is another special environment. This environment is not chained, thus the instructions provided above until and including the ``spack install`` are still valid. The following differences apply:
 
-1. The ``cylc`` environment can only be built with a reasonably recent version of the GNU compilers (``gcc`` version ``10`` or later, as long as spack-stack in general supports the version; see section :numref:`%s <NewSiteConfigs>` for a compiler compatibility matrix). Further, on Cray systems, the Cray compiler wrappers can not be used (see the comment in ``configs/sites/tier1/narwhal/compilers.yaml``). Note that, as long as the ``cylc`` environment does not use MPI (which is currently the case), it is not necessary to toggle the ``wrappers`` variant for the external ``cray-mpich`` package when using the native compilers without the Cray wrappers.
+1. The ``cylc`` environment can only be built with a reasonably recent version of the GNU compilers (``gcc`` version ``10`` or later, as long as spack-stack in general supports the version; see section :numref:`%s <NewSiteConfigs>` for a compiler compatibility matrix). Further, on Cray systems, the Cray compiler wrappers can not be used. Note that, as long as the ``cylc`` environment does not use MPI (which is currently the case), it is not necessary to toggle the ``wrappers`` variant for the external ``cray-mpich`` package when using the native compilers without the Cray wrappers.
 
 2. Instead of creating ``tcl`` or ``lmod`` modules and the associated meta-modules, this environment creates a spack environment view in ``/path/to/spack-stack/envs/env-name/view``. In order to use the ``cylc`` installation provided in that view, the user is advised to create a ``cylc-wrapper`` similar to the following bash script, and then create an alias ``cylc`` pointing to the wrapper script. This approach ensures that the environment in which ``cylc`` operates is encapsulated from the environment that users or ``cylc`` tasks operate in.
 

@@ -282,7 +282,7 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
   spack config --scope system add packages:pkg-config:buildable:false  # Intel based Mac only
 
-5. Find compilers, add to site config's ``compilers.yaml``
+5. Find compilers, add to ``site/packages.yaml`` as externals
 
 .. code-block:: console
 
@@ -290,27 +290,22 @@ Remember to activate the ``lua`` module environment and have MacTeX in your sear
 
 .. _apple-clang-15-workaround:
 .. note::
-  When using apple-clang@15.x (or newer) compilers, you need to manually add the following ldflags spec in the `site/compilers.yaml` file.
+  When using apple-clang@15.x (or newer) compilers, you need to manually add the following ldflags spec in the `site/packages.yaml` file.
   There are known issues with new features in the Apple linker/loader that comes with the 15.x compiler set, and this change tells the linker/loader to use its legacy features which work fine.
 
 .. code-block:: yaml
   :emphasize-lines: 9,10
 
-  compilers:
-  - compiler:
-      spec: apple-clang@=15.0.0
-      paths:
-        cc: /usr/bin/clang
-        cxx: /usr/bin/clang++
-        f77: /opt/homebrew/bin/gfortran-12
-        fc: /opt/homebrew/bin/gfortran-12
-      flags:
-        ldflags: '-Wl,-ld_classic'         # Add this ldflags spec
-      operating_system: sonoma
-      target: aarch64
-      modules: []
-      environment: {}
-      extra_rpaths: []
+  apple-clang:
+    externals:
+    - spec: apple-clang@=15.0.0
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+        flags:
+          ldflags: '-Wl,-ld_classic'         # Add this ldflags spec
 
 .. note::
   Apple is aware of this issue (Apple ticket number FB13208302) and working on a solution, so this is a temporary workaround that will be removed once the linker/loader issues are repaired.
@@ -464,8 +459,11 @@ The following instructions were used to prepare a basic Ubuntu 20.04 or 22.04 LT
    apt-get update
    apt-get upgrade
 
-   # Compilers
-   apt install -y gcc g++ gfortran gdb
+   # Compilers. Note you can select other versions of gcc, g++, and gfortran by changing the version number.
+   apt install -y gcc-13 g++-13 gfortran-13 gdb
+   update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
+   update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
+   update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100
 
    # Environment module support
    # Note: lmod is available in 22.04, but is out of date: https://github.com/JCSDA/spack-stack/issues/593
@@ -539,12 +537,10 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 .. code-block:: console
 
    spack external find --scope system \
-       --exclude cmake \
+       --exclude bison --exclude meson \
        --exclude curl --exclude openssl \
        --exclude openssh --exclude python
    spack external find --scope system grep
-   spack external find --scope system sed
-   spack external find --scope system perl
    spack external find --scope system wget
 
    # Note - only needed for running JCSDA's
@@ -554,11 +550,18 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    # Note - only needed for generating documentation
    spack external find --scope system texlive
 
-5. Find compilers, add to site config's ``compilers.yaml``
+5. Find compilers, add to site config's ``packages.yaml``.
+
+.. note::
+   As of spack-stack 2.0, this step no longer adds compilers to ``compilers.yaml``. Instead, compilers are added at the top of ``packages.yaml`` as externals. If you have multiple versions of a compiler you will need to manually remove the unwanted versions prevent their use.
 
 .. code-block:: console
 
+   # Add compilers to the top of site/packages.yaml.
    spack compiler find --scope system
+
+   # Edit site/packages.yaml to delete or comment unwanted compiler versions.
+   vi site/packages.yaml
 
 6. Do **not** forget to unset the ``SPACK_SYSTEM_CONFIG_PATH`` environment variable and restore the ``SPACK_DISABLE_LOCAL_CONFIG`` variable!
 
@@ -571,40 +574,17 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
 
 .. code-block:: console
 
-   # Check your gcc version then add it to your site compiler config.
-   gcc --version
-   spack config add "packages:all:compiler:[gcc@YOUR-VERSION]"
+   # Configure preferred mpi and compiler for your environment.
+   spack config add "packages:mpi:require:['openmpi@5.0.8']"
+   spack config add "packages:all:prefer:['%gcc']"
 
-   # Example for Red Hat 8 following the above instructions
-   spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
-
-   # Example for Ubuntu 20.04 or 22.04 following the above instructions
-   spack config add "packages:all:providers:mpi:[mpich@4.2.1]"
-
-.. warning::
-   On some systems, the default compiler (e.g., ``gcc`` on Ubuntu 20) may not get used by spack if a newer version is found. Compare your entry to the output of the concretization step later and adjust the entry, if necessary.
-
-8. Set a few more package variants and versions to avoid linker errors and duplicate packages being built (for both Red Hat and Ubuntu):
-
-.. code-block:: console
-
-   spack config add "packages:fontconfig:variants:+pic"
-   spack config add "packages:pixman:variants:+pic"
-   spack config add "packages:cairo:variants:+pic"
-
-   If the environment will be used to run JCSDA's JEDI-Skylab experiments using R2D2 with a local MySQL server, run the following command:
-
-.. code-block:: console
-
-   spack config add "packages:ewok-env:variants:+mysql"
-
-9. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
+8. If you have manually installed lmod, you will need to update the site module configuration to use lmod instead of tcl. Skip this step if you followed the Ubuntu or Red Hat instructions above.
 
 .. code-block:: console
 
    sed -i 's/tcl/lmod/g' site/modules.yaml
 
-10. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``spack.yaml``, etc.
+9. Edit site config files and common config files, for example to remove duplicate versions of external packages that are unwanted, add specs in ``spack.yaml``, etc.
 
 .. code-block:: console
 
@@ -612,7 +592,7 @@ It is recommended to increase the stacksize limit by using ``ulimit -S -s unlimi
    vi common/*.yaml
    vi site/*.yaml
 
-11. Process the specs and install
+10. Process the specs and install
 
 It is recommended to save the output of concretize in a log file and inspect that log file manually and also using the :ref:`show_duplicate_packages.py <Duplicate_Checker>` utility.
 The former is to ensure that the correct compiler and MPI libraries are being used. The latter is done to find and eliminate duplicate package specifications which can cause issues at the module creation step below.
@@ -625,19 +605,19 @@ See the :ref:`documentation <Duplicate_Checker>` for usage information including
    ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
    spack install [--verbose] [--fail-fast] 2>&1 | tee log.install
 
-12. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
+11. Create tcl module files (replace ``tcl`` with ``lmod`` if you have manually installed lmod)
 
 .. code-block:: console
 
    spack module tcl refresh
 
-13. Create meta-modules for compiler, mpi, python
+11. Create meta-modules for compiler, mpi, python
 
 .. code-block:: console
 
    spack stack setup-meta-modules
 
-14. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
+12. You now have a spack-stack environment that can be accessed by running ``module use ${SPACK_STACK_DIR}/envs/unified-env.mylinux/install/modulefiles/Core``. The modules defined here can be loaded to build and run code as described in :numref:`Section %s <UsingSpackEnvironments>`.
 
 ..  _NewSiteConfigs_Linux_CreateEnv_Nvidia:
 
@@ -741,7 +721,7 @@ Optionally, to run code that may use the CUDA runtime libraries, also install:
    spack external find --scope system cmake
    spack external find --scope system xz
 
-8. Find compilers, add to site config's ``compilers.yaml``
+8. Find compilers, add to ``site/packages.yaml`` as externals
 
 .. code-block:: console
 
@@ -760,12 +740,11 @@ Optionally, to run code that may use the CUDA runtime libraries, also install:
 
    packages:
      all:
+       prefer: ['%nvhpc']
        providers:
          mpi: [openmpi@3.1.5]
          zlib-api: [zlib]
          blas: [nvhpc]
-       compiler:
-       - nvhpc@24.9
      nvhpc:
        externals:
        - spec: nvhpc@24.9 %nvhpc
