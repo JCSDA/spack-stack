@@ -14,12 +14,12 @@ spack:
   specs:
   - awscli
   - bacio
-  - boost
+  - boost@1.88
   - bufr
   - cdo
   - cfitsio
   - cmake
-  - crtm@=2.4.0.1
+  - crtm@=3.1.2
   - curl
   - ecflow
   - eckit
@@ -31,7 +31,7 @@ spack:
   - g2
   - g2c
   - g2tmpl
-  - gdal@3.8.5
+  - gdal
   - geos
   - gfsio
   - gftl-shared
@@ -81,7 +81,7 @@ spack:
   - sp
   - subversion
   - udunits
-  - upp
+  - upp ^crtm@=2.4.0.1
   - w3emc
   - w3nco
   - wgrib2

@@ -1,10 +1,14 @@
 packages:
-    all:
-      providers:
-        jpeg: [libjpeg-turbo]
-        pkgconfig: [pkg-config]
-        yacc: [bison]
-        zlib-api: [zlib]
+    # Virtual provider settings
+    jpeg:
+      require: [libjpeg-turbo]
+    pkgconfig:
+      require: [pkg-config]
+    yacc:
+      require: [bison]
+    zlib-api:
+      require: [zlib]
+    # Individual package settings
     awscli-v2:
       require:
       - ~examples
@@ -139,6 +143,8 @@ packages:
     #glib:
     #  require:
     #  - '@:2.78.3'
+    global-workflow-env:
+      require: ['+uwtools']
     ## To avoid duplicate packages being built
     #gmake:
     #  require:

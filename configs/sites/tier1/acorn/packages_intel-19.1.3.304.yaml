@@ -1,0 +1,110 @@
+packages:
+  #
+  ### Compilers
+  #
+  all:
+    prefer: ['%intel']
+  intel-oneapi-compilers-classic:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers-classic@19.1.3.304
+      modules:
+      - PrgEnv-intel/8.3.3
+      - craype/2.7.17
+      - intel/19.1.3.304
+      - libfabric
+      extra_attributes:
+        compilers:
+          c: cc
+          cxx: CC
+          fortran: ftn
+        environment:
+          set:
+            CONFIG_SITE: ''
+            PYTHONPATH: ''
+  gcc-runtime:
+    require: '%gcc@10.3.0'
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@10.3.0 languages:='c,c++,fortran'
+      prefix: /opt/cray/pe/gcc/10.3.0/snos/
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc/10.3.0/snos/bin/gcc
+          cxx: /opt/cray/pe/gcc/10.3.0/snos/bin/g++
+          fortran: /opt/cray/pe/gcc/10.3.0/snos/bin/gfortran
+        environment:
+          set:
+            CONFIG_SITE: ''
+            PYTHONPATH: ''
+  #
+  ### Provider settings, including MPI external
+  #
+  cray-mpich:
+    externals:
+    - spec: cray-mpich@8.1.9~wrappers
+      prefix: /opt/cray/pe/mpich/8.1.9/ofi/intel/19.0
+      modules:
+      - libfabric
+      - craype-network-ofi
+      - cray-mpich/8.1.9
+      - cray-pals
+  #
+  ### Individual package settings (mostly using GCC and/or old versions on account of Intel 19 being old)
+  #
+  boost::
+    require: ['@:']
+  cdo:
+    # 2.0.5 is the last version to use C++14; no grib2 simplifies deps
+    require: ["@2.0.5", 'grib2=none']
+  eccodes:
+    # 2.25.0 is the last version to use C++11 (as opposed to C++17)
+    require: ["@2.25.0"]
+  ecflow:
+    require::
+    - '@5.11.4'
+    - '+ui'
+    - 'cflags="-no-ipo" cxxflags="-no-ipo"'
+    - '^boost %gcc'
+    - '%intel'
+  eckit:
+    require:: ["@1.23.1"]
+  ecmwf-atlas:
+    require:: ['@:0.33', +fckit, ~trans, ~fftw]
+  ectrans:
+    require: ['@1.2.0', '+fftw']
+  fckit:
+    require:: ['@0.10.1', '+eckit']
+  gdal:
+    require:: ['@3.8.5', '~curl']
+  gettext:
+    require: ['%gcc', '@0.21.1']
+  glib:
+    require: ['@:2.74.3']
+  go:
+    require: ['%gcc']
+  gsibec:
+    require: ['@1.2.1']
+  harfbuzz:
+    require: ['%gcc']
+  libffi:
+    require: ['@3.3']
+  libunistring:
+    require: ['@:1.0']
+  meson:
+    require: ['@1.5.1']
+  nco:
+    require:: ['%intel']
+  patchelf:
+    require: ['@0.13.1']
+  py-maturin:
+    require: ['%gcc']
+  py-numpy:
+    require:: ['@1.26', '%gcc']
+  py-scipy:
+    require: ['@1.10.1']
+  qt:
+    require: ['cflags="-no-ipo"', 'cxxflags="-no-ipo"']
+  rhash:
+    require: ['@1.3.5']

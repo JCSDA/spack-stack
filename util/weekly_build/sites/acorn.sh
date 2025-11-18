@@ -1,5 +1,8 @@
-. ${SPACK_STACK_DIR}/configs/sites/tier1/acorn/setup.sh
-COMPILERS=${COMPILERS:-"intel@2022.2.0.262 intel@19.1.3.304"}
+if [ ! -z $SPACK_STACK_DIR ]; then
+  . ${SPACK_STACK_DIR}/configs/sites/tier1/wcoss2/setup.sh
+fi
+
+COMPILERS=${COMPILERS:-"oneapi@2024.2.1 intel@19.1.3.304"}
 TEMPLATES=${TEMPLATES:-"unified-dev"}
 function spack_install_wrapper {
   logfile=$1

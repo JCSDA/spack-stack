@@ -2,12 +2,15 @@ packages:
   #
   ### Compilers
   #
+  fortran:
+    # without this I had some weird concretization; no fortran deps require gcc
+    require: 'intel-oneapi-compilers'
   intel-oneapi-compilers:
     buildable: false
     externals:
     - spec: intel-oneapi-compilers@2024.2.1 ~envmods
       modules:
-      - PrgEnv-intel/8.5.0
+      - PrgEnv-intel/8.3.3
       - craype/2.7.17
       - intel-oneapi/2024.2
       - libfabric
@@ -30,6 +33,7 @@ packages:
             CONFIG_SITE: ''
             PYTHONPATH: ''
             INTEL_COMPILER_TYPE: RECOMMENDED
+          unset: [PYTHONPATH]
   gcc:
     buildable: false
     externals:
@@ -69,14 +73,27 @@ packages:
     require: ['+fc']
   cmake:
     require: ['%gcc']
+  ecflow:
+    require::
+    - '@5.11.4'
+    - '+ui'
+  eckit:
+    require:: ['@:']
   ectrans:
     require:: ['@1.2.0', '+fftw']
   elfutils:
     require: ['@0.191']
+  fckit:
+    require:: ['@:', '+eckit']
+  gdal:
+    require:: ['~curl']
   glib:
     require: ['%gcc']
   gsibec:
     require: ['@1.2.1']
+  harfbuzz:
+    require:
+    - any_of: ['@:2.9 %gcc', '@11: %oneapi']
   libtiff:
     require: ['build_system=cmake']
   nco:

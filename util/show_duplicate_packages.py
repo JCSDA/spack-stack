@@ -17,7 +17,7 @@ import re
 import sys
 from collections import defaultdict
 
-def show_duplicate_packages(json_to_check, ignore_list=[], only_show_dups=False):
+def show_duplicate_packages(json_to_check, ignore_list=[]):
     dd = defaultdict(set)
     json_dict = json.loads(json_to_check)
     for _hash in json_dict["concrete_specs"].keys():
@@ -27,23 +27,22 @@ def show_duplicate_packages(json_to_check, ignore_list=[], only_show_dups=False)
         dd[pkg_name].add(key)
     duplicates_found = False
     for pkg_name in sorted(dd.keys()):
-        if [pkg_name] in ignore_list:
+        if pkg_name in ignore_list:
             continue
         if len(dd[pkg_name])>1:
             print(dd[pkg_name])
             duplicates_found = True
-    sys.stderr.write("===\n%suplicates found%s\n" % (("D","!") if duplicates_found else ("No d",".")))
-    sys.stderr.flush()
     return int(duplicates_found)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Check output of `spack concretize` for duplicate packages")
-    parser.add_argument("-d", action="store_true", help="Only show duplicates (default output is colorized list of all packages)")
     parser.add_argument("-i", default=[], nargs="*", action="append", help="Ignore package name (e.g., 'hdf5', 'netcdf-c')")
     args = parser.parse_args()
     spack_env = os.getenv("SPACK_ENV")
     basedir = spack_env if spack_env else "./"
     with open(os.path.join(basedir, "spack.lock"), "r") as f:
         json_to_check = f.read()
-    ret = show_duplicate_packages(json_to_check, only_show_dups=args.d, ignore_list=args.i)
-    sys.exit(ret)
+    ndups = show_duplicate_packages(json_to_check, ignore_list=[x[0] for x in args.i])
+    sys.stderr.write("===\n%suplicates found%s\n" % (("D","!") if ndups else ("No d",".")))
+    sys.stderr.flush()
+    sys.exit(ndups)

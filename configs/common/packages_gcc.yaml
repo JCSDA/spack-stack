@@ -2,16 +2,14 @@ packages:
     all:
       prefer:
       - '%gcc'
-      providers:
-        blas: [openblas]
-        fftw-api: [fftw]
-        lapack: [openblas]
+    # Virtual provider settings
+    blas:
+      require: [openblas]
+    fftw-api:
+      require: [fftw]
+    lapack:
+      require: [openblas]
+    # Individual package settings
     ectrans:
       require:
-      - ~mkl +fftw
-    ip:
-      require:
-      - '^openblas'
-    py-numpy:
-      require:
-      - '^openblas'
+      - +fftw
