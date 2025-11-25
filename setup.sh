@@ -16,6 +16,8 @@ echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=${SPACK_STACK_DIR}/cache/user_cache
 
+echo "Enabling shell completions for spack-stack extensions..."
+${SPACK_STACK_DIR}/spack/bin/spack commands --update-completion
 source ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
 
