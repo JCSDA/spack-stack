@@ -112,7 +112,6 @@ modules:
         suffixes:
           +debug: 'debug'
           build_type=Debug:  'debug'
-          +openmp: 'openmp'
       ecmwf-atlas:
         environment:
           set:
@@ -121,6 +120,14 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+        suffixes:
+          ~openmp: 'noopenmp'
+      ip:
+        suffixes:
+          ~openmp: 'noopenmp'
+      neptune-env:
+        suffixes:
+          ~openmp: 'noopenmp'
       libpng:
         environment:
           set:
@@ -131,18 +138,18 @@ modules:
             'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
-          ^esmf@8.6.1~debug ~openmp snapshot=none: 'esmf-8.6.1'
-          ^esmf@8.6.1+debug ~openmp snapshot=none: 'esmf-8.6.1-debug'
-          ^esmf@8.6.1~debug +openmp snapshot=none: 'esmf-8.6.1-openmp'
-          ^esmf@8.6.1+debug +openmp snapshot=none: 'esmf-8.6.1-debug-openmp'
-          ^esmf@8.8.0~debug ~openmp snapshot=none: 'esmf-8.8.0'
-          ^esmf@8.8.0+debug ~openmp snapshot=none: 'esmf-8.8.0-debug'
-          ^esmf@8.8.0~debug +openmp snapshot=none: 'esmf-8.8.0-openmp'
-          ^esmf@8.8.0+debug +openmp snapshot=none: 'esmf-8.8.0-debug-openmp'
-          ^esmf@8.9.1~debug ~openmp snapshot=none: 'esmf-8.9.1'
-          ^esmf@8.9.1+debug ~openmp snapshot=none: 'esmf-8.9.1-debug'
-          ^esmf@8.9.1~debug +openmp snapshot=none: 'esmf-8.9.1-openmp'
-          ^esmf@8.9.1+debug +openmp snapshot=none: 'esmf-8.9.1-debug-openmp'
+          ^esmf@8.6.1~debug ~openmp snapshot=none: 'esmf-8.6.1-noopenmp'
+          ^esmf@8.6.1+debug ~openmp snapshot=none: 'esmf-8.6.1-debug-noopenmp'
+          ^esmf@8.6.1~debug +openmp snapshot=none: 'esmf-8.6.1'
+          ^esmf@8.6.1+debug +openmp snapshot=none: 'esmf-8.6.1-debug'
+          ^esmf@8.8.0~debug ~openmp snapshot=none: 'esmf-8.8.0-noopenmp'
+          ^esmf@8.8.0+debug ~openmp snapshot=none: 'esmf-8.8.0-debug-noopenmp'
+          ^esmf@8.8.0~debug +openmp snapshot=none: 'esmf-8.8.0'
+          ^esmf@8.8.0+debug +openmp snapshot=none: 'esmf-8.8.0-debug'
+          ^esmf@8.9.1~debug ~openmp snapshot=none: 'esmf-8.9.1-noopenmp'
+          ^esmf@8.9.1+debug ~openmp snapshot=none: 'esmf-8.9.1-debug-noopenmp'
+          ^esmf@8.9.1~debug +openmp snapshot=none: 'esmf-8.9.1'
+          ^esmf@8.9.1+debug +openmp snapshot=none: 'esmf-8.9.1-debug'
       fms:
         suffixes:
           constants=GFS: 'gfs-constants'
