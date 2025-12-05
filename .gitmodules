@@ -9,4 +9,5 @@
 [submodule "repos/builtin"]
   path = repos/builtin
   url = https://github.com/jcsda/spack-packages
-  branch = release/2.0
+  #branch = release/2.0
+  branch = bugfix/eckit_libzip
