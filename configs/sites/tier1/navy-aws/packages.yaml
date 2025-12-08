@@ -106,11 +106,7 @@ packages:
       prefix: /usr
   libfabric:
     externals:
-    - spec: libfabric@2.1.0 fabrics=psm2,psm3,shm,tcp,verbs
-      prefix: /opt/intel/oneapi/mpi/2021.16
-    - spec: libfabric@2.1.0 fabrics=psm2,psm3,shm,tcp,verbs
-      prefix: /opt/intel/oneapi/mpi/2021.16/opt/mpi/libfabric
-    - spec: libfabric@2.1.0 fabrics=psm2,psm3,shm,tcp,verbs
+    - spec: libfabric@1.22.0 fabrics=psm2,psm3,shm,tcp,verbs
       prefix: /usr
   libfuse:
     externals:
