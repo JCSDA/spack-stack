@@ -8,5 +8,7 @@
   branch = v1.3.0
 [submodule "repos/builtin"]
   path = repos/builtin
-  url = https://github.com/jcsda/spack-packages
-  branch = release/2.0
+  #url = https://github.com/jcsda/spack-packages
+  #branch = release/2.0
+  url = https://github.com/climbfuji/spack-packages
+  branch = bugfix/rel20_met_segfault
