@@ -9,6 +9,7 @@ parser.add_argument('-x', '--skip-go-rust-handling', action='store_true', help="
 parser.add_argument('-r', '--redeploy-existing', action='store_true', help="Redeploy existing deployments (default is skip existing env dirs)")
 parser.add_argument('-s', '--site', type=str, help='Site name override')
 parser.add_argument('-u', '--until', choices=("create", "concretize", "validate", "fetch", "install"), help='Carry out steps up to and including')
+parser.add_argument('-l', '--list-only', action='store_true', help="List configured deployments for the detected site and exit")
 
 parser.add_argument('deployments', nargs='*', help="List of deployments to apply (default is all; specify template+compiler with, e.g., 'unified-dev%%oneapi@2024.2.1')")
 
@@ -150,14 +151,17 @@ for _deployment in deployments_yaml["deployments"]:
             deployment["only_concretize_requested_packages"] = False
         env_dir_basename = get_env_dir_basename(deployment)
         deployments[env_dir_basename] = deployment
-        print(f"  Registered deployment: {deployment['template']}/{deployment['compiler']} ({env_dir_basename})")
+        print(f"  Registered deployment: {deployment['template']}%{deployment['compiler']} ({env_dir_basename})")
+
+if args.list_only:
+    sys.exit(0)
 
 print("="*30)
 
 # Create and install each deployment
 for env_dir_basename, deployment in deployments.items():
     if not is_deployment_requested(env_dir_basename, deployment, args):
-        print(f"Skipping deployment: {deployment['template']}/{deployment['compiler']} ({env_dir_basename})")
+        print(f"Skipping deployment: {deployment['template']}%{deployment['compiler']} ({env_dir_basename})")
         continue
     print("="*30)
     # Create env based on config
