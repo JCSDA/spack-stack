@@ -6,7 +6,7 @@
 whitelist = [
     "^libmkl.+",
     "^libifcore.so.*",
-    "~libpython3.*",
+    "^libpython3.*",
 ]
 
 ########
