@@ -26,4 +26,7 @@ packages:
   openmpi:
     externals:
     - spec: openmpi@4.1.8
-      prefix: /project/spack-stack/openmpi-4.1.8/gcc-13.3.1
+      #prefix: /project/spack-stack/openmpi-4.1.8/gcc-13.3.1
+      modules:
+      - openmpi/4.1.8
+
