@@ -491,6 +491,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
     spack env activate -p ${env_dir}
 
+    # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
+    sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
+
     # Update bootstrap mirror if requested
     if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
       tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
