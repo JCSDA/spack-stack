@@ -49,6 +49,19 @@ def spack_hash():
     return get_git_revision_short_hash(spack.paths.spack_root)
 
 
+def compiler_name_and_version_from_string(compiler):
+    """Return compiler name and version from a string that
+    contains name and version separated by - (as opposed
+    to @), e.g. gcc-13.3.1. If not version is provided,
+    return the name and "None" for the version."""
+    compiler_name, compiler_version = (
+            lambda m: (compiler[:m.start()], compiler[m.start()+1:]) if m else (compiler, ''))(re.search(r'-(?=\d)', compiler)
+        )
+    if not compiler_version:
+        compiler_version = None
+    return (compiler_name, compiler_version)
+
+
 class StackEnv(object):
     """Represents a spack.yaml environment based on different
     configurations of sites and specs. Uses the Spack library
@@ -98,6 +111,7 @@ class StackEnv(object):
         self.upstreams = kwargs.get("upstreams", None)
         self.modifypkg = kwargs.get("modifypkg", None)
         self.keepallcompilers = kwargs.get("keep_all_compilers", None)
+        self.treatwarningsaserrors = kwargs.get("treat_warnings_as_errors", None)
 
         if not self.name:
             # site = self.site if self.site else 'default'
@@ -171,7 +185,13 @@ class StackEnv(object):
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
         # Merge or copy common package config(s)
         packages_yaml_path = os.path.join(common_path, "packages.yaml")
-        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{self.compiler.split('@')[0]}.yaml")
+        (compiler_name, _) = compiler_name_and_version_from_string(self.compiler)
+        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{compiler_name}.yaml")
+        if not os.path.exists(packages_compiler_yaml_path):
+            if self.treatwarningsaserrors:
+                raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
+            else:
+                logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
         destination = os.path.join(env_common_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -190,7 +210,7 @@ class StackEnv(object):
 
         site_name = "site"
         self.includes.append(site_name)
-        env_path = self.site_configs_dir()
+        site_path = self.site_configs_dir()
         env_site_dir = os.path.join(self.env_dir(), site_name)
         logging.info(f"Copying site includes from {self.site_configs_dir()} ...\n  ... to {env_site_dir}")
         shutil.copytree(
@@ -198,13 +218,18 @@ class StackEnv(object):
         )
         # Merge or copy site module config(s)
         lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
-        modules_yaml_path = os.path.join(env_path, "modules.yaml")
-        modules_yaml_modulesys_path = os.path.join(env_path, f"modules_{lmod_or_tcl}.yaml")
+        modules_yaml_path = os.path.join(site_path, "modules.yaml")
+        modules_yaml_modulesys_path = os.path.join(site_path, f"modules_{lmod_or_tcl}.yaml")
         destination = os.path.join(env_site_dir, "modules.yaml")
         self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
-        # Merge or copy site package config(s)
-        packages_yaml_path = os.path.join(env_path, "packages.yaml")
-        packages_compiler_yaml_path = os.path.join(env_path, f"packages_{self.compiler.split('@')[0]}.yaml")
+        # Merge or copy site package config(s), issue a warning if compiler-dependent package config doesn't exist
+        packages_yaml_path = os.path.join(site_path, "packages.yaml")
+        packages_compiler_yaml_path = os.path.join(site_path, f"packages_{self.compiler}.yaml")
+        if not os.path.exists(packages_compiler_yaml_path):
+            if self.treatwarningsaserrors:
+                raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
+            else:
+                logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
         destination = os.path.join(env_site_dir, "packages.yaml")
         self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
 
@@ -218,21 +243,6 @@ class StackEnv(object):
             for entry in entries.items():
                 upstream_paths += self.get_upstream_realpaths(entry[1]["install_tree"])
         return upstream_paths
-
-    def filter_site_compilers(self, compilers_yaml_path, compiler_to_keep):
-        compiler_to_keep = re.sub("@=", "@", compiler_to_keep)
-        config_compiler_name = re.sub("@.*", "", compiler_to_keep)
-        with open(compilers_yaml_path, "r") as f:
-            compilers_yaml = syaml.load_config(f)
-        n_compilers = len(compilers_yaml["compilers"])
-        for i in range(n_compilers-1, -1, -1):
-            spec_tmp = compilers_yaml["compilers"][i]["compiler"]["spec"]
-            spec_tmp = re.sub("@=", "@", spec_tmp)
-            name_tmp = re.sub("@.*", "", spec_tmp)
-            if (name_tmp == config_compiler_name) and (spec_tmp != compiler_to_keep):
-                del(compilers_yaml["compilers"][i])
-        with open(compilers_yaml_path, "w") as f:
-            syaml.dump_config(compilers_yaml, stream=f)
 
     def write(self):
         """Write environment out to a spack.yaml in <env_dir>/<name>.
@@ -249,9 +259,6 @@ class StackEnv(object):
         # Copy site config first so that it takes precedence in env
         if self.site != "none":
             self._copy_site_includes()
-            # By default remove all other versions of the specified compiler
-            if not self.keepallcompilers and "@" in self.compiler:
-                self.filter_site_compilers(os.path.join(env_dir, "site", "compilers.yaml"), self.compiler)
 
         # Copy common include files
         self._copy_common_includes()
@@ -283,8 +290,8 @@ class StackEnv(object):
                 original_sections[key] = copy.deepcopy(section)
 
         # Commonly used config settings
-        compiler = f"packages:all:prefer:['%{self.compiler}']"
-        spack.config.add(compiler, scope=env_scope)
+        #compiler = f"packages:all:prefer:['%{self.compiler}']"
+        #spack.config.add(compiler, scope=env_scope)
         # Also update compiler definitions if matrices are used
         # DH I am too stupid to do this the "spack way" ...
         definitions = spack.config.get("definitions", scope=env_scope)
@@ -349,13 +356,14 @@ class StackEnv(object):
                               "version of spack-stack, or really, really know what you are doing.")
                         )
             new_envrepo = os.path.join(self.env_dir(), "envrepo")
+            config_envrepo = False
             for upstream_path in all_upstreams[::-1]:
                 envrepo_path = os.path.realpath(os.path.join(upstream_path, "../envrepo"))
                 if os.path.isdir(envrepo_path):
                     shutil.copytree(envrepo_path, new_envrepo, dirs_exist_ok=True)
-            if os.path.isdir(new_envrepo):
-                repo_cfg = "repos:[$env/envrepo]"
-                spack.config.add(repo_cfg, scope=env_scope)
+                    config_envrepo = True
+            if config_envrepo:
+                spack.config.add("repos:[$env/envrepo]", scope=env_scope)
 
         if self.modifypkg:
             logging.info("Creating custom repo with packages %s" % ", ".join(self.modifypkg))
@@ -365,15 +373,20 @@ class StackEnv(object):
             with open(os.path.join(env_repo_path, "repo.yaml"), "w") as f:
                 f.write("repo:\n  namespace: envrepo")
             repo_paths = spack.config.get("repos")
-            repo_paths = [p.replace("$spack/", spack.paths.spack_root + "/") for p in repo_paths]
+            repo_paths = [p.replace("${SPACK_STACK_DIR}", os.getenv("SPACK_STACK_DIR")) for p in repo_paths.values()]
             for pkg_name in self.modifypkg:
                 pkg_found = False
                 for repo_path in repo_paths:
-                    pkg_path = os.path.join(repo_path, "packages", pkg_name)
+                    # Replace dashes with underscores
+                    pkg_subdir = pkg_name.replace("-","_")
+                    # Prepend leading digits with underscores
+                    pkg_subdir = '_' + pkg_subdir if pkg_subdir[0].isdigit() else pkg_subdir
+                    pkg_path = os.path.join(repo_path, "packages", pkg_subdir)
+                    # Copy package to env repo
                     if os.path.exists(pkg_path):
                         shutil.copytree(
                             pkg_path,
-                            os.path.join(env_pkgs_path, pkg_name),
+                            os.path.join(env_pkgs_path, pkg_subdir),
                             ignore=shutil.ignore_patterns("__pycache__"),
                             dirs_exist_ok=True,
                         )
@@ -383,8 +396,16 @@ class StackEnv(object):
                 if not pkg_found:
                     logging.warning(f"WARNING: package '{pkg_name}' could not be found")
             logging.info("Adding custom repo 'envrepo' to env config")
-            repo_cfg = "repos:[$env/envrepo]"
-            spack.config.add(repo_cfg, scope=env_scope)
+            spack.config.add("repos:[$env/envrepo]", scope=env_scope)
+
+        # Copy any envrepo directory associated with the template (i.e., add-on env)
+        if self.template:
+            template_envrepo_path = os.path.join(self.template_path, "envrepo")
+            if os.path.isdir(template_envrepo_path):
+                logging.info(f"Copying envrepo/ from {self.template_path}")
+                target_envrepo_path = os.path.join(env_dir, "envrepo")
+                shutil.copytree(template_envrepo_path, target_envrepo_path, dirs_exist_ok=True)
+                spack.config.add("repos:[$env/envrepo]", scope=env_scope)
 
         # Merge the original spack.yaml template back in
         # so it has the highest precedence

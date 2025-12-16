@@ -1,45 +1,47 @@
-  packages:
-    ip:
-      require: '+alltests'
-    git:
-      buildable: false
-      externals:
-      - spec: git@2.35.3
-        prefix: /usr
-    git-lfs:
-      buildable: false
-      externals:
-      - spec: git-lfs@2.11.0
-        modules: [git-lfs/2.11.0]
-    mysql:
-      buildable: false
-      externals:
-      - spec: mysql@8.0.31
-        prefix: /lfs/h1/emc/nceplibs/noscrub/spack-stack/externals/mysql/mysql-8.0.31-linux-glibc2.17-x86_64-minimal
-    ecflow::
-      buildable: false
-      externals:
-      - spec: ecflow@5.6.0
-        modules: [ecflow/5.6.0.13]
-    pkg-config:
-      buildable: false
-      externals:
-      - spec: pkg-config@0.29.2
-        prefix: /usr
-    patchelf:
-      version: ['0.13.1']
-    gettext:
-      version: ['0.19.7']
-    rhash:
-      version: ['1.3.5']
-    gdal:
-      variants: ~curl
-    flex:
-      buildable: false
-      externals:
-      - spec: flex@2.6.4+lex
-        prefix: /usr
-    grep:
-      externals:
-      - spec: grep@3.1
-        prefix: /usr
+packages:
+  # Don't build compilers
+  c:
+    buildable: false
+  cxx:
+    buildable: false
+  fortran:
+    buildable: false
+  #
+  ### Providers
+  #
+  blas:
+    require:: ['openblas']
+  fftw-api:
+    require: ['fftw']
+  jpeg:
+    require: ['libjpeg-turbo']
+  lapack:
+    require:: ['openblas']
+  mkl:
+    buildable: false
+  mpi:
+    buildable: false
+    require: ['cray-mpich']
+  #
+  ### Individual package settings
+  #
+  curl:
+    require: ['~nghttp2']
+  flex:
+    require: ['@2.6.4']
+  gdal:
+    require: ['~curl']
+  global-workflow-env:
+    require:: ['~uwtools']
+  icu4c:
+    require: ['%gcc']
+  libxslt:
+    require: ['~crypto']
+  nco:
+    require:: ['%oneapi']
+  py-pandas:
+    require:: ['~excel']
+  subversion:
+    require: ['~serf', '+pic']
+  zlib-ng:
+    require: ['+compat', '~new_strategies']

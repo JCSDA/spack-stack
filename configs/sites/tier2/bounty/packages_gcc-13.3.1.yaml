@@ -1,0 +1,19 @@
+packages:
+  mpi:
+    require:
+    - "openmpi@=5.0.8"
+  gcc-runtime:
+    buildable: False
+    externals:
+    - spec: gcc-runtime@13.3.1
+      prefix: /opt/rh/gcc-toolset-13/root/usr
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@13.3.1 languages:='c,c++,fortran'
+      prefix: /opt/rh/gcc-toolset-13/root/usr
+      extra_attributes:
+        compilers:
+          c: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+          cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+          fortran: /opt/rh/gcc-toolset-13/root/usr/bin/gfortran

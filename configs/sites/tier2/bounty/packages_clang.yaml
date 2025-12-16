@@ -1,5 +1,0 @@
-packages:
-  all:
-    compiler:: [clang@20.1.5]
-    providers:
-      mpi:: [openmpi@5.0.6]

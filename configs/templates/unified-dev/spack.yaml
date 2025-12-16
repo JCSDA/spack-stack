@@ -1,3 +1,5 @@
+# Template for grand, unified environment
+#
 spack:
   concretizer:
     unify: when_possible
@@ -5,65 +7,52 @@ spack:
   view: false
   include: []
 
-  definitions:
-  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
-  - packages:
-    - ewok-env +ecflow ~cylc
-    - ai-env
-    - geos-gcm-env          ^esmf@=8.6.1
-    - global-workflow-env   ^esmf@=8.6.1 ^crtm@=3.1.2
-    - gmao-swell-env                     ^crtm@=v2.4.1-jedi.2
-    - gsi-env                            ^crtm@=3.1.2
-    - jedi-fv3-env
-    - jedi-geos-env         ^esmf@=8.6.1
-    - jedi-mpas-env
-    - jedi-neptune-env      ^esmf@=8.9.1
-    - jedi-tools-env
-    - jedi-ufs-env          ^esmf@=8.8.0
-    - jedi-um-env
-    - neptune-env           ^esmf@=8.9.1
-    - neptune-python-env    ^esmf@=8.9.1
-    - soca-env
-    - ufs-srw-app-env       ^esmf@=8.8.0 ^crtm@=3.1.2
-    - ufs-weather-model-env ^esmf@=8.8.0 ^crtm@=3.1.2
-
-    # Various crtm tags (list all to avoid duplicate packages)
-    - crtm@2.4.0.1
-    - crtm@v2.4.1-jedi.2
-    - crtm@3.1.2
-
-    # Mapl with various esmf tags
-    - mapl@2.53.0 ^esmf@8.6.1
-    - mapl@2.53.4 ^esmf@8.8.0
-
-    # Various esmf tags (list all to avoid duplicate packages)
-    - esmf@=8.6.1
-    - esmf@=8.8.0
-    - esmf@=8.9.1
-
-    # MADIS for WCOSS2 decoders.
-    - madis@4.5
-
   specs:
-  - matrix:
-    - [$packages]
-    - [$compilers]
-    exclude:
-    # Don't build ai-env and jedi-tools-env with Intel or oneAPI,
-    # some packages don't build (e.g., py-torch in ai-env doesn't
-    # build with Intel, and there are constant problems concretizing
-    # the environment
-    - ai-env%intel
-    - ai-env%oneapi
-    - jedi-tools-env%intel
-    - jedi-tools-env%oneapi
-    # Skip neptune-python-env with Intel Classic due to problems
-    # with new versions of py-numpy, py-scipy, ...
-    - neptune-python-env%intel
-    # Skip incompatible CRTM versions with oneapi
-    - crtm@2.4.0.1%oneapi
+  - ewok-env
+  #- ai-env
+  - geos-gcm-env          ^esmf@=8.9.1
+  - global-workflow-env   ^esmf@=8.6.1 ^crtm@=3.1.2
+  - gmao-swell-env                     ^crtm@=v2.4.1-jedi.2
+  - gsi-env                            ^crtm@=3.1.2
+  - jedi-fv3-env
+  - jedi-geos-env         ^esmf@=8.9.1
+  - jedi-mpas-env
+  - jedi-neptune-env      ^esmf@=8.9.1
+  #- jedi-tools-env
+  - jedi-ufs-env          ^esmf@=8.8.0
+  #- jedi-um-env
+  - neptune-env           ^esmf@=8.9.1
+  - neptune-python-env    ^esmf@=8.9.1
+  - soca-env
+  - ufs-srw-app-env       ^esmf@=8.8.0 ^crtm@=3.1.2
+  - ufs-weather-model-env ^esmf@=8.8.0 ^crtm@=3.1.2
+
+  # Various crtm tags (list all to avoid duplicate packages)
+  - crtm@v2.4.1-jedi.2
+  - crtm@3.1.2
+
+  # Mapl with various esmf tags
+  - mapl@2.53.0 ^esmf@8.6.1
+  - mapl@2.53.4 ^esmf@8.8.0
+
+  # Various esmf tags (list all to avoid duplicate packages)
+  - esmf@=8.6.1
+  - esmf@=8.8.0
+  - esmf@=8.9.1
+
+  # Various fms builds
+  - fms +gfs_phys constants=GFS
+  - fms ~gfs_phys constants=GEOS
+
+  # MADIS for WCOSS2 decoders.
+  - madis@4.5
+
   packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:
       require:
-      - '+pnetcdf'
+      - +pnetcdf

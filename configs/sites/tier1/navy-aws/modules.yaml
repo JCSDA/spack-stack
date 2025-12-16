@@ -5,3 +5,4 @@ modules:
     tcl:
       include:
       - python
+      - openmpi

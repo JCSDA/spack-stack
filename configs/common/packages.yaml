@@ -1,331 +1,455 @@
 packages:
-  #
-  all:
-    providers:
-      gl: [opengl]
-      glu: [openglu]
-      jpeg: [libjpeg-turbo]
-      pkgconfig: [pkg-config]
-      yacc: [bison]
-      zlib-api: [zlib-ng]
-  #
-  awscli-v2:
-    require: '~examples'
-  bacio:
-    require: '@2.6.0'
-  bison:
-    require: '@3.4:'
-  # 1.85 incompatible with ecflow@5.11.4 - use latest 'good version'
-  boost:
-    require:
-    - '@1.84 ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization ~signals +system +test +thread +timer ~wave cxxstd=17 visibility=hidden'
-  bufr:
-    require: '@12.1.0 +python'
-  bufr-query:
-    require: '@0.0.4 +python'
-  cairo:
-    require: '+pic'
-  cdo:
-    require:
-    - any_of: ['@2.3.0 ~openmp']
-      when: '%intel@2021:'
-      message: '2.3.0 is the last version to use C++17, use with Intel Classic'
-    - any_of: ['@2.3.0 ~openmp']
-      when: '%gcc@:10'
-      message: 2.3.0 is the last version to use C++17, use with GCC 10 and earlier
-    - any_of: ['@2.3.0 ~openmp']
-      when: '%apple-clang@:14'
-      message: '2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier'
-    - any_of: ['@2.0.5 ~openmp']
-      when: '%intel@:2020'
-      message: '2.0.5 is the last version to use C++14, use with Intel Classic 2020 and earlier'
-  cmake:
-    require:
-    - '@3.29:'
-    - '+ownlibs'
-  # Attention - when updating also check the various jcsda-emc-bundles env packages
-  crtm:
-    require: '+fix'
-  ecbuild:
-    require: '@3.7.2'
-  eccodes:
-    require:
-    - '@2.33.0'
-    - '+netcdf +png +tools'
-  ecflow:
-    require:
-    - '@5.11.4 +ui'
-  eckit:
-    require: '@1.28.3 linalg=eigen,lapack compression=lz4,bzip2'
-  ecmwf-atlas:
-    require: '@0.40.0 +fckit +trans +tesselation +fftw'
-  ectrans:
-    require:
-    - '@1.5.0'
-  eigen:
-    require: '@3.4.0'
-  # Attention - when updating the version also check the common modules.yaml
-  # config and update the projections for lmod/tcl.
-  # Also, check the acorn and derecho site configs which have esmf modifications.
-  esmf:
-    require:
-    - '~xerces ~pnetcdf +shared +external-parallelio'
-    - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.1 snapshot=none']
-    - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
-      when: "%intel"
-      message: "Extra ESMF compile options for Intel"
-    - any_of: ['+python']
-      when: "%gcc"
-    - any_of: ['+python']
-      when: "%intel"
-    - any_of: ['+python']
-      when: "%oneapi"
-    - any_of: ['~python']
-      when: "%clang"
-      message: "Disable python variant for ESMF because mpi4py doesn't build with clang" 
-  # To avoid duplicate packages (concretizer bug?)
-  expat:
-    require:
-    - '~libbsd'
-  fckit:
-    require: '@0.13.2 +eckit'
-  fftw:
-    require: '@3.3.10'
-  fiat:
-    require: '@1.4.1'
-  flex:
-    # Pin version to avoid duplicates
-    require: '@2.6.4'
-  fms:
-    require:
-    - '@2024.02'
-    - 'precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io'
-  fontconfig:
-    require: '+pic'
-  freetype:
-    require: '+pic'
-  g2:
-    require:
-    - '@3.5.1'
-  g2c:
-    require: '@2.1.0'
-  g2tmpl:
-    require:
-    - '@1.13.0'
-  gcc-runtime:
-    require: '%gcc'
-  gfsio:
-    require: '@1.4.2'
-  #git-lfs:
-    # Assume git-lfs is provided, hard to install
-    # because of dependencies on go/go-bootstrap.
-    # Note: Uncommenting this entry will break
-    # the container builds.
-    #require: '@2.11.0'
-  # https://github.com/spack/spack/issues/49358
-  # https://github.com/spack/spack/pull/44323
-  glib:
-    require:
-    - '@:2.78.3'
-  # To avoid duplicate packages being built
-  gmake:
-    require:
-    - one_of: ['@=4.2.1', '@=4.4.1']
-  grib-util:
-    require: '@1.4.0'
-  gsibec:
-    require:
-    - '@1.2.1'
-  gsi-ncdiag:
-    require: '@1.1.2'
-  gsl-lite:
-    require: '@0.37.0'
-  hdf:
-    require: '@4.2.15 +external-xdr ~fortran ~netcdf'
-  hdf5:
-    require: '@1.14.5 +hl +fortran +mpi +threadsafe ~szip'
-  # Newer versions of hdf-eos2 require manual downloading, avoid
-  hdf-eos2:
-    require: '@2.20v1.00'
-  ip:
-    require:
-    - '@5.4.0 precision=4,d,8'
-  ip2:
-    require: '@1.1.2'
-  jasper:
-    require: '@2.0.32'
-  jedi-cmake:
-    require: '@1.4.0'
-  landsfcutil:
-    require: '@2.4.2'
-  libjpeg-turbo:
-    require: '@2.1.0'
-  libpng:
-    require: '@1.6.37 +pic'
-  # libtirpc +gssapi doesn't build with oneapi@2025
-  # https://github.com/JCSDA/spack-stack/issues/1441
-  libtirpc:
-    require: '~gssapi'
-  # Newest version of magics needed for oneapi compilers
-  magics:
-    require: "@4.15.3:"
-  mapl:
-    require: '@2.53 ~shared ~f2py'
-    variants: '+pflogger'
-  # Note: Please check the sites/tier1/nas/packages_gcc.yaml if
-  #       this is changed, as it has a custom variant combination
-  met:
-    require:
-    - '@12.0.1'
-    - '+python'
-    - '+grib2'
-  metplus:
-    require: '@6.0.0'
-  metis:
-    require: '+int64 +real64'
-  mpich:
-    require: '~hwloc'
-  nco:
-    require: '@5.2.4 ~doc'
-  # ncview - when adding information here, also check Orion
-  # and Discover site configs
-  nemsio:
-    require: '@2.5.4'
-  nemsiogfs:
-    require: '@2.5.3'
-  nccmp:
-    require: '@1.9.0.1'
-  ncio:
-    require: '@1.1.2'
-  netcdf-c:
-    # If using 4.9.1, turn off byterange variant to fix compile error: ~byterange
-    require: '@4.9.2 +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=autotools'
-  netcdf-cxx4:
-    require: '@4.3.1'
-  netcdf-fortran:
-    require: '@4.6.1 +parallel_tests'
-  # ninja - when adding information here, also check Discover site config
-  odc:
-    require: '@1.6.1 ~fortran'
-  openmpi:
-    require: '~internal-hwloc +two_level_namespace'
-  openssl:
-    require: '+shared'
-  p4est:
-    require: '@2.8.7'
-  parallelio:
-    require:
-    - '@2.6.2'
-  parallel-netcdf:
-    require:
-    - '@1.12.3'
-  pflogger:
-    require: '+mpi'
-  pixman:
-    require: '+pic'
-  prod-util:
-    require: '@2.1.1'
-  proj:
-    require: '~tiff'
-  # Turn off crypt variant for Python; this leads to build errors
-  # with Intel in py-cryptography unless external curl and openssl
-  # are removed, which itself is problematic.
-  python:
-    require: '@3.11.11 ~crypt'
-  py-cartopy:
-    require: '+plotting'
-  # Avoid full rust dependency: version 43+ requires py-maturin
-  # DH* 20250214 No longer needed?
-  # https://github.com/JCSDA/spack-stack/pull/1519
-  py-cryptography:
-    require: '@:42 +rust_bootstrap'
-  # Pin py-cython to avoid duplicate packages
-  py-cython:
-    require: '@3'
-  # As long as we need the "delayed" variant for py-dask,
-  # we are restricted to version 2021.03.0 (last one that has it)
-  # and newer than 2021.01.0 because of these issues:
-  # https://github.com/JCSDA/spack-stack/issues/1216
-  # https://github.com/pydata/xarray/issues/8917
-  py-dask:
-    require: '@2021.3.0'
-  # To avoid duplicate packages
-  py-flit-core:
-    require: '@3.8.0'
-  py-h5py:
-    require: '~mpi'
-  # https://github.com/JCSDA/spack-stack/issues/1276
-  py-matplotlib:
-    require: '@3.7.4'
-  py-maturin:
-    require: '+rust_bootstrap'
-  # https://github.com/Unidata/netcdf4-python/issues/1389
-  # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
-  py-netcdf4:
-    require: '@1.7.1 ~mpi'
-  # To avoid duplicate packages
-  py-numpy:
-    require:
-    - '@1.26'
-  py-rpds-py:
-    require: '+rust_bootstrap'
-  # To avoid duplicate packages
-  py-ruamel-yaml:
-    require: '@0.17.16'
-  # Pin the py-setuptools version to avoid duplicate Python packages
-  py-setuptools:
-    require: '@69'
-  py-setuptools-rust:
-    require: '+rust_bootstrap'
-  # When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
-  py-torch:
-    require:
-    - '+custom-protobuf ~mkldnn'
-  # To avoid duplicate packages
-  py-urllib3:
-    require: '@1.26.12'
-  # To avoid duplicate packages
-  py-versioneer:
-    require: '@0.28'
-  qt:
-    require:
-    - '@5'
-  scotch:
-    require:
-    - '@7.0.4 +mpi+metis~shared~threads~mpi_thread+noarch+esmumps'
-  sfcio:
-    require: '@1.4.2'
-  shumlib:
-    require: '@macos_clang_linux_intel_port'
-  sigio:
-    require: '@2.3.3'
-  sp:
-    require: '@2.5.0 precision=4,d,8'
-  udunits:
-    require: '@2.2.28'
-  ufs-utils:
-    require: '@1.13.0'
-  # Note - we can remove upp from stack at some point?
-  upp:
-    require: '@10.0.10'
-  uwtools:
-    require: '@2.7.2'
-  # Need extradeps for grib-utils, which ties us to w3ecm@:2.11
-  w3emc:
-    require:
-    - '@:2.11.0'
-    - 'precision=4,d,8 +extradeps'
-    # https://github.com/NOAA-EMC/NCEPLIBS-w3emc/issues/246
-    - one_of: ['@2.10.0']
-      when: "%clang"
-  w3nco:
-    require: '@2.4.1'
-  # See macOS site config for wgrib2 version/variant overrides
-  wgrib2:
-    require:
-    - '@3.6.0'
-    - '+ipolates +netcdf'
-  wrf-io:
-    require: '@1.2.0'
-  zstd:
-    require: '@1.5.6 +programs'
+    # Virtual provider settings
+    jpeg:
+      require: [libjpeg-turbo]
+    pkgconfig:
+      require: [pkg-config]
+    yacc:
+      require: [bison]
+    zlib-api:
+      require: [zlib]
+    # Individual package settings
+    awscli-v2:
+      require:
+      - ~examples
+    bacio:
+      require:
+      - '@2.6.0'
+    bison:
+      require:
+      - '@3.4:'
+    boost:
+      require:
+      - '@1.84.0'
+      - ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log
+      - ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization
+      - +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
+    bufr:
+      require:
+      - '@12.1.0'
+      - +python
+    bufr-query:
+      require:
+      - '@0.0.4'
+      - +python
+    cairo:
+      require:
+      - +pic
+    cdo:
+      require:
+      - any_of: ['@2.3.0 ~openmp']
+        when: '%intel@2021:'
+        message: 2.3.0 is the last version to use C++17, use with Intel Classic
+      - any_of: ['@2.3.0 ~openmp']
+        when: '%gcc@:10'
+        message: 2.3.0 is the last version to use C++17, use with GCC 10 and earlier
+      - any_of: ['@2.3.0 ~openmp']
+        when: '%apple-clang@:14'
+        message: 2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier
+      - any_of: ['@2.0.5 ~openmp']
+        when: '%intel@:2020'
+        message: 2.0.5 is the last version to use C++14, use with Intel Classic 2020 and earlier
+    cmake:
+      require:
+      - '@3.29:'
+      - +ownlibs
+    # Attention - when updating also check the various jcsda-emc-bundles env packages
+    crtm:
+      require:
+      - +fix
+    ecbuild:
+      require:
+      - '@3.12.0'
+    eccodes:
+      require:
+      - '@2.33.0'
+      - +netcdf +png +tools
+    ecflow:
+      require:
+      - '@5.11.4'
+      - +ui
+    eckit:
+      require:
+      - '@1.32.3'
+      - linalg=eigen,lapack compression=lz4,bzip2
+    ecmwf-atlas:
+      require:
+      - '@0.44.1'
+      - +fckit +trans +tesselation +fftw
+    ectrans:
+      require:
+      - '@1.7.0'
+    eigen:
+      require:
+      - '@3.4.0'
+    # Attention - when updating the version also check the common modules.yaml
+    # config and update the projections for lmod/tcl.
+    # Also, check the acorn and derecho site configs which have esmf modifications.
+    esmf:
+      require:
+      - ~xerces ~pnetcdf +shared +external-parallelio
+      - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0 snapshot=none', '@=8.9.1 snapshot=none']
+      - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
+        when: '%intel'
+        message: Extra ESMF compile options for Intel
+    expat:
+      require:
+      - ~libbsd
+    fckit:
+      require:
+      - '@0.14.1'
+      - +eckit
+    fftw:
+      require:
+      - '@3.3.10'
+    fiat:
+      require:
+      - '@1.6.1'
+    flex:
+      require:
+      - '@2.6.4'
+    fms:
+      require:
+      - '@2024.02'
+      - precision=32,64 +quad_precision +openmp +pic build_type=Release +deprecated_io
+      - any_of:
+        - +gfs_phys constants=GFS
+        - ~gfs_phys constants=GEOS
+    fontconfig:
+      require:
+      - +pic
+    freetype:
+      require:
+      - +pic
+    g2:
+      require:
+      - '@3.5.1'
+    g2c:
+      require:
+      - '@2.1.0'
+    g2tmpl:
+      require:
+      - '@1.17.0'
+    # This version builds with Intel oneAPI compilers, newer/older versions don't
+    gdal:
+      require:
+      - '@3.10.2'
+    # *DH
+    gfsio:
+      require:
+      - '@1.4.2'
+    ## https://github.com/spack/spack/issues/49358
+    ## https://github.com/spack/spack/pull/44323
+    #glib:
+    #  require:
+    #  - '@:2.78.3'
+    global-workflow-env:
+      require: ['+uwtools']
+    ## To avoid duplicate packages being built
+    #gmake:
+    #  require:
+    #  - one_of: ['@=4.2.1', '@=4.4.1']
+    grib-util:
+      require:
+      - '@1.4.0'
+    gsibec:
+      require:
+      - '@1.2.1'
+    gsi-ncdiag:
+      require:
+      - '@1.1.2'
+    #gsl-lite:
+    #  require:
+    #  - '@0.37.0'
+    hdf:
+      require:
+      - '@4.2.15'
+      - +external-xdr ~fortran ~netcdf
+    hdf5:
+      require:
+      - '@1.14.5'
+      - +hl +fortran +mpi +threadsafe ~szip
+    # Newer versions of hdf-eos2 require manual downloading, avoid
+    hdf-eos2:
+      require:
+      - '@2.20v1.00'
+    intel-oneapi-compilers-runtime:
+      require:
+      - '%oneapi'
+    intel-oneapi-compilers-classic-runtime:
+      require:
+      - '%intel'
+    ip:
+      require:
+      - '@5.4.0'
+      - precision=4,d,8
+    ip2:
+      require:
+      - '@1.1.2'
+    #jasper:
+    #  require:
+    #  - '@2.0.32'
+    jedi-cmake:
+      require:
+      - '@1.4.0'
+    landsfcutil:
+      require:
+      - '@2.4.2'
+    #libjpeg-turbo:
+    #  require:
+    #  - '@2.1.0'
+    libpng:
+      require:
+      - '@1.6.37'
+      - +pic
+    # libtirpc +gssapi doesn't build with oneapi@2025
+    # https://github.com/JCSDA/spack-stack/issues/1441
+    libtirpc:
+      require:
+      - ~gssapi
+    # Newest version of magics needed for oneapi compilers
+    magics:
+      require:
+      - '@4.15.3:'
+    mapl:
+      require:
+      - '@2.53'
+      - ~shared ~f2py +pflogger
+    met:
+      require:
+      - '@12.0.1'
+      - +python +grib2
+    metplus:
+      require:
+      - '@6.0.0'
+    metis:
+      require:
+      - +int64 +real64
+    mpich:
+      require:
+      - ~hwloc
+    nco:
+      require:
+      - ~doc
+    # ncview - check Orion and Discover site configs
+    nemsio:
+      require:
+      - '@2.5.5'
+    nemsiogfs:
+      require:
+      - '@2.5.4'
+    nccmp:
+      require:
+      - '@1.9.0.1'
+    ncio:
+      require:
+      - '@1.1.2'
+    netcdf-c:
+      require:
+      - '@4.9.2'
+      - +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=cmake
+    netcdf-cxx4:
+      require:
+      - '@4.3.1'
+    netcdf-fortran:
+      require:
+      - '@4.6.1'
+      - +parallel_tests
+    # ninja - when adding information here, also check Discover site config
+    odc:
+      require:
+      - '@1.6.1'
+      - ~fortran
+    openmpi:
+      require:
+      - ~internal-hwloc +two_level_namespace
+    openssl:
+      require:
+      - +shared
+      - '@3'
+    p4est:
+      require:
+      - '@2.8.7'
+    # Earlier versions of pango don't build on Blueback because of
+    # a bug in finding the correct Python interpreter from spack.
+    pango:
+      require:
+      - '@1.54:'
+    parallelio:
+      require:
+      - '@2.6.2'
+    # DH* CAN WE UPDATE? NEED A NEW SHARED-INTEL PATCH?
+    parallel-netcdf:
+      require:
+      - '@1.12.3'
+    pflogger:
+      require:
+      - +mpi
+    pixman:
+      require:
+      - +pic
+    prod-util:
+      require:
+      - '@2.1.2'
+    proj:
+      require:
+      - ~tiff
+    # Turn off crypt variant for Python; this leads to build errors
+    # with Intel in py-cryptography unless external curl and openssl
+    # are removed, which itself is problematic.
+    python:
+      require:
+      - '@3.11'
+      - ~crypt
+    # Not sure about the exact version requirements, but earlier
+    # versions (definitely 4.5.3 and earlier) don't work with newer
+    # py-setuptools (version 68 and later) because of a breaking
+    # change: error in beautifulsoup4 setup command: use_2to3 is invalid
+    py-beautifulsoup4:
+      require:
+      - '@4.12.3:'
+    py-cartopy:
+      require:
+      - +plotting
+    # Pin py-colorama to avoid duplicate packages, hopefully can be removed soon
+    py-colorama:
+      require:
+      - '@0.4.6'
+    # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
+    py-cryptography:
+      require:
+      - '@42'
+    ## Pin py-cython to avoid duplicate packages
+    #py-cython:
+    #  require:
+    #  - '@3'
+    ## As long as we need the "delayed" variant for py-dask,
+    ## we are restricted to version 2021.03.0 (last one that has it)
+    ## and newer than 2021.01.0 because of these issues:
+    ## https://github.com/JCSDA/spack-stack/issues/1216
+    ## https://github.com/pydata/xarray/issues/8917
+    #py-dask:
+    #  require:
+    #  - '@2021.3.0'
+    # To avoid duplicate packages
+    py-flit-core:
+      require:
+      - '@3.8.0'
+    py-h5py:
+      require:
+      - ~mpi
+    # Needed to fix issues of older versions (e.g. 1.13.0) with newer Python and
+    # newer python packages: "ValueError: Unknown classifier in field project.classifiers ..."
+    py-hatchling:
+      require:
+      - '@1.27:'
+    # https://github.com/JCSDA/spack-stack/issues/1276
+    py-matplotlib:
+      require:
+      - '@3.7.4'
+      #- '@3.8.0'
+    # https://github.com/Unidata/netcdf4-python/issues/1389
+    # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
+    py-netcdf4:
+      require:
+      - '@1.7.2'
+      - ~mpi
+    ## To avoid duplicate packages
+    #py-numpy:
+    #  require:
+    #  - '@1.26'
+    # DH* 20250813
+    # To avoid duplicate packages
+    py-poetry-core:
+      require:
+      - '@1.7'
+    # *DH 20250813
+    # This version builds with Intel oneAPI compilers, newer versions don't
+    py-pyogrio:
+      require:
+      - '@0.9.0'
+    # To avoid duplicate packages
+    py-python-dateutil:
+      require:
+      - '@2'
+    # To avoid duplicate packages
+    py-requests:
+      require:
+      - '@2.32.3'
+    # To avoid duplicate packages
+    py-ruamel-yaml:
+      require:
+      - '@0.17.16'
+    # Pin the py-setuptools version to avoid duplicate Python packages
+    py-setuptools:
+      require:
+      - '@69'
+    ## When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
+    py-torch:
+      require:
+      - +custom-protobuf ~mkldnn
+    # To avoid duplicate packages
+    py-urllib3:
+      require:
+      - '@1.26.20'
+      # OR - '@1.26.12' ?
+    # To avoid duplicate packages
+    py-versioneer:
+      require:
+      - '@0.29'
+    qt:
+      require:
+      - '@5'
+    scotch:
+      require:
+      - '@7.0.10'
+      - +mpi+metis~shared~threads~mpi_thread+noarch+esmumps+fortran determinism=FIXED_SEED
+    sfcio:
+      require:
+      - '@1.4.2'
+    shumlib:
+      require:
+      - '@macos_clang_linux_intel_port'
+    sigio:
+      require:
+      - '@2.3.3'
+    sp:
+      require:
+      - '@2.5.0'
+      - 'precision=4,d,8'
+    udunits:
+      require:
+      - '@2.2.28'
+    ufs-utils:
+      require:
+      - '@1.13.0'
+    # Note - we can remove upp from stack at some point?
+    upp:
+      require:
+      - '@10.0.10'
+    uwtools:
+      require:
+      - '@2.7.2'
+    # Need extradeps for grib-utils, enable by default to avoid duplicate packages
+    # w3emc@2.11.0 doesn't build with LLVM 21
+    w3emc:
+      require:
+      - one_of: ['@=2.11.0', '@=2.10.0']
+      - one_of: ['@=2.10.0']
+        when: '%clang'
+      - precision=4,d,8 +extradeps
+    w3nco:
+      require:
+      - '@2.4.1'
+    # See macOS site config for wgrib2 version/variant overrides
+    wgrib2:
+      require:
+      - '@3.6.0'
+      - +ipolates +netcdf
+    wrf-io:
+      require:
+      - '@1.3.0'
+    zstd:
+      require:
+      - '@1.5.7'
+      - +programs

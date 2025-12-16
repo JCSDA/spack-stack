@@ -3,12 +3,32 @@
 modules:
   default:
     roots:
-      tcl: $env/install/modulefiles
+      tcl: $env/modules
     tcl:
       projections:
-        all: '{compiler.name}/{compiler.version}/{name}/{version}'
+        # Note: These translations of compiler and MPI library names must match the ALIASES
+        # dictionary in spack-ext/lib/jcsda-emc/spack-stack/stack/meta_modules.py
+        # Defaults
+        '^intel-oneapi-compilers-classic^intel-oneapi-mpi': 'impi/{^mpi.version}/intel/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers-classic^mpi': '{^mpi.name}/{^mpi.version}/intel/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers-classic': 'intel/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers^intel-oneapi-mpi': 'impi/{^mpi.version}/oneapi/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers^mpi': '{^mpi.name}/{^mpi.version}/oneapi/{compiler.version}/{name}/{version}'
+        '^intel-oneapi-compilers': 'oneapi/{compiler.version}/{name}/{version}'
+        ^intel-oneapi-mpi: 'impi/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
         ^mpi: '{^mpi.name}/{^mpi.version}/{compiler.name}/{compiler.version}/{name}/{version}'
-        ecmwf-atlas: '{compiler.name}/{compiler.version}/atlas/{version}'
+        all: '{compiler.name}/{compiler.version}/{name}/{version}'
+        # The special cases - Intel classic compilers
+        'nlohmann-json ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/json/{version}'
+        'nlohmann-json-schema-validator ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/json-schema-validator/{version}'
+        'libjpeg-turbo ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/libjpeg/{version}'
+        'prod-util ^intel-oneapi-compilers-classic': 'intel/{compiler.version}/prod_util/{version}'
+        # The special cases - Intel LLVM compilers
+        'nlohmann-json ^intel-oneapi-compilers': 'oneapi/{compiler.version}/json/{version}'
+        'nlohmann-json-schema-validator ^intel-oneapi-compilers': 'oneapi/{compiler.version}/json-schema-validator/{version}'
+        'libjpeg-turbo ^intel-oneapi-compilers': 'oneapi/{compiler.version}/libjpeg/{version}'
+        'prod-util ^intel-oneapi-compilers': 'oneapi/{compiler.version}/prod_util/{version}'
+        # The special cases - other compilers
         nlohmann-json: '{compiler.name}/{compiler.version}/json/{version}'
         nlohmann-json-schema-validator: '{compiler.name}/{compiler.version}/json-schema-validator/{version}'
         libjpeg-turbo: '{compiler.name}/{compiler.version}/libjpeg/{version}'
@@ -22,6 +42,7 @@ modules:
       - berkeley-db
       - bison
       - bzip2
+      - compiler-wrapper
       - diffutils
       - expat
       - findutils
@@ -34,6 +55,7 @@ modules:
       - googletest
       - hwloc
       - inputproto
+      - intel-oneapi-runtime
       - kbproto
       - libaec
       - libbsd
@@ -73,6 +95,8 @@ modules:
       - perl
       - pkgconf
       - pkg-config
+      - py-cython
+      - py-poetry-core
       - qt
       - randrproto
       - readline
@@ -85,14 +109,19 @@ modules:
       - xtrans
       - xz
       - yaksa
-      # Do not create MPI modules - we create our own meta modules
+      # By default, do not create compiler modules
+      - apple-clang
+      - gcc
+      - intel-oneapi-compilers
+      - intel-oneapi-compilers-classic
+      - llvm
+      # By default, do not create MPI modules
       - cray-mpich
-      - mpich
-      - openmpi
       - intel-mpi
       - intel-oneapi-mpi
-      # Do not create python modules - we create our own meta modules
-      - python
+      - mpich
+      - mpt
+      - openmpi
       hash_length: 0
       all:
         autoload: direct
@@ -110,6 +139,14 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+        suffixes:
+          ~openmp: 'noopenmp'
+      ip:
+        suffixes:
+          ~openmp: 'noopenmp'
+      neptune-env:
+        suffixes:
+          ~openmp: 'noopenmp'
       libpng:
         environment:
           set:
@@ -120,22 +157,22 @@ modules:
             'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
-          ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
-          ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
-          ^esmf@8.5.0~debug snapshot=none: 'esmf-8.5.0'
-          ^esmf@8.5.0+debug snapshot=none: 'esmf-8.5.0-debug'
-          ^esmf@8.6.0~debug snapshot=none: 'esmf-8.6.0'
-          ^esmf@8.6.0+debug snapshot=none: 'esmf-8.6.0-debug'
-          ^esmf@8.6.1~debug snapshot=none: 'esmf-8.6.1'
-          ^esmf@8.6.1+debug snapshot=none: 'esmf-8.6.1-debug'
-          ^esmf@8.7.0~debug snapshot=none: 'esmf-8.7.0'
-          ^esmf@8.7.0+debug snapshot=none: 'esmf-8.7.0-debug'
-          ^esmf@8.8.0~debug snapshot=none: 'esmf-8.8.0'
-          ^esmf@8.8.0+debug snapshot=none: 'esmf-8.8.0-debug'
-          ^esmf@8.9.0~debug snapshot=none: 'esmf-8.9.0'
-          ^esmf@8.9.0+debug snapshot=none: 'esmf-8.9.0-debug'
-          ^esmf@8.9.1~debug snapshot=none: 'esmf-8.9.1'
-          ^esmf@8.9.1+debug snapshot=none: 'esmf-8.9.1-debug'
+          ^esmf@8.6.1~debug ~openmp snapshot=none: 'esmf-8.6.1-noopenmp'
+          ^esmf@8.6.1+debug ~openmp snapshot=none: 'esmf-8.6.1-debug-noopenmp'
+          ^esmf@8.6.1~debug +openmp snapshot=none: 'esmf-8.6.1'
+          ^esmf@8.6.1+debug +openmp snapshot=none: 'esmf-8.6.1-debug'
+          ^esmf@8.8.0~debug ~openmp snapshot=none: 'esmf-8.8.0-noopenmp'
+          ^esmf@8.8.0+debug ~openmp snapshot=none: 'esmf-8.8.0-debug-noopenmp'
+          ^esmf@8.8.0~debug +openmp snapshot=none: 'esmf-8.8.0'
+          ^esmf@8.8.0+debug +openmp snapshot=none: 'esmf-8.8.0-debug'
+          ^esmf@8.9.1~debug ~openmp snapshot=none: 'esmf-8.9.1-noopenmp'
+          ^esmf@8.9.1+debug ~openmp snapshot=none: 'esmf-8.9.1-debug-noopenmp'
+          ^esmf@8.9.1~debug +openmp snapshot=none: 'esmf-8.9.1'
+          ^esmf@8.9.1+debug +openmp snapshot=none: 'esmf-8.9.1-debug'
+      fms:
+        suffixes:
+          constants=GFS: 'gfs-constants'
+          constants=GEOS: 'geos-constants'
       openmpi:
         environment:
           set:

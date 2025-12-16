@@ -1,0 +1,20 @@
+packages:
+  all:
+    providers:
+      blas: [openblas]
+      fftw-api: [fftw]
+      lapack: [openblas]
+  ectrans:
+    require:
+    - '~mkl +fftw'
+  gsibec:
+    require:
+    - '~mkl'
+  py-numpy:
+    require:
+    - '^openblas'
+  # ip@5 doesn't build with aocc@4 compilers
+  ip:
+    require:
+    - '%gcc'
+    - '^openblas'

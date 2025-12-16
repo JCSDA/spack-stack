@@ -1,0 +1,36 @@
+packages:
+  mpi:
+    buildable: False
+    require:
+    - openmpi@5.0.8
+  gcc-runtime:
+    buildable: False
+    externals:
+    - spec: gcc-runtime@13.3.1
+      prefix: /opt/rh/gcc-toolset-13/root/usr
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@13.3.1 languages:='c,c++,fortran'
+      prefix: /opt/rh/gcc-toolset-13/root/usr
+      modules:
+      - scl/gcc-toolset-13
+      extra_attributes:
+        compilers:
+          c: /opt/rh/gcc-toolset-13/root/usr/bin/gcc
+          cxx: /opt/rh/gcc-toolset-13/root/usr/bin/g++
+          fortran: /opt/rh/gcc-toolset-13/root/usr/bin/gfortran
+  openmpi:
+    buildable: False
+    externals:
+    - spec: openmpi@5.0.8
+      prefix: /p/app/penguin/openmpi/5.0.8/gcc-13.3.1
+      modules:
+      - penguin/openmpi/5.0.8/gcc-13.3.1
+      - slurm
+      extra_attributes:
+        environment:
+          set:
+            OMPI_MCA_coll: "^hcoll,cuda"
+            OMPI_MCA_pml: "ucx"
+

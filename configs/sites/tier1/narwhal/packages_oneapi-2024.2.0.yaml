@@ -1,0 +1,78 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@8.1.26
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.0
+      prefix: /opt/intel/oneapi_2024.2.0.634
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.0
+      prefix: /opt/intel/oneapi_2024.2.0.634
+      modules:
+      - PrgEnv-intel/8.4.0
+      - intel-oneapi/2024.2
+      extra_attributes:
+        compilers:
+          c: /opt/intel/oneapi_2024.2.0.634/compiler/2024.2/bin/icx
+          cxx: /opt/intel/oneapi_2024.2.0.634/compiler/2024.2/bin/icpx
+          fortran: /opt/intel/oneapi_2024.2.0.634/compiler/2024.2/bin/ifort
+        environment:
+          set:
+            CONFIG_SITE: ''
+            # Force ifort not ifx
+            INTEL_COMPILER_TYPE: 'RECOMMENDED'
+          prepend_path:
+            PATH: /opt/cray/pe/gcc/12.2.0/snos/bin
+            CPATH: /opt/cray/pe/gcc/12.2.0/snos/include
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@12.2.0
+      prefix: /opt/cray/pe/gcc/12.2.0/snos
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@12.2.0 languages:='c,c++'
+      prefix: /opt/cray/pe/gcc/12.2.0/snos
+      modules:
+      - PrgEnv-gnu/8.4.0
+      - gcc/12.2.0
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc/12.2.0/snos/bin/gcc
+          cxx: /opt/cray/pe/gcc/12.2.0/snos/bin/g++
+          fortran: /opt/cray/pe/gcc/12.2.0/snos/bin/gfortran
+        environment:
+          set:
+            CONFIG_SITE: ''
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.26
+      prefix: /opt/cray/pe/mpich/8.1.26/ofi/intel/2022.1
+      modules:
+      - craype-network-ucx
+      - cray-mpich-ucx/8.1.26
+      - libfabric/1.22.0
+      extra_attributes:
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
+        # - /opt/cray/pe/mpich/8.1.26/ofi/intel/2022.1/lib
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /opt/intel/oneapi_2024.2.0.634

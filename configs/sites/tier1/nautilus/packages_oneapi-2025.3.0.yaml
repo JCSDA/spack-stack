@@ -1,0 +1,62 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.17
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.3.0
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.0
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0
+      modules:
+      - tbb/2022.3
+      - umf/1.0.2
+      - compiler-rt/2025.3.0
+      - compiler/2025.3.0
+      extra_attributes:
+        compilers:
+          c: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icx
+          cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icpx
+          fortran: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/ifx
+        environment:
+          prepend_path:
+            PATH: /opt/rh/gcc-toolset-11/root/usr/bin
+            CPATH: /opt/rh/gcc-toolset-11/root/usr/include
+        extra_rpaths:
+        - /opt/rh/gcc-toolset-11/root/usr/lib64
+        - /opt/rh/gcc-toolset-11/root/usr/lib
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@11.2.1
+      prefix: /opt/rh/gcc-toolset-11/root/usr
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@11.2.1 languages:='c,c++'
+      prefix: /opt/rh/gcc-toolset-11/root/usr
+      modules:
+      - scl/gcc-toolset-11
+      extra_attributes:
+        compilers:
+          c: /opt/rh/gcc-toolset-11/root/usr/bin/gcc
+          cxx: /opt/rh/gcc-toolset-11/root/usr/bin/g++
+          fortran: /opt/rh/gcc-toolset-11/root/usr/bin/gfortran
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.17
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0
+      modules:
+      - mpi/2021.17
+      - slurm
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0

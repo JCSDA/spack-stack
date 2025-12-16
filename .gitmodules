@@ -6,3 +6,7 @@
   path = doc/CMakeModules
   url = https://github.com/noaa-emc/cmakemodules
   branch = v1.3.0
+[submodule "repos/builtin"]
+  path = repos/builtin
+  url = https://github.com/jcsda/spack-packages
+  branch = spack-stack-dev

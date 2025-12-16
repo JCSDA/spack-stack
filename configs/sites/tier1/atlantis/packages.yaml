@@ -1,22 +1,12 @@
 packages:
-# Modification of common packages
-  # Use system zlib instead of spack-built zlib-ng
-  all:
-    providers:
-      zlib-api:: [zlib]
+  # Modification of common packages
+  ewok-env:
+    require:
+    - '~ecflow'
   zlib-api:
     buildable: False
-  zlib:
-    buildable: False
-    externals:
-    - spec: zlib@1.2.11
-      prefix: /usr
-  # Pin py-torch to 2.5.1 to avoid build errors with 2.6.0
-  py-torch:
-    require:
-        - '@2.5.1'
 
-# All other packages listed alphabetically
+  # All other packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -50,10 +40,12 @@ packages:
     - spec: gawk@4.2.1
       prefix: /usr
   git:
+    buildable: False
     externals:
     - spec: git@2.43.5+tcltk
       prefix: /usr
   git-lfs:
+    buildable: False
     externals:
     - spec: git-lfs@3.4.1
       prefix: /usr
@@ -82,11 +74,6 @@ packages:
     externals:
     - spec: openssh@8.0p1
       prefix: /usr
-  # Can no longer use, issues with py-cryptography
-  #openssl:
-  #  externals:
-  #  - spec: openssl@1.1.1k
-  #    prefix: /usr
   pkgconf:
     externals:
     - spec: pkgconf@1.4.2
@@ -110,4 +97,9 @@ packages:
   wget:
     externals:
     - spec: wget@1.19.5
+      prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
       prefix: /usr

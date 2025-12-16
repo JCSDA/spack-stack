@@ -1,41 +1,48 @@
 packages:
-  all:
-    providers:
-      blas: [intel-oneapi-mkl]
-      fftw-api: [intel-oneapi-mkl]
-      lapack: [intel-oneapi-mkl]
-  cmake:
-    require:
-    - '%gcc'
-  ectrans:
-    require:
-    - '+mkl ~fftw'
-  gsibec:
-    require:
-    - '+mkl'
-  py-numpy:
-    require:
-    - '^intel-oneapi-mkl'
-  bison:
-    require: '%gcc'
-  gmake:
-    require: '%gcc'
-  libmd:
-    require: '%gcc'
-  libbsd:
-    require: '%gcc'
-  met:
-    require:
-    - '+shared-intel'
-  parallel-netcdf:
-    require:
-    - '+shared-intel'
-  py-maturin:
-    require:
-    - '%gcc'
-  qt:
-    require:
-    - '%gcc'
-  scotch:
-    require:
-    - '%gcc'
+    all:
+      prefer:
+      - '%oneapi'
+    # Virtual package settings
+    blas:
+      require: ['intel-oneapi-mkl']
+    fftw-api:
+      require: ['intel-oneapi-mkl']
+    lapack:
+      require: ['intel-oneapi-mkl']
+    # Individual package settings
+    antlr:
+      require:
+      - '%gcc'
+    bison:
+      require:
+      - '%gcc'
+    cmake:
+      require:
+      - '%gcc'
+    ectrans:
+      require:
+      - +mkl ~fftw
+    gmake:
+      require:
+      - '%gcc'
+    libbsd:
+      require:
+      - '%gcc'
+    libmd:
+      require:
+      - '%gcc'
+    met:
+      require:
+      - +shared-intel
+    nco:
+      require:
+      - '%gcc'
+    parallel-netcdf:
+      require:
+      - +shared-intel
+    py-maturin:
+      require:
+      - '%gcc'
+    qt:
+      require:
+      - '%gcc'

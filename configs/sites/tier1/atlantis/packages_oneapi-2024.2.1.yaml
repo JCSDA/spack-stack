@@ -1,0 +1,60 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.13
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2024.2.1
+      prefix: /cm/shared/apps/intel/oneapi-2024.2.1
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.1
+      prefix: /cm/shared/apps/intel/oneapi-2024.2.1
+      modules:
+      - intel-oneapi-2024.2.1
+      - tbb/2021.13
+      - compiler-rt/2024.2.1
+      - compiler/2024.2.1
+      extra_attributes:
+        compilers:
+          c: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/bin/icx
+          cxx: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/bin/icpx
+          fortran: /cm/shared/apps/intel/oneapi-2024.2.1/compiler/2024.2/bin/ifort
+        environment:
+          prepend_path:
+            PATH: /cm/local/apps/gcc/11.2.0/bin
+            CPATH: /cm/local/apps/gcc/11.2.0/include
+        extra_rpaths:
+        - /cm/local/apps/gcc/11.2.0/lib64
+        - /cm/local/apps/gcc/11.2.0/lib
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@11.2.0
+      prefix: /cm/local/apps/gcc/11.2.0
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@11.2.0 languages:='c,c++'
+      prefix: /cm/local/apps/gcc/11.2.0
+      extra_attributes:
+        compilers:
+          c: /cm/local/apps/gcc/11.2.0/bin/gcc
+          cxx: /cm/local/apps/gcc/11.2.0/bin/g++
+          fortran: /cm/local/apps/gcc/11.2.0/bin/gfortran
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.13
+      prefix: /cm/shared/apps/intel/oneapi-2024.2.1
+      modules:
+      - mpi/2021.13
+      - slurm
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /cm/shared/apps/intel/oneapi-2024.2.1

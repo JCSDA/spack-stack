@@ -11,6 +11,11 @@ defaults:
   run:
     shell: bash
 
+env:
+  # DH* REVERT ME AFTER MERGE
+  BUILD_CACHE_PATH: /home/ubuntu/spack-stack/build-cache-new-spack-v1
+  SOURCE_CACHE_PATH: /home/ubuntu/spack-stack/source-cache
+
 jobs:
   ubuntu-ci-c6a-x86_64-oneapi-ifx-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
@@ -32,8 +37,9 @@ jobs:
 
       - name: prepare-directories
         run: |
-          mkdir -p /home/ubuntu/spack-stack/build-cache/
-          mkdir -p /home/ubuntu/spack-stack/source-cache/
+          # DH* REVERT ME AFTER MERGE
+          mkdir -p ${BUILD_CACHE_PATH}
+          mkdir -p ${SOURCE_CACHE_PATH}
 
       - name: create-buildcache
         run: |
@@ -50,154 +56,145 @@ jobs:
 
           # Set up spack-stack
           source ./setup.sh
-          export ENVNAME=ue-oneifx-2024.2.0-buildcache
-          export ENVDIR=$PWD/envs/${ENVNAME}
-          spack stack create env --site linux.default --template unified-dev --name ${ENVNAME} --compiler oneapi
-          spack env activate ${ENVDIR}
 
-          unset SPACK_DISABLE_LOCAL_CONFIG
-          export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
+          declare -a TEMPLATES=("unified-dev" "skylab-dev" "neptune-dev")
+          for TEMPLATE in "${TEMPLATES[@]}"; do
+            if [[ "${TEMPLATE}" == *"unified-dev"* ]]; then
+              export ENVNAME=ue-oneifx-2024.2.0-buildcache
+            elif [[ "${TEMPLATE}" == *"skylab-dev"* ]]; then
+              export ENVNAME=se-oneifx-2024.2.0-buildcache
+            elif [[ "${TEMPLATE}" == *"cylc-dev"* ]]; then
+              export ENVNAME=ce-oneifx-2024.2.0-buildcache
+            elif [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
+              export ENVNAME=ne-oneifx-2024.2.0-buildcache
+            fi
+            echo "Creating environment ${ENVNAME} from template ${TEMPLATE}"
 
-          # Find external packages
-          spack external find --scope system \
-              --exclude bison --exclude openssl \
-              --exclude curl --exclude python \
-              --exclude meson --exclude gmake
-          spack external find --scope system grep
-          spack external find --scope system sed
-          spack external find --scope system perl
-          spack external find --scope system wget
-          spack external find --scope system texlive
-          spack external find --scope system mysql
+            export ENVDIR=$PWD/envs/${ENVNAME}
+            spack stack create env --site linux.default --template ${TEMPLATE} --name ${ENVNAME} --compiler oneapi
+            spack env activate ${ENVDIR}
 
-          # Find compilers
-          spack compiler find --scope system
+            # Turn off variant "adp" for neptune-dev (NRL internal only)
+            if [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
+              sed -i 's/+adp/~adp/g' ${ENVDIR}/spack.yaml
+            fi
 
-          # For Intel oneAPI
-          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "- compiler:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    spec: oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    paths:" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cc: /opt/intel/oneapi/compiler/2024.2/bin/icx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "      fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    flags: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    operating_system: ubuntu22.04" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    target: x86_64" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    modules: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    environment: {}" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
-          echo "    extra_rpaths: []" >> ${SPACK_SYSTEM_CONFIG_PATH}/compilers.yaml
+            unset SPACK_DISABLE_LOCAL_CONFIG
+            export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
-          # Need to find external Intel MPI and annotate with the
-          # correct compiler, no way to do that with spack commands.
-          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  intel-oneapi-mpi:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    buildable: false" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+            # Find external packages
+            spack external find --scope system \
+                --exclude bison --exclude openssl \
+                --exclude curl --exclude python \
+                --exclude meson --exclude gmake
+            spack external find --scope system grep
+            spack external find --scope system sed
+            spack external find --scope system perl
+            spack external find --scope system wget
+            spack external find --scope system texlive
+            spack external find --scope system mysql
 
-          # Add external Intel MKL and oneAPI runtime
-          echo "" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  intel-oneapi-mkl:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: intel-oneapi-mkl@2024.2%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "  intel-oneapi-runtime:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    externals:" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "    - spec: intel-oneapi-runtime@2024.2.0%oneapi@2024.2.0" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-          echo "      prefix: /opt/intel/oneapi" >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+            # Find compilers
+            spack compiler find --scope system
 
-          export SPACK_DISABLE_LOCAL_CONFIG=true  
-          unset SPACK_SYSTEM_CONFIG_PATH
+            # For Intel oneAPI
+            source /etc/profile.d/modules.sh
+            module use /opt/intel/oneapi/modulefiles
 
-          # For buildcaches
-          spack config add config:install_tree:padded_length:200
+            cat .github/workflows/ubuntu-ci-x86_64-oneapi-ifx.cfg >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
 
-          # Set compiler and MPI specs
-          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.13]"
-          spack config add "packages:all:compiler:[oneapi@2024.2.0,gcc@11.4.0]"
+            export SPACK_DISABLE_LOCAL_CONFIG=true
+            unset SPACK_SYSTEM_CONFIG_PATH
 
-          # Add additional variants for MET packages, different from config/common/packages.yaml
-          spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+            # For buildcaches
+            spack config add config:install_tree:padded_length:200
 
-          # Switch providers for blas, lapack, fftw-api
-          spack config add "packages:all:providers:mpi:[intel-oneapi-mpi]"
-          spack config add "packages:all:providers:blas:[intel-oneapi-mkl]"
-          spack config add "packages:all:providers:fftw-api:[intel-oneapi-mkl]"
-          spack config add "packages:all:providers:lapack:[intel-oneapi-mkl]"
-          spack config add "packages:ectrans:require:'+mkl ~fftw'"
-          spack config add "packages:gsibec:require:'+mkl'"
-          spack config add "packages:py-numpy:require:['^intel-oneapi-mkl']"
+            # Set compiler and MPI specs
+            spack config add "packages:mpi:buildable:False"
+            spack config add "packages:mpi:require:['intel-oneapi-mpi@2021.13']"
+            spack config add "packages:all:prefer:['%oneapi']"
 
-          # Pin gmake to avoid duplicate packages (excluded gmake from spack external find above)
-          spack config add "packages:gmake:require:'@:4.2'"
+            # Add additional variants for MET packages, different from config/common/packages.yaml
+            spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
-          # Remove wgrib2 from all virtual packages, since it doesn't build with oneAPI
-          sed -i 's/depends_on("wgrib2")/#depends_on("wgrib2")/g' `grep -lRie wgrib2 spack-ext/`
+            ## Pin gmake to avoid duplicate packages (excluded gmake from spack external find above)
+            #spack config add "packages:gmake:require:'@:4.2'"
 
-          # Don't generate ecflow module when using external package
-          spack config add "modules:default:tcl:exclude:[ecflow]"
+            ## Remove wgrib2 from all virtual packages, since it doesn't build with oneAPI
+            #sed -i 's/depends_on("wgrib2")/#depends_on("wgrib2")/g' `grep -lRie wgrib2 spack-ext/`
 
-          # Concretize and check for duplicates
-          spack concretize 2>&1 | tee log.concretize.oneifx-2024.2.0-buildcache
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl
+            # Don't generate ecflow module when using external package
+            spack config add "modules:default:tcl:exclude:[ecflow]"
 
-          # Add and update source cache
-          spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
-          spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
+            # Concretize and check for duplicates
+            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
 
-          # Add binary cache if requested
-          if [ "$USE_BINARY_CACHE" = true ] ; then
-            set +e
-            spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
-            spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
-            set -e
-            echo "Packages in spack binary cache:"
-            spack buildcache list
-          fi
+            # Add and update source cache
+            spack mirror add local-source file://${SOURCE_CACHE_PATH}/
+            spack mirror create -a -d ${SOURCE_CACHE_PATH}/
 
-          # Break installation up in pieces and create build caches in between
-          # This allows us to "spin up" builds that altogether take longer than
-          # six hours, and/or fail later in the build process.
+            # Add binary cache if requested
+            if [ "$USE_BINARY_CACHE" = true ] ; then
+              set +e
+              spack mirror add local-binary file://${BUILD_CACHE_PATH}/
+              spack buildcache update-index local-binary
+              set -e
+              echo "Packages in spack binary cache:"
+              spack buildcache list
+            fi
 
-          # base-env
-          echo "base-env ..."
-          spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.oneifx-2024.2.0-buildcache.base-env
-          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
+            # Break installation up in pieces and create build caches in between
+            # This allows us to "spin up" builds that altogether take longer than
+            # six hours, and/or fail later in the build process.
 
-          # jedi-base-env
-          echo "jedi-base-env ..."
-          spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.oneifx-2024.2.0-buildcache.jedi-base-env
-          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
+            if [[ "${TEMPLATE}" == *"unified-dev"* || "${TEMPLATE}" == *"skylab-dev"* ]]; then
+              # base-env
+              echo "base-env ..."
+              spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.${ENVNAME}.base-env
+              spack buildcache create -u local-binary base-env
+              # jedi-base-env
+              echo "jedi-base-env ..."
+              spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.${ENVNAME}.jedi-base-env
+              spack buildcache create -u local-binary jedi-base-env
+              # jedi-ufs-env
+              echo "jedi-ufs-env ..."
+              spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.${ENVNAME}.jedi-ufs-env
+              spack buildcache create -u local-binary jedi-ufs-env
+            elif [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
+              # base-env
+              echo "base-env ..."
+              spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.${ENVNAME}.base-env
+              spack buildcache create -u local-binary base-env
+              # neptune-python-env
+              echo "neptune-env ..."
+              spack install --fail-fast --source --no-check-signature neptune-python-env 2>&1 | tee log.install.${ENVNAME}.neptune-env
+              spack buildcache create -u local-binary neptune-python-env
+            fi
 
-          # jedi-ufs-env
-          echo "jedi-ufs-env ..."
-          spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.oneifx-2024.2.0-buildcache.jedi-ufs-env
-          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
+            # the rest
+            echo "${TEMPLATE} ..."
+            spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
+            spack buildcache create -u local-binary
 
-          # the rest
-          echo "unified-env ..."
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneifx-2024.2.0-buildcache.unified-env
-          spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
+            # Check for libirc.so in shared libraries (returns 1=error if found)
+            ${SPACK_STACK_DIR}/util/check_libirc.sh
 
-          # Check for libirc.so in shared libraries (returns 1=error if found)
-          ${SPACK_STACK_DIR}/util/check_libirc.sh
+            # Remove binary cache for next round of concretization
+            if [ "$USE_BINARY_CACHE" = true ] ; then
+              spack mirror rm local-binary
+            fi
 
-          # Remove binary cache for next round of concretization
-          if [ "$USE_BINARY_CACHE" = true ] ; then
-            spack mirror rm local-binary
-          fi
+            # Remove buildcache config settings
+            spack config remove config:install_tree:padded_length
 
-          # Remove buildcache config settings
-          spack config remove config:install_tree:padded_length
+            # Next steps: synchronize source and build cache to a central/combined mirror?
 
-          # Next steps: synchronize source and build cache to a central/combined mirror?
+            # Cleanup
+            spack clean -a
+            spack env deactivate
 
-          # Cleanup
-          spack clean -a
-          spack env deactivate
+          done
 
       - name: create-env
         run: |
@@ -211,16 +208,19 @@ jobs:
           spack env activate ${ENVDIR}
 
           # Concretize and check for duplicates
-          spack concretize --force 2>&1 | tee log.concretize.oneifx-2024.2.0
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl
+          spack concretize --force 2>&1 | tee log.concretize.${ENVNAME}
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
 
           # Add binary cache back in
-          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+          spack mirror add local-binary file://${BUILD_CACHE_PATH}/
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
           # Install from cache
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.oneifx-2024.2.0.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
+
+          # For spack-built Intel oneAPI runtime to find libintlc.so.5 etc.
+          export LD_LIBRARY_PATH="/opt/intel/oneapi/compiler/2024.2/lib:$LD_LIBRARY_PATH"
 
           # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
@@ -237,16 +237,16 @@ jobs:
       - name: test-env
         run: |
           source /etc/profile.d/modules.sh
+          module use /opt/intel/oneapi/modulefiles
           module use /home/ubuntu/spack-stack/modulefiles
 
           export ENVNAME=ue-oneifx-2024.2.0
           export ENVDIR=$PWD/envs/${ENVNAME}
-          ls -l ${ENVDIR}/install/modulefiles/Core
+          ls -l ${ENVDIR}/modules/Core
 
-          module use ${ENVDIR}/install/modulefiles/Core
-          module load stack-oneapi/2024.2.0
+          module use ${ENVDIR}/modules/Core
+          module load stack-intel-oneapi-compilers/2024.2.0
           module load stack-intel-oneapi-mpi/2021.13
-          module load stack-python/3.11.11
           module available
 
           module load jedi-ufs-env

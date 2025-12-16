@@ -5,6 +5,15 @@ modules:
     tcl:
       include:
       # List of packages for which we need modules that are blacklisted by default
-      - openmpi
+      # Compiler
+      - apple-clang
+      - gcc
+      - intel-oneapi-compilers
+      - llvm
+      # MPI
+      - cray-mpich
+      - intel-mpi
+      - intel-oneapi-mpi
       - mpich
-      - python
+      - mpt
+      - openmpi

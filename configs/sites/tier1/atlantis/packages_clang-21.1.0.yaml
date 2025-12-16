@@ -1,0 +1,26 @@
+packages:
+  mpi:
+    buildable: False
+    require:
+    - "openmpi@4.1.8"
+  llvm:
+    externals:
+    - spec: llvm@21.1.0 +flang ~libomptarget
+      prefix: /gpfs/neptune/spack-stack/llvm-21.1.0
+      modules:
+      - hwloc2/2.7.0
+      - llvm/21.1.0
+      extra_attributes:
+        compilers:
+          c: /gpfs/neptune/spack-stack/llvm-21.1.0/bin/clang
+          cxx: /gpfs/neptune/spack-stack/llvm-21.1.0/bin/clang++
+          fortran: /gpfs/neptune/spack-stack/llvm-21.1.0/bin/flang-new
+        extra_rpaths:
+        - /gpfs/neptune/spack-stack/llvm-21.1.0/lib
+        - /gpfs/neptune/spack-stack/llvm-21.1.0/lib/x86_64-unknown-linux-gnu
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.8
+      prefix: /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-21.1.0
+      modules:
+      - openmpi/4.1.8

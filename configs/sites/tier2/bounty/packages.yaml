@@ -1,4 +1,7 @@
 packages:
+  # Modification of common packages
+
+  # All other packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -40,10 +43,12 @@ packages:
     - spec: gettext@0.21
       prefix: /usr
   git:
+    buildable: False
     externals:
     - spec: git@2.43.5~tcltk
       prefix: /usr
   git-lfs:
+    buildable: False
     externals:
     - spec: git-lfs@3.4.1
       prefix: /usr
@@ -60,6 +65,7 @@ packages:
     - spec: groff@1.22.4
       prefix: /usr
   m4:
+    # DH* NEEDED? buildable: false
     externals:
     - spec: m4@1.4.19
       prefix: /usr
@@ -79,7 +85,7 @@ packages:
     buildable: False
     externals:
     - spec: qt@5.15.9
-      prefix: /usr/lib64/qt5
+      prefix: /usr
   sed:
     externals:
     - spec: sed@4.8
@@ -95,8 +101,4 @@ packages:
   wget:
     externals:
     - spec: wget@1.21.1
-      prefix: /usr
-  zlib:
-    externals:
-    - spec: zlib@1.2.11
       prefix: /usr

@@ -1,19 +1,9 @@
 packages:
-
-# Modification of common packages
-  # Use system zlib instead of spack-built zlib-ng
-  all:
-    providers:
-      zlib-api:: [zlib]
+  # Modification of common packages
   zlib-api:
     buildable: False
-  zlib:
-    buildable: False
-    externals:
-    - spec: zlib@1.2.13
-      prefix: /usr
 
-# All other packages listed alphabetically
+  # All other packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -51,10 +41,12 @@ packages:
     - spec: gettext@0.20.2
       prefix: /usr
   git:
+    buildable: False
     externals:
     - spec: git@2.35.3+tcltk
       prefix: /usr
   git-lfs:
+    buildable: False
     externals:
     - spec: git-lfs@3.3.0
       prefix: /usr
@@ -90,13 +82,11 @@ packages:
     externals:
     - spec: pkg-config@0.29.2
       prefix: /usr
-  # MISSING qt:
-  #  buildable: False
-  #  externals:
-  #  - spec: qt@5.15.2
-  #    prefix: /p/app/projects/NEPTUNE/spack-stack/qt-5.15.2/5.15.2/gcc_64
-  #    modules:
-  #    - qt/5.15.2
+  qt::
+    buildable: False
+    externals:
+    - spec: qt@5.15.2
+      prefix: /p/app/projects/NEPTUNE/spack-stack/qt-5.15.2/5.15.2/gcc_64
   sed:
     externals:
     - spec: sed@4.4
@@ -116,4 +106,9 @@ packages:
   wget:
     externals:
     - spec: wget@1.20.3
+      prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.13
       prefix: /usr

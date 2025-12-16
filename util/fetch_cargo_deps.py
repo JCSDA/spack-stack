@@ -21,12 +21,13 @@ import os
 this_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
 
 from spack.environment import active_environment
-from spack.build_systems.cargo import CargoPackage
-from spack.build_systems.python import PythonPackage
+from spack_repo.builtin.build_systems.cargo import CargoPackage
+from spack_repo.builtin.build_systems.python import PythonPackage
 from spack.package_base import PackageBase
 from spack.util.executable import Executable, which
-from llnl.util.filesystem import working_dir
+from spack.llnl.util.filesystem import working_dir
 from spack.store import find
+from spack.util.environment import EnvironmentModifications
 from spack.error import SpackError
 
 # Load the current environment
@@ -75,11 +76,17 @@ for spec in env.all_specs():
     pkg = spec.package
     pkg.do_stage()
 
-    if which("cargo"):
+    cargo_path = os.path.join(spec["rust"].prefix.bin, "cargo")
+    if os.path.exists(cargo_path):
+        cargo_bin = spec["rust"].prefix.bin
+        cargo_exe = Executable(cargo_path)
+    elif which("cargo"):
+        cargo_bin = ""
         cargo_exe = Executable("cargo")
     else:
         # cargo/rustup
-        cargo_path = os.path.join(cargo_home, "bin", "cargo")
+        cargo_bin = os.path.join(cargo_home, "bin")
+        cargo_path = os.path.join(cargo_bin, "cargo")
         print(f"Checking for {cargo_path} ...")
         if which(cargo_path):
             print(f"  ... found {cargo_path}")
@@ -100,7 +107,7 @@ for spec in env.all_specs():
         else:
             print("  ... not found, creating {{cargo_wrapper}}")
             with open(cargo_wrapper, "w") as f:
-                f.write(f"""#!/usr/bin/env bash
+                f.write(f"""#!/bin/bash
         
 export PATH="{cargo_home}/bin:{default_path}"
 export RUSTUP_HOME="{cargo_home}/rustup"
@@ -109,7 +116,11 @@ export RUSTUP_HOME="{cargo_home}/rustup"
             os.chmod(cargo_wrapper, 0o744)
         cargo_exe = Executable(cargo_wrapper)
 
+    env = EnvironmentModifications()
+    env.set("CARGO_HOME", cargo_home)
+    if cargo_bin:
+        env.prepend_path("PATH", cargo_bin)
     for root, dirs, files in os.walk(pkg.stage.source_path):
         if "Cargo.toml" in files:
             with working_dir(root):
-                cargo_exe("fetch")
+                cargo_exe("fetch", env=env)

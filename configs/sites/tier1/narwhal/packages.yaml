@@ -1,18 +1,9 @@
 packages:
-# Modification of common packages
-  # Use system zlib instead of spack-built zlib-ng
-  all:
-    providers:
-      zlib-api:: [zlib]
+  # Modification of common packages
   zlib-api:
     buildable: False
-  zlib:
-    buildable: False
-    externals:
-    - spec: zlib@1.2.11
-      prefix: /usr
 
-# All other packages listed alphabetically
+  # All other packages listed alphabetically
   autoconf:
     externals:
     - spec: autoconf@2.69
@@ -75,13 +66,13 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
-  mysql:
-    buildable: False
-    externals:
-    - spec: mysql@8.0.31
-      prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
-      modules:
-      - mysql/8.0.31
+  #mysql:
+  #  buildable: False
+  #  externals:
+  #  - spec: mysql@8.0.31
+  #    prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
+  #    modules:
+  #    - mysql/8.0.31
   perl:
     externals:
     - spec: perl@5.26.1~cpanm+shared+threads
@@ -90,13 +81,11 @@ packages:
     externals:
     - spec: pkg-config@0.29.2
       prefix: /usr
-  qt:
+  qt::
     buildable: False
     externals:
     - spec: qt@5.15.2
       prefix: /p/app/projects/NEPTUNE/spack-stack/qt-5.15.2/5.15.2/gcc_64
-      modules:
-      - qt/5.15.2
   sed:
     externals:
     - spec: sed@4.4
@@ -121,3 +110,9 @@ packages:
     externals:
     - spec: wget@1.20.3
       prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+

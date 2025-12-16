@@ -1,0 +1,62 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.17
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.3.0
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.0
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
+      modules:
+      - umf/1.0.2
+      - tbb/2022.3
+      - compiler-rt/2025.3.0
+      - compiler/2025.3.0
+      extra_attributes:
+        compilers:
+          c: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icx
+          cxx: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icpx
+          fortran: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/ifx
+        environment:
+          prepend_path:
+            PATH: /cm/local/apps/gcc/11.2.0/bin
+            CPATH: /cm/local/apps/gcc/11.2.0/include
+        extra_rpaths:
+        - /cm/local/apps/gcc/11.2.0/lib64
+        - /cm/local/apps/gcc/11.2.0/lib
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@11.2.0
+      prefix: /cm/local/apps/gcc/11.2.0
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@11.2.0 languages:='c,c++'
+      prefix: /cm/local/apps/gcc/11.2.0
+      extra_attributes:
+        compilers:
+          c: /cm/local/apps/gcc/11.2.0/bin/gcc
+          cxx: /cm/local/apps/gcc/11.2.0/bin/g++
+          fortran: /cm/local/apps/gcc/11.2.0/bin/gfortran
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.17
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
+      modules:
+      - mpi/2021.17
+      - slurm
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3
+      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
+      modules:
+      - mkl/2025.3

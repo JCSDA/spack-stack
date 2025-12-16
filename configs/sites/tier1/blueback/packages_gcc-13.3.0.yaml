@@ -1,0 +1,40 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@8.1.32
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@13.3.0
+      prefix: /usr
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+      prefix: /usr
+      modules:
+      - PrgEnv-gnu/8.6.0
+      - gcc-native/13.2
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+        environment:
+          set:
+            CONFIG_SITE: ''
+            PE_GCC_EXTERNAL: native
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.32
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/GNU/12.3
+      modules:
+      - libfabric/1.22.0
+      - craype-network-ofi
+      - cray-mpich/8.1.32
+      extra_attributes:
+        environment:
+          prepend_path:
+            CMAKE_PREFIX_PATH: /p/app/projects/NEPTUNE/spack-stack/cmake-findmpi

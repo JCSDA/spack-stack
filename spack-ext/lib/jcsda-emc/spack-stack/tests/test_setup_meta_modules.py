@@ -1,3 +1,4 @@
+import shutil
 import os
 
 import pytest
@@ -6,7 +7,7 @@ import spack
 import spack.environment as ev
 import spack.main
 
-stack_create = spack.main.SpackCommand("stack")
+spack_stack_cmd = spack.main.SpackCommand("stack")
 
 
 # Find spack-stack directory assuming this Spack instance
@@ -30,49 +31,65 @@ def test_setup_meta_modules():
         return
 
     os.makedirs(test_dir, exist_ok=True)
+    env_root_dir = os.path.join(test_dir)
 
-    env_dir = os.path.join(test_dir)
-    stack_create("create", "env", "--dir", env_dir, "--name", "modtest", "--compiler", "gcc")
+    env_name = "modtest1"
+    env_dir = os.path.join(env_root_dir, env_name)
+    module_dir = os.path.join(env_dir, "modules")
+    if os.path.exists(env_dir):
+        shutil.rmtree(env_dir)
+
+    spack_stack_cmd("create", "env", "--dir", env_root_dir, "--name", env_name, "--compiler", "gcc")
 
     # Create empty env
-    env_dir = os.path.join(env_dir, "modtest")
     env = ev.Environment(manifest_dir=env_dir)
     ev.activate(env)
 
-    comp = "gcc"
-    comp_ver = "9.4.0"
-    mpi = "openmpi"
-    mpi_ver = "4.0.1"
-    module_dir = os.path.join(env_dir, "install", "modulefiles")
-    compiler_module_path = os.path.join(module_dir, comp, comp_ver)
-    mpi_module_path = os.path.join(module_dir, mpi, mpi_ver, comp, comp_ver)
+    packages_definition = """
+packages:
+  all:
+    prefer:
+    - '%gcc'
+  gcc:
+    externals:
+    - spec: gcc@11.5.0 languages:='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@11.5.0 %gcc@11.5.0
+      prefix: /usr
+  mpi:
+    buildable: false
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.8 %gcc@11.5.0
+      prefix: /usr
+  python:
+    buildable: false
+    externals:
+    - spec: python@3.11.11
+      prefix: /usr
+"""
+    site_packages_yaml = os.path.join(env_dir, "site", "packages.yaml")
+    if os.path.exists(site_packages_yaml):
+        raise Exception("Not implemented: appending to existing {site_packages_yaml}")
+    with open(site_packages_yaml, 'w') as f:
+        f.write(packages_definition)
 
-    # Setup env and pretend that a build exists
-    # by creating the module directory structure.
-    scope = env.scope_name
-    # Mock compiler config
-    compiler_def = {
-        "compiler": {
-            "flags": {},
-            "modules": [],
-            "paths": {"cc": "gcc", "cxx": "g++", "f77": "gfortran", "fc": "gfortran"},
-            "extra_rpaths": [],
-            "operating_system": "test",
-            "target": "test",
-            "environment": {},
-            "spec": "gcc@9.4.0",
-        }
-    }
-    compiler_config = [compiler_def]
-    spack.config.set("compilers", compiler_config, scope=scope)
-    spack.config.add("packages:all:compiler:[{}]".format(comp), scope=scope)
-    spack.config.add("packages:all:providers:mpi:[{}]".format(mpi), scope=scope)
-    spack.config.add("packages:openmpi:version:[{}]".format(mpi_ver))
-    spack.main.SpackCommand("stack")
-    os.makedirs(compiler_module_path)
-    os.makedirs(mpi_module_path)
-    cmd = spack.main.SpackCommand("external")
-    cmd("find", "python")
-    with env.write_transaction():
-        env.write()
-    stack_create("setup-meta-modules")
+    cmd = spack.main.SpackCommand("install")
+    cmd("--add", "--no-cache", "gcc", "openmpi", "python")
+
+    spack_stack_cmd("setup-meta-modules")
+
+    expected_comp_meta_module = os.path.join(module_dir, "Core", "stack-gcc", "11.5.0")
+    assert(
+        os.path.exists(expected_comp_meta_module),
+        f"Expected module {expected_comp_meta_module} not found"
+    )
+
+    expected_mpi_meta_module = os.path.join(module_dir, "gcc", "13.2.1", "stack-openmpi", "4.1.8")

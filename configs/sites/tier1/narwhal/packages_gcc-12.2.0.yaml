@@ -1,0 +1,43 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@8.1.26
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@12.2.0
+      prefix: /opt/cray/pe/gcc/12.2.0/snos
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@12.2.0 languages:='c,c++,fortran'
+      prefix: /opt/cray/pe/gcc/12.2.0/snos
+      modules:
+      - PrgEnv-gnu/8.4.0
+      - gcc/12.2.0
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc/12.2.0/snos/bin/gcc
+          cxx: /opt/cray/pe/gcc/12.2.0/snos/bin/g++
+          fortran: /opt/cray/pe/gcc/12.2.0/snos/bin/gfortran
+        environment:
+          set:
+            CONFIG_SITE: ''
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib64
+        - /opt/cray/pe/gcc/12.2.0/snos/lib
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.26
+      prefix: /opt/cray/pe/mpich/8.1.26/ofi/gnu/9.1
+      modules:
+      - craype-network-ucx
+      - cray-mpich-ucx/8.1.26
+      - libfabric/1.22.0
+      extra_attributes:
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
+        # - /opt/cray/pe/mpich/8.1.26/ofi/gnu/9.1/lib

@@ -1,0 +1,19 @@
+packages:
+  all:
+    providers:
+      blas: [openblas]
+      fftw-api: [fftw]
+      lapack: [openblas]
+  ectrans:
+    require:
+    - '~mkl +fftw'
+  gsibec:
+    require:
+    - '~mkl'
+  ip:
+    require:
+    - '^openblas'
+    - '~openmp'
+  py-numpy:
+    require:
+    - '^openblas'

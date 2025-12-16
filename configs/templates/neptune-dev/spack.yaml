@@ -1,3 +1,5 @@
+# Template for NEPTUNE development
+#
 spack:
   concretizer:
     unify: when_possible
@@ -5,25 +7,22 @@ spack:
   view: false
   include: []
 
-  definitions:
-  - compilers: ['%aocc', '%apple-clang', '%gcc', '%intel', '%oneapi']
-  - packages:
-      - neptune-env ~debug +espc ^esmf@=8.9.1 snapshot=none
-      - neptune-env +debug +espc ^esmf@=8.9.1 snapshot=none
-      - neptune-python-env ^neptune-env ~debug +espc ^esmf@=8.9.1 snapshot=none
-
   specs:
-    - matrix:
-      - [$packages]
-      - [$compilers]
-      exclude:
-      # Skip neptune-python-env with Intel Classic due to problems
-      # with new versions of py-numpy, py-scipy, ...
-      - neptune-python-env%intel
-      # Same for LLVM compilers
-      - neptune-python-env%clang
+  - neptune-env ~debug +openmp +espc +ncview ^esmf@=8.9.1
+  - neptune-env +debug +openmp +espc +ncview ^esmf@=8.9.1
+  - neptune-env ~debug ~openmp +espc +ncview ^esmf@=8.9.1
+  - neptune-env +debug ~openmp +espc +ncview ^esmf@=8.9.1
+  - neptune-python-env    ^neptune-env ~debug +openmp +espc +ncview ^esmf@=8.9.1
+  - jedi-neptune-env +adp ^neptune-env ~debug +openmp +espc +ncview ^esmf@=8.9.1
+  - crtm@3.1.2
+  - crtm@v2.4.1-jedi.2
+
   packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python
     # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
     parallelio:
       require:
-      - '~pnetcdf'
+      - ~pnetcdf

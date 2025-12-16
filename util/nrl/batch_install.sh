@@ -105,14 +105,14 @@ SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
 
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.3" "gcc@=13.4.0" "clang@=20.1.5")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=21.1.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-ops" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.0.4" "gcc@=13.3.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -133,7 +133,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.1.1" "gcc@=13.4.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -147,15 +147,15 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   blackpearl)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.1.0" "gcc@=13.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=13.2.1")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   bounty)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.1.1" "gcc@=13.3.1" "clang@=20.1.5")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1" "clang@=21.1.1")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-ops" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
@@ -334,8 +334,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    # With clang, only neptune-dev
-    elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev" ]]; then
+    # With clang, only neptune-ops 
+    elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-ops" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler}"
+      continue
+    # With other compilers, skip neptune-ops
+    elif [[ ! "${compiler_name}" == "clang" && "${template}" == "neptune-ops" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     # FMS compiler ICE: https://github.com/NOAA-GFDL/FMS/issues/1680
@@ -352,6 +356,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         env_name_prefix="ue"
         ;;
       neptune-dev)
+        env_name_prefix="ne"
+        ;;
+      neptune-ops)
         env_name_prefix="ne"
         ;;
       cylc-dev)
@@ -385,13 +392,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         umask 0022
         module purge
         case ${compiler} in
-          clang@=20.1.5)
-            module use /gpfs/neptune/spack-stack/llvm-20.1.5/modulefiles
-            module use /gpfs/neptune/spack-stack/openmpi-5.0.6/llvm-20.1.5/modulefiles
+          clang@=21.1.0)
+            module use /gpfs/neptune/spack-stack/llvm-21.1.0/modulefiles
+            module use /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-21.1.0/modulefiles
             ;;
           gcc@=13.4.0)
             module use /gpfs/neptune/spack-stack/gcc-13.4.0/modulefiles
             module use /gpfs/neptune/spack-stack/openmpi-4.1.8/gcc-13.4.0/modulefiles
+            ;;
+          oneapi@=2025.3.0)
+            module use /gpfs/neptune/spack-stack/oneapi-2025.3.0/modulefiles
             ;;
         esac
         ;;
@@ -416,11 +426,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       nautilus)
         umask 0022
         module purge
-        case ${compiler} in
-          gcc@=13.4.0)
-            module use /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/modulefiles
-            ;;
-        esac
         ;;
       tusk)
         umask 0022
@@ -450,33 +455,19 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ ! ${env_exists} == "true" ]]; then
       spack stack create env --name=${env_name} \
                              --site=${host} \
-                             --compiler=${compiler_name}@=${compiler_version} \
+                             --compiler=${compiler_name}-${compiler_version} \
                              --template=${template} \
                              --dir=${environment_dirs} \
+                             --treat-warnings-as-errors \
                              2>&1 | tee log.create.${env_name}.001
     fi
     spack env activate -p ${env_dir}
-
-    # Workaround for building cylc environment on Narwhal: We need to use GNU
-    # compilers without the Cray wrappers. Until we can come up with a smarter
-    # solution, use this.
-    if [[ ${host} == "narwhal" && ${template} == "cylc-dev" ]]; then
-      echo "Applying workaround for ${template} on ${host}"
-      cp -av configs/sites/tier1/narwhal/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
-    elif [[ ${host} == "blueback" && ${template} == "cylc-dev" ]]; then
-      echo "Applying workaround for ${template} on ${host}"
-      cp -av configs/sites/tier1/blueback/compilers.gcc-direct.tmp ${env_dir}/site/compilers.yaml
-    fi
 
     # Update bootstrap mirror if requested
     if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
       tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
       echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
       rm -fr ${tmp_bootstrap_mirror_path}
-      if [[ -d ${tmp_bootstrap_mirror_path} ]]; then
-        echo "ERROR, directory ${tmp_bootstrap_mirror_path} already exists"
-        exit 1
-      fi
       spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
       rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
       rm -fr ${tmp_bootstrap_mirror_path}
@@ -489,8 +480,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       echo "ERROR, directory ${bootstrap_mirror_path} not found"
       exit 1
     fi
-    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources || true
-    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries || true
+    # If the environment already existed, then it is possible that the bootstrap
+    # sources were already added. In this case, ignore errors from these commands.
+    if [[ ${env_exists} == "true" ]]; then
+      set +e
+    fi
+    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+    if [[ ${env_exists} == "true" ]]; then
+      set -e
+    fi
 
     # Check that the site has mirrors configured for local source and build caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
@@ -530,7 +529,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Check for duplicate packages
-    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env
+    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip
 
     # Update local source cache if requested
     if [[ "${update_source_cache}" == "true"* ]]; then
@@ -572,32 +571,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${update_build_cache}" == "false" ]]; then
       spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee log.modules.${env_name}.001
       spack stack setup-meta-modules 2>&1 | tee log.setup-meta-modules.${env_name}.001
-    fi
-
-    # In install mode, run post-install scripts if applicable
-    if [[ "${update_build_cache}" == "false" ]]; then
-      case ${host} in
-        atlantis)
-          ;;
-        blueback)
-          ;;
-        cole)
-          ;;
-        narwhal)
-          ;;
-        nautilus)
-          ;;
-        tusk)
-          ;;
-        blackpearl)
-          ;;
-        bounty)
-          ;;
-        *)
-          echo "ERROR, post-install scripts not configured for ${host}"
-          exit 1
-          ;;
-      esac
     fi
 
     # When creating or updating buildcaches, fix permissions for mirrors.

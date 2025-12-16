@@ -168,18 +168,12 @@ The following is required for building new spack environments with any supported
 NAVY HPCMP Nautilus
 ------------------------------
 
-The following is required for building new spack environments with any supported compiler on this platform. For ``gcc@13.4.0``, see the additional instructions below.
+The following is required for building new spack environments with any supported compiler on this platform.
 
 .. code-block:: console
 
    umask 0022
    module purge
-
-For ``gcc@13.4.0``, further run:
-
-.. code-block:: console
-
-   module use /p/app/projects/NEPTUNE/spack-stack/gcc-13.4.0/modulefiles
 
 
 .. _Preconfigured_Sites_Blueback:
@@ -218,7 +212,7 @@ On WCOSS2 OpenSUSE sets ``CONFIG_SITE`` which causes libraries to be installed i
 
 For official deployments on ``spack-stack`` on Acorn, be mindful of umask and group ownership, as these can be finicky. The umask value should be 002, otherwise various files can be assigned to the wrong group. In any case, running something to the effect of ``chgrp nceplibs <spack-stack dir> -R`` and ``chmod o+rX <spack-stack dir> -R`` after the whole installation is done is a good idea.
 
-Note that for the installation using Intel 19, the system GCC, 7.5.0, is used on the backend for the Intel compiler. More recent versions of GCC are not reliably compatible. Likewise, for Intel 2022, GCC 10.2.0 is used on the backend. Intel 19 is not reliably compatible with C++17 standards, and Intel 2022 is not reliably compatible with C++20. Without a handful of package version restrictions, certain package builds will break, usually in the configure stage.
+Note that for the installation using Intel 19, the system GCC, 7.5.0, is used on the backend for the Intel compiler. More recent versions of GCC are not reliably compatible. Intel 19 is not reliably compatible with C++17 standards. Without a handful of package version restrictions, certain package builds will break, usually in the configure stage.
 
 .. note::
    System-wide ``spack`` software installations are maintained by NCO on this platform, which are not associated with spack-stack.

@@ -11,6 +11,11 @@ defaults:
   run:
     shell: bash
 
+env:
+  # DH* REVERT ME AFTER MERGE
+  BUILD_CACHE_PATH: /home/ubuntu/spack-stack/build-cache-new-spack-v1
+  SOURCE_CACHE_PATH: /home/ubuntu/spack-stack/source-cache
+
 jobs:
   ubuntu-ci-c6a-x86_64-gnu-build:
     runs-on: [ubuntu-ci-c6a-x86_64]
@@ -32,8 +37,9 @@ jobs:
 
       - name: prepare-directories
         run: |
-          mkdir -p /home/ubuntu/spack-stack/build-cache/
-          mkdir -p /home/ubuntu/spack-stack/source-cache/
+          # DH* REVERT ME AFTER MERGE
+          mkdir -p ${BUILD_CACHE_PATH}
+          mkdir -p ${SOURCE_CACHE_PATH}
 
       - name: create-buildcache
         run: |
@@ -68,6 +74,11 @@ jobs:
             spack stack create env --site linux.default --template ${TEMPLATE} --name ${ENVNAME} --compiler gcc
             spack env activate ${ENVDIR}
 
+            # Turn off variant "adp" for neptune-dev (NRL internal only)
+            if [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
+              sed -i 's/+adp/~adp/g' ${ENVDIR}/spack.yaml
+            fi
+
             unset SPACK_DISABLE_LOCAL_CONFIG
             export SPACK_SYSTEM_CONFIG_PATH="${ENVDIR}/site"
 
@@ -93,25 +104,25 @@ jobs:
             spack config add config:install_tree:padded_length:200
 
             # Set compiler and MPI specs
-            spack config add "packages:all:providers:mpi:[openmpi@5.0.3]"
-            spack config add "packages:all:compiler:[gcc@11.4.0]"
+            spack config add "packages:mpi:require:['openmpi@5.0.8']"
+            spack config add "packages:all:prefer:['%gcc']"
 
             # Add additional variants for MET packages, different from config/common/packages.yaml
             spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
             # Concretize and check for duplicates
-            spack concretize 2>&1 | tee log.concretize.gnu-11.4.0-buildcache
-            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env
+            spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
 
             # Add and update source cache
-            spack mirror add local-source file:///home/ubuntu/spack-stack/source-cache/
-            spack mirror create -a -d /home/ubuntu/spack-stack/source-cache/
+            spack mirror add local-source file://${SOURCE_CACHE_PATH}/
+            spack mirror create -a -d ${SOURCE_CACHE_PATH}/
 
             # Add binary cache if requested
             if [ "$USE_BINARY_CACHE" = true ] ; then
               set +e
-              spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
-              spack buildcache update-index local-binary || (echo "No valid binary cache found, proceed without" && spack mirror rm local-binary)
+              spack mirror add local-binary file://${BUILD_CACHE_PATH}/
+              spack buildcache update-index local-binary
               set -e
               echo "Packages in spack binary cache:"
               spack buildcache list
@@ -124,24 +135,31 @@ jobs:
             if [[ "${TEMPLATE}" == *"unified-dev"* || "${TEMPLATE}" == *"skylab-dev"* ]]; then
               # base-env
               echo "base-env ..."
-              spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.base-env
-              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ base-env
-
+              spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.${ENVNAME}.base-env
+              spack buildcache create -u local-binary base-env
               # jedi-base-env
               echo "jedi-base-env ..."
-              spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-base-env
-              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-base-env
-
+              spack install --fail-fast --source --no-check-signature jedi-base-env 2>&1 | tee log.install.${ENVNAME}.jedi-base-env
+              spack buildcache create -u local-binary jedi-base-env
               # jedi-ufs-env
               echo "jedi-ufs-env ..."
-              spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.gnu-11.4.0-buildcache.jedi-ufs-env
-              spack buildcache create -u /home/ubuntu/spack-stack/build-cache/ jedi-ufs-env
+              spack install --fail-fast --source --no-check-signature jedi-ufs-env 2>&1 | tee log.install.${ENVNAME}.jedi-ufs-env
+              spack buildcache create -u local-binary jedi-ufs-env
+            elif [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
+              # base-env
+              echo "base-env ..."
+              spack install --fail-fast --source --no-check-signature base-env 2>&1 | tee log.install.${ENVNAME}.base-env
+              spack buildcache create -u local-binary base-env
+              # neptune-python-env
+              echo "neptune-env ..."
+              spack install --fail-fast --source --no-check-signature neptune-python-env 2>&1 | tee log.install.${ENVNAME}.neptune-env
+              spack buildcache create -u local-binary neptune-python-env
             fi
 
             # the rest
             echo "${TEMPLATE} ..."
-            spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0-buildcache.${TEMPLATE}
-            spack buildcache create -u /home/ubuntu/spack-stack/build-cache/
+            spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
+            spack buildcache create -u local-binary
 
             # Remove binary cache for next round of concretization
             if [ "$USE_BINARY_CACHE" = true ] ; then
@@ -171,16 +189,16 @@ jobs:
           spack env activate ${ENVDIR}
 
           # Concretize and check for duplicates
-          spack concretize --force 2>&1 | tee log.concretize.gnu-11.4.0
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl
+          spack concretize --force 2>&1 | tee log.concretize.${ENVNAME}
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
 
           # Add binary cache back in
-          spack mirror add local-binary file:///home/ubuntu/spack-stack/build-cache/
+          spack mirror add local-binary file://${BUILD_CACHE_PATH}/
           echo "Packages in combined spack build caches:"
           spack buildcache list
 
           # Install from cache
-          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.gnu-11.4.0.unified-env
+          spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
 
           # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
@@ -216,12 +234,11 @@ jobs:
 
           export ENVNAME=ue-gcc-11.4.0
           export ENVDIR=$PWD/envs/${ENVNAME}
-          ls -l ${ENVDIR}/install/modulefiles/Core
+          ls -l ${ENVDIR}/modules/Core
 
-          module use ${ENVDIR}/install/modulefiles/Core
+          module use ${ENVDIR}/modules/Core
           module load stack-gcc/11.4.0
-          module load stack-openmpi/5.0.6
-          module load stack-python/3.11.11
+          module load stack-openmpi/5.0.8
           module available
 
           module load jedi-ufs-env

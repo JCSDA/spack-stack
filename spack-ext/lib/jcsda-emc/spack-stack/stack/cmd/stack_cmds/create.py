@@ -3,7 +3,7 @@ import os
 import shutil
 from sys import platform
 
-import llnl.util.tty as tty
+import spack.llnl.util.tty as tty
 
 from spack.extensions.stack.container_env import StackContainer
 from spack.extensions.stack.stack_env import StackEnv, stack_path
@@ -151,6 +151,11 @@ def setup_env_parser(subparser):
         help="Do not filter site/compilers.yaml (default is filter out different compiler versions of the same name)"
     )
 
+    subparser.add_argument(
+        "--treat-warnings-as-errors",
+        action='store_true',
+        help="Promote warnings from 'spack stack create env' to errors"
+    )
 
 def setup_create_parser(subparser):
     sp = subparser.add_subparsers(metavar="SUBCOMMAND", dest="env_type")
@@ -187,6 +192,7 @@ def dict_from_args(args):
     dict["modifypkg"] = args.modify_pkg
     dict["compiler"] = args.compiler
     dict["keep_all_compilers"] = args.keep_all_compilers
+    dict["treat_warnings_as_errors"] = args.treat_warnings_as_errors
 
     return dict
 
