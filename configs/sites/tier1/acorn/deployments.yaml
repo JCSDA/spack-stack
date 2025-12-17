@@ -1,6 +1,6 @@
 deployments:
   - template: "unified-dev"
-    compilers: ["oneapi-2024.2.1", "intel-19.1.3.304"]
+    compilers: ["oneapi@2024.2.1", "intel@19.1.3.304"]
     packages_to_install:
     - ufs-weather-model-env
     - global-workflow-env
@@ -20,7 +20,7 @@ deployments:
     - py-numpy
 
   - template: "nco"
-    compilers: ["oneapi-2024.2.1", "intel-19.1.3.304"]
+    compilers: ["oneapi@2024.2.1", "intel@19.1.3.304"]
     duplicates_to_ignore: ["crtm", "crtm-fix", "boost", "harfbuzz"]
     allowed_gcc_packages:
     - antlr
