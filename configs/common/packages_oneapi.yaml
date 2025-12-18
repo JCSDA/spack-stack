@@ -43,6 +43,9 @@ packages:
     py-maturin:
       require:
       - '%gcc'
+    py-scipy:
+      require:
+      - 'cxxflags="-O1"'
     qt:
       require:
       - '%gcc'

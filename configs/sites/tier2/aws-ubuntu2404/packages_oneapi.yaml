@@ -1,32 +1,58 @@
 packages:
-  all:
-    compiler:: [oneapi@2024.2.1, gcc@11.4.0]
-    providers:
-      mpi:: [intel-oneapi-mpi@2021.13]
-      # Remove the next three lines to switch to intel-oneapi-mkl
-      blas:: [openblas]
-      fftw-api:: [fftw]
-      lapack:: [openblas]
-  intel-oneapi-runtime:
-    buildable: False
+  intel-oneapi-compilers:
+    buildable: false
     externals:
-    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
+    - spec: intel-oneapi-compilers@2025.3.0
       prefix: /opt/intel/oneapi
-  intel-oneapi-mpi:
-    buildable: False
+      modules:
+       - umf/1.0.2
+       - tbb/2022.3
+       - compiler-rt/2025.3.0
+       - compiler/2025.3.0
+      extra_attributes:
+        compilers:
+          fortran: /opt/intel/oneapi/compiler/2025.3/bin/ifx
+          c: /opt/intel/oneapi/compiler/2025.3/bin/icx
+          cxx: /opt/intel/oneapi/compiler/2025.3/bin/icpx
+  openmpi:
+    buildable: false
+  mpich:
+    buildable: false
+  gcc:
     externals:
-    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
-      prefix: /opt/intel/oneapi
+    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+    buildable: false
   intel-oneapi-mkl:
-    buildable: False
-  ectrans:
-    require::
-    - '@1.5.0 ~mkl +fftw'
-  gsibec:
-    require::
-    - '@1.2.1 ~mkl'
-  py-numpy:
-    require::
-    - '@:1.26.4 ^openblas'
-  gmake:
-    buildable: False
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3
+      prefix: /opt/intel/oneapi
+      modules:
+      - mkl/2025.3
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.17
+      modules:
+      - mpi/2021.17
+      prefix: /opt/intel/oneapi
+  intel-oneapi-tbb:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-tbb@2022.3
+      prefix: /opt/intel/oneapi
+      modules:
+      - tbb/2022.3
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.3.0
+      prefix: /opt/intel/oneapi
+      modules:
+      - compiler-rt/2025.3.0
