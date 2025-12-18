@@ -161,6 +161,10 @@ packages:
     #gsl-lite:
     #  require:
     #  - '@0.37.0'
+    harfbuzz:
+      # cmake-based harfbuzz fails during build
+      require:
+      - one_of: ['build_system=meson', 'build_system=autotools']
     hdf:
       require:
       - '@4.2.15'
