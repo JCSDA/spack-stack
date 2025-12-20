@@ -1,13 +1,8 @@
 packages:
-  all:
-    compiler:: [oneapi@2025.2.1,gcc@12.4.0]
-    providers:
-      mpi:: [hpcx-mpi@2.18.1]
-      blas:: [openblas]
-      fftw-api:: [fftw]
-      lapack:: [openblas]
   mpi:
     buildable: False
+    require:
+    - hpcx-mpi@2.18.1
   hpcx-mpi:
     buildable: False
     externals:
@@ -20,9 +15,6 @@ packages:
     externals:
     - spec: intel-oneapi-runtime@2025.2.1
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2025.2.1-5nijquf65qj5mmbn3k2gxkjkrjkpjtw7
-      modules:
-      - intel-oneapi-compilers/2025.2.1
-      #- compiler-rt/2025.2.1
   intel-oneapi-compilers:
     buildable: false
     externals:
