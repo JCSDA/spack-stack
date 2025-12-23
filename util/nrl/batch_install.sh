@@ -452,7 +452,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         case ${compiler} in
           gcc-13.3.1)
             module use /project/spack-stack/gcc-13.3.1/modulefiles
-	    module use /project/spack-stack/openmpi-4.1.8/gcc-13.3.1/modulefiles
+            module use /project/spack-stack/openmpi-4.1.8/gcc-13.3.1/modulefiles
 	    ;;
 	esac
         ;;
