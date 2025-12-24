@@ -133,11 +133,37 @@ Preconfigured sites are defined through spack configuration files in the spack-s
 
 The instructions below are platform-specific tasks that only need to be done once and can be reused for new spack environments. To build new environments on preconfigured platforms, follow the instructions in :numref:`Section %s <Preconfigured_Sites_ExtendingEnvironments>`.
 
+Preconfigured sites are used by invoking ``spack stack create env`` with the ``--site`` flag specifying the site name.
+
+.. code-block:: console
+
+   # Creates a new "unified-dev" template environment on Hera in the directory envs/my-test-environment/
+   spack stack create env --site=hera --template=unified-dev --name=my-test-environment --compiler=oneapi
+
 Note that, for official installations of new environments on any supported platform, the ``spack install`` command should be invoked with the ``--source`` and ``--verbose`` arguments, i.e.:
 
 .. code-block:: console
     
    spack install --source --verbose
+
+.. _MaintainersSection_Using_Site_Compiler_Configs:
+
+------------------------------
+Using site compiler configurations
+------------------------------
+
+Similar to how the site config amends the common config, the compiler-specific configuration (e.g., ``packages_oneapi.yaml``, ``packages_gcc.yaml``) appends to the site config, adding its modifications exclusive of unselected compiler configs.
+
+The compiler name may be a base name like ``oneapi`` or ``gcc``, which corresponds to files like ``packages_oneapi.yaml`` or ``packages_gcc.yaml``. For sites with multiple compiler stack versions, the compiler config file name may include the version, such as ``gcc-13.3.0``, which corresponds to ``packages_gcc-13.3.0.yaml``. When using a versioned compiler name, the ``--compiler`` flag must include the full version. Note that using a fully specified compiler version will also select the base-name compiler config from the common config.
+
+.. code-block:: console
+
+   # Create a new narwhal environment at "envs/skylab" drawing from the following specified configuration files.
+   # - templates/skylab-dev/spack.yaml         -  specified by "--template=skylab-dev"
+   # - sites/narwhal/packages_gcc-12.2.0.yaml  -  specified by "--site=narwhal" & "--compiler=gcc-12.2.0"
+   # - sites/narwhal/packages.yaml             -  specified by "--site=narwhal"
+   # - common/packages_gcc.yaml                -  specified by "--compiler=gcc-12.2.0"
+   spack stack create env --site=narwhal --name=skylab --template=skylab-dev --compiler=gcc-12.2.0
 
 .. _MaintainersSection_Discover_SCU17:
 
