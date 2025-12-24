@@ -1,10 +1,14 @@
 packages:
-    all:
-      providers:
-        jpeg: [libjpeg-turbo]
-        pkgconfig: [pkg-config]
-        yacc: [bison]
-        zlib-api: [zlib]
+    # Virtual provider settings
+    jpeg:
+      require: [libjpeg-turbo]
+    pkgconfig:
+      require: [pkg-config]
+    yacc:
+      require: [bison]
+    zlib-api:
+      require: [zlib]
+    # Individual package settings
     awscli-v2:
       require:
       - ~examples
@@ -55,7 +59,7 @@ packages:
       - +fix
     ecbuild:
       require:
-      - '@3.7.2'
+      - '@3.12.0'
     eccodes:
       require:
       - '@2.33.0'
@@ -66,15 +70,15 @@ packages:
       - +ui
     eckit:
       require:
-      - '@1.28.3'
+      - '@1.32.3'
       - linalg=eigen,lapack compression=lz4,bzip2
     ecmwf-atlas:
       require:
-      - '@0.40.0'
+      - '@0.44.1'
       - +fckit +trans +tesselation +fftw
     ectrans:
       require:
-      - '@1.5.0'
+      - '@1.7.0'
     eigen:
       require:
       - '@3.4.0'
@@ -84,7 +88,7 @@ packages:
     esmf:
       require:
       - ~xerces ~pnetcdf +shared +external-parallelio
-      - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0 snapshot=none']
+      - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0 snapshot=none', '@=8.9.1 snapshot=none']
       - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
         when: '%intel'
         message: Extra ESMF compile options for Intel
@@ -93,21 +97,24 @@ packages:
       - ~libbsd
     fckit:
       require:
-      - '@0.13.2'
+      - '@0.14.1'
       - +eckit
     fftw:
       require:
       - '@3.3.10'
     fiat:
       require:
-      - '@1.4.1'
+      - '@1.6.1'
     flex:
       require:
       - '@2.6.4'
     fms:
       require:
       - '@2024.02'
-      - precision=32,64 +quad_precision +gfs_phys +openmp +pic constants=GFS build_type=Release +deprecated_io
+      - precision=32,64 +quad_precision +openmp +pic build_type=Release +deprecated_io
+      - any_of:
+        - +gfs_phys constants=GFS
+        - ~gfs_phys constants=GEOS
     fontconfig:
       require:
       - +pic
@@ -136,6 +143,8 @@ packages:
     #glib:
     #  require:
     #  - '@:2.78.3'
+    global-workflow-env:
+      require: ['+uwtools']
     ## To avoid duplicate packages being built
     #gmake:
     #  require:
@@ -206,8 +215,6 @@ packages:
       require:
       - '@2.53'
       - ~shared ~f2py +pflogger
-    # Note: Please check the sites/tier1/nas/packages_gcc.yaml if
-    #       this is changed, as it has a custom variant combination
     met:
       require:
       - '@12.0.1'
@@ -304,6 +311,10 @@ packages:
     py-cartopy:
       require:
       - +plotting
+    # Pin py-colorama to avoid duplicate packages, hopefully can be removed soon
+    py-colorama:
+      require:
+      - '@0.4.6'
     # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
     py-cryptography:
       require:

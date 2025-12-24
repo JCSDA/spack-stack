@@ -17,6 +17,7 @@ class GlobalWorkflowEnv(BundlePackage):
 
     version("1.0.0")
     variant("python", default=True, description="Build Python dependencies")
+    variant("uwtools", default=False, description="Build uwtools")
 
     depends_on("ufs-pyenv", when="+python")
     depends_on("prod-util")
@@ -46,6 +47,6 @@ class GlobalWorkflowEnv(BundlePackage):
     depends_on("gsi-ncdiag")
     depends_on("crtm")
     depends_on("py-wxflow", when="+python")
-    depends_on("uwtools")
+    depends_on("uwtools", when="+uwtools")
 
     # There is no need for install() since there is no code.

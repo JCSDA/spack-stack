@@ -5,7 +5,7 @@ SPACK_STACK_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && p
 hostname=$(hostname -f)
 case $hostname in
   *acorn.wcoss2*)
-    . ${SPACK_STACK_DIR}/configs/sites/tier1/acorn/setup.sh
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/wcoss2/setup.sh
     ;;
 esac
 
@@ -16,6 +16,8 @@ echo "Setting environment variable SPACK_STACK_DIR to ${SPACK_STACK_DIR}"
 export SPACK_DISABLE_LOCAL_CONFIG=true
 export SPACK_USER_CACHE_PATH=${SPACK_STACK_DIR}/cache/user_cache
 
+echo "Enabling shell completions for spack-stack extensions..."
+${SPACK_STACK_DIR}/spack/bin/spack commands --update-completion
 source ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh
 echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.sh"
 

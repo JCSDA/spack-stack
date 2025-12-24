@@ -42,6 +42,7 @@ modules:
       - berkeley-db
       - bison
       - bzip2
+      - compiler-wrapper
       - diffutils
       - expat
       - findutils
@@ -112,6 +113,7 @@ modules:
       - apple-clang
       - gcc
       - intel-oneapi-compilers
+      - intel-oneapi-compilers-classic
       - llvm
       # By default, do not create MPI modules
       - cray-mpich
@@ -137,6 +139,14 @@ modules:
         environment:
           set:
             'ESMFMKFILE': '{prefix}/lib/esmf.mk'
+        suffixes:
+          ~openmp: 'noopenmp'
+      ip:
+        suffixes:
+          ~openmp: 'noopenmp'
+      neptune-env:
+        suffixes:
+          ~openmp: 'noopenmp'
       libpng:
         environment:
           set:
@@ -147,20 +157,22 @@ modules:
             'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
-          ^esmf@8.4.2~debug snapshot=none: 'esmf-8.4.2'
-          ^esmf@8.4.2+debug snapshot=none: 'esmf-8.4.2-debug'
-          ^esmf@8.5.0~debug snapshot=none: 'esmf-8.5.0'
-          ^esmf@8.5.0+debug snapshot=none: 'esmf-8.5.0-debug'
-          ^esmf@8.6.0~debug snapshot=none: 'esmf-8.6.0'
-          ^esmf@8.6.0+debug snapshot=none: 'esmf-8.6.0-debug'
-          ^esmf@8.6.1~debug snapshot=none: 'esmf-8.6.1'
-          ^esmf@8.6.1+debug snapshot=none: 'esmf-8.6.1-debug'
-          ^esmf@8.7.0~debug snapshot=none: 'esmf-8.7.0'
-          ^esmf@8.7.0+debug snapshot=none: 'esmf-8.7.0-debug'
-          ^esmf@8.8.0~debug snapshot=none: 'esmf-8.8.0'
-          ^esmf@8.8.0+debug snapshot=none: 'esmf-8.8.0-debug'
-          ^esmf@8.9.0~debug snapshot=none: 'esmf-8.9.0'
-          ^esmf@8.9.0+debug snapshot=none: 'esmf-8.9.0-debug'
+          ^esmf@8.6.1~debug ~openmp snapshot=none: 'esmf-8.6.1-noopenmp'
+          ^esmf@8.6.1+debug ~openmp snapshot=none: 'esmf-8.6.1-debug-noopenmp'
+          ^esmf@8.6.1~debug +openmp snapshot=none: 'esmf-8.6.1'
+          ^esmf@8.6.1+debug +openmp snapshot=none: 'esmf-8.6.1-debug'
+          ^esmf@8.8.0~debug ~openmp snapshot=none: 'esmf-8.8.0-noopenmp'
+          ^esmf@8.8.0+debug ~openmp snapshot=none: 'esmf-8.8.0-debug-noopenmp'
+          ^esmf@8.8.0~debug +openmp snapshot=none: 'esmf-8.8.0'
+          ^esmf@8.8.0+debug +openmp snapshot=none: 'esmf-8.8.0-debug'
+          ^esmf@8.9.1~debug ~openmp snapshot=none: 'esmf-8.9.1-noopenmp'
+          ^esmf@8.9.1+debug ~openmp snapshot=none: 'esmf-8.9.1-debug-noopenmp'
+          ^esmf@8.9.1~debug +openmp snapshot=none: 'esmf-8.9.1'
+          ^esmf@8.9.1+debug +openmp snapshot=none: 'esmf-8.9.1-debug'
+      fms:
+        suffixes:
+          constants=GFS: 'gfs-constants'
+          constants=GEOS: 'geos-constants'
       openmpi:
         environment:
           set:

@@ -373,6 +373,12 @@ def setup_meta_modules():
         raise Exception(f"Expected no or one MPI provider, but got {mpi_providers}")
     logging.info(f"  ... mpi_providers: {mpi_providers}")
 
+    # To catch errors (invalid compilers, etc) we check that the number of written
+    # stack-* meta modules matches what we expect: One module for the preferred
+    # compiler, and (if applicable) one for each (currently one) MPI provider.
+    number_of_meta_modules_expected = 1 + len(mpi_providers)
+    number_of_meta_modules_written = 0
+
     # Prepare meta module directory
     logging.info("Preparing meta module directory ...")
     meta_module_dir = os.path.join(module_dir, "Core")
@@ -508,6 +514,7 @@ def setup_meta_modules():
         with open(compiler_module_file, "w") as f:
             f.write(module_content)
         logging.info("  ... writing {}".format(compiler_module_file))
+        number_of_meta_modules_written += 1
 
         # If this is the last compiler in the list (i.e. the preferred compiler),
         # then save the substitutes for later when building the MPI meta module
@@ -520,12 +527,14 @@ def setup_meta_modules():
     # Create mpi modules - currently, only one mpi provider is allowed
     for mpi_provider in mpi_providers:
 
+        if module_choice == "lmod":
+            mpi_alias = mpi_provider.name
+        else:
+            mpi_alias = ALIASES[mpi_provider.name]
+
         # For tcl, append modulepath for external specs and for specs without
         # compiler dependencies; remove the compiler/mpi prefices from the moduless
         if module_choice == "tcl":
-
-            # Module paths are short names for tcl modules
-            mpi_alias = ALIASES[mpi_provider.name]
 
             modulepath_save = os.path.join(module_dir, mpi_alias, str(mpi_provider.version), "none", "none")
             if not os.path.isdir(modulepath_save):
@@ -548,7 +557,7 @@ def setup_meta_modules():
 
             # Module paths are short names for tcl modules
             if module_choice == "lmod":
-                mpi_alias = compiler.name
+                compiler_alias = compiler.name
             else:
                 compiler_alias = ALIASES[compiler.name]
 
@@ -654,10 +663,10 @@ def setup_meta_modules():
             substitutes["FC"]  = COMPILER_SUBSTITUTES_SAVE["FC"]
 
             # Environment variables
-            if "environment" in compiler.extra_attributes.keys():
-                for action in compiler.extra_attributes["environment"].keys():
-                    for env_name in compiler.extra_attributes["environment"][action]:
-                        env_values = compiler.extra_attributes["environment"][action][env_name]
+            if "environment" in mpi_provider.extra_attributes.keys():
+                for action in mpi_provider.extra_attributes["environment"].keys():
+                    for env_name in mpi_provider.extra_attributes["environment"][action]:
+                        env_values = mpi_provider.extra_attributes["environment"][action][env_name]
                         substitutes["ENVVARS"] += envmod_command(
                             module_choice,
                             action,
@@ -689,5 +698,10 @@ def setup_meta_modules():
             with open(mpi_module_file, "w") as f:
                 f.write(module_content)
             logging.info("  ... writing {}".format(mpi_module_file))
+            number_of_meta_modules_written += 1
 
-    logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))
+
+    if number_of_meta_modules_written == number_of_meta_modules_expected:
+        logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))
+    else:
+        raise Exception("Metamodule generation NOT successful, check output (invalid compiler?)")

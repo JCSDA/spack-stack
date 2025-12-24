@@ -2,10 +2,14 @@ packages:
     all:
       prefer:
       - '%oneapi'
-      providers:
-        blas: [intel-oneapi-mkl]
-        fftw-api: [intel-oneapi-mkl]
-        lapack: [intel-oneapi-mkl]
+    # Virtual package settings
+    blas:
+      require: ['intel-oneapi-mkl']
+    fftw-api:
+      require: ['intel-oneapi-mkl']
+    lapack:
+      require: ['intel-oneapi-mkl']
+    # Individual package settings
     antlr:
       require:
       - '%gcc'
@@ -21,9 +25,6 @@ packages:
     gmake:
       require:
       - '%gcc'
-    ip:
-      require:
-      - '^intel-oneapi-mkl'
     libbsd:
       require:
       - '%gcc'
@@ -42,9 +43,6 @@ packages:
     py-maturin:
       require:
       - '%gcc'
-    py-numpy:
-      require:
-      - '^intel-oneapi-mkl'
     qt:
       require:
       - '%gcc'

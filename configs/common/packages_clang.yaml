@@ -2,17 +2,17 @@ packages:
     all:
       prefer:
       - '%clang'
-      providers:
-        blas: [openblas]
-        fftw-api: [fftw]
-        lapack: [openblas]
+    # Virtual provider settings
+    blas:
+      require: [openblas]
+    fftw-api:
+      require: [fftw]
+    lapack:
+      require: [openblas]
+    # Individual package settings
     ectrans:
       require:
-      - ~mkl +fftw
+      - +fftw
     ip:
       require:
-      - '^openblas'
       - '~openmp'
-    py-numpy:
-      require:
-      - '^openblas'
