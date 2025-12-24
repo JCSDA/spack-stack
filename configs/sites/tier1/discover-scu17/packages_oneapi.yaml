@@ -1,10 +1,32 @@
 packages:
   all:
-    compiler:: [oneapi@2024.2.0,gcc@11.4.0]
     providers:
       mpi:: [intel-oneapi-mpi@2021.13]
   mpi:
     buildable: False
+  intel-oneapi-compilers:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.0
+      prefix: /usr/local/intel/oneapi/2024
+      modules:
+      - comp/intel/2024.2.0
+      extra_attributes:
+        compilers:
+          c: /usr/local/intel/oneapi/2024/compiler/2024.2/bin/icx
+          cxx: /usr/local/intel/oneapi/2024/compiler/2024.2/bin/icpx
+          fortran: /usr/local/intel/oneapi/2024/compiler/2024.2/bin/ifort
+          f77: /usr/local/intel/oneapi/2024/compiler/2024.2/bin/ifort
+        environment:
+          set:
+            # Force ifort not ifx
+            INTEL_COMPILER_TYPE: 'RECOMMENDED'
+          prepend_path:
+            PATH: /usr/local/other/gcc/12.3.0/bin
+            CPATH: /usr/local/other/gcc/12.3.0/include
+            LD_LIBRARY_PATH: '/usr/local/intel/oneapi/2024/compiler/2024.2/lib/:/usr/local/other/gcc/12.3.0/lib64'
+        extra_rpaths:
+        - /usr/local/other/gcc/12.3.0/lib64
   intel-oneapi-mpi:
     externals:
     - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.0
@@ -12,10 +34,26 @@ packages:
       modules:
       - mpi/impi/2021.13
   intel-oneapi-mkl:
+    buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2.0
+    - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
       prefix: /usr/local/intel/oneapi/2024
   intel-oneapi-runtime:
+    buildable: false
     externals:
     - spec: intel-oneapi-runtime@2024.2.0%oneapi@2024.2.0
       prefix: /usr/local/intel/oneapi/2024
+  gcc:
+    externals:
+    - spec: gcc@12.3.0 languages:='c,c++,fortran'
+      prefix: /usr/local/other/gcc/12.3.0
+      modules:
+      - comp/gcc/12.3.0
+      extra_attributes:
+        compilers:
+          c: /usr/local/other/gcc/12.3.0/bin/gcc
+          cxx: /usr/local/other/gcc/12.3.0/bin/g++
+          fortran: /usr/local/other/gcc/12.3.0/bin/gfortran
+        flags: {}
+        environment: {}
+        extra_rpaths: []
