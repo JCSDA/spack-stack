@@ -11,17 +11,11 @@ packages:
       - craype/2.7.34
       - cray-mpich/8.1.32
       - libfabric/1.22.0
-      #- cray-pals/1.2.11
-
   intel-oneapi-runtime:
     buildable: False
     externals:
     - spec: intel-oneapi-runtime@2025.2.1
       prefix: /glade/u/apps/common/25.10/spack/opt/spack/intel-oneapi-compilers/2025.2.1/s4f2
-      #modules:
-      #  - ncarenv/25.10
-      #  - intel/2025.2.1
-
   intel-oneapi-compilers:
     buildable: False
     externals:
@@ -46,7 +40,6 @@ packages:
             # https://github.com/JCSDA/spack-stack/issues/1012
             I_MPI_EXTRA_FILESYSTEM: 'ON'
         extra_rpaths: []
-
   intel-oneapi-mkl:
     buildable: False
     externals:
@@ -54,13 +47,11 @@ packages:
       prefix: /glade/u/apps/derecho/25.10/spack/opt/spack/intel-oneapi-mkl/2025.2.0/intel-oneapi-compilers/2025.2.1/fj2q
       modules:
       - intel-oneapi-mkl/2025.2.0
-
   gcc-runtime:
     buildable: False
     externals:
     - spec: gcc-runtime@12.5.0
       prefix: /glade/u/apps/common/25.10/spack/opt/spack/gcc/12.5.0/hsbg
-
   gcc:
     buildable: False
     externals:
