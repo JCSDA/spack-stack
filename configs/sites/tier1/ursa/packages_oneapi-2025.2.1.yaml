@@ -1,15 +1,15 @@
 packages:
   mpi:
-    buildable: false
+    buildable: False
     require:
     - intel-oneapi-mpi@2021.13
   intel-oneapi-runtime:
-    buildable: false
+    buildable: False
     externals:
     - spec: intel-oneapi-runtime@2025.2.1
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2025.2.1-5nijquf65qj5mmbn3k2gxkjkrjkpjtw7
   intel-oneapi-compilers:
-    buildable: false
+    buildable: False
     externals:
     - spec: intel-oneapi-compilers@2025.2.1
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2025.2.1-5nijquf65qj5mmbn3k2gxkjkrjkpjtw7
@@ -29,31 +29,31 @@ packages:
         - /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/lib
         - /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/lib64
   intel-oneapi-mpi:
-    buildable: false
+    buildable: False
     externals:
     - spec: intel-oneapi-mpi@2021.13
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2024.2.1/intel-oneapi-mpi-2021.13.1-ss72gbndvat3oz22sa6lhmlbjkeabrn4
       modules:
       - intel-oneapi-mpi/2021.13.1
   intel-oneapi-mkl:
-    buildable: false
+    buildable: False
     externals:
     - spec: intel-oneapi-mkl@2024.2
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-mkl-2024.2.1-srqwrbzwo2k7hxuuhlrxttburs5jvlat
       modules:
       - intel-oneapi-mkl/2024.2.1
   intel-oneapi-tbb:
-    buildable: false
+    buildable: False
     externals:
     - spec: intel-oneapi-tbb@2021.12
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-tbb-2021.12.0-grcsmccjpm3trn6rgtyq76kdxks6ygzm
   gcc-runtime:
-    buildable: false
+    buildable: False
     externals:
     - spec: gcc-runtime@12.4.0
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj
   gcc:
-    buildable: false
+    buildable: False
     externals:
     - spec: gcc@12.4.0 languages:='c,c++'
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj
