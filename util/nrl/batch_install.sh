@@ -103,6 +103,11 @@ fi
 SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1)
 SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
 
+# Workaround for ParallelWorks login nodes
+if [[ "${SPACK_STACK_BATCH_HOST}" == *"awsneptunecluster"* ]]; then
+  SPACK_STACK_BATCH_HOST="navy-aws"
+fi
+
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=21.1.0")
@@ -138,6 +143,13 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
+    ;;
+  navy-aws)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/project/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/project/spack-stack/cargo-mirror"
     ;;
   tusk)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.1.0")
@@ -221,6 +233,13 @@ function fix_permissions() {
         sleep 30
       fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    navy-aws)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     tusk)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
@@ -427,6 +446,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         umask 0022
         module purge
         ;;
+      navy-aws)
+        umask 0022
+        module purge
+        case ${compiler} in
+          gcc-13.3.1)
+            module use /project/spack-stack/gcc-13.3.1/modulefiles
+            module use /project/spack-stack/openmpi-4.1.8/gcc-13.3.1/modulefiles
+	    ;;
+	esac
+        ;;
       tusk)
         umask 0022
         set +e
@@ -462,6 +491,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              2>&1 | tee log.create.${env_name}.001
     fi
     spack env activate -p ${env_dir}
+
+    # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
+    sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
 
     # Update bootstrap mirror if requested
     if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
@@ -529,7 +561,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Check for duplicate packages
-    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip
+    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip -i fms
 
     # Update local source cache if requested
     if [[ "${update_source_cache}" == "true"* ]]; then

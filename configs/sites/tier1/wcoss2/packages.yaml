@@ -12,7 +12,7 @@ packages:
   blas:
     require:: ['openblas']
   fftw-api:
-    require: ['fftw']
+    require:: ['fftw']
   jpeg:
     require: ['libjpeg-turbo']
   lapack:
@@ -55,6 +55,7 @@ packages:
     require:: ['%oneapi']
   netcdf-c:
     require:: ['@4.9.2', '+mpi', '~parallel-netcdf', '~dap', '~blosc', '~szip']
+  py-colorama:: {}
   py-pandas:
     require:: ['~excel']
   scotch:
