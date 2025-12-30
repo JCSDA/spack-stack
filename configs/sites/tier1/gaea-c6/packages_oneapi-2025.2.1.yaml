@@ -11,13 +11,11 @@ packages:
       - cray-mpich/8.1.32
       - libfabric/1.22.0
       - craype-network-ofi
-
   intel-oneapi-runtime:
     buildable: False
     externals:
     - spec: intel-oneapi-runtime@2025.2.1
       prefix: /opt/intel/oneapi
-
   intel-oneapi-compilers:
     buildable: False
     externals:
@@ -45,19 +43,16 @@ packages:
             CONFIG_SITE: ''
         extra_rpaths:
           - /opt/intel/oneapi/compiler/2025.2/lib  
-
   intel-oneapi-mkl:
     buildable: False
     externals:
     - spec: intel-oneapi-mkl@2025.2
       prefix: /opt/intel/oneapi
-
   gcc-runtime:
     buildable: False
     externals:
       - spec: gcc-runtime@12.3.0
         prefix: /opt/cray/pe/gcc-native/12/bin
-
   gcc:
     buildable: False
     externals:
