@@ -1,0 +1,29 @@
+packages:
+  mpi:
+    buildable: False
+    require:
+    - openmpi@4.1.4
+  openmpi:
+    buildable: False
+    externals:
+    - spec: openmpi@4.1.4
+      prefix: /apps/spack-managed/gcc-11.3.1/openmpi-4.1.4-zabolhazla2ahsroedlyt2pu4mkp7o3q
+      modules:
+      - openmpi/4.1.6
+  gcc-runtime:
+    buildable: False
+    externals:
+    - spec: gcc-runtime@12.2.0
+      prefix: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@12.2.0 languages:='c,c++,fortran'
+      prefix: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo
+      modules:
+      - gcc/12.2.0
+      extra_attributes:
+        compilers:
+          c: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gcc
+          cxx: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/g++
+          fortran: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo/bin/gfortran
