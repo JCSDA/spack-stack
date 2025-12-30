@@ -1,9 +1,8 @@
 <img src="https://user-images.githubusercontent.com/8006981/234488735-45b2c5fa-1de6-47ad-ae3b-4a6829ae49b9.png" width="425">
 
 Spack-stack is a framework for installing software libraries to support
-NOAA's Unified Forecast System (UFS) applications and the
-Joint Effort for Data assimilation Integration (JEDI) coupled to
-several Earth system prediction models (MPAS, NEPTUNE, UM, FV3, GEOS, UFS).
+a wide range of numerical weather prediction and data assimilation systems
+developed by the spack-stack project partners: UFS, MPAS, NEPTUNE, FV3, GEOS, JEDI, ...
 
 Spack-stack supports installations on a range of R&D and operational platforms.
 It provides a set of installation templates (package lists), default package settings,
@@ -29,6 +28,7 @@ Spack-stack is a collaborative effort between:
 * [UCAR Joint Center for Satellite Data Assimilation (JCSDA)](https://www.jcsda.org)
 * [Earth Prediction Innovation Center (EPIC)](https://epic.noaa.gov)
 * [U.S. Naval Research Laboratory (NRL)](https://https://www.nrl.navy.mil)
+* [NASA Global Modeling and Assimilation Office (GMAO)](https://gmao.gsfc.nasa.gov)
 
 For more information about the organization of the spack-stack
 project, see the [Project Charter](project_charter.md).
