@@ -35,6 +35,13 @@ packages:
         extra_rpaths:
         - /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/lib
         - /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/lib64
+  intel-oneapi-mkl:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-mkl-2024.2.1-srqwrbzwo2k7hxuuhlrxttburs5jvlat
+      modules:
+      - intel-oneapi-mkl/2024.2.1
   gcc-runtime:
     buildable: False
     externals:
