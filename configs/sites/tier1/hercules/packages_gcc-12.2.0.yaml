@@ -9,7 +9,7 @@ packages:
     - spec: openmpi@4.1.4
       prefix: /apps/spack-managed/gcc-11.3.1/openmpi-4.1.4-zabolhazla2ahsroedlyt2pu4mkp7o3q
       modules:
-      - openmpi/4.1.6
+      - openmpi/4.1.4
   gcc-runtime:
     buildable: False
     externals:
