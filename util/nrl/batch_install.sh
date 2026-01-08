@@ -569,10 +569,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       spack mirror create -a -d ${source_mirror_path}
     fi
 
-    # Update local cargo mirror if requested
+    # Update local cargo mirror if requested; this can be
+    # unreliable, therefore ignore errors and proceed ...
     if [[ "${update_cargo_mirror}" == "true"* ]]; then
+      set +e
       echo "Updating local cargo mirror ..."
       ./util/fetch_cargo_deps.py
+      set -e
     fi
 
     # Install the environment with the correct flags
