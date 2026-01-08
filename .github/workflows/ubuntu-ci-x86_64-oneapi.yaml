@@ -1,6 +1,14 @@
 name: ubuntu-ci-c6a-x86_64-oneapi-build
 on:
   pull_request:
+    paths-ignore:
+      - 'configs/sites/**'
+      - '!configs/sites/tier2/*.default/*'
+      - '**.md'
+      - '.github/CODEOWNERS'
+      - '.github/pull_request_template.md'
+      - '.github/ISSUE_TEMPLATE/*'
+      - '.gitignore'
   workflow_dispatch:
 
 concurrency:
