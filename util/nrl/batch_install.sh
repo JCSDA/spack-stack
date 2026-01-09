@@ -111,7 +111,7 @@ fi
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=21.1.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-ops" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-dev-llvm" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
@@ -167,7 +167,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     ;;
   bounty)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1" "clang@=21.1.1")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-ops" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-dev-llvm" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
@@ -353,12 +353,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    # With clang, only neptune-ops 
-    elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-ops" ]]; then
+    # With clang, only neptune-dev-llvm 
+    elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev-llvm" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    # With other compilers, skip neptune-ops
-    elif [[ ! "${compiler_name}" == "clang" && "${template}" == "neptune-ops" ]]; then
+    # With other compilers, skip neptune-dev-llvm
+    elif [[ ! "${compiler_name}" == "clang" && "${template}" == "neptune-dev-llvm" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     # FMS compiler ICE: https://github.com/NOAA-GFDL/FMS/issues/1680
@@ -377,7 +377,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       neptune-dev)
         env_name_prefix="ne"
         ;;
-      neptune-ops)
+      neptune-dev-llvm)
         env_name_prefix="ne"
         ;;
       cylc-dev)
