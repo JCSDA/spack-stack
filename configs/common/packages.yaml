@@ -434,14 +434,10 @@ packages:
     uwtools:
       require:
       - '@2.7.2'
-    # Need extradeps for grib-utils, enable by default to avoid duplicate packages
-    # w3emc@2.11.0 doesn't build with LLVM 21
     w3emc:
       require:
-      - one_of: ['@=2.11.0', '@=2.10.0']
-      - one_of: ['@=2.10.0']
-        when: '%clang'
-      - precision=4,d,8 +extradeps
+      - '@2.13.0'
+      - precision=4,d,8 +build_deprecated
     w3nco:
       require:
       - '@2.4.1'
