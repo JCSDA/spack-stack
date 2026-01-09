@@ -22,6 +22,7 @@ class JediNeptuneEnv(BundlePackage):
 
     depends_on("jedi-base-env", type="run")
     depends_on("neptune-env", type="run")
+    depends_on("neptune-python-env", type="run")
 
     with when("+adp"):
         depends_on("adp-preprocessors", type="run")
