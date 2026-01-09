@@ -1,0 +1,76 @@
+packages:
+  mpi:
+    buildable: False
+  cray-mpich:
+    buildable: False
+    externals:
+    - spec: cray-mpich@8.1.32
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
+      modules:
+      - PrgEnv-intel/8.6.0
+      - cray-mpich/8.1.32
+      - libfabric/1.22.0
+      - craype-network-ofi
+  intel-oneapi-runtime:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-runtime@2025.2.1
+      prefix: /opt/intel/oneapi
+  intel-oneapi-compilers:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-compilers@2025.2.1
+      prefix: /opt/intel/oneapi
+      modules:
+        - PrgEnv-intel/8.6.0
+        - intel/2025.2
+        - craype/2.7.35
+        - cray-libsci/25.09.0
+        - libfabric/1.22.0
+      extra_attributes:
+        compilers:
+          c: /opt/intel/oneapi/compiler/2025.2/bin/icx
+          cxx: /opt/intel/oneapi/compiler/2025.2/bin/icpx
+          fortran: /opt/intel/oneapi/compiler/2025.2/bin/ifx
+        environment:
+          prepend_path:
+            PATH: '/opt/cray/pe/gcc-native/12/bin'
+            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.09.0/INTEL/2025.0/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12:/opt/intel/oneapi/compiler/2025.2/lib:/opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1/lib'
+          set:
+            # OpenSUSE on Gaea C6 sets CONFIG_SITE so
+            # Automake-based builds are installed in lib64
+            # which confuses some packages.
+            CONFIG_SITE: ''
+        extra_rpaths:
+          - /opt/intel/oneapi/compiler/2025.2/lib  
+  intel-oneapi-mkl:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2025.2
+      prefix: /opt/intel/oneapi
+  gcc-runtime:
+    buildable: False
+    externals:
+      - spec: gcc-runtime@12.3.0
+        prefix: /opt/cray/pe/gcc-native/12/bin
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@12.3.0 languages:='c,c++'
+      prefix: /opt/cray/pe/gcc-native/12/bin
+      modules:
+        - PrgEnv-gnu/8.6.0
+        - gcc-native/12.3
+        - craype/2.7.35
+        - libfabric/1.22.0
+        - cray-libsci/25.09.0
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc-native/12/bin/gcc
+          cxx: /opt/cray/pe/gcc-native/12/bin/g++
+          fortran: /opt/cray/pe/gcc-native/12/bin/gfortran
+        environment: 
+          prepend_path:
+            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.09.0/INTEL/2025.0/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12:/opt/intel/oneapi/compiler/2025.2/lib'
+      extra_rpaths:
+        - /opt/intel/oneapi/compiler/2025.2/lib

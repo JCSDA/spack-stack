@@ -4,7 +4,7 @@ spack:
 
   config:
     checksum: false
-    build_jobs: 2
+    build_jobs: 4
     connect_timeout: 60
 
   compilers:
@@ -25,35 +25,45 @@ spack:
   # Additional package config for container
   packages:
     all:
-      require: '%gcc'
+      prefer:
+      - '%gcc'
       target: [x86_64]
       providers:
-        mpi: [openmpi@5.0.5]
-      compiler: [gcc@11.4.0]
+        mpi: [openmpi@5.0.8]
+
+    # Compilers and meta packages.
     gcc:
       buildable: false
       externals:
-      - spec: gcc@11.4.0
+      - spec: gcc@11.4.0 languages:='c,c++,fortran'
         prefix: /usr
+        extra_attributes:
+          compilers:
+            c: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fortran: /usr/bin/gfortran
     gcc-runtime:
       buildable: false
       externals:
       - spec: gcc-runtime@11.4.0
         prefix: /usr
+    mpi:
+      require: [openmpi@5.0.8]
+
     diffutils:
       buildable: false
       externals:
-      - spec: diffutils@3.8
+      - spec: diffutils@3.10
         prefix: /usr
     git:
       buildable: false
       externals:
-      - spec: git@2.34.1~tcltk
+      - spec: git@2.43.0~tcltk
         prefix: /usr
     git-lfs:
       buildable: false
       externals:
-      - spec: git-lfs@3.0.2
+      - spec: git-lfs@3.4.1
         prefix: /usr
     llvm:
       buildable: false
@@ -74,7 +84,12 @@ spack:
     wget:
       buildable: false
       externals:
-      - spec: wget@1.21.2
+      - spec: wget@1.21.4
+        prefix: /usr
+    perl:
+      buildable: false
+      externals:
+      - spec: perl@5.38.2
         prefix: /usr
 
   specs: []
@@ -84,18 +99,7 @@ spack:
     # Select the format of the recipe e.g. docker,
     # singularity or anything else that is currently supported
     format: docker
-    # How to use:
-    #$ spack containerize > Dockerfile
-    #$ sudo docker build -t myimage .
-    #$ sudo docker run -it myimage
 
-    #format: singularity
-    # How to use:
-    #$ spack containerize > singularity.def
-    #$ sudo singularity build singularity.sif singularity.def
-
-    # Sets the base images for the stages where Spack builds the
-    # software or where the software gets installed after being built..
     images:
       os: ubuntu:24.04
       spack:
@@ -155,8 +159,6 @@ spack:
     # Extra instructions
     extra_instructions:
       pre_build: |
-        # Copy the spack-stack extension repo into the spack code
-        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
         # Register spack-stack extension repo
         RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults && \
         update-alternatives --remove-all cpp && \
@@ -181,37 +183,39 @@ spack:
       final: |
         # Copy spack find output from builder
         COPY --from=builder /root/spack_find.out /root/spack_find.out
-        # Make a non-root user:nonroot / group:nonroot for running MPI
-        RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
-        echo "ulimit -s unlimited" >> /home/nonroot/.bashrc && \
-        echo "ulimit -v unlimited" >> /home/nonroot/.bashrc && \
-        echo "export CC=gcc" >> /home/nonroot/.bashrc && \
-        echo "export CXX=g++" >> /home/nonroot/.bashrc && \
-        echo "export FC=gfortran" >> /home/nonroot/.bashrc && \
-        update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 100 && \
+        # Set compiler defaults.
+        RUN update-alternatives --install /usr/bin/cpp cpp /usr/bin/cpp-11 100 && \
         update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100 && \
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100 && \
         # Needed by py-llvmlite
         update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
-        printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
-        mkdir /home/nonroot/.pmix && \
+        # Make a non-root user:nonroot / group:nonroot for running MPI
+        useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
+        # Set startup environment variables not set by spack.
+        echo "ulimit -s unlimited" >> /etc/spack_container_rc.sh && \
+        echo "ulimit -v unlimited" >> /etc/spack_container_rc.sh && \
+        echo "export CC=gcc" >> /etc/spack_container_rc.sh && \
+        echo "export CXX=g++" >> /etc/spack_container_rc.sh && \
+        echo "export FC=gfortran" >> /etc/spack_container_rc.sh && \
+        # Set necessary environment variables and config for openmpi.
+        echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /etc/spack_container_rc.sh && \
+        echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /etc/spack_container_rc.sh && \
+        echo "export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe" >> /etc/spack_container_rc.sh && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-*/jedi-cmake-*)" >> /etc/spack_container_rc.sh && \
+        echo "source /etc/spack_container_rc.sh" >> /etc/bash.bashrc && \
+        # More openmpi config.
+        mkdir -p /root/.pmix && \
+        echo "rmaps_default_mapping_policy=:oversubscribe" >> /root/.pmix/mca-params.conf && \
+        mkdir -p /home/nonroot/.pmix && \
         echo "rmaps_default_mapping_policy=:oversubscribe" >> /home/nonroot/.pmix/mca-params.conf && \
-        chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.pmix
-        # Replicate settings for root user
-        RUN echo "ulimit -s unlimited" >> /root/.bashrc && \
-        echo "ulimit -v unlimited" >> /root/.bashrc && \
-        echo "export CC=gcc" >> /root/.bashrc && \
-        echo "export CXX=g++" >> /root/.bashrc && \
-        echo "export FC=gfortran" >> /root/.bashrc && \
-        printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig && \
-        mkdir /root/.pmix && \
-        echo "rmaps_default_mapping_policy=:oversubscribe" >> /root/.pmix/mca-params.conf
-        # Also set necessary environment variables for openmpi and jedi-cmake.
-        RUN echo "export OMPI_ALLOW_RUN_AS_ROOT=1" >> /root/.bashrc && \
-        echo "export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1" >> /root/.bashrc && \
-        echo "export PRTE_MCA_rmaps_default_mapping_policy=:oversubscribe" >> /root/.bashrc && \
-        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/gcc-*/jedi-cmake-*)" >> /root/.bashrc
+        chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.pmix && \
+        # Git config settings.
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
+        printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig
+
+        # Ensure that the container rc is run by non-login shells.
+        ENV BASH_ENV=/etc/spack_container_rc.sh
 
     # Labels for the image
     labels:

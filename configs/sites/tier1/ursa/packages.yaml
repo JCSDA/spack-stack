@@ -82,6 +82,10 @@ packages:
     externals:
     - spec: gmake@4.3
       prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.6.1
+      prefix: /usr
   groff:
     externals:
     - spec: groff@1.22.4
@@ -113,11 +117,6 @@ packages:
     externals:
     - spec: openjdk@1.8.0.412.b08-2
       prefix: /usr
-  openssl:
-      buildable: False
-      externals:
-      - spec: openssl@3.0.7
-        prefix: /usr
   pkg-config:
     externals:
     - spec: pkg-config@1.7.3

@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
 # Whitelist file patterns (checked with re.match()) that will be satisfied by
-# compiler & MPI modules (though arguably these should be added as extra
-# rpaths).
+# compiler, MPI, and Python modules (though arguably these should be added as
+# extra rpaths).
 whitelist = [
     "^libmkl.+",
     "^libifcore.so.*",
+    "^libpython3.*",
 ]
 
 ########

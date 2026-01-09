@@ -1,35 +1,41 @@
 packages:
-  mysql:
+  gmake:
+    buildable: false
     externals:
-    - spec: mysql@8.0.41
+    - spec: gmake@4.3
+      prefix: /usr
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@13.3.0
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.11
       prefix: /usr
   wget:
     externals:
     - spec: wget@1.21.4
       prefix: /usr
-  binutils:
+  perl:
     externals:
-    - spec: binutils@2.38
-      prefix: /usr
-  coreutils:
-    externals:
-    - spec: coreutils@8.32
-      prefix: /usr
-  diffutils:
-    externals:
-    - spec: diffutils@3.10
+    - spec: perl@5.38.2~cpanm+opcode+open+shared+threads
       prefix: /usr
   findutils:
     externals:
     - spec: findutils@4.9.0
       prefix: /usr
-  gawk:
+  coreutils:
     externals:
-    - spec: gawk@5.1.0
+    - spec: coreutils@9.4
       prefix: /usr
-  tar:
+  pkgconf:
     externals:
-    - spec: tar@1.34
+    - spec: pkgconf@1.8.1
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.7
       prefix: /usr
   autoconf:
     externals:
@@ -39,61 +45,27 @@ packages:
     externals:
     - spec: automake@1.16.5
       prefix: /usr
-  flex:
+  gawk:
     externals:
-    - spec: flex@2.6.4+lex
-      prefix: /usr
-  gettext:
-    externals:
-    - spec: gettext@0.21
+    - spec: gawk@5.2.1
       prefix: /usr
   git:
     externals:
     - spec: git@2.43.0~tcltk
       prefix: /usr
-  git-lfs:
+  flex:
     externals:
-    - spec: git-lfs@3.4.1
-      prefix: /usr
-  gmake:
-    externals:
-    - spec: gmake@4.3
-      prefix: /usr
-  groff:
-    externals:
-    - spec: groff@1.22.4
-      prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.7
-      prefix: /usr
-  m4:
-    externals:
-    - spec: m4@1.4.19
-      prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.38.2~cpanm+opcode+open+shared+threads
-      prefix: /usr
-  pkg-config:
-    externals:
-    - spec: pkg-config@0.29.2
-      prefix: /usr
-  qt:
-    buildable: false
-    externals:
-    - spec: qt@5.15.3
+    - spec: flex@2.6.4+lex
       prefix: /usr
   sed:
     externals:
     - spec: sed@4.9
       prefix: /usr
-  lcms:
+  diffutils:
     externals:
-    - spec: lcms@2.13.1
+    - spec: diffutils@3.10
       prefix: /usr
-  llvm:
-    buildable: false
+  groff:
     externals:
-    - spec: llvm@14.0.6
+    - spec: groff@1.23.0
       prefix: /usr

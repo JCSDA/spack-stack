@@ -5,3 +5,5 @@ modules:
     lmod:
       include:
       - python
+      all:
+        autoload: run

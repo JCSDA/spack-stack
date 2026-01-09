@@ -1,0 +1,33 @@
+packages:
+  mpi:
+    buildable: False
+    require:
+    - "openmpi@4.1.8"
+  gcc:
+    externals:
+    - spec: gcc@13.4.0 languages:='c,c++,fortran'
+      prefix: /project/spack-stack/gcc-13.4.0
+      modules:
+      - gcc/13.4.0
+      extra_attributes:
+        compilers:
+          c: /project/spack-stack/gcc-13.4.0/bin/gcc
+          cxx: /project/spack-stack/gcc-13.4.0/bin/g++
+          fortran: /project/spack-stack/gcc-13.4.0/bin/gfortran
+    #- spec: gcc@11.5.0 languages:='c,c++,fortran'
+    #  prefix: /usr
+    #  extra_attributes:
+    #    compilers:
+    #      c: /usr/bin/gcc
+    #      cxx: /usr/bin/g++
+    #      fortran: /usr/bin/gfortran
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@13.4.0%gcc@13.4.0
+      prefix: /project/spack-stack/gcc-13.4.0
+  openmpi:
+    externals:
+    - spec: openmpi@4.1.8
+      prefix: /project/spack-stack/openmpi-4.1.8/gcc-13.4.0
+      modules:
+      - openmpi/4.1.8

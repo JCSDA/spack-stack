@@ -266,6 +266,12 @@ modules:
           set:
             'UPP_INC': '{prefix}/include'
             'UPP_LIB': '{prefix}/lib/libupp.a'
+      # NOTE: This will be fixed upstream in udunits Spack package
+      # Once this is done, remove this section
+      udunits:
+        environment:
+          set:
+            'UDUNITS2_XML_PATH': '{prefix}/share/udunits/udunits2.xml'
 
       hierarchy:
       - mpi

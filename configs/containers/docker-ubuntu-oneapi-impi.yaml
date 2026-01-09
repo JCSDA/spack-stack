@@ -7,48 +7,80 @@ spack:
     build_jobs: 2
     connect_timeout: 60
 
-  compilers:
-  - compiler:
-      spec: gcc@=13.4.0
-      paths:
-        cc: /usr/bin/gcc
-        cxx: /usr/bin/g++
-        f77: /usr/bin/gfortran
-        fc: /usr/bin/gfortran
-      flags: {}
-      operating_system: ubuntu24.04
-      target: x86_64
-      modules: []
-      environment: {}
-      extra_rpaths: []
-  - compiler:
-      spec: oneapi@=2024.2.1
-      paths:
-        cc: /opt/intel/oneapi/compiler/2024.2/bin/icx
-        cxx: /opt/intel/oneapi/compiler/2024.2/bin/icpx
-        #f77: /opt/intel/oneapi/compiler/2024.2/bin/ifx
-        #fc: /opt/intel/oneapi/compiler/2024.2/bin/ifx
-        f77: /opt/intel/oneapi/compiler/2024.2/bin/ifort
-        fc: /opt/intel/oneapi/compiler/2024.2/bin/ifort
-      flags: {}
-      operating_system: ubuntu24.04
-      target: x86_64
-      modules: []
-      environment:
-        # change to append_path once relevant PR is merged
-        append_path:
-          CPATH: /opt/intel/oneapi/compiler/2024.2/opt/compiler/include/intel64
-      extra_rpaths: []
-
   # Basic package config from configs/common/packages.yaml
   # Additional package config for container
   packages:
     all:
-      require: '%oneapi'
-      target: [core2]
-      compiler: [oneapi@2024.2.1, gcc@13.4.0]
+      prefer:
+      - '%oneapi'
+      target: [x86_64]
       providers:
         mpi: [intel-oneapi-mpi@2021.13]
+
+    # Compilers and meta packages.
+    intel-oneapi-compilers:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-compilers@2025.3.0
+        prefix: /opt/intel/oneapi
+        modules:
+        - umf/1.0.2
+        - tbb/2022.3
+        - compiler-rt/2025.3.0
+        - compiler/2025.3.0
+        extra_attributes:
+          compilers:
+            fortran: /opt/intel/oneapi/compiler/2025.3/bin/ifx
+            c: /opt/intel/oneapi/compiler/2025.3/bin/icx
+            cxx: /opt/intel/oneapi/compiler/2025.3/bin/icpx
+    gcc:
+      externals:
+      - spec: gcc@13.3.0 languages:='c,c++,fortran'
+        prefix: /usr
+        extra_attributes:
+          compilers:
+            c: /usr/bin/gcc
+            cxx: /usr/bin/g++
+            fortran: /usr/bin/gfortran
+      buildable: false
+    intel-oneapi-mkl:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mkl@2025.3
+        prefix: /opt/intel/oneapi
+        modules:
+        - mkl/2025.3
+    intel-oneapi-mpi:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-mpi@2021.17
+        modules:
+        - mpi/2021.17
+        prefix: /opt/intel/oneapi
+    intel-oneapi-tbb:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-tbb@2022.3
+        prefix: /opt/intel/oneapi
+        modules:
+        - tbb/2022.3
+    intel-oneapi-runtime:
+      buildable: false
+      externals:
+      - spec: intel-oneapi-runtime@2025.3.0
+        prefix: /opt/intel/oneapi
+        modules:
+        - compiler-rt/2025.3.0
+    mpi:
+      require: [intel-oneapi-mpi@2021.17]
+    mpich:
+      buildable: false
+    mkl:
+      require: [intel-oneapi-mkl@2025.3]
+    openmpi:
+      buildable: false
+
+    # System packages and spack package requirements.
     autoconf:
       externals:
       - spec: autoconf@2.71
@@ -68,57 +100,27 @@ spack:
       externals:
       - spec: coreutils@8.32
         prefix: /usr
-    diffutils:
-      buildable: false
-      externals:
-      - spec: diffutils@3.8
-        prefix: /usr
     ectrans:
       require:
       - '+mkl ~fftw'
     git:
       buildable: false
       externals:
-      - spec: git@2.34.1~tcltk
+      - spec: git@2.43.0~tcltk
         prefix: /usr
     git-lfs:
       buildable: false
       externals:
-      - spec: git-lfs@3.0.2
+      - spec: git-lfs@3.4.1
         prefix: /usr
     gmake:
       externals:
       - spec: gmake@4.3
         prefix: /usr
-    gsibec:
-      require:
-      - '+mkl'
     # Building icu4c with oneapi intel causes segfault.
     icu4c:
       require:
       - '%gcc'
-    intel-oneapi-runtime:
-      buildable: false
-      externals:
-      - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
-        prefix: /opt/intel/oneapi
-    intel-oneapi-mkl:
-      buildable: false
-      externals:
-      - spec: intel-oneapi-mkl@2024.2
-        prefix: /opt/intel/oneapi
-    intel-oneapi-mpi:
-      buildable: false
-      externals:
-      - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
-        prefix: /opt/intel/oneapi
-    intel-oneapi-tbb:
-      buildable: false
-      externals:
-      - spec: intel-oneapi-tbb@2021.13
-        prefix: /opt/intel/oneapi
-    mpi:
-      buildable: False
     libmd:
       require:
       - '%gcc'
@@ -153,19 +155,9 @@ spack:
       - spec: qt@5.15.3
         prefix: /usr
       version: [5.15.3]
-    tar:
-      externals:
-      - spec: tar@1.34
-        prefix: /usr
-    wget:
-      buildable: false
-      externals:
-      - spec: wget@1.21.2
-        prefix: /usr
-    gettext:
-      externals:
-      - spec: gettext@0.21
-        prefix: /usr
+    sp:
+      require:
+      - +pic
 
   specs: []
 
@@ -213,6 +205,7 @@ spack:
       - qt5dxcb-plugin
       - libcurl4-openssl-dev
       - wget
+      - environment-modules
 
       final:
       - autopoint
@@ -251,26 +244,21 @@ spack:
       - vim
       - nano
       - less
+      - environment-modules
 
     # Extra instructions
     extra_instructions:
       pre_build: |
-        # Copy the spack-stack extension repo into the spack code
-        COPY spack-ext-SPACK_STACK_HASH/repos/spack-stack $SPACK_ROOT/var/spack/repos/spack-stack
-        # Register spack-stack extension repo
-        RUN spack repo add $SPACK_ROOT/var/spack/repos/spack-stack --scope defaults
-        # Install Intel compilers and MPI library
         RUN apt update && apt install apt-utils && \
-        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
-        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
-        apt update && \
-        apt install intel-oneapi-compiler-dpcpp-cpp-2024.2 intel-oneapi-compiler-fortran-2024.2 intel-oneapi-mpi-devel-2021.13 intel-oneapi-tbb-devel-2021.13 intel-oneapi-mkl-devel-2024.2 -y && \
-        # Intel package versions reported by apt cache policy
-        #   compiler - 2024.2.1
-        #   fortran  - 2024.2.1
-        #   mpi      - 2021.13.1
-        #   tbb      - 2021.13.1
-        #   mkl      - 2024.2.2
+            wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+            echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+            apt update && \
+            apt install intel-oneapi-compiler-dpcpp-cpp-2025.3 \
+                        intel-oneapi-compiler-fortran-2025.3 \
+                        intel-oneapi-mpi-devel-2021.17 \
+                        intel-oneapi-tbb-devel-2022.3 \
+                        intel-oneapi-mkl-devel-2025.3 -y && \
+        echo 'source /etc/profile.d/modules.sh && module use /opt/intel/oneapi/modulefiles' > /etc/profile.d/z01_oneapi_modules.sh && \
         update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
@@ -278,6 +266,8 @@ spack:
         # Needed by py-llvmlite
         update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
         rm -rf /var/lib/apt/lists/*
+        # BASH_ENV is used by the docker build system. Run commands will source this file prior to executing the command.
+        ENV BASH_ENV=/etc/profile.d/z01_oneapi_modules.sh
       pre_final: |
         # Set environment variables for installing tzdata
         ENV DEBIAN_FRONTEND=noninteractive
@@ -289,15 +279,21 @@ spack:
         # Put output of spack find into a file
         RUN cd /opt/spack-environment && \
         spack env activate -d . && \
-        spack find 2>&1 | tee /root/spack_find.out
+        spack find 2>&1 | tee /root/spack_find.out && \
+        spack spec > /root/spack_spec.out
       final: |
         # Install Intel compilers and MPI library and pynacl
-        RUN apt update  && apt install apt-utils && \
-        wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
-        echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
-        apt update && \
-        apt install intel-oneapi-compiler-dpcpp-cpp-2024.2 intel-oneapi-compiler-fortran-2024.2 intel-oneapi-mpi-devel-2021.13 intel-oneapi-tbb-devel-2021.13 intel-oneapi-mkl-devel-2024.2 -y && \
-        update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
+        RUN apt update && apt install apt-utils && \
+            wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+            echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list && \
+            apt update && \
+            apt install intel-oneapi-compiler-dpcpp-cpp-2025.3 \
+                        intel-oneapi-compiler-fortran-2025.3 \
+                        intel-oneapi-mpi-devel-2021.17 \
+                        intel-oneapi-tbb-devel-2022.3 \
+                        intel-oneapi-mkl-devel-2025.3 -y && \
+        echo 'source /etc/profile.d/modules.sh && module use /opt/intel/oneapi/modulefiles' > /etc/profile.d/z01_oneapi_modules.sh
+        RUN update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
         update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
         update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
         rm /usr/bin/cpp && ln -s /usr/bin/cpp-13 /usr/bin/cpp && \
@@ -309,17 +305,19 @@ spack:
         COPY --from=builder /root/spack_find.out /root/spack_find.out
         # Make a non-root user:nonroot / group:nonroot for running MPI
         RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 && \
-        echo "source /opt/intel/oneapi/setvars.sh" >> /etc/bash.bashrc && \
-        echo "ulimit -s unlimited" >> /etc/bash.bashrc && \
-        echo "ulimit -v unlimited" >> /etc/bash.bashrc && \
-        echo "export CC=icx" >> /etc/bash.bashrc && \
-        echo "export CXX=icpx" >> /etc/bash.bashrc && \
-        echo "export FC=ifort" >> /etc/bash.bashrc && \
-        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-ubuntu*/oneapi-*/jedi-cmake-*)" >> /etc/bash.bashrc && \
+        echo "source /etc/profile.d/z01_oneapi_modules.sh" > /etc/spack_container_rc.sh  && \
+        echo "ulimit -s unlimited" >> /etc/spack_container_rc.sh  && \
+        echo "ulimit -v unlimited" >> /etc/spack_container_rc.sh  && \
+        echo "export CC=icx" >> /etc/spack_container_rc.sh  && \
+        echo "export CXX=icpx" >> /etc/spack_container_rc.sh  && \
+        echo "export FC=ifort" >> /etc/spack_container_rc.sh  && \
+        echo "export jedi_cmake_ROOT=$(ls -d /opt/software/linux-*/jedi-cmake-*)" >> /etc/spack_container_rc.sh  && \
+        echo "source /etc/spack_container_rc.sh" >> /etc/bash.bashrc && \
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig && \
         # Replicate gitconfig for nonroot user.
         printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig && \
         chown -R nonroot:nonroot /home/nonroot/.gitconfig
+        ENV BASH_ENV=/etc/spack_container_rc.sh
 
     # Labels for the image
     labels:

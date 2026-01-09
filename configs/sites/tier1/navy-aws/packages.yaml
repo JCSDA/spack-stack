@@ -2,14 +2,6 @@ packages:
   # Modification of common packages
 
   # All other packages listed alphabetically
-  autoconf:
-    externals:
-    - spec: autoconf@2.69
-      prefix: /usr
-  automake:
-    externals:
-    - spec: automake@1.16.2
-      prefix: /usr
   bash:
     externals:
     - spec: bash@5.1.8
@@ -106,11 +98,7 @@ packages:
       prefix: /usr
   libfabric:
     externals:
-    - spec: libfabric@2.1.0 fabrics=psm2,psm3,shm,tcp,verbs
-      prefix: /opt/intel/oneapi/mpi/2021.16
-    - spec: libfabric@2.1.0 fabrics=psm2,psm3,shm,tcp,verbs
-      prefix: /opt/intel/oneapi/mpi/2021.16/opt/mpi/libfabric
-    - spec: libfabric@2.1.0 fabrics=psm2,psm3,shm,tcp,verbs
+    - spec: libfabric@1.22.0 fabrics=psm2,psm3,shm,tcp,verbs
       prefix: /usr
   libfuse:
     externals:
