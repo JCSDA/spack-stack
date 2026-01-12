@@ -49,7 +49,7 @@ def test_setup_meta_modules():
 packages:
   all:
     prefer:
-    - '%gcc'
+    - "%[when=%c]c=gcc %[when=%cxx]cxx=gcc %[when=%fortran]fortran=gcc"
   gcc:
     externals:
     - spec: gcc@11.5.0 languages:='c,c++,fortran'
@@ -59,10 +59,6 @@ packages:
           c: /usr/bin/gcc
           cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran
-  gcc-runtime:
-    externals:
-    - spec: gcc-runtime@11.5.0 %gcc@11.5.0
-      prefix: /usr
   mpi:
     buildable: false
   openmpi:
