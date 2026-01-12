@@ -221,11 +221,11 @@ packages:
       - ~shared ~f2py +pflogger
     met:
       require:
-      - '@12.0.1'
+      - '@12.1.1'
       - +python +grib2
     metplus:
       require:
-      - '@6.0.0'
+      - '@6.1.0'
     metis:
       require:
       - +int64 +real64
