@@ -1,7 +1,7 @@
 packages:
     all:
       prefer:
-      - '%gcc'
+      - "%[when=%c]c=gcc %[when=%cxx]cxx=gcc %[when=%fortran]fortran=gcc"
     # Virtual provider settings
     blas:
       require: [openblas]

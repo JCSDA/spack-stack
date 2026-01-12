@@ -1,7 +1,7 @@
 packages:
     all:
       prefer:
-      - '%clang'
+      - "%[when=%c]c=llvm %[when=%cxx]cxx=llvm %[when=%fortran]fortran=llvm"
     # Virtual provider settings
     blas:
       require: [openblas]

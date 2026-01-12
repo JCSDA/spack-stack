@@ -1,7 +1,7 @@
 packages:
     all:
       prefer:
-      - '%oneapi'
+      - "%[when=%c]c=intel-oneapi-compilers %[when=%cxx]cxx=intel-oneapi-compilers %[when=%fortran]fortran=intel-oneapi-compilers"
     # Virtual package settings
     blas:
       require: ['intel-oneapi-mkl']
