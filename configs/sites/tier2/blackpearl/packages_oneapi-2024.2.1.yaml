@@ -3,11 +3,6 @@ packages:
     buildable: False
     require:
     - intel-oneapi-mpi@2021.13
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2024.2.1
-      prefix: /opt/intel/oneapi
   intel-oneapi-compilers:
     externals:
     - spec: intel-oneapi-compilers@2024.2.1
@@ -17,11 +12,6 @@ packages:
           c: /opt/intel/oneapi/2024.2/bin/icx
           cxx: /opt/intel/oneapi/2024.2/bin/icpx
           fortran: /opt/intel/oneapi/2024.2/bin/ifort
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@11.4.1
-      prefix: /usr
   gcc:
     buildable: false
     externals:
