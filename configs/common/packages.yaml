@@ -347,6 +347,10 @@ packages:
     py-hatchling:
       require:
       - '@1.27:'
+    # To avoid duplicate packages
+    py-lxml:
+      require:
+      - '@5.2.2'
     # https://github.com/JCSDA/spack-stack/issues/1276
     py-matplotlib:
       require:
@@ -415,6 +419,10 @@ packages:
     sigio:
       require:
       - '@2.3.3'
+    # To avoid duplicate packages
+    snappy:
+      require:
+      - +shared
     sp:
       require:
       - '@2.5.0'
