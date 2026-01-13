@@ -1,7 +1,14 @@
 packages:
-    all:
+    # Compiler preferences
+    c:
       prefer:
-      - "%[when=%c]c=llvm %[when=%cxx]cxx=llvm %[when=%fortran]fortran=llvm"
+      - llvm
+    cxx:
+      prefer:
+      - llvm
+    fortran:
+      prefer:
+      - llvm
     # Virtual provider settings
     blas:
       require: [openblas]
