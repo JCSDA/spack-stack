@@ -165,7 +165,7 @@ def test_modules():
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_compilers():
-    for compiler in ["gcc-13.2.1", "oneapi-2025.1.0"]:
+    for compiler in ["gcc-13.2.1", "oneapi-2024.2.1"]:
         if os.path.exists(test_dir):
             shutil.rmtree(test_dir)
         stack_create(
