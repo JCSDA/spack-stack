@@ -6,5 +6,7 @@
   branch = feature/update_spack-stack-dev_from_develop
 [submodule "repos/builtin"]
   path = repos/builtin
-  url = https://github.com/jcsda/spack-packages
-  branch = spack-stack-dev
+  #url = https://github.com/jcsda/spack-packages
+  #branch = spack-stack-dev
+  url = https://github.com/climbfuji/spack-packages
+  branch = feature/cherry_pick_bufrquery_spack_develop
