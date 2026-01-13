@@ -199,6 +199,10 @@ packages:
     landsfcutil:
       require:
       - '@2.4.2'
+    # https://github.com/JCSDA/spack-stack/actions/runs/20957699537/job/60226338267
+    libaec:
+      prefer:
+      - build_system=cmake generator=make
     #libjpeg-turbo:
     #  require:
     #  - '@2.1.0'
