@@ -13,6 +13,3 @@ packages:
     ectrans:
       require:
       - +fftw
-    ip:
-      require:
-      - '~openmp'

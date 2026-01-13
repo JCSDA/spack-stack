@@ -1,0 +1,68 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.17
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.17
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/intel-oneapi-compilers-2025.3.1/intel-oneapi-mpi-2021.17.1-yin2cansthgf7jsldji6psbjkxqmrz3n
+      modules:
+      - intel-oneapi-mpi/2021.17.1
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.3.1
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.1
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj
+      modules:
+      - intel-oneapi-compilers/2025.3.1
+      extra_attributes:
+        compilers:
+          c: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj/compiler/2025.3/bin/icx
+          cxx: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj/compiler/2025.3/bin/icpx
+          fortran: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj/compiler/2025.3/bin/ifx
+        environment:
+          prepend_path:
+            LD_LIBRARY_PATH: '/usr/lib:/usr/lib64'
+            PATH: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/bin
+            CPATH: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/include
+        extra_rpaths:
+        - /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/lib
+        - /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/lib64
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3.0
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-mkl-2025.3.0-k4vxa4iuzfth5qvxi5ymh36ap6kb4gfj
+      modules:
+      - intel-oneapi-mkl/2025.3.0
+  intel-oneapi-tbb:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-tbb@2022.3.0
+      prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-tbb-2022.3.0-npcdu7tjriihmbm4cbi4fepycg34d2fd
+      modules:
+      - intel-oneapi-tbb/2022.3.0
+  gcc-runtime:
+    buildable: false
+    externals:
+    - spec: gcc-runtime@12.2.0
+      prefix: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@12.2.0 languages:='c,c++'
+      prefix: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3
+      modules:
+      - gcc/12.2.0
+      extra_attributes:
+        compilers:
+          c: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/bin/gcc
+          cxx: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/bin/g++
+          fortran: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/bin/gfortran

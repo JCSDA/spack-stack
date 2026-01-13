@@ -25,10 +25,9 @@ assignees:
 
 Project board: _insert link here_
 
-- [ ] Create release branches `release/x.y` for spack, spack-packages and spack-stack
-- [ ] Update `doc/source/conf.py` and `.gitmodules` to use `release/x.y` instead of `develop`
+- [ ] Create release branches `release/x.y` for spack, spack-packages, and spack-stack (update `.gitmodules` in spack-stack accordingly)
 - [ ] Clear project board (no open pull requests other than for specific site configs or documentation)
-- [ ] Prepare Wiki page for release information (https://github.com/jcsda/spack-stack/wiki)
+- [ ] Prepare Wiki page for release (https://github.com/jcsda/spack-stack/wiki)
 - [ ] Roll out release x.y.z from release branch `release/x.y` and update documentation (readthedocs), site config, and wiki page each time
     - [ ] Acorn (NOAA-EMC)
     - [ ] Atlantis (NRL)
@@ -50,8 +49,8 @@ Project board: _insert link here_
     - [ ] NOAA PW AWS (EPIC)
     - [ ] NOAA PW Azure (EPIC)
     - [ ] NOAA PW Gcloud (EPIC)
-- [ ] Tag spack and spack-packages
-- [ ] Update `doc/source/conf.py` and `.gitmodules` to use tags instead of release branches
-- [ ] Tag spack-stack
+- [ ] Tag repositories spack, spack-packages, and spack-stack ((update `.gitmodules` in spack-stack accordingly)
+- [ ] Finalize Wiki page for release (https://github.com/jcsda/spack-stack/wiki)
 - [ ] Prepare and publish release notes: https://github.com/JCSDA/spack-stack/releases
+- [ ] As needed, merge pull requests into release branches back into `develop` / `spack-stack-dev`
 - [ ] Close GitHub project

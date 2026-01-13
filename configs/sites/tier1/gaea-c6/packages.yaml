@@ -67,13 +67,15 @@ packages:
   git:
     buildable: false
     externals:
-    - spec: git@2.42.0
-      modules: [git/2.42.0]
+    - spec: git@2.43.0
+      prefix: /usr
   git-lfs:
     buildable: false
     externals:
     - spec: git-lfs@2.11.0
-      modules: [git-lfs/2.11.0]
+      modules:
+        - Core/24.11
+        - git-lfs/2.11.0
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -123,7 +125,6 @@ packages:
     externals:
     - spec: mysql@8.0.36
       prefix: /ncrc/proj/epic/spack-stack/c6/installs/mysql/8.0.36
-      modules: [mysql/8.0.36]
   ncurses:
     externals:
     - spec: ncurses@6.1.20180317+termlib abi=6
@@ -146,7 +147,6 @@ packages:
     externals:
     - spec: qt@5.12.6
       prefix: /ncrc/proj/epic/spack-stack/c6/installs/qt5/qt-5.12.6/qtbase
-      modules: [qt/5.12.6]
   rdma-core:
     externals:
     - spec: rdma-core@37.0

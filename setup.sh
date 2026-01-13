@@ -25,7 +25,7 @@ echo "Sourcing spack environment ${SPACK_STACK_DIR}/spack/share/spack/setup-env.
 echo "Changing bootstrap path to $(spack bootstrap root '$spack/bootstrap')"
 
 # Get the current hash of the spack-stack code
-export SPACK_STACK_HASH=`git rev-parse --short HEAD`
+export SPACK_STACK_HASH=`cd $SPACK_STACK_DIR && git rev-parse --short HEAD`
 echo "Current hash of spack-stack is ${SPACK_STACK_HASH}"
 
 ## Register the spack extension

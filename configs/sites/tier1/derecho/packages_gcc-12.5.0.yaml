@@ -1,0 +1,42 @@
+packages:
+  mpi:
+    buildable: False
+    require: cray-mpich@8.1.32
+  cray-mpich:
+    buildable: False
+    externals:
+    - spec: cray-mpich@8.1.32 +wrappers
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
+      modules:
+      - ncarenv/25.10
+      - craype/2.7.34
+      - cray-mpich/8.1.32
+      - libfabric/1.22.0
+      #- cray-pals/1.2.11
+  gcc-runtime:
+    buildable: False
+    externals:
+    - spec: gcc-runtime@12.5.0
+      prefix: /glade/u/apps/common/25.10/spack/opt/spack/gcc/12.5.0/hsbg
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@12.5.0 languages:='c,c++,fortran'
+      prefix: /glade/u/apps/common/25.10/spack/opt/spack/gcc/12.5.0/hsbg
+      modules:
+      - ncarenv/25.10
+      - gcc/12.5.0
+      extra_attributes:
+        compilers:
+          c: /glade/u/apps/common/25.10/spack/opt/spack/gcc/12.5.0/hsbg/bin/gcc
+          cxx: /glade/u/apps/common/25.10/spack/opt/spack/gcc/12.5.0/hsbg/bin/g++
+          fortran: /glade/u/apps/common/25.10/spack/opt/spack/gcc/12.5.0/hsbg/bin/gfortran
+        environment:
+          prepend_path:
+            # For compiling scotch (which requires Intel MPI) with gcc in the oneapi@2024.2.1 unified environment
+            LD_LIBRARY_PATH: /glade/u/apps/common/25.10/spack/opt/spack/intel-oneapi-compilers/2025.2.1/s4f2/compiler/2025.2/lib:/glade/u/apps/common/25.10/spack/opt/spack/intel-oneapi-compilers/2025.2.1/s4f2/compiler/2025.2/lib64
+          set:
+            # https://github.com/JCSDA/spack-stack/issues/957
+            FI_CXI_RX_MATCH_MODE: 'hybrid'
+        extra_rpaths: []
+

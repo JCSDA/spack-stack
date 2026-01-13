@@ -1,7 +1,6 @@
 packages:
 # Modification of common packages
   all:
-    target: [core2]
     # Use system zlib instead of spack-built zlib-ng
     providers:
       zlib-api:: [zlib]
@@ -25,6 +24,10 @@ packages:
   automake:
     externals:
     - spec: automake@1.15.1
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@4.4.23
       prefix: /usr
   binutils:
     externals:
@@ -87,12 +90,6 @@ packages:
     externals:
     - spec: openssh@8.4p1
       prefix: /usr
-  # spack concretizer gets confused when omitting %gcc from the external spec (a spack bug?)
-  openssl:
-    buildable: False
-    externals:
-    - spec: openssl@1.1.1l%gcc
-      prefix: /usr
   pkg-config:
     externals:
     - spec: pkg-config@0.29.2
@@ -101,9 +98,6 @@ packages:
     buildable: False
     externals:
     - spec: qt@5.14.2
-      # Newer versions don't work, some headers are missing
-      #prefix: /glade/u/apps/casper/24.12/spack/opt/spack/qt/5.14.2/gcc/12.4.0/6suc
-      #prefix: /glade/u/apps/casper/24.12/spack/opt/spack/qt/5.14.2/gcc/12.4.0/axtw
       prefix: /glade/u/apps/derecho/23.09/spack/opt/spack/qt/5.14.2/gcc/7.5.0/eqcj
   sed:
     externals:

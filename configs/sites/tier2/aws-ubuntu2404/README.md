@@ -15,7 +15,7 @@ aws ec2 run-instances \
    --tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"ubuntu2404-spack-stack-1.9-gcc-oneapi"}]}' \
    --metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' \
    --private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":false,"EnableResourceNameDnsAAAARecord":false}' \
-   --count "1" 
+   --count 1
 ```
 
 ## Using this Site Config
@@ -46,16 +46,16 @@ apt update
 apt upgrade -y
 
 # Build tools
-apt install -y build-essential g++-11 gcc-11 gfortran-11 g++-12 gcc-12 gfortran-12 g++-13 gcc-13 gfortran-13 make cmake automake autoconf apt-utils
+apt install -y build-essential g++-13 gcc-13 gfortran-13 make cmake automake autoconf apt-utils
 
 #Install other requirements.
-apt install -y cpp-11 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev mysql-server libtool flex llvm-14
+apt install -y cpp-13 libgomp1 git git-lfs autopoint mysql-server libmysqlclient-dev qtbase5-dev qt5-qmake libqt5svg5-dev qt5dxcb-plugin wget curl file tcl-dev gnupg2 iproute2 locales unzip less bzip2 gettext libtree pkg-config libcurl4-openssl-dev mysql-server libtool flex llvm-14
 
 # Set llvm config.
 update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 10
 
 # Editors
-apt install -y vim nano 
+apt install -y vim nano
 
 # Python develop.
 apt install -y python3 python3-pip python3-setuptools
@@ -63,11 +63,10 @@ apt install -y python3 python3-pip python3-setuptools
 # Configure git credential caching and git lfs for the rocky user and root.
 git config --global credential.helper 'cache --timeout=3600'
 git lfs install
-
-# Change the gcc, g++, and gfortran version to 11 and give it the highest priority
-update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-11 100
-update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-11 100
-update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-11 100
+# Change the gcc, g++, and gfortran version to 13 and give it the highest priority
+update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100
+update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100
+update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100
 
 exit # Exit root access
 ```
@@ -117,27 +116,11 @@ exit
 exit
 ```
 
-### Setup MySQL Sercer
-
-```bash
-sudo systemctl status mysql.service
-sudo systemctl start mysql.service # Only if it isn't running
-
-# Use the mysql server.
-# This sets mysql up for root passwordless access (required by R2D2)
-# Make sure this machine and database are not accessible via public networks
-sudo mysql -u root
-USE mysql;
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '';
-FLUSH PRIVILEGES;
-EXIT;
-```
-
 ### Clone `spack-stack`
 
 ```bash
 cd /opt
-sudo git clone -b develop --depth 1 --recursive https://github.com/jcsda/spack-stack.git
+sudo git clone -b release/2.0 --depth 1 --recursive https://github.com/jcsda/spack-stack.git
 ```
 
 ## Install Spack-Stack Steps by Compiler
@@ -152,18 +135,20 @@ cd /opt/spack-stack
 source setup.sh
 # Swap default module type for default linux.
 sed -i 's/tcl/lmod/g' configs/sites/tier2/linux.default/modules.yaml
-spack stack create env --site linux.default --template unified-dev --name unified-env-gcc --compiler gcc
-cd envs/unified-env-gcc 
+sed -i "s/- '%gcc'/- '%gcc_toolchain'/" ./common/packages.yaml
+spack stack create env --site linux.default --template unified-dev --name unified-gcc --compiler gcc
+cd envs/unified-gcc
 spack env activate -p .
-export SPACK_SYSTEM_CONFIG_PATH="$PWD/site"
+unset SPACK_DISABLE_LOCAL_CONFIG
+export SPACK_SYSTEM_CONFIG_PATH="$(pwd)/site"
 spack external find --scope system \
     --exclude cmake \
     --exclude curl --exclude openssl \
     --exclude openssh --exclude python
 spack external find --scope system wget
-spack external find --scope system mysql
 spack external find --scope system grep
 spack compiler find --scope system
+export SPACK_DISABLE_LOCAL_CONFIG=true
 unset SPACK_SYSTEM_CONFIG_PATH
 # ACTION: Edit the site/compilers.yaml with the following.
 #   1) Delete or comment gcc-13 refs and preserve only gcc-12
@@ -190,17 +175,17 @@ cat << 'EOF' >> $PWD/site/packages.yaml
 EOF
 
 # Continue configuration.
-spack config add "packages:all:compiler:[gcc@11.4.0]"
-spack config add "packages:all:providers:mpi:[openmpi@5.0.5]"
+spack config add "packages:all:prefer:['%gcc']"
+spack config add "packages:all:providers:mpi:[openmpi@5.0.8]"
 spack config add "packages:fontconfig:variants:+pic"
 spack config add "packages:pixman:variants:+pic"
 spack config add "packages:cairo:variants:+pic"
-spack config add "packages:ewok-env:variants:+mysql"
+spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
 
 # Concretize and install
 spack concretize 2>&1 | tee log.concretize
-${SPACK_STACK_DIR}/util/show_duplicate_packages.py
-spack install --fail-fast -j 12 2>&1 | tee log.install
+${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython
+spack install --fail-fast -j 14 2>&1 | tee log.install
 
 # Install modules
 spack module lmod refresh
@@ -224,8 +209,8 @@ sudo su -
 
 wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
 echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list
-apt update 
-apt install intel-oneapi-compiler-dpcpp-cpp-2024.2 intel-oneapi-compiler-fortran-2024.2 intel-oneapi-mpi-devel-2021.13 intel-oneapi-tbb-devel-2021.13 intel-oneapi-mkl-devel-2024.2 -y
+apt update
+apt install intel-oneapi-compiler-dpcpp-cpp-2025.3 intel-oneapi-compiler-fortran-2025.3 intel-oneapi-mpi-devel-2021.17 intel-oneapi-tbb-devel-2022.3 intel-oneapi-mkl-devel-2025.3 -y
 
 exit
 ```
@@ -236,6 +221,7 @@ exit
 sudo su -
 # Create all modulefiles.
 /opt/intel/oneapi/modulefiles-setup.sh --output-dir=/opt/intel/oneapi/modulefiles
+module use /opt/intel/oneapi/modulefiles
 
 # Add the oneapi module files to lmod init (confirm that this file does not exist)
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
@@ -244,23 +230,22 @@ EOF
 
 # Create combined module file.
 mkdir /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/
-cat << 'EOF' >> /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/2024.2.1
+cat << 'EOF' >> /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/2025.3.0
 #%Module1.0
 ##
-## intel-oneapi-full-env/2024.2.1
+## intel-oneapi-full-env/2025.3.0
 ## Intel oneAPI full module environment
 
 proc ModulesHelp { } {
     puts stderr "intel-oneapi-full-env defines the entire module set used for spack-stack intel builds"
 }
 module-whatis "intel-oneapi-full-env defines the entire module set used for spack-stack intel builds"
-module load tbb/2021.13
-module load compiler-rt/2024.2.1
-module load compiler/2024.2.1
-module load ifort/2024.2.1
-module load mpi/2021.13
-module load mkl/2024.2
-module load compiler-intel-llvm/2024.2.1
+module load umf/1.0.2
+module load tbb/2022.3
+module load compiler-rt/2025.3.0
+module load compiler/2025.3.0
+module load mkl/2025.3
+module load compiler-intel-llvm/2025.3.0
 EOF
 ```
 
@@ -269,83 +254,149 @@ EOF
 ```bash
 sudo su -
 
-module load intel-oneapi-full-env/2024.2.1
+module load intel-oneapi-full-env/2025.3.0
+export FC=ifx
+export CXX=icpx
+export CC=icx
 
 cd /opt/spack-stack
 source ./setup.sh
 
-spack stack create env --site linux.default --template unified-dev --name unified-env-oneapi --compiler oneapi
-cd envs/unified-env-oneapi
+spack stack create env --site linux.default --template unified-dev --name unified-oneapi --compiler oneapi
+cd envs/unified-oneapi
 spack env activate -p .
 
-export SPACK_SYSTEM_CONFIG_PATH="${PWD}/site"
 
+# Before finding packages you need to go into ./common/packages.yaml
+# and comment out gmake requirements to prevent gmake from being
+# over-constrained.
+#   pico ./common/packages.yaml
+# Near the top of the file find and comment out these three lines.
+#  gmake:
+#    require:
+#    - '%gcc'
+
+
+# Find external packages for the site config.
+unset SPACK_DISABLE_LOCAL_CONFIG
+export SPACK_SYSTEM_CONFIG_PATH="$(pwd)/site"
 spack external find --scope system --exclude bison --exclude openssl --exclude python --exclude gettext --exclude m4 --exclude cmake --exclude curl
-spack external find --scope system perl
 spack external find --scope system wget
-spack external find --scope system texlive
-spack external find --scope system mysql
 spack external find --scope system grep
 
-# No external find for pre-installed intel-oneapi-mpi,
-# and no way to add object entry to list using "spack config add".
+# Here we are doing some manual configuration to address the
+# following tricky situations
+# - External find doesn't work well for pre-installed intel-oneapi-mpi
+#   and we are using an external module load for this.
+# - Specify correct gcc runtime.
+# - Disable "buildable" on all intel modules.
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-  gcc:
-    buildable: false
-    externals:
-    - spec: gcc@11.4.0
-      prefix: /usr
   gcc-runtime:
     buildable: false
     externals:
-    - spec: gcc-runtime@11.4.0
-      prefix: /usr
+    - spec: gcc-runtime@13.3.0
+      prefix: /usr      
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2
+    - spec: intel-oneapi-mkl@2025.3
       prefix: /opt/intel/oneapi
+      modules:
+      - mkl/2025.3
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.1
+    - spec: intel-oneapi-mpi@2021.17
       prefix: /opt/intel/oneapi
+      modules:
+      - mpi/2021.17
   intel-oneapi-tbb:
     buildable: false
     externals:
-    - spec: intel-oneapi-tbb@2021.13
+    - spec: intel-oneapi-tbb@2022.3
       prefix: /opt/intel/oneapi
+      modules:
+      - tbb/2022.3
   intel-oneapi-runtime:
     buildable: false
     externals:
-    - spec: intel-oneapi-runtime%oneapi@2024.2.1
+    - spec: intel-oneapi-runtime@2025.3.0
       prefix: /opt/intel/oneapi
-EOF
-
-# Can't find qt5 because qtpluginfo is broken,
-# and no way to add object entry to list using "spack config add".
-cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-  qt:
-    buildable: false
-    externals:
-    - spec: qt@5.15.3
-      prefix: /usr
+      modules:
+      - compiler-rt/2025.3.0
 EOF
 
 spack compiler find --scope system
 
-# Edit site/compilers.yaml
-pico ${PWD}/site/compilers.yaml
-#  1) Replace ifx with ifort.
-#  2) Add "- intel-oneapi-full-env/2024.2.1" to the modules section for oneapi.
-#  3) Disable gcc compilers other than 11.4.0
-sed -i 's/ifx/ifort/g' ${PWD}/site/compilers.yaml
+# Edit site/packages.yaml
+pico ${PWD}/site/packages.yaml
+# Your intel compiler should look something like this below
+# and any non-preferred GCC toolchains should be removed. Note
+# that GCC should reference languages c, c++, but not fortran.
+#
+# NOTE! watch out for redundant empty gcc specs which will cause
+# unintelligible build errors later. There should only be one spec
+# under "externals:".
+#
+#   intel-oneapi-compilers:
+#     buildable: false
+#     externals:
+#     - spec: intel-oneapi-compilers@2025.3.0
+#       prefix: /opt/intel/oneapi
+#       modules:
+#       - umf/1.0.2
+#       - tbb/2022.3
+#       - compiler-rt/2025.3.0
+#       - compiler/2025.3.0
+#       extra_attributes:
+#         compilers:
+#           c: /opt/intel/oneapi/compiler/2025.3/bin/icx
+#           fortran: /opt/intel/oneapi/compiler/2025.3/bin/ifx
+#           cxx: /opt/intel/oneapi/compiler/2025.3/bin/icpx
+#   gcc:
+#     buildable: false
+#     externals:
+#     - spec: gcc@13.3.0 languages:='c,c++,fortran'
+#       ....
 
+export SPACK_DISABLE_LOCAL_CONFIG=true
 unset SPACK_SYSTEM_CONFIG_PATH
 
-spack config add "packages:all:providers:mpi:[intel-oneapi-mpi@2021.13]"
-spack config add "packages:all:compiler:[oneapi@2024.2.1, gcc@11.4.0]"
-spack config add "packages:gmake:buildable:False"
+# Edit the spack.yaml to include these clauses.
+cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+    all:
+      prefer:
+      - '%oneapi'
+      conflict:
+      - '%c=oneapi %fortran=gcc'
+      - '%c,cxx=oneapi %fortran=gcc'
+      - '%c=gcc %fortran=oneapi'
+      - '%c,cxx=gcc %fortran=oneapi'
+      - '%fortran=oneapi %c=gcc'
+      - '%fortran=oneapi %c,cxx=gcc'
+      - '%fortran=gcc %c,cxx=oneapi'
+      - '%fortran=gcc %c=oneapi'
+      providers:
+        mpi: [intel-oneapi-mpi@2021.17]
+    met:
+      variants: +python +grib2 +graphics +lidar2nc +modis
+    mpi:
+      buildable: false
+      require:
+      - intel-oneapi-mpi@2021.17
+    py-scipy:
+      require:
+      #- '%c,cxx,fortran=gcc'
+      - 'cxxflags="-O1"'
+    jedi-base-env:
+      require:
+      - ~bufrquery
+      - +fftw
+      - +hdf4
+    py-pyyaml:
+      require:
+      - +libyaml
+EOF
 
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
@@ -393,13 +444,10 @@ ctest
 <summary>Intel OneAPI</summary>
 
 ```bash
-# Re-source the intel OneAPI environment
-module load intel-oneapi-full-env/2024.2.1
-
-# Example given for building jedi-bundle
+# Build jedi-bundle with oneapi
 module use /opt/spack-stack/envs/unified-env-oneapi/install/modulefiles/Core
-module load stack-oneapi/2024.2.1
-module load stack-intel-oneapi-mpi/2021.13
+module load stack-intel-oneapi-compilers/2025.3.0
+module load stack-intel-oneapi-mpi/2021.17
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env

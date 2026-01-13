@@ -1,180 +1,281 @@
-# How to build spack-stack at NAS
+# How to Build **spack-stack** at NAS
 
-In the commands below some will be run on login nodes (with internet access) and some
-on compute nodes as, at NAS, you aren't allowed more than 2 processes on a login node.
+This guide documents how to build **spack-stack** on NASA NAS systems, where login nodes have internet access but are CPU-restricted, while compute nodes allow parallel builds but have *no* internet access. Several packages (Rust/Cargo, ecFlow, CRTM) require special handling due to these constraints.
 
-## Machines
+---
 
-For the below you will need to login to both an `afe01` node for one step. You'll
-also want to get a Rome compute node for the rest of the steps.
+## Table of Contents
+
+- [Overview](#overview)
+- [Machines Required](#machines-required)
+- [Clone spack-stack](#clone-spack-stack)
+- [Obtain an Interactive Compute Node](#obtain-an-interactive-compute-node)
+- [Setup spack-stack](#setup-spack-stack)
+- [Create Environments](#create-environments)
+  - [oneAPI Environment](#oneapi-environment)
+  - [GCC Environment](#gcc-environment)
+- [Activate the Environment](#activate-the-environment)
+- [Concretize the Environment](#concretize-the-environment)
+- [Create Source Cache (LOGIN NODE ONLY)](#create-source-cache-login-node-only)
+- [Pre-Fetch Cargo Dependencies (LOGIN NODE ONLY)](#pre-fetch-cargo-dependencies-login-node-only)
+- [Install Packages](#install-packages)
+  - [Step 1 — Dependencies of Rust codes and ecFlow (COMPUTE NODE)](#step-1--dependencies-of-rust-codes-and-ecflow-compute-node)
+  - [Step 2 — Rust codes and ecFlow (AFE LOGIN NODE)](#step-2--rust-codes-and-ecflow-afe-login-node)
+  - [Step 3 — Remaining Packages (COMPUTE NODE)](#step-3--remaining-packages-compute-node)
+  - [Packages Requiring Internet](#packages-requiring-internet)
+- [Update Module Files](#update-module-files)
+- [Deactivate the Environment](#deactivate-the-environment)
+- [Debugging Package Builds](#debugging-package-builds)
+
+---
+
+## Overview
+
+Due to NAS system architecture and network restrictions:
+
+- **Login nodes**:  
+  - Have internet  
+  - Limited to **2 processes**  
+  - `pfe` nodes use **Sandy Bridge** (too old for x86_64_v3 builds)
+
+- **Compute nodes** (Milan / Rome):  
+  - No internet  
+  - Allow parallel builds  
+
+Some packages (Cargo/Rust, ecFlow, CRTM) require internet or newer CPU features, so the install is broken into multiple steps across different node types.
+
+---
+
+## Machines Required
+
+You will need:
+
+- **An `afe01` login node**  
+  Supports x86_64_v3 binaries → required for building Rust packages and ecFlow.
+
+- **A Rome or Milan compute node**  
+  Used for the main installation with multiple cores.
+
+---
 
 ## Clone spack-stack
 
-```
-git clone --recurse-submodules https://github.com/mathomp4/spack-stack.git -b feature/nas_install_spack_v1 spack-stack-2.0.0-test
+Use the appropriate branch or tag:
+
+```bash
+git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git \
+    -b spack-stack-2.0.0 spack-stack-2.0.0
 ```
 
-## Grab interactive node
+---
 
-Since NAS limits you to 2 processes on a login node, you'll need to grab an interactive node. For example:
+## Obtain an Interactive Compute Node
+
+NAS login nodes allow only **2 processes**, so use:
+
+```bash
+qsub -I -V -X \
+    -l select=1:ncpus=128:mpiprocs=128:model=rom_ait \
+    -l walltime=12:00:00 \
+    -W group_list=s1873 \
+    -m b \
+    -N Interactive
 ```
-qsub -I -V -X -l select=1:ncpus=128:mpiprocs=128:model=mil_ait -l walltime=12:00:00 -W group_list=s1873 -m b -N Interactive
-```
-will get you a Milan node for 12 hours
 
-## Setup spack-stack on each node
+This gives a **Rome** compute node for up to 12 hours. 
 
-We will start on a login node with internet access. This is mainly needed for the
-`spack mirror create` command which downloads all the source code for the packages.
+For a **Milan** node, change `model=rom_ait` to `model=mil_ait` and run the `qsub` command on a Milan-capable login node (e.g., `afe02`).
 
-```
-cd spack-stack-2.0.0-test
+---
+
+## Setup spack-stack
+
+Run on a **login node with internet**:
+
+```bash
+cd spack-stack-2.0.0
 . setup.sh
 ```
 
-## Create environments
+---
 
-We create two different environments, one for oneAPI and one for GCC. The commands below
-are used to create the environments. You only need to do this once.
+## Create Environments
 
-### oneAPI
+You only need to create each environment once.
 
-To create the oneAPI environment, do:
+### oneAPI Environment
 
-```
-spack stack create env --name ue-oneapi-2024.2.0 --template unified-dev --site nas --compiler=oneapi-2024.2.0
+```bash
+spack stack create env --name ue-oneapi-2024.2.0 \
+    --template unified-dev --site nas --compiler=oneapi-2024.2.0
 cd envs/ue-oneapi-2024.2.0
 ```
 
-### GCC
+### GCC Environment
 
-To create the GCC environment, do:
-
-```
-spack stack create env --name ue-gcc-13.2.0 --template unified-dev --site nas --compiler gcc-13.2.0
+```bash
+spack stack create env --name ue-gcc-13.2.0 \
+    --template unified-dev --site nas --compiler=gcc-13.2.0
 cd envs/ue-gcc-13.2.0
 ```
 
-## Activate environment
+---
 
-Now enter the spack environment you just created:
+## Activate the Environment
 
-```
+```bash
 spack env activate .
 ```
 
-NOTE: You need to make sure you do this in *any* terminal where you want to do any commmand
-below with this environment.
+> **Important:** Run this in *every* terminal where you plan to run Spack commands.
 
-## Concretize and create source cache
+---
 
-```
-spack concretize 2>&1 | tee log.concretize
-```
+## Concretize the Environment
 
-NOTE: The first time you do this on a new build, you should do it on a *LOGIN* node. This is because
-it might need to bootstrap things and so it will reach out to the internet.
+Run on a **login node** (internet required for bootstrapping Clingo and other tools):
 
-## Create source cache (LOGIN NODE ONLY)
-
-Because this step downloads all the source code for all packages and all versions, it
-should be done on a login node with internet access.
-
-```
-spack mirror create -a -d /swbuild/gmao_SIteam/spack-stack/source-cache
+```bash
+spack concretize 2>&1 | tee log.concretize ; bell
 ```
 
-NOTE: Make sure you are in an environment when you run that `spack mirror create` command. Otherwise,
-you will download *EVERY* package and *EVERY* version in spack!
+### Optional `bell` helper
 
-## Pre-fetch cargo packages (LOGIN NODE ONLY)
-
-Some packages use Rust/Cargo for dependencies. These need internet access to build. So we pre-fetch them here.
-
-We need to set `CARGO_HOME` to a location where the Cargo deps have been downloaded
-
+```bash
+bell() { tput bel ; printf "\nFinished at: " ; date; }
 ```
+
+---
+
+## Create Source Cache (LOGIN NODE ONLY)
+
+This downloads all source tarballs for your environment:
+
+```bash
+spack mirror create -a \
+    -d /swbuild/gmao_SIteam/spack-stack/source-cache
+```
+
+> ⚠️ **Do not run this outside an activated environment.**  
+> Otherwise Spack will attempt to mirror **every** known package/version.
+
+---
+
+## Pre-Fetch Cargo Dependencies (LOGIN NODE ONLY)
+
+Rust packages frequently require network access during build. Pre-fetch their dependencies:
+
+```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
 ../../util/fetch_cargo_deps.py
 ```
 
-NOTE: `CARGO_HOME` should be set as well on the COMPUTE node!
+> ⚠️ **You must also set `CARGO_HOME` on compute nodes** before building.
 
-## Install packages
+---
 
-Our install process will actually have (at least) three steps. This is because of the `crtm` package
-which requires internet access at build time.
+## Install Packages
 
-### Install Step 1: Dependencies of Rust codes and ecflow (COMPUTE NODE)
+Installation requires three stages:
 
-We currently have some codes that use rust/cargo for dependencies. And, for some reason,
-even doing the "cargo dependencies" as above, they still need internet
-access to build/install. 
+| Step | Node Type | Why |
+|------|-----------|-----|
+| Step 1 | Compute | Build dependencies in parallel, avoids CPU limits |
+| Step 2 | `afe` login | Needed for x86_64_v3 Python and internet access |
+| Step 3 | Compute | Finish main installation at high parallelism |
 
-As for ecflow, we built QT on a login node (as it was the only complete node), so we
-then have to build ecflow on a login node as well.
+---
 
-So we first install all the dependencies of then codes.
+### Step 1 — Dependencies of Rust codes and ecFlow (COMPUTE NODE)
 
-```
+```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature --only dependencies py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.deps-for-rust-and-ecflow
+spack install -j 16 --verbose --fail-fast --show-log-on-error \
+    --no-check-signature \
+    --only dependencies py-cryptography py-maturin py-rpds-py ecflow \
+    2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
 ```
 
-### Install Step 2: Rust Codes and ecflow (AFE LOGIN NODE)
+---
 
-NOTE: You *MUST* run this on an afe login node. The reason is the pfe login nodes are Sandy
-Bridge but we are building Spack with `x86_64_v3` and these are too old (`_v2`). So 
-you will get an illegal instruction error when the install below calls python3.
+### Step 2 — Rust codes and ecFlow (AFE LOGIN NODE)
 
-So go back to an afe login node and run:
+`pfe` nodes use Sandy Bridge CPUs, which **cannot run** spack-stack’s x86_64_v3 Python interpreter → results in `Illegal instruction`.
 
-```
+So this must be done on **afe**:
+
+```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error --no-check-signature py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.rust-and-ecflow
+spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error \
+    --no-check-signature \
+    py-cryptography py-maturin py-rpds-py ecflow \
+    2>&1 | tee log.install.rust-and-ecflow ; bell
 ```
 
-Note we are only using 2 processes here because NAS limits you to 2 processes on a login node.
+NAS limits login nodes to 2 processes, hence `-j 2`.
 
-### Install Step 3: The rest (COMPUTE NODE)
+---
 
-```
+### Step 3 — Remaining Packages (COMPUTE NODE)
+
+```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install.after-cargo
+spack install -j 16 --verbose --fail-fast --show-log-on-error \
+    --no-check-signature \
+    2>&1 | tee log.install.after-cargo ; bell
 ```
 
-NOTE: You might need to run the `spack install` command multiple times because sometimes
-it just fails. But then you run it more and more and it will eventually succeed.
+> **Note:** You may need to re-run this command multiple times. Some builds fail intermittently but succeed on retry.
 
-### Packages needing internet access to build
+---
 
-If you encounter other packages that need internet access to build, you can install them with:
+### Packages Requiring Internet (AFE LOGIN NODE)
 
+If you encounter another package that insists on network access:
+
+```bash
+spack install -j 2 --verbose --fail-fast --show-log-on-error \
+    --no-check-signature <package> \
+    |& tee log.install.<package> ; bell
 ```
-spack install -j 2 --verbose --fail-fast --show-log-on-error --no-check-signature <package> |& tee log.install.<package>
-```
 
-Then, once that package is built, you can go back to the compute node and run the `spack install` command again.
+Again, this must be done on an **afe** login node because of the CPU architecture.
 
-## Update module files and setup meta-modules
+Once built, return to the compute node and resume the full installation.
 
-```
-spack module tcl refresh -y --delete-tree
+---
+
+## Update Module Files (AFE LOGIN NODE)
+
+After installation completes, on an **afe** login node run:
+
+```bash
+spack module tcl refresh -y --delete-tree ; bell
 spack stack setup-meta-modules
 ```
 
-## Deactivate environment
+Apparently, spack modulefile generation might use code that spack built for `x86_64_v3`.
 
-```
+---
+
+## Deactivate the Environment
+
+```bash
 spack env deactivate
 ```
 
-# Debugging a package
+---
 
-When things go wrong, a good way to debug a failure is:
+## Debugging Package Builds
 
-```
+```bash
 spack clean
 spack stage <package>
 spack build-env <package> -- bash --norc --noprofile
 ```
+
+This drops you into a clean build environment with the package’s full compiler/runtime environment loaded.
+
+---
+
+

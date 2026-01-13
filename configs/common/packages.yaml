@@ -161,6 +161,10 @@ packages:
     #gsl-lite:
     #  require:
     #  - '@0.37.0'
+    harfbuzz:
+      # cmake-based harfbuzz fails during build
+      require:
+      - one_of: ['build_system=meson', 'build_system=autotools']
     hdf:
       require:
       - '@4.2.15'
@@ -217,11 +221,11 @@ packages:
       - ~shared ~f2py +pflogger
     met:
       require:
-      - '@12.0.1'
+      - '@12.1.1'
       - +python +grib2
     metplus:
       require:
-      - '@6.0.0'
+      - '@6.1.0'
     metis:
       require:
       - +int64 +real64
@@ -430,14 +434,10 @@ packages:
     uwtools:
       require:
       - '@2.7.2'
-    # Need extradeps for grib-utils, enable by default to avoid duplicate packages
-    # w3emc@2.11.0 doesn't build with LLVM 21
     w3emc:
       require:
-      - one_of: ['@=2.11.0', '@=2.10.0']
-      - one_of: ['@=2.10.0']
-        when: '%clang'
-      - precision=4,d,8 +extradeps
+      - '@2.13.0'
+      - precision=4,d,8 +build_deprecated
     w3nco:
       require:
       - '@2.4.1'
