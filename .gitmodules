@@ -9,4 +9,4 @@
   #url = https://github.com/jcsda/spack-packages
   #branch = spack-stack-dev
   url = https://github.com/climbfuji/spack-packages
-  branch = feature/cherry_pick_bufrquery_spack_develop
+  branch = bugfix/pixman_meson_libpng
