@@ -3,11 +3,6 @@ packages:
     buildable: false
     require:
     - intel-oneapi-mpi@2021.17
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2025.3.0
-      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
   intel-oneapi-compilers:
     buildable: false
     externals:
@@ -30,11 +25,6 @@ packages:
         extra_rpaths:
         - /cm/local/apps/gcc/11.2.0/lib64
         - /cm/local/apps/gcc/11.2.0/lib
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@11.2.0
-      prefix: /cm/local/apps/gcc/11.2.0
   gcc:
     buildable: false
     externals:

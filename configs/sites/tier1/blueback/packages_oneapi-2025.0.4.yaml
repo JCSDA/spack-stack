@@ -3,14 +3,6 @@ packages:
     buildable: false
     require:
     - cray-mpich@8.1.32
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2025.0.4
-      prefix: /p/app/intel/oneapi-combined
-      modules:
-      - PrgEnv-intel/8.6.0
-      - intel-oneapi/2025.0
   intel-oneapi-compilers:
     buildable: false
     externals:
@@ -27,14 +19,6 @@ packages:
         environment:
           set:
             CONFIG_SITE: ''
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@13.3.0
-      prefix: /usr
-      modules:
-      - PrgEnv-gnu/8.6.0
-      - gcc-native/13.2
   gcc:
     buildable: false
     externals:

@@ -38,11 +38,6 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
       prefix: /usr/local/intel/oneapi/2024
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2024.2.0%oneapi@2024.2.0
-      prefix: /usr/local/intel/oneapi/2024
   gcc:
     externals:
     - spec: gcc@12.3.0 languages:='c,c++,fortran'

@@ -3,11 +3,6 @@ packages:
     buildable: False
     require:
     - openmpi@4.1.8
-  gcc-runtime:
-    buildable: False
-    externals:
-    - spec: gcc-runtime@13.4.0%gcc@13.4.0
-      prefix: /gpfs/neptune/spack-stack/gcc-13.4.0
   gcc:
     buildable: False
     externals:

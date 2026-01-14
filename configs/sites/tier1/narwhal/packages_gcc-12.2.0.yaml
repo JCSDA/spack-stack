@@ -3,11 +3,6 @@ packages:
     buildable: false
     require:
     - cray-mpich@8.1.26
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@12.2.0
-      prefix: /opt/cray/pe/gcc/12.2.0/snos
   gcc:
     buildable: false
     externals:

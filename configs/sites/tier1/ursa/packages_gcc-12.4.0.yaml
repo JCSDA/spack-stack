@@ -3,11 +3,6 @@ packages:
     buildable: False
     require:
     - openmpi@4.1.6
-  gcc-runtime:
-    buildable: False
-    externals:
-    - spec: gcc-runtime@12.4.0
-      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrh
   gcc:
     buildable: False
     externals:

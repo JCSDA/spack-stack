@@ -3,11 +3,6 @@ packages:
     buildable: False
     require:
     - openmpi@5.0.8
-  gcc-runtime:
-    buildable: False
-    externals:
-    - spec: gcc-runtime@13.3.1
-      prefix: /opt/rh/gcc-toolset-13/root/usr
   gcc:
     buildable: False
     externals:

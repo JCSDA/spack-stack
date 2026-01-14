@@ -9,11 +9,6 @@ packages:
       modules:
       - cray-mpich/8.1.32
       - craype-network-ofi
-  gcc-runtime:
-    buildable: False
-    externals:
-      - spec: gcc-runtime@12.3.0
-        prefix: /opt/cray/pe/gcc-native/12/bin
   gcc:
     buildable: False
     externals:

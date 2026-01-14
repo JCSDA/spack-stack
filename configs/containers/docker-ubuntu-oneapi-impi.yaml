@@ -64,13 +64,6 @@ spack:
         prefix: /opt/intel/oneapi
         modules:
         - tbb/2022.3
-    intel-oneapi-runtime:
-      buildable: false
-      externals:
-      - spec: intel-oneapi-runtime@2025.3.0
-        prefix: /opt/intel/oneapi
-        modules:
-        - compiler-rt/2025.3.0
     mpi:
       require: [intel-oneapi-mpi@2021.17]
     mpich:

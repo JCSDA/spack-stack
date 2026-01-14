@@ -3,11 +3,6 @@ packages:
     buildable: false
     require:
     - cray-mpich@8.1.26
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2024.2.0
-      prefix: /opt/intel/oneapi_2024.2.0.634
   intel-oneapi-compilers:
     buildable: false
     externals:
@@ -33,11 +28,6 @@ packages:
         - /opt/cray/libfabric/1.22.0/lib64
         - /opt/cray/pe/gcc/12.2.0/snos/lib64
         - /opt/cray/pe/gcc/12.2.0/snos/lib
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@12.2.0
-      prefix: /opt/cray/pe/gcc/12.2.0/snos
   gcc:
     buildable: false
     externals:

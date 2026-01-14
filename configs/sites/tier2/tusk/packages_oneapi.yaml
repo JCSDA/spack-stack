@@ -21,7 +21,3 @@ packages:
       prefix: /opt/intel/oneapi_2024.2.0.634
       modules:
       - tbb/2021.13
-  intel-oneapi-runtime:
-    externals:
-    - spec: intel-oneapi-runtime@2024.2.0%oneapi@2024.2.0
-      prefix: /opt/intel/oneapi_2024.2.0.634

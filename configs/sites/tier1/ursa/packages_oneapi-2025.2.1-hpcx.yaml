@@ -10,11 +10,6 @@ packages:
       prefix: /apps/hpcx-v2.18.1-gcc-mlnx_ofed-redhat9-cuda12-x86_64/ompi-mt-oneapi2025
       modules:
       - hpc-x/2.18.1-mt-oneapi2025
-  intel-oneapi-runtime:
-    buildable: False
-    externals:
-    - spec: intel-oneapi-runtime@2025.2.1
-      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2025.2.1-5nijquf65qj5mmbn3k2gxkjkrjkpjtw7
   intel-oneapi-compilers:
     buildable: False
     externals:
@@ -42,11 +37,6 @@ packages:
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-mkl-2024.2.1-srqwrbzwo2k7hxuuhlrxttburs5jvlat
       modules:
       - intel-oneapi-mkl/2024.2.1
-  gcc-runtime:
-    buildable: False
-    externals:
-    - spec: gcc-runtime@12.4.0
-      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj
   gcc:
     buildable: False
     externals:
