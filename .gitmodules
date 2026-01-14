@@ -6,7 +6,5 @@
   branch = feature/update_spack-stack-dev_from_develop
 [submodule "repos/builtin"]
   path = repos/builtin
-  #url = https://github.com/jcsda/spack-packages
-  #branch = spack-stack-dev
-  url = https://github.com/climbfuji/spack-packages
-  branch = bugfix/pixman_meson_libpng
+  url = https://github.com/jcsda/spack-packages
+  branch = spack-stack-dev
