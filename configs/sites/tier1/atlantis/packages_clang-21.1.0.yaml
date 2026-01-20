@@ -20,7 +20,7 @@ packages:
         - /gpfs/neptune/spack-stack/llvm-21.1.0/lib/x86_64-unknown-linux-gnu
   openmpi:
     externals:
-    - spec: openmpi@4.1.8
+    - spec: openmpi@4.1.8 ~internal-hwloc +two_level_namespace
       prefix: /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-21.1.0
       modules:
       - openmpi/4.1.8
