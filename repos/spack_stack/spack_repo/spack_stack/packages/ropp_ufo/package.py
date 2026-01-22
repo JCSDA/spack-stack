@@ -22,8 +22,8 @@ class RoppUfo(CMakePackage):
     version("11.0.20260120", commit="02e21ef0696e67675184797427af265c06973ecf", submodules=True)
 
     # Project doesn't list "c" as a dependency in CMakeLists.txt, but cmake step fails w/o it
-    depends_on("c")
-    depends_on("fortran")
+    depends_on("c", type=("build"))
+    depends_on("fortran", type=("build"))
 
     depends_on("cmake", type=("build"))
     depends_on("cmake@3.12:", type=("build"), when="@11:")

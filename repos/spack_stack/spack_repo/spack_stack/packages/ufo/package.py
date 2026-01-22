@@ -47,11 +47,10 @@ class Ufo(CMakePackage):
     conflicts("+oasim", msg="UFO: OASIM to be implemented.")
     conflicts("+rttov", msg="UFO: RTTOV to be implemented.")
 
-    # DH* TODO UPDATE
     # Project doesn't list "c" as a dependency in CMakeLists.txt, but cmake step fails w/o it
-    depends_on("c")
-    depends_on("cxx")
-    depends_on("fortran")
+    depends_on("c", type=("build"))
+    depends_on("cxx", type=("build"))
+    depends_on("fortran", type=("build"))
 
     # DH* TODO FIX THIS
     # -- Download test data from https://bin.ssec.wisc.edu/pub/s4/CRTM/file/crtm_coefficients_2.4.1_skylab_4.0.tar.gz

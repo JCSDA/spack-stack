@@ -32,6 +32,7 @@ class JediNeptuneEnv(BundlePackage):
 
     with when("+jedi"):
         depends_on("oops", type="run")
+        # DOES THIS INCLUDE THE ONEAPI IFX OPENMP BUG FIX? DH* TODO
         depends_on("crtm@v2.4.1-jedi.2", type="run")
         depends_on("ioda", type="run")
         depends_on("ioda-converters", type="run")

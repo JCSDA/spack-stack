@@ -22,9 +22,9 @@ class IodaConverters(CMakePackage):
     generator("make")
 
     # Project doesn't list "c" as a dependency in CMakeLists.txt, but cmake step fails w/o it
-    depends_on("c")
-    depends_on("cxx")
-    depends_on("fortran")
+    depends_on("c", type=("build"))
+    depends_on("cxx", type=("build"))
+    depends_on("fortran", type=("build"))
 
     extends("python")
 
