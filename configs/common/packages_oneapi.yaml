@@ -19,40 +19,43 @@ packages:
     # Individual package settings
     antlr:
       require:
-      - '%gcc'
+      - '%c,cxx=gcc'
     bison:
       require:
-      - '%gcc'
+      - '%c,cxx=gcc'
     cmake:
       require:
-      - '%gcc'
+      - '%c,cxx=gcc'
     ectrans:
       require:
       - +mkl ~fftw
     gmake:
       require:
-      - '%gcc'
+      - '%c=gcc'
     libbsd:
       require:
-      - '%gcc'
+      - '%c=gcc'
     libmd:
       require:
-      - '%gcc'
+      - '%c=gcc'
     met:
       require:
       - +shared-intel
     nco:
       require:
-      - '%gcc'
+      - '%c,cxx=gcc'
+    oops:
+      require:
+      - +mkl
     parallel-netcdf:
       require:
       - +shared-intel
     py-maturin:
       require:
-      - '%gcc'
+      - '%c=gcc'
     py-scipy:
       require:
       - 'cxxflags="-O1"'
     qt:
       require:
-      - '%gcc'
+      - '%c,cxx=gcc'
