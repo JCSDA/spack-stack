@@ -1,7 +1,14 @@
 packages:
-    all:
+    # Compiler preferences
+    c:
       prefer:
-      - '%gcc'
+      - gcc
+    cxx:
+      prefer:
+      - gcc
+    fortran:
+      prefer:
+      - gcc
     # Virtual provider settings
     blas:
       require: [openblas]

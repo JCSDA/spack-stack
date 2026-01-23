@@ -38,15 +38,6 @@ packages:
       prefix: /project/spack-stack/oneapi-2025.3.0
       modules:
       - tbb/2022.3
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2025.3.0
-      prefix: /project/spack-stack/oneapi-2025.3.0
-      modules:
-      - umf/1.0
-      - tbb/2022.3
-      - compiler-rt/2025.3.0
   gcc:
     buildable: false
     externals:
@@ -57,8 +48,3 @@ packages:
           c: /usr/bin/gcc
           cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@11.5.0
-      prefix: /usr

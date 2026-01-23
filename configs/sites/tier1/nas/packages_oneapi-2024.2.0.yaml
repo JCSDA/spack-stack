@@ -3,13 +3,6 @@ packages:
     buildable: false
     require:
     - "mpt@2.30"
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2024.2.1
-      prefix: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
-      modules:
-      - comp-intel/2024.2.0-ifort
   intel-oneapi-compilers:
     externals:
     - spec: intel-oneapi-compilers@2024.2.0
@@ -29,11 +22,6 @@ packages:
         extra_rpaths:
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@12.3.0%gcc@12.3.0
-      prefix: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4
   gcc:
     externals:
     - spec: gcc@12.3.0 languages:='c,c++'

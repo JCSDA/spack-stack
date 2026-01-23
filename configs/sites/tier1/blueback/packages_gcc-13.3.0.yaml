@@ -3,11 +3,6 @@ packages:
     buildable: false
     require:
     - cray-mpich@8.1.32
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@13.3.0
-      prefix: /usr
   gcc:
     buildable: false
     externals:

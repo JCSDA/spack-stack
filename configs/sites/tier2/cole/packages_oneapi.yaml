@@ -19,7 +19,3 @@ packages:
     externals:
     - spec: intel-oneapi-tbb@2021.13%oneapi@2024.2.1
       prefix: /p/work1/heinzell/spack-stack/oneapi-2024.2.1
-  intel-oneapi-runtime:
-    externals:
-    - spec: intel-oneapi-runtime@2024.2.1%oneapi@2024.2.1
-      prefix: /p/work1/heinzell/spack-stack/oneapi-2024.2.1

@@ -120,7 +120,6 @@ jobs:
             # Set compiler and MPI specs
             spack config add "packages:mpi:buildable:False"
             spack config add "packages:mpi:require:['intel-oneapi-mpi@2021.13']"
-            spack config add "packages:all:prefer:['%oneapi']"
 
             # Add additional variants for MET packages, different from config/common/packages.yaml
             spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"

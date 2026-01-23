@@ -4,11 +4,6 @@ packages:
     externals:
     - spec: gmake@4.3
       prefix: /usr
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@13.3.0
-      prefix: /usr
   grep:
     externals:
     - spec: grep@3.11

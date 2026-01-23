@@ -1,7 +1,14 @@
 packages:
-    all:
+    # Compiler preferences
+    c:
       prefer:
-      - '%clang'
+      - llvm
+    cxx:
+      prefer:
+      - llvm
+    fortran:
+      prefer:
+      - llvm
     # Virtual provider settings
     blas:
       require: [openblas]

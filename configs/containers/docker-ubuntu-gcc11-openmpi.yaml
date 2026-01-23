@@ -42,11 +42,6 @@ spack:
             c: /usr/bin/gcc
             cxx: /usr/bin/g++
             fortran: /usr/bin/gfortran
-    gcc-runtime:
-      buildable: false
-      externals:
-      - spec: gcc-runtime@11.4.0
-        prefix: /usr
     mpi:
       require: [openmpi@5.0.8]
 

@@ -161,11 +161,6 @@ cat << 'EOF' >> $PWD/site/packages.yaml
     externals:
     - spec: gcc@11.4.0
       prefix: /usr
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@11.4.0
-      prefix: /usr
   qt:
     buildable: false
     externals:
@@ -288,14 +283,8 @@ spack external find --scope system grep
 # following tricky situations
 # - External find doesn't work well for pre-installed intel-oneapi-mpi
 #   and we are using an external module load for this.
-# - Specify correct gcc runtime.
 # - Disable "buildable" on all intel modules.
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@13.3.0
-      prefix: /usr      
   intel-oneapi-mkl:
     buildable: false
     externals:
@@ -317,13 +306,6 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
       prefix: /opt/intel/oneapi
       modules:
       - tbb/2022.3
-  intel-oneapi-runtime:
-    buildable: false
-    externals:
-    - spec: intel-oneapi-runtime@2025.3.0
-      prefix: /opt/intel/oneapi
-      modules:
-      - compiler-rt/2025.3.0
 EOF
 
 spack compiler find --scope system

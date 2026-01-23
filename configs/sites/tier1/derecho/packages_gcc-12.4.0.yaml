@@ -13,11 +13,6 @@ packages:
       - cray-mpich/8.1.29
       - libfabric/1.15.2.0
       - cray-pals/1.2.11
-  gcc-runtime:
-    buildable: False
-    externals:
-    - spec: gcc-runtime@12.4.0
-      prefix: /glade/u/apps/casper/24.12/spack/opt/spack/gcc/12.4.0/5b5c
   gcc:
     buildable: False
     externals:

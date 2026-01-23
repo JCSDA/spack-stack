@@ -1,7 +1,14 @@
 packages:
-    all:
+    # Compiler preferences
+    c:
       prefer:
-      - '%oneapi'
+      - intel-oneapi-compilers
+    cxx:
+      prefer:
+      - intel-oneapi-compilers
+    fortran:
+      prefer:
+      - intel-oneapi-compilers
     # Virtual package settings
     blas:
       require: ['intel-oneapi-mkl']

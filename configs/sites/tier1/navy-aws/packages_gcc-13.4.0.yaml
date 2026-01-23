@@ -21,10 +21,6 @@ packages:
     #      c: /usr/bin/gcc
     #      cxx: /usr/bin/g++
     #      fortran: /usr/bin/gfortran
-  gcc-runtime:
-    externals:
-    - spec: gcc-runtime@13.4.0%gcc@13.4.0
-      prefix: /project/spack-stack/gcc-13.4.0
   openmpi:
     externals:
     - spec: openmpi@4.1.8

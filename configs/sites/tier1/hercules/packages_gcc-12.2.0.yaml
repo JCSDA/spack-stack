@@ -10,11 +10,6 @@ packages:
       prefix: /apps/spack-managed/gcc-11.3.1/openmpi-4.1.4-zabolhazla2ahsroedlyt2pu4mkp7o3q
       modules:
       - openmpi/4.1.4
-  gcc-runtime:
-    buildable: False
-    externals:
-    - spec: gcc-runtime@12.2.0
-      prefix: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-7cu3qahzhsxpauy4jlnsbcqmlbkxbbbo
   gcc:
     buildable: False
     externals:

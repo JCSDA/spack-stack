@@ -173,59 +173,22 @@ def substitute_config_vars(config_str):
 
 
 def get_preferred_compiler():
-    """DH* 20250730 - DO WE NEED BOTH WAYS TO DETERMINE THE PREFERRED COMPILER?
-    # MAYBE KEEP FOR NOW UNTIL WE KNOW BETTER WHAT IS NEEDED AND WHAT NOT. TODO:
-    UPDATE DOCSTRING"""
-    ## Method 1
-    #try:
-    #    preferred_compilers = spack.config.get("packages")["all"]["require"]
-    #except:
-    #    raise Exception(
-    #        """Unable to detect preferred compiler from environment.
-    #        Does the environment have the config entry 'packages:all:require?'"""
-    #    )
-    #if len(preferred_compilers)>1:
-    #    raise Exception(f"Invalid value for packages:all:require is {preferred_compilers}")
-    #match = re.search(r'%\[when=%fortran\](\S+)', preferred_compilers[0])
-    ## Translate legacy names (intel, oneapi, ...) to new names (intel-oneapi-compilers-classic, ...)
-    #if match and match.group(1) in spack.aliases.LEGACY_COMPILER_TO_BUILTIN.keys():
-    #    preferred_compiler_v1 = spack.aliases.LEGACY_COMPILER_TO_BUILTIN[match.group(1)]
-    #else:
-    #    preferred_compiler_v1 = match.group(1)
-    ## Method 2
-    #try:
-    #    preferred_compilers = spack.config.get("packages")["fortran"]["require"]
-    #except:
-    #    raise Exception(
-    #        """Unable to detect preferred compiler from environment.
-    #        Does the environment have the config entry 'packages:fortran:require?'"""
-    #    )
-    #if len(preferred_compilers)>1:
-    #    raise Exception(f"Invalid value for packages:fortran:require is {preferred_compilers}")
-    #preferred_compiler_v2 = preferred_compilers[0]
-    #if preferred_compiler_v1 == preferred_compiler_v2:
-    #    preferred_compiler = preferred_compiler_v1
-    #    del preferred_compilers
-    #    del preferred_compiler_v1
-    #    del preferred_compiler_v2
-    #else:
-    #    raise Exception(f"Multiple preferred compilers in spack config: {preferred_compiler_v1} vs {preferred_compiler_v2}")
-    #return preferred_compiler
-    # Determine preferred compiler
+    """Determine the preferred compiler by looking at
+    packages:
+      fortran:
+        prefer:
+        - COMPILER_NAME (gcc, intel-oneapi-compilers, llvm, ..)
+    """
     try:
-        preferred_compilers = spack.config.get("packages")["all"]["prefer"]
+        preferred_compilers = spack.config.get("packages")["fortran"]["prefer"]
     except:
         raise Exception(
             """Unable to detect preferred compiler from environment.
-            Does the environment have the config entry 'packages:all:prefer?'"""
+            Does the environment have the config entry 'packages:fortran:prefer?'"""
         )
     if len(preferred_compilers)>1:
-        raise Exception(f"Invalid value for packages:all:prefer is {preferred_compilers}")
-    preferred_compiler_legacy_name = preferred_compilers[0].replace('%','')
-    if preferred_compiler_legacy_name in spack.aliases.LEGACY_COMPILER_TO_BUILTIN.keys():
-        preferred_compiler = spack.aliases.LEGACY_COMPILER_TO_BUILTIN[preferred_compiler_legacy_name]
-    else:
-        preferred_compiler = preferred_compiler_legacy_name
+        raise Exception(f"Invalid value for packages:fortran:prefer is {preferred_compilers}")
+    preferred_compiler = preferred_compilers[0]
     return preferred_compiler
 
 

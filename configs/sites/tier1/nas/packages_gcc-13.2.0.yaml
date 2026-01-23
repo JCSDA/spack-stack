@@ -3,11 +3,6 @@ packages:
     buildable: false
     require:
     - "openmpi@4.1.8"
-  gcc-runtime:
-    buildable: false
-    externals:
-    - spec: gcc-runtime@13.2.0%gcc@13.2.0
-      prefix: /nobackup/gmao_SIteam/gcc/gcc-13.2.0
   gcc:
     buildable: false
     externals:

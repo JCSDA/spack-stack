@@ -47,9 +47,6 @@ def test_setup_meta_modules():
 
     packages_definition = """
 packages:
-  all:
-    prefer:
-    - '%gcc'
   gcc:
     externals:
     - spec: gcc@11.5.0 languages:='c,c++,fortran'
@@ -59,20 +56,11 @@ packages:
           c: /usr/bin/gcc
           cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran
-  gcc-runtime:
-    externals:
-    - spec: gcc-runtime@11.5.0 %gcc@11.5.0
-      prefix: /usr
   mpi:
     buildable: false
   openmpi:
     externals:
-    - spec: openmpi@4.1.8 %gcc@11.5.0
-      prefix: /usr
-  python:
-    buildable: false
-    externals:
-    - spec: python@3.11.11
+    - spec: openmpi@5.0.8 ~internal-hwloc +two_level_namespace
       prefix: /usr
 """
     site_packages_yaml = os.path.join(env_dir, "site", "packages.yaml")
@@ -81,8 +69,14 @@ packages:
     with open(site_packages_yaml, 'w') as f:
         f.write(packages_definition)
 
+    cmd = spack.main.SpackCommand("concretize")
+    cmd("--force", "--fresh")
+
     cmd = spack.main.SpackCommand("install")
-    cmd("--add", "--no-cache", "gcc", "openmpi", "python")
+    cmd("--add", "--no-cache", "gcc", "openmpi")
+
+    cmd = spack.main.SpackCommand("module")
+    cmd("tcl", "refresh", "--yes")
 
     spack_stack_cmd("setup-meta-modules")
 
@@ -92,4 +86,8 @@ packages:
         f"Expected module {expected_comp_meta_module} not found"
     )
 
-    expected_mpi_meta_module = os.path.join(module_dir, "gcc", "13.2.1", "stack-openmpi", "4.1.8")
+    expected_mpi_meta_module = os.path.join(module_dir, "gcc", "11.5.0", "stack-openmpi", "5.0.8")
+    assert(
+        os.path.exists(expected_mpi_meta_module),
+        f"Expected module {expected_mpi_meta_module} not found"
+    )

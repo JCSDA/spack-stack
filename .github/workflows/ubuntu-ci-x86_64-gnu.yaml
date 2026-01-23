@@ -113,7 +113,6 @@ jobs:
 
             # Set compiler and MPI specs
             spack config add "packages:mpi:require:['openmpi@5.0.8']"
-            spack config add "packages:all:prefer:['%gcc']"
 
             # Add additional variants for MET packages, different from config/common/packages.yaml
             spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"

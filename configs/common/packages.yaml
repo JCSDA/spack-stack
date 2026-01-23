@@ -30,7 +30,7 @@ packages:
       - +python
     bufr-query:
       require:
-      - '@0.0.4'
+      - '@0.0.5'
       - +python
     cairo:
       require:
@@ -199,6 +199,10 @@ packages:
     landsfcutil:
       require:
       - '@2.4.2'
+    # https://github.com/JCSDA/spack-stack/actions/runs/20957699537/job/60226338267
+    libaec:
+      prefer:
+      - build_system=cmake generator=make
     #libjpeg-turbo:
     #  require:
     #  - '@2.1.0'
@@ -347,6 +351,10 @@ packages:
     py-hatchling:
       require:
       - '@1.27:'
+    # To avoid duplicate packages
+    py-lxml:
+      require:
+      - '@5.2.2'
     # https://github.com/JCSDA/spack-stack/issues/1276
     py-matplotlib:
       require:
@@ -358,16 +366,14 @@ packages:
       require:
       - '@1.7.2'
       - ~mpi
-    ## To avoid duplicate packages
-    #py-numpy:
-    #  require:
-    #  - '@1.26'
-    # DH* 20250813
+    # To avoid duplicate packages
+    py-numpy:
+      require:
+      - '@1'
     # To avoid duplicate packages
     py-poetry-core:
       require:
       - '@1.7'
-    # *DH 20250813
     # This version builds with Intel oneAPI compilers, newer versions don't
     py-pyogrio:
       require:
@@ -417,6 +423,10 @@ packages:
     sigio:
       require:
       - '@2.3.3'
+    # To avoid duplicate packages
+    snappy:
+      require:
+      - +shared
     sp:
       require:
       - '@2.5.0'
