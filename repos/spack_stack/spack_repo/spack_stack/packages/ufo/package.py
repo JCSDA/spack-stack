@@ -17,12 +17,12 @@ class Ufo(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
-    version("1.10.0.20260120", commit="1ca49e253caa6d6a507f41ffa6875e0db7cc0751")
+    version("1.10.0.20250821", commit="1ca49e253caa6d6a507f41ffa6875e0db7cc0751")
 
     patch(
         "https://github.com/jcsda/ufo/commit/ce4cbf8d9dbfd11ac5f2d4add61aa1c1bbc075fc.patch?full_index=1",
         sha256="b12aa105e8058409e5897fcc1d18054f4aef7fdb444bbb0341c1af6e0025197b",
-        when="@1.10.0.20260120",
+        when="@1.10.0.20250821",
     )
 
     variant("crtm-v2", default=True, description="Build CRTM v2 operator")
@@ -52,7 +52,7 @@ class Ufo(CMakePackage):
     depends_on("cxx", type=("build"))
     depends_on("fortran", type=("build"))
 
-    # DH* TODO FIX THIS
+    # DH* TODO FIX THIS (ALSO IN IODA ETC - CHECK ALL)
     # -- Download test data from https://bin.ssec.wisc.edu/pub/s4/CRTM/file/crtm_coefficients_2.4.1_skylab_4.0.tar.gz
 
     depends_on("boost")

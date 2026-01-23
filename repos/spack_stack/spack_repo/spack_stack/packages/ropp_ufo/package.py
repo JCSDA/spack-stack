@@ -19,7 +19,7 @@ class RoppUfo(CMakePackage):
 
     version("develop", branch="develop", no_cache=True)
     # this is the ropp-submodule branch ... update once merged
-    version("11.0.20260120", commit="02e21ef0696e67675184797427af265c06973ecf", submodules=True)
+    version("11.0.20251022", commit="02e21ef0696e67675184797427af265c06973ecf", submodules=True)
 
     # Project doesn't list "c" as a dependency in CMakeLists.txt, but cmake step fails w/o it
     depends_on("c", type=("build"))

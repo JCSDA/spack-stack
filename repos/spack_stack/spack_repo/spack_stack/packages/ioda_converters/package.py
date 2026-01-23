@@ -17,7 +17,7 @@ class IodaConverters(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
-    version("0.0.1.20260120", commit="a91f432d9d50940910605e689cd1cf93a1ce3798")
+    version("0.0.1.20250830", commit="a91f432d9d50940910605e689cd1cf93a1ce3798")
 
     generator("make")
 

@@ -19,9 +19,9 @@ class Oops(CMakePackage):
     version("develop", branch="develop", no_cache=True)
     # This commit plus the patch below accounts for commit
     # 2340e9b664f82de9fa01c136c3a31d87e4a0bec9 in NRL GitHub
-    version("1.10.0.20260120", commit="91889ad09d3789f14a1184701dd80a4913d3ce3e")
+    version("1.10.0.20250827", commit="91889ad09d3789f14a1184701dd80a4913d3ce3e")
 
-    patch("include_algorithm.patch", when="@1.10.0.20260120")
+    patch("include_algorithm.patch", when="@1.10.0.20250827")
 
     variant("l95", default=True, description="Build LORENZ95 toy model")
     variant("mkl", default=False, description="Use MKL for LAPACK implementation (if available)")

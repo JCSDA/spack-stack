@@ -17,9 +17,9 @@ class Ioda(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
-    version("2.9.0.20260120", commit="6e76616001067384f7d0ca4341ad78e81527af8b")
+    version("2.9.0.20250826", commit="6e76616001067384f7d0ca4341ad78e81527af8b")
 
-    patch("ioda_cmake_import.patch", when="@2.9.0.20260120")
+    patch("ioda_cmake_import.patch", when="@2.9.0.20250826")
 
     variant("doc", default=False, description="Build IODA documentation")
     # Let's always assume IODA_BUILD_LANGUAGE_FORTRAN=on.
