@@ -22,7 +22,7 @@ packages:
   openmpi:
     buildable: False
     externals:
-    - spec: openmpi@5.0.8
+    - spec: openmpi@5.0.8 ~internal-hwloc +two_level_namespace
       prefix: /p/app/penguin/openmpi/5.0.8/gcc-13.3.1
       modules:
       - penguin/openmpi/5.0.8/gcc-13.3.1
