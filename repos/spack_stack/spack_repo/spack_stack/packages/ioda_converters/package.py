@@ -19,6 +19,12 @@ class IodaConverters(CMakePackage):
     version("develop", branch="develop", no_cache=True)
     version("0.0.1.20250830", commit="a91f432d9d50940910605e689cd1cf93a1ce3798")
 
+    patch(
+        "https://github.com/JCSDA/ioda-converters/commit/2c09857aac09b7dd9029fdd23e33f712933c40c4.patch?full_index=1",
+        sha256="c31342a5bcffdcb77a99ee5f16a5ba2d74e9d822f1fe2d44b3ee772765800d83",
+        when="@0.0.1.20250830",
+    )
+
     generator("make")
 
     # Project doesn't list "c" as a dependency in CMakeLists.txt, but cmake step fails w/o it
