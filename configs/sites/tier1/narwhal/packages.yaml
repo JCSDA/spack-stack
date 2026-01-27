@@ -12,6 +12,10 @@ packages:
     externals:
     - spec: automake@1.15.1
       prefix: /usr
+  bash:
+    externals:
+    - spec: bash@4.4.23
+      prefix: /usr
   binutils:
     externals:
     - spec: binutils@2.37.20211103

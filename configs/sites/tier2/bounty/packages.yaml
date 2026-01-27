@@ -10,6 +10,10 @@ packages:
     externals:
     - spec: automake@1.16.2
       prefix: /usr
+  bash:
+    externals:
+    - spec: bash@5.1.8
+      prefix: /usr
   binutils:
     externals:
     - spec: binutils@2.35.2~gold+headers
