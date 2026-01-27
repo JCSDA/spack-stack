@@ -32,6 +32,9 @@ packages:
     gmake:
       require:
       - '%gcc'
+    go:
+      require:
+      - '%c,cxx=gcc'
     libbsd:
       require:
       - '%gcc'
