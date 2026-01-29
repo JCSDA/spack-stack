@@ -44,4 +44,7 @@ class BaseEnv(BundlePackage):
     depends_on("py-setuptools-scm", type="run")
     depends_on("py-pytest", type="run")
 
+    # Miscellaneous
+    depends_on("rank-run", type="run")
+
     # There is no need for install() since there is no code.

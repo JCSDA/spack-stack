@@ -374,6 +374,10 @@ packages:
     py-poetry-core:
       require:
       - '@1.7'
+    # Need at least py-pygithub@2.7 for self-hosted runner management
+    py-pygithub:
+      require:
+      - '@2.7:'
     # This version builds with Intel oneAPI compilers, newer versions don't
     py-pyogrio:
       require:
@@ -394,7 +398,6 @@ packages:
     py-setuptools:
       require:
       - '@69'
-    ## When making changes here, also check the packages.yaml for atlantis, nautilus, blackpearl
     py-torch:
       require:
       - +custom-protobuf ~mkldnn
