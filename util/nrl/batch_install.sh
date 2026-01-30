@@ -481,6 +481,22 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     source setup.sh
     spack clean -a
 
+    # Update bootstrap mirror if requested before creating any
+    # environments. It is sufficient to do this one time only.
+    if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
+      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror
+      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
+      rm -fr ${tmp_bootstrap_mirror_path}
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.001
+      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      rm -fr ${tmp_bootstrap_mirror_path}
+      # Update buildcache index
+      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
+      # Fix permissions for the bootstrap mirror
+      fix_permissions ${host} ${bootstrap_mirror_path} 0
+      update_bootstrap_mirror="false"
+    fi
+
     if [[ ! ${env_exists} == "true" ]]; then
       spack stack create env --name=${env_name} \
                              --site=${host} \
@@ -494,18 +510,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
     sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
-
-    # Update bootstrap mirror if requested
-    if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
-      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
-      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
-      rm -fr ${tmp_bootstrap_mirror_path}
-      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
-      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
-      rm -fr ${tmp_bootstrap_mirror_path}
-      # Update buildcache index
-      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
-    fi
 
     echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
     if [[ ! -d ${bootstrap_mirror_path} ]]; then
@@ -610,9 +614,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # When creating or updating buildcaches, fix permissions for mirrors.
     # Mirrors do not contain executables, therefore skip looking for them.
-    if [[ "${update_bootstrap_mirror}" == "true" ]]; then
-      fix_permissions ${host} ${bootstrap_mirror_path} 0
-    fi
     if [[ "${update_source_cache}" == "true" ]]; then
       fix_permissions ${host} ${source_mirror_path} 0
     fi
