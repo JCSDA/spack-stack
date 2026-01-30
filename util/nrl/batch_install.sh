@@ -115,7 +115,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/neptune_diagnostics/spack-stack/source-cache"
     ;;
   blueback)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
@@ -123,7 +122,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/source-cache"
     ;;
   cole)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=12.3.0")
@@ -131,7 +129,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/p/work1/heinzell/spack-stack/source-cache"
     ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.2.0")
@@ -139,7 +136,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/source-cache"
     ;;
   nautilus)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1")
@@ -147,7 +143,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/source-cache"
     ;;
   navy-aws)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.4.0")
@@ -155,7 +150,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/project/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/project/spack-stack/cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/project/spack-stack/source-cache"
     ;;
   tusk)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.1.0")
@@ -163,7 +157,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/p/work1/heinzell/spack-stack/source-cache"
     ;;
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=13.2.1")
@@ -171,7 +164,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/home/dom/prod/spack-source-cache"
     ;;
   bounty)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1" "clang@=21.1.1")
@@ -179,7 +171,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
-    SPACK_STACK_SOURCE_MIRROR="/home/dom/prod/spack-source-cache"
     ;;
   *)
     echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
@@ -288,7 +279,6 @@ module_choice=${SPACK_STACK_MODULE_CHOICE}
 bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
 cargo_mirror_path=${SPACK_STACK_CARGO_MIRROR}
 export CARGO_HOME=${cargo_mirror_path}
-source_mirror_path=${SPACK_STACK_SOURCE_MIRROR}
 
 if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
   environment_dirs=${PWD}/envs
@@ -533,6 +523,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       set -e
     fi
 
+    # Check that the site has mirrors configured for local source and build caches,
+    # and extract the local path on disk. Need to strip leading "file://" from path
+    result=$(spack mirror list | grep local-source) || \
+        (echo "ERROR, no local source cache configured" && exit 1)
+    source_mirror_path=$(echo ${result} | cut -d " " -f 3)
+    source_mirror_path=${source_mirror_path:7}
+    echo "Spack source mirror path: ${source_mirror_path}"
     # For build caches, additional logic is needed. If buildcache_dir is defined,
     # update the location of the default build cache to this directory.
     result=$(spack mirror list | grep local-binary) || \
@@ -565,10 +562,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # Check for duplicate packages
     ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip -i fms
-
-    # Add the source mirror/cache to the environment
-    echo "Spack source mirror path: ${source_mirror_path}"
-    spack mirror add local-source file://${source_mirror_path}
 
     # Update local source cache if requested
     if [[ "${update_source_cache}" == "true"* ]]; then
