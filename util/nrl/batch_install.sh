@@ -447,10 +447,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         module purge
         case ${compiler} in
           oneapi@=2024.2.1)
-            module use /gpfs/neptune/spack-stack/oneapi-2024.2.1/modulefiles
+            module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
             ;;
           oneapi@=2025.3.0)
-            module use /gpfs/neptune/spack-stack/oneapi-2025.3.0/modulefiles
+            module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/modulefiles
             ;;
         esac
         ;;
