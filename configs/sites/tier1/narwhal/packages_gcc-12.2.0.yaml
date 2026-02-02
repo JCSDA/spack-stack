@@ -1,4 +1,8 @@
 packages:
+  all:
+    require:
+    - any_of: ['%gcc@=12.2.0']
+      when: '%gcc'
   mpi:
     buildable: false
     require:
