@@ -138,7 +138,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.3.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -445,6 +445,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       nautilus)
         umask 0022
         module purge
+        case ${compiler} in
+          oneapi@=2024.2.1)
+            module use /gpfs/neptune/spack-stack/oneapi-2024.2.1/modulefiles
+            ;;
+          oneapi@=2025.3.0)
+            module use /gpfs/neptune/spack-stack/oneapi-2025.3.0/modulefiles
+            ;;
+        esac
         ;;
       navy-aws)
         umask 0022
