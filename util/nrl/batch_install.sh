@@ -333,6 +333,7 @@ fi
 ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
 
 # Loop through all compilers and templates for this host
+first_pass="true"
 for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
   if [[ ! ${compiler} == *"@="* ]]; then
@@ -487,7 +488,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     module li
 
     source setup.sh
-    spack clean -a
+    if [[ "${first_pass}" == "true" ]]; then
+      spack clean -a
+    else
+      # Don't remove software and configuration needed to bootstrap Spack
+      spack clean -d -f -m -p -s
+    fi
 
     # Update bootstrap mirror if requested before creating any
     # environments. It is sufficient to do this one time only.
@@ -524,16 +530,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       echo "ERROR, directory ${bootstrap_mirror_path} not found"
       exit 1
     fi
-    # If the environment already existed, then it is possible that the bootstrap
-    # sources were already added. In this case, ignore errors from these commands.
-    if [[ ${env_exists} == "true" ]]; then
-      set +e
-    fi
-    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
-    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
-    if [[ ${env_exists} == "true" ]]; then
-      set -e
-    fi
+    spack bootstrap list | grep local-sources || \
+        spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+    spack bootstrap list | grep local-binaries || \
+        spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
 
     # Check that the site has mirrors configured for local source and build caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
@@ -632,9 +632,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       fix_permissions ${host} ${cargo_mirror_path} 0
     fi
 
-    # Clean up
-    spack clean -a
+    # Clean up (don't remove software and configuration needed to bootstrap Spack)
+    spack clean -d -f -m -p -s
     spack env deactivate
+    first_pass="false"
 
   done
 
