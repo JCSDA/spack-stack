@@ -126,7 +126,7 @@ packages:
       - '@3.5.1'
     g2c:
       require:
-      - '@2.1.0'
+      - '@2.3.0'
     g2tmpl:
       require:
       - '@1.17.0'
@@ -458,7 +458,7 @@ packages:
     # See macOS site config for wgrib2 version/variant overrides
     wgrib2:
       require:
-      - '@3.6.0'
+      - '@3.8.0'
       - +ipolates +netcdf
     wrf-io:
       require:
