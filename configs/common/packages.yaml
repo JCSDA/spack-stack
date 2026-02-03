@@ -286,6 +286,7 @@ packages:
     parallelio:
       require:
       - '@2.6.2'
+      - +pnetcdf
     # DH* CAN WE UPDATE? NEED A NEW SHARED-INTEL PATCH?
     parallel-netcdf:
       require:
