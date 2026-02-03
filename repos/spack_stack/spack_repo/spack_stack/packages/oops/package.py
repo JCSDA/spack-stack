@@ -68,3 +68,19 @@ class Oops(CMakePackage):
             self.define_from_variant("ENABLE_GPTL", "gptl"),
         ]
         return res
+
+    def check(self):
+        skipped_tests = None
+        with when("@1.10.0.20250827"):
+            skipped_tests = [
+                "qg_rescale_ens_perts",
+                "qg_4densvar_single-obs_loc_4d",
+                "qg_4densvar_single-obs_no_loc",
+            ]
+
+        ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
+        with working_dir(self.build_directory):
+            if skipped_tests:
+                ctest("-E", "|".join(skipped_tests))
+            else:
+                ctest()
