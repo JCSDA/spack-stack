@@ -1,29 +1,28 @@
 packages:
   all:
     require:
-    - any_of: ['%intel-oneapi-compilers@=2025.3.0']
+    - any_of: ['%intel-oneapi-compilers@=2024.2.1']
       when: '%intel-oneapi-compilers'
     - any_of: ['%gcc@=11.2.1']
       when: '%gcc'
   mpi:
     buildable: false
     require:
-    - intel-oneapi-mpi@2021.17
+    - intel-oneapi-mpi@2021.13
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0
+    - spec: intel-oneapi-compilers@2024.2.1
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
-      - tbb/2022.3
-      - umf/1.0.2
-      - compiler-rt/2025.3.0
-      - compiler/2025.3.0
+      - tbb/2021.13
+      - compiler-rt/2024.2.1
+      - compiler/2024.2.1
       extra_attributes:
         compilers:
-          c: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icx
-          cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icpx
-          fortran: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/ifx
+          c: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icx
+          cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/icpx
+          fortran: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/compiler/2024.2/bin/ifort
         environment:
           prepend_path:
             PATH: /opt/rh/gcc-toolset-11/root/usr/bin
@@ -46,13 +45,13 @@ packages:
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.17
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0
+    - spec: intel-oneapi-mpi@2021.13
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
-      - mpi/2021.17
+      - mpi/2021.13
       - slurm
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.3
-      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1

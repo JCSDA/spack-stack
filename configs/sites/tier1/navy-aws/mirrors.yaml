@@ -1,4 +1,3 @@
 mirrors:
   local-source: file:///project/spack-stack/source-cache
   local-binary: file:///project/spack-stack/build-cache
-

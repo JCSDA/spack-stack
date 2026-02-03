@@ -20,6 +20,8 @@ class NeptunePythonEnv(BundlePackage):
 
     version("1.5.0")
 
+    variant("gittools", default=False, description="Build additional tools for Git/GitHub")
+
     depends_on("neptune-env", type="run")
     # Enable the Python variant for ESMF
     depends_on("esmf +python", type="run")
@@ -43,5 +45,9 @@ class NeptunePythonEnv(BundlePackage):
 
     depends_on("met", type="run")
     depends_on("metplus", type="run")
+
+    with when("+gittools"):
+        depends_on("gh", type="run")
+        depends_on("py-pygithub", type="run")
 
     # There is no need for install() since there is no code.

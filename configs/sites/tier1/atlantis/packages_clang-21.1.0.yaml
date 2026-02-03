@@ -1,4 +1,8 @@
 packages:
+  all:
+    require:
+    - any_of: ['%llvm@=21.1.0']
+      when: '%llvm'
   mpi:
     buildable: False
     require:
