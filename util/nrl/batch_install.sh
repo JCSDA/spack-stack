@@ -138,7 +138,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.3.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -333,6 +333,7 @@ fi
 ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
 
 # Loop through all compilers and templates for this host
+first_pass="true"
 for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
   if [[ ! ${compiler} == *"@="* ]]; then
@@ -445,6 +446,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       nautilus)
         umask 0022
         module purge
+        case ${compiler} in
+          oneapi@=2024.2.1)
+            module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
+            ;;
+          oneapi@=2025.3.0)
+            module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/modulefiles
+            ;;
+        esac
         ;;
       navy-aws)
         umask 0022
@@ -479,7 +488,28 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     module li
 
     source setup.sh
-    spack clean -a
+    if [[ "${first_pass}" == "true" ]]; then
+      spack clean -a
+    else
+      # Don't remove software and configuration needed to bootstrap Spack
+      spack clean -d -f -m -p -s
+    fi
+
+    # Update bootstrap mirror if requested before creating any
+    # environments. It is sufficient to do this one time only.
+    if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
+      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror
+      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
+      rm -fr ${tmp_bootstrap_mirror_path}
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.001
+      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      rm -fr ${tmp_bootstrap_mirror_path}
+      # Update buildcache index
+      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
+      # Fix permissions for the bootstrap mirror
+      fix_permissions ${host} ${bootstrap_mirror_path} 0
+      update_bootstrap_mirror="false"
+    fi
 
     if [[ ! ${env_exists} == "true" ]]; then
       spack stack create env --name=${env_name} \
@@ -495,33 +525,15 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
     sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
 
-    # Update bootstrap mirror if requested
-    if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
-      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror-${env_name}
-      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
-      rm -fr ${tmp_bootstrap_mirror_path}
-      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${env_name}.001
-      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
-      rm -fr ${tmp_bootstrap_mirror_path}
-      # Update buildcache index
-      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
-    fi
-
     echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
     if [[ ! -d ${bootstrap_mirror_path} ]]; then
       echo "ERROR, directory ${bootstrap_mirror_path} not found"
       exit 1
     fi
-    # If the environment already existed, then it is possible that the bootstrap
-    # sources were already added. In this case, ignore errors from these commands.
-    if [[ ${env_exists} == "true" ]]; then
-      set +e
-    fi
-    spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
-    spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
-    if [[ ${env_exists} == "true" ]]; then
-      set -e
-    fi
+    spack bootstrap list | grep local-sources || \
+        spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+    spack bootstrap list | grep local-binaries || \
+        spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
 
     # Check that the site has mirrors configured for local source and build caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
@@ -610,9 +622,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # When creating or updating buildcaches, fix permissions for mirrors.
     # Mirrors do not contain executables, therefore skip looking for them.
-    if [[ "${update_bootstrap_mirror}" == "true" ]]; then
-      fix_permissions ${host} ${bootstrap_mirror_path} 0
-    fi
     if [[ "${update_source_cache}" == "true" ]]; then
       fix_permissions ${host} ${source_mirror_path} 0
     fi
@@ -623,9 +632,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       fix_permissions ${host} ${cargo_mirror_path} 0
     fi
 
-    # Clean up
-    spack clean -a
+    # Clean up (don't remove software and configuration needed to bootstrap Spack)
+    spack clean -d -f -m -p -s
     spack env deactivate
+    first_pass="false"
 
   done
 

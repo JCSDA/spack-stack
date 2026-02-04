@@ -29,7 +29,3 @@ spack:
     esmf:
       require:
       - +python
-    # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
-    parallelio:
-      require:
-      - ~pnetcdf
