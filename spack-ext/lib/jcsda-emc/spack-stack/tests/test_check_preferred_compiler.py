@@ -97,4 +97,11 @@ packages:
 
     with pytest.raises(Exception) as error:
         spack_stack_cmd("check-preferred-compiler")
+    # There is only one compiler mismatch for libszip.
+    # The concretizer chooses to use LLVM for zlib because
+    # of the general compiler preference (common/packages.yaml),
+    # i.e. it ignores the zlib-specific preference. The tool
+    # check-preferred-compiler correctly reports a violation
+    # of the hard requirement for libszip, but allows zlib
+    # to be built with the default compiler instead of the soft req.
     assert "Detected 1 compiler mismatch" in str(error)
