@@ -45,23 +45,11 @@ jobs:
 
       - name: prepare-directories
         run: |
-          # DH* REVERT ME AFTER MERGE
           mkdir -p ${BUILD_CACHE_PATH}
           mkdir -p ${SOURCE_CACHE_PATH}
 
       - name: create-buildcache
         run: |
-          # Get day of week to decide whether to use build caches or not
-          DOW=$(date +%u)
-          # Monday is 1 ... Sunday is 7
-          if [[ $DOW == 7 ]]; then
-            export USE_BINARY_CACHE=false
-            echo "Ignore existing binary cache for creating buildcache environment"
-          else
-            export USE_BINARY_CACHE=true
-            echo "Use existing binary cache for creating buildcache environment"
-          fi
-
           # Set up spack-stack
           source ./setup.sh
 
@@ -134,23 +122,22 @@ jobs:
             # Don't generate ecflow module when using external package
             spack config add "modules:default:tcl:exclude:[ecflow]"
 
-            # Concretize and check for duplicates
+            # Concretize, check for duplicates and for correct compilers being used
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
             ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
+            spack stack check-preferred-compiler 2>&1 | tee log.check-preferred-compiler.${ENVNAME}
 
             # Add and update source cache
             spack mirror add local-source file://${SOURCE_CACHE_PATH}/
             spack mirror create -a -d ${SOURCE_CACHE_PATH}/
 
-            # Add binary cache if requested
-            if [ "$USE_BINARY_CACHE" = true ] ; then
-              set +e
-              spack mirror add local-binary file://${BUILD_CACHE_PATH}/
-              spack buildcache update-index local-binary
-              set -e
-              echo "Packages in spack binary cache:"
-              spack buildcache list
-            fi
+            # Add binary cache
+            set +e
+            spack mirror add local-binary file://${BUILD_CACHE_PATH}/
+            spack buildcache update-index local-binary
+            set -e
+            echo "Packages in spack binary cache:"
+            spack buildcache list
 
             # Break installation up in pieces and create build caches in between
             # This allows us to "spin up" builds that altogether take longer than
@@ -188,11 +175,6 @@ jobs:
             # Check for libirc.so in shared libraries (returns 1=error if found)
             ${SPACK_STACK_DIR}/util/check_libirc.sh
 
-            # Remove binary cache for next round of concretization
-            if [ "$USE_BINARY_CACHE" = true ] ; then
-              spack mirror rm local-binary
-            fi
-
             # Remove buildcache config settings
             spack config remove config:install_tree:padded_length
 
@@ -215,14 +197,10 @@ jobs:
           rsync -av --exclude='install' --exclude='spack.lock' --exclude='.spack_db' ${BUILDCACHE_ENVDIR}/ ${ENVDIR}/
           spack env activate ${ENVDIR}
 
-          # Concretize and check for duplicates
-          spack concretize --force 2>&1 | tee log.concretize.${ENVNAME}
+          # Concretize, check for duplicates and for correct compilers being used
+          spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
           ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
-
-          # Add binary cache back in
-          spack mirror add local-binary file://${BUILD_CACHE_PATH}/
-          echo "Packages in combined spack build caches:"
-          spack buildcache list
+          spack stack check-preferred-compiler 2>&1 | tee log.check-preferred-compiler.${ENVNAME}
 
           # Install from cache
           spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
