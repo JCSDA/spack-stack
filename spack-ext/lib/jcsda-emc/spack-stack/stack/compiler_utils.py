@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 
-import copy
 import logging
-import os
 import re
-import sys
 
 import spack
 import spack.environment as ev
