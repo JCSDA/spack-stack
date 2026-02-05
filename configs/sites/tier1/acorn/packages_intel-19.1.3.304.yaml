@@ -85,7 +85,7 @@ packages:
   go:
     require: ['%gcc']
   gsibec:
-    require: ['@1.2.1']
+    require: ['@1.4.1']
   harfbuzz:
     require: ['%gcc']
   libffi:
