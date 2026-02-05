@@ -63,8 +63,7 @@ You will need:
 Use the appropriate branch or tag:
 
 ```bash
-git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git \
-    -b spack-stack-2.0.0 spack-stack-2.0.0
+git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git -b spack-stack-2.1.0 spack-stack-2.1.0
 ```
 
 ---
@@ -74,17 +73,12 @@ git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git \
 NAS login nodes allow only **2 processes**, so use:
 
 ```bash
-qsub -I -V -X \
-    -l select=1:ncpus=128:mpiprocs=128:model=rom_ait \
-    -l walltime=12:00:00 \
-    -W group_list=s1873 \
-    -m b \
-    -N Interactive
+qsub -I -V -X -l select=1:ncpus=128:mpiprocs=128:model=mil_ait -l walltime=12:00:00 -W group_list=s1873 -m b -N Interactive
 ```
 
-This gives a **Rome** compute node for up to 12 hours. 
+This gives a **Milan** compute node for up to 12 hours. 
 
-For a **Milan** node, change `model=rom_ait` to `model=mil_ait` and run the `qsub` command on a Milan-capable login node (e.g., `afe02`).
+For a **Rome** node, change `model=mil_ait` to `model=rom_ait` and run the `qsub` command on a Rome-capable login node (e.g., `pfe25`).
 
 ---
 
@@ -93,7 +87,7 @@ For a **Milan** node, change `model=rom_ait` to `model=mil_ait` and run the `qsu
 Run on a **login node with internet**:
 
 ```bash
-cd spack-stack-2.0.0
+cd spack-stack-2.1.0
 . setup.sh
 ```
 
@@ -103,19 +97,24 @@ cd spack-stack-2.0.0
 
 You only need to create each environment once.
 
-### oneAPI Environment
+### oneAPI - ifx Environment
 
 ```bash
-spack stack create env --name ue-oneapi-2024.2.0 \
-    --template unified-dev --site nas --compiler=oneapi-2024.2.0
+spack stack create env --name ue-oneapi-2025.3.0 --template unified-dev --site nas --compiler=oneapi-2025.3.0
+cd envs/ue-oneapi-2025.3.0
+```
+
+### oneAPI - ifort Environment
+
+```bash
+spack stack create env --name ue-oneapi-2024.2.0 --template unified-dev --site nas --compiler=oneapi-2024.2.0
 cd envs/ue-oneapi-2024.2.0
 ```
 
 ### GCC Environment
 
 ```bash
-spack stack create env --name ue-gcc-13.2.0 \
-    --template unified-dev --site nas --compiler=gcc-13.2.0
+spack stack create env --name ue-gcc-13.2.0 --template unified-dev --site nas --compiler=gcc-13.2.0
 cd envs/ue-gcc-13.2.0
 ```
 
@@ -152,8 +151,7 @@ bell() { tput bel ; printf "\nFinished at: " ; date; }
 This downloads all source tarballs for your environment:
 
 ```bash
-spack mirror create -a \
-    -d /swbuild/gmao_SIteam/spack-stack/source-cache
+spack mirror create -a -d /swbuild/gmao_SIteam/spack-stack/source-cache
 ```
 
 > ⚠️ **Do not run this outside an activated environment.**  
@@ -190,10 +188,8 @@ Installation requires three stages:
 
 ```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 16 --verbose --fail-fast --show-log-on-error \
-    --no-check-signature \
-    --only dependencies py-cryptography py-maturin py-rpds-py ecflow \
-    2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
+spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature \
+    --only dependencies py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
 ```
 
 ---
@@ -206,10 +202,8 @@ So this must be done on **afe**:
 
 ```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error \
-    --no-check-signature \
-    py-cryptography py-maturin py-rpds-py ecflow \
-    2>&1 | tee log.install.rust-and-ecflow ; bell
+spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error --no-check-signature \
+    py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.rust-and-ecflow ; bell
 ```
 
 NAS limits login nodes to 2 processes, hence `-j 2`.
@@ -220,9 +214,7 @@ NAS limits login nodes to 2 processes, hence `-j 2`.
 
 ```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 16 --verbose --fail-fast --show-log-on-error \
-    --no-check-signature \
-    2>&1 | tee log.install.after-cargo ; bell
+spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install.after-cargo ; bell
 ```
 
 > **Note:** You may need to re-run this command multiple times. Some builds fail intermittently but succeed on retry.
@@ -234,9 +226,7 @@ spack install -j 16 --verbose --fail-fast --show-log-on-error \
 If you encounter another package that insists on network access:
 
 ```bash
-spack install -j 2 --verbose --fail-fast --show-log-on-error \
-    --no-check-signature <package> \
-    |& tee log.install.<package> ; bell
+spack install -j 2 --verbose --fail-fast --show-log-on-error --no-check-signature <package> |& tee log.install.<package> ; bell
 ```
 
 Again, this must be done on an **afe** login node because of the CPU architecture.

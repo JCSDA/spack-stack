@@ -1,0 +1,49 @@
+packages:
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.17.0
+  intel-oneapi-compilers:
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.0
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
+      modules:
+      - comp-intel/2025.3.0
+      extra_attributes:
+        compilers:
+          c: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/icx
+          cxx: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/icpx
+          fortran: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/ifx
+        environment:
+          prepend_path:
+            PATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin
+            CPATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/include
+            LD_LIBRARY_PATH: '/nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64'
+        extra_rpaths:
+        - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64
+        - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib
+  gcc:
+    externals:
+    - spec: gcc@12.3.0 languages:='c,c++'
+      prefix: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4
+      modules:
+      - comp-gcc/12.3.0-TOSS4
+      extra_attributes:
+        compilers:
+          c: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gcc
+          cxx: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/g++
+          fortran: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gfortran
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.17.0
+      prefix: /nobackupp28/gmao_SIteam/intel/oneapi
+      modules:
+      - mpi-impi/2021.17
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3.0
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
+      modules:
+        - math-mkl/2025.3

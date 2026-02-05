@@ -1,3 +1,8 @@
 mirrors:
-  local-source: file:///swbuild/gmao_SIteam/spack-stack/source-cache
-  local-binary: file:///swbuild/gmao_SIteam/spack-stack/binary-cache-spack-v1
+  local-source:
+    url: file:///swbuild/gmao_SIteam/spack-stack/source-cache
+    binary: false
+  local-binary:
+    url: file:///swbuild/gmao_SIteam/spack-stack/build-cache
+    binary: true
+
