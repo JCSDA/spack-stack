@@ -27,6 +27,7 @@ class JediGeosEnv(BundlePackage):
     depends_on("gftl-shared", type="run")
     depends_on("fargparse", type="run")
     depends_on("pflogger", type="run")
+    depends_on("pfunit", type="run")
     #
     depends_on("py-numpy", type="run")
 

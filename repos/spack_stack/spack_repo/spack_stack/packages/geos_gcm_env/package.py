@@ -20,6 +20,7 @@ class GeosGcmEnv(BundlePackage):
 
     depends_on("base-env", type="run")
     depends_on("blas", type="run")
+    depends_on("lapack", type="run")
     depends_on("mepo", type="run")
     depends_on("esmf", type="run")
     # mapl is built as part of GEOS, don't load;
@@ -28,10 +29,13 @@ class GeosGcmEnv(BundlePackage):
     depends_on("gftl-shared", type="run")
     depends_on("fargparse", type="run")
     depends_on("pflogger", type="run")
+    depends_on("pfunit", type="run")
     #
     depends_on("py-numpy", type="run")
     depends_on("py-pyyaml", type="run")
     depends_on("py-ruamel-yaml", type="run")
     depends_on("udunits", type="run")
+
+    depends_on("perl", type="run")
 
     # There is no need for install() since there is no code.
