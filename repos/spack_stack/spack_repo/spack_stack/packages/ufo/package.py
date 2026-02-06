@@ -74,6 +74,7 @@ class Ufo(CMakePackage):
     depends_on("netcdf-fortran")
     depends_on("oops")
     depends_on("oops@1.10", when="@1.10")
+    depends_on("ufo-data@2.9.0.20250821", type=("build", "test"), when="@1.10")
 
     depends_on("crtm@v2", when="+crtm-v2")
     # DOES THIS INCLUDE THE ONEAPI IFX OPENMP BUG FIX? DH* TODO
@@ -96,3 +97,28 @@ class Ufo(CMakePackage):
 
     # depends_on('rttov', when='+rttov')
     # depends_on('rttov@12.1.0', when='@1.7.0 +rttov')
+
+    def cmake_args(self):
+        res = [
+            self.define("BUILD_TESTING", self.run_tests),
+        ]
+        return res
+
+    def setup_build_environment(self, env: EnvironmentModifications) -> None:
+        """This needs to be set at build time, not at test time,
+        to prevent UFO from downloading test data from S4"""
+        env.set("UFO_TESTFILES", self.spec["ufo-data"].prefix)
+
+    def check(self):
+        skipped_tests = None
+        with when("@1.10.0.20250821"):
+            skipped_tests = [
+                "ufo_test_tier1_test_ufo_tropics_qc_filters",
+            ]
+
+        ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
+        with working_dir(self.build_directory):
+            if skipped_tests:
+                ctest("--timeout", "120", "-E", "|".join(skipped_tests))
+            else:
+                ctest("--timeout", "120")

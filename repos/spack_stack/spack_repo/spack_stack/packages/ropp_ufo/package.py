@@ -32,3 +32,19 @@ class RoppUfo(CMakePackage):
     depends_on("jedi-cmake", type=("build"))
     depends_on("netcdf-c")
     depends_on("netcdf-fortran")
+
+    # ropp-ufo currently has no tests, but we keep
+    # this section for consistency with the other
+    # JEDI packages and for future use.
+    def check(self):
+        skipped_tests = None
+        #with when("@11.0.20251022"):
+        #    skipped_tests = [
+        #    ]
+        #
+        ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
+        with working_dir(self.build_directory):
+            if skipped_tests:
+                ctest("--timeout", "120", "-E", "|".join(skipped_tests))
+            else:
+                ctest("--timeout", "120")

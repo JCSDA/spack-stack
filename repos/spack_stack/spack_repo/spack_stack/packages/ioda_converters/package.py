@@ -50,3 +50,26 @@ class IodaConverters(CMakePackage):
     depends_on("oops")
     depends_on("py-cartopy")
     depends_on("py-pybind11")
+
+    # For running checks
+    depends_on("nccmp")
+    depends_on("py-eccodes")
+    depends_on("py-h5py")
+    depends_on("py-netcdf4")
+    depends_on("py-pandas")
+    depends_on("py-pyhdf")
+    depends_on("py-pyyaml")
+    depends_on("py-xarray")
+
+    def check(self):
+        skipped_tests = None
+        #with when("@0.0.1.20250830"):
+        #    skipped_tests = [
+        #    ]
+        #
+        ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
+        with working_dir(self.build_directory):
+            if skipped_tests:
+                ctest("-E", "|".join(skipped_tests))
+            else:
+                ctest()
