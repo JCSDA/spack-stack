@@ -1,7 +1,9 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = spack-stack-dev
+  #url = https://github.com/jcsda/spack
+  #branch = spack-stack-dev
+  url = https://github.com/climbfuji/spack
+  branch = bugfix/dont_traverse_root
 [submodule "repos/builtin"]
   path = repos/builtin
   url = https://github.com/jcsda/spack-packages
