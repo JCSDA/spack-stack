@@ -8,6 +8,10 @@ from spack.extensions.stack.cmd.stack_cmds.setup_meta_modules import (
     setup_meta_modules_parser,
     stack_setup_meta_modules,
 )
+from spack.extensions.stack.cmd.stack_cmds.check_preferred_compiler import (
+    setup_preferred_compiler_parser,
+    stack_check_preferred_compiler,
+)
 from spack.extensions.stack.stack_paths import stack_path
 
 description = "Create spack-stack environment"
@@ -26,10 +30,17 @@ def setup_parser(subparser):
     sp = subparser.add_subparsers(metavar='SUBCOMMAND', dest='stack_command')
     create_parser = sp.add_parser('create',
                                   help='Create spack-stack environment or container.')
-    meta_modules_parser = sp.add_parser('setup-meta-modules',
-                                        help='Create lmod/lua or tcl/tk meta-modules')
+    meta_modules_parser = sp.add_parser(
+        'setup-meta-modules',
+        help='Create lmod/lua or tcl/tk meta-modules',
+    )
+    preferred_compiler_parser = sp.add_parser(
+        'check-preferred-compiler',
+        help='Check that the preferred compiler is being used',
+    )
     setup_create_parser(create_parser)
     setup_meta_modules_parser(meta_modules_parser)
+    setup_preferred_compiler_parser(preferred_compiler_parser)
 
 
 # Main command that calls subcommands
@@ -38,3 +49,5 @@ def stack(parser, args):
         stack_create(parser, args)
     if args.stack_command == 'setup-meta-modules':
         stack_setup_meta_modules(parser, args)
+    if args.stack_command == 'check-preferred-compiler':
+        stack_check_preferred_compiler(parser, args)
