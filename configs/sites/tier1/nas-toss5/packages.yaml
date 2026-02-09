@@ -1,0 +1,120 @@
+packages:
+  all:
+    target: [x86_64_v3]
+### Modification of common packages
+  # Problems building shared hdf-eos2 with Intel, not needed
+  hdf-eos2:
+    variants: ~shared
+  met:
+    variants: +python +grib2 +graphics +lidar2nc +modis
+  zlib-api:
+    buildable: False
+### All other external packages listed alphabetically
+  automake:
+    externals:
+    - spec: automake@1.16.2
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@5.1.8
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.35.2~gold~headers
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.7.4
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@4.2.0
+      prefix: /nobackup/gmao_SIteam/cmake/cmake-4.2.0-TOSS5
+  coreutils:
+    externals:
+    - spec: coreutils@8.32
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.7
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.8.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@5.1.0
+      prefix: /usr
+  gh:
+    externals:
+    - spec: gh@2.83.1
+      prefix: /nobackup/gmao_SIteam/gh/2.83.1
+  git:
+    buildable: False
+    externals:
+    - spec: git@2.52.0~tcltk
+      prefix: /nobackup/gmao_SIteam/git/git-2.52.0-TOSS5
+  git-lfs:
+    buildable: False
+    externals:
+    - spec: git-lfs@3.7.1
+      prefix: /nobackup/gmao_SIteam/git-lfs/3.7.1
+  gmake:
+    externals:
+    - spec: gmake@4.333
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.6
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.4
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.19
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.32.1~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.7.3
+      prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@5.15.18
+      prefix: /nobackup/gmao_SIteam/qt5/5.15.18-TOSS5
+  sed:
+    externals:
+    - spec: sed@4.8
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.14.1
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.34
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.21.1
+      prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
