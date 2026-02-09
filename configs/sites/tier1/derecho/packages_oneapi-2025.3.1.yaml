@@ -25,14 +25,14 @@ packages:
           fortran: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/compiler/2025.3/bin/ifx
         environment:
           prepend_path:
-            CPATH: /usr/include/c++/13
-            LD_LIBRARY_PATH: /usr/lib64/gcc/x86_64-suse-linux/13
+            #CPATH: /usr/include/c++/13/x86_64-suse-linux:/usr/include/c++/13
+            #LD_LIBRARY_PATH: /usr/lib64/gcc/x86_64-suse-linux/13
+            #PATH: /opt/cray/pe/gcc-native/13/bin
           set:
-            #CONFIG_SITE: ''
             # https://github.com/JCSDA/spack-stack/issues/957
-            FI_CXI_RX_MATCH_MODE: 'hybrid'
+            FI_CXI_RX_MATCH_MODE: hybrid
             # https://github.com/JCSDA/spack-stack/issues/1012
-            I_MPI_EXTRA_FILESYSTEM: 'ON'
+            I_MPI_EXTRA_FILESYSTEM: ON
   gcc:
     buildable: false
     externals:
@@ -49,10 +49,9 @@ packages:
           fortran: /opt/cray/pe/gcc-native/13/bin/gfortran
         environment:
           set:
-            #CONFIG_SITE: ''
-            PE_GCC_EXTERNAL: 'native'
+            PE_GCC_EXTERNAL: native
             # https://github.com/JCSDA/spack-stack/issues/957
-            FI_CXI_RX_MATCH_MODE: 'hybrid'
+            FI_CXI_RX_MATCH_MODE: hybrid
   cray-mpich:
     buildable: false
     externals:
@@ -62,8 +61,9 @@ packages:
       - craype-network-ofi
       - cray-mpich/8.1.32
       - libfabric/1.22.0
+      - cray-pals/1.6.1
   intel-oneapi-mkl:
     buildable: false
     externals:
     - spec: intel-oneapi-mkl@2025.3
-      prefix: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/mkl/2025.3
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1

@@ -23,17 +23,17 @@ packages:
           fortran: /opt/cray/pe/gcc-native/13/bin/gfortran
         environment:
           set:
-            #CONFIG_SITE: ''
-            PE_GCC_EXTERNAL: 'native'
-          set:
+            PE_GCC_EXTERNAL: native
             # https://github.com/JCSDA/spack-stack/issues/957
-            FI_CXI_RX_MATCH_MODE: 'hybrid'
+            FI_CXI_RX_MATCH_MODE: hybrid
   cray-mpich:
     buildable: false
     externals:
     - spec: cray-mpich@8.1.32 +wrappers
-      prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
       modules:
       - craype-network-ofi
       - cray-mpich/8.1.32
       - libfabric/1.22.0
+      - cray-pals/1.6.1
+
