@@ -2,7 +2,7 @@ packages:
   mpi:
     buildable: false
     require:
-    - intel-oneapi-mpi@2021.17.0
+    - intel-oneapi-mpi@2021.17
   intel-oneapi-compilers:
     externals:
     - spec: intel-oneapi-compilers@2025.3.0
@@ -36,14 +36,14 @@ packages:
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.17.0
-      prefix: /nobackupp28/gmao_SIteam/intel/oneapi
+    - spec: intel-oneapi-mpi@2021.17
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
       - mpi-impi/2021.17
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.3.0
+    - spec: intel-oneapi-mkl@2025.3
       prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
         - math-mkl/2025.3
