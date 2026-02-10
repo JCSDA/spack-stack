@@ -1,13 +1,17 @@
 packages:
     # Virtual provider settings
     jpeg:
-      require: [libjpeg-turbo]
+      require:
+      - libjpeg-turbo
     pkgconfig:
-      require: [pkg-config]
+      require:
+      - pkg-config
     yacc:
-      require: [bison]
+      require:
+      - bison
     zlib-api:
-      require: [zlib]
+      require:
+      - zlib
     # Individual package settings
     awscli-v2:
       require:
@@ -21,9 +25,31 @@ packages:
     boost:
       require:
       - '@1.84.0'
-      - ~atomic +chrono +date_time +exception +filesystem ~graph ~iostreams ~locale ~log
-      - ~math ~mpi ~numpy +pic +program_options +python ~random +regex +serialization
-      - +system +test +thread +timer ~wave cxxstd=17 visibility=hidden
+      - ~atomic
+      - +chrono
+      - +date_time
+      - +exception
+      - +filesystem
+      - ~graph
+      - ~iostreams
+      - ~locale
+      - ~log
+      - ~math
+      - ~mpi
+      - ~numpy
+      - +pic
+      - +program_options
+      - +python
+      - ~random
+      - +regex
+      - +serialization
+      - +system
+      - +test
+      - +thread
+      - +timer
+      - ~wave
+      - cxxstd=17
+      - visibility=hidden
     bufr:
       require:
       - '@12.1.0'
@@ -37,16 +63,21 @@ packages:
       - +pic
     cdo:
       require:
-      - any_of: ['@2.3.0 ~openmp']
+      - ~openmp
+      - any_of:
+        - '@2.3.0'
         when: '%intel@2021:'
         message: 2.3.0 is the last version to use C++17, use with Intel Classic
-      - any_of: ['@2.3.0 ~openmp']
+      - any_of:
+        - '@2.3.0'
         when: '%gcc@:10'
         message: 2.3.0 is the last version to use C++17, use with GCC 10 and earlier
-      - any_of: ['@2.3.0 ~openmp']
+      - any_of:
+        - '@2.3.0'
         when: '%apple-clang@:14'
         message: 2.3.0 is the last version to use C++17, use with Apple Clang 14 and earlier
-      - any_of: ['@2.0.5 ~openmp']
+      - any_of:
+        - '@2.0.5'
         when: '%intel@:2020'
         message: 2.0.5 is the last version to use C++14, use with Intel Classic 2020 and earlier
     cmake:
@@ -63,7 +94,9 @@ packages:
     eccodes:
       require:
       - '@2.33.0'
-      - +netcdf +png +tools
+      - +netcdf
+      - +png
+      - +tools
     ecflow:
       require:
       - '@5.11.4'
@@ -71,11 +104,15 @@ packages:
     eckit:
       require:
       - '@1.32.3'
-      - linalg=eigen,lapack compression=lz4,bzip2
+      - linalg=eigen,lapack
+      - compression=lz4,bzip2
     ecmwf-atlas:
       require:
       - '@0.44.1'
-      - +fckit +trans +tesselation +fftw
+      - +fckit
+      - +trans
+      - +tesselation
+      - +fftw
     ectrans:
       require:
       - '@1.7.0'
@@ -87,9 +124,17 @@ packages:
     # Also, check the acorn and derecho site configs which have esmf modifications.
     esmf:
       require:
-      - ~xerces ~pnetcdf +shared +external-parallelio
-      - any_of: ['@=8.6.1 snapshot=none', '@=8.8.0 snapshot=none', '@=8.9.0 snapshot=none', '@=8.9.1 snapshot=none']
-      - any_of: ['fflags="-fp-model precise" cxxflags="-fp-model precise"']
+      - ~xerces
+      - ~pnetcdf
+      - +shared
+      - +external-parallelio
+      - any_of:
+        - '@=8.6.1 snapshot=none'
+        - '@=8.8.0 snapshot=none'
+        - '@=8.9.0 snapshot=none'
+        - '@=8.9.1 snapshot=none'
+      - any_of:
+        - 'fflags="-fp-model precise" cxxflags="-fp-model precise"'
         when: '%intel'
         message: Extra ESMF compile options for Intel
     expat:
@@ -111,7 +156,12 @@ packages:
     fms:
       require:
       - '@2024.02'
-      - precision=32,64 +quad_precision +openmp +pic build_type=Release +deprecated_io
+      - precision=32,64
+      - +quad_precision
+      - +openmp
+      - +pic
+      - build_type=Release
+      - +deprecated_io
       - any_of:
         - +gfs_phys constants=GFS
         - ~gfs_phys constants=GEOS
@@ -138,17 +188,9 @@ packages:
     gfsio:
       require:
       - '@1.4.2'
-    ## https://github.com/spack/spack/issues/49358
-    ## https://github.com/spack/spack/pull/44323
-    #glib:
-    #  require:
-    #  - '@:2.78.3'
     global-workflow-env:
-      require: ['+uwtools']
-    ## To avoid duplicate packages being built
-    #gmake:
-    #  require:
-    #  - one_of: ['@=4.2.1', '@=4.4.1']
+      require:
+      - '+uwtools'
     grib-util:
       require:
       - '@1.4.0'
@@ -158,21 +200,26 @@ packages:
     gsi-ncdiag:
       require:
       - '@1.1.2'
-    #gsl-lite:
-    #  require:
-    #  - '@0.37.0'
     harfbuzz:
       # cmake-based harfbuzz fails during build
       require:
-      - one_of: ['build_system=meson', 'build_system=autotools']
+      - one_of:
+        - 'build_system=meson'
+        - 'build_system=autotools'
     hdf:
       require:
       - '@4.2.15'
-      - +external-xdr ~fortran ~netcdf
+      - +external-xdr
+      - ~fortran
+      - ~netcdf
     hdf5:
       require:
       - '@1.14.5'
-      - +hl +fortran +mpi +threadsafe ~szip
+      - +hl
+      - +fortran
+      - +mpi
+      - +threadsafe
+      - ~szip
     # Newer versions of hdf-eos2 require manual downloading, avoid
     hdf-eos2:
       require:
@@ -190,9 +237,6 @@ packages:
     ip2:
       require:
       - '@1.1.2'
-    #jasper:
-    #  require:
-    #  - '@2.0.32'
     jedi-cmake:
       require:
       - '@1.4.0'
@@ -202,10 +246,8 @@ packages:
     # https://github.com/JCSDA/spack-stack/actions/runs/20957699537/job/60226338267
     libaec:
       prefer:
-      - build_system=cmake generator=make
-    #libjpeg-turbo:
-    #  require:
-    #  - '@2.1.0'
+      - build_system=cmake
+      - generator=make
     libpng:
       require:
       - '@1.6.37'
@@ -222,17 +264,21 @@ packages:
     mapl:
       require:
       - '@2.53'
-      - ~shared ~f2py +pflogger
+      - ~shared
+      - ~f2py
+      - +pflogger
     met:
       require:
       - '@12.1.1'
-      - +python +grib2
+      - +python
+      - +grib2
     metplus:
       require:
       - '@6.1.0'
     metis:
       require:
-      - +int64 +real64
+      - +int64
+      - +real64
     mpich:
       require:
       - ~hwloc
@@ -255,7 +301,12 @@ packages:
     netcdf-c:
       require:
       - '@4.9.2'
-      - +dap +mpi ~parallel-netcdf ~szip +parallel_tests build_system=cmake
+      - +dap
+      - +mpi
+      - ~parallel-netcdf
+      - ~szip
+      - +parallel_tests
+      - build_system=cmake
     netcdf-cxx4:
       require:
       - '@4.3.1'
@@ -270,7 +321,8 @@ packages:
       - ~fortran
     openmpi:
       require:
-      - ~internal-hwloc +two_level_namespace
+      - ~internal-hwloc
+      - +two_level_namespace
     openssl:
       require:
       - +shared
@@ -328,18 +380,6 @@ packages:
     py-cryptography:
       require:
       - '@42'
-    ## Pin py-cython to avoid duplicate packages
-    #py-cython:
-    #  require:
-    #  - '@3'
-    ## As long as we need the "delayed" variant for py-dask,
-    ## we are restricted to version 2021.03.0 (last one that has it)
-    ## and newer than 2021.01.0 because of these issues:
-    ## https://github.com/JCSDA/spack-stack/issues/1216
-    ## https://github.com/pydata/xarray/issues/8917
-    #py-dask:
-    #  require:
-    #  - '@2021.3.0'
     # To avoid duplicate packages
     py-flit-core:
       require:
@@ -401,7 +441,8 @@ packages:
       - '@69'
     py-torch:
       require:
-      - +custom-protobuf ~mkldnn
+      - +custom-protobuf
+      - ~mkldnn
     # To avoid duplicate packages
     py-urllib3:
       require:
@@ -417,7 +458,15 @@ packages:
     scotch:
       require:
       - '@7.0.10'
-      - +mpi+metis~shared~threads~mpi_thread+noarch+esmumps+fortran determinism=FIXED_SEED
+      - +mpi
+      - +metis
+      - ~shared
+      - ~threads
+      - ~mpi_thread
+      - +noarch
+      - +esmumps
+      - +fortran
+      - determinism=FIXED_SEED
     sfcio:
       require:
       - '@1.4.2'
@@ -434,7 +483,7 @@ packages:
     sp:
       require:
       - '@2.5.0'
-      - 'precision=4,d,8'
+      - precision=4,d,8
     udunits:
       require:
       - '@2.2.28'
@@ -451,7 +500,8 @@ packages:
     w3emc:
       require:
       - '@2.13.0'
-      - precision=4,d,8 +build_deprecated
+      - precision=4,d,8
+      - +build_deprecated
     w3nco:
       require:
       - '@2.4.1'
@@ -459,7 +509,8 @@ packages:
     wgrib2:
       require:
       - '@3.8.0'
-      - +ipolates +netcdf
+      - +ipolates
+      - +netcdf
     wrf-io:
       require:
       - '@1.3.0'

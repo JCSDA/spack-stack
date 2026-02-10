@@ -11,11 +11,14 @@ packages:
       - llvm
     # Virtual provider settings
     blas:
-      require: [openblas]
+      require:
+      - openblas
     fftw-api:
-      require: [fftw]
+      require:
+      - fftw
     lapack:
-      require: [openblas]
+      require:
+      - openblas
     # Individual package settings
     ectrans:
       require:
