@@ -3,7 +3,5 @@ modules:
     enable::
     - lmod
     lmod:
-      include:
-      - python
       all:
         autoload: run
