@@ -22,7 +22,7 @@ class AdpPreprocessors(MakefilePackage):
     #license("UNKNOWN", checked_by="github_user1")
 
     # Update commit once 1.2.0 is released
-    version("1.2.0", commit="87e93306de9df9ff4d02bce84249976cfa2f4c97")
+    version("1.2.0", commit="c6f15e46496309c3893416ba4ccec7f003b93550")
     version("1.1.0", commit="b2d9d4ffb472eff9ab973ef2a12f574d92c9754b")
 
     # MakefilePackage dependencies
