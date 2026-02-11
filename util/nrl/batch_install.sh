@@ -509,6 +509,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       # Fix permissions for the bootstrap mirror
       fix_permissions ${host} ${bootstrap_mirror_path} 0
       update_bootstrap_mirror="false"
+      # When spack creates a bootstrap mirror, it populates the "spack" scope
+      # with compilers and packages it finds, which can create problems later
+      echo "Removing package config in spack/etc/spack created by spack boostrap mirror"
+      rm -vf spack/etc/spack/packages.yaml
     fi
 
     if [[ ! ${env_exists} == "true" ]]; then
