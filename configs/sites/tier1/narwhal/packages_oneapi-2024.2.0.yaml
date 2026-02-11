@@ -26,14 +26,7 @@ packages:
           set:
             CONFIG_SITE: ''
             # Force ifort not ifx
-        #    INTEL_COMPILER_TYPE: 'RECOMMENDED'
-        #  prepend_path:
-        #    PATH: /opt/cray/pe/gcc/12.2.0/snos/bin
-        #    CPATH: /opt/cray/pe/gcc/12.2.0/snos/include
-        #extra_rpaths:
-        #- /opt/cray/libfabric/1.22.0/lib64
-        #- /opt/cray/pe/gcc/12.2.0/snos/lib64
-        #- /opt/cray/pe/gcc/12.2.0/snos/lib
+            INTEL_COMPILER_TYPE: 'RECOMMENDED'
   gcc:
     buildable: false
     externals:
@@ -53,27 +46,6 @@ packages:
             PE_GCC_EXTERNAL: native
         extra_rpaths:
         - /opt/cray/libfabric/1.22.0/lib64
-        #- /usr/lib64/gcc/x86_64-suse-linux/13
-  #gcc:
-  #  buildable: false
-  #  externals:
-  #  - spec: gcc@12.2.0 languages:='c,c++'
-  #    prefix: /opt/cray/pe/gcc/12.2.0/snos
-  #    modules:
-  #    - PrgEnv-gnu/8.5.0
-  #    - gcc/12.2.0
-  #    extra_attributes:
-  #      compilers:
-  #        c: /opt/cray/pe/gcc/12.2.0/snos/bin/gcc
-  #        cxx: /opt/cray/pe/gcc/12.2.0/snos/bin/g++
-  #        fortran: /opt/cray/pe/gcc/12.2.0/snos/bin/gfortran
-  #      environment:
-  #        set:
-  #          CONFIG_SITE: ''
-  #      extra_rpaths:
-  #      - /opt/cray/libfabric/1.22.0/lib64
-  #      - /opt/cray/pe/gcc/12.2.0/snos/lib64
-  #      - /opt/cray/pe/gcc/12.2.0/snos/lib
   cray-mpich:
     buildable: false
     externals:
@@ -86,7 +58,6 @@ packages:
       extra_attributes:
         extra_rpaths:
         - /opt/cray/libfabric/1.22.0/lib64
-        # - /opt/cray/pe/mpich/8.1.30/ofi/intel/2022.1/lib
   intel-oneapi-mkl:
     buildable: false
     externals:

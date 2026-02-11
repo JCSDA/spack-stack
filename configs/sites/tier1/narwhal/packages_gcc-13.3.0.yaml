@@ -26,7 +26,6 @@ packages:
             PE_GCC_EXTERNAL: native
         extra_rpaths:
         - /opt/cray/libfabric/1.22.0/lib64
-        #- /usr/lib64/gcc/x86_64-suse-linux/13
   cray-mpich:
     buildable: false
     externals:
@@ -39,4 +38,3 @@ packages:
       extra_attributes:
         extra_rpaths:
         - /opt/cray/libfabric/1.22.0/lib64
-        #- /opt/cray/pe/mpich/8.1.30/ofi/gnu/12.3/lib
