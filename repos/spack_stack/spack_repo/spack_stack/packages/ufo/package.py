@@ -25,8 +25,6 @@ class Ufo(CMakePackage):
         when="@1.10.0.20250821",
     )
 
-    variant("crtm-v2", default=True, description="Build CRTM v2 operator")
-    variant("crtm-v3", default=False, description="Build CRTM v3 operator")
     # JCSDA-internal repository needed.
     variant("geos-aero", default=False, description="Build GEOS-AERO AOD operator")
     # Package gsw not yet available in spack
@@ -39,8 +37,6 @@ class Ufo(CMakePackage):
     variant("ropp", default=False, description="Build ROPP operator")
     # JCSDA-internal repository needed.
     variant("rttov", default=False, description="Build RTTOV operator")
-
-    conflicts("+crtm-v2 +crtm-v3", msg="UFO: choose either CRTM v2 or v3, not both.")
 
     conflicts("+geos-aero", msg="UFO: GEOS-AERO to be implemented.")
     conflicts("+gsw", msg="UFO: GSW to be implemented.")
@@ -58,6 +54,8 @@ class Ufo(CMakePackage):
     depends_on("boost")
     depends_on("cmake", type=("build"))
     depends_on("cmake@3.12:", type=("build"), when="@1.10:")
+    depends_on("crtm@3")
+    depends_on("crtm@=3.1.3", when="@1.10")
     depends_on("ecbuild", type=("build"))
     depends_on("ecbuild@3.3.2:", type=("build"), when="@1.10:")
     depends_on("eckit")
@@ -75,13 +73,6 @@ class Ufo(CMakePackage):
     depends_on("oops")
     depends_on("oops@1.10", when="@1.10")
     depends_on("ufo-data@2.9.0.20250821", type=("build", "test"), when="@1.10")
-
-    depends_on("crtm@v2", when="+crtm-v2")
-    # DOES THIS INCLUDE THE ONEAPI IFX OPENMP BUG FIX? DH* TODO
-    depends_on("crtm@=v2.4.1-jedi.2", when="@1.10 +crtm-v2")
-
-    depends_on("crtm@3", when="+crtm-v3")
-    depends_on("crtm@=3.1.2", when="@1.10 +crtm-v3")
 
     # depends_on('geos-aero', when='+geos-aero')
     # depends_on('geos-aero@0.0.0', when='@1.7.0 +geos-aero')

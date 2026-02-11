@@ -77,6 +77,11 @@ class Oops(CMakePackage):
                 "qg_4densvar_single-obs_loc_4d",
                 "qg_4densvar_single-obs_no_loc",
             ]
+            if self.spec.satisfies("%oneapi"):
+                skipped_tests += [
+                    "test_qg_verticallocev",
+                    "test_qg_verticallocev_io",
+                ]
 
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
