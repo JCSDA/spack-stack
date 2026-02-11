@@ -1,0 +1,40 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=13.3.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@8.1.30
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+      prefix: /usr
+      modules:
+      - PrgEnv-gnu/8.5.0
+      - gcc-native/13.2
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc-13
+          cxx: /usr/bin/g++-13
+          fortran: /usr/bin/gfortran-13
+        environment:
+          set:
+            CONFIG_SITE: ''
+            PE_GCC_EXTERNAL: native
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.30
+      prefix: /opt/cray/pe/mpich/8.1.30/ofi/gnu/12.3
+      modules:
+      - craype-network-ofi
+      - cray-mpich/8.1.30
+      - libfabric/1.22.0
+      extra_attributes:
+        extra_rpaths:
+        - /opt/cray/libfabric/1.22.0/lib64
