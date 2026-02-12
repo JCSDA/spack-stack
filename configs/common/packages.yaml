@@ -156,7 +156,6 @@ packages:
     fms:
       require:
       - '@2025.03'
-      - '@2024.02'
       - precision=32,64
       - +quad_precision
       - +openmp
