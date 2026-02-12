@@ -131,7 +131,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   narwhal)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.2.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
