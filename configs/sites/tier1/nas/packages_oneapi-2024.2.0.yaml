@@ -1,9 +1,16 @@
 packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2024.2.0']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=12.3.0']
+      when: '%gcc'
   mpi:
     buildable: false
     require:
     - "mpt@2.30"
   intel-oneapi-compilers:
+    buildable: false
     externals:
     - spec: intel-oneapi-compilers@2024.2.0
       prefix: /nobackup/gmao_SIteam/intel/oneapi
@@ -23,6 +30,7 @@ packages:
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib
   gcc:
+    buildable: false
     externals:
     - spec: gcc@12.3.0 languages:='c,c++'
       prefix: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4
@@ -36,12 +44,12 @@ packages:
   mpt:
     buildable: false
     externals:
-    - spec: mpt@2.30%oneapi@=2024.2.0
+    - spec: mpt@2.30
       prefix: /nasa/hpe/mpt/2.30_rhel810
       modules:
       - mpi-hpe/mpt.2.30
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
+    - spec: intel-oneapi-mkl@2024.2.0
       prefix: /nobackup/gmao_SIteam/intel/oneapi
