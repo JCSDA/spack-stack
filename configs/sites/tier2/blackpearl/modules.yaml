@@ -4,13 +4,12 @@ modules:
     - tcl
     tcl:
       include:
-      # List of packages for which we need modules that are blacklisted by default
-      # Compiler
+      # Compiler modules
       - apple-clang
       - gcc
       - intel-oneapi-compilers
       - llvm
-      # MPI
+      # MPI modules
       - cray-mpich
       - intel-mpi
       - intel-oneapi-mpi

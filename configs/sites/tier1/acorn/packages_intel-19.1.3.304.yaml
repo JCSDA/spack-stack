@@ -4,6 +4,12 @@ packages:
   #
   all:
     prefer: ['%intel']
+  c:
+    prefer: ['intel-oneapi-compilers-classic']
+  cxx:
+    prefer: ['intel-oneapi-compilers-classic']
+  fortran:
+    prefer: ['intel-oneapi-compilers-classic']
   intel-oneapi-compilers-classic:
     buildable: false
     externals:

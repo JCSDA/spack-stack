@@ -7,6 +7,9 @@ case $hostname in
   *acorn.wcoss2*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/wcoss2/setup.sh
     ;;
+  *derecho*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/derecho/setup.sh
+    ;;
 esac
 
 export SPACK_STACK_DIR

@@ -11,11 +11,14 @@ packages:
       - intel-oneapi-compilers
     # Virtual package settings
     blas:
-      require: ['intel-oneapi-mkl']
+      require:
+      - intel-oneapi-mkl
     fftw-api:
-      require: ['intel-oneapi-mkl']
+      require:
+      - intel-oneapi-mkl
     lapack:
-      require: ['intel-oneapi-mkl']
+      require:
+      - intel-oneapi-mkl
     # Individual package settings
     antlr:
       require:
@@ -28,7 +31,8 @@ packages:
       - '%c,cxx=gcc'
     ectrans:
       require:
-      - +mkl ~fftw
+      - +mkl
+      - ~fftw
     gmake:
       require:
       - '%c=gcc'

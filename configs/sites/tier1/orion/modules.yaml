@@ -3,6 +3,4 @@ modules:
     enable::
     - lmod
     lmod:
-      include:
-      - python
       - openssl

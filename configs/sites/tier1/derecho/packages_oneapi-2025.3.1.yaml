@@ -1,0 +1,65 @@
+packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2025.3.1']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=13.3.1']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@8.1.32
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.1
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1
+      modules:
+        - crayenv/25.03
+        - PrgEnv-intel/8.6.0
+        - intel/2025.3.1
+      extra_attributes:
+        compilers:
+          c: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/compiler/2025.3/bin/icx
+          cxx: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/compiler/2025.3/bin/icpx
+          fortran: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/compiler/2025.3/bin/ifx
+        environment:
+          set:
+            # https://github.com/JCSDA/spack-stack/issues/957
+            FI_CXI_RX_MATCH_MODE: hybrid
+            # https://github.com/JCSDA/spack-stack/issues/1012
+            I_MPI_EXTRA_FILESYSTEM: ON
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@13.3.1 languages:='c,c++'
+      prefix: /opt/cray/pe/gcc-native/13
+      modules:
+      - crayenv/25.03
+      - PrgEnv-gnu/8.6.0
+      - gcc-native/13.2
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc-native/13/bin/gcc
+          cxx: /opt/cray/pe/gcc-native/13/bin/g++
+          fortran: /opt/cray/pe/gcc-native/13/bin/gfortran
+        environment:
+          set:
+            PE_GCC_EXTERNAL: native
+            # https://github.com/JCSDA/spack-stack/issues/957
+            FI_CXI_RX_MATCH_MODE: hybrid
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.32 +wrappers
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
+      modules:
+      - craype-network-ofi
+      - cray-mpich/8.1.32
+      - libfabric/1.22.0
+      - cray-pals/1.6.1
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3
+      prefix: /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1
