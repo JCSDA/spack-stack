@@ -1,4 +1,10 @@
 packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2024.2.0']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=12.5.0']
+      when: '%gcc'
   mpi:
     buildable: false
     require:
@@ -30,6 +36,7 @@ packages:
         - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib64
         - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib
   gcc:
+    buildable: false
     externals:
     - spec: gcc@12.5.0 languages:='c,c++'
       prefix: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5
@@ -43,7 +50,7 @@ packages:
   cray-mpich:
     buildable: false
     externals:
-    - spec: cray-mpich@8.1.33%oneapi@=2024.2.0
+    - spec: cray-mpich@8.1.33
       prefix: /opt/cray/pe/mpich/8.1.33/ofi/intel/2022.1
       modules:
       - cray-libpals/1.7.1
@@ -57,5 +64,5 @@ packages:
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
+    - spec: intel-oneapi-mkl@2024.2
       prefix: /nasa/intel-test/oneapi

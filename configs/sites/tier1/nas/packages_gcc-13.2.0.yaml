@@ -1,4 +1,8 @@
 packages:
+  all:
+    require:
+    - any_of: ['%gcc@=13.2.0']
+      when: '%gcc'
   mpi:
     buildable: false
     require:
@@ -16,6 +20,7 @@ packages:
           cxx: /nobackup/gmao_SIteam/gcc/gcc-13.2.0/bin/g++
           fortran: /nobackup/gmao_SIteam/gcc/gcc-13.2.0/bin/gfortran
   openmpi:
+    buildable: false
     externals:
     - spec: openmpi@4.1.8 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+lustre fabrics=ucx schedulers=tm %gcc@13.2.0
       prefix: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-13.2.0

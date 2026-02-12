@@ -51,5 +51,7 @@ packages:
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2.0
+    - spec: intel-oneapi-mkl@2024.2
       prefix: /nobackup/gmao_SIteam/intel/oneapi
+      modules:
+        - math-mkl/2024.2

@@ -1,9 +1,16 @@
 packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2025.3.0']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=12.3.0']
+      when: '%gcc'
   mpi:
     buildable: false
     require:
     - intel-oneapi-mpi@2021.17
   intel-oneapi-compilers:
+    buildable: false
     externals:
     - spec: intel-oneapi-compilers@2025.3.0
       prefix: /nobackup/gmao_SIteam/intel/oneapi
@@ -23,6 +30,7 @@ packages:
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib
   gcc:
+    buildable: false
     externals:
     - spec: gcc@12.3.0 languages:='c,c++'
       prefix: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4
