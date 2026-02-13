@@ -52,14 +52,21 @@ class IodaConverters(CMakePackage):
     depends_on("py-pybind11")
 
     # For running checks
-    depends_on("nccmp")
-    depends_on("py-eccodes")
-    depends_on("py-h5py")
-    depends_on("py-netcdf4")
-    depends_on("py-pandas")
-    depends_on("py-pyhdf")
-    depends_on("py-pyyaml")
-    depends_on("py-xarray")
+    depends_on("nccmp", type=("build", "test"))
+    depends_on("py-pycodestyle", type=("build", "test"))
+    depends_on("py-eccodes", type=("build", "test"))
+    depends_on("py-h5py", type=("build", "test"))
+    depends_on("py-netcdf4", type=("build", "test"))
+    depends_on("py-pandas", type=("build", "test"))
+    depends_on("py-pyhdf", type=("build", "test"))
+    depends_on("py-pyyaml", type=("build", "test"))
+    depends_on("py-xarray", type=("build", "test"))
+
+    def cmake_args(self):
+        res = [
+            self.define("BUILD_TESTING", self.run_tests),
+        ]
+        return res
 
     def check(self):
         skipped_tests = None
@@ -70,6 +77,6 @@ class IodaConverters(CMakePackage):
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
             if skipped_tests:
-                ctest("-E", "|".join(skipped_tests))
+                ctest("--timeout", "120", "-E", "|".join(skipped_tests))
             else:
-                ctest()
+                ctest("--timeout", "120")

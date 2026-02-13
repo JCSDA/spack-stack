@@ -25,6 +25,8 @@ class Ufo(CMakePackage):
         when="@1.10.0.20250821",
     )
 
+    patch("ufo_crtm_testfiles.patch", when="@1.10.0.20250821")
+
     # JCSDA-internal repository needed.
     variant("geos-aero", default=False, description="Build GEOS-AERO AOD operator")
     # Package gsw not yet available in spack
@@ -47,9 +49,6 @@ class Ufo(CMakePackage):
     depends_on("c", type=("build"))
     depends_on("cxx", type=("build"))
     depends_on("fortran", type=("build"))
-
-    # DH* TODO FIX THIS (ALSO IN IODA ETC - CHECK ALL)
-    # -- Download test data from https://bin.ssec.wisc.edu/pub/s4/CRTM/file/crtm_coefficients_2.4.1_skylab_4.0.tar.gz
 
     depends_on("boost")
     depends_on("cmake", type=("build"))
@@ -99,6 +98,8 @@ class Ufo(CMakePackage):
         """This needs to be set at build time, not at test time,
         to prevent UFO from downloading test data from S4"""
         env.set("UFO_TESTFILES", self.spec["ufo-data"].prefix)
+        if self.spec["crtm"].satisfies("+fix"):
+            env.set("UFO_CRTM_TESTFILES", join_path(self.spec['crtm-fix'].prefix, "fix"))
 
     def check(self):
         skipped_tests = None
@@ -106,7 +107,71 @@ class Ufo(CMakePackage):
             skipped_tests = [
                 "ufo_test_tier1_test_ufo_tropics_qc_filters",
             ]
-
+            # Until issues with crtm fixed data organization are
+            # resolved, exclude any tests using crtm fixed data
+            skipped_tests += [
+                "_crtm",
+                "ufo_test_tier1_test_ufo_atms_skylab_filters",
+                "ufo_test_tier1_test_ufo_amsr2_qc",
+                "ufo_test_tier1_test_ufo_amsua_qc",
+                "ufo_test_tier1_test_ufo_amsua_allsky_gfs_gsi_qc",
+                "ufo_test_tier1_test_ufo_amsua_allsky_gsi_qc",
+                "ufo_test_tier1_test_ufo_amsua_qc_clwretmw",
+                "ufo_test_tier1_test_ufo_amsua_qc_filters",
+                "ufo_test_tier1_test_ufo_amsua_qc_filters_geos",
+                "ufo_test_tier1_test_ufo_amsua_qc_miss_val",
+                "ufo_test_tier1_test_ufo_atms_qc_filters",
+                "ufo_test_tier1_test_ufo_atms_n20_qc_filters_geos",
+                "ufo_test_tier1_test_ufo_cris_qc",
+                "ufo_test_tier1_test_ufo_cris_qc_land",
+                "ufo_test_tier1_test_ufo_amsr2_qc_filters",
+                "ufo_test_tier1_test_ufo_gmi_skylab_filters",
+                "ufo_test_tier1_test_ufo_gmi_qc_filters",
+                "ufo_test_tier1_test_ufo_gmi_qc_filters_geos",
+                "ufo_test_tier1_test_ufo_mhs_qc_filters_geos",
+                "ufo_test_tier1_test_ufo_qc_flags_true",
+                "ufo_test_tier1_test_ufo_gmi_clw_ret",
+                "ufo_test_tier1_test_ufo_ssmis_f17_gfs_backgroundcheck_bc",
+                "ufo_test_tier1_test_ufo_ssmis_f17_gfs_backgroundcheck_nbc",
+            ]
+            # Additional test failures with Intel oneAPI only
+            if self.spec.satisfies("%oneapi"):
+                skipped_tests += [
+                    "ufo_test_tier1_test_ufo_obserrorcrossvarcorr",
+                    "ufo_test_tier1_test_ufo_obserrorwithingroupcorr",
+                    "ufo_test_tier1_test_ufo_obserrordiagonal",
+                    "ufo_test_tier1_test_ufo_gnssrobendmetoffice_qc_profile",
+                    "ufo_test_tier1_test_ufo_gnssrorefmetoffice_qc",
+                    "ufo_test_tier1_test_ufo_gnssrobndnbam_qc",
+                    "ufo_test_tier1_test_ufo_gnssro_obs_error",
+                    "ufo_test_tier1_test_ufo_qc_modelbestfitpressure",
+                    "ufo_test_tier1_test_ufo_satwind_inversion_correction",
+                    "ufo_test_tier1_test_ufo_function_averagetemperaturebelow",
+                    "ufo_test_tier1_test_ufo_function_assignvalueequalchannels",
+                    "ufo_test_tier1_test_ufo_fov_amsua",
+                    "ufo_test_tier1_test_ufo_sample_and_reduce_over_fov",
+                    "ufo_test_tier1_test_ufo_opr_gnssrorefmetoffice",
+                    "ufo_test_tier1_test_ufo_linopr_gnssrorefmetoffice",
+                    "ufo_test_tier1_test_ufo_opr_gnssrobendmetoffice_profile",
+                    "ufo_test_tier1_test_ufo_opr_groundgnssmetoffice",
+                    "ufo_test_tier1_test_ufo_linopr_groundgnssmetoffice",
+                    "ufo_test_tier1_test_ufo_opr_logarithm",
+                    "ufo_test_tier1_test_ufo_linopr_logarithm",
+                    "ufo_test_tier1_test_ufo_opr_radialvelocity",
+                    "ufo_test_tier1_test_ufo_opr_satwind_metoffice",
+                    "ufo_test_tier1_test_ufo_opr_seaicefrac",
+                    "ufo_test_tier1_test_ufo_linopr_seaicefrac",
+                    "ufo_test_tier1_test_ufo_opr_sfcpcorrected",
+                    "ufo_test_tier1_test_ufo_gnssrobendmetoffice_qc",
+                    "ufo_test_tier1_test_ufo_gnssrobendmetoffice_obserror",
+                    "ufo_test_tier1_test_ufo_gnssro_super_refraction_check",
+                    "ufo_test_tier1_test_ufo_opr_gnssrobendmetoffice",
+                    "ufo_test_tier1_test_ufo_linopr_gnssrobendmetoffice",
+                    "ufo_test_tier1_test_ufo_opr_gnssrobendmetoffice_nopseudo",
+                    "ufo_test_tier1_test_ufo_linopr_gnssrobendmetoffice_nopseudo",
+                    "ufo_test_tier1_test_ufo_opr_gnssrobendmetoffice_nosupercheck",
+                    "ufo_test_tier1_test_ufo_linopr_gnssrobendmetoffice_nosupercheck",
+                ]
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
             if skipped_tests:

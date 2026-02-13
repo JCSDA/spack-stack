@@ -61,6 +61,7 @@ class Oops(CMakePackage):
 
     def cmake_args(self):
         res = [
+            self.define("BUILD_TESTING", self.run_tests),
             self.define_from_variant("ENABLE_LORENZ95_MODEL", "l95"),
             self.define_from_variant("ENABLE_QG_MODEL", "qg"),
             self.define_from_variant("ENABLE_MKL", "mkl"),
