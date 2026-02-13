@@ -22,7 +22,7 @@ packages:
   openmpi:
     buildable: false
     externals:
-    - spec: openmpi@4.1.8 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+lustre fabrics=ucx schedulers=tm %gcc@13.2.0
+    - spec: openmpi@4.1.8 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+lustre~internal-hwloc+two_level_namespace fabrics=ucx schedulers=tm %gcc@13.2.0
       prefix: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-13.2.0
       modules:
       - mpi-openmpi/4.1.8/gcc/13.2.0
