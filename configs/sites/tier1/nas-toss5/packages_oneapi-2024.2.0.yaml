@@ -65,4 +65,4 @@ packages:
     buildable: false
     externals:
     - spec: intel-oneapi-mkl@2024.2
-      prefix: /nasa/intel-test/oneapi
+      prefix: /nasa/intel/oneapi-test
