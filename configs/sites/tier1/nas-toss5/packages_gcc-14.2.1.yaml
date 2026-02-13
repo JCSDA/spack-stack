@@ -40,14 +40,15 @@ packages:
       - cray-dsmml/0.3.1
       - cray-mpich/8.1.33
       - mpi/mpich-gfortran
-    environment:
-      set:
-        MPICH_CC: gcc
-        MPICH_CXX: g++
-        MPICH_FC: gfortran
-        CC: gcc
-        CXX: g++
-        FC: gfortran
+      extra_attributes:
+        environment:
+          set:
+            MPICH_CC: gcc
+            MPICH_CXX: g++
+            MPICH_FC: gfortran
+            CC: gcc
+            CXX: g++
+            FC: gfortran
 
   intel-oneapi-mkl:
     buildable: false
