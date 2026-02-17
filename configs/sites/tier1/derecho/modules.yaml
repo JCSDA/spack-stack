@@ -2,7 +2,3 @@ modules:
   default:
     enable::
     - lmod
-    lmod:
-      include:
-      - cray-mpich
-      - python

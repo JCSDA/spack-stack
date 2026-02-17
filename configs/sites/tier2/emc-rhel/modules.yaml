@@ -4,6 +4,15 @@ modules:
     - lmod
     lmod:
       include:
-      # List of packages for which we need modules that are blacklisted by default
-      - openmpi
+      # Compiler modules
+      - apple-clang
+      - gcc
+      - intel-oneapi-compilers
+      - llvm
+      # MPI modules
+      - cray-mpich
+      - intel-mpi
+      - intel-oneapi-mpi
       - mpich
+      - mpt
+      - openmpi

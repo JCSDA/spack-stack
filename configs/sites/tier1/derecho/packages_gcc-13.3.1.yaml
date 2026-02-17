@@ -1,0 +1,39 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=13.3.1']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@8.1.32
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@13.3.1 languages:='c,c++,fortran'
+      prefix: /opt/cray/pe/gcc-native/13
+      modules:
+      - crayenv/25.03
+      - PrgEnv-gnu/8.6.0
+      - gcc-native/13.2
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc-native/13/bin/gcc
+          cxx: /opt/cray/pe/gcc-native/13/bin/g++
+          fortran: /opt/cray/pe/gcc-native/13/bin/gfortran
+        environment:
+          set:
+            PE_GCC_EXTERNAL: native
+            # https://github.com/JCSDA/spack-stack/issues/957
+            FI_CXI_RX_MATCH_MODE: hybrid
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.32 +wrappers
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
+      modules:
+      - craype-network-ofi
+      - cray-mpich/8.1.32
+      - libfabric/1.22.0
+      - cray-pals/1.6.1
+

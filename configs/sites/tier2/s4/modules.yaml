@@ -5,4 +5,3 @@ modules:
     lmod:
       include:
       - mpich
-      - python

@@ -131,7 +131,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   narwhal)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.2.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -509,6 +509,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       # Fix permissions for the bootstrap mirror
       fix_permissions ${host} ${bootstrap_mirror_path} 0
       update_bootstrap_mirror="false"
+      # When spack creates a bootstrap mirror, it populates the "spack" scope
+      # with compilers and packages it finds, which can create problems later
+      echo "Removing package config in spack/etc/spack created by spack boostrap mirror"
+      rm -vf spack/etc/spack/packages.yaml
     fi
 
     if [[ ! ${env_exists} == "true" ]]; then

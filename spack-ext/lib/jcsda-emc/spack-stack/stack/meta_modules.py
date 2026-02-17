@@ -8,8 +8,10 @@ import sys
 
 import spack
 import spack.environment as ev
-#    import spack.repo
 from spack.provider_index import ProviderIndex
+
+from spack.extensions.stack.common import ALIASES
+from spack.extensions.stack.common import get_preferred_compiler
 
 # logging.basicConfig(level=logging.INFO)
 logging.basicConfig(format="%(message)s", level=logging.DEBUG)
@@ -50,24 +52,6 @@ SUBSTITUTES_TEMPLATE = {
     "MPICXX": "",
     "MPIF77": "",
     "MPIROOT": "",
-}
-
-# Aliases to shorten module paths for tcl modules. These aliases must match
-# the compiler and MPI name translations in configs/common/modules_tcl.yaml
-ALIASES = {
-    "none" : "none",
-    # Compilers
-    "gcc" : "gcc",
-    "intel-oneapi-compilers-classic" : "intel",
-    "intel-oneapi-compilers" : "oneapi",
-    "llvm" : "llvm",
-    # MPI
-    "cray-mpich" : "cray-mpich",
-    # Do we still need intel-mpi, and if yes, use the same impi?
-    "intel-oneapi-mpi" : "impi",
-    "mpich" : "mpich",
-    "mpt" : "mpt",
-    "openmpi" : "openmpi",
 }
 
 
@@ -172,26 +156,6 @@ def substitute_config_vars(config_str):
     return config_str
 
 
-def get_preferred_compiler():
-    """Determine the preferred compiler by looking at
-    packages:
-      fortran:
-        prefer:
-        - COMPILER_NAME (gcc, intel-oneapi-compilers, llvm, ..)
-    """
-    try:
-        preferred_compilers = spack.config.get("packages")["fortran"]["prefer"]
-    except:
-        raise Exception(
-            """Unable to detect preferred compiler from environment.
-            Does the environment have the config entry 'packages:fortran:prefer?'"""
-        )
-    if len(preferred_compilers)>1:
-        raise Exception(f"Invalid value for packages:fortran:prefer is {preferred_compilers}")
-    preferred_compiler = preferred_compilers[0]
-    return preferred_compiler
-
-
 def remove_compiler_prefices_from_tcl_modulefiles(modulepath, compiler_list, mpi_provider, module_choice):
     """Remove compiler and mpi prefices from tcl modulefiles in modulepath"""
     logging.info(f"  ... ... removing compiler/mpi prefices from tcl modulefiles in {modulepath}")
@@ -243,7 +207,12 @@ def remove_compiler_prefices_from_tcl_modulefiles(modulepath, compiler_list, mpi
 
 
 def setup_meta_modules():
-    # Find currently active spack environment, activate here
+    """For an active environment, create meta-modules for the preferred
+    compiler and the MPI provider (compiled with the preferred compiler).
+    For tcl/tk environment modules, remove modulepath prefices from the
+    spack-generated modules and implement a module hiearchy modeled after
+    the lua/lmod modules."""
+
     logging.info("Configuring active spack environment ...")
     env_dir = ev.active_environment().path
     if not env_dir:
@@ -282,8 +251,7 @@ def setup_meta_modules():
     logging.info(f"  ... module directory: {module_dir}")
 
     # Get all specs and determine compilers
-    hashes = env.all_hashes()
-    specs = spack.store.STORE.db.query(hashes=hashes)
+    specs = env.all_specs()
     q = ProviderIndex(specs=specs, repository=spack.repo.PATH)
 
     c_providers = q.providers_for("c")
@@ -320,7 +288,7 @@ def setup_meta_modules():
     # takes it and adds it to the stack-COMPILER metamodule. Likewise, we need
     # to save the list of compiler substitutions from the preferred compiler
     # so that we have access to it when we build the MPI meta module.
-    preferred_compiler = get_preferred_compiler()
+    preferred_compiler = get_preferred_compiler(spack.config)
     logging.info("  ... preferred compiler: {}".format(preferred_compiler))
 
     # Sort the list using a custom key
@@ -330,7 +298,7 @@ def setup_meta_modules():
         return (1 if preferred_compiler in entry else 0, entry)
     compilers = sorted(compilers, key=custom_sort_key)
 
-   # Get mpi providers (currently only one mpi provider is supported)
+    # Get mpi providers (currently only one mpi provider is supported)
     mpi_providers = q.providers_for("mpi")
     if len(mpi_providers)>1:
         raise Exception(f"Expected no or one MPI provider, but got {mpi_providers}")
