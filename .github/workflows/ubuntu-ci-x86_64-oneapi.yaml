@@ -239,3 +239,6 @@ jobs:
           module load ewok-env
           module load soca-env
           module list
+
+          # https://github.com/JCSDA/spack-stack/issues/1903
+          llvm-ar --version
