@@ -48,3 +48,9 @@ packages:
             CPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-13.2.0/include
             FPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-13.2.0/include
             MANPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-13.2.0/share/man
+
+  # Testing shows we now need to pass in -lm for GCC
+  p4est:
+    require:
+    - 'ldflags="-lm"'
+>>>>>>> 6bc7cb6 (Build p4est with -lm on gnu)

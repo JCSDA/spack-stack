@@ -55,3 +55,8 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2024.2
       prefix: /nasa/intel/oneapi-test
+
+  # Testing shows we now need to pass in -lm for GCC
+  p4est:
+    require:
+    - 'ldflags="-lm"'
