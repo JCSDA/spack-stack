@@ -60,3 +60,7 @@ packages:
   p4est:
     require:
     - 'ldflags="-lm"'
+
+  hdf-eos2:
+    require:
+    - 'cflags="-Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=incompatible-pointer-types"'
