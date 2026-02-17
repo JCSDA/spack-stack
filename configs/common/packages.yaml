@@ -84,6 +84,9 @@ packages:
       require:
       - '@3.29:'
       - +ownlibs
+    codee:
+      require:
+      - '@2025.4.7'
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       require:
