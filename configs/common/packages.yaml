@@ -401,12 +401,9 @@ packages:
       require:
       - '@3.7.4'
       #- '@3.8.0'
-    # https://github.com/Unidata/netcdf4-python/issues/1389
-    # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
     py-netcdf4:
       require:
-      - '@1.7.2'
-      - ~mpi
+      - +mpi
     # To avoid duplicate packages
     py-numpy:
       require:
