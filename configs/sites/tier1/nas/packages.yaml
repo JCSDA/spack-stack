@@ -28,8 +28,8 @@ packages:
       prefix: /usr
   cmake:
     externals:
-    - spec: cmake@4.0.2
-      prefix: /nobackup/gmao_SIteam/cmake/cmake-4.0.2
+    - spec: cmake@3.31.11
+      prefix: /nobackup/gmao_SIteam/cmake/cmake-3.31.11
   coreutils:
     externals:
     - spec: coreutils@8.30
