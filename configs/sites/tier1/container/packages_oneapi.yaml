@@ -1,0 +1,65 @@
+packages:
+  all:
+    prefer:
+    - '%oneapi'
+    providers:
+      mpi: [intel-oneapi-mpi@2021.17]
+  mpi:
+    require: [intel-oneapi-mpi@2021.17]
+  # Compilers and meta packages.
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.0
+      prefix: /opt/intel/oneapi
+      modules:
+      - umf/1.0.2
+      - tbb/2022.3
+      - compiler-rt/2025.3.0
+      - compiler/2025.3.0
+      extra_attributes:
+        compilers:
+          c: /opt/intel/oneapi/compiler/2025.3/bin/icx
+          cxx: /opt/intel/oneapi/compiler/2025.3/bin/icpx
+          fortran: /opt/intel/oneapi/compiler/2025.3/bin/ifx
+  gcc:
+    externals:
+    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+    buildable: false
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3
+      prefix: /opt/intel/oneapi
+      modules:
+      - mkl/2025.3
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.17
+      modules:
+      - mpi/2021.17
+      prefix: /opt/intel/oneapi
+  intel-oneapi-tbb:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-tbb@2022.3
+      prefix: /opt/intel/oneapi
+      modules:
+      - tbb/2022.3
+  mpich:
+    buildable: false
+  openmpi:
+    buildable: false
+  mkl:
+    require:
+    - intel-oneapi-mkl
+  py-numpy:
+    require:
+    - '^intel-oneapi-mkl'

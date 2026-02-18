@@ -1,0 +1,58 @@
+packages:
+  all:
+    target: [core2]
+  met:
+    variants: +python +grib2 +graphics +lidar2nc +modis
+  # System packages installed during the container build.
+  grep:
+    externals:
+    - spec: grep@3.11
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.9.0
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@9.4
+      prefix: /usr
+  autoconf:
+    externals:
+    - spec: autoconf@2.71
+      prefix: /usr
+  diffutils:
+    buildable: false
+    externals:
+    - spec: diffutils@3.10
+      prefix: /usr
+  git:
+    buildable: false
+    externals:
+    - spec: git@2.43.0~tcltk
+      prefix: /usr
+  git-lfs:
+    buildable: false
+    externals:
+    - spec: git-lfs@3.4.1
+      prefix: /usr
+  llvm:
+    buildable: false
+    externals:
+    - spec: llvm@14.0.6
+      prefix: /usr
+  qt:
+    buildable: false
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr
+    version: [5.15.3]
+  wget:
+    buildable: false
+    externals:
+    - spec: wget@1.21.4
+      prefix: /usr
+  perl:
+    buildable: false
+    externals:
+    - spec: perl@5.38.2
+      prefix: /usr

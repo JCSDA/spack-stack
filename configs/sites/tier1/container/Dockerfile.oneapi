@@ -1,0 +1,151 @@
+# Spack-Stack Container Build for tier1/container Intel oneapi site
+# See the README.md for building instructions.
+
+## ---------- build base container used by builder and runtime ----------
+FROM ubuntu:24.04 AS ubuntu_base
+
+ARG BUILD_JOBS=4
+ARG SPACK_STACK_TEMPLATE=unified-dev
+
+SHELL ["/bin/bash", "-c"]
+
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=Etc/UTC \
+    LANGUAGE=en_US.UTF-8 \
+    LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8 \
+    COMPILER=intel
+
+# Install core packages.
+RUN set -euo pipefail; \
+    apt-get -yqq update && \
+    apt-get -yqq upgrade && \
+    apt-get -yqq install --no-install-recommends \
+        # Core build tools.
+        build-essential \
+        gcc-13 \
+        gcc++-13 \
+        gfortran-13 \
+        cpp-13 \
+        make \
+        llvm-14 \
+        autoconf \
+        # External dependencies.
+        libcurl4-openssl-dev \
+        libmysqlclient-dev \
+        libqt5svg5-dev \
+        qt5-qmake \
+        qt5dxcb-plugin \
+        qtbase5-dev \
+        zstd \
+        # Shell tools, source retrieval and networking.
+        sed \
+        file \
+        less \
+        bzip2 \
+        unzip \
+        ca-certificates \
+        curl \
+        git \
+        git-lfs \
+        gpg \
+        environment-modules \
+        tcl \
+        tcl-dev \
+        vim \
+        wget \
+        nano \
+        locales && \
+    locale-gen en_US.UTF-8 && \
+    # Update alternatives for compilers and tools
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
+    update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
+    update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
+    # Install the intel
+    apt install -y apt-utils gpg && \
+    wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
+        | gpg --dearmor \
+        | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null && \
+    echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" \
+        | tee /etc/apt/sources.list.d/oneAPI.list && \
+    apt update && \
+    apt install -y \
+        intel-oneapi-compiler-dpcpp-cpp-2025.3 \
+        intel-oneapi-compiler-fortran-2025.3 \
+        intel-oneapi-mpi-devel-2021.17 \
+        intel-oneapi-tbb-devel-2022.3 \
+        intel-oneapi-mkl-devel-2025.3 && \
+    /opt/intel/oneapi/modulefiles-setup.sh --output-dir=/opt/intel/oneapi/modulefiles && \
+    echo "source /etc/profile.d/modules.sh && module use /opt/intel/oneapi/modulefiles" > /etc/profile.d/z01_oneapi_modules.sh && \
+    rm -rf /var/lib/apt/lists/*
+
+
+## ---------- build spack-stack environment ----------
+FROM ubuntu_base AS builder
+
+ENV SPACK_STACK_DIR=/opt/spack-stack \
+    SPACK_ROOT=/opt/spack-stack/spack
+
+
+# Copy spack-stack from build context. Note the build context must be the
+# root of the spack-stack repository (see the README.md for details).
+COPY . ${SPACK_STACK_DIR}
+
+# Create spack-stack environment
+WORKDIR /opt/spack-stack
+RUN mkdir -p /tmp/spack-stack && \
+    source setup.sh && \
+    spack stack create env \
+        --site container \
+        --template ${SPACK_STACK_TEMPLATE} \
+        --name container \
+        --prefix /opt/spack-software/ \
+        --compiler oneapi && \
+    cd ${SPACK_STACK_DIR}/envs/container && \
+    spack env activate . && \
+    spack concretize 2>&1 | tee log.concretize && \
+    spack install --fail-fast -j ${BUILD_JOBS} 2>&1 | tee log.install && \
+    spack module tcl refresh -y && \
+    spack stack setup-meta-modules && \
+    # Save output of spack find.
+    spack find 2>&1 | tee /opt/spack-software/spack_find.out && \
+    spack clean --all
+
+## ---------- Create runtime container ----------
+FROM ubuntu_base AS runtime
+
+COPY --from=builder /opt/spack-software/ /opt/spack-software/
+
+ENV CC=icx \
+    CXX=icpx \
+    FC=ifx
+
+# Container-wide rc script with compiler defaults, MPI policy, module paths.
+RUN echo "ulimit -s unlimited" > /etc/spack_container_rc.sh \
+    && echo "ulimit -v unlimited" >> /etc/spack_container_rc.sh \
+    && echo "export CC=icx" >> /etc/spack_container_rc.sh \
+    && echo "export CXX=icpx" >> /etc/spack_container_rc.sh \
+    && echo "export FC=ifx" >> /etc/spack_container_rc.sh \
+    && echo "# TCL module path for the spack-stack environment." >> /etc/spack_container_rc.sh \
+    && echo "export MODULEPATH=/opt/spack-software/modules/Core" >> /etc/spack_container_rc.sh \
+    && echo "source /etc/profile.d/modules.sh" >> /etc/spack_container_rc.sh \
+    && echo "module use /opt/intel/oneapi/modulefiles" >> /etc/spack_container_rc.sh \
+    && echo "module use /opt/spack-software/modules/Core" >> /etc/spack_container_rc.sh \
+    && echo "source /etc/spack_container_rc.sh" >> /etc/bash.bashrc \
+    && printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig \
+    && mkdir /root/.pmix
+
+# Nonroot user for MPI
+RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891 \
+ && echo "ulimit -s unlimited" >> /home/nonroot/.bashrc \
+ && echo "ulimit -v unlimited" >> /home/nonroot/.bashrc \
+ && printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig \
+ && mkdir /home/nonroot/.pmix \
+ && chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.pmix
+
+# Ensure the container rc is run by non-login shells too.
+ENV BASH_ENV=/etc/spack_container_rc.sh
+
+CMD ["/bin/bash"]
