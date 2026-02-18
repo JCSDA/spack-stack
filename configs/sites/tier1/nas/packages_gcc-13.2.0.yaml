@@ -53,3 +53,7 @@ packages:
   p4est:
     require:
     - 'ldflags="-lm"'
+
+  gsibec:
+    require:
+    - 'fflags="-ffree-line-length-none"'

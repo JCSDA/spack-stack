@@ -64,3 +64,15 @@ packages:
   hdf-eos2:
     require:
     - 'cflags="-Wno-error=implicit-function-declaration -Wno-error=implicit-int -Wno-error=incompatible-pointer-types"'
+
+  py-pyhdf:
+    require:
+    - 'cflags="-Wno-error=incompatible-pointer-types -Wno-error=discarded-qualifiers"'
+
+  py-h5py:
+    require:
+    - 'cflags="-Wno-error=incompatible-pointer-types -Wno-error=discarded-qualifiers"'
+
+  gsibec:
+    require:
+    - 'fflags="-ffree-line-length-none"'
