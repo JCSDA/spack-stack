@@ -32,6 +32,7 @@ class NeptuneEnv(BundlePackage):
     if not sys.platform == "darwin":
         depends_on("numactl", type="run")
 
+    depends_on("codee", type="run")
     depends_on("libyaml", type="run")
     depends_on("p4est", type="run")
     depends_on("w3emc", type="run")
