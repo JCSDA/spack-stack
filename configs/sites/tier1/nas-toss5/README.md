@@ -1,6 +1,6 @@
 # How to Build **spack-stack** at NAS on TOSS5
 
-This guide documents how to build **spack-stack** on NASA NAS TOSS5 systems, where login nodes have internet access but are CPU-restricted, while compute nodes allow parallel builds but have *no* internet access. Several packages (Rust/Cargo, ecFlow, CRTM) require special handling due to these constraints.
+This guide documents how to build **spack-stack** on NASA NAS TOSS5 systems. The previous install process used three stages across compute and login nodes, but recent testing shows installation can now be done directly on a compute node.
 
 ---
 
@@ -12,36 +12,36 @@ This guide documents how to build **spack-stack** on NASA NAS TOSS5 systems, whe
 - [Obtain an Interactive Compute Node](#obtain-an-interactive-compute-node)
 - [Setup spack-stack](#setup-spack-stack)
 - [Create Environments](#create-environments)
-  - [oneAPI Environment](#oneapi-environment)
+  - [oneAPI - ifx Environment](#oneapi---ifx-environment)
+  - [oneAPI - ifort Environment](#oneapi---ifort-environment)
   - [GCC Environment](#gcc-environment)
 - [Activate the Environment](#activate-the-environment)
 - [Concretize the Environment](#concretize-the-environment)
 - [Create Source Cache (LOGIN NODE ONLY)](#create-source-cache-login-node-only)
 - [Pre-Fetch Cargo Dependencies (LOGIN NODE ONLY)](#pre-fetch-cargo-dependencies-login-node-only)
-- [Install Packages](#install-packages)
-  - [Step 1 — Dependencies of Rust codes and ecFlow (COMPUTE NODE)](#step-1--dependencies-of-rust-codes-and-ecflow-compute-node)
-  - [Step 2 — Rust codes and ecFlow (ATHFE LOGIN NODE)](#step-2--rust-codes-and-ecflow-athfe-login-node)
-  - [Step 3 — Remaining Packages (COMPUTE NODE)](#step-3--remaining-packages-compute-node)
-  - [Packages Requiring Internet](#packages-requiring-internet)
+- [Install Packages (COMPUTE NODE)](#install-packages-compute-node)
 - [Update Module Files](#update-module-files)
 - [Deactivate the Environment](#deactivate-the-environment)
 - [Debugging Package Builds](#debugging-package-builds)
+- [Deprecated: Legacy Three-Step Install](#deprecated-legacy-three-step-install)
 
 ---
 
 ## Overview
 
-Due to NAS system architecture and network restrictions:
+NAS login nodes and compute nodes have different constraints:
 
-- **Login nodes**:  
-  - Have internet  
-  - Limited to **2 processes**  
+- **Login nodes**:
+  - Have internet access
+  - Limited to **2 processes**
 
-- **Compute nodes** (Turnin):
-  - No internet  
-  - Allow parallel builds  
+- **Compute nodes** (Turin):
+  - No internet access
+  - Allow parallel builds
 
-Some packages (Cargo/Rust, ecFlow, CRTM) require internet or newer CPU features, so the install is broken into multiple steps across different node types.
+Use login nodes for setup steps that require internet access (e.g., concretization, mirroring sources, pre-fetching Cargo dependencies), then run installation on a compute node.
+
+The install step itself is now a single compute-node command.
 
 ---
 
@@ -49,11 +49,11 @@ Some packages (Cargo/Rust, ecFlow, CRTM) require internet or newer CPU features,
 
 You will need:
 
-- **An `athfe` login node**
-  Supports x86_64_v3 binaries → required for building Rust packages and ecFlow.
+- **A login node**
+  Used for setup steps that require internet access.
 
-- **A Turnin compute node**
-  Used for the main installation with multiple cores.
+- **A Turin compute node**
+  Used for package installation with higher parallelism.
 
 ---
 
@@ -75,7 +75,7 @@ NAS login nodes allow only **2 processes**, so use:
 qsub -I -V -X -l select=1:ncpus=128:mpiprocs=128:model=tur_ath -l walltime=12:00:00 -W group_list=s1873 -m b -N Interactive
 ```
 
-This gives a Turin** compute node for up to 12 hours. 
+This gives a **Turin** compute node for up to 12 hours.
 
 ---
 
@@ -151,7 +151,7 @@ This downloads all source tarballs for your environment:
 spack mirror create -a -d /swbuild/gmao_SIteam/spack-stack/source-cache
 ```
 
-> ⚠️ **Do not run this outside an activated environment.**  
+> ⚠️ **Do not run this outside an activated environment.**
 > Otherwise Spack will attempt to mirror **every** known package/version.
 
 ---
@@ -165,79 +165,33 @@ export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
 ../../util/fetch_cargo_deps.py
 ```
 
-> ⚠️ **You must also set `CARGO_HOME` on compute nodes** before building.
+> ⚠️ **Set `CARGO_HOME` on compute nodes** before running `spack install`.
 
 ---
 
-## Install Packages
+## Install Packages (COMPUTE NODE)
 
-Installation requires three stages:
-
-| Step | Node Type | Why |
-|------|-----------|-----|
-| Step 1 | Compute | Build dependencies in parallel, avoids CPU limits |
-| Step 2 | `athfe` login | Needed for x86_64_v3 Python and internet access |
-| Step 3 | Compute | Finish main installation at high parallelism |
-
----
-
-### Step 1 — Dependencies of Rust codes and ecFlow (COMPUTE NODE)
+Run installation on a **compute node**:
 
 ```bash
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature \
-    --only dependencies py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
+spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install ; bell
 ```
 
----
-
-### Step 2 — Rust codes and ecFlow (ATHFE LOGIN NODE)
-
-```bash
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error --no-check-signature \
-    py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.rust-and-ecflow ; bell
-```
-
-NAS limits login nodes to 2 processes, hence `-j 2`.
-
----
-
-### Step 3 — Remaining Packages (COMPUTE NODE)
-
-```bash
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
-spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install.after-cargo ; bell
-```
+This replaces the former compute → login → compute install sequence.
 
 > **Note:** You may need to re-run this command multiple times. Some builds fail intermittently but succeed on retry.
 
 ---
 
-### Packages Requiring Internet (ATHFE LOGIN NODE)
+## Update Module Files
 
-If you encounter another package that insists on network access:
-
-```bash
-spack install -j 2 --verbose --fail-fast --show-log-on-error --no-check-signature <package> |& tee log.install.<package> ; bell
-```
-
-Again, this must be done on an **athfe** login node because of the CPU architecture.
-
-Once built, return to the compute node and resume the full installation.
-
----
-
-## Update Module Files (ATHFE LOGIN NODE)
-
-After installation completes, on an **athfe** login node run:
+After installation completes, run:
 
 ```bash
 spack module tcl refresh -y --delete-tree ; bell
 spack stack setup-meta-modules
 ```
-
-Apparently, spack modulefile generation might use code that spack built for `x86_64_v3`.
 
 ---
 
@@ -261,4 +215,32 @@ This drops you into a clean build environment with the package’s full compiler
 
 ---
 
+## Deprecated: Legacy Three-Step Install
 
+> ⚠️ **Deprecated:** Keep this only as historical reference. Prefer the single compute-node install above.
+
+Older workflows used three stages:
+
+1. Compute node: build dependencies for Rust-related Python packages and ecFlow.
+2. `athfe` login node: build `py-cryptography`, `py-maturin`, `py-rpds-py`, and `ecflow` with `-j 2`.
+3. Compute node: run full `spack install` to finish remaining packages.
+
+Typical commands were:
+
+```bash
+# Step 1 (compute node)
+export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
+spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature \
+  --only dependencies py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
+
+# Step 2 (athfe login node)
+export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
+spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error --no-check-signature \
+  py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.rust-and-ecflow ; bell
+
+# Step 3 (compute node)
+export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
+spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install.after-cargo ; bell
+```
+
+---
