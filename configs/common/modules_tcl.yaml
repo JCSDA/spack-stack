@@ -191,7 +191,7 @@ modules:
         environment:
           set:
             'CRTM_INC': '{prefix}/include'
-            'CRTM_LIB': '{prefix}/lib/libcrtm.a'
+            'CRTM_LIB': '{prefix}/lib/libcrtm.so'
       g2tmpl:
         environment:
           set:
