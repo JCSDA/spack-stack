@@ -163,7 +163,7 @@ modules:
         environment:
           set:
             'BACIO_INC': '{prefix}/include'
-            'BACIO_LIB': '{prefix}/lib/libbacio.a'
+            'BACIO_LIB': '{prefix}/lib64/libbacio.a'
       bufr:
         environment:
           set:
