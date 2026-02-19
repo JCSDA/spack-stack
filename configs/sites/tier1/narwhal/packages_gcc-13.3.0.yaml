@@ -30,10 +30,10 @@ packages:
     buildable: false
     externals:
     - spec: cray-mpich@8.1.30
-      prefix: /opt/cray/pe/mpich/8.1.30/ofi/gnu/12.3
+      prefix: /opt/cray/pe/mpich/8.1.30/ucx/gnu/12.3
       modules:
-      - craype-network-ofi
-      - cray-mpich/8.1.30
+      - craype-network-ucx
+      - cray-mpich-ucx/8.1.30
       - libfabric/1.22.0
       extra_attributes:
         extra_rpaths:
