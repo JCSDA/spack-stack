@@ -399,7 +399,7 @@ def setup_meta_modules():
         logging.debug("  ... ... CC  : {}".format(substitutes["CC"]))
         logging.debug("  ... ... CXX : {}".format(substitutes["CXX"]))
         logging.debug("  ... ... F77 : {}".format(substitutes["F77"]))
-        logging.debug("  ... ... FC' : {}".format(substitutes["FC"]))
+        logging.debug("  ... ... FC  : {}".format(substitutes["FC"]))
 
         # Compiler flags; names are lowercase in spack
         if "flags" in compiler.extra_attributes.keys():
@@ -422,6 +422,17 @@ def setup_meta_modules():
                         env_name,
                         env_values
                     )
+        # https://github.com/JCSDA/spack-stack/issues/1903
+        # Attempt to locate directory "compiler" in the same directory where
+        # "icx" resides. If found, add it to PATH in the compiler module
+        if compiler.name=="intel-oneapi-compilers":
+            path_to_icx = os.path.dirname(substitutes["CC"])
+            if os.path.isdir(os.path.join(path_to_icx, "compiler")):
+                substitutes["ENVVARS"] +=  prepend_path_command(
+                    module_choice,
+                    "PATH",
+                    os.path.join(path_to_icx, "compiler"),
+                )
         substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
         logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
 
