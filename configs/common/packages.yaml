@@ -84,6 +84,9 @@ packages:
       require:
       - '@3.29:'
       - +ownlibs
+    codee:
+      require:
+      - '@2025.4.7'
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       require:
@@ -404,12 +407,9 @@ packages:
       require:
       - '@3.7.4'
       #- '@3.8.0'
-    # https://github.com/Unidata/netcdf4-python/issues/1389
-    # https://github.com/Unidata/netcdf4-python/issues/1389#issuecomment-2599760051
     py-netcdf4:
       require:
-      - '@1.7.2'
-      - ~mpi
+      - +mpi
     # To avoid duplicate packages
     py-numpy:
       require:
