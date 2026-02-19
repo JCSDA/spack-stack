@@ -87,6 +87,12 @@ packages:
     codee:
       require:
       - '@2025.4.7'
+    crtm_fix:
+      require:
+      - ~link-big-endian
+      - +link-little-endian
+      - +link-netcdf
+      - +link-testfiles
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       require:
