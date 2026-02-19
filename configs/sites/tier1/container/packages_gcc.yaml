@@ -1,0 +1,18 @@
+packages:
+  all:
+    prefer:
+    - '%gcc'
+    providers:
+      mpi: [openmpi@5.0.8]
+  mpi:
+    require: [openmpi@5.0.8]
+  gcc:
+    externals:
+    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+    buildable: false
