@@ -401,7 +401,6 @@ def setup_meta_modules():
         logging.debug("  ... ... F77 : {}".format(substitutes["F77"]))
         logging.debug("  ... ... FC  : {}".format(substitutes["FC"]))
 
-
         # Compiler flags; names are lowercase in spack
         if "flags" in compiler.extra_attributes.keys():
             for flag_name in compiler.extra_attributes["flags"].keys():
