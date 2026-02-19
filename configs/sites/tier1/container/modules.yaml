@@ -1,6 +1,6 @@
 modules:
   default:
-    enable::
+    enable:
     - tcl
     tcl:
       include:
