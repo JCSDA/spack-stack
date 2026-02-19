@@ -198,7 +198,7 @@ packages:
       - '@1.4.0'
     gsibec:
       require:
-      - '@1.4.1'
+      - '@1.4.2'
     gsi-ncdiag:
       require:
       - '@1.1.2'
