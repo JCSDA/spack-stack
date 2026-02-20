@@ -1,6 +1,6 @@
-# How to Build **spack-stack** at NAS
+# How to Build **spack-stack** at NAS on TOSS5
 
-This guide documents how to build **spack-stack** on NASA NAS systems. The previous install process used three stages across compute and login nodes, but recent testing shows installation can now be done directly on a compute node.
+This guide documents how to build **spack-stack** on NASA NAS TOSS5 systems. The previous install process used three stages across compute and login nodes, but recent testing shows installation can now be done directly on a compute node.
 
 ---
 
@@ -35,7 +35,7 @@ NAS login nodes and compute nodes have different constraints:
   - Have internet access
   - Limited to **2 processes**
 
-- **Compute nodes** (Milan / Rome):
+- **Compute nodes** (Turin):
   - No internet access
   - Allow parallel builds
 
@@ -52,7 +52,7 @@ You will need:
 - **A login node**
   Used for setup steps that require internet access.
 
-- **A Rome or Milan compute node**
+- **A Turin compute node**
   Used for package installation with higher parallelism.
 
 ---
@@ -72,12 +72,10 @@ git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git -b spack
 NAS login nodes allow only **2 processes**, so use:
 
 ```bash
-qsub -I -V -X -l select=1:ncpus=128:mpiprocs=128:model=mil_ait -l walltime=12:00:00 -W group_list=s1873 -m b -N Interactive
+qsub -I -V -X -l select=1:ncpus=128:mpiprocs=128:model=tur_ath -l walltime=12:00:00 -W group_list=s1873 -m b -N Interactive
 ```
 
-This gives a **Milan** compute node for up to 12 hours.
-
-For a **Rome** node, change `model=mil_ait` to `model=rom_ait` and run the `qsub` command on a Rome-capable login node (e.g., `pfe25`).
+This gives a **Turin** compute node for up to 12 hours.
 
 ---
 
@@ -99,22 +97,22 @@ You only need to create each environment once.
 ### oneAPI - ifx Environment
 
 ```bash
-spack stack create env --name ue-oneapi-2025.3.0 --template unified-dev --site nas --compiler=oneapi-2025.3.0
+spack stack create env --name ue-oneapi-2025.3.0 --template unified-dev --site nas-toss5 --compiler=oneapi-2025.3.0
 cd envs/ue-oneapi-2025.3.0
 ```
 
 ### oneAPI - ifort Environment
 
 ```bash
-spack stack create env --name ue-oneapi-2024.2.0 --template unified-dev --site nas --compiler=oneapi-2024.2.0
+spack stack create env --name ue-oneapi-2024.2.0 --template unified-dev --site nas-toss5 --compiler=oneapi-2024.2.0
 cd envs/ue-oneapi-2024.2.0
 ```
 
 ### GCC Environment
 
 ```bash
-spack stack create env --name ue-gcc-13.2.0 --template unified-dev --site nas --compiler=gcc-13.2.0
-cd envs/ue-gcc-13.2.0
+spack stack create env --name ue-gcc-14.2.1 --template unified-dev --site nas-toss5 --compiler=gcc-14.2.1
+cd envs/ue-gcc-14.2.1
 ```
 
 ---
@@ -224,7 +222,7 @@ This drops you into a clean build environment with the package’s full compiler
 Older workflows used three stages:
 
 1. Compute node: build dependencies for Rust-related Python packages and ecFlow.
-2. `afe` login node: build `py-cryptography`, `py-maturin`, `py-rpds-py`, and `ecflow` with `-j 2`.
+2. `athfe` login node: build `py-cryptography`, `py-maturin`, `py-rpds-py`, and `ecflow` with `-j 2`.
 3. Compute node: run full `spack install` to finish remaining packages.
 
 Typical commands were:
@@ -235,7 +233,7 @@ export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
 spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature \
   --only dependencies py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
 
-# Step 2 (afe login node)
+# Step 2 (athfe login node)
 export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-cache
 spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error --no-check-signature \
   py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.rust-and-ecflow ; bell

@@ -12,69 +12,69 @@ packages:
 ### All other external packages listed alphabetically
   automake:
     externals:
-    - spec: automake@1.16.1
+    - spec: automake@1.16.2
       prefix: /usr
   bash:
     externals:
-    - spec: bash@4.4.20
+    - spec: bash@5.1.8
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.30.125~gold~headers
+    - spec: binutils@2.35.2~gold~headers
       prefix: /usr
   bison:
     externals:
-    - spec: bison@3.0.4
+    - spec: bison@3.7.4
       prefix: /usr
   cmake:
     externals:
     - spec: cmake@3.31.11
-      prefix: /nobackup/gmao_SIteam/cmake/cmake-3.31.11
+      prefix: /nobackup/gmao_SIteam/cmake/cmake-3.31.11-TOSS5
   coreutils:
     externals:
-    - spec: coreutils@8.30
+    - spec: coreutils@8.32
       prefix: /usr
   diffutils:
     externals:
-    - spec: diffutils@3.6
+    - spec: diffutils@3.7
       prefix: /usr
   findutils:
     externals:
-    - spec: findutils@4.6.0
+    - spec: findutils@4.8.0
       prefix: /usr
   flex:
     externals:
-    - spec: flex@2.6.1+lex
+    - spec: flex@2.6.4+lex
       prefix: /usr
   gawk:
     externals:
-    - spec: gawk@4.2.1
+    - spec: gawk@5.1.0
       prefix: /usr
   gh:
     externals:
-    - spec: gh@2.78.0
-      prefix: /nobackup/gmao_SIteam/gh/2.78.0
+    - spec: gh@2.83.1
+      prefix: /nobackup/gmao_SIteam/gh/2.83.1
   git:
     buildable: False
     externals:
-    - spec: git@2.43.5~tcltk
-      prefix: /usr
+    - spec: git@2.52.0~tcltk
+      prefix: /nobackup/gmao_SIteam/git/git-2.52.0-TOSS5
   git-lfs:
     buildable: False
     externals:
-    - spec: git-lfs@3.7.0
-      prefix: /nobackup/gmao_SIteam/git-lfs/3.7.0
+    - spec: git-lfs@3.7.1
+      prefix: /nobackup/gmao_SIteam/git-lfs/3.7.1
   gmake:
     externals:
-    - spec: gmake@4.2.1
+    - spec: gmake@4.333
       prefix: /usr
   grep:
     externals:
-    - spec: grep@3.1
+    - spec: grep@3.6
       prefix: /usr
   groff:
     externals:
-    - spec: groff@1.22.3
+    - spec: groff@1.22.4
       prefix: /usr
   libtool:
     externals:
@@ -82,24 +82,24 @@ packages:
       prefix: /usr
   m4:
     externals:
-    - spec: m4@1.4.18
+    - spec: m4@1.4.19
       prefix: /usr
   perl:
     externals:
-    - spec: perl@5.26.3~cpanm+opcode+open+shared+threads
+    - spec: perl@5.32.1~cpanm+opcode+open+shared+threads
       prefix: /usr
   pkgconf:
     externals:
-    - spec: pkgconf@1.4.2
+    - spec: pkgconf@1.7.3
       prefix: /usr
   qt:
     buildable: False
     externals:
     - spec: qt@5.15.18
-      prefix: /nobackup/gmao_SIteam/qt5/5.15.18
+      prefix: /nobackup/gmao_SIteam/qt5/5.15.18-TOSS5
   sed:
     externals:
-    - spec: sed@4.5
+    - spec: sed@4.8
       prefix: /usr
   subversion:
     externals:
@@ -107,11 +107,11 @@ packages:
       prefix: /usr
   tar:
     externals:
-    - spec: tar@1.30
+    - spec: tar@1.34
       prefix: /usr
   wget:
     externals:
-    - spec: wget@1.19.5
+    - spec: wget@1.21.1
       prefix: /usr
   zlib:
     buildable: False

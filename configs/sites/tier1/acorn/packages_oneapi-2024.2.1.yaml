@@ -76,7 +76,7 @@ packages:
   glib:
     require: ['%gcc']
   gsibec:
-    require: ['@1.2.1']
+    require: ['@1.4.2']
   libtiff:
     require: ['build_system=cmake']
   nco:
