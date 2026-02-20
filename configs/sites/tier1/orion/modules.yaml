@@ -2,5 +2,3 @@ modules:
   default:
     enable::
     - lmod
-    lmod:
-      - openssl
