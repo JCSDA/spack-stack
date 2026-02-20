@@ -158,13 +158,12 @@ packages:
       - '@2.6.4'
     fms:
       require:
-      - '@2024.02'
+      - '@2025.03'
       - precision=32,64
       - +quad_precision
       - +openmp
       - +pic
       - build_type=Release
-      - +deprecated_io
       - any_of:
         - +gfs_phys constants=GFS
         - ~gfs_phys constants=GEOS
@@ -199,7 +198,7 @@ packages:
       - '@1.4.0'
     gsibec:
       require:
-      - '@1.2.1'
+      - '@1.4.2'
     gsi-ncdiag:
       require:
       - '@1.1.2'
@@ -349,6 +348,10 @@ packages:
     pflogger:
       require:
       - +mpi
+    pfunit:
+      require:
+      - +mpi
+      - +fhamcrest
     pixman:
       require:
       - +pic
@@ -480,10 +483,6 @@ packages:
     snappy:
       require:
       - +shared
-    sp:
-      require:
-      - '@2.5.0'
-      - precision=4,d,8
     udunits:
       require:
       - '@2.2.28'

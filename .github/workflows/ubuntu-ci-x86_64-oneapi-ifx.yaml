@@ -239,3 +239,8 @@ jobs:
           module load ewok-env
           module load soca-env
           module list
+
+          # https://github.com/JCSDA/spack-stack/issues/1903
+          module show stack-intel-oneapi-compilers/2024.2.0
+          which llvm-ar
+          llvm-ar --version
