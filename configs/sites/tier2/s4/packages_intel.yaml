@@ -34,7 +34,7 @@ packages:
     - '@1.2.0 ~mkl +fftw'
   gsibec:
     require::
-    - '@1.2.1 ~mkl'
+    - '@1.4.2 ~mkl'
   py-numpy:
     require::
     - '@1.26'

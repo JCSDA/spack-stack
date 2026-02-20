@@ -1,31 +1,31 @@
 packages:
   all:
     require:
-    - any_of: ['%intel-oneapi-compilers@=2024.2.0']
+    - any_of: ['%intel-oneapi-compilers@=2025.3.0']
       when: '%intel-oneapi-compilers'
     - any_of: ['%gcc@=12.3.0']
       when: '%gcc'
   mpi:
     buildable: false
     require:
-    - "mpt@2.30"
+    - intel-oneapi-mpi@2021.17
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2024.2.0
+    - spec: intel-oneapi-compilers@2025.3.0
       prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
-      - comp-intel/2024.2.0-ifort
+      - comp-intel/2025.3.0
       extra_attributes:
         compilers:
-          c: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icx
-          cxx: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icpx
-          fortran: /nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
+          c: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/icx
+          cxx: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/icpx
+          fortran: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/ifx
         environment:
           prepend_path:
             PATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin
             CPATH: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/include
-            LD_LIBRARY_PATH: '/nobackup/gmao_SIteam/intel/oneapi/compiler/2024.2/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64'
+            LD_LIBRARY_PATH: '/nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64'
         extra_rpaths:
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib64
         - /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/lib
@@ -41,17 +41,17 @@ packages:
           c: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gcc
           cxx: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/g++
           fortran: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gfortran
-  mpt:
+  intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: mpt@2.30
-      prefix: /nasa/hpe/mpt/2.30_rhel810
+    - spec: intel-oneapi-mpi@2021.17
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
-      - mpi-hpe/mpt.2.30
+      - mpi-impi/2021.17
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2
+    - spec: intel-oneapi-mkl@2025.3
       prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
-        - math-mkl/2024.2
+        - math-mkl/2025.3
