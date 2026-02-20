@@ -41,7 +41,7 @@ class JediBaseEnv(BundlePackage):
     depends_on("flex", type="run")
     depends_on("git-lfs", type="run")
     # Commented out until update to ip is completed
-    #depends_on("gsibec", type="run")
+    depends_on("gsibec", type="run")
     depends_on("gsl-lite", type="run")
     depends_on("hdf", when="+hdf4", type="run")
     depends_on("jedi-cmake", type="run")
