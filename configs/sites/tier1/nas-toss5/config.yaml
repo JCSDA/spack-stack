@@ -1,0 +1,9 @@
+config:
+  build_jobs: 6
+
+  # Overrides for spack build and staging areas to speed up builds
+  # and avoid errors with Lustre file locking and xattr issues
+  build_stage:  /swbuild/gmao_SIteam/spack-stack/cache/build_stage
+  test_stage:   /swbuild/gmao_SIteam/spack-stack/cache/test_stage
+  source_cache: /swbuild/gmao_SIteam/spack-stack/cache/source_cache
+  misc_cache:   /swbuild/gmao_SIteam/spack-stack/cache/misc_cache

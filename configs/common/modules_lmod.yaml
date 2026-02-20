@@ -162,10 +162,8 @@ modules:
       bacio:
         environment:
           set:
-            'BACIO_INC4': '{prefix}/include_4'
-            'BACIO_INC8': '{prefix}/include_8'
-            'BACIO_LIB4': '{prefix}/lib/libbacio_4.a'
-            'BACIO_LIB8': '{prefix}/lib/libbacio_8.a'
+            'BACIO_INC': '{prefix}/include'
+            'BACIO_LIB': '{prefix}/lib64/libbacio.a'
       bufr:
         environment:
           set:
@@ -174,7 +172,7 @@ modules:
         environment:
           set:
             'CRTM_INC': '{prefix}/include'
-            'CRTM_LIB': '{prefix}/lib/libcrtm.a'
+            'CRTM_LIB': '{prefix}/lib/libcrtm.so'
       g2tmpl:
         environment:
           set:
