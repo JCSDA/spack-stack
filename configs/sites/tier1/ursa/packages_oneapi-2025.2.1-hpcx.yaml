@@ -25,11 +25,6 @@ packages:
         environment:
           prepend_path:
             LD_LIBRARY_PATH: '/usr/lib:/usr/lib64'
-            PATH: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/bin
-            CPATH: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/include
-        extra_rpaths:
-        - /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/lib
-        - /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/lib64
   intel-oneapi-mkl:
     buildable: False
     externals:
