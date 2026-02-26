@@ -1,7 +1,7 @@
 packages:
   all:
     require:
-    - any_of: ['%llvm@=21.1.1']
+    - any_of: ['%llvm@=22.1.0']
       when: '%llvm'
   mpi:
     require:
@@ -9,13 +9,13 @@ packages:
   llvm:
     buildable: False
     externals:
-    - spec: llvm@21.1.1 +flang ~libomptarget
-      prefix: /home/dom/prod/llvm-21.1.1
+    - spec: llvm@22.1.0 +flang ~libomptarget
+      prefix: /home/dom/prod/llvm-22.1.0
       extra_attributes:
         compilers:
-          c: /home/dom/prod/llvm-21.1.1/bin/clang
-          cxx: /home/dom/prod/llvm-21.1.1/bin/clang++
-          fortran: /home/dom/prod/llvm-21.1.1/bin/flang-new
+          c: /home/dom/prod/llvm-22.1.0/bin/clang
+          cxx: /home/dom/prod/llvm-22.1.0/bin/clang++
+          fortran: /home/dom/prod/llvm-22.1.0/bin/flang-new
         extra_rpaths:
-        - /home/dom/prod/llvm-21.1.1/lib
-        - /home/dom/prod/llvm-21.1.1/lib/x86_64-unknown-linux-gnu
+        - /home/dom/prod/llvm-22.1.0/lib
+        - /home/dom/prod/llvm-22.1.0/lib/x86_64-unknown-linux-gnu
