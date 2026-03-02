@@ -8,7 +8,7 @@ import spack.environment as ev
 from spack.provider_index import ProviderIndex
 
 from spack.extensions.stack.common import ALIASES
-from spack.extensions.stack.common import RED, RESET
+from spack.extensions.stack.common import GREEN, RED, RESET
 from spack.extensions.stack.common import get_preferred_compiler
 
 
@@ -153,3 +153,5 @@ def check_preferred_compiler():
         raise Exception(f"{RED}Detected {errors} compiler mismatch!{RESET}")
     elif errors:
         raise Exception(f"{RED}Detected {errors} compiler mismatches!{RESET}")
+    else:
+        logging.info(f"{GREEN}No compiler mismatches found.{RESET}")

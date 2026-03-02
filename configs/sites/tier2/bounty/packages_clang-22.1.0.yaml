@@ -1,0 +1,21 @@
+packages:
+  all:
+    require:
+    - any_of: ['%llvm@=22.1.0']
+      when: '%llvm'
+  mpi:
+    require:
+    - "openmpi@=5.0.8"
+  llvm:
+    buildable: False
+    externals:
+    - spec: llvm@22.1.0 +flang ~libomptarget
+      prefix: /home/dom/prod/llvm-22.1.0
+      extra_attributes:
+        compilers:
+          c: /home/dom/prod/llvm-22.1.0/bin/clang
+          cxx: /home/dom/prod/llvm-22.1.0/bin/clang++
+          fortran: /home/dom/prod/llvm-22.1.0/bin/flang-new
+        extra_rpaths:
+        - /home/dom/prod/llvm-22.1.0/lib
+        - /home/dom/prod/llvm-22.1.0/lib/x86_64-unknown-linux-gnu
