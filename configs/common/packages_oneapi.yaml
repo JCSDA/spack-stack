@@ -51,6 +51,9 @@ packages:
     nco:
       require:
       - '%c,cxx=gcc'
+    oops:
+      require:
+      - +mkl
     parallel-netcdf:
       require:
       - +shared-intel

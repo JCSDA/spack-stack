@@ -1,0 +1,22 @@
+--- a/test/CMakeLists.txt
++++ b/test/CMakeLists.txt
+@@ -7,14 +7,11 @@
+ include( ufo_functions )
+ 
+ # CRTM test data - from tarball if not provided locally
+-# It's unclear if anyone is using the local data functionality, therefore comment it out
+-# for now and add in if someone complains / remove if completely if not.
+-#if (crtm_FOUND AND DEFINED ENV{UFO_CRTM_TESTFILES})
+-#  message(STATUS "Use crtm test data from local directory $ENV{UFO_CRTM_TESTFILES}")
+-#  # A bit of guesswork here, I don't know if folks using this option stored it in the same directory structure
+-#  set (UFO_CRTM_TESTFILES_PATH "$ENV{UFO_CRTM_TESTFILES}")
+-#elseif (crtm_FOUND)
+-if (crtm_FOUND)
++if (crtm_FOUND AND DEFINED ENV{UFO_CRTM_TESTFILES})
++  message(STATUS "Use crtm test data from local directory $ENV{UFO_CRTM_TESTFILES}")
++  # A bit of guesswork here, I don't know if folks using this option stored it in the same directory structure
++  set (UFO_CRTM_TESTFILES_PATH "$ENV{UFO_CRTM_TESTFILES}")
++elseif (crtm_FOUND)
+   set (UFO_CRTM_TESTFILES_PATH "${CMAKE_SOURCE_DIR}/test-data-release/crtm/${crtm_data_tag}/${crtm_data_tag_postfix}")
+   if (EXISTS ${UFO_CRTM_TESTFILES_PATH})
+     message(STATUS "Skipping download of test data from ${crtm_data_download_url}/${crtm_data_tarball_name} since it already exists")

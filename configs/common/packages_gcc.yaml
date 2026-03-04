@@ -23,3 +23,6 @@ packages:
     ectrans:
       require:
       - +fftw
+    oops:
+      require:
+      - ~mkl

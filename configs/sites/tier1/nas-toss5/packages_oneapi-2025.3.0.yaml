@@ -1,0 +1,68 @@
+packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2025.3.0']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=12.5.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - "cray-mpich@8.1.33"
+  intel-oneapi-compilers:
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.0
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
+      modules:
+      - cray-libpals/1.7.1
+      - cray-pals/1.7.1
+      - craype-x86-turin
+      - libfabric/12.0
+      - craype-network-ofi
+      - cray-dsmml/0.3.1
+      - PrgEnv-intel/8.6.0
+      - comp-intel/2025.3.0
+      extra_attributes:
+        compilers:
+          c: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/icx
+          cxx: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/icpx
+          fortran: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/ifx
+        environment:
+          prepend_path:
+            PATH: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin
+            CPATH: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/include
+            LD_LIBRARY_PATH: '/nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib64'
+        extra_rpaths:
+        - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib64
+        - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@12.5.0 languages:='c,c++'
+      prefix: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5
+      modules:
+      - comp-gcc/12.5.0-TOSS5
+      extra_attributes:
+        compilers:
+          c: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin/gcc
+          cxx: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin/g++
+          fortran: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin/gfortran
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.33
+      prefix: /opt/cray/pe/mpich/8.1.33/ofi/intel/2022.1
+      modules:
+      - cray-libpals/1.7.1
+      - cray-pals/1.7.1
+      - craype-x86-turin
+      - libfabric/12.0
+      - craype-network-ofi
+      - cray-dsmml/0.3.1
+      - cray-mpich/8.1.33
+
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2025.3
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
