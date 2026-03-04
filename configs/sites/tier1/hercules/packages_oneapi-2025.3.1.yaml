@@ -14,22 +14,17 @@ packages:
     buildable: false
     externals:
     - spec: intel-oneapi-compilers@2025.3.1
-      prefix: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj
+      prefix: /apps/contrib/spack-stack/installs/oneapi-2025.3.1
       modules:
       - intel-oneapi-compilers/2025.3.1
       extra_attributes:
         compilers:
-          c: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj/compiler/2025.3/bin/icx
-          cxx: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj/compiler/2025.3/bin/icpx
-          fortran: /apps/spack-managed-x86_64_v3-v1.0/gcc-11.3.1/intel-oneapi-compilers-2025.3.1-oxnnvyk4v5pxrvckkrvnfg3o7gx6tymj/compiler/2025.3/bin/ifx
+          c: /apps/contrib/spack-stack/installs/oneapi-2025.3.1/compiler/2025.3/bin/icx
+          cxx: /apps/contrib/spack-stack/installs/oneapi-2025.3.1/compiler/2025.3/bin/icpx
+          fortran: /apps/contrib/spack-stack/installs/oneapi-2025.3.1/compiler/2025.3/bin/ifx
         environment:
           prepend_path:
             LD_LIBRARY_PATH: '/usr/lib:/usr/lib64'
-            PATH: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/bin
-            CPATH: /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/include
-        extra_rpaths:
-        - /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/lib
-        - /apps/spack-managed/gcc-11.3.1/gcc-12.2.0-xy5rpremb5ln7puuq7it42fiqqhmvfe3/lib64
   intel-oneapi-mkl:
     buildable: false
     externals:

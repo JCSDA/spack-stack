@@ -6,7 +6,7 @@ packages:
   openmpi:
     buildable: False
     externals:
-    - spec: openmpi@4.1.4
+    - spec: openmpi@4.1.4 ~internal-hwloc +two_level_namespace
       prefix: /apps/spack-managed/gcc-11.3.1/openmpi-4.1.4-zabolhazla2ahsroedlyt2pu4mkp7o3q
       modules:
       - openmpi/4.1.4

@@ -1,0 +1,18 @@
+--- a/cmake/ioda-import.cmake.in
++++ b/cmake/ioda-import.cmake.in
+@@ -65,6 +65,15 @@
+ if(@odc_FOUND@)
+     find_dependency( odc 1.0.2 REQUIRED )
+ endif()
++
++if(@bufr_FOUND@)
++    find_dependency( bufr 12.0.1 REQUIRED )
++endif()
++
++if(@bufr_query_FOUND@)
++    find_dependency( bufr_query 0.0.4 REQUIRED )
++endif()
++
+ # Header-only. Not exposed.
+ #find_dependency( Boost 1.64.0 )
+ 
