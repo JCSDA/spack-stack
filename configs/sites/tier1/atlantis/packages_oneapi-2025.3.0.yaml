@@ -24,13 +24,13 @@ packages:
           c: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icx
           cxx: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icpx
           fortran: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/ifx
-        #environment:
-        #  prepend_path:
-        #    PATH: /cm/local/apps/gcc/11.2.0/bin
-        #    CPATH: /cm/local/apps/gcc/11.2.0/include
-        #extra_rpaths:
-        #- /cm/local/apps/gcc/11.2.0/lib64
-        #- /cm/local/apps/gcc/11.2.0/lib
+        environment:
+          prepend_path:
+            PATH: /cm/local/apps/gcc/11.2.0/bin
+            CPATH: /cm/local/apps/gcc/11.2.0/include
+        extra_rpaths:
+        - /cm/local/apps/gcc/11.2.0/lib64
+        - /cm/local/apps/gcc/11.2.0/lib
   gcc:
     buildable: false
     externals:
