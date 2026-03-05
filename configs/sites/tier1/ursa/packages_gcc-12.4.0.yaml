@@ -1,4 +1,8 @@
 packages:
+  all:
+    require:
+    - any_of: ['%gcc@=12.4.0']
+      when: '%gcc'
   mpi:
     buildable: False
     require:
@@ -18,7 +22,7 @@ packages:
   openmpi:
     buildable: False
     externals:
-    - spec: openmpi@4.1.6
+    - spec: openmpi@4.1.6 ~internal-hwloc +two_level_namespace
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/openmpi-4.1.6-2dkf6t23iyw4xodxruh72yvmrhhvyoms
       modules:
       - openmpi/4.1.6
