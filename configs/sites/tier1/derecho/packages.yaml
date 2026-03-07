@@ -3,8 +3,6 @@ packages:
   all:
     providers:
       zlib-api:: [zlib]
-  zlib-api:
-    buildable: False
   # Tell esmf that this is not a 'normal' Cray ...
   esmf:
     require:
