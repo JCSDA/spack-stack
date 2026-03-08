@@ -3,22 +3,16 @@ packages:
     require:
     - any_of: ['%intel-oneapi-compilers@=2025.2.1']
       when: '%intel-oneapi-compilers'
-    - any_of: ['gcc@=13.3.1']
+    - any_of: ['%gcc@=13.3.1']
       when: '%gcc'
   mpi:
     buildable: False
     require:
-    - cray-mpich@8.1.32
+      - cray-mpich@8.1.32
   cray-mpich:
     buildable: False
     externals:
     - spec: cray-mpich@8.1.32
-      prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
-      modules:
-      - libfabric/1.22.0
-      - craype-network-ofi
-      - cray-mpich/8.1.32
-  gcc:
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
       modules:
       - PrgEnv-intel/8.6.0
