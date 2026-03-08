@@ -1,15 +1,24 @@
 packages:
   all:
     require:
-    - any_of: ['%intel-oneapi-compilers@=2025.2.1']
-      when: '%intel-oneapi-compilers'
-    - any_of: ['%gcc@=12.3.0']
+    - any_of: ['gcc@=13.3.1']
       when: '%gcc'
   mpi:
     buildable: False
+    require:
+    - cray-mpich@8.1.32
   cray-mpich:
     buildable: False
-    - spec: cray-mpich@8.1.32 +wrappers
+    externals:
+    - spec: cray-mpich@8.1.32
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
+      modules:
+      #- PrgEnv-gnu/8.6.0
+      #- craype/2.7.34
+      - libfabric/1.22.0
+      - craype-network-ofi
+      - cray-mpich/8.1.32
+  gcc:
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
       modules:
       - PrgEnv-intel/8.6.0
@@ -26,8 +35,6 @@ packages:
         - PrgEnv-intel/8.6.0
         - intel/2025.2
         - craype/2.7.34
-        #- cray-libsci/25.03.0
-        #- libfabric/1.22.0
       extra_attributes:
         compilers:
           c: /opt/intel/oneapi/compiler/2025.2/bin/icx
@@ -49,16 +56,16 @@ packages:
   gcc:
     buildable: False
     externals:
-    - spec: gcc@12.3.0 languages:='c,c++'
-      prefix: /opt/cray/pe/gcc-native/12/bin
+    - spec: gcc@13.3.1 languages:='c,c++'
+      prefix: /opt/cray/pe/gcc-native/13/bin
       modules:
-        - PrgEnv-gnu/8.5.0
-        - gcc-native/12.3
+        - PrgEnv-gnu/8.6.0
+        - gcc-native/13.2
       extra_attributes:
         compilers:
-          c: /usr/bin/gcc-12
-          cxx: /usr/bin/g++-12
-          fortran: /usr/bin/gfortran-12
+          c: /usr/bin/gcc-13
+          cxx: /usr/bin/g++-13
+          fortran: /usr/bin/gfortran-13
         environment: 
           set:
             PE_GCC_EXTERNAL: native

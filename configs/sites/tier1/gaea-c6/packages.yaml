@@ -1,4 +1,4 @@
-packages:
+ipackages:
   # For addressing https://github.com/JCSDA/spack-stack/issues/1355
   #   Use system zlib instead of spack-built zlib-ng
   all:
