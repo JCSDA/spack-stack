@@ -1,6 +1,8 @@
 packages:
   all:
     require:
+    - any_of: ['%intel-oneapi-compilers@=2025.2.1']
+      when: '%intel-oneapi-compilers'
     - any_of: ['gcc@=13.3.1']
       when: '%gcc'
   mpi:
@@ -13,8 +15,6 @@ packages:
     - spec: cray-mpich@8.1.32
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
       modules:
-      #- PrgEnv-gnu/8.6.0
-      #- craype/2.7.34
       - libfabric/1.22.0
       - craype-network-ofi
       - cray-mpich/8.1.32
@@ -22,7 +22,6 @@ packages:
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
       modules:
       - PrgEnv-intel/8.6.0
-      - craype/2.7.34
       - cray-mpich/8.1.32
       - libfabric/1.22.0
       - craype-network-ofi
@@ -34,7 +33,6 @@ packages:
       modules:
         - PrgEnv-intel/8.6.0
         - intel/2025.2
-        - craype/2.7.34
       extra_attributes:
         compilers:
           c: /opt/intel/oneapi/compiler/2025.2/bin/icx
