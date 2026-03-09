@@ -1,18 +1,4 @@
 mirrors:
-  local-source:
-    fetch:
-      url: file:///contrib/spack-stack/source-cache
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
-    push:
-      url: file:///contrib/spack-stack/source-cache
-      access_pair:
-      - null
-      - null
-      access_token: null
-      profile: null
-      endpoint_url: null
+  spack-public:
+    binary: false
+    url: https://mirror.spack.io

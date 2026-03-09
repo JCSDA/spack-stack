@@ -2,12 +2,13 @@ packages:
   all:
     providers:
       zlib-api:: [zlib]
-  zlib-api:
-    buildable: False
-  zlib:
-    buildable: False
+  autoconf:
     externals:
-    - spec: zlib@1.2.11
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.16.2
       prefix: /usr
   bash:
     externals:
