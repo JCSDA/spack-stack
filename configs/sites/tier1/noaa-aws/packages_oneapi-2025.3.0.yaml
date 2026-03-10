@@ -3,7 +3,7 @@ packages:
     require:
     - any_of: ['%intel-oneapi-compilers@=2025.3.0']
       when: '%intel-oneapi-compilers'
-    - any_of: ['%gcc@=12.4']
+    - any_of: ['%gcc@=12.4.0']
       when: '%gcc'
   mpi:
     buildable: false
