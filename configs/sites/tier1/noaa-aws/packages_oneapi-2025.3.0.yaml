@@ -3,7 +3,7 @@ packages:
     require:
     - any_of: ['%intel-oneapi-compilers@=2025.3.0']
       when: '%intel-oneapi-compilers'
-    - any_of: ['%gcc@=12.4']
+    - any_of: ['%gcc@=12.4.0']
       when: '%gcc'
   mpi:
     buildable: false
@@ -37,7 +37,6 @@ packages:
       modules:
       - mpi/2021.17
   intel-oneapi-mkl:
-    # Remove buildable: False and uncomment externals section below to use intel-oneapi-mkl
     buildable: false
     externals:
     - spec: intel-oneapi-mkl@2025.3
