@@ -37,7 +37,6 @@ packages:
       modules:
       - mpi/2021.17
   intel-oneapi-mkl:
-    # Remove buildable: False and uncomment externals section below to use intel-oneapi-mkl
     buildable: false
     externals:
     - spec: intel-oneapi-mkl@2025.3
