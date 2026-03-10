@@ -1,0 +1,26 @@
+packages:
+  mpi:
+    buildable: False
+    require:
+    - openmpi@4.1.6
+  gcc:
+    buildable: False
+    externals:
+      - spec: gcc@12.4.0 languages:='c,c++,fortran'
+        prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj
+        modules:
+        - gcc/12.4.0
+        extra_attributes:
+          compilers:
+            c: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/bin/gcc
+            cxx: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/bin/g++
+            fortran: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj/bin/gfortran
+  openmpi:
+    buildable: false
+    externals:
+    - spec: openmpi@4.1.6~internal-hwloc+two_level_namespace
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/openmpi-4.1.6-2dkf6t23iyw4xodxruh72yvmrhhvyoms
+      modules:
+      - gnu/12.4.0
+      - openmpi/4.1.6
+
