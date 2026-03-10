@@ -3,7 +3,7 @@ packages:
     providers:
       zlib-api:: [zlib]
   zlib:
-    require::
+    require:
     - '@1.2.13'
 
 # All other packages listed alphabetically
