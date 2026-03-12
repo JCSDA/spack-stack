@@ -1,5 +1,8 @@
 packages:
 ### Modification of common packages
+  ewok-env:
+    require:
+    - '+ecflow'
   # Problems building shared hdf-eos2 with Intel, not needed
   hdf-eos2:
     variants: ~shared
