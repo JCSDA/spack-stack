@@ -15,8 +15,8 @@ packages:
       modules:
       - umf/1.0.2
       - tbb/2022.3
-      - compiler-rt/2025.3.0
-      - compiler/2025.3.0
+      - compiler-rt/2025.3.2
+      - compiler/2025.3.2
       extra_attributes:
         compilers:
           c: /opt/intel/oneapi/compiler/2025.3/bin/icx
