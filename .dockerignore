@@ -1,0 +1,19 @@
+# .dockerignore
+
+# Log files. 
+log.*
+*.log
+
+# spack-stack environments and builds.
+envs/
+.env/
+build/
+cache/
+
+# Misc.
+.vscode
+.Trashes
+.github/
+venv/
+.venv/
+
