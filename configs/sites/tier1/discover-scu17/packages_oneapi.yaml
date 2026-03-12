@@ -1,5 +1,7 @@
 packages:
   all:
+    prefer:
+    - '%oneapi'
     providers:
       mpi:: [intel-oneapi-mpi@2021.13]
   mpi:
@@ -28,15 +30,16 @@ packages:
         extra_rpaths:
         - /usr/local/other/gcc/12.3.0/lib64
   intel-oneapi-mpi:
+    buildable: False
     externals:
-    - spec: intel-oneapi-mpi@2021.13%oneapi@2024.2.0
+    - spec: intel-oneapi-mpi@2021.13
       prefix: /usr/local/intel/oneapi/2024
       modules:
       - mpi/impi/2021.13
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2.0%oneapi@2024.2.0
+    - spec: intel-oneapi-mkl@2024.2.0
       prefix: /usr/local/intel/oneapi/2024
   gcc:
     externals:
