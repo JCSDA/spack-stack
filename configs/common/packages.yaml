@@ -87,6 +87,9 @@ packages:
     codee:
       require:
       - '@2025.4.7'
+    ewok-env:
+      require:
+      - +ecflow
     # Attention - when updating also check the various jcsda-emc-bundles env packages
     crtm:
       require:
