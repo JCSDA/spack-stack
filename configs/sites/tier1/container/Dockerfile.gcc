@@ -34,10 +34,6 @@ RUN set -euo pipefail; \
         # External dependencies.
         libcurl4-openssl-dev \
         libmysqlclient-dev \
-        libqt5svg5-dev \
-        qt5-qmake \
-        qt5dxcb-plugin \
-        qtbase5-dev \
         zstd \
         # Shell tools, source retrieval and networking.
         sed \
