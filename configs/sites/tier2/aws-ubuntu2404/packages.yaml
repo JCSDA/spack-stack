@@ -28,6 +28,10 @@ packages:
     externals:
     - spec: automake@1.16.5
       prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.42+gold~headers
+      prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@9.4
@@ -52,6 +56,10 @@ packages:
     externals:
     - spec: git@2.43.0~tcltk
       prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.4.1
+      prefix: /usr
   gmake:
     buildable: false
     externals:
@@ -69,6 +77,10 @@ packages:
     externals:
     - spec: libtool@2.4.7
       prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.19
+      prefix: /usr
   perl:
     externals:
     - spec: perl@5.38.2~cpanm+opcode+open+shared+threads
@@ -81,7 +93,6 @@ packages:
     externals:
     - spec: sed@4.9
       prefix: /usr
-  wget:
+  tar:
     externals:
-    - spec: wget@1.21.4
-      prefix: /usr
+    - spec: tar@1.35
