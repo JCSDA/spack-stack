@@ -1,5 +1,6 @@
 packages:
   gcc:
+    buildable: false
     externals:
     - spec: gcc@13.3.0 languages:='c,c++,fortran'
       prefix: /usr
@@ -8,4 +9,7 @@ packages:
           c: /usr/bin/gcc
           cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran
-    buildable: false
+  gcc-runtime:
+    externals:
+    - spec: gcc-runtime@13.3.0
+      prefix: /usr

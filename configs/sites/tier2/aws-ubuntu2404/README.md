@@ -135,7 +135,6 @@ cd /opt/spack-stack
 source setup.sh
 # Swap default module type for default linux.
 sed -i 's/tcl/lmod/g' configs/sites/tier2/linux.default/modules.yaml
-sed -i "s/- '%gcc'/- '%gcc_toolchain'/" ./common/packages.yaml
 spack stack create env --site linux.default --template unified-dev --name unified-gcc --compiler gcc
 cd envs/unified-gcc
 spack env activate -p .
@@ -145,29 +144,12 @@ spack external find --scope system \
     --exclude cmake \
     --exclude curl --exclude openssl \
     --exclude openssh --exclude python
-spack external find --scope system wget
-spack external find --scope system grep
 spack compiler find --scope system
 export SPACK_DISABLE_LOCAL_CONFIG=true
 unset SPACK_SYSTEM_CONFIG_PATH
 # ACTION: Edit the site/compilers.yaml with the following.
 #   1) Delete or comment gcc-13 refs and preserve only gcc-12
 #   2) Delete or comment clang refs.
-# ACTION: Edit the site/packages.yaml and add these packages
-# If not present.
-cat << 'EOF' >> $PWD/site/packages.yaml
-  gcc:
-    buildable: false
-    externals:
-    - spec: gcc@11.4.0
-      prefix: /usr
-  qt:
-    buildable: false
-    externals:
-    - spec: qt@5.15.3
-      prefix: /usr
-      version: [5.15.3]
-EOF
 
 # Continue configuration.
 spack config add "packages:all:prefer:['%gcc']"
@@ -176,6 +158,9 @@ spack config add "packages:fontconfig:variants:+pic"
 spack config add "packages:pixman:variants:+pic"
 spack config add "packages:cairo:variants:+pic"
 spack config add "packages:met:variants:+python +grib2 +graphics +lidar2nc +modis"
+spack config add "packages:ewok-env:require:[+ecflow]"
+# Pin py-netcdf4
+spack config add "packages:py-netcdf4:require:[\"@1.7.2\"]"
 
 # Concretize and install
 spack concretize 2>&1 | tee log.concretize
@@ -285,6 +270,13 @@ spack external find --scope system grep
 #   and we are using an external module load for this.
 # - Disable "buildable" on all intel modules.
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
+  intel-oneapi-runtime:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-runtime@2025.3.0
+      prefix: /opt/intel/oneapi
+      modules:
+      - compiler-rt/2025.3.0
   intel-oneapi-mkl:
     buildable: false
     externals:
@@ -362,10 +354,10 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
         mpi: [intel-oneapi-mpi@2021.17]
     met:
       variants: +python +grib2 +graphics +lidar2nc +modis
-    mpi:
+    openmpi:
       buildable: false
-      require:
-      - intel-oneapi-mpi@2021.17
+    mpich:
+      buildable: false
     py-scipy:
       require:
       #- '%c,cxx,fortran=gcc'
@@ -383,7 +375,7 @@ EOF
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 spack install --fail-fast -j 12 2>&1 | tee log.install
-spack module lmod refresh
+spack module lmod refresh && \
 spack stack setup-meta-modules
 
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
@@ -443,7 +435,7 @@ cd jedi-bundle
 mkdir build && cd build
 ecbuild ../
 make update
-make -j10
+make -j10 2>&1 | tee log.make
 ctest
 ```
 
