@@ -6,6 +6,19 @@ SPACK_STACK_DIR=$(dirname $(dirname ${SCRIPT_DIR}))
 set -e
 
 ##################################################################################################
+# Packages for which to run tests when "-t" is specified; caveat: must be listed in order of     #
+# their respective dependencies (e.g. A depends on B --> B comes first)                          #
+##################################################################################################
+
+SPACK_STACK_PACKAGES_TO_TEST=(
+  "oops"
+  "ioda"
+  "ioda-converters"
+  "ropp-ufo"
+  "ufo"
+)
+
+##################################################################################################
 # Options                                                                                        #
 ##################################################################################################
 
@@ -26,11 +39,13 @@ usage() {
   echo "      requires role 'dev' and mode 'build'"
   echo "  -e  Continue builds/install in existing environments;"
   echo "      by default, exit with an error if already exist"
+  echo "  -t  Run tests for specific thirdparty dependencies;"
+  echo "      these are currently hardcoded in batch_install.sh"
   echo "  -h  display this help"
   echo
 }
 
-while getopts r:m:d:c:uhe flag
+while getopts r:m:d:c:ueth flag
 do
   case "${flag}" in
     r)
@@ -51,6 +66,9 @@ do
     e)
       SPACK_STACK_IGNORE_ENV_EXIST="true"
       ;;
+    t)
+      SPACK_STACK_RUN_TESTS="true"
+      ;;
     *)
       usage
       exit 1
@@ -65,6 +83,7 @@ echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_D
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
+echo "  SPACK_STACK_RUN_TESTS:                       ${SPACK_STACK_RUN_TESTS:-false}"
 
 if [[ -z ${SPACK_STACK_ROLE} ]]; then
   echo "ERROR, SPACK_STACK_ROLE not defined. Provide -r ROLE as argument"
@@ -331,6 +350,12 @@ else
 fi
 
 ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
+
+if [[ "${SPACK_STACK_RUN_TESTS}" == "true" ]]; then
+  test_packages=("${SPACK_STACK_PACKAGES_TO_TEST[@]}")
+else
+  test_packages=()
+fi
 
 # Loop through all compilers and templates for this host
 first_pass="true"
@@ -607,10 +632,31 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         exit 1
         ;;
     esac
-    spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.001
 
-    # Run another spack install without redirects to catch build errors
-    spack install
+    # If no tests are required, install everything
+    if [[ ${#test_packages[@]} -eq 0 ]]; then
+      set -o pipefail
+      spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.001
+      set +o pipefail
+    else
+      for (( idx=0; idx<${#test_packages[@]}; idx++ )); do
+        test_package=${test_packages[$idx]}
+        # First, check if this package is in this environment
+        set +e
+        grep -e "${test_package}@" log.concretize.${env_name}.001 || continue
+        set -e
+        idx_padded=$(printf "%03d" "$((idx+1))")
+        set -o pipefail
+        spack install --verbose ${buildcache_install_flags} --only=dependencies ${test_package} 2>&1 | tee log.install.${env_name}.${idx_padded}.${test_package}-dependencies
+        spack install --verbose --no-cache --test=root ${test_package} 2>&1 | tee log.install.${env_name}.${idx_padded}.${test_package}
+        set +o pipefail
+      done
+      # idx now equals the length of the array; install the rest
+      idx_padded=$(printf "%03d" "$((idx+1))")
+      set -o pipefail
+      spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.${idx_padded}
+      set +o pipefail
+    fi
 
     # In build mode, update local binary cache
     if [[ "${update_build_cache}" == "true" ]]; then
