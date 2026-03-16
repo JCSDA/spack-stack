@@ -1,4 +1,4 @@
-# Provisiong ParallelWorks NOAA-Azure clusters
+# Provisioning ParallelWorks NOAA-Azure clusters
 
 ## Use ParallelWorks NOAA-Azure Rocky9 cluster
 ## Steps to install ue-oneapi-2025.3.0 environment
@@ -73,7 +73,7 @@ export MODULES_AUTO_HANDLING=1
 
 module use /pw/apps/modules/intel/2025.3.0
 
-module use /contrib/spack-stack/spack-stack-2.1/envs/ue-oneapi-2025.3.0/modules/Core
+module use /contrib/spack-stack-rocky9/spack-stack-2.1/envs/ue-oneapi-2025.3.0/modules/Core
 
 module load stack-intel-oneapi-compilers/2025.3.0
 
@@ -89,7 +89,7 @@ module purge
 
 module reset
 
-module use /contrib/spack-stack/spack-stack-2.1/envs/ue-gcc-12.4.0/modules/Core
+module use /contrib/spack-stack-rocky9/spack-stack-2.1/envs/ue-gcc-12.4.0/modules/Core
 
 module load stack-gcc/12.4.0
 
