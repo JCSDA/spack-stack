@@ -21,6 +21,5 @@ packages:
     - spec: openmpi@4.1.6~internal-hwloc+two_level_namespace
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/openmpi-4.1.6-2dkf6t23iyw4xodxruh72yvmrhhvyoms
       modules:
-      - gnu/12.4.0
       - openmpi/4.1.6
 
