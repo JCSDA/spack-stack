@@ -6,6 +6,8 @@ packages:
   ewok-env:
     require:
     - +ecflow
+  met:
+    require: [+python, +grib2, +graphics, +lidar2nc, +modis]
   py-awscrt:
     require:
     - "@0.19.19"
@@ -60,11 +62,6 @@ packages:
     externals:
     - spec: git-lfs@3.4.1
       prefix: /usr
-  gmake:
-    buildable: false
-    externals:
-    - spec: gmake@4.3
-      prefix: /usr
   grep:
     externals:
     - spec: grep@3.11
@@ -72,10 +69,6 @@ packages:
   groff:
     externals:
     - spec: groff@1.23.0
-      prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.7
       prefix: /usr
   m4:
     externals:
