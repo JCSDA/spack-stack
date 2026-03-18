@@ -14,7 +14,7 @@ packages:
     - '%fortran=gcc %c,cxx=oneapi'
     - '%fortran=gcc %c=oneapi'
     providers:
-      mpi: [intel-oneapi-mpi@2021.17]
+      mpi:: [intel-oneapi-mpi@2021.17]
 
   intel-oneapi-compilers:
     buildable: false
@@ -35,6 +35,10 @@ packages:
     buildable: false
   mpich:
     buildable: false
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.17
   gcc:
     externals:
     - spec: gcc@13.3.0 languages:='c,c++,fortran'
