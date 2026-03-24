@@ -39,7 +39,7 @@ Tasks
     - [ ] Acorn (NOAA-EMC)
     - [ ] Atlantis (NRL)
     - [ ] Blueback (NRL)
-    - [ ] Derecho (EPIC)
+    - [ ] Derecho (NCAR)
     - [ ] Discover (JCSDA)
     - [ ] Gaea (EPIC)
     - [ ] Hercules (EPIC)
