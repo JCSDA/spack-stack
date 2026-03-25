@@ -1,37 +1,29 @@
 packages:
-  gmake:
-    buildable: false
-    externals:
-    - spec: gmake@4.3
-      prefix: /usr
-  grep:
-    externals:
-    - spec: grep@3.11
-      prefix: /usr
-  wget:
-    externals:
-    - spec: wget@1.21.4
-      prefix: /usr
-  perl:
-    externals:
-    - spec: perl@5.38.2~cpanm+opcode+open+shared+threads
-      prefix: /usr
-  findutils:
-    externals:
-    - spec: findutils@4.9.0
-      prefix: /usr
-  coreutils:
-    externals:
-    - spec: coreutils@9.4
-      prefix: /usr
-  pkgconf:
-    externals:
-    - spec: pkgconf@1.8.1
-      prefix: /usr
-  libtool:
-    externals:
-    - spec: libtool@2.4.7
-      prefix: /usr
+  # Package constraints.
+  awscli-v2:
+    require:
+    - "@2.22.4"
+  ewok-env:
+    require:
+    - +ecflow
+  met:
+    require: [+python, +grib2, +graphics, +lidar2nc, +modis]
+  py-awscrt:
+    require:
+    - "@0.19.19"
+  py-botocore:
+    require:
+    - "@1.34.162"
+  py-boto3:
+    require:
+    - "@1.34.162"
+  py-netcdf4:
+    require:
+    - "@1.7.2"
+  jedi-base-env:
+    require: [+fftw, +hdf4, +bufrquery]
+
+  # System packages.
   autoconf:
     externals:
     - spec: autoconf@2.71
@@ -39,6 +31,26 @@ packages:
   automake:
     externals:
     - spec: automake@1.16.5
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.42+gold~headers
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@9.4
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.10
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.9.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
       prefix: /usr
   gawk:
     externals:
@@ -48,19 +60,45 @@ packages:
     externals:
     - spec: git@2.43.0~tcltk
       prefix: /usr
-  flex:
+  git-lfs:
     externals:
-    - spec: flex@2.6.4+lex
+    - spec: git-lfs@3.4.1
       prefix: /usr
-  sed:
+  grep:
     externals:
-    - spec: sed@4.9
-      prefix: /usr
-  diffutils:
-    externals:
-    - spec: diffutils@3.10
+    - spec: grep@3.11
       prefix: /usr
   groff:
     externals:
     - spec: groff@1.23.0
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.19
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.38.2~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.8.1
+      prefix: /usr
+  qt::
+    buildable: false
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr
+    version: [5.15.3]
+  sed:
+    externals:
+    - spec: sed@4.9
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.35
+  wget::
+    buildable: false
+    externals:
+    - spec: wget@1.21.4
       prefix: /usr

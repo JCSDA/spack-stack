@@ -1,29 +1,53 @@
 packages:
   all:
-    target: [core2]
+    target: [x86_64_v3]
+  awscli-v2:
+    require:
+    - "@2.22.4"
+  cairo:
+    variants: +pic
+  ewok-env:
+    require:
+    - +ecflow
+  fontconfig:
+    variants: +pic
   met:
     variants: +python +grib2 +graphics +lidar2nc +modis
+  parallelio:
+    require:
+    - +pnetcdf
+  pixman:
+    variants: +pic
+  py-awscrt:
+    require:
+    - "@0.19.19"
+  py-botocore:
+    require:
+    - "@1.34.162"
+  py-boto3:
+    require:
+    - "@1.34.162"
+  py-netcdf4:
+    require:
+    - "@1.7.2"
+
   # System packages installed during the container build.
-  grep:
+  autoconf:
     externals:
-    - spec: grep@3.11
-      prefix: /usr
-  findutils:
-    externals:
-    - spec: findutils@4.9.0
+    - spec: autoconf@2.71
       prefix: /usr
   coreutils:
     externals:
     - spec: coreutils@9.4
       prefix: /usr
-  autoconf:
-    externals:
-    - spec: autoconf@2.71
-      prefix: /usr
   diffutils:
     buildable: false
     externals:
     - spec: diffutils@3.10
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.9.0
       prefix: /usr
   git:
     buildable: false
@@ -35,21 +59,14 @@ packages:
     externals:
     - spec: git-lfs@3.4.1
       prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.11
+      prefix: /usr
   llvm:
     buildable: false
     externals:
     - spec: llvm@14.0.6
-      prefix: /usr
-  qt:
-    buildable: false
-    externals:
-    - spec: qt@5.15.3
-      prefix: /usr
-    version: [5.15.3]
-  wget:
-    buildable: false
-    externals:
-    - spec: wget@1.21.4
       prefix: /usr
   perl:
     buildable: false

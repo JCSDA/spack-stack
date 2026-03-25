@@ -34,10 +34,6 @@ RUN set -euo pipefail; \
         # External dependencies.
         libcurl4-openssl-dev \
         libmysqlclient-dev \
-        libqt5svg5-dev \
-        qt5-qmake \
-        qt5dxcb-plugin \
-        qtbase5-dev \
         zstd \
         # Shell tools, source retrieval and networking.
         sed \
@@ -91,7 +87,13 @@ ENV SPACK_STACK_DIR=/opt/spack-stack \
 
 # Copy spack-stack from build context. Note the build context must be the
 # root of the spack-stack repository (see the README.md for details).
-COPY . ${SPACK_STACK_DIR}
+# Do not copy the dockerfiles into the container.
+COPY --exclude=configs/sites/tier1/container/Dockerfile.oneapi \
+    --exclude=configs/sites/tier1/container/Dockerfile.gcc \
+    --exclude=configs/sites/tier1/container/packages_gcc.yaml \
+    --exclude=envs/** \
+    --exclude=cache/** \
+    . ${SPACK_STACK_DIR}
 
 # Create spack-stack environment
 WORKDIR /opt/spack-stack
@@ -105,12 +107,19 @@ RUN mkdir -p /tmp/spack-stack && \
         --compiler oneapi && \
     cd ${SPACK_STACK_DIR}/envs/container && \
     spack env activate . && \
-    spack concretize 2>&1 | tee log.concretize && \
-    spack install --fail-fast -j ${BUILD_JOBS} 2>&1 | tee log.install && \
+    spack concretize 2>&1 | tee log.concretize
+
+# Build the spack environment.
+RUN  source setup.sh &&  cd ${SPACK_STACK_DIR}/envs/container && spack env activate . && \
+        spack install --fail-fast -j ${BUILD_JOBS} 2>&1 | tee log.install
+
+# Setup modules and meta-modules.
+RUN source setup.sh &&  cd ${SPACK_STACK_DIR}/envs/container && spack env activate . && \
     spack module tcl refresh -y && \
     spack stack setup-meta-modules && \
     # Save output of spack find.
     spack find 2>&1 | tee /opt/spack-software/spack_find.out && \
+    cp ./log.concretize /opt/spack-software/log.concretize && \
     spack clean --all
 
 ## ---------- Create runtime container ----------
@@ -129,10 +138,22 @@ RUN echo "ulimit -s unlimited" > /etc/spack_container_rc.sh \
     && echo "export CXX=icpx" >> /etc/spack_container_rc.sh \
     && echo "export FC=ifx" >> /etc/spack_container_rc.sh \
     && echo "# TCL module path for the spack-stack environment." >> /etc/spack_container_rc.sh \
-    && echo "export MODULEPATH=/opt/spack-software/modules/Core" >> /etc/spack_container_rc.sh \
     && echo "source /etc/profile.d/modules.sh" >> /etc/spack_container_rc.sh \
     && echo "module use /opt/intel/oneapi/modulefiles" >> /etc/spack_container_rc.sh \
-    && echo "module use /opt/spack-software/modules/Core" >> /etc/spack_container_rc.sh \
+    && echo "module use /opt/spack-software/modulefiles" >> /etc/spack_container_rc.sh \
+    && echo "module use /opt/spack-software/modulefiles/Core" >> /etc/spack_container_rc.sh \
+    && echo "# Bash function to load modules necessary to build the JEDI bundle." >> /etc/spack_container_rc.sh \
+    && echo "load_jedi_bundle_env() {" >> /etc/spack_container_rc.sh \
+    && echo "    module purge" >> /etc/spack_container_rc.sh \
+    && echo "    module load stack-intel-oneapi-compilers" >> /etc/spack_container_rc.sh \
+    && echo "    module load stack-intel-oneapi-mpi" >> /etc/spack_container_rc.sh \
+    && echo "    module load base-env" >> /etc/spack_container_rc.sh \
+    && echo "    module load jedi-mpas-env" >> /etc/spack_container_rc.sh \
+    && echo "    module load py-fortranformat" >> /etc/spack_container_rc.sh \
+    && echo "    module load jedi-fv3-env" >> /etc/spack_container_rc.sh \
+    && echo "    module load ewok-env" >> /etc/spack_container_rc.sh \
+    && echo "    module load ip" >> /etc/spack_container_rc.sh \
+    && echo "}" >> /etc/spack_container_rc.sh \ \
     && echo "source /etc/spack_container_rc.sh" >> /etc/bash.bashrc \
     && printf "[credential]\n    helper = cache --timeout=7200\n" >> /root/.gitconfig \
     && mkdir /root/.pmix

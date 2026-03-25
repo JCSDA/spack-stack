@@ -32,6 +32,9 @@ packages:
     - spec: cray-mpich@8.1.32 +wrappers
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
       modules:
+      - crayenv/25.03
+      - PrgEnv-gnu/8.6.0
+      - gcc-native/13.2
       - craype-network-ofi
       - cray-mpich/8.1.32
       - libfabric/1.22.0

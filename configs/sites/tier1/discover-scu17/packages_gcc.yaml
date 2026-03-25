@@ -8,7 +8,7 @@ packages:
   openmpi:
     buildable: False
     externals:
-    - spec: openmpi@4.1.6 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath
+    - spec: openmpi@4.1.6 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+two_level_namespace
         fabrics=ucx schedulers=slurm
       prefix: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-13.4.0
       modules:

@@ -1,4 +1,21 @@
 packages:
+
+  # Compilers.
+  all:
+    prefer:
+    - '%oneapi'
+    conflict:
+    - '%c=oneapi %fortran=gcc'
+    - '%c,cxx=oneapi %fortran=gcc'
+    - '%c=gcc %fortran=oneapi'
+    - '%c,cxx=gcc %fortran=oneapi'
+    - '%fortran=oneapi %c=gcc'
+    - '%fortran=oneapi %c,cxx=gcc'
+    - '%fortran=gcc %c,cxx=oneapi'
+    - '%fortran=gcc %c=oneapi'
+    providers:
+      mpi:: [intel-oneapi-mpi@2021.17]
+
   intel-oneapi-compilers:
     buildable: false
     externals:
@@ -18,6 +35,10 @@ packages:
     buildable: false
   mpich:
     buildable: false
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.17
   gcc:
     externals:
     - spec: gcc@13.3.0 languages:='c,c++,fortran'
@@ -49,3 +70,23 @@ packages:
       prefix: /opt/intel/oneapi
       modules:
       - tbb/2022.3
+
+  # Package constraints.
+  jedi-base-env:
+    require: [+fftw, +hdf4, +bufrquery]
+  eccodes:
+    require:
+    - "jp2k=jasper"
+  jasper:
+    require:
+    - +jpeg
+  elfutils:
+    require:
+    - '@0.191'
+  libelf:
+    buildable: false
+  curl:
+    require: ['+nghttp2']
+  py-pyyaml:
+    require:
+    - +libyaml

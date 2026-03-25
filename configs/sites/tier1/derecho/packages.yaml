@@ -1,7 +1,8 @@
 packages:
 # Modification of common packages
-  zlib-api:
-    buildable: False
+  all:
+    providers:
+      zlib-api:: [zlib]
   # Tell esmf that this is not a 'normal' Cray ...
   esmf:
     require:
@@ -113,5 +114,5 @@ packages:
   zlib:
     buildable: False
     externals:
-    - spec: zlib@1.2.11
+    - spec: zlib@1.2.13
       prefix: /usr

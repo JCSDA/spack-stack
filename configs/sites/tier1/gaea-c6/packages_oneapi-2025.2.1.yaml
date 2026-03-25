@@ -1,6 +1,14 @@
 packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2025.2.1']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=13.3.1']
+      when: '%gcc'
   mpi:
     buildable: False
+    require:
+      - cray-mpich@8.1.32
   cray-mpich:
     buildable: False
     externals:
@@ -19,9 +27,6 @@ packages:
       modules:
         - PrgEnv-intel/8.6.0
         - intel/2025.2
-        - craype/2.7.35
-        - cray-libsci/25.09.0
-        - libfabric/1.22.0
       extra_attributes:
         compilers:
           c: /opt/intel/oneapi/compiler/2025.2/bin/icx
@@ -29,15 +34,12 @@ packages:
           fortran: /opt/intel/oneapi/compiler/2025.2/bin/ifx
         environment:
           prepend_path:
-            PATH: '/opt/cray/pe/gcc-native/12/bin'
-            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.09.0/INTEL/2025.0/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12:/opt/intel/oneapi/compiler/2025.2/lib:/opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1/lib'
+            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.03.0/INTEL/2025.0/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12:/opt/intel/oneapi/compiler/2025.2/lib:/opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1/lib'
           set:
             # OpenSUSE on Gaea C6 sets CONFIG_SITE so
             # Automake-based builds are installed in lib64
             # which confuses some packages.
             CONFIG_SITE: ''
-        extra_rpaths:
-          - /opt/intel/oneapi/compiler/2025.2/lib  
   intel-oneapi-mkl:
     buildable: False
     externals:
@@ -46,21 +48,17 @@ packages:
   gcc:
     buildable: False
     externals:
-    - spec: gcc@12.3.0 languages:='c,c++'
-      prefix: /opt/cray/pe/gcc-native/12/bin
+    - spec: gcc@13.3.1 languages:='c,c++'
+      prefix: /opt/cray/pe/gcc-native/13/bin
       modules:
         - PrgEnv-gnu/8.6.0
-        - gcc-native/12.3
-        - craype/2.7.35
-        - libfabric/1.22.0
-        - cray-libsci/25.09.0
+        - gcc-native/13.2
       extra_attributes:
         compilers:
-          c: /opt/cray/pe/gcc-native/12/bin/gcc
-          cxx: /opt/cray/pe/gcc-native/12/bin/g++
-          fortran: /opt/cray/pe/gcc-native/12/bin/gfortran
+          c: /usr/bin/gcc-13
+          cxx: /usr/bin/g++-13
+          fortran: /usr/bin/gfortran-13
         environment: 
-          prepend_path:
-            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.09.0/INTEL/2025.0/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12:/opt/intel/oneapi/compiler/2025.2/lib'
-      extra_rpaths:
-        - /opt/intel/oneapi/compiler/2025.2/lib
+          set:
+            PE_GCC_EXTERNAL: native
+            #FI_CXI_RX_MATCH_MODE: hybrid
