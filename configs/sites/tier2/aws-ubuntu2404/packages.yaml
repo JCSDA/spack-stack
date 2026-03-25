@@ -20,6 +20,8 @@ packages:
   py-netcdf4:
     require:
     - "@1.7.2"
+  jedi-base-env:
+    require: [+fftw, +hdf4, +bufrquery]
 
   # System packages.
   autoconf:
@@ -82,6 +84,12 @@ packages:
     externals:
     - spec: pkgconf@1.8.1
       prefix: /usr
+  qt::
+    buildable: false
+    externals:
+    - spec: qt@5.15.3
+      prefix: /usr
+    version: [5.15.3]
   sed:
     externals:
     - spec: sed@4.9
@@ -89,3 +97,8 @@ packages:
   tar:
     externals:
     - spec: tar@1.35
+  wget::
+    buildable: false
+    externals:
+    - spec: wget@1.21.4
+      prefix: /usr
