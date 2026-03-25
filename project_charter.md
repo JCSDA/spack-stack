@@ -4,7 +4,7 @@
 
 spack-stack is a project which allows sysadmins and users to install
 correct versions of the many dependent packages that are required to
-build the Unified Forecast System (UFS) and other models.
+build the Unified Forecast System (UFS) and numerous other models.
 
 spack-stack relies on the open-source [spack
 project](https://github.com/spack/spack). Spack uses package
@@ -24,7 +24,8 @@ in installing the large number of packages managed by spack-stack.
 - The UCAR Joint Center for Satellite Data Assimilation (JCSDA)
 - The Earth Prediction Innovation Center (EPIC)
 - The U.S. Naval Research Laboratory (NRL)
-- The NASA Global Modeling and Assimilation Office, (GMAO)
+- The NASA Global Modeling and Assimilation Office (GMAO)
+- The NCAR Mesoscale and Microscale Meteorology (MMM) Laboratory
 
 Each stakeholder will designate a small number of developers to assist
 in spack-stack development by becoming a code manager of the
@@ -34,11 +35,12 @@ spack-stack repo.
 
 Organization | Code Manager(s)
 -------------|----------------
-NOAA EMC | Alex Richert, Hang Lei
-JCSDA | Ashley Griffin, Evan Parker
-EPIC | Rick Grubin, Ratko Vasic
-NRL | Dom Heinzeller, TBD
-NASA | Matthew Thompson, TBD
+NOAA EMC     | Alex Richert, Hang Lei
+JCSDA        | Ashley Griffin, Evan Parker
+EPIC         | Rick Grubin, Ratko Vasic
+NRL          | Dom Heinzeller, TBD
+NASA         | Matthew Thompson, TBD
+NCAR         | Jim Wittig, TBD
 
 ## Project Process
 
@@ -76,7 +78,7 @@ sending updates in our fork to upstream.
 
 The spack-stack stack must be installed on various NOAA, NCAR, NASA,
 and other HPC systems. Each stakeholder will designate developers to
-install on their systems (see https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html).
+install on their systems (see https://github.com/JCSDA/spack-stack/wiki/Preconfigured-Sites).
 
 ### Releases
 
@@ -99,8 +101,7 @@ Sometimes tags are preferrable to releases. Tags can be added at any time. Tag p
 
 ### Documentation
 
-spack-stack is documented with its README.md and [Spack Documentation
-on readthedocs](https://spack-stack.readthedocs.io/en/latest/#).
+spack-stack is documented with its README.md and [Wiki](https://github.com/JCSDA/spack-stack/wiki).
 
 ### Reporting Problems
 
@@ -127,17 +128,17 @@ _Example_
 
 #### Auto-generated modules structure (no MPI dependency)
 
-/path/to/spack-stack/spack-stack-x.y.z/envs/ue-compiler-name-compiler-version/install/modulefiles/compiler-name/compiler-version/package-name/package-version[.lua]
+/path/to/spack-stack/spack-stack-x.y.z/envs/ue-compiler-name-compiler-version//modules/compiler-name/compiler-version/package-name/package-version[.lua]
 
 _Example_
-/Users/heinzell/prod/spack-stack-1.4.0/envs/ue-apple-clang-13.1.6/install/modulefiles/apple-clang/13.1.6/sfcio/1.4.1.lua
+/Users/heinzell/prod/spack-stack-1.4.0/envs/ue-apple-clang-13.1.6/modules/apple-clang/13.1.6/sfcio/1.4.1.lua
 
 ####  Auto-generated modules structure (MPI dependency)
 
-/path/to/spack-stack/spack-stack-x.y.z/envs/ue-compiler-name-compiler-version/install/modulefiles/mpi-name/mpi-version/compiler-name/compiler-version/package-name/package-version[.lua]
+/path/to/spack-stack/spack-stack-x.y.z/envs/ue-compiler-name-compiler-version/modules/mpi-name/mpi-version/compiler-name/compiler-version/package-name/package-version[.lua]
 
 _Example_
-/Users/heinzell/prod/spack-stack-1.4.0/envs/ue-apple-clang-13.1.6/install/modulefiles/openmpi/4.1.5/apple-clang/13.1.6/hdf5/1.14.0.lua
+/Users/heinzell/prod/spack-stack-1.4.0/envs/ue-apple-clang-13.1.6/modules/openmpi/4.1.5/apple-clang/13.1.6/hdf5/1.14.0.lua
 
 #### Important points to remember 
 
@@ -174,7 +175,7 @@ We need to consider two types of installations: test installations and official 
 Test installations can be requested as part of issues (which should be mandatory for pull requests anyway). These can be more frequent than official updates.
 Issues can be in the application (e.g. `ufs-weather-model` repo) or in spack-stack, clearly describing the need and with a reasonable timeline.
 
-Test installations are limited to one platform at a time (depending on the developer’s needs). The installers for that platform (see table in https://spack-stack.readthedocs.io/en/1.4.1/PreConfiguredSites.html) are responsible for installing it.
+Test installations are limited to one platform at a time (depending on the developer’s needs). The installers for that platform (see table in https://github.com/JCSDA/spack-stack/wiki/Preconfigured-Sites) are responsible for installing it.
 
 Test installations are made outside the official spack-stack release environment using chained environments (if possible, otherwise completely new install trees), never in the official environments. This currently requires the developer to add an additional module use statement, as in the example below. The spack-stack developers are working on a solution to make the upstream modules available to the chained environment to make life easier for the users.
 

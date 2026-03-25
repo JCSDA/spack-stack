@@ -6,22 +6,20 @@ developed by the spack-stack project partners: UFS, MPAS, NEPTUNE, FV3, GEOS, JE
 
 Spack-stack supports installations on a range of R&D and operational platforms.
 It provides a set of installation templates (package lists), default package settings,
-system configurations for a range of [macOS and Linux workstation, HPC, and cloud
-platforms](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html), and Spack extensions, and uses a fork of the
+system configurations for a range of [macOS and Linux workstation, containers, HPC,
+and cloud platforms](https://github.com/jcsda/spack-stack/wiki/Developer-Corner), and Spack extensions, and uses a fork of the
 [Spack repository](https://github.com/spack/spack). [Spack](https://spack.io/) is a
-community-supported, multi-platform package manager
-developed by Lawrence Livermore National Laboratory
+community-supported, multi-platform package manager developed by Lawrence Livermore National Laboratory
 (LLNL). Spack is provided as a submodule to spack-stack so that a
 stable version can be referenced. For more information about Spack, see
 the [LLNL project page for Spack](https://computing.llnl.gov/projects/spack-hpc-package-manager)
 and the [Spack documentation](https://spack.readthedocs.io/en/latest/).
 
 **To get started with spack-stack**, either by using an existing
-installation on a [supported platform](https://spack-stack.readthedocs.io/en/latest/PreConfiguredSites.html)
-or by [creating a new installation](https://spack-stack.readthedocs.io/en/latest/CreatingEnvironments.html), see the
-[Getting Started](https://spack-stack.readthedocs.io/en/latest/Overview.html#getting-started) documentation page.
-Full documentation with table of contents can be found at https://spack-stack.readthedocs.io/en/latest/. The spack-stack
-[Wiki](https://github.com/JCSDA/spack-stack/wiki) also provides latest updates for current and previous spack-stack releases.
+installation on a [supported platform](https://github.com/jcsda/spack-stack/wiki/Preconfigured-Sites)
+or by [creating a new installation](https://github.com/jcsda/spack-stack/wiki/New-Site-Configs), see the
+[Developers Conrner](https://github.com/jcsda/spack-stack/wiki/Developer-Corner) Wiki page.
+Full documentation with links to spack-stack releases can be found at https://github.com/jcsda/spack-stack/wiki.
 
 Spack-stack is a collaborative effort between:
 * [NOAA Environmental Modeling Center (EMC)](https://www.emc.ncep.noaa.gov)
@@ -29,6 +27,6 @@ Spack-stack is a collaborative effort between:
 * [Earth Prediction Innovation Center (EPIC)](https://epic.noaa.gov)
 * [U.S. Naval Research Laboratory (NRL)](https://https://www.nrl.navy.mil)
 * [NASA Global Modeling and Assimilation Office (GMAO)](https://gmao.gsfc.nasa.gov)
+* [NCAR Mesoscale and Microscale Meteorology (MMM) Laboratory](https://www.mmm.ucar.edu)
 
-For more information about the organization of the spack-stack
-project, see the [Project Charter](project_charter.md).
+For more information about the organization of the spack-stackproject, see the [Project Charter](project_charter.md).
