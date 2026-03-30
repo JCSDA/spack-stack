@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Save old prompt if not already saved
-if [[ -z "$__OLD_PS1" ]]; then
+if [[ ! -v "$__OLD_PS1" ]]; then
   export __OLD_PS1="$PS1"
 fi
 
