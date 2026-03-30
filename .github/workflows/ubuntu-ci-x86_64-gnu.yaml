@@ -214,7 +214,7 @@ jobs:
           cnt=$(grep -c "WARNING.*do not match" stderr.txt || true)
           if [ $cnt -lt 3 ]; then echo "Missing 'create env' warnings"; exit 1; fi
 
-      - name: test-env
+      - name: test-unified-env
         run: |
           source /etc/profile.d/modules.sh
           module use /home/ubuntu/spack-stack/modulefiles
@@ -231,4 +231,17 @@ jobs:
           module load jedi-ufs-env
           module load ewok-env
           module load soca-env
+          module list
+
+      - name: test-neptune-env
+        run: |
+          source /etc/profile.d/modules.sh
+          module use /home/ubuntu/spack-stack/modulefiles
+
+          export ENVNAME=ne-gcc-11.4.0
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          ls -l ${ENVDIR}/modules/Core
+
+          module use ${ENVDIR}/modules/Core
+          module load stack-venv/release-openmp
           module list

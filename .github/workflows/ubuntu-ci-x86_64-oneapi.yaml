@@ -221,7 +221,7 @@ jobs:
           spack stack setup-meta-modules
           spack env deactivate
 
-      - name: test-env
+      - name: test-unified-env
         run: |
           source /etc/profile.d/modules.sh
           module use /opt/intel/oneapi/modulefiles
@@ -245,3 +245,17 @@ jobs:
           module show stack-intel-oneapi-compilers/2024.2.0
           which llvm-ar
           llvm-ar --version
+
+      - name: test-neptune-env
+        run: |
+          source /etc/profile.d/modules.sh
+          module use /opt/intel/oneapi/modulefiles
+          module use /home/ubuntu/spack-stack/modulefiles
+
+          export ENVNAME=ne-oneapi-2024.2.0
+          export ENVDIR=$PWD/envs/${ENVNAME}
+          ls -l ${ENVDIR}/modules/Core
+
+          module use ${ENVDIR}/modules/Core
+          module load stack-venv/release-openmp
+          module list
