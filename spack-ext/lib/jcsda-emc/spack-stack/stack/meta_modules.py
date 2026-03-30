@@ -119,8 +119,11 @@ def envmod_command(module_choice, action, env_name, env_values):
 
 def module_load_command(module_choice, module):
     if module_choice == "lmod":
-        return f"""load("{module}")
-prereq("{module}")\n"""
+#        return f"""load("{module}")
+#prereq("{module}")\n"""
+        return f"""if (mode() == "load" and not isloaded("{module}")) then
+    load("{module}")
+end\n"""
     else:
         return f"""if {{ [ module-info mode load ] && ![ is-loaded {module} ] }} {{
     module load {module}
@@ -683,7 +686,7 @@ def setup_meta_modules():
         view_dir = os.path.join(env_dir, view_values["root"])
 
         venv_module_dir = os.path.join(meta_module_dir, "stack-venv")
-        venv_module_file = os.path.join(venv_module_dir, view_name)
+        venv_module_file = os.path.join(venv_module_dir, view_name + MODULE_FILE_EXTENSION[module_choice])
 
         substitutes = SUBSTITUTES_TEMPLATE.copy()
         substitutes["VENV_MODULEDIR"] = venv_module_dir
