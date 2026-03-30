@@ -23,4 +23,4 @@
 /repos/spack_stack/spack_repo/spack_stack/packages/nceplibs_env/ @AlexanderRichert-NOAA @HangLei-NOAA @AlysonStahl-NOAA
 /repos/spack_stack/spack_repo/spack_stack/packages/upp_env/ @AlexanderRichert-NOAA @HangLei-NOAA @AlysonStahl-NOAA
 /util/acorn/ @AlexanderRichert-NOAA @HangLei-NOAA @AlysonStahl-NOAA
-/util/weekly_build/sites/acorn.sh
+/util/weekly_build/sites/acorn.sh @AlexanderRichert-NOAA @HangLei-NOAA @AlysonStahl-NOAA
