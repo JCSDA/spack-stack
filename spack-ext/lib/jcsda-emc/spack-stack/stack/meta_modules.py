@@ -347,6 +347,8 @@ def setup_meta_modules():
             module_choice = module_choice
         )
 
+    # Create compiler modules
+    COMPILER_META_MODULE = None
     for compiler in compilers:
         logging.info(f"  ... configuring compiler {compiler.name}@{compiler.version}")
 
@@ -475,6 +477,7 @@ def setup_meta_modules():
     MODULEPATHS_SAVE = []
 
     # Create mpi modules - currently, only one mpi provider is allowed
+    MPI_META_MODULE = None
     for mpi_provider in mpi_providers:
 
         if module_choice == "lmod":
@@ -678,8 +681,10 @@ def setup_meta_modules():
         substitutes = SUBSTITUTES_TEMPLATE.copy()
         substitutes["VENV_NAME"] = view_name
         substitutes["VENV_ROOT"] = view_dir
-        substitutes["MODULELOADS"] = module_load_command(module_choice, COMPILER_META_MODULE)
-        substitutes["MODULELOADS"] += module_load_command(module_choice, MPI_META_MODULE)
+        if COMPILER_META_MODULE:
+            substitutes["MODULELOADS"] = module_load_command(module_choice, COMPILER_META_MODULE)
+        if MPI_META_MODULE:
+            substitutes["MODULELOADS"] += module_load_command(module_choice, MPI_META_MODULE)
 
         # Read venv template into module_content string
         with open(VENV_TEMPLATES[module_choice]) as f:
