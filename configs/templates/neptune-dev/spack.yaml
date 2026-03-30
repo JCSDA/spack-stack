@@ -15,7 +15,7 @@ spack:
       - esmf ~debug ~openmp
       - esmf +debug ~openmp
       - ip ~openmp
-      link: run
+      link: all
       link_type: symlink
 
   include: []

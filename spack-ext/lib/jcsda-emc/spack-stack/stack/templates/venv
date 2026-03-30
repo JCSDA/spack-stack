@@ -1,0 +1,36 @@
+#%Module
+#
+# spack-stack virtual environment meta module
+#
+
+# conflicts
+conflict stack-venv
+
+# prerequisite modules
+@MODULELOADS@
+
+setenv       PYTHONHOME      "@VENV_ROOT@"
+prepend-path PATH            "@VENV_ROOT@/bin"
+prepend-path LD_LIBRARY_PATH "@VENV_ROOT@/lib"
+prepend-path LD_LIBRARY_PATH "@VENV_ROOT@/lib64"
+
+
+# Prompt modification only supported in bash
+if { [module-info shell] == "bash" } {
+  if { [module-info mode] == "load" } {
+    # Save original PS1 if not already saved
+    puts stdout {if [ -z "$__OLD_PS1" ]; then export __OLD_PS1="$PS1"; fi}
+    # Only prepend if not already present
+    puts stdout {case "$PS1" in *"(@VENV_NAME@)"*) ;; *) export PS1="(@VENV_NAME@) $PS1" ;; esac}
+  } elseif { [module-info mode] == "remove" } {
+    # Restore original PS1 if we saved it
+    puts stdout {if [ ! -z "$__OLD_PS1" ]; then export PS1="$__OLD_PS1"; unset __OLD_PS1; fi}
+  }
+}
+
+
+proc ModulesHelp {} {
+    puts -nonewline stderr "This modulefile defines the @VENV_NAME@ environment meta module for spack-stack"
+}
+
+module-whatis   "spack-stack virtual environment meta module"
