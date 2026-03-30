@@ -22,24 +22,11 @@ prepend_path("LD_LIBRARY_PATH", "@VENV_ROOT@/lib64")
 if (myShellName() == "bash") then
   if (mode() == "load") then
     execute{
-      cmd = [[
-        if [ -z "$__OLD_PS1" ]; then
-          export __OLD_PS1="$PS1"
-        fi
-        case "$PS1" in
-          *"(@VENV_NAME@)"*) ;;
-          *) export PS1="(@VENV_NAME@) $PS1" ;;
-        esac
-        ]]
+      cmd = [[ source @VENV_MODULEDIR@/ps1mod_bash_load.sh @VENV_NAME@ ]]
     }
   elseif (mode() == "unload") then
     execute{
-      cmd = [[
-        if [ ! -z "$__OLD_PS1" ]; then
-          export PS1="$__OLD_PS1"
-          unset __OLD_PS1
-        fi
-      ]]
+      cmd = [[ source @VENV_MODULEDIR@/ps1mod_bash_unload.sh @VENV_NAME@ ]]
     }
   end
 end
