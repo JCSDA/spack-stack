@@ -86,7 +86,7 @@ packages:
       - +ownlibs
     codee:
       require:
-      - '@2025.4.7'
+      - '@2026.1'
     crtm_fix:
       require:
       - ~link-big-endian
