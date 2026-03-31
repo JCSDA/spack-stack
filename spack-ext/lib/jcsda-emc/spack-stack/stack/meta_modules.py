@@ -61,11 +61,6 @@ SUBSTITUTES_TEMPLATE = {
     "VENV_ROOT": "",
 }
 
-PS1MOD_SCRIPTS = [
-    os.path.join(this_script_dir, "templates/ps1mod_bash_load.sh"),
-    os.path.join(this_script_dir, "templates/ps1mod_bash_unload.sh"),
-]
-
 
 def setenv_command(module_choice, key, value):
     if module_choice == "lmod":
@@ -680,7 +675,10 @@ def setup_meta_modules():
     for view_name, view_values in view_config.items():
         if not "root" in view_values.keys():
             raise Exception(f"View {view_name} is missing the 'root' attribute")
-        view_dir = os.path.join(env_dir, view_values["root"])
+        if os.path.isabs(view_values["root"]):
+            view_dir = view_values["root"]
+        else:
+            view_dir = os.path.join(env_dir, view_values["root"])
 
         venv_module_dir = os.path.join(meta_module_dir, "stack-venv")
         venv_module_file = os.path.join(venv_module_dir, view_name + MODULE_FILE_EXTENSION[module_choice])
