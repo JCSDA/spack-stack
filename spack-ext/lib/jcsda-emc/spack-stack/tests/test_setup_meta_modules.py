@@ -114,8 +114,6 @@ packages:
     env_yaml = os.path.join(env_dir, "spack.yaml")
     with open(env_yaml, "r") as f:
         content = f.read()
-    #for i in range(content):
-    #    content[i] = content[i].replace("view: true", view_config, content)
     content = content.replace("view: true", view_config)
     with open(env_yaml, "w") as f:
         f.write(content)
