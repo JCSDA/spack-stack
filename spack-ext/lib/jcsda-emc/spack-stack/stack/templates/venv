@@ -14,17 +14,6 @@ prepend-path PATH            "@VENV_ROOT@/bin"
 prepend-path LD_LIBRARY_PATH "@VENV_ROOT@/lib"
 prepend-path LD_LIBRARY_PATH "@VENV_ROOT@/lib64"
 
-
-# Prompt modification only supported in bash
-if { [module-info shell] == "bash" } {
-  if { [module-info mode] == "load" } {
-    puts stdout "source @VENV_MODULEDIR@/ps1mod_bash_load.sh @VENV_NAME@"
-  } elseif { [module-info mode] == "remove" } {
-    puts stdout "source @VENV_MODULEDIR@/ps1mod_bash_unload.sh @VENV_NAME@"
-  }
-}
-
-
 proc ModulesHelp {} {
     puts -nonewline stderr "This modulefile defines the @VENV_NAME@ environment meta module for spack-stack"
 }

@@ -57,7 +57,6 @@ SUBSTITUTES_TEMPLATE = {
     "MPICXX": "",
     "MPIF77": "",
     "MPIROOT": "",
-    "VENV_MODULEDIR": "",
     "VENV_NAME": "",
     "VENV_ROOT": "",
 }
@@ -119,8 +118,6 @@ def envmod_command(module_choice, action, env_name, env_values):
 
 def module_load_command(module_choice, module):
     if module_choice == "lmod":
-#        return f"""load("{module}")
-#prereq("{module}")\n"""
         return f"""if (mode() == "load" and not isloaded("{module}")) then
     load("{module}")
 end\n"""
@@ -689,7 +686,6 @@ def setup_meta_modules():
         venv_module_file = os.path.join(venv_module_dir, view_name + MODULE_FILE_EXTENSION[module_choice])
 
         substitutes = SUBSTITUTES_TEMPLATE.copy()
-        substitutes["VENV_MODULEDIR"] = venv_module_dir
         substitutes["VENV_NAME"] = view_name
         substitutes["VENV_ROOT"] = view_dir
         if COMPILER_META_MODULE:
@@ -713,12 +709,6 @@ def setup_meta_modules():
         with open(venv_module_file, "w") as f:
             f.write(module_content)
         logging.info("  ... writing {}".format(venv_module_file))
-
-        # Copy prompt modification scripts from template directory to venv_module_dir
-        for ps1mod_script in PS1MOD_SCRIPTS:
-            shutil.copy(ps1mod_script, venv_module_dir)
-            logging.debug(f"  ... ... PS1MOD SCRIPT  : {ps1mod_script} --> {venv_module_dir}")
-
         number_of_meta_modules_written += 1
 
     if number_of_meta_modules_written == number_of_meta_modules_expected:
