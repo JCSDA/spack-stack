@@ -34,6 +34,10 @@ MPI_TEMPLATES = {
     "lmod": os.path.join(this_script_dir, "templates/mpi.lua"),
     "tcl": os.path.join(this_script_dir, "templates/mpi"),
 }
+VENV_TEMPLATES = {
+    "lmod": os.path.join(this_script_dir, "templates/venv.lua"),
+    "tcl": os.path.join(this_script_dir, "templates/venv"),
+}
 MODULE_FILE_EXTENSION = {
     "lmod": ".lua",
     "tcl": ""
@@ -52,6 +56,8 @@ SUBSTITUTES_TEMPLATE = {
     "MPICXX": "",
     "MPIF77": "",
     "MPIROOT": "",
+    "VENV_NAME": "",
+    "VENV_ROOT": "",
 }
 
 
@@ -106,8 +112,9 @@ def envmod_command(module_choice, action, env_name, env_values):
 
 def module_load_command(module_choice, module):
     if module_choice == "lmod":
-        return f"""load("{module}")
-prereq("{module}")\n"""
+        return f"""if (mode() == "load" and not isloaded("{module}")) then
+    load("{module}")
+end\n"""
     else:
         return f"""if {{ [ module-info mode load ] && ![ is-loaded {module} ] }} {{
     module load {module}
@@ -341,6 +348,8 @@ def setup_meta_modules():
             module_choice = module_choice
         )
 
+    # Create compiler modules
+    COMPILER_META_MODULE = None
     for compiler in compilers:
         logging.info(f"  ... configuring compiler {compiler.name}@{compiler.version}")
 
@@ -376,6 +385,8 @@ def setup_meta_modules():
         compiler_module_file = os.path.join(
             compiler_module_dir, str(compiler.version) + MODULE_FILE_EXTENSION[module_choice]
         )
+        # Save this for later use
+        COMPILER_META_MODULE = f"stack-{compiler.name}/{str(compiler.version)}"
         substitutes = SUBSTITUTES_TEMPLATE.copy()
 
         if not compiler.external:
@@ -450,7 +461,7 @@ def setup_meta_modules():
         for key in substitutes.keys():
             module_content = module_content.replace("@{}@".format(key), substitutes[key])
 
-        # Write compiler lua module
+        # Write compiler module
         if not os.path.isdir(compiler_module_dir):
             os.makedirs(compiler_module_dir)
         with open(compiler_module_file, "w") as f:
@@ -467,6 +478,7 @@ def setup_meta_modules():
     MODULEPATHS_SAVE = []
 
     # Create mpi modules - currently, only one mpi provider is allowed
+    MPI_META_MODULE = None
     for mpi_provider in mpi_providers:
 
         if module_choice == "lmod":
@@ -532,6 +544,8 @@ def setup_meta_modules():
             mpi_module_file = os.path.join(
                 mpi_module_dir, str(mpi_provider.version).split("-")[0] + MODULE_FILE_EXTENSION[module_choice]
             )
+            # Save this for later
+            MPI_META_MODULE = f"stack-{mpi_provider.name}/{str(mpi_provider.version).split('-')[0]}"
 
             substitutes = SUBSTITUTES_TEMPLATE.copy()
             # Use existing modules for external mpi providers; otherwise, use spack-built module
@@ -624,7 +638,7 @@ def setup_meta_modules():
             substitutes["MODULEPATHS"] = substitutes["MODULEPATHS"].rstrip("\n")
             logging.debug("  ... ... MODULEPATHS  : {}".format(substitutes["MODULEPATHS"]))
 
-            # Read compiler lua template into module_content string
+            # Read mpi module template into module_content string
             with open(MPI_TEMPLATES[module_choice]) as f:
                 module_content = f.read()
 
@@ -634,7 +648,7 @@ def setup_meta_modules():
                     "@{}@".format(key), substitutes[key]
                 )
 
-            # Write mpi lua module
+            # Write mpi module
             if not os.path.isdir(mpi_module_dir):
                 os.makedirs(mpi_module_dir)
             with open(mpi_module_file, "w") as f:
@@ -642,6 +656,57 @@ def setup_meta_modules():
             logging.info("  ... writing {}".format(mpi_module_file))
             number_of_meta_modules_written += 1
 
+    # Write stack virtual environment meta modules
+    view_config = spack.config.get("view")
+    # view: [true|false]
+    if isinstance(view_config, bool):
+        # view: true
+        if view_config:
+            view_config = {"default" : {"root": ".spack-env/view"}}
+        # view: false
+        else:
+            view_config = {}
+    # view is explicitly configured
+    elif not isinstance(view_config, dict):
+        raise Exception(f"Invalid environment view config {view_config}")
+    number_of_meta_modules_expected += len(view_config.keys())
+
+    for view_name, view_values in view_config.items():
+        if not "root" in view_values.keys():
+            raise Exception(f"View {view_name} is missing the 'root' attribute")
+        if os.path.isabs(view_values["root"]):
+            view_dir = view_values["root"]
+        else:
+            view_dir = os.path.join(env_dir, view_values["root"])
+
+        venv_module_dir = os.path.join(meta_module_dir, "stack-venv")
+        venv_module_file = os.path.join(venv_module_dir, view_name + MODULE_FILE_EXTENSION[module_choice])
+
+        substitutes = SUBSTITUTES_TEMPLATE.copy()
+        substitutes["VENV_NAME"] = view_name
+        substitutes["VENV_ROOT"] = view_dir
+        if COMPILER_META_MODULE:
+            substitutes["MODULELOADS"] = module_load_command(module_choice, COMPILER_META_MODULE)
+        if MPI_META_MODULE:
+            substitutes["MODULELOADS"] += module_load_command(module_choice, MPI_META_MODULE)
+
+        # Read venv template into module_content string
+        with open(VENV_TEMPLATES[module_choice]) as f:
+            module_content = f.read()
+
+        # Substitute variables in module_content
+        for key in substitutes.keys():
+            module_content = module_content.replace(
+                "@{}@".format(key), substitutes[key]
+            )
+
+        # Write venv module
+        if not os.path.isdir(venv_module_dir):
+            os.makedirs(venv_module_dir)
+        with open(venv_module_file, "w") as f:
+            f.write(module_content)
+        logging.info("  ... writing {}".format(venv_module_file))
+        number_of_meta_modules_written += 1
 
     if number_of_meta_modules_written == number_of_meta_modules_expected:
         logging.info("Metamodule generation completed successfully in {}".format(meta_module_dir))
