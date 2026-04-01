@@ -129,15 +129,15 @@ fi
 
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=22.1.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-dev-llvm" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1") # "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=22.1.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev") # "neptune-dev-llvm" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4") # "gcc@=13.3.0") # oneapi@=2025.2.1
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev") # "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/app/projects/NEPTUNE/spack-stack/cargo-mirror"
@@ -290,23 +290,13 @@ function run_interactive_job() {
   echo "Starting interactive job on ${host} for ${script} ..."
   case ${host} in
     atlantis)
-      #nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
-      #if [[ ${executables} -eq 1 ]]; then
-      #  nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-      #fi
-      #nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      module load slurm
       salloc --exclusive --nodes=1 --ntasks-per-node=128 --time=720 bash ${script}
+      module unload slurm
       ;;
-    #blueback)
-    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-    #  # In case the find command returns no executables
-    #  if [[ ${executables} -eq 1 ]]; then
-    #    sleep 30
-    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-    #    sleep 30
-    #  fi
-    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
-    #  ;;
+    blueback)
+      salloc --exclusive --nodes=1 --ntasks-per-node=192 --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      ;;
     #cole)
     #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
     #  # In case the find command returns no executables
