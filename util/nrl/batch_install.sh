@@ -178,7 +178,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   blackpearl)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=13.2.1")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1") # "gcc@=13.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
@@ -280,6 +280,91 @@ function fix_permissions() {
       ;;
   esac
   set -e
+}
+
+##################################################################################################
+
+function run_interactive_job() {
+  host=$1
+  script=$2
+  echo "Starting interactive job on ${host} for ${script} ..."
+  case ${host} in
+    atlantis)
+      #nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      #if [[ ${executables} -eq 1 ]]; then
+      #  nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      #fi
+      #nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      salloc --exclusive --nodes=1 --ntasks-per-node=128 --time=720 bash ${script}
+      ;;
+    #blueback)
+    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+    #  # In case the find command returns no executables
+    #  if [[ ${executables} -eq 1 ]]; then
+    #    sleep 30
+    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+    #    sleep 30
+    #  fi
+    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+    #  ;;
+    #cole)
+    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+    #  # In case the find command returns no executables
+    #  if [[ ${executables} -eq 1 ]]; then
+    #    sleep 30
+    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+    #    sleep 30
+    #  fi
+    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+    #  ;;
+    #narwhal)
+    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+    #  # In case the find command returns no executables
+    #  if [[ ${executables} -eq 1 ]]; then
+    #    sleep 30
+    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+    #    sleep 30
+    #  fi
+    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+    #  ;;
+    #nautilus)
+    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+    #  # In case the find command returns no executables
+    #  if [[ ${executables} -eq 1 ]]; then
+    #    sleep 30
+    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+    #    sleep 30
+    #  fi
+    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+    #  ;;
+    #navy-aws)
+    #  nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+    #  if [[ ${executables} -eq 1 ]]; then
+    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+    #  fi
+    #  nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+    #  ;;
+    #tusk)
+    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+    #  # In case the find command returns no executables
+    #  if [[ ${executables} -eq 1 ]]; then
+    #    sleep 30
+    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+    #    sleep 30
+    #  fi
+    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+    #  ;;
+    blackpearl)
+      bash ${script}
+      ;;
+    bounty)
+      bash ${script}
+      ;;
+    *)
+      echo "ERROR, run_interactive_job command not configured for ${host}"
+      exit 1
+      ;;
+  esac
 }
 
 ##################################################################################################
@@ -633,30 +718,42 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
     esac
 
-    # If no tests are required, install everything
-    if [[ ${#test_packages[@]} -eq 0 ]]; then
-      set -o pipefail
-      spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.001
-      set +o pipefail
-    else
-      for (( idx=0; idx<${#test_packages[@]}; idx++ )); do
-        test_package=${test_packages[$idx]}
-        # First, check if this package is in this environment
-        set +e
-        grep -e "${test_package}@" log.concretize.${env_name}.001 || continue
-        set -e
-        idx_padded=$(printf "%03d" "$((idx+1))")
-        set -o pipefail
-        spack install --verbose ${buildcache_install_flags} --only=dependencies ${test_package} 2>&1 | tee log.install.${env_name}.${idx_padded}.${test_package}-dependencies
-        spack install --verbose --no-cache --test=root ${test_package} 2>&1 | tee log.install.${env_name}.${idx_padded}.${test_package}
-        set +o pipefail
-      done
-      # idx now equals the length of the array; install the rest
-      idx_padded=$(printf "%03d" "$((idx+1))")
-      set -o pipefail
-      spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.${idx_padded}
-      set +o pipefail
-    fi
+    install_script=${PWD}/install.${env_name}.sh
+    cat << EOF > ${install_script}
+#!/usr/bin/env bash
+
+$(declare -p test_packages)
+
+# If no tests are required, install everything
+if [[ \${#test_packages[@]} -eq 0 ]]; then
+  set -o pipefail
+  spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.001
+  set +o pipefail
+else
+  for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
+    test_package=\${test_packages[\${idx}]}
+    # First, check if this package is in this environment
+    set +e
+    grep -e "\${test_package}@" log.concretize.${env_name}.001 || continue
+    set -e
+    idx_padded=\$(printf "%03d" "\$((idx+1))")
+    set -o pipefail
+    spack install --verbose ${buildcache_install_flags} --only=dependencies \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
+    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}
+    set +o pipefail
+  done
+  # idx now equals the length of the array; install the rest
+  idx_padded=\$(printf "%03d" "\$((idx+1))")
+  set -o pipefail
+  spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.\${idx_padded}
+  set +o pipefail
+fi
+
+# For testing, exit with error.
+exit 1
+EOF
+    chmod u+x ${install_script}
+    run_interactive_job ${host} ${install_script}
 
     # In build mode, update local binary cache
     if [[ "${update_build_cache}" == "true" ]]; then
