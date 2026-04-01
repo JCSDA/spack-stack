@@ -415,8 +415,13 @@ packages:
       - '@3.7.4'
       #- '@3.8.0'
     py-netcdf4:
-      require:
+      prefer:
       - +mpi
+      require:
+      - any_of:
+        - ~mpi
+        when: '^intel-oneapi-mpi@2021.13'
+        message: parallel features not compatible with intel-oneapi-mpi@2021.13
     # To avoid duplicate packages
     py-numpy:
       require:
