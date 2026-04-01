@@ -357,7 +357,7 @@ function run_interactive_job() {
   esac
   # DH* NOT NEEDED? salloc should abort automatically
   status=$?
-  echo "run_interactive_job ${host} ${install_script} finished with status $?
+  echo "run_interactive_job ${host} ${install_script} finished with status $?"
   # *DH
 }
 
