@@ -8,8 +8,8 @@ spack:
   include: []
 
   specs:
+  - dev-utils-env
   - ewok-env
-  #- ai-env
   - geos-gcm-env          ^esmf@=8.9.1
   - jedi-fv3-env
   - jedi-geos-env         ^esmf@=8.9.1
@@ -17,7 +17,6 @@ spack:
   - jedi-neptune-env      ^esmf@=8.9.1
   - jedi-tools-env
   - jedi-ufs-env          ^esmf@=8.8.0
-  #- jedi-um-env
   - neptune-env           ^esmf@=8.9.1
   - neptune-python-env    ^esmf@=8.9.1
   - soca-env
