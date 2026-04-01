@@ -355,6 +355,10 @@ function run_interactive_job() {
       exit 1
       ;;
   esac
+  # DH* NOT NEEDED? salloc should abort automatically
+  status=$?
+  echo "run_interactive_job ${host} ${install_script} finished with status $?
+  # *DH
 }
 
 ##################################################################################################
@@ -712,6 +716,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     cat << EOF > ${install_script}
 #!/usr/bin/env bash
 
+set -ex
+
 $(declare -p test_packages)
 
 # If no tests are required, install everything
@@ -739,7 +745,7 @@ else
   set +o pipefail
 fi
 
-# For testing, exit with error.
+echo "For testing, exit with error."
 exit 1
 EOF
     chmod u+x ${install_script}
