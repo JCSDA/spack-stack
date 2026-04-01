@@ -39,13 +39,14 @@ usage() {
   echo "      requires role 'dev' and mode 'build'"
   echo "  -e  Continue builds/install in existing environments;"
   echo "      by default, exit with an error if already exist"
+  echo "  -s  Submit 'spack install' to batch scheduler"
   echo "  -t  Run tests for specific thirdparty dependencies;"
   echo "      these are currently hardcoded in batch_install.sh"
   echo "  -h  display this help"
   echo
 }
 
-while getopts r:m:d:c:ueth flag
+while getopts r:m:d:c:uesth flag
 do
   case "${flag}" in
     r)
@@ -66,6 +67,9 @@ do
     e)
       SPACK_STACK_IGNORE_ENV_EXIST="true"
       ;;
+    s)
+      SPACK_STACK_SUBMIT_TO_SCHEDULER="true"
+      ;;
     t)
       SPACK_STACK_RUN_TESTS="true"
       ;;
@@ -83,6 +87,7 @@ echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_D
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
+echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
 echo "  SPACK_STACK_RUN_TESTS:                       ${SPACK_STACK_RUN_TESTS:-false}"
 
 if [[ -z ${SPACK_STACK_ROLE} ]]; then
@@ -142,13 +147,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/app/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
-  cole)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=12.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
-    ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
@@ -169,13 +167,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/project/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/project/spack-stack/cargo-mirror"
-    ;;
-  tusk)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.1.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
     ;;
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1") # "gcc@=13.2.1")
@@ -223,16 +214,6 @@ function fix_permissions() {
       fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
-    cole)
-      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-      # In case the find command returns no executables
-      if [[ ${executables} -eq 1 ]]; then
-        sleep 30
-        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-        sleep 30
-      fi
-      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
-      ;;
     narwhal)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
@@ -259,16 +240,6 @@ function fix_permissions() {
         nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
       fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
-      ;;
-    tusk)
-      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-      # In case the find command returns no executables
-      if [[ ${executables} -eq 1 ]]; then
-        sleep 30
-        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-        sleep 30
-      fi
-      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     blackpearl)
       ;;
@@ -297,68 +268,17 @@ function run_interactive_job() {
     blueback)
       salloc --exclusive --nodes=1 --ntasks-per-node=192 --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
       ;;
-    #cole)
-    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-    #  # In case the find command returns no executables
-    #  if [[ ${executables} -eq 1 ]]; then
-    #    sleep 30
-    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-    #    sleep 30
-    #  fi
-    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
-    #  ;;
     #narwhal)
-    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-    #  # In case the find command returns no executables
-    #  if [[ ${executables} -eq 1 ]]; then
-    #    sleep 30
-    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-    #    sleep 30
-    #  fi
-    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
     #  ;;
     #nautilus)
-    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-    #  # In case the find command returns no executables
-    #  if [[ ${executables} -eq 1 ]]; then
-    #    sleep 30
-    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-    #    sleep 30
-    #  fi
-    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
     #  ;;
     #navy-aws)
-    #  nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
-    #  if [[ ${executables} -eq 1 ]]; then
-    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-    #  fi
-    #  nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
     #  ;;
-    #tusk)
-    #  nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-    #  # In case the find command returns no executables
-    #  if [[ ${executables} -eq 1 ]]; then
-    #    sleep 30
-    #    nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-    #    sleep 30
-    #  fi
-    #  nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
-    #  ;;
-    blackpearl)
-      bash ${script}
-      ;;
-    bounty)
-      bash ${script}
-      ;;
     *)
       echo "ERROR, run_interactive_job command not configured for ${host}"
       exit 1
       ;;
   esac
-  # DH* NOT NEEDED? salloc should abort automatically
-  status=$?
-  echo "run_interactive_job ${host} ${install_script} finished with status $?"
-  # *DH
 }
 
 ##################################################################################################
@@ -429,6 +349,12 @@ else
 fi
 
 ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
+
+if [[ "${SPACK_STACK_SUBMIT_TO_SCHEDULER}" == "true" ]]; then
+  submit_to_scheduler="true"
+else
+  submit_to_scheduler="false"
+fi
 
 if [[ "${SPACK_STACK_RUN_TESTS}" == "true" ]]; then
   test_packages=("${SPACK_STACK_PACKAGES_TO_TEST[@]}")
@@ -535,12 +461,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         module purge
         set -e
         ;;
-      cole)
-        umask 0022
-        set +e
-        module purge
-        set -e
-        ;;
       narwhal)
         umask 0022
         set +e
@@ -566,14 +486,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           gcc-13.4.0)
             module use /project/spack-stack/gcc-13.4.0/modulefiles
             module use /project/spack-stack/openmpi-4.1.8/gcc-13.4.0/modulefiles
-	    ;;
-	esac
-        ;;
-      tusk)
-        umask 0022
-        set +e
-        module purge
-        set -e
+            ;;
+        esac
         ;;
       blackpearl)
         ulimit -s unlimited
@@ -712,18 +626,31 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
     esac
 
+    case ${submit_to_scheduler} in
+      "true")
+        concurrent_packages_flag="--concurrent-packages=10"
+        ;;
+      "false")
+        concurrent_packages_flag=""
+        ;;
+      *)
+        echo "ERROR, unkown submit_to_scheduler value ${submit_to_scheduler} for setting install flags"
+        exit 1
+        ;;
+    esac
+
     install_script=${PWD}/install.${env_name}.sh
     cat << EOF > ${install_script}
 #!/usr/bin/env bash
 
-set -ex
+set -e
 
 $(declare -p test_packages)
 
 # If no tests are required, install everything
 if [[ \${#test_packages[@]} -eq 0 ]]; then
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.001
+  spack install --verbose ${buildcache_install_flags} ${concurrent_packages_flag} 2>&1 | tee log.install.${env_name}.001
   set +o pipefail
 else
   for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
@@ -734,22 +661,24 @@ else
     set -e
     idx_padded=\$(printf "%03d" "\$((idx+1))")
     set -o pipefail
-    spack install --verbose ${buildcache_install_flags} --only=dependencies \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
+    spack install --verbose ${buildcache_install_flags} ${concurrent_packages_flag} --only=dependencies \${test_package} \\
+      2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
     spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}
     set +o pipefail
   done
   # idx now equals the length of the array; install the rest
   idx_padded=\$(printf "%03d" "\$((idx+1))")
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.\${idx_padded}
+  spack install --verbose ${buildcache_install_flags} ${concurrent_packages_flag} 2>&1 | tee log.install.${env_name}.\${idx_padded}
   set +o pipefail
 fi
-
-echo "For testing, exit with error."
-exit 1
 EOF
     chmod u+x ${install_script}
-    run_interactive_job ${host} ${install_script}
+    if [[ "${submit_to_scheduler}" == "true" ]]; then
+      run_interactive_job ${host} ${install_script}
+    else
+      bash ${install_script}
+    fi
 
     # In build mode, update local binary cache
     if [[ "${update_build_cache}" == "true" ]]; then
