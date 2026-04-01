@@ -56,6 +56,7 @@ modules:
       - libtool
       - libx11
       - libxau
+      - libxaw
       - libxcb
       - libxdmcp
       - libxext
@@ -63,8 +64,11 @@ modules:
       - libxi
       - libxml
       - libxml2
+      - libxmu
+      - libxpm
       - libxrandr
       - libxrender
+      - libxt
       - libxxf86vm
       - lz4
       - m4

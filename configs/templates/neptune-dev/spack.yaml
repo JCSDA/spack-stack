@@ -4,7 +4,20 @@ spack:
   concretizer:
     unify: when_possible
 
-  view: false
+  view:
+    release-openmp:
+      root: views/release-openmp
+      exclude:
+      - neptune-env +debug +openmp
+      - neptune-env ~debug ~openmp
+      - neptune-env +debug ~openmp
+      - esmf +debug +openmp
+      - esmf ~debug ~openmp
+      - esmf +debug ~openmp
+      - ip ~openmp
+      link: all
+      link_type: symlink
+
   include: []
 
   specs:

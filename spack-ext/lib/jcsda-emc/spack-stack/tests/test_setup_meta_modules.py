@@ -91,3 +91,38 @@ packages:
         os.path.exists(expected_mpi_meta_module),
         f"Expected module {expected_mpi_meta_module} not found"
     )
+
+    # Test "view: true"
+    cmd = spack.main.SpackCommand("env")
+    cmd("view", "enable")
+    cmd("view", "regenerate")
+
+    spack_stack_cmd("setup-meta-modules")
+
+    expected_venv_meta_module = os.path.join(module_dir, "Core", "stack-venv", "default")
+
+    assert(
+        os.path.exists(expected_venv_meta_module),
+        f"Expected module {expected_venv_meta_module} not found"
+    )
+
+    # Test explicitly configured view
+    view_config = """view:
+    myview:
+      root: views/myview
+"""
+    env_yaml = os.path.join(env_dir, "spack.yaml")
+    with open(env_yaml, "r") as f:
+        content = f.read()
+    content = content.replace("view: true", view_config)
+    with open(env_yaml, "w") as f:
+        f.write(content)
+
+    cmd("view", "regenerate")
+
+    expected_venv_meta_module = os.path.join(module_dir, "Core", "stack-venv", "myview")
+
+    assert(
+        os.path.exists(expected_venv_meta_module),
+        f"Expected module {expected_venv_meta_module} not found"
+    )
