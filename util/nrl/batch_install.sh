@@ -292,7 +292,7 @@ function run_interactive_job() {
   else
     walltime="720"
   fi
-  echo "Starting interactive job on ${host} with ${tpn} tasks for ${script} ..."
+  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} for ${script} ..."
   case ${host} in
     atlantis)
       module load slurm
