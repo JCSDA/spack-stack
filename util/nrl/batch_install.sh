@@ -255,23 +255,52 @@ function fix_permissions() {
 
 ##################################################################################################
 
+function tasks_per_node() {
+  host=$1
+  case ${host} in
+    atlantis)
+      tpn=128
+      ;;
+    blueback)
+      tpn=192
+      ;;
+    narwhal)
+      tpn=128
+      ;;
+    nautilus)
+      tpn=128
+      ;;
+    #navy-aws)
+    #  ;;
+    *)
+      echo "ERROR, tasks_per_node command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+}
+
+##################################################################################################
+
 function run_interactive_job() {
   host=$1
   script=$2
-  echo "Starting interactive job on ${host} for ${script} ..."
+  tpn=$(tasks_per_node ${host})
+  echo "Starting interactive job on ${host} with ${tpn} tasks for ${script} ..."
   case ${host} in
     atlantis)
       module load slurm
-      salloc --exclusive --nodes=1 --ntasks-per-node=128 --time=720 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 bash ${script}
       module unload slurm
       ;;
     blueback)
-      salloc --exclusive --nodes=1 --ntasks-per-node=192 --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
       ;;
-    #narwhal)
-    #  ;;
-    #nautilus)
-    #  ;;
+    narwhal)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      ;;
+    nautilus)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      ;;
     #navy-aws)
     #  ;;
     *)
@@ -628,10 +657,11 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     case ${submit_to_scheduler} in
       "true")
-        concurrent_packages_flag="--concurrent-packages=10"
+        jobs=$(tasks_per_node ${host})
+        parallel_install_flags="--concurrent-packages=10 --jobs=${jobs}"
         ;;
       "false")
-        concurrent_packages_flag=""
+        parallel_install_flags=""
         ;;
       *)
         echo "ERROR, unkown submit_to_scheduler value ${submit_to_scheduler} for setting install flags"
@@ -650,7 +680,7 @@ $(declare -p test_packages)
 # If no tests are required, install everything
 if [[ \${#test_packages[@]} -eq 0 ]]; then
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${concurrent_packages_flag} 2>&1 | tee log.install.${env_name}.001
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.001
   set +o pipefail
 else
   for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
@@ -661,7 +691,7 @@ else
     set -e
     idx_padded=\$(printf "%03d" "\$((idx+1))")
     set -o pipefail
-    spack install --verbose ${buildcache_install_flags} ${concurrent_packages_flag} --only=dependencies \${test_package} \\
+    spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} --only=dependencies \${test_package} \\
       2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
     spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}
     set +o pipefail
@@ -669,7 +699,7 @@ else
   # idx now equals the length of the array; install the rest
   idx_padded=\$(printf "%03d" "\$((idx+1))")
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${concurrent_packages_flag} 2>&1 | tee log.install.${env_name}.\${idx_padded}
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.\${idx_padded}
   set +o pipefail
 fi
 EOF
