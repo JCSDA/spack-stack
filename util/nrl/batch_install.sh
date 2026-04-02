@@ -296,7 +296,7 @@ function run_interactive_job() {
     echo "ERROR, environment variable ACCOUNT not set"
     exit 1
   fi
-  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} for ${script} ..."
+  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} minutes for ${script} ..."
   case ${host} in
     atlantis)
       module load slurm
