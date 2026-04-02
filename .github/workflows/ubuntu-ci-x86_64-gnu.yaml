@@ -109,7 +109,7 @@ jobs:
 
             # Concretize, check for duplicates and for correct compilers being used
             spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
-            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
+            ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip -i py-netcdf4
             spack stack check-preferred-compiler 2>&1 | tee log.check-preferred-compiler.${ENVNAME}
 
             # Add and update source cache
@@ -181,7 +181,7 @@ jobs:
 
           # Concretize, check for duplicates and for correct compilers being used
           spack concretize --force --fresh 2>&1 | tee log.concretize.${ENVNAME}
-          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip
+          ${SPACK_STACK_DIR}/util/show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython -i neptune-env -i fms -i ip -i py-netcdf4
           spack stack check-preferred-compiler 2>&1 | tee log.check-preferred-compiler.${ENVNAME}
 
           # Install from cache
