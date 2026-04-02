@@ -639,7 +639,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
     esac
 
-    install_script=${PWD}/install.${env_name}.sh
+    install_script=${PWD}/spack-install.${env_name}.sh
     cat << EOF > ${install_script}
 #!/usr/bin/env bash
 
