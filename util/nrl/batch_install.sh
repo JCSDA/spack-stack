@@ -134,15 +134,15 @@ fi
 
 case ${SPACK_STACK_BATCH_HOST} in
   atlantis)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1") # "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=22.1.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev") # "neptune-dev-llvm" "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=22.1.0")
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-dev-llvm" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4") # "gcc@=13.3.0") # oneapi@=2025.2.1
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev") # "unified-dev" "cylc-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
+    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/app/projects/NEPTUNE/spack-stack/cargo-mirror"
@@ -169,7 +169,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/project/spack-stack/cargo-mirror"
     ;;
   blackpearl)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1") # "gcc@=13.2.1")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=13.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
