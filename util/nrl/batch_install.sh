@@ -285,22 +285,28 @@ function tasks_per_node() {
 function run_interactive_job() {
   host=$1
   script=$2
+  reuse_build_cache=$3
   tpn=$(tasks_per_node ${host})
+  if [[ "${reuse_build_cache}" == "true" ]]; then
+    walltime="120"
+  else
+    walltime="720"
+  fi
   echo "Starting interactive job on ${host} with ${tpn} tasks for ${script} ..."
   case ${host} in
     atlantis)
       module load slurm
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} bash ${script}
       module unload slurm
       ;;
     blueback)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=frontier --account=NRLMR03795YH2 bash ${script}
       ;;
     narwhal)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=frontier --account=NRLMR03795YH2 bash ${script}
       ;;
     nautilus)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=720 --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=frontier --account=NRLMR03795YH2 bash ${script}
       ;;
     #navy-aws)
     #  ;;
@@ -706,7 +712,7 @@ fi
 EOF
     chmod u+x ${install_script}
     if [[ "${submit_to_scheduler}" == "true" ]]; then
-      run_interactive_job ${host} ${install_script}
+      run_interactive_job ${host} ${install_script} ${reuse_build_cache}
     else
       bash ${install_script}
     fi
