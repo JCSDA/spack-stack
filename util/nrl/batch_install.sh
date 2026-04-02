@@ -300,13 +300,13 @@ function run_interactive_job() {
       module unload slurm
       ;;
     blueback)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
       ;;
     narwhal)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
       ;;
     nautilus)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=frontier --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
       ;;
     #navy-aws)
     #  ;;
