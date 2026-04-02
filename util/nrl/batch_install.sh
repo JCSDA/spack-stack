@@ -306,7 +306,9 @@ function run_interactive_job() {
       salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
       ;;
     nautilus)
+      module load slurm
       salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
+      module unload slurm
       ;;
     #navy-aws)
     #  ;;
