@@ -292,6 +292,10 @@ function run_interactive_job() {
   else
     walltime="720"
   fi
+  if [[ ! -n "${ACCOUNT}" ]]; then
+    echo "ERROR, environment variable ACCOUNT not set"
+    exit 1
+  fi
   echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} for ${script} ..."
   case ${host} in
     atlantis)
@@ -300,14 +304,14 @@ function run_interactive_job() {
       module unload slurm
       ;;
     blueback)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
       ;;
     narwhal)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
       ;;
     nautilus)
       module load slurm
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=NRLMR03795YH2 bash ${script}
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
       module unload slurm
       ;;
     #navy-aws)
