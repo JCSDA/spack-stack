@@ -31,7 +31,7 @@ class NeptunePythonEnv(BundlePackage):
     depends_on("py-cfgrib", type="run")
     depends_on("py-h5py", type="run")
     depends_on("py-matplotlib", type="run")
-    depends_on("py-netcdf4", type="run")
+    depends_on("py-netcdf4 ~mpi", type="run")
     depends_on("py-pandas", type="run")
     depends_on("py-pycodestyle", type="run")
     depends_on("py-pybind11", type="run")

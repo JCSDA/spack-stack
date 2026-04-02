@@ -25,7 +25,7 @@ class UfsPyenv(BundlePackage):
     depends_on("py-numpy")
     depends_on("py-pandas")
     depends_on("py-python-dateutil")
-    depends_on("py-netcdf4")
+    depends_on("py-netcdf4 ~mpi")
     depends_on("py-jinja2")
     depends_on("py-pyyaml")
     depends_on("py-f90nml")
