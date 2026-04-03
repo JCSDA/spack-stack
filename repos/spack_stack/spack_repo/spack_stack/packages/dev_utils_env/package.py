@@ -26,7 +26,6 @@ class DevUtilsEnv(BundlePackage):
     # Python
     depends_on("py-pydantic +dotenv", type="run")
     depends_on("py-pydantic-settings", type="run")
-    depends_on("py-pytest", type="run")
 
     # Miscellaneous
     depends_on("cloc", type="run")

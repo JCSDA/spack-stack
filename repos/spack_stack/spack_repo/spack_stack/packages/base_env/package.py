@@ -41,6 +41,7 @@ class BaseEnv(BundlePackage):
     depends_on("py-wheel", type="run")
     depends_on("py-setuptools", type="run")
     depends_on("py-setuptools-scm", type="run")
+    depends_on("py-pytest", type="run")
 
     # Miscellaneous
 
