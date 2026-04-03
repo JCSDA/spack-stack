@@ -48,10 +48,6 @@ spack:
   # MADIS for WCOSS2 decoders.
   - madis@4.5
 
-  # py-netcdf4 without (default) and with parallel features
-  - py-netcdf4 ~mpi
-  - py-netcdf4 +mpi
-
   packages:
     # Turn on python variant for esmf
     esmf:
