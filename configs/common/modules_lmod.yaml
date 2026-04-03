@@ -158,6 +158,9 @@ modules:
         suffixes:
           constants=GFS: 'gfs-constants'
           constants=GEOS: 'geos-constants'
+      py-netcdf4:
+        suffixes:
+          +mpi: 'parallel'
       openmpi:
         environment:
           set:
