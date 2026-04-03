@@ -25,7 +25,7 @@ class EmcVerifGlobalEnv(BundlePackage):
     depends_on("grib-util")
     depends_on("py-cartopy")
     depends_on("py-numpy")
-    depends_on("py-netcdf4 ~mpi")
+    depends_on("py-netcdf4")
     depends_on("py-matplotlib")
     depends_on("py-pandas")
     # Test grads

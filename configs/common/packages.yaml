@@ -416,7 +416,7 @@ packages:
       #- '@3.8.0'
     # https://github.com/JCSDA/spack-stack/issues/1971
     py-netcdf4:
-      prefer:
+      require:
       - ~mpi
     # To avoid duplicate packages
     py-numpy:
