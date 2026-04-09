@@ -71,8 +71,6 @@ packages:
     require: ['%gcc']
   ectrans:
     require:: ['@1.2.0', '+fftw']
-  elfutils:
-    require: ['@0.191']
   glib:
     require: ['%gcc']
   gsibec:
