@@ -1,0 +1,21 @@
+# Template for GEOS development
+#
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+  - geos-gcm-env ~debug ^esmf@=9.0.0b10
+  - geos-gcm-env +debug ^esmf@=9.0.0b10
+
+  # Various fms builds
+  - fms ~gfs_phys constants=GEOS
+
+  packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python

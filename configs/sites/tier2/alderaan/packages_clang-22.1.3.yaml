@@ -1,0 +1,25 @@
+packages:
+  c:
+    require: [apple-clang@17.0.0]
+  cxx:
+    require: [apple-clang@17.0.0]
+  fortran:
+    require: [llvm@21.1.3 ~clang +flang]
+  mpi:
+    require: [openmpi@=5.0.10]
+  apple-clang:
+    externals:
+    - spec: apple-clang@17.0.0 languages:='c,c++'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+  llvm:
+    buildable: False
+    externals:
+    - spec: llvm@21.1.3 ~clang +flang languages:='fortran'
+      prefix: /Users/mathomp4/.homebrew/brew
+      extra_attributes:
+        compilers:
+          fortran: /Users/mathomp4/.homebrew/brew/bin/flang

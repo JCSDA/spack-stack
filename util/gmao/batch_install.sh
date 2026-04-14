@@ -1,0 +1,680 @@
+#!/usr/bin/env bash
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+SPACK_STACK_DIR=$(dirname $(dirname ${SCRIPT_DIR}))
+
+set -e
+
+##################################################################################################
+# Packages for which to run tests when "-t" is specified; caveat: must be listed in order of     #
+# their respective dependencies (e.g. A depends on B --> B comes first)                          #
+##################################################################################################
+
+SPACK_STACK_PACKAGES_TO_TEST=(
+  "oops"
+  "ioda"
+  "ioda-converters"
+  "ropp-ufo"
+  "ufo"
+)
+
+##################################################################################################
+# Options                                                                                        #
+##################################################################################################
+
+usage() {
+  set +x
+  echo
+  echo "Usage: $0 -r <ROLE> -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>]"
+  echo
+  echo "  -r  Set role, can be 'ops' or 'dev'"
+  echo "  -m  Set mode, can be 'build' or 'install';"
+  echo "      build: build environments and update build caches;"
+  echo "      install: install environments using build caches"
+  echo "  -d  Build or install environments in ENV_DIRS;"
+  echo "      if not set, the default location is used"
+  echo "  -c  Provide location of build caches as BUILDCACHE_DIR;"
+  echo "      if not set, authoritative build caches are used"
+  echo "  -u  Flag to update bootstrap and source caches;"
+  echo "      requires role 'dev' and mode 'build'"
+  echo "  -e  Continue builds/install in existing environments;"
+  echo "      by default, exit with an error if already exist"
+  echo "  -s  Submit 'spack install' to batch scheduler"
+  echo "  -t  Run tests for specific thirdparty dependencies;"
+  echo "      these are currently hardcoded in batch_install.sh"
+  echo "  -h  display this help"
+  echo
+}
+
+while getopts r:m:d:c:uesth flag
+do
+  case "${flag}" in
+    r)
+      SPACK_STACK_ROLE=${OPTARG}
+      ;;
+    m)
+      SPACK_STACK_MODE=${OPTARG}
+      ;;
+    d)
+      SPACK_STACK_ENVIRONMENT_DIRS=$(readlink -f ${OPTARG})
+      ;;
+    c)
+      SPACK_STACK_BUILDCACHE_DIR=$(readlink -f ${OPTARG})
+      ;;
+    u)
+      SPACK_STACK_UPDATE_DEV_CACHES="true"
+      ;;
+    e)
+      SPACK_STACK_IGNORE_ENV_EXIST="true"
+      ;;
+    s)
+      SPACK_STACK_SUBMIT_TO_SCHEDULER="true"
+      ;;
+    t)
+      SPACK_STACK_RUN_TESTS="true"
+      ;;
+    *)
+      usage
+      exit 1
+      ;;
+  esac
+done
+
+echo "INFO: $0 options:"
+echo "  SPACK_STACK_ROLE:                            ${SPACK_STACK_ROLE:-not set}"
+echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set}"
+echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
+echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
+echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
+echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
+echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
+echo "  SPACK_STACK_RUN_TESTS:                       ${SPACK_STACK_RUN_TESTS:-false}"
+
+if [[ -z ${SPACK_STACK_ROLE} ]]; then
+  echo "ERROR, SPACK_STACK_ROLE not defined. Provide -r ROLE as argument"
+  exit 1
+elif [[ ! ${SPACK_STACK_ROLE} == "dev" && ! ${SPACK_STACK_ROLE} == "ops" ]]; then
+  echo "ERROR, invalid role '${SPACK_STACK_ROLE}'"
+  exit 1
+fi
+
+if [[ -z ${SPACK_STACK_MODE} ]]; then
+  echo "ERROR, SPACK_STACK_MODE not defined. Provide -m MODE as argument"
+  exit 1
+elif [[ ! ${SPACK_STACK_MODE} == "build" && ! ${SPACK_STACK_MODE} == "install" ]]; then
+  echo "ERROR, invalid mode '${SPACK_STACK_MODE}'"
+  exit 1
+fi
+
+# Role ops cannot write to the default (authoritative) build cache
+if [[ ${SPACK_STACK_ROLE} == "ops" && ${SPACK_STACK_MODE} == "build" && -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
+  echo "ERROR, SPACK_STACK_BUILDCACHE_DIR not defined. Provide -c BUILDCACHE_DIR"
+  echo "as argument when role is 'ops' and mode is 'build'"
+  exit 1
+fi
+
+# Updating bootstrap and source caches requires role dev and mode build
+if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
+  if [[ ! ${SPACK_STACK_ROLE} == "dev" || ! ${SPACK_STACK_MODE} == "build" ]]; then
+    echo "ERROR, SPACK_STACK_UPDATE_DEV_CACHES requires role 'dev' and mode 'build'"
+    exit 1
+  fi
+fi
+
+##################################################################################################
+
+# Remove domain name suffices and digits to determine hostname
+SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1)
+SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
+
+case ${SPACK_STACK_BATCH_HOST} in
+  nas)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=13.2.0")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    ;;
+  nas-toss5)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.1")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="tcl"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    ;;
+  discover-gmao)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.1")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    ;;
+  alderaan)
+    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "clang@=22.1.3")
+    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/Users/mathomp4/prod/spack-bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/Users/mathomp4/prod/spack-cargo-mirror"
+    ;;
+  *)
+    echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
+    exit 1
+    ;;
+esac
+
+##################################################################################################
+
+function fix_permissions() {
+  host=$1
+  dir=$2
+  executables=$3
+  echo "Repairing permissions for directory ${dir} on ${host} ..."
+  set +e
+  case ${host} in
+    nas)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    nas-toss5)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    discover-gmao)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    alderaan)
+      ;;
+    *)
+      echo "ERROR, xargs-chmod command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+  set -e
+}
+
+##################################################################################################
+
+function tasks_per_node() {
+  host=$1
+  case ${host} in
+    nas)
+      tpn=128
+      ;;
+    nas-toss5)
+      tpn=256
+      ;;
+    discover-gmao)
+      tpn=128
+      ;;
+    *)
+      echo "ERROR, tasks_per_node command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+  echo "${tpn}"
+}
+
+##################################################################################################
+
+function run_interactive_job() {
+  host=$1
+  script=$2
+  reuse_build_cache=$3
+  tpn=$(tasks_per_node ${host})
+  if [[ "${reuse_build_cache}" == "true" ]]; then
+    walltime="120"
+  else
+    walltime="720"
+  fi
+  if [[ ! -n "${ACCOUNT}" ]]; then
+    echo "ERROR, environment variable ACCOUNT not set"
+    exit 1
+  fi
+  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} minutes for ${script} ..."
+  case ${host} in
+    nas)
+      module load slurm
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} bash ${script}
+      module unload slurm
+      ;;
+    nas-toss5)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+      ;;
+    discover-gmao)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=compute --account=${ACCOUNT} bash ${script}
+      ;;
+    *)
+      echo "ERROR, run_interactive_job command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+}
+
+##################################################################################################
+
+echo
+echo "Welcome to GMAO SPACK-STACK BATCH INSTALL"
+echo
+
+if [[ ! -e "setup.sh" || ! -e ".spackstack" ]]; then
+  echo "ERROR, this script must be executed from the top-level spack-stack directory"
+  exit 1
+fi
+
+host=${SPACK_STACK_BATCH_HOST}
+module_choice=${SPACK_STACK_MODULE_CHOICE}
+bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
+cargo_mirror_path=${SPACK_STACK_CARGO_MIRROR}
+export CARGO_HOME=${cargo_mirror_path}
+
+if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
+  environment_dirs=${PWD}/envs
+else
+  environment_dirs=${SPACK_STACK_ENVIRONMENT_DIRS}
+fi
+mkdir -p ${environment_dirs}
+
+if [[ ! -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
+  buildcache_dir=${SPACK_STACK_BUILDCACHE_DIR}
+  if [[ "${SPACK_STACK_MODE}" == "install" && ! -d ${buildcache_dir} ]]; then
+    echo "ERROR, build cache ${buildcache_dir} not found,"
+    echo "must exist before installing environments"
+    exit 1
+  else
+    mkdir -p ${buildcache_dir}
+  fi
+fi
+
+if [[ "${SPACK_STACK_MODE}" == "install" ]]; then
+  update_bootstrap_mirror="false"
+  update_cargo_mirror="false"
+  update_source_cache="false"
+  update_build_cache="false"
+  reuse_build_cache="true"
+elif [[ "${SPACK_STACK_MODE}" == "build" ]]; then
+  if [[ "${SPACK_STACK_ROLE}" == "ops" ]]; then
+    update_bootstrap_mirror="false"
+    update_cargo_mirror="false"
+    update_source_cache="false"
+  elif [[ "${SPACK_STACK_ROLE}" == "dev" ]]; then
+    if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
+      update_bootstrap_mirror="true"
+      update_cargo_mirror="true"
+      update_source_cache="true"
+    else
+      update_bootstrap_mirror="false"
+      update_cargo_mirror="false"
+      update_source_cache="false"
+    fi
+  else
+    echo "ERROR, invalid role ${SPACK_STACK_ROLE}"
+    exit 1
+  fi
+  update_build_cache="true"
+  reuse_build_cache="true"
+else
+  echo "ERROR, invalid mode ${SPACK_STACK_MODE}"
+  exit 1
+fi
+
+ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
+
+if [[ "${SPACK_STACK_SUBMIT_TO_SCHEDULER}" == "true" ]]; then
+  submit_to_scheduler="true"
+else
+  submit_to_scheduler="false"
+fi
+
+if [[ "${SPACK_STACK_RUN_TESTS}" == "true" ]]; then
+  test_packages=("${SPACK_STACK_PACKAGES_TO_TEST[@]}")
+else
+  test_packages=()
+fi
+
+# Loop through all compilers and templates for this host
+first_pass="true"
+for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
+
+  if [[ ! ${compiler} == *"@="* ]]; then
+    echo "ERROR, '@=' not found in compiler string '${compiler}'"
+    exit 1
+  fi
+
+  compiler_name=$(echo ${compiler} | cut -d "@" -f 1)
+  compiler_version=$(echo ${compiler} | cut -d "=" -f 2)
+
+  for template in "${SPACK_STACK_BATCH_TEMPLATES[@]}"; do
+
+    echo
+    #############################################################
+    # Add excluded combinations of compilers and templates here #
+    #############################################################
+    # cylc-dev only with gcc
+    #if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
+      #echo "Skipping template ${template} with compiler ${compiler}"
+      #continue
+    ## With clang, only neptune-dev-llvm
+    #elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev-llvm" ]]; then
+      #echo "Skipping template ${template} with compiler ${compiler}"
+      #continue
+    ## With other compilers, skip neptune-dev-llvm
+    #elif [[ ! "${compiler_name}" == "clang" && "${template}" == "neptune-dev-llvm" ]]; then
+      #echo "Skipping template ${template} with compiler ${compiler}"
+      #continue
+    ## FMS compiler ICE: https://github.com/NOAA-GFDL/FMS/issues/1680
+    #elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && "${template}" == "unified-dev" ]]; then
+      #echo "Skipping template ${template} with compiler ${compiler}"
+      #continue
+    #fi
+    echo "Processing template ${template} with compiler ${compiler}"
+    #############################################################
+
+    # Build environment name. Prefices are defined here
+    case ${template} in
+      unified-dev)
+        env_name_prefix="ue"
+        ;;
+      geos-dev)
+        env_name_prefix="ge"
+        ;;
+      *)
+        echo "ERROR, template ${template} not configured"
+        exit 1
+        ;;
+    esac
+    env_name=${env_name_prefix}-${compiler_name}-${compiler_version}
+    [[ "${update_build_cache}" == "true" ]] && env_name=${env_name}-build
+    env_dir=${environment_dirs}/${env_name}
+
+    # Bail out if the environment already exists
+    if [[ -d ${env_dir} ]]; then
+      if [[ ${ignore_env_exist} == "true" ]]; then
+        env_exists="true"
+      else
+        echo "ERROR, environment ${env_dir} already exists"
+        exit 1
+      fi
+    else
+      env_exists="false"
+    fi
+
+    # Reset environment
+    echo "Resetting environment ..."
+    case ${host} in
+      atlantis)
+        umask 0022
+        module purge
+        case ${compiler} in
+          clang@=22.1.0)
+            module use /gpfs/neptune/spack-stack/llvm-22.1.0/modulefiles
+            module use /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-22.1.0/modulefiles
+            ;;
+          gcc@=13.4.0)
+            module use /gpfs/neptune/spack-stack/gcc-13.4.0/modulefiles
+            module use /gpfs/neptune/spack-stack/openmpi-4.1.8/gcc-13.4.0/modulefiles
+            ;;
+          oneapi@=2025.3.0)
+            module use /gpfs/neptune/spack-stack/oneapi-2025.3.0/modulefiles
+            ;;
+        esac
+        ;;
+      nas)
+        umask 0022
+        set +e
+        module purge
+        set -e
+        ;;
+      nas-toss5)
+        umask 0022
+        set +e
+        module purge
+        set -e
+        ;;
+      discover-gmao)
+        umask 0022
+        set +e
+        module purge
+        set -e
+        ;;
+      alderaan)
+        ulimit -s unlimited
+        ;;
+      *)
+        echo "ERROR, host ${host} not configured for resetting environment"
+        exit 1
+        ;;
+    esac
+
+    # Info prints
+    ulimit -a
+    module li
+
+    source setup.sh
+    if [[ "${first_pass}" == "true" ]]; then
+      spack clean -a
+    else
+      # Don't remove software and configuration needed to bootstrap Spack
+      spack clean -d -f -m -p -s
+    fi
+
+    # Update bootstrap mirror if requested before creating any
+    # environments. It is sufficient to do this one time only.
+    if [[ "${update_bootstrap_mirror}" == "true"*  ]]; then
+      tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror
+      echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
+      rm -fr ${tmp_bootstrap_mirror_path}
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.001
+      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      rm -fr ${tmp_bootstrap_mirror_path}
+      # Update buildcache index
+      spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
+      # Fix permissions for the bootstrap mirror
+      fix_permissions ${host} ${bootstrap_mirror_path} 0
+      update_bootstrap_mirror="false"
+      # When spack creates a bootstrap mirror, it populates the "spack" scope
+      # with compilers and packages it finds, which can create problems later
+      echo "Removing package config in spack/etc/spack created by spack boostrap mirror"
+      rm -vf spack/etc/spack/packages.yaml
+    fi
+
+    if [[ ! ${env_exists} == "true" ]]; then
+      spack stack create env --name=${env_name} \
+                             --site=${host} \
+                             --compiler=${compiler_name}-${compiler_version} \
+                             --template=${template} \
+                             --dir=${environment_dirs} \
+                             --treat-warnings-as-errors \
+                             2>&1 | tee log.create.${env_name}.001
+    fi
+    spack env activate -p ${env_dir}
+
+    # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
+    sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
+
+    echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
+    if [[ ! -d ${bootstrap_mirror_path} ]]; then
+      echo "ERROR, directory ${bootstrap_mirror_path} not found"
+      exit 1
+    fi
+    spack bootstrap list | grep local-sources || \
+        spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+    spack bootstrap list | grep local-binaries || \
+        spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+
+    # Check that the site has mirrors configured for local source and build caches,
+    # and extract the local path on disk. Need to strip leading "file://" from path
+    result=$(spack mirror list | grep local-source) || \
+        (echo "ERROR, no local source cache configured" && exit 1)
+    source_mirror_path=$(echo ${result} | cut -d " " -f 3)
+    source_mirror_path=${source_mirror_path:7}
+    echo "Spack source mirror path: ${source_mirror_path}"
+    # For build caches, additional logic is needed. If buildcache_dir is defined,
+    # update the location of the default build cache to this directory.
+    result=$(spack mirror list | grep local-binary) || \
+        (echo "ERROR, no local binary cache configured" && exit 1)
+    binary_mirror_path=$(echo ${result} | cut -d " " -f 3)
+    binary_mirror_path=${binary_mirror_path:7}
+    # If buildcache_dir is set, update binary_mirror_path
+    if [[ ! -z ${buildcache_dir} ]]; then
+      sed -i "s#${binary_mirror_path}#${buildcache_dir}#g" ${env_dir}/site/mirrors.yaml
+      result=$(spack mirror list | grep local-binary)
+      binary_mirror_path=$(echo ${result} | cut -d " " -f 3)
+      binary_mirror_path=${binary_mirror_path:7}
+    fi
+    echo "Spack binary mirror path: ${binary_mirror_path}"
+
+    if [[ "${update_build_cache}" == "true" ]]; then
+      spack config add config:install_tree:padded_length:200
+    fi
+
+    # Bootstrap spack explicitly
+    echo "Bootstrapping spack ..."
+    spack bootstrap now 2>&1 | tee log.bootstrap.${env_name}.001
+
+    # Concretize environment, and check that spack.lock is created
+    spack concretize --force --fresh 2>&1 | tee log.concretize.${env_name}.001
+    if [[ ! -e ${env_dir}/spack.lock ]]; then
+      echo "ERROR during concretization of environment ${env_name}, spack.lock not found"
+      exit 1
+    fi
+
+    # Check for duplicate packages
+    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip -i fms
+
+    # Update local source cache if requested
+    if [[ "${update_source_cache}" == "true"* ]]; then
+      echo "Updating local source cache ..."
+      spack mirror create -a -d ${source_mirror_path}
+    fi
+
+    # Update local cargo mirror if requested; this can be
+    # unreliable, therefore ignore errors and proceed ...
+    if [[ "${update_cargo_mirror}" == "true"* ]]; then
+      set +e
+      echo "Updating local cargo mirror ..."
+      ./util/fetch_cargo_deps.py
+      set -e
+    fi
+
+    # Install the environment with the correct flags
+    case ${reuse_build_cache} in
+      "true")
+        buildcache_install_flags="--no-check-signature"
+        ;;
+      "false")
+        buildcache_install_flags="--no-cache"
+        ;;
+      *)
+        echo "ERROR, unkown reuse_build_cache value ${reuse_build_cache} for setting install flags"
+        exit 1
+        ;;
+    esac
+
+    case ${submit_to_scheduler} in
+      "true")
+        jobs=$(tasks_per_node ${host})
+        parallel_install_flags="--concurrent-packages=10 --jobs=${jobs}"
+        ;;
+      "false")
+        parallel_install_flags=""
+        ;;
+      *)
+        echo "ERROR, unkown submit_to_scheduler value ${submit_to_scheduler} for setting install flags"
+        exit 1
+        ;;
+    esac
+
+    install_script=${PWD}/spack-install.${env_name}.sh
+    cat << EOF > ${install_script}
+#!/usr/bin/env bash
+
+set -e
+
+$(declare -p test_packages)
+
+# If no tests are required, install everything
+if [[ \${#test_packages[@]} -eq 0 ]]; then
+  set -o pipefail
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.001
+  set +o pipefail
+else
+  for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
+    test_package=\${test_packages[\${idx}]}
+    # First, check if this package is in this environment
+    set +e
+    grep -e "\${test_package}@" log.concretize.${env_name}.001 || continue
+    set -e
+    idx_padded=\$(printf "%03d" "\$((idx+1))")
+    set -o pipefail
+    spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} --only=dependencies \${test_package} \\
+      2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
+    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}
+    set +o pipefail
+  done
+  # idx now equals the length of the array; install the rest
+  idx_padded=\$(printf "%03d" "\$((idx+1))")
+  set -o pipefail
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.\${idx_padded}
+  set +o pipefail
+fi
+EOF
+    chmod u+x ${install_script}
+    if [[ "${submit_to_scheduler}" == "true" ]]; then
+      run_interactive_job ${host} ${install_script} ${reuse_build_cache}
+    else
+      bash ${install_script}
+    fi
+
+    # In build mode, update local binary cache
+    if [[ "${update_build_cache}" == "true" ]]; then
+      spack buildcache push -u ${binary_mirror_path}
+      spack buildcache update-index local-binary
+    fi
+
+    # In install mode, create environment modules
+    if [[ "${update_build_cache}" == "false" ]]; then
+      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee log.modules.${env_name}.001
+      spack stack setup-meta-modules 2>&1 | tee log.setup-meta-modules.${env_name}.001
+    fi
+
+    # When creating or updating buildcaches, fix permissions for mirrors.
+    # Mirrors do not contain executables, therefore skip looking for them.
+    if [[ "${update_source_cache}" == "true" ]]; then
+      fix_permissions ${host} ${source_mirror_path} 0
+    fi
+    if [[ "${update_build_cache}" == "true" ]]; then
+      fix_permissions ${host} ${binary_mirror_path} 0
+    fi
+    if [[ "${update_cargo_mirror}" == "true" ]]; then
+      fix_permissions ${host} ${cargo_mirror_path} 0
+    fi
+
+    # Clean up (don't remove software and configuration needed to bootstrap Spack)
+    spack clean -d -f -m -p -s
+    spack env deactivate
+    first_pass="false"
+
+  done
+
+done
+
+# Repair permissions for environments if in installer mode
+if [[ "${update_build_cache}" == "false" ]]; then
+  # Also search for exectuables
+  fix_permissions ${host} ${environment_dirs} 1
+fi
+
+echo "SUCCESS"
+echo
+
+exit 0

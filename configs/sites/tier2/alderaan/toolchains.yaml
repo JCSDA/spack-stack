@@ -1,0 +1,29 @@
+toolchains:
+  apple-gfortran-15:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=gcc@15"
+    when: "%fortran"
+  apple-gfortran-14:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=gcc@14"
+    when: "%fortran"
+  gcc-gfortran-15:
+  - spec: "%c=gcc@15"
+    when: "%c"
+  - spec: "%cxx=gcc@15"
+    when: "%cxx"
+  - spec: "%fortran=gcc@15"
+    when: "%fortran"
+  apple-nag:
+  - spec: "%c=apple-clang"
+    when: "%c"
+  - spec: "%cxx=apple-clang"
+    when: "%cxx"
+  - spec: "%fortran=nag"
+    when: "%fortran"
