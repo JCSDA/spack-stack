@@ -5,13 +5,15 @@ packages:
     - "openmpi@4.1.8"
   gcc:
     externals:
-    - spec: gcc@13.3.1 languages:='c,c++,fortran'
-      prefix: /opt/rh/gcc-toolset-13/root
+    - spec: gcc@13.4.0 languages:='c,c++,fortran'
+      prefix: /project/spack-stack/gcc-13.4.0
+      modules:
+      - gcc/13.4.0
       extra_attributes:
         compilers:
-          c: /opt/rh/gcc-toolset-13/root/bin/gcc
-          cxx: /opt/rh/gcc-toolset-13/root/bin/g++
-          fortran: /opt/rh/gcc-toolset-13/root/bin/gfortran
+          c: /project/spack-stack/gcc-13.4.0/bin/gcc
+          cxx: /project/spack-stack/gcc-13.4.0/bin/g++
+          fortran: /project/spack-stack/gcc-13.4.0/bin/gfortran
     #- spec: gcc@11.5.0 languages:='c,c++,fortran'
     #  prefix: /usr
     #  extra_attributes:
@@ -21,12 +23,11 @@ packages:
     #      fortran: /usr/bin/gfortran
   gcc-runtime:
     externals:
-    - spec: gcc-runtime@13.3.1%gcc@13.3.1
-      prefix: /opt/rh/gcc-toolset-13/root
+    - spec: gcc-runtime@13.4.0%gcc@13.4.0
+      prefix: /project/spack-stack/gcc-13.4.0
   openmpi:
     externals:
     - spec: openmpi@4.1.8
-      #prefix: /project/spack-stack/openmpi-4.1.8/gcc-13.3.1
+      prefix: /project/spack-stack/openmpi-4.1.8/gcc-13.4.0
       modules:
       - openmpi/4.1.8
-

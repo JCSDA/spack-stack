@@ -145,7 +145,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/p/cwfs/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
   navy-aws)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.4.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/project/spack-stack/bootstrap-mirror"
@@ -450,8 +450,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         umask 0022
         module purge
         case ${compiler} in
-          gcc-13.3.1)
-	    module use /project/spack-stack/openmpi-4.1.8/gcc-13.3.1/modulefiles
+          gcc-13.4.0)
+            module use /project/spack-stack/gcc-13.4.0/modulefiles
+            module use /project/spack-stack/openmpi-4.1.8/gcc-13.4.0/modulefiles
 	    ;;
 	esac
         ;;

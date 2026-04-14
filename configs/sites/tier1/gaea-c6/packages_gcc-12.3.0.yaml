@@ -1,0 +1,37 @@
+packages:
+  mpi:
+    buildable: False
+  cray-mpich:
+    buildable: False
+    externals:
+    - spec: cray-mpich@8.1.32 ~wrappers
+      prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
+      modules:
+      - cray-mpich/8.1.32
+      - craype-network-ofi
+  gcc-runtime:
+    buildable: False
+    externals:
+      - spec: gcc-runtime@12.3.0
+        prefix: /opt/cray/pe/gcc-native/12/bin
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@12.3.0 languages:='c,c++'
+      prefix: /opt/cray/pe/gcc-native/12/bin
+      modules:
+        - PrgEnv-gnu/8.6.0
+        - gcc-native/12.3
+        - craype/2.7.35
+        - libfabric/1.22.0
+        - cray-libsci/25.09.0
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc-12
+          cxx: /usr/bin/g++-12
+          fortran: /usr/bin/gfortran-12
+        environment:
+          prepend_path:
+            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.22.0/lib64:/opt/cray/pe/libsci/25.09.0/INTEL/2025.0/x86_64/lib:/usr/lib64/gcc/x86_64-suse-linux/12:/opt/intel/oneapi/compiler/2025.2/lib'
+      extra_rpaths:
+        - /opt/intel/oneapi/compiler/2025.2/lib
