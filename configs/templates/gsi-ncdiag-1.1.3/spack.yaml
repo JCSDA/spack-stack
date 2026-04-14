@@ -1,0 +1,13 @@
+# For JCSDA/spack-stack issue #1938
+#
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+  - gsi-env ^crtm@3.1.2 # match unified-dev template
+
+  repos: [$env/envrepo]
