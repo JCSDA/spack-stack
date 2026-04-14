@@ -63,7 +63,7 @@ git clone --recurse-submodules https://github.com/GMAO-SI-Team/spack-stack.git -
 
 ```bash
 cd spack-stack-dev
-. setup.sh
+. ./setup.sh
 ```
 
 ---
@@ -136,7 +136,7 @@ export CARGO_HOME=/Users/mathomp4/prod/spack-cargo-mirror
 ../../util/fetch_cargo_deps.py
 ```
 
-> ⚠️ **Set `CARGO_HOME` before running `spack install`.
+> ⚠️ **Set `CARGO_HOME` before running `spack install`.**
 
 ---
 
