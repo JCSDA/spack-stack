@@ -81,8 +81,6 @@ packages:
     require:: ['@:']
   ectrans:
     require:: ['@1.2.0', '+fftw']
-  elfutils:
-    require: ['@0.191']
   fckit:
     require:: ['@:', '+eckit']
   gdal:
