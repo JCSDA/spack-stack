@@ -75,14 +75,16 @@ NAS login nodes allow only **2 processes**, so use:
 
 ```bash
 qsub -I -V -X \
-    -l select=1:ncpus=128:mpiprocs=128:model=mil_ait \
+    -l select=1:ncpus=128:mpiprocs=128:model=rom_ait \
     -l walltime=12:00:00 \
     -W group_list=s1873 \
     -m b \
     -N Interactive
 ```
 
-This gives a **Milan** compute node for up to 12 hours.
+This gives a **Rome** compute node for up to 12 hours. 
+
+For a **Milan** node, change `model=rom_ait` to `model=mil_ait` and run the `qsub` command on a Milan-capable login node (e.g., `afe02`).
 
 ---
 
@@ -227,7 +229,7 @@ spack install -j 16 --verbose --fail-fast --show-log-on-error \
 
 ---
 
-### Packages Requiring Internet
+### Packages Requiring Internet (AFE LOGIN NODE)
 
 If you encounter another package that insists on network access:
 
@@ -237,18 +239,22 @@ spack install -j 2 --verbose --fail-fast --show-log-on-error \
     |& tee log.install.<package> ; bell
 ```
 
+Again, this must be done on an **afe** login node because of the CPU architecture.
+
 Once built, return to the compute node and resume the full installation.
 
 ---
 
-## Update Module Files
+## Update Module Files (AFE LOGIN NODE)
 
-After installation completes:
+After installation completes, on an **afe** login node run:
 
 ```bash
 spack module tcl refresh -y --delete-tree ; bell
 spack stack setup-meta-modules
 ```
+
+Apparently, spack modulefile generation might use code that spack built for `x86_64_v3`.
 
 ---
 
