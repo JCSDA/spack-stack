@@ -15,9 +15,9 @@ Alderaan is one of @mathomp4's development systems (Mac Studio)
   - [GCC Environment](#gcc-environment)
 - [Activate the Environment](#activate-the-environment)
 - [Concretize the Environment](#concretize-the-environment)
-- [Create Source Cache (LOGIN NODE ONLY)](#create-source-cache-login-node-only)
-- [Pre-Fetch Cargo Dependencies (LOGIN NODE ONLY)](#pre-fetch-cargo-dependencies-login-node-only)
-- [Install Packages (COMPUTE NODE)](#install-packages-compute-node)
+- [Create Source Cache](#create-source-cache)
+- [Pre-Fetch Cargo Dependencies](#pre-fetch-cargo-dependencies)
+- [Install Packages](#install-packages)
 - [Update Module Files](#update-module-files)
 - [Deactivate the Environment](#deactivate-the-environment)
 - [Debugging Package Builds](#debugging-package-builds)
@@ -100,8 +100,6 @@ spack env activate .
 
 ## Concretize the Environment
 
-Run on a **login node** (internet required for bootstrapping Clingo and other tools):
-
 ```bash
 spack concretize 2>&1 | tee log.concretize ; bell
 ```
@@ -127,7 +125,7 @@ spack mirror create -a -d /Users/mathomp4/prod/spack-source-mirror
 
 ---
 
-## Pre-Fetch Cargo Dependencies (LOGIN NODE ONLY)
+## Pre-Fetch Cargo Dependencies
 
 Rust packages frequently require network access during build. Pre-fetch their dependencies:
 
