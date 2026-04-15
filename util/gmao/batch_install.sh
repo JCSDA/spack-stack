@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -x
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SPACK_STACK_DIR=$(dirname $(dirname ${SCRIPT_DIR}))
@@ -25,7 +25,7 @@ SPACK_STACK_PACKAGES_TO_TEST=(
 usage() {
   set +x
   echo
-  echo "Usage: $0 -r <ROLE> -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>]"
+  echo "Usage: $0 -r <ROLE> -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>] [-H <HOSTNAME>]"
   echo
   echo "  -r  Set role, can be 'ops' or 'dev'"
   echo "  -m  Set mode, can be 'build' or 'install';"
@@ -42,11 +42,14 @@ usage() {
   echo "  -s  Submit 'spack install' to batch scheduler"
   echo "  -t  Run tests for specific thirdparty dependencies;"
   echo "      these are currently hardcoded in batch_install.sh"
+  echo "  -n  Dry-run: print what would be executed without running anything"
+  echo "  -H  Provide hostname manually (overrides autodetection);"
+  echo "      useful when VPN/etc masks the real hostname"
   echo "  -h  display this help"
   echo
 }
 
-while getopts r:m:d:c:uesth flag
+while getopts r:m:d:c:H:nuesth flag
 do
   case "${flag}" in
     r)
@@ -60,6 +63,12 @@ do
       ;;
     c)
       SPACK_STACK_BUILDCACHE_DIR=$(readlink -f ${OPTARG})
+      ;;
+    H)
+      SPACK_STACK_BATCH_HOST_OPT=${OPTARG}
+      ;;
+    n)
+      SPACK_STACK_DRY_RUN="true"
       ;;
     u)
       SPACK_STACK_UPDATE_DEV_CACHES="true"
@@ -85,6 +94,8 @@ echo "  SPACK_STACK_ROLE:                            ${SPACK_STACK_ROLE:-not set
 echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set}"
 echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
+echo "  SPACK_STACK_BATCH_HOST_OPT:                  ${SPACK_STACK_BATCH_HOST_OPT:-autodetect}"
+echo "  SPACK_STACK_DRY_RUN:                         ${SPACK_STACK_DRY_RUN:-false}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
 echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
@@ -123,9 +134,13 @@ fi
 
 ##################################################################################################
 
-# Remove domain name suffices and digits to determine hostname
-SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1)
-SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
+if [[ -n "${SPACK_STACK_BATCH_HOST_OPT}" ]]; then
+  SPACK_STACK_BATCH_HOST="${SPACK_STACK_BATCH_HOST_OPT}"
+else
+  # Remove domain name suffices and digits to determine hostname
+  SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1)
+  SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
+fi
 
 case ${SPACK_STACK_BATCH_HOST} in
   nas)
@@ -150,7 +165,8 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
     ;;
   alderaan)
-    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "clang@=22.1.3")
+    #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "clang@=22.1.3")
+    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/Users/mathomp4/prod/spack-bootstrap-mirror"
@@ -282,7 +298,7 @@ if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
 else
   environment_dirs=${SPACK_STACK_ENVIRONMENT_DIRS}
 fi
-mkdir -p ${environment_dirs}
+[[ "${SPACK_STACK_DRY_RUN}" != "true" ]] && mkdir -p ${environment_dirs}
 
 if [[ ! -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
   buildcache_dir=${SPACK_STACK_BUILDCACHE_DIR}
@@ -291,7 +307,7 @@ if [[ ! -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
     echo "must exist before installing environments"
     exit 1
   else
-    mkdir -p ${buildcache_dir}
+    [[ "${SPACK_STACK_DRY_RUN}" != "true" ]] && mkdir -p ${buildcache_dir}
   fi
 fi
 
@@ -401,11 +417,66 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       if [[ ${ignore_env_exist} == "true" ]]; then
         env_exists="true"
       else
-        echo "ERROR, environment ${env_dir} already exists"
-        exit 1
+        if [[ "${SPACK_STACK_DRY_RUN}" == "true" ]]; then
+          echo "[DRY-RUN] ERROR: environment ${env_dir} already exists. (Would exit here)"
+          continue
+        else
+          echo "ERROR, environment ${env_dir} already exists"
+          exit 1
+        fi
       fi
     else
       env_exists="false"
+    fi
+
+    if [[ "${SPACK_STACK_DRY_RUN}" == "true" ]]; then
+      echo "--------------------------------------------------------------------------------"
+      echo "[DRY-RUN] Target Environment: ${env_name}"
+      echo "[DRY-RUN] Directory: ${env_dir}"
+      echo "--------------------------------------------------------------------------------"
+      if [[ "${update_bootstrap_mirror}" == "true"* ]]; then
+        echo "[DRY-RUN] spack bootstrap mirror --binary-packages ${PWD}/tmp-bootstrap-mirror"
+        echo "[DRY-RUN] rsync -a ${PWD}/tmp-bootstrap-mirror/ ${bootstrap_mirror_path}/"
+        echo "[DRY-RUN] spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache"
+        update_bootstrap_mirror="false"
+      fi
+
+      if [[ ! ${env_exists} == "true" ]]; then
+        echo "[DRY-RUN] spack stack create env --name=${env_name} \\"
+        echo "          --site=${host} --compiler=${compiler_name}-${compiler_version} \\"
+        echo "          --template=${template} --dir=${environment_dirs} --treat-warnings-as-errors"
+      fi
+      echo "[DRY-RUN] spack env activate -p ${env_dir}"
+      echo "[DRY-RUN] spack bootstrap now"
+      echo "[DRY-RUN] spack concretize --force --fresh"
+      
+      if [[ "${update_source_cache}" == "true"* ]]; then
+        echo "[DRY-RUN] spack mirror create -a -d <source_mirror_path>"
+      fi
+      if [[ "${update_cargo_mirror}" == "true"* ]]; then
+        echo "[DRY-RUN] ./util/fetch_cargo_deps.py"
+      fi
+
+      echo "[DRY-RUN] Generating spack-install.${env_name}.sh and executing via:"
+      if [[ "${submit_to_scheduler}" == "true" ]]; then
+        echo "[DRY-RUN]   run_interactive_job ${host} spack-install.${env_name}.sh ${reuse_build_cache}"
+      else
+        echo "[DRY-RUN]   bash spack-install.${env_name}.sh"
+      fi
+
+      if [[ "${update_build_cache}" == "true" ]]; then
+        echo "[DRY-RUN] spack buildcache push -u <binary_mirror_path>"
+        echo "[DRY-RUN] spack buildcache update-index local-binary"
+      else
+        echo "[DRY-RUN] spack module ${module_choice} refresh --yes --upstream-modules"
+        echo "[DRY-RUN] spack stack setup-meta-modules"
+      fi
+      
+      echo "[DRY-RUN] spack clean -d -f -m -p -s"
+      echo "[DRY-RUN] spack env deactivate"
+      echo ""
+      first_pass="false"
+      continue
     fi
 
     # Reset environment
@@ -447,7 +518,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         set -e
         ;;
       alderaan)
-        ulimit -s unlimited
+        set +e
+        ulimit -s unlimited 2>/dev/null || ulimit -s hard 2>/dev/null || ulimit -s 65532 2>/dev/null || true
+        if ! command -v module &> /dev/null; then
+          if command -v brew &> /dev/null; then
+            . $(brew --prefix)/opt/lmod/init/bash 2>/dev/null || true
+          fi
+        fi
+        set -e
         ;;
       *)
         echo "ERROR, host ${host} not configured for resetting environment"
@@ -498,9 +576,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
     spack env activate -p ${env_dir}
 
-    # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
-    sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
-
     echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
     if [[ ! -d ${bootstrap_mirror_path} ]]; then
       echo "ERROR, directory ${bootstrap_mirror_path} not found"
@@ -549,7 +624,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Check for duplicate packages
-    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip -i fms
+    ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip -i fms -i geos-gcm-env
 
     # Update local source cache if requested
     if [[ "${update_source_cache}" == "true"* ]]; then
@@ -671,7 +746,11 @@ done
 # Repair permissions for environments if in installer mode
 if [[ "${update_build_cache}" == "false" ]]; then
   # Also search for exectuables
-  fix_permissions ${host} ${environment_dirs} 1
+  if [[ "${SPACK_STACK_DRY_RUN}" == "true" ]]; then
+    echo "[DRY-RUN] fix_permissions ${host} ${environment_dirs} 1"
+  else
+    fix_permissions ${host} ${environment_dirs} 1
+  fi
 fi
 
 echo "SUCCESS"
