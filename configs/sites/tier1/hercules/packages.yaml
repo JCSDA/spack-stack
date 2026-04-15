@@ -1,5 +1,5 @@
 packages:
-### Modification of common packages
+# Modification of common packages
   ewok-env:
     require:
     - '+ecflow'
