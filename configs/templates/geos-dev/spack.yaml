@@ -12,7 +12,7 @@ spack:
   - geos-gcm-env +debug ^esmf@=9.0.0b10
 
   # Various fms builds
-  - fms ~gfs_phys constants=GEOS
+  - fms@=2024.03 ~gfs_phys constants=GEOS
 
   packages:
     # Turn on python variant for esmf

@@ -1,4 +1,8 @@
 packages:
+
+  netcdf-c:
+    require: [+shared]
+
   autoconf:
     externals:
     - spec: autoconf@2.72
