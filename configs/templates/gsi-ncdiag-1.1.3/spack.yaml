@@ -1,4 +1,5 @@
-# For JCSDA/spack-stack issue #1938
+# Add-on environment to provide gsi-env with gsi-ncdiag@1.1.3
+# See https://github.com/JCSDA/spack-stack/issues/1938
 #
 spack:
   concretizer:
