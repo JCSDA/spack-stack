@@ -1,4 +1,4 @@
-#!/usr/bin/env bash -x
+#!/usr/bin/env bash
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SPACK_STACK_DIR=$(dirname $(dirname ${SCRIPT_DIR}))
@@ -21,6 +21,33 @@ SPACK_STACK_PACKAGES_TO_TEST=(
 ##################################################################################################
 # Options                                                                                        #
 ##################################################################################################
+
+##################################################################################################
+# macOS Prerequisites Check                                                                      #
+##################################################################################################
+
+check_macos_prerequisites() {
+  if ! command -v brew &> /dev/null; then
+    echo "ERROR: brew is not installed or not in PATH."
+    exit 1
+  fi
+
+  local missing_pkgs=()
+  local required_pkgs=(coreutils gcc git lmod wget bash tcsh cmake openssl rust)
+
+  for pkg in "${required_pkgs[@]}"; do
+    if ! brew --prefix "$pkg" &> /dev/null; then
+      missing_pkgs+=("$pkg")
+    fi
+  done
+
+  if [ ${#missing_pkgs[@]} -ne 0 ]; then
+    echo "ERROR: Missing required Homebrew packages: ${missing_pkgs[*]}"
+    echo "Please run: brew install ${missing_pkgs[*]}"
+    exit 1
+  fi
+}
+
 
 usage() {
   set +x
@@ -169,8 +196,15 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/Users/mathomp4/prod/spack-bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/Users/mathomp4/prod/spack-cargo-mirror"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/Users/mathomp4/spack-stack-mirrors/spack-bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/Users/mathomp4/spack-stack-mirrors/spack-cargo-mirror"
+    ;;
+  macos.gmao)
+    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
+    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="${HOME}/spack-stack-mirrors/spack-bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="${HOME}/spack-stack-mirrors/spack-cargo-mirror"
     ;;
   *)
     echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
@@ -209,6 +243,8 @@ function fix_permissions() {
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     alderaan)
+      ;;
+    macos.gmao)
       ;;
     *)
       echo "ERROR, xargs-chmod command not configured for ${host}"
@@ -281,6 +317,8 @@ function run_interactive_job() {
 echo
 echo "Welcome to GMAO SPACK-STACK BATCH INSTALL"
 echo
+
+LOG_TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 
 if [[ ! -e "setup.sh" || ! -e ".spackstack" ]]; then
   echo "ERROR, this script must be executed from the top-level spack-stack directory"
@@ -442,14 +480,21 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       fi
 
       if [[ ! ${env_exists} == "true" ]]; then
+        if [[ "${host}" == "macos.gmao" ]]; then
+          echo "[DRY-RUN] Would check macOS prerequisites and generate YAML configs from templates"
+        fi
         echo "[DRY-RUN] spack stack create env --name=${env_name} \\"
         echo "          --site=${host} --compiler=${compiler_name}-${compiler_version} \\"
         echo "          --template=${template} --dir=${environment_dirs} --treat-warnings-as-errors"
       fi
       echo "[DRY-RUN] spack env activate -p ${env_dir}"
+      if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
+        echo "[DRY-RUN] spack external find --not-buildable autoconf automake bash cmake cvs doxygen gawk git-lfs groff libtool ninja npm subversion swig texinfo"
+        echo "[DRY-RUN] generating spack-macos-externals.yaml and applying with 'spack config add -f'"
+      fi
       echo "[DRY-RUN] spack bootstrap now"
       echo "[DRY-RUN] spack concretize --force --fresh"
-      
+
       if [[ "${update_source_cache}" == "true"* ]]; then
         echo "[DRY-RUN] spack mirror create -a -d <source_mirror_path>"
       fi
@@ -471,7 +516,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         echo "[DRY-RUN] spack module ${module_choice} refresh --yes --upstream-modules"
         echo "[DRY-RUN] spack stack setup-meta-modules"
       fi
-      
+
       echo "[DRY-RUN] spack clean -d -f -m -p -s"
       echo "[DRY-RUN] spack env deactivate"
       echo ""
@@ -527,6 +572,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         fi
         set -e
         ;;
+      macos.gmao)
+        set +e
+        ulimit -s unlimited 2>/dev/null || ulimit -s hard 2>/dev/null || ulimit -s 65532 2>/dev/null || true
+        if ! command -v module &> /dev/null; then
+          if command -v brew &> /dev/null; then
+            . $(brew --prefix)/opt/lmod/init/bash 2>/dev/null || true
+          fi
+        fi
+        set -e
+        ;;
       *)
         echo "ERROR, host ${host} not configured for resetting environment"
         exit 1
@@ -551,7 +606,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror
       echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
       rm -fr ${tmp_bootstrap_mirror_path}
-      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.001
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${LOG_TIMESTAMP}
       rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
       rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
@@ -566,15 +621,58 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     if [[ ! ${env_exists} == "true" ]]; then
+      if [[ "${host}" == "macos.gmao" ]]; then
+        check_macos_prerequisites
+
+        macos_site_dir="${SPACK_STACK_DIR}/configs/sites/tier2/macos.gmao"
+        brew_prefix=$(brew --prefix)
+
+        sed "s#@HOME@#${HOME}#g" "${macos_site_dir}/mirrors.yaml.template" > "${macos_site_dir}/mirrors.yaml"
+        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_gcc-15.2.0.yaml.template" > "${macos_site_dir}/packages_gcc-15.2.0.yaml"
+
+        if [[ -d "${SPACK_STACK_DIR}/.git" ]]; then
+          grep -q "^configs/sites/tier2/macos.gmao/mirrors.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/mirrors.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+          grep -q "^configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+        fi
+      fi
+
       spack stack create env --name=${env_name} \
                              --site=${host} \
                              --compiler=${compiler_name}-${compiler_version} \
                              --template=${template} \
                              --dir=${environment_dirs} \
                              --treat-warnings-as-errors \
-                             2>&1 | tee log.create.${env_name}.001
+                             2>&1 | tee log.create.${env_name}.${LOG_TIMESTAMP}
     fi
     spack env activate -p ${env_dir}
+
+    if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
+      echo "Running spack external find for macOS generic packages..."
+      spack external find --not-buildable autoconf automake bash cmake cvs doxygen gawk git-lfs groff libtool ninja npm subversion swig texinfo
+
+      brew_prefix=$(brew --prefix)
+      tcsh_version=$(${brew_prefix}/bin/tcsh --version | awk '{print $2}')
+      rust_version=$(${brew_prefix}/bin/rustc --version | awk '{print $2}')
+
+      echo "Manually injecting tricky macOS packages into Spack configuration..."
+      cat << EOF > spack-macos-externals.yaml
+packages:
+  tcsh:
+    externals:
+    - spec: tcsh@${tcsh_version}
+      prefix: ${brew_prefix}
+  rust:
+    externals:
+    - spec: rust@${rust_version}
+      prefix: ${brew_prefix}
+      extra_attributes:
+        cargo: ${brew_prefix}/bin/cargo
+        compilers:
+          rust: ${brew_prefix}/bin/rustc
+EOF
+      spack config add -f spack-macos-externals.yaml
+      rm -f spack-macos-externals.yaml
+    fi
 
     echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
     if [[ ! -d ${bootstrap_mirror_path} ]]; then
@@ -614,10 +712,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # Bootstrap spack explicitly
     echo "Bootstrapping spack ..."
-    spack bootstrap now 2>&1 | tee log.bootstrap.${env_name}.001
+    spack bootstrap now 2>&1 | tee log.bootstrap.${env_name}.${LOG_TIMESTAMP}
 
     # Concretize environment, and check that spack.lock is created
-    spack concretize --force --fresh 2>&1 | tee log.concretize.${env_name}.001
+    spack concretize --force --fresh 2>&1 | tee log.concretize.${env_name}.${LOG_TIMESTAMP}
     if [[ ! -e ${env_dir}/spack.lock ]]; then
       echo "ERROR during concretization of environment ${env_name}, spack.lock not found"
       exit 1
@@ -670,6 +768,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     esac
 
     install_script=${PWD}/spack-install.${env_name}.sh
+
+    # Locally ignore the generated install script in git without changing global .gitignore
+    if [[ -d "${SPACK_STACK_DIR}/.git" ]] && ! grep -q "^spack-install\.\*\.sh$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null; then
+      echo "spack-install.*.sh" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+    fi
+
     cat << EOF > ${install_script}
 #!/usr/bin/env bash
 
@@ -680,26 +784,26 @@ $(declare -p test_packages)
 # If no tests are required, install everything
 if [[ \${#test_packages[@]} -eq 0 ]]; then
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.001
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}
   set +o pipefail
 else
   for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
     test_package=\${test_packages[\${idx}]}
     # First, check if this package is in this environment
     set +e
-    grep -e "\${test_package}@" log.concretize.${env_name}.001 || continue
+    grep -e "\${test_package}@" log.concretize.${env_name}.${LOG_TIMESTAMP} || continue
     set -e
     idx_padded=\$(printf "%03d" "\$((idx+1))")
     set -o pipefail
     spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} --only=dependencies \${test_package} \\
-      2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
-    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}
+      2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}.\${test_package}-dependencies
+    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}.\${test_package}
     set +o pipefail
   done
   # idx now equals the length of the array; install the rest
   idx_padded=\$(printf "%03d" "\$((idx+1))")
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.\${idx_padded}
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}
   set +o pipefail
 fi
 EOF
@@ -718,8 +822,8 @@ EOF
 
     # In install mode, create environment modules
     if [[ "${update_build_cache}" == "false" ]]; then
-      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee log.modules.${env_name}.001
-      spack stack setup-meta-modules 2>&1 | tee log.setup-meta-modules.${env_name}.001
+      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee log.modules.${env_name}.${LOG_TIMESTAMP}
+      spack stack setup-meta-modules 2>&1 | tee log.setup-meta-modules.${env_name}.${LOG_TIMESTAMP}
     fi
 
     # When creating or updating buildcaches, fix permissions for mirrors.
