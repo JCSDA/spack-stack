@@ -52,7 +52,7 @@ packages:
       - visibility=hidden
     bufr:
       require:
-      - '@12.1.0'
+      - '@12.3.0'
       - +python
     bufr-query:
       require:
