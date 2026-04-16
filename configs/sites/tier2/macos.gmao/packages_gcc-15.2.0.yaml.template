@@ -1,0 +1,31 @@
+packages:
+  c:
+    require: [apple-clang@17.0.0]
+  cxx:
+    require: [apple-clang@17.0.0]
+  fortran:
+    require: [gcc@15.2.0]
+  mpi:
+    require: [openmpi@=5.0.10]
+  apple-clang:
+    externals:
+    - spec: apple-clang@17.0.0 languages:='c,c++'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@15.2.0 languages:='fortran'
+      prefix: @BREW_PREFIX@
+      extra_attributes:
+        compilers:
+          fortran: @BREW_PREFIX@/bin/gfortran-15
+
+  # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
+  # we do the same here to avoid build failures.
+  esmf:
+    require::
+    - '~openmp'
