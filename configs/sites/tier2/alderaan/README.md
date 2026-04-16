@@ -117,7 +117,7 @@ bell() { tput bel ; printf "\nFinished at: " ; date; }
 This downloads all source tarballs for your environment:
 
 ```bash
-spack mirror create -a -d /Users/mathomp4/prod/spack-source-mirror
+spack mirror create -a -d /Users/mathomp4/spack-stack-mirrors/spack-source-mirror
 ```
 
 > ⚠️ **Do not run this outside an activated environment.**
@@ -130,7 +130,7 @@ spack mirror create -a -d /Users/mathomp4/prod/spack-source-mirror
 Rust packages frequently require network access during build. Pre-fetch their dependencies:
 
 ```bash
-export CARGO_HOME=/Users/mathomp4/prod/spack-cargo-mirror
+export CARGO_HOME=/Users/mathomp4/spack-stack-mirrors/spack-cargo-mirror
 ../../util/fetch_cargo_deps.py
 ```
 
@@ -141,7 +141,7 @@ export CARGO_HOME=/Users/mathomp4/prod/spack-cargo-mirror
 ## Install Packages
 
 ```bash
-export CARGO_HOME=/Users/mathomp4/prod/spack-cargo-mirror
+export CARGO_HOME=/Users/mathomp4/spack-stack-mirrors/spack-cargo-mirror
 spack install -j 6 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install ; bell
 ```
 

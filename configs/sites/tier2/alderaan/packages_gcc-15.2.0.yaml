@@ -23,3 +23,9 @@ packages:
       extra_attributes:
         compilers:
           fortran: /Users/mathomp4/.homebrew/brew/bin/gfortran-15
+
+  # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
+  # we do the same here to avoid build failures.
+  esmf:
+    require::
+    - '~openmp'
