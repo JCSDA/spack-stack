@@ -403,10 +403,10 @@ def setup_meta_modules():
         logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
 
         # Compiler environment variables; names are lowercase in spack
-        substitutes["CC"] = compiler.extra_attributes["compilers"]["c"]
-        substitutes["CXX"] = compiler.extra_attributes["compilers"]["cxx"]
-        substitutes["F77"] = compiler.extra_attributes["compilers"]["fortran"]
-        substitutes["FC"] = compiler.extra_attributes["compilers"]["fortran"]
+        substitutes["CC"] = compiler.extra_attributes.get("compilers", {}).get("c", "")
+        substitutes["CXX"] = compiler.extra_attributes.get("compilers", {}).get("cxx", "")
+        substitutes["F77"] = compiler.extra_attributes.get("compilers", {}).get("fortran", "")
+        substitutes["FC"] = compiler.extra_attributes.get("compilers", {}).get("fortran", "")
         logging.debug("  ... ... CC  : {}".format(substitutes["CC"]))
         logging.debug("  ... ... CXX : {}".format(substitutes["CXX"]))
         logging.debug("  ... ... F77 : {}".format(substitutes["F77"]))
