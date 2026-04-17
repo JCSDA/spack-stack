@@ -4,7 +4,7 @@ packages:
   cxx:
     require: [apple-clang@17.0.0]
   fortran:
-    require: [gcc@15.2.0]
+    require: [nag@7.2.7243]
   mpi:
     require: [openmpi@=5.0.10]
   apple-clang:
@@ -15,14 +15,14 @@ packages:
         compilers:
           c: /usr/bin/clang
           cxx: /usr/bin/clang++
-  gcc:
+  nag:
     buildable: False
     externals:
-    - spec: gcc@15.2.0 languages:='fortran'
-      prefix: @BREW_PREFIX@
+    - spec: nag@7.2.7243 languages:='fortran'
+      prefix: /Users/mathomp4/installed/Core/nag/7.2.43
       extra_attributes:
         compilers:
-          fortran: @BREW_PREFIX@/bin/gfortran-15
+          fortran: /Users/mathomp4/installed/Core/nag/7.2.43/bin/nagfor
 
   # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
   # we do the same here to avoid build failures.
