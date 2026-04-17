@@ -193,6 +193,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     ;;
   alderaan)
     #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "clang@=22.1.3")
+    #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "nag@=7.2.7243")
     SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
@@ -200,8 +201,9 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/Users/mathomp4/spack-stack-mirrors/spack-cargo-mirror"
     ;;
   macos.gmao)
+    #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "nag@=7.2.7243")
     SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("geos-dev" "geos-dev-nag")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="${HOME}/spack-stack-mirrors/spack-bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="${HOME}/spack-stack-mirrors/spack-cargo-mirror"
@@ -430,6 +432,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       #echo "Skipping template ${template} with compiler ${compiler}"
       #continue
     #fi
+    if [[ "${template}" == "geos-dev" && "${compiler_name}" == "nag" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler} (fms not supported by nag)"
+      continue
+    elif [[ "${template}" == "geos-dev-nag" && "${compiler_name}" != "nag" ]]; then
+      echo "Skipping template ${template} with compiler ${compiler} (geos-dev-nag is only for nag)"
+      continue
+    fi
     echo "Processing template ${template} with compiler ${compiler}"
     #############################################################
 
@@ -440,6 +449,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
       geos-dev)
         env_name_prefix="ge"
+        ;;
+      geos-dev-nag)
+        env_name_prefix="genag"
         ;;
       *)
         echo "ERROR, template ${template} not configured"
@@ -629,10 +641,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
         sed "s#@HOME@#${HOME}#g" "${macos_site_dir}/mirrors.yaml.template" > "${macos_site_dir}/mirrors.yaml"
         sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_gcc-15.2.0.yaml.template" > "${macos_site_dir}/packages_gcc-15.2.0.yaml"
+        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_clang-22.1.3.yaml.template" > "${macos_site_dir}/packages_clang-22.1.3.yaml"
 
         if [[ -d "${SPACK_STACK_DIR}/.git" ]]; then
           grep -q "^configs/sites/tier2/macos.gmao/mirrors.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/mirrors.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
           grep -q "^configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+          grep -q "^configs/sites/tier2/macos.gmao/packages_clang-22.1.3.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_clang-22.1.3.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
         fi
       fi
 
