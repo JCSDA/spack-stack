@@ -22,12 +22,12 @@ spack:
 
   specs:
   - dev-utils-env
-  - neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-env +debug +openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-env ~debug ~openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-env +debug ~openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-python-env +gittools ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b10
-  - jedi-neptune-env +adp +jedi  ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b10
+  - neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-env +debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-env ~debug ~openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-env +debug ~openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-python-env +gittools ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  - jedi-neptune-env +adp +jedi  ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
   - crtm@3.1.3
 
   packages:
