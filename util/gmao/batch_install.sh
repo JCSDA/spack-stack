@@ -642,11 +642,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         sed "s#@HOME@#${HOME}#g" "${macos_site_dir}/mirrors.yaml.template" > "${macos_site_dir}/mirrors.yaml"
         sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_gcc-15.2.0.yaml.template" > "${macos_site_dir}/packages_gcc-15.2.0.yaml"
         sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_clang-22.1.3.yaml.template" > "${macos_site_dir}/packages_clang-22.1.3.yaml"
+        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_nag-7.2.7243.yaml.template" > "${macos_site_dir}/packages_nag-7.2.7243.yaml"
 
         if [[ -d "${SPACK_STACK_DIR}/.git" ]]; then
           grep -q "^configs/sites/tier2/macos.gmao/mirrors.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/mirrors.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
           grep -q "^configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
           grep -q "^configs/sites/tier2/macos.gmao/packages_clang-22.1.3.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_clang-22.1.3.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+          grep -q "^configs/sites/tier2/macos.gmao/packages_nag-7.2.7243.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_nag-7.2.7243.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
         fi
       fi
 
