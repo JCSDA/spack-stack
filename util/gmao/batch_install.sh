@@ -66,6 +66,10 @@ usage() {
   echo "      requires role 'dev' and mode 'build'"
   echo "  -e  Continue builds/install in existing environments;"
   echo "      by default, exit with an error if already exist"
+  echo "  -C  Set a comma-separated list of compilers to use (e.g. gcc@=15.2.0,nag@=7.2.7243);"
+  echo "      overrides the default compilers for the site"
+  echo "  -N  Path to nagfor executable (e.g. /opt/nag/bin/nagfor);"
+  echo "      forces NAG stack to be built using this specific compiler"
   echo "  -s  Submit 'spack install' to batch scheduler"
   echo "  -t  Run tests for specific thirdparty dependencies;"
   echo "      these are currently hardcoded in batch_install.sh"
@@ -76,7 +80,7 @@ usage() {
   echo
 }
 
-while getopts r:m:d:c:H:nuesth flag
+while getopts r:m:d:c:C:N:H:nuesth flag
 do
   case "${flag}" in
     r)
@@ -90,6 +94,12 @@ do
       ;;
     c)
       SPACK_STACK_BUILDCACHE_DIR=$(readlink -f ${OPTARG})
+      ;;
+    C)
+      SPACK_STACK_COMPILER_OPT=${OPTARG}
+      ;;
+    N)
+      SPACK_STACK_NAGFOR_PATH=${OPTARG}
       ;;
     H)
       SPACK_STACK_BATCH_HOST_OPT=${OPTARG}
@@ -201,8 +211,28 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/Users/mathomp4/spack-stack-mirrors/spack-cargo-mirror"
     ;;
   macos.gmao)
-    #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "nag@=7.2.7243")
-    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
+    # Detect NAG Fortran Compiler
+    nag_path_tmp=""
+    if [[ -n "${SPACK_STACK_NAGFOR_PATH}" && -x "${SPACK_STACK_NAGFOR_PATH}" ]]; then
+      nag_path_tmp="${SPACK_STACK_NAGFOR_PATH}"
+    elif command -v nagfor &> /dev/null; then
+      nag_path_tmp=$(which nagfor)
+    fi
+    
+    if [[ -n "${nag_path_tmp}" ]]; then
+      export MAC_GMAO_NAG_PATH="${nag_path_tmp}"
+      export MAC_GMAO_NAG_VERSION=$("${MAC_GMAO_NAG_PATH}" -V 2>&1 | head -n1 | sed -E 's/.*Release ([0-9]+\.[0-9]+).*Build ([0-9]+).*/\1.\2/' || echo "7.2.7243")
+      export MAC_GMAO_NAG_PREFIX=$(dirname $(dirname "${MAC_GMAO_NAG_PATH}"))
+    fi
+
+    if [[ -n "${SPACK_STACK_COMPILER_OPT}" ]]; then
+      IFS=',' read -r -a SPACK_STACK_BATCH_COMPILERS <<< "${SPACK_STACK_COMPILER_OPT}"
+    else
+      SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
+      if [[ -n "${MAC_GMAO_NAG_VERSION}" ]]; then
+        SPACK_STACK_BATCH_COMPILERS+=("nag@=${MAC_GMAO_NAG_VERSION}")
+      fi
+    fi
     SPACK_STACK_BATCH_TEMPLATES=("geos-dev" "geos-dev-nag")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="${HOME}/spack-stack-mirrors/spack-bootstrap-mirror"
@@ -639,17 +669,32 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         macos_site_dir="${SPACK_STACK_DIR}/configs/sites/tier2/macos.gmao"
         brew_prefix=$(brew --prefix)
 
-        sed "s#@HOME@#${HOME}#g" "${macos_site_dir}/mirrors.yaml.template" > "${SPACK_STACK_DIR}/mirrors.yaml.generated"
-        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_gcc-15.2.0.yaml.template" > "${SPACK_STACK_DIR}/packages_gcc-15.2.0.yaml.generated"
-        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_clang-22.1.3.yaml.template" > "${SPACK_STACK_DIR}/packages_clang-22.1.3.yaml.generated"
-        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_nag-7.2.7243.yaml.template" > "${SPACK_STACK_DIR}/packages_nag-7.2.7243.yaml.generated"
+        # Use NAG vars if available
+        nag_version=${MAC_GMAO_NAG_VERSION}
+        nag_path=${MAC_GMAO_NAG_PATH}
+        nag_prefix=${MAC_GMAO_NAG_PREFIX}
 
-        if [[ -d "${SPACK_STACK_DIR}/.git" ]]; then
-          grep -q "^mirrors.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "mirrors.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
-          grep -q "^packages_gcc-15.2.0.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "packages_gcc-15.2.0.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
-          grep -q "^packages_clang-22.1.3.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "packages_clang-22.1.3.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
-          grep -q "^packages_nag-7.2.7243.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "packages_nag-7.2.7243.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
-        fi
+        for template_file in "${macos_site_dir}"/*.yaml.template; do
+          if [[ -f "${template_file}" ]]; then
+            filename=$(basename "${template_file}")
+            base_filename="${filename%.template}"
+            
+            # Special case for NAG template: inject version into filename
+            if [[ "${base_filename}" == "packages_nag.yaml" && -n "${nag_version}" ]]; then
+              base_filename="packages_nag-${nag_version}.yaml"
+            fi
+            
+            sed_cmd="sed -e \"s#@HOME@#${HOME}#g\" -e \"s#@BREW_PREFIX@#${brew_prefix}#g\""
+            if [[ -n "${nag_version}" ]]; then
+              sed_cmd="${sed_cmd} -e \"s#@NAG_VERSION@#${nag_version}#g\" -e \"s#@NAG_PREFIX@#${nag_prefix}#g\" -e \"s#@NAG_PATH@#${nag_path}#g\""
+            fi
+            
+            eval "${sed_cmd} \"${template_file}\"" > "${SPACK_STACK_DIR}/configs/sites/tier2/${host}/${base_filename}"
+            if [[ -d "${SPACK_STACK_DIR}/.git" ]]; then
+              grep -q "^configs/sites/tier2/${host}/${base_filename}$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/${host}/${base_filename}" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+            fi
+          fi
+        done
       fi
 
       spack stack create env --name=${env_name} \
@@ -660,17 +705,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              --treat-warnings-as-errors \
                              2>&1 | tee log.create.${env_name}.${LOG_TIMESTAMP}
 
-      # Move the generated YAMLs into the newly created environment site config
+      # Clean up the generated yamls in the site configuration now that the env is created
       if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
-        mv "${SPACK_STACK_DIR}/mirrors.yaml.generated" "${env_dir}/site/mirrors.yaml"
-
-        if [[ -f "${SPACK_STACK_DIR}/packages_${compiler_name}-${compiler_version}.yaml.generated" ]]; then
-          # We only need the packages.yaml for the compiler we are actually using
-          mv "${SPACK_STACK_DIR}/packages_${compiler_name}-${compiler_version}.yaml.generated" "${env_dir}/site/packages_${compiler_name}-${compiler_version}.yaml"
-        fi
-
-        # Clean up any leftover generated package yamls from other compilers
-        rm -f "${SPACK_STACK_DIR}/packages_*.yaml.generated"
+        rm -f "${SPACK_STACK_DIR}/configs/sites/tier2/${host}/mirrors.yaml"
+        rm -f "${SPACK_STACK_DIR}/configs/sites/tier2/${host}/packages_*.yaml"
       fi
     fi
     spack env activate -p ${env_dir}
