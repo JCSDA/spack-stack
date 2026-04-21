@@ -3,6 +3,11 @@ packages:
   netcdf-c:
     require: [+shared]
 
+  openblas:
+    require:
+    - '~dynamic_dispatch'
+    - 'build_system=cmake'
+
   flex:
     externals:
     - spec: flex@2.6.4+lex
