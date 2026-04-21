@@ -4,7 +4,7 @@ packages:
   cxx:
     require: [apple-clang@17.0.0]
   fortran:
-    require: [nag@7.2.7243]
+    require: [nag@@NAG_VERSION@]
   mpi:
     require: [openmpi@=5.0.7]
   apple-clang:
@@ -18,11 +18,11 @@ packages:
   nag:
     buildable: False
     externals:
-    - spec: nag@7.2.7243 languages:='fortran'
-      prefix: /Users/mathomp4/installed/Core/nag/7.2.43
+    - spec: nag@@NAG_VERSION@ languages:='fortran'
+      prefix: @NAG_PREFIX@
       extra_attributes:
         compilers:
-          fortran: /Users/mathomp4/installed/Core/nag/7.2.43/bin/nagfor
+          fortran: @NAG_PATH@
 
   openmpi:
     require::

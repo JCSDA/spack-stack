@@ -8,7 +8,7 @@ spack:
   include: []
 
   specs:
-  - geos-gcm-env ~debug ^esmf@=9.0.0b10
+  - geos-gcm-env ^esmf@=9.0.0b10
   - geos-gcm-env +debug ^esmf@=9.0.0b10
 
 

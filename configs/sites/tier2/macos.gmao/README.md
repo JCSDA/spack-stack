@@ -83,6 +83,26 @@ The `batch_install.sh` script automates the creation of environments (e.g., `gcc
 ./util/gmao/batch_install.sh -h
 ```
 
+### Compiler Selection and NAG Support
+
+By default, `batch_install.sh` builds the `gcc@=15.2.0` stack. 
+
+If the NAG Fortran compiler (`nagfor`) is found in your `PATH`, the script will automatically detect its version and add it to the build queue (e.g., `nag@=7.2.7243`). 
+
+If your NAG compiler is installed in a non-standard location and not in your `PATH`, you can explicitly provide its path using the `-N` flag:
+
+```bash
+./util/gmao/batch_install.sh -N /path/to/your/nag/bin/nagfor -r dev -m build -H macos.gmao -e
+```
+
+If you want to explicitly override the compilers built by the script entirely, use the `-C` flag with a comma-separated list of Spack compiler specs:
+
+```bash
+./util/gmao/batch_install.sh -C "gcc@=15.2.0,nag@=7.2.7243" -r dev -m build -H macos.gmao -e
+```
+
+*Note: For every compiler you specify, you must have a corresponding `packages_<compiler_name>-<version>.yaml.template` file in this site directory.*
+
 ### First run (Building Bootstrap and Source Caches)
 
 When you first run the script on a new machine, you need to use the `-u` option. This tells Spack to build the bootstrap mirror and source caches locally before attempting to register them.
@@ -112,12 +132,16 @@ If you are just installing environments using already populated build caches (th
 ./util/gmao/batch_install.sh -r dev -m install -H macos.gmao -e
 ```
 
+### Generating `.yaml.generated` files
+`batch_install.sh` uses `.yaml.template` files in the `macos.gmao` site directory to dynamically detect the path to your Brew installation and your NAG compiler, creating `.yaml.generated` files on the fly. 
+To prevent cluttering the site configuration directory, the script writes these generated files to the repository root, injects them directly into the target environment's `site/` directory, and then cleans up the temporary files from the root.
+
 ### Loading the stack
 
-Once the installation and module generation are complete, you can point your shell to the newly built modules:
+Once the installation and module generation are complete, you can point your shell to the newly built modules. OpenMPI is built specifically with `~two_level_namespace` to support flat namespace linking required by GEOS, and `pflogger` and `esmf` variants are carefully managed to support building with both GCC and NAG.
 
 ```bash
-module use -a /path/to/envs/ge-gcc-15.2.0/modules/Core
+module use -a /path/to/envs/ge-gcc-15.2.0/install/modulefiles/Core
 ```
 
 Then load the stack and your target environment (e.g., for GEOSgcm work):
@@ -130,11 +154,13 @@ module load stack-gcc stack-openmpi geos-gcm-env
 
 ## Building the stack by hand
 
-If you prefer to run the Spack commands manually instead of using `batch_install.sh`, follow these steps.
+If you prefer to run the Spack commands manually instead of using `batch_install.sh`, you can still follow these steps. However, it's highly recommended to use `batch_install.sh` because it automatically handles dynamic template substitution (e.g. for Homebrew paths and NAG compiler versions) that you will otherwise need to do manually with `sed`.
+
+If you choose to do this manually, you must first run `sed` over the `*.yaml.template` files and create the `.yaml.generated` files. 
 
 ### Create Environments
 
-You only need to create each environment once. Our `macos.gmao` site configurations use `.template` files to dynamically set your local `brew` paths, so you must use `spack stack create env` which automatically resolves them.
+You only need to create each environment once. Our `macos.gmao` site configurations use `.yaml.template` files which are dynamically processed into `.yaml.generated` files.
 
 #### GCC Environment
 
@@ -142,10 +168,10 @@ You only need to create each environment once. Our `macos.gmao` site configurati
 spack stack create env --name ge-gcc-15.2.0 --template geos-dev --site macos.gmao --compiler=gcc-15.2.0
 ```
 
-#### Flang Environment
+#### NAG Environment
 
 ```bash
-spack stack create env --name ge-clang-22.1.3 --template geos-dev --site macos.gmao --compiler=clang-22.1.3
+spack stack create env --name genag-nag-7.2.7243 --template geos-dev-nag --site macos.gmao --compiler=nag-7.2.7243
 ```
 
 ---
