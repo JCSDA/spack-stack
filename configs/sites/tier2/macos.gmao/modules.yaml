@@ -22,6 +22,11 @@ modules:
       '':
       - CMAKE_PREFIX_PATH
     lmod:
+      openmpi:
+        environment:
+          set:
+            'TMPDIR': '/tmp'
+            'OMPI_MCA_btl': '^tcp'
       all:
         filter:
           exclude_env_vars:
