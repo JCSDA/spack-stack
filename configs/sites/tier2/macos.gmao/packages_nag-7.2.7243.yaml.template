@@ -6,7 +6,7 @@ packages:
   fortran:
     require: [nag@7.2.7243]
   mpi:
-    require: [openmpi@=5.0.10]
+    require: [openmpi@=5.0.7]
   apple-clang:
     externals:
     - spec: apple-clang@17.0.0 languages:='c,c++'
@@ -23,6 +23,16 @@ packages:
       extra_attributes:
         compilers:
           fortran: /Users/mathomp4/installed/Core/nag/7.2.43/bin/nagfor
+
+  openmpi:
+    require::
+    - '@=5.0.7'
+    - '+internal-hwloc'
+    - '+internal-libevent'
+    - '+internal-pmix'
+    - '+fortran'
+    # GEOS requires a flat namespace to link properly on macOS
+    - '~two_level_namespace'
 
   # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
   # we do the same here to avoid build failures.

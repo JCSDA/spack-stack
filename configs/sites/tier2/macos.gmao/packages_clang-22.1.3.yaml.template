@@ -23,3 +23,12 @@ packages:
       extra_attributes:
         compilers:
           fortran: @BREW_PREFIX@/bin/flang
+
+  openmpi:
+    require::
+    - '+internal-hwloc'
+    - '+internal-libevent'
+    - '+internal-pmix'
+    - '+fortran'
+    # GEOS requires a flat namespace to link properly on macOS
+    - '~two_level_namespace'
