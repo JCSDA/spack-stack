@@ -492,6 +492,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     [[ "${update_build_cache}" == "true" ]] && env_name=${env_name}-build
     env_dir=${environment_dirs}/${env_name}
 
+    # Reset env_exists for this specific environment target
+    env_exists="false"
+
     # Bail out if the environment already exists
     if [[ -d ${env_dir} ]]; then
       if [[ ${ignore_env_exist} == "true" ]]; then
@@ -505,8 +508,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           exit 1
         fi
       fi
-    else
-      env_exists="false"
     fi
 
     if [[ "${SPACK_STACK_DRY_RUN}" == "true" ]]; then
