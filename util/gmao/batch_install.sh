@@ -639,16 +639,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         macos_site_dir="${SPACK_STACK_DIR}/configs/sites/tier2/macos.gmao"
         brew_prefix=$(brew --prefix)
 
-        sed "s#@HOME@#${HOME}#g" "${macos_site_dir}/mirrors.yaml.template" > "${macos_site_dir}/mirrors.yaml"
-        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_gcc-15.2.0.yaml.template" > "${macos_site_dir}/packages_gcc-15.2.0.yaml"
-        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_clang-22.1.3.yaml.template" > "${macos_site_dir}/packages_clang-22.1.3.yaml"
-        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_nag-7.2.7243.yaml.template" > "${macos_site_dir}/packages_nag-7.2.7243.yaml"
+        sed "s#@HOME@#${HOME}#g" "${macos_site_dir}/mirrors.yaml.template" > "${SPACK_STACK_DIR}/mirrors.yaml.generated"
+        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_gcc-15.2.0.yaml.template" > "${SPACK_STACK_DIR}/packages_gcc-15.2.0.yaml.generated"
+        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_clang-22.1.3.yaml.template" > "${SPACK_STACK_DIR}/packages_clang-22.1.3.yaml.generated"
+        sed "s#@BREW_PREFIX@#${brew_prefix}#g" "${macos_site_dir}/packages_nag-7.2.7243.yaml.template" > "${SPACK_STACK_DIR}/packages_nag-7.2.7243.yaml.generated"
 
         if [[ -d "${SPACK_STACK_DIR}/.git" ]]; then
-          grep -q "^configs/sites/tier2/macos.gmao/mirrors.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/mirrors.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
-          grep -q "^configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_gcc-15.2.0.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
-          grep -q "^configs/sites/tier2/macos.gmao/packages_clang-22.1.3.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_clang-22.1.3.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
-          grep -q "^configs/sites/tier2/macos.gmao/packages_nag-7.2.7243.yaml$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/macos.gmao/packages_nag-7.2.7243.yaml" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+          grep -q "^mirrors.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "mirrors.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+          grep -q "^packages_gcc-15.2.0.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "packages_gcc-15.2.0.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+          grep -q "^packages_clang-22.1.3.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "packages_clang-22.1.3.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
+          grep -q "^packages_nag-7.2.7243.yaml.generated$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "packages_nag-7.2.7243.yaml.generated" >> "${SPACK_STACK_DIR}/.git/info/exclude"
         fi
       fi
 
@@ -659,6 +659,19 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              --dir=${environment_dirs} \
                              --treat-warnings-as-errors \
                              2>&1 | tee log.create.${env_name}.${LOG_TIMESTAMP}
+
+      # Move the generated YAMLs into the newly created environment site config
+      if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
+        mv "${SPACK_STACK_DIR}/mirrors.yaml.generated" "${env_dir}/site/mirrors.yaml"
+
+        if [[ -f "${SPACK_STACK_DIR}/packages_${compiler_name}-${compiler_version}.yaml.generated" ]]; then
+          # We only need the packages.yaml for the compiler we are actually using
+          mv "${SPACK_STACK_DIR}/packages_${compiler_name}-${compiler_version}.yaml.generated" "${env_dir}/site/packages_${compiler_name}-${compiler_version}.yaml"
+        fi
+
+        # Clean up any leftover generated package yamls from other compilers
+        rm -f "${SPACK_STACK_DIR}/packages_*.yaml.generated"
+      fi
     fi
     spack env activate -p ${env_dir}
 
