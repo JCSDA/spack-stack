@@ -41,3 +41,8 @@ packages:
     require:
     - '~openmp'
     - '+debug'
+
+  gdbm:
+    externals:
+    - spec: gdbm@1.26
+      prefix: @BREW_PREFIX@/opt/gdbm

@@ -36,6 +36,26 @@ packages:
 
   # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
   # we do the same here to avoid build failures.
+  # Also enforce +debug since NAG is meant for debugging.
   esmf:
-    require:
+    require::
     - '~openmp'
+    - '+debug'
+
+  # Disable parallel-netcdf for NAG as it fails to build and is unneeded
+  parallelio:
+    require::
+    - '@2.6.2'
+    - '~pnetcdf'
+
+  # netcdf-fortran needs explicit preprocessor and type safety flags for NAG
+  netcdf-fortran:
+    require::
+    - 'fflags="-fpp -mismatch_all"'
+
+
+  gdbm:
+    externals:
+    - spec: gdbm@1.26
+      prefix: @BREW_PREFIX@/opt/gdbm
+
