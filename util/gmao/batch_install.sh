@@ -201,15 +201,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
     ;;
-  alderaan)
-    #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "clang@=22.1.3")
-    #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0" "nag@=7.2.7243")
-    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
-    SPACK_STACK_MODULE_CHOICE="lmod"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/Users/mathomp4/spack-stack-mirrors/spack-bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/Users/mathomp4/spack-stack-mirrors/spack-cargo-mirror"
-    ;;
   macos.gmao)
     # Detect NAG Fortran Compiler
     nag_path_tmp=""
@@ -218,7 +209,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     elif command -v nagfor &> /dev/null; then
       nag_path_tmp=$(which nagfor)
     fi
-    
+
     if [[ -n "${nag_path_tmp}" ]]; then
       export MAC_GMAO_NAG_PATH="${nag_path_tmp}"
       export MAC_GMAO_NAG_VERSION=$("${MAC_GMAO_NAG_PATH}" -V 2>&1 | head -n1 | sed -E 's/.*Release ([0-9]+\.[0-9]+).*Build ([0-9]+).*/\1.\2/' || echo "7.2.7243")
@@ -273,8 +264,6 @@ function fix_permissions() {
         nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
       fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
-      ;;
-    alderaan)
       ;;
     macos.gmao)
       ;;
@@ -351,6 +340,8 @@ echo "Welcome to GMAO SPACK-STACK BATCH INSTALL"
 echo
 
 LOG_TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+
+mkdir -p "${SPACK_STACK_DIR}/logs"
 
 if [[ ! -e "setup.sh" || ! -e ".spackstack" ]]; then
   echo "ERROR, this script must be executed from the top-level spack-stack directory"
@@ -481,7 +472,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         env_name_prefix="ge"
         ;;
       geos-dev-nag)
-        env_name_prefix="genag"
+        env_name_prefix="ge"
         ;;
       *)
         echo "ERROR, template ${template} not configured"
@@ -605,16 +596,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         module purge
         set -e
         ;;
-      alderaan)
-        set +e
-        ulimit -s unlimited 2>/dev/null || ulimit -s hard 2>/dev/null || ulimit -s 65532 2>/dev/null || true
-        if ! command -v module &> /dev/null; then
-          if command -v brew &> /dev/null; then
-            . $(brew --prefix)/opt/lmod/init/bash 2>/dev/null || true
-          fi
-        fi
-        set -e
-        ;;
       macos.gmao)
         set +e
         ulimit -s unlimited 2>/dev/null || ulimit -s hard 2>/dev/null || ulimit -s 65532 2>/dev/null || true
@@ -649,7 +630,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror
       echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
       rm -fr ${tmp_bootstrap_mirror_path}
-      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.${LOG_TIMESTAMP}
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.bootstrap-mirror.${LOG_TIMESTAMP}
       rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
       rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
@@ -679,17 +660,17 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           if [[ -f "${template_file}" ]]; then
             filename=$(basename "${template_file}")
             base_filename="${filename%.template}"
-            
+
             # Special case for NAG template: inject version into filename
             if [[ "${base_filename}" == "packages_nag.yaml" && -n "${nag_version}" ]]; then
               base_filename="packages_nag-${nag_version}.yaml"
             fi
-            
+
             sed_cmd="sed -e \"s#@HOME@#${HOME}#g\" -e \"s#@BREW_PREFIX@#${brew_prefix}#g\""
             if [[ -n "${nag_version}" ]]; then
               sed_cmd="${sed_cmd} -e \"s#@NAG_VERSION@#${nag_version}#g\" -e \"s#@NAG_PREFIX@#${nag_prefix}#g\" -e \"s#@NAG_PATH@#${nag_path}#g\""
             fi
-            
+
             eval "${sed_cmd} \"${template_file}\"" > "${SPACK_STACK_DIR}/configs/sites/tier2/${host}/${base_filename}"
             if [[ -d "${SPACK_STACK_DIR}/.git" ]]; then
               grep -q "^configs/sites/tier2/${host}/${base_filename}$" "${SPACK_STACK_DIR}/.git/info/exclude" 2>/dev/null || echo "configs/sites/tier2/${host}/${base_filename}" >> "${SPACK_STACK_DIR}/.git/info/exclude"
@@ -704,7 +685,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              --template=${template} \
                              --dir=${environment_dirs} \
                              --treat-warnings-as-errors \
-                             2>&1 | tee log.create.${env_name}.${LOG_TIMESTAMP}
+                             2>&1 | tee ${SPACK_STACK_DIR}/logs/log.create.${env_name}.${LOG_TIMESTAMP}
 
       # Clean up the generated yamls in the site configuration now that the env is created
       if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
@@ -780,10 +761,10 @@ EOF
 
     # Bootstrap spack explicitly
     echo "Bootstrapping spack ..."
-    spack bootstrap now 2>&1 | tee log.bootstrap.${env_name}.${LOG_TIMESTAMP}
+    spack bootstrap now 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.bootstrap.${env_name}.${LOG_TIMESTAMP}
 
     # Concretize environment, and check that spack.lock is created
-    spack concretize --force --fresh 2>&1 | tee log.concretize.${env_name}.${LOG_TIMESTAMP}
+    spack concretize --force --fresh 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.concretize.${env_name}.${LOG_TIMESTAMP}
     if [[ ! -e ${env_dir}/spack.lock ]]; then
       echo "ERROR during concretization of environment ${env_name}, spack.lock not found"
       exit 1
@@ -852,7 +833,7 @@ $(declare -p test_packages)
 # If no tests are required, install everything
 if [[ \${#test_packages[@]} -eq 0 ]]; then
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}
   set +o pipefail
 else
   for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
@@ -864,14 +845,14 @@ else
     idx_padded=\$(printf "%03d" "\$((idx+1))")
     set -o pipefail
     spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} --only=dependencies \${test_package} \\
-      2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}.\${test_package}-dependencies
-    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}.\${test_package}
+      2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}.\${test_package}-dependencies
+    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}.\${test_package}
     set +o pipefail
   done
   # idx now equals the length of the array; install the rest
   idx_padded=\$(printf "%03d" "\$((idx+1))")
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}.\${idx_padded}
   set +o pipefail
 fi
 EOF
@@ -890,8 +871,8 @@ EOF
 
     # In install mode, create environment modules
     if [[ "${update_build_cache}" == "false" ]]; then
-      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee log.modules.${env_name}.${LOG_TIMESTAMP}
-      spack stack setup-meta-modules 2>&1 | tee log.setup-meta-modules.${env_name}.${LOG_TIMESTAMP}
+      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.modules.${env_name}.${LOG_TIMESTAMP}
+      spack stack setup-meta-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.setup-meta-modules.${env_name}.${LOG_TIMESTAMP}
     fi
 
     # When creating or updating buildcaches, fix permissions for mirrors.
