@@ -8,7 +8,7 @@ spack:
   include: []
 
   specs:
-  - neptune-env ~debug +openmp +espc ~ncview ^esmf@=9.0.0b10
+  - neptune-env ~debug +openmp +espc ~ncview ^esmf@=9.0.0b11
 
   packages:
     # Turn off python variant for esmf
