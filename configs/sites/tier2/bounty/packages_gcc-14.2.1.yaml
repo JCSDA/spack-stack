@@ -1,0 +1,18 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=14.2.1']
+      when: '%gcc'
+  mpi:
+    require:
+    - "openmpi@=5.0.8"
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@14.2.1 languages:='c,c++,fortran'
+      prefix: /opt/rh/gcc-toolset-14/root/usr
+      extra_attributes:
+        compilers:
+          c: /opt/rh/gcc-toolset-14/root/usr/bin/gcc
+          cxx: /opt/rh/gcc-toolset-14/root/usr/bin/g++
+          fortran: /opt/rh/gcc-toolset-14/root/usr/bin/gfortran

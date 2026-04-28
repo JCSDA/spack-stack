@@ -56,6 +56,7 @@ modules:
       - libtool
       - libx11
       - libxau
+      - libxaw
       - libxcb
       - libxdmcp
       - libxext
@@ -63,8 +64,11 @@ modules:
       - libxi
       - libxml
       - libxml2
+      - libxmu
+      - libxpm
       - libxrandr
       - libxrender
+      - libxt
       - libxxf86vm
       - lz4
       - m4
@@ -154,6 +158,9 @@ modules:
         suffixes:
           constants=GFS: 'gfs-constants'
           constants=GEOS: 'geos-constants'
+      py-netcdf4:
+        suffixes:
+          +mpi: 'parallel'
       openmpi:
         environment:
           set:

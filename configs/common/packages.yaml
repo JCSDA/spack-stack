@@ -86,7 +86,7 @@ packages:
       - +ownlibs
     codee:
       require:
-      - '@2025.4.7'
+      - '@2026.1'
     crtm_fix:
       require:
       - ~link-big-endian
@@ -140,9 +140,8 @@ packages:
       - any_of:
         - '@=8.6.1 snapshot=none'
         - '@=8.8.0 snapshot=none'
-        - '@=8.9.0 snapshot=none'
         - '@=8.9.1 snapshot=none'
-        - '@=9.0.0b10 snapshot=b10'
+        - '@=9.0.0b11 snapshot=b11'
       - any_of:
         - 'fflags="-fp-model precise" cxxflags="-fp-model precise"'
         when: '%intel'
@@ -414,9 +413,10 @@ packages:
       require:
       - '@3.7.4'
       #- '@3.8.0'
+    # https://github.com/JCSDA/spack-stack/issues/1971
     py-netcdf4:
       require:
-      - +mpi
+      - ~mpi
     # To avoid duplicate packages
     py-numpy:
       require:

@@ -26,7 +26,6 @@ class BaseEnv(BundlePackage):
     depends_on("git", type="run")
     depends_on("wget", type="run")
     depends_on("curl", type="run")
-    depends_on("cloc", type="run")
 
     # I/O
     depends_on("zlib-api", type="run")
@@ -45,6 +44,5 @@ class BaseEnv(BundlePackage):
     depends_on("py-pytest", type="run")
 
     # Miscellaneous
-    depends_on("rank-run", type="run")
 
     # There is no need for install() since there is no code.

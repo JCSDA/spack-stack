@@ -1,0 +1,21 @@
+#%Module
+#
+# spack-stack virtual environment meta module
+#
+
+# conflicts
+conflict stack-venv
+
+# prerequisite modules
+@MODULELOADS@
+
+setenv       PYTHONHOME      "@VENV_ROOT@"
+prepend-path PATH            "@VENV_ROOT@/bin"
+prepend-path LD_LIBRARY_PATH "@VENV_ROOT@/lib"
+prepend-path LD_LIBRARY_PATH "@VENV_ROOT@/lib64"
+
+proc ModulesHelp {} {
+    puts -nonewline stderr "This modulefile defines the @VENV_NAME@ environment meta module for spack-stack"
+}
+
+module-whatis   "spack-stack virtual environment meta module"

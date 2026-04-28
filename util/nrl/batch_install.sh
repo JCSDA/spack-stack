@@ -39,13 +39,14 @@ usage() {
   echo "      requires role 'dev' and mode 'build'"
   echo "  -e  Continue builds/install in existing environments;"
   echo "      by default, exit with an error if already exist"
+  echo "  -s  Submit 'spack install' to batch scheduler"
   echo "  -t  Run tests for specific thirdparty dependencies;"
   echo "      these are currently hardcoded in batch_install.sh"
   echo "  -h  display this help"
   echo
 }
 
-while getopts r:m:d:c:ueth flag
+while getopts r:m:d:c:uesth flag
 do
   case "${flag}" in
     r)
@@ -66,6 +67,9 @@ do
     e)
       SPACK_STACK_IGNORE_ENV_EXIST="true"
       ;;
+    s)
+      SPACK_STACK_SUBMIT_TO_SCHEDULER="true"
+      ;;
     t)
       SPACK_STACK_RUN_TESTS="true"
       ;;
@@ -83,6 +87,7 @@ echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_D
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
+echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
 echo "  SPACK_STACK_RUN_TESTS:                       ${SPACK_STACK_RUN_TESTS:-false}"
 
 if [[ -z ${SPACK_STACK_ROLE} ]]; then
@@ -142,13 +147,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/p/app/projects/NEPTUNE/spack-stack/cargo-mirror"
     ;;
-  cole)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=12.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
-    ;;
   narwhal)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=13.3.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
@@ -170,13 +168,6 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BOOTSTRAP_MIRROR="/project/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/project/spack-stack/cargo-mirror"
     ;;
-  tusk)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=12.1.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/p/work1/heinzell/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/p/work1/heinzell/spack-stack/cargo-mirror"
-    ;;
   blackpearl)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=13.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
@@ -185,7 +176,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
     ;;
   bounty)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.3.1" "clang@=22.1.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=14.2.1" "gcc@=13.3.1" "clang@=22.1.0")
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-dev-llvm" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
@@ -223,16 +214,6 @@ function fix_permissions() {
       fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
-    cole)
-      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-      # In case the find command returns no executables
-      if [[ ${executables} -eq 1 ]]; then
-        sleep 30
-        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-        sleep 30
-      fi
-      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
-      ;;
     narwhal)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
@@ -260,16 +241,6 @@ function fix_permissions() {
       fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
-    tusk)
-      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
-      # In case the find command returns no executables
-      if [[ ${executables} -eq 1 ]]; then
-        sleep 30
-        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-        sleep 30
-      fi
-      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
-      ;;
     blackpearl)
       ;;
     bounty)
@@ -280,6 +251,76 @@ function fix_permissions() {
       ;;
   esac
   set -e
+}
+
+##################################################################################################
+
+function tasks_per_node() {
+  host=$1
+  case ${host} in
+    atlantis)
+      tpn=128
+      ;;
+    blueback)
+      tpn=192
+      ;;
+    narwhal)
+      tpn=128
+      ;;
+    nautilus)
+      tpn=128
+      ;;
+    #navy-aws)
+    #  ;;
+    *)
+      echo "ERROR, tasks_per_node command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+  echo "${tpn}"
+}
+
+##################################################################################################
+
+function run_interactive_job() {
+  host=$1
+  script=$2
+  reuse_build_cache=$3
+  tpn=$(tasks_per_node ${host})
+  if [[ "${reuse_build_cache}" == "true" ]]; then
+    walltime="120"
+  else
+    walltime="720"
+  fi
+  if [[ ! -n "${ACCOUNT}" ]]; then
+    echo "ERROR, environment variable ACCOUNT not set"
+    exit 1
+  fi
+  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} minutes for ${script} ..."
+  case ${host} in
+    atlantis)
+      module load slurm
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} bash ${script}
+      module unload slurm
+      ;;
+    blueback)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+      ;;
+    narwhal)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+      ;;
+    nautilus)
+      module load slurm
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+      module unload slurm
+      ;;
+    #navy-aws)
+    #  ;;
+    *)
+      echo "ERROR, run_interactive_job command not configured for ${host}"
+      exit 1
+      ;;
+  esac
 }
 
 ##################################################################################################
@@ -350,6 +391,12 @@ else
 fi
 
 ignore_env_exist=${SPACK_STACK_IGNORE_ENV_EXIST:-false}
+
+if [[ "${SPACK_STACK_SUBMIT_TO_SCHEDULER}" == "true" ]]; then
+  submit_to_scheduler="true"
+else
+  submit_to_scheduler="false"
+fi
 
 if [[ "${SPACK_STACK_RUN_TESTS}" == "true" ]]; then
   test_packages=("${SPACK_STACK_PACKAGES_TO_TEST[@]}")
@@ -456,12 +503,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         module purge
         set -e
         ;;
-      cole)
-        umask 0022
-        set +e
-        module purge
-        set -e
-        ;;
       narwhal)
         umask 0022
         set +e
@@ -487,14 +528,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           gcc-13.4.0)
             module use /project/spack-stack/gcc-13.4.0/modulefiles
             module use /project/spack-stack/openmpi-4.1.8/gcc-13.4.0/modulefiles
-	    ;;
-	esac
-        ;;
-      tusk)
-        umask 0022
-        set +e
-        module purge
-        set -e
+            ;;
+        esac
         ;;
       blackpearl)
         ulimit -s unlimited
@@ -633,29 +668,59 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         ;;
     esac
 
-    # If no tests are required, install everything
-    if [[ ${#test_packages[@]} -eq 0 ]]; then
-      set -o pipefail
-      spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.001
-      set +o pipefail
+    case ${submit_to_scheduler} in
+      "true")
+        jobs=$(tasks_per_node ${host})
+        parallel_install_flags="--concurrent-packages=10 --jobs=${jobs}"
+        ;;
+      "false")
+        parallel_install_flags=""
+        ;;
+      *)
+        echo "ERROR, unkown submit_to_scheduler value ${submit_to_scheduler} for setting install flags"
+        exit 1
+        ;;
+    esac
+
+    install_script=${PWD}/spack-install.${env_name}.sh
+    cat << EOF > ${install_script}
+#!/usr/bin/env bash
+
+set -e
+
+$(declare -p test_packages)
+
+# If no tests are required, install everything
+if [[ \${#test_packages[@]} -eq 0 ]]; then
+  set -o pipefail
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.001
+  set +o pipefail
+else
+  for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
+    test_package=\${test_packages[\${idx}]}
+    # First, check if this package is in this environment
+    set +e
+    grep -e "\${test_package}@" log.concretize.${env_name}.001 || continue
+    set -e
+    idx_padded=\$(printf "%03d" "\$((idx+1))")
+    set -o pipefail
+    spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} --only=dependencies \${test_package} \\
+      2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
+    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}
+    set +o pipefail
+  done
+  # idx now equals the length of the array; install the rest
+  idx_padded=\$(printf "%03d" "\$((idx+1))")
+  set -o pipefail
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.\${idx_padded}
+  set +o pipefail
+fi
+EOF
+    chmod u+x ${install_script}
+    if [[ "${submit_to_scheduler}" == "true" ]]; then
+      run_interactive_job ${host} ${install_script} ${reuse_build_cache}
     else
-      for (( idx=0; idx<${#test_packages[@]}; idx++ )); do
-        test_package=${test_packages[$idx]}
-        # First, check if this package is in this environment
-        set +e
-        grep -e "${test_package}@" log.concretize.${env_name}.001 || continue
-        set -e
-        idx_padded=$(printf "%03d" "$((idx+1))")
-        set -o pipefail
-        spack install --verbose ${buildcache_install_flags} --only=dependencies ${test_package} 2>&1 | tee log.install.${env_name}.${idx_padded}.${test_package}-dependencies
-        spack install --verbose --no-cache --test=root ${test_package} 2>&1 | tee log.install.${env_name}.${idx_padded}.${test_package}
-        set +o pipefail
-      done
-      # idx now equals the length of the array; install the rest
-      idx_padded=$(printf "%03d" "$((idx+1))")
-      set -o pipefail
-      spack install --verbose ${buildcache_install_flags} 2>&1 | tee log.install.${env_name}.${idx_padded}
-      set +o pipefail
+      bash ${install_script}
     fi
 
     # In build mode, update local binary cache

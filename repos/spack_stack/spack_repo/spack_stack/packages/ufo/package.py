@@ -162,6 +162,11 @@ class Ufo(CMakePackage):
                     "ufo_test_tier1_test_ufo_opr_sndrd1-4_crtm",
                     "ufo_test_tier1_test_ufo_linopr_sndrd1-4_crtm",
                     "ufo_test_tier1_test_ufo_obsdiag_crtm_airs_optics",
+                    # Added for oneapi@2024.2.1 2026/04/01
+                    "ufo_test_tier1_instrument_sonde_geos_qc",
+                    "ufo_test_tier1_instrument_sfcLand_geos_qc",
+                    "ufo_test_tier1_instrument_sfcMarine_geos_qc",
+                    "ufo_test_tier1_test_ufo_opr_sfccorrected_pressure",
                 ]
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):

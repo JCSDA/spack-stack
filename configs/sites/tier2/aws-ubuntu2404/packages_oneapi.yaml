@@ -80,11 +80,6 @@ packages:
   jasper:
     require:
     - +jpeg
-  elfutils:
-    require:
-    - '@0.191'
-  libelf:
-    buildable: false
   curl:
     require: ['+nghttp2']
   py-pyyaml:

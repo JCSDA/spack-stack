@@ -33,6 +33,11 @@ packages:
       require:
       - +mkl
       - ~fftw
+    elfutils:
+      require:
+      - '@0.191:'
+    libelf:
+      buildable: false
     gmake:
       require:
       - '%c=gcc'

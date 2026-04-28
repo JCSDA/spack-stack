@@ -4,16 +4,30 @@ spack:
   concretizer:
     unify: when_possible
 
-  view: false
+  view:
+    release-openmp:
+      root: views/release-openmp
+      exclude:
+      - neptune-env +debug +openmp
+      - neptune-env ~debug ~openmp
+      - neptune-env +debug ~openmp
+      - esmf +debug +openmp
+      - esmf ~debug ~openmp
+      - esmf +debug ~openmp
+      - ip ~openmp
+      link: all
+      link_type: symlink
+
   include: []
 
   specs:
-  - neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-env +debug +openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-env ~debug ~openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-env +debug ~openmp +espc +ncview ^esmf@=9.0.0b10
-  - neptune-python-env +gittools ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b10
-  - jedi-neptune-env +adp +jedi  ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b10
+  - dev-utils-env
+  - neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-env +debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-env ~debug ~openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-env +debug ~openmp +espc +ncview ^esmf@=9.0.0b11
+  - neptune-python-env +gittools ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  - jedi-neptune-env +adp +jedi  ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
   - crtm@3.1.3
 
   packages:

@@ -1,4 +1,8 @@
 packages:
+# Modification of common packages
+  ewok-env:
+    require:
+    - '+ecflow'
   # For addressing https://github.com/JCSDA/spack-stack/issues/1355
   #   Use system zlib instead of spack-built zlib-ng
   all:
