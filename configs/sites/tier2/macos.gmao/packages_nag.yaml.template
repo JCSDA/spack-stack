@@ -1,15 +1,15 @@
 packages:
   c:
-    require: [apple-clang@17.0.0]
+    require: [apple-clang@@APPLE_CLANG_VERSION@]
   cxx:
-    require: [apple-clang@17.0.0]
+    require: [apple-clang@@APPLE_CLANG_VERSION@]
   fortran:
     require: [nag@@NAG_VERSION@]
   mpi:
     require: [openmpi@=5.0.7]
   apple-clang:
     externals:
-    - spec: apple-clang@17.0.0 languages:='c,c++'
+    - spec: apple-clang@@APPLE_CLANG_VERSION@ languages:='c,c++'
       prefix: /usr
       extra_attributes:
         compilers:
