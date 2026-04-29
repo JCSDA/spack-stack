@@ -224,6 +224,14 @@ case ${SPACK_STACK_BATCH_HOST} in
         SPACK_STACK_BATCH_COMPILERS+=("nag@=${MAC_GMAO_NAG_VERSION}")
       fi
     fi
+    
+    # Auto-detect Apple Clang version
+    if command -v clang &> /dev/null; then
+      export MAC_GMAO_APPLE_CLANG_VERSION=$(clang --version | grep "Apple clang version" | awk '{print $4}')
+    else
+      export MAC_GMAO_APPLE_CLANG_VERSION="21.0.0"
+    fi
+
     SPACK_STACK_BATCH_TEMPLATES=("geos-dev" "geos-dev-nag")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="${HOME}/spack-stack-mirrors/spack-bootstrap-mirror"
@@ -655,6 +663,8 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         nag_version=${MAC_GMAO_NAG_VERSION}
         nag_path=${MAC_GMAO_NAG_PATH}
         nag_prefix=${MAC_GMAO_NAG_PREFIX}
+        
+        apple_clang_version=${MAC_GMAO_APPLE_CLANG_VERSION:-"21.0.0"}
 
         for template_file in "${macos_site_dir}"/*.yaml.template; do
           if [[ -f "${template_file}" ]]; then
@@ -666,7 +676,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
               base_filename="packages_nag-${nag_version}.yaml"
             fi
 
-            sed_cmd="sed -e \"s#@HOME@#${HOME}#g\" -e \"s#@BREW_PREFIX@#${brew_prefix}#g\""
+            sed_cmd="sed -e \"s#@HOME@#${HOME}#g\" -e \"s#@BREW_PREFIX@#${brew_prefix}#g\" -e \"s#@APPLE_CLANG_VERSION@#${apple_clang_version}#g\""
             if [[ -n "${nag_version}" ]]; then
               sed_cmd="${sed_cmd} -e \"s#@NAG_VERSION@#${nag_version}#g\" -e \"s#@NAG_PREFIX@#${nag_prefix}#g\" -e \"s#@NAG_PATH@#${nag_path}#g\""
             fi
