@@ -12,8 +12,8 @@ spack:
   # On some platforms (like macOS with gcc-15/gfortranclang), ESMF requires 
   # +debug to build successfully, which is enforced via the site's packages.yaml.
   # Explicitly requesting ~debug here will cause a concretization conflict on those platforms.
-  - geos-gcm-env ^esmf@=9.0.0b10
-  - geos-gcm-env +debug ^esmf@=9.0.0b10
+  - geos-gcm-env ^esmf@=9.0.0b11
+  - geos-gcm-env +debug ^esmf@=9.0.0b11
 
 
   packages:
