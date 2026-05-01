@@ -86,8 +86,7 @@ packages:
       - +ownlibs
     codee:
       require:
-      # TODO UPDATE TO 2026.1.2 once https://github.com/JCSDA/spack-packages/pull/56 is merged
-      - '@2026.1'
+      - '@2026.1.2'
     crtm_fix:
       require:
       - ~link-big-endian
