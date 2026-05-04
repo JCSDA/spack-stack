@@ -19,6 +19,8 @@ class DevUtilsEnv(BundlePackage):
 
     version("1.0.0")
 
+    variant("scalasca", default=False, description="Build Scalasca/Cube")
+
     depends_on("base-env", type="run")
 
     # I/O
@@ -27,6 +29,10 @@ class DevUtilsEnv(BundlePackage):
     depends_on("py-pydantic +dotenv", type="run")
     depends_on("py-pydantic-settings", type="run")
 
+    # Scalasca/ScoreP
+    depends_on("scalasca", when="+scalasca", type="run")
+    depends_on("cube +gui", when="+scalasca", type="run")
+  
     # Miscellaneous
     depends_on("cloc", type="run")
     depends_on("rank-run", type="run")

@@ -71,9 +71,9 @@ packages:
     py-scipy:
       require:
       - 'cxxflags="-O1"'
-    qt:
-      require:
-      - '%c,cxx=gcc'
+    #qt:
+    #  require:
+    #  - '%c,cxx=gcc'
     rust:
       require:
       - '%c,cxx=gcc'
