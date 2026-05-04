@@ -95,6 +95,7 @@ def check_preferred_compiler():
         except:
             logging.info(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)} has no compiler dependency")
             continue
+        logging.warning(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)}: {compiler_name}@={compiler_version}")
         # If the spec compiler matches the preferred compiler for the environment, move on.
         # Note that this permits situations where a packages has an explicit preferred (but
         # not explicitly required) compiler, but Spack decides to use the preferred (and
