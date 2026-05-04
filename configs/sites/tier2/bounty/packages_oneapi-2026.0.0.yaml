@@ -1,0 +1,41 @@
+packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2026.0.0']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=11.5.0']
+      when: '%gcc'
+  mpi:
+    buildable: False
+    require:
+    - "intel-oneapi-mpi@2021.18"
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2026.0.0 +fix_rt_linkage
+      prefix: /opt/intel/oneapi
+      extra_attributes:
+        compilers:
+          c: /opt/intel/oneapi/2026.0/bin/icx
+          cxx: /opt/intel/oneapi/2026.0/bin/icpx
+          fortran: /opt/intel/oneapi/2026.0/bin/ifx
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@11.5.0 languages:='c,c++'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.18
+      prefix: /opt/intel/oneapi
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2026.0
+      prefix: /opt/intel/oneapi
