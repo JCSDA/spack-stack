@@ -12,7 +12,7 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0
+    - spec: intel-oneapi-compilers@2025.3.0 +fix_rt_linkage
       prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
       modules:
       - umf/1.0.2

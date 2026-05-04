@@ -141,7 +141,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
     ;;
   blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0") # oneapi@=2025.2.1
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "gcc@=13.3.0" "gcc@=14.3.0") # oneapi@=2025.2.1
     SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
@@ -671,7 +671,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     case ${submit_to_scheduler} in
       "true")
         jobs=$(tasks_per_node ${host})
-        parallel_install_flags="--concurrent-packages=10 --jobs=${jobs}"
+        parallel_install_flags="--concurrent-packages=4 --jobs=${jobs}"
         ;;
       "false")
         parallel_install_flags=""

@@ -62,6 +62,9 @@ packages:
     parallel-netcdf:
       require:
       - +shared-intel
+    patchelf:
+      require:
+      - '%c=gcc'
     py-maturin:
       require:
       - '%c=gcc'
