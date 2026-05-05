@@ -1,0 +1,105 @@
+packages:
+  # Modification of common packages
+
+  # All other packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.71
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.16.5
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@5.2.26
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.41.58~gold~headers
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.8.2
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.30.5
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@9.5
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.10
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.10.0
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@5.3.0
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.22.5
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.47.3~tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.6.1
+      prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.4.1
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.11
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.23.0
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.19
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@9.9p1
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.40.2~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@2.1.0
+      prefix: /usr
+  qt:
+    buildable: False
+    externals:
+    - spec: qt@6.9.1
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.9
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.35
+      prefix: /usr
+  texlive:
+    externals:
+    - spec: texlive@20240312
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.24.5
+      prefix: /usr
