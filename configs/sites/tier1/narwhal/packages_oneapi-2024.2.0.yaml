@@ -12,7 +12,7 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2024.2.0
+    - spec: intel-oneapi-compilers@2024.2.0 +fix_rt_linkage
       prefix: /opt/intel/oneapi_2024.2.0.634
       modules:
       - PrgEnv-intel/8.5.0

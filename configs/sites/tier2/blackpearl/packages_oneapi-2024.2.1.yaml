@@ -11,7 +11,7 @@ packages:
     - intel-oneapi-mpi@2021.13
   intel-oneapi-compilers:
     externals:
-    - spec: intel-oneapi-compilers@2024.2.1
+    - spec: intel-oneapi-compilers@2024.2.1 +fix_rt_linkage
       prefix: /opt/intel/oneapi
       extra_attributes:
         compilers:
