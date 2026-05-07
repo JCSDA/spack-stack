@@ -277,6 +277,11 @@ modules:
         environment:
           set:
             'UDUNITS2_XML_PATH': '{prefix}/share/udunits/udunits2.xml'
+      python:
+        environment:
+          set:
+            'Python_ROOT_DIR': '{prefix}'
+            'Python3_ROOT_DIR': '{prefix}'
 
       hierarchy:
       - mpi

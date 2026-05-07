@@ -1,0 +1,3 @@
+mirrors:
+  local-source: file://@HOME@/spack-stack-mirrors/spack-source-mirror
+  local-binary: file://@HOME@/spack-stack-mirrors/spack-build-mirror
