@@ -1,0 +1,41 @@
+modules:
+  default:
+    enable::
+    - lmod
+    prefix_inspections::
+      bin:
+      - PATH
+      man:
+      - MANPATH
+      share/man:
+      - MANPATH
+      share/aclocal:
+      - ACLOCAL_PATH
+      include:
+      - CPATH
+      lib/pkgconfig:
+      - PKG_CONFIG_PATH
+      lib64/pkgconfig:
+      - PKG_CONFIG_PATH
+      share/pkgconfig:
+      - PKG_CONFIG_PATH
+      '':
+      - CMAKE_PREFIX_PATH
+    lmod:
+      openmpi:
+        environment:
+          set:
+            'TMPDIR': '/tmp'
+            'OMPI_MCA_btl': '^tcp'
+      all:
+        filter:
+          exclude_env_vars:
+            - LD_LIBRARY_PATH
+      include:
+      # Compiler modules
+      - apple-clang
+      - gcc
+      - llvm
+      # MPI modules
+      - mpich
+      - openmpi

@@ -1,7 +1,7 @@
 packages:
   all:
     require:
-    - any_of: ['%intel-oneapi-compilers@=2025.0.4']
+    - any_of: ['%intel-oneapi-compilers@=2026.0.0']
       when: '%intel-oneapi-compilers'
     - any_of: ['%gcc@=13.3.0']
       when: '%gcc'
@@ -12,16 +12,16 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.0.4 +fix_rt_linkage
-      prefix: /p/app/intel/oneapi-combined
+    - spec: intel-oneapi-compilers@2026.0.0 +fix_rt_linkage
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0
       modules:
       - PrgEnv-intel/8.6.0
-      - intel-oneapi/2025.0
+      - intel-oneapi/2026.0.0
       extra_attributes:
         compilers:
-          c: /p/app/intel/oneapi-combined/compiler/2025.0/bin/icx
-          cxx: /p/app/intel/oneapi-combined/compiler/2025.0/bin/icpx
-          fortran: /p/app/intel/oneapi-combined/compiler/2025.0/bin/ifx
+          c: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0/2026.0/bin/icx
+          cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0/2026.0/bin/icpx
+          fortran: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0/2026.0/bin/ifx
         environment:
           set:
             CONFIG_SITE: ''
@@ -58,5 +58,5 @@ packages:
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.0
-      prefix: /p/app/intel/oneapi-combined
+    - spec: intel-oneapi-mkl@2026.0
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0
