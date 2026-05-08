@@ -1,0 +1,18 @@
+modules:
+  default:
+    enable::
+    - tcl
+    tcl:
+      include:
+      # Compiler modules
+      - apple-clang
+      - gcc
+      - intel-oneapi-compilers
+      - llvm
+      # MPI modules
+      - cray-mpich
+      - intel-mpi
+      - intel-oneapi-mpi
+      - mpich
+      - mpt
+      - openmpi

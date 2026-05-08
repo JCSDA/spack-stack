@@ -1,4 +1,4 @@
-# Copyright 2013-2022 Lawrence Livermore National Security, LLC and other
+# Copyright 2013-2026 Lawrence Livermore National Security, LLC and other
 # Spack Project Developers. See the top-level COPYRIGHT file for details.
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
@@ -18,11 +18,17 @@ class GeosGcmEnv(BundlePackage):
     # Current version
     version("1.1.0")
 
+    variant("debug", default=False, description="Build debug version of selected dependencies")
+
     depends_on("base-env", type="run")
+
     depends_on("blas", type="run")
     depends_on("lapack", type="run")
+
     depends_on("mepo", type="run")
-    depends_on("esmf", type="run")
+    depends_on("esmf ~debug", type="run", when="~debug")
+    depends_on("esmf +debug", type="run", when="+debug")
+
     # mapl is built as part of GEOS, don't load;
     # needs external gftl-shared/fargparse/pflogger
     # depends_on("mapl", type="run")

@@ -1,0 +1,26 @@
+packages:
+
+  netcdf-c:
+    require: [+shared]
+
+  openblas:
+    require:
+    - '~dynamic_dispatch'
+    - 'build_system=cmake'
+
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.50.1~tcltk
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@9.9p2
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
+      prefix: /usr

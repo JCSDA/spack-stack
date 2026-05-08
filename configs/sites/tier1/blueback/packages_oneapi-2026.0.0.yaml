@@ -13,7 +13,7 @@ packages:
     buildable: false
     externals:
     - spec: intel-oneapi-compilers@2026.0.0 +fix_rt_linkage
-      prefix: /p/app/intel/oneapi-combined
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0
       modules:
       - PrgEnv-intel/8.6.0
       - intel-oneapi/2026.0.0

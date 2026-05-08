@@ -164,12 +164,14 @@ packages:
       - '@2.6.4'
     fms:
       require:
-      - '@2025.03'
       - precision=32,64
       - +quad_precision
       - +openmp
       - +pic
       - build_type=Release
+      - any_of:
+        - '@=2025.03'
+        - '@=2024.03'
       - any_of:
         - +gfs_phys constants=GFS
         - ~gfs_phys constants=GEOS
