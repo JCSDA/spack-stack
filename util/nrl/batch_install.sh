@@ -287,11 +287,7 @@ function run_interactive_job() {
   script=$2
   reuse_build_cache=$3
   tpn=$(tasks_per_node ${host})
-  if [[ "${reuse_build_cache}" == "true" ]]; then
-    walltime="120"
-  else
-    walltime="720"
-  fi
+  walltime="720"
   if [[ ! -n "${ACCOUNT}" ]]; then
     echo "ERROR, environment variable ACCOUNT not set"
     exit 1
@@ -655,6 +651,11 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${update_cargo_mirror}" == "true"* ]]; then
       set +e
       echo "Updating local cargo mirror ..."
+      export CARGO_HTTP_MULTIPLEXING=false
+      export CARGO_HTTP_TIMEOUT=600
+      export CARGO_HTTP_LOW_SPEED_LIMIT=1
+      export CARGO_HTTP_LOW_SPEED_TIMEOUT=600
+      export CARGO_NET_RETRY=10
       ./util/fetch_cargo_deps.py
       set -e
     fi
@@ -676,7 +677,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     case ${submit_to_scheduler} in
       "true")
         jobs=$(tasks_per_node ${host})
-        parallel_install_flags="--concurrent-packages=4 --jobs=${jobs}"
+        parallel_install_flags="--concurrent-packages=2 --jobs=${jobs}"
         ;;
       "false")
         parallel_install_flags=""
