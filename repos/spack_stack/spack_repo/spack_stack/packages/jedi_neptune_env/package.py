@@ -31,9 +31,12 @@ class JediNeptuneEnv(BundlePackage):
         depends_on("adp-preprocessors", type="run")
 
     with when("+jedi"):
-        depends_on("oops@1.10.0.20250827", type="run")
-        depends_on("crtm@3.1.3", type="run")
-        depends_on("ioda@2.9.0.20250826", type="run")
-        depends_on("ioda-converters@0.0.1.20250830", type="run")
-        depends_on("ropp-ufo@11.0.20251022", type="run")
-        depends_on("ufo@1.10.0.20250821 +ropp", type="run")
+        # https://github.com/JCSDA/spack-stack/issues/2015
+        # Changed type from "run" to "build" so that
+        # the modules don't get loaded automatically
+        depends_on("oops@1.10.0.20250827", type="build")
+        depends_on("crtm@3.1.3", type="build")
+        depends_on("ioda@2.9.0.20250826", type="build")
+        depends_on("ioda-converters@0.0.1.20250830", type="build")
+        depends_on("ropp-ufo@11.0.20251022", type="build")
+        depends_on("ufo@1.10.0.20250821 +ropp", type="build")
