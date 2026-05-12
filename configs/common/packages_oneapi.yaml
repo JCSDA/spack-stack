@@ -71,6 +71,7 @@ packages:
     py-scipy:
       require:
       - 'cxxflags="-O1"'
+    # Each site must either set qt:buildable:false or set require gcc in its own packages_oneapi-<version>.yaml
     #qt:
     #  require:
     #  - '%c,cxx=gcc'
