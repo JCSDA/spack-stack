@@ -4,8 +4,5 @@
   branch = spack-stack-dev
 [submodule "repos/builtin"]
   path = repos/builtin
-  #url = https://github.com/jcsda/spack-packages
-  #branch = spack-stack-dev
-  # https://github.com/JCSDA/spack-packages/pull/57
-  url = https://github.com/climbfuji/spack-packages
-  branch = bugfix/scalasca_scorep_spack_stack_dev
+  url = https://github.com/jcsda/spack-packages
+  branch = spack-stack-dev
