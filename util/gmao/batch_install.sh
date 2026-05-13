@@ -70,6 +70,8 @@ usage() {
   echo "      overrides the default compilers for the site"
   echo "  -N  Path to nagfor executable (e.g. /opt/nag/bin/nagfor);"
   echo "      forces NAG stack to be built using this specific compiler"
+  echo "  -a  Set PBS/SLURM account (default: s1873);"
+  echo "      overrides the ACCOUNT environment variable"
   echo "  -s  Submit 'spack install' to batch scheduler"
   echo "  -t  Run tests for specific thirdparty dependencies;"
   echo "      these are currently hardcoded in batch_install.sh"
@@ -80,7 +82,7 @@ usage() {
   echo
 }
 
-while getopts r:m:d:c:C:N:H:nuesth flag
+while getopts r:m:d:c:C:N:H:a:nuesth flag
 do
   case "${flag}" in
     r)
@@ -103,6 +105,9 @@ do
       ;;
     H)
       SPACK_STACK_BATCH_HOST_OPT=${OPTARG}
+      ;;
+    a)
+      ACCOUNT=${OPTARG}
       ;;
     n)
       SPACK_STACK_DRY_RUN="true"
@@ -137,6 +142,10 @@ echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CA
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
 echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
 echo "  SPACK_STACK_RUN_TESTS:                       ${SPACK_STACK_RUN_TESTS:-false}"
+echo "  ACCOUNT:                                     ${ACCOUNT:-s1873 (default)}"
+
+# Set default account if not provided via -a or environment
+ACCOUNT=${ACCOUNT:-s1873}
 
 if [[ -z ${SPACK_STACK_ROLE} ]]; then
   echo "ERROR, SPACK_STACK_ROLE not defined. Provide -r ROLE as argument"
@@ -312,23 +321,61 @@ function run_interactive_job() {
   script=$2
   reuse_build_cache=$3
   tpn=$(tasks_per_node ${host})
-  walltime="720"
-  if [[ ! -n "${ACCOUNT}" ]]; then
-    echo "ERROR, environment variable ACCOUNT not set"
-    exit 1
-  fi
-  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} minutes for ${script} ..."
+  walltime="12:00:00"
+  echo "Starting batch job on ${host} with ${tpn} tasks, walltime ${walltime}, account ${ACCOUNT} for ${script} ..."
   case ${host} in
     nas)
-      module load slurm
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} bash ${script}
-      module unload slurm
+      # Determine PBS model based on login node name
+      login_node=$(hostname | cut -d "." -f 1)
+      case ${login_node} in
+        pfe*)
+          pbs_model="rom_ait"
+          ;;
+        afe*)
+          pbs_model="mil_ait"
+          ;;
+        *)
+          echo "ERROR, cannot determine PBS model from login node '${login_node}' on ${host}"
+          echo "Expected login node name starting with 'pfe' or 'afe'"
+          exit 1
+          ;;
+      esac
+      echo "  Login node: ${login_node}, PBS model: ${pbs_model}"
+      qsub -V \
+           -l select=1:ncpus=${tpn}:mpiprocs=${tpn}:model=${pbs_model} \
+           -l walltime=${walltime} \
+           -W group_list=${ACCOUNT} \
+           -W block=true \
+           -j oe -k oed \
+           -N spack-install \
+           ${script}
       ;;
     nas-toss5)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+      # All nas-toss5 login nodes start with athfe
+      login_node=$(hostname | cut -d "." -f 1)
+      if [[ ! ${login_node} == athfe* ]]; then
+        echo "WARNING, expected login node name starting with 'athfe' on ${host}, got '${login_node}'"
+      fi
+      qsub -V \
+           -l select=1:ncpus=${tpn}:mpiprocs=${tpn}:model=tur_ath \
+           -q normal \
+           -l walltime=${walltime} \
+           -W group_list=${ACCOUNT} \
+           -W block=true \
+           -j oe -k oed \
+           -N spack-install \
+           ${script}
       ;;
     discover-gmao)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=compute --account=${ACCOUNT} bash ${script}
+      slurm_constraint="--constraint=mil"
+      if [[ "${ACCOUNT}" == "s1873" ]]; then
+        slurm_partition="--partition=preops --qos=benchmark"
+      else
+        slurm_partition=""
+      fi
+      salloc --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} \
+             ${slurm_constraint} ${slurm_partition} \
+             --account=${ACCOUNT} bash ${script}
       ;;
     *)
       echo "ERROR, run_interactive_job command not configured for ${host}"
