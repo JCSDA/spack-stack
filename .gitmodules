@@ -4,7 +4,5 @@
   branch = spack-stack-2.1.0
 [submodule "repos/builtin"]
   path = repos/builtin
-  #url = https://github.com/jcsda/spack-packages
-  #branch = spack-stack-2.1.0
-  url = https://github.com/climbfuji/spack-packages
-  branch = feature/update_netcdf_c_from_upstream_rel21
+  url = https://github.com/jcsda/spack-packages
+  branch = spack-stack-2.1.0
