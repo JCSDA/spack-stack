@@ -346,6 +346,7 @@ function run_interactive_job() {
            -l walltime=${walltime} \
            -W group_list=${ACCOUNT} \
            -W block=true \
+           -W umask=0022 \
            -j oe -k oed \
            -N spack-install \
            ${script}
@@ -362,6 +363,7 @@ function run_interactive_job() {
            -l walltime=${walltime} \
            -W group_list=${ACCOUNT} \
            -W block=true \
+           -W umask=0022 \
            -j oe -k oed \
            -N spack-install \
            ${script}
@@ -589,7 +591,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             echo "[DRY-RUN]   qsub -V \\"
             echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=${pbs_model_dry} \\"
             echo "[DRY-RUN]        -l walltime=08:00:00 \\"
-            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true \\"
+            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true -W umask=0022 \\"
             echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
             echo "[DRY-RUN]        spack-install.${env_name}.sh"
             ;;
@@ -597,7 +599,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             echo "[DRY-RUN]   qsub -V \\"
             echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=tur_ath \\"
             echo "[DRY-RUN]        -q normal -l walltime=08:00:00 \\"
-            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true \\"
+            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true -W umask=0022 \\"
             echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
             echo "[DRY-RUN]        spack-install.${env_name}.sh"
             ;;
