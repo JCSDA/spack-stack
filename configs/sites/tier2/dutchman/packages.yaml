@@ -1,75 +1,70 @@
 packages:
   # Modification of common packages
-  dev-utils-env:
-    require:
-    - +scalasca
 
   # All other packages listed alphabetically
   autoconf:
     externals:
-    - spec: autoconf@2.69
+    - spec: autoconf@2.71
       prefix: /usr
   automake:
     externals:
-    - spec: automake@1.16.2
+    - spec: automake@1.16.5
       prefix: /usr
   bash:
     externals:
-    - spec: bash@5.1.8
+    - spec: bash@5.2.26
       prefix: /usr
   binutils:
     externals:
-    - spec: binutils@2.35.2~gold+headers
+    - spec: binutils@2.41.58~gold~headers
       prefix: /usr
   bison:
     externals:
-    - spec: bison@3.7.4
+    - spec: bison@3.8.2
       prefix: /usr
   cmake:
     externals:
-    - spec: cmake@3.26.5
+    - spec: cmake@3.30.5
       prefix: /usr
   coreutils:
     externals:
-    - spec: coreutils@8.32
+    - spec: coreutils@9.5
       prefix: /usr
   diffutils:
     externals:
-    - spec: diffutils@3.7
+    - spec: diffutils@3.10
       prefix: /usr
   findutils:
     externals:
-    - spec: findutils@4.8.0
+    - spec: findutils@4.10.0
       prefix: /usr
   gawk:
     externals:
-    - spec: gawk@5.1.0
+    - spec: gawk@5.3.0
       prefix: /usr
   gettext:
     externals:
-    - spec: gettext@0.21
+    - spec: gettext@0.22.5
       prefix: /usr
   git:
-    buildable: False
     externals:
-    - spec: git@2.43.5~tcltk
+    - spec: git@2.47.3~tcltk
       prefix: /usr
   git-lfs:
-    buildable: False
     externals:
-    - spec: git-lfs@3.4.1
+    - spec: git-lfs@3.6.1
       prefix: /usr
   gmake:
     externals:
-    - spec: gmake@4.3
+    - spec: gmake@4.4.1
       prefix: /usr
   grep:
     externals:
-    - spec: grep@3.6
+    - spec: grep@3.11
       prefix: /usr
   groff:
     externals:
-    - spec: groff@1.22.4
+    - spec: groff@1.23.0
       prefix: /usr
   m4:
     externals:
@@ -77,34 +72,34 @@ packages:
       prefix: /usr
   openssh:
     externals:
-    - spec: openssh@8.7p1
+    - spec: openssh@9.9p1
       prefix: /usr
   perl:
     externals:
-    - spec: perl@5.32.1~cpanm~opcode+open+shared+threads
+    - spec: perl@5.40.2~cpanm+opcode+open+shared+threads
       prefix: /usr
   pkgconf:
     externals:
-    - spec: pkgconf@1.7.3
+    - spec: pkgconf@2.1.0
       prefix: /usr
   qt:
     buildable: False
     externals:
-    - spec: qt@5.15.9
+    - spec: qt@6.9.1
       prefix: /usr
   sed:
     externals:
-    - spec: sed@4.8
+    - spec: sed@4.9
       prefix: /usr
   tar:
     externals:
-    - spec: tar@1.34
+    - spec: tar@1.35
       prefix: /usr
   texlive:
     externals:
-    - spec: texlive@20200406
+    - spec: texlive@20240312
       prefix: /usr
   wget:
     externals:
-    - spec: wget@1.21.1
+    - spec: wget@1.24.5
       prefix: /usr

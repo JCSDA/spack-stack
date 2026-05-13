@@ -1,0 +1,39 @@
+packages:
+  c:
+    require: [apple-clang@@APPLE_CLANG_VERSION@]
+  cxx:
+    require: [apple-clang@@APPLE_CLANG_VERSION@]
+  fortran:
+    require: [llvm@21.1.3 ~clang +flang]
+  mpi:
+    require: [openmpi@=5.0.10]
+  apple-clang:
+    externals:
+    - spec: apple-clang@@APPLE_CLANG_VERSION@ languages:='c,c++'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+  llvm:
+    buildable: False
+    externals:
+    - spec: llvm@21.1.3 ~clang +flang languages:='fortran'
+      prefix: @BREW_PREFIX@
+      extra_attributes:
+        compilers:
+          fortran: @BREW_PREFIX@/bin/flang
+
+  openmpi:
+    require::
+    - '+internal-hwloc'
+    - '+internal-libevent'
+    - '+internal-pmix'
+    - '+fortran'
+    # GEOS requires a flat namespace to link properly on macOS
+    - '~two_level_namespace'
+
+  gdbm:
+    externals:
+    - spec: gdbm@1.26
+      prefix: @BREW_PREFIX@/opt/gdbm

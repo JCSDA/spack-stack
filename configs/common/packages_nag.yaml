@@ -1,0 +1,31 @@
+packages:
+  # Compiler preferences
+  c:
+    prefer::
+    - apple-clang
+  cxx:
+    prefer::
+    - apple-clang
+  fortran:
+    prefer::
+    - nag
+  all:
+    providers:
+      fortran: [nag, gcc, llvm, intel-oneapi-compilers]
+  # Virtual provider settings
+  blas:
+    require:
+    - openblas
+  fftw-api:
+    require:
+    - fftw
+  lapack:
+    require:
+    - openblas
+  # Individual package settings
+  ectrans:
+    require:
+    - +fftw
+  oops:
+    require:
+    - '~mkl'

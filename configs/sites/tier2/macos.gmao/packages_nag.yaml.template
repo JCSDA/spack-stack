@@ -1,0 +1,61 @@
+packages:
+  c:
+    require: [apple-clang@@APPLE_CLANG_VERSION@]
+  cxx:
+    require: [apple-clang@@APPLE_CLANG_VERSION@]
+  fortran:
+    require: [nag@@NAG_VERSION@]
+  mpi:
+    require: [openmpi@=5.0.7]
+  apple-clang:
+    externals:
+    - spec: apple-clang@@APPLE_CLANG_VERSION@ languages:='c,c++'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+  nag:
+    buildable: False
+    externals:
+    - spec: nag@@NAG_VERSION@ languages:='fortran'
+      prefix: @NAG_PREFIX@
+      extra_attributes:
+        compilers:
+          fortran: @NAG_PATH@
+
+  openmpi:
+    require::
+    - '@=5.0.7'
+    - '+internal-hwloc'
+    - '+internal-libevent'
+    - '+internal-pmix'
+    - '+fortran'
+    # GEOS requires a flat namespace to link properly on macOS
+    - '~two_level_namespace'
+
+  # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
+  # we do the same here to avoid build failures.
+  # Also enforce +debug since NAG is meant for debugging.
+  esmf:
+    require::
+    - '~openmp'
+    - '+debug'
+
+  # Disable parallel-netcdf for NAG as it fails to build and is unneeded
+  parallelio:
+    require::
+    - '@2.6.2'
+    - '~pnetcdf'
+
+  # netcdf-fortran needs explicit preprocessor and type safety flags for NAG
+  netcdf-fortran:
+    require::
+    - 'fflags="-fpp -mismatch_all"'
+
+
+  gdbm:
+    externals:
+    - spec: gdbm@1.26
+      prefix: @BREW_PREFIX@/opt/gdbm
+

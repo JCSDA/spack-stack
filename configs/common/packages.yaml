@@ -86,7 +86,7 @@ packages:
       - +ownlibs
     codee:
       require:
-      - '@2026.1'
+      - '@2026.1.2'
     crtm_fix:
       require:
       - ~link-big-endian
@@ -140,9 +140,8 @@ packages:
       - any_of:
         - '@=8.6.1 snapshot=none'
         - '@=8.8.0 snapshot=none'
-        - '@=8.9.0 snapshot=none'
         - '@=8.9.1 snapshot=none'
-        - '@=9.0.0b10 snapshot=b10'
+        - '@=9.0.0b11 snapshot=b11'
       - any_of:
         - 'fflags="-fp-model precise" cxxflags="-fp-model precise"'
         when: '%intel'
@@ -165,12 +164,14 @@ packages:
       - '@2.6.4'
     fms:
       require:
-      - '@2025.03'
       - precision=32,64
       - +quad_precision
       - +openmp
       - +pic
       - build_type=Release
+      - any_of:
+        - '@=2025.03'
+        - '@=2024.03'
       - any_of:
         - +gfs_phys constants=GFS
         - ~gfs_phys constants=GEOS
@@ -464,6 +465,8 @@ packages:
     py-versioneer:
       require:
       - '@0.29'
+    # On a per-site basis, either set qt to buildable: false
+    # or add requirement to build with gcc for Intel oneAPI
     qt:
       require:
       - '@5'
