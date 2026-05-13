@@ -560,8 +560,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         echo "[DRY-RUN] spack external find --not-buildable autoconf automake bash cmake cvs doxygen gawk git-lfs groff libtool ninja npm subversion swig texinfo"
         echo "[DRY-RUN] generating spack-macos-externals.yaml and applying with 'spack config add -f'"
       fi
+      echo "[DRY-RUN] spack bootstrap list  # add local-sources and local-binaries if missing"
+      if [[ "${update_build_cache}" == "true" ]]; then
+        echo "[DRY-RUN] spack config add config:install_tree:padded_length:200"
+      fi
       echo "[DRY-RUN] spack bootstrap now"
       echo "[DRY-RUN] spack concretize --force --fresh"
+      echo "[DRY-RUN] ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip -i fms -i geos-gcm-env"
 
       if [[ "${update_source_cache}" == "true"* ]]; then
         echo "[DRY-RUN] spack mirror create -a -d <source_mirror_path>"
@@ -572,7 +577,44 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
       echo "[DRY-RUN] Generating spack-install.${env_name}.sh and executing via:"
       if [[ "${submit_to_scheduler}" == "true" ]]; then
-        echo "[DRY-RUN]   run_interactive_job ${host} spack-install.${env_name}.sh ${reuse_build_cache}"
+        tpn_dry=$(tasks_per_node ${host})
+        case ${host} in
+          nas)
+            login_node=$(hostname | cut -d "." -f 1)
+            case ${login_node} in
+              pfe*) pbs_model_dry="rom_ait" ;;
+              afe*) pbs_model_dry="mil_ait" ;;
+              *)    pbs_model_dry="<rom_ait|mil_ait>" ;;
+            esac
+            echo "[DRY-RUN]   qsub -V \\"
+            echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=${pbs_model_dry} \\"
+            echo "[DRY-RUN]        -l walltime=12:00:00 \\"
+            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true \\"
+            echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
+            echo "[DRY-RUN]        spack-install.${env_name}.sh"
+            ;;
+          nas-toss5)
+            echo "[DRY-RUN]   qsub -V \\"
+            echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=tur_ath \\"
+            echo "[DRY-RUN]        -q normal -l walltime=12:00:00 \\"
+            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true \\"
+            echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
+            echo "[DRY-RUN]        spack-install.${env_name}.sh"
+            ;;
+          discover-gmao)
+            if [[ "${ACCOUNT}" == "s1873" ]]; then
+              slurm_extra_dry="--partition=preops --qos=benchmark"
+            else
+              slurm_extra_dry="(default partition/qos)"
+            fi
+            echo "[DRY-RUN]   salloc --nodes=1 --ntasks-per-node=${tpn_dry} --time=12:00:00 \\"
+            echo "[DRY-RUN]          --constraint=mil ${slurm_extra_dry} \\"
+            echo "[DRY-RUN]          --account=${ACCOUNT} bash spack-install.${env_name}.sh"
+            ;;
+          *)
+            echo "[DRY-RUN]   run_interactive_job ${host} spack-install.${env_name}.sh ${reuse_build_cache}"
+            ;;
+        esac
       else
         echo "[DRY-RUN]   bash spack-install.${env_name}.sh"
       fi
@@ -580,9 +622,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       if [[ "${update_build_cache}" == "true" ]]; then
         echo "[DRY-RUN] spack buildcache push -u <binary_mirror_path>"
         echo "[DRY-RUN] spack buildcache update-index local-binary"
+        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0"
       else
         echo "[DRY-RUN] spack module ${module_choice} refresh --yes --upstream-modules"
         echo "[DRY-RUN] spack stack setup-meta-modules"
+      fi
+      if [[ "${update_source_cache}" == "true" ]]; then
+        echo "[DRY-RUN] fix_permissions ${host} <source_mirror_path> 0"
+      fi
+      if [[ "${update_cargo_mirror}" == "true" ]]; then
+        echo "[DRY-RUN] fix_permissions ${host} ${cargo_mirror_path} 0"
       fi
 
       echo "[DRY-RUN] spack clean -d -f -m -p -s"
