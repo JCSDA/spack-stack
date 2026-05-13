@@ -819,24 +819,25 @@ EOF
         spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
 
     # Check that the site has mirrors configured for local source and build caches,
-    # and extract the local path on disk. Need to strip leading "file://" from path
+    # and extract the local path on disk. Need to strip leading "file://" from path.
+    # Use awk to grab the last field since spack mirror list uses variable-width columns.
     result=$(spack mirror list | grep local-source) || \
         (echo "ERROR, no local source cache configured" && exit 1)
-    source_mirror_path=$(echo ${result} | cut -d " " -f 3)
-    source_mirror_path=${source_mirror_path:7}
+    source_mirror_path=$(echo ${result} | awk '{print $NF}')
+    source_mirror_path=${source_mirror_path#file://}
     echo "Spack source mirror path: ${source_mirror_path}"
     # For build caches, additional logic is needed. If buildcache_dir is defined,
     # update the location of the default build cache to this directory.
     result=$(spack mirror list | grep local-binary) || \
         (echo "ERROR, no local binary cache configured" && exit 1)
-    binary_mirror_path=$(echo ${result} | cut -d " " -f 3)
-    binary_mirror_path=${binary_mirror_path:7}
+    binary_mirror_path=$(echo ${result} | awk '{print $NF}')
+    binary_mirror_path=${binary_mirror_path#file://}
     # If buildcache_dir is set, update binary_mirror_path
     if [[ ! -z ${buildcache_dir} ]]; then
       sed -i "s#${binary_mirror_path}#${buildcache_dir}#g" ${env_dir}/site/mirrors.yaml
       result=$(spack mirror list | grep local-binary)
-      binary_mirror_path=$(echo ${result} | cut -d " " -f 3)
-      binary_mirror_path=${binary_mirror_path:7}
+      binary_mirror_path=$(echo ${result} | awk '{print $NF}')
+      binary_mirror_path=${binary_mirror_path#file://}
     fi
     echo "Spack binary mirror path: ${binary_mirror_path}"
 
