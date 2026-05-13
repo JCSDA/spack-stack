@@ -321,7 +321,7 @@ function run_interactive_job() {
   script=$2
   reuse_build_cache=$3
   tpn=$(tasks_per_node ${host})
-  walltime="12:00:00"
+  walltime="08:00:00"
   echo "Starting batch job on ${host} with ${tpn} tasks, walltime ${walltime}, account ${ACCOUNT} for ${script} ..."
   case ${host} in
     nas)
@@ -588,7 +588,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             esac
             echo "[DRY-RUN]   qsub -V \\"
             echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=${pbs_model_dry} \\"
-            echo "[DRY-RUN]        -l walltime=12:00:00 \\"
+            echo "[DRY-RUN]        -l walltime=08:00:00 \\"
             echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true \\"
             echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
             echo "[DRY-RUN]        spack-install.${env_name}.sh"
@@ -596,7 +596,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           nas-toss5)
             echo "[DRY-RUN]   qsub -V \\"
             echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=tur_ath \\"
-            echo "[DRY-RUN]        -q normal -l walltime=12:00:00 \\"
+            echo "[DRY-RUN]        -q normal -l walltime=08:00:00 \\"
             echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true \\"
             echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
             echo "[DRY-RUN]        spack-install.${env_name}.sh"
@@ -607,7 +607,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             else
               slurm_extra_dry="(default partition/qos)"
             fi
-            echo "[DRY-RUN]   salloc --nodes=1 --ntasks-per-node=${tpn_dry} --time=12:00:00 \\"
+            echo "[DRY-RUN]   salloc --nodes=1 --ntasks-per-node=${tpn_dry} --time=08:00:00 \\"
             echo "[DRY-RUN]          --constraint=mil ${slurm_extra_dry} \\"
             echo "[DRY-RUN]          --account=${ACCOUNT} bash spack-install.${env_name}.sh"
             ;;
