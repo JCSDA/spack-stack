@@ -312,11 +312,7 @@ function run_interactive_job() {
   script=$2
   reuse_build_cache=$3
   tpn=$(tasks_per_node ${host})
-  if [[ "${reuse_build_cache}" == "true" ]]; then
-    walltime="120"
-  else
-    walltime="720"
-  fi
+  walltime="720"
   if [[ ! -n "${ACCOUNT}" ]]; then
     echo "ERROR, environment variable ACCOUNT not set"
     exit 1
@@ -444,23 +440,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     #############################################################
     # Add excluded combinations of compilers and templates here #
     #############################################################
-    # cylc-dev only with gcc
-    #if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    ## With clang, only neptune-dev-llvm
-    #elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev-llvm" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    ## With other compilers, skip neptune-dev-llvm
-    #elif [[ ! "${compiler_name}" == "clang" && "${template}" == "neptune-dev-llvm" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    ## FMS compiler ICE: https://github.com/NOAA-GFDL/FMS/issues/1680
-    #elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && "${template}" == "unified-dev" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    #fi
     if [[ "${template}" == "geos-dev" && "${compiler_name}" == "nag" ]]; then
       echo "Skipping template ${template} with compiler ${compiler} (fms not supported by nag)"
       continue
@@ -794,6 +773,11 @@ EOF
     if [[ "${update_cargo_mirror}" == "true"* ]]; then
       set +e
       echo "Updating local cargo mirror ..."
+      export CARGO_HTTP_MULTIPLEXING=false
+      export CARGO_HTTP_TIMEOUT=600
+      export CARGO_HTTP_LOW_SPEED_LIMIT=1
+      export CARGO_HTTP_LOW_SPEED_TIMEOUT=600
+      export CARGO_NET_RETRY=10
       ./util/fetch_cargo_deps.py
       set -e
     fi
@@ -815,7 +799,7 @@ EOF
     case ${submit_to_scheduler} in
       "true")
         jobs=$(tasks_per_node ${host})
-        parallel_install_flags="--concurrent-packages=10 --jobs=${jobs}"
+        parallel_install_flags="--concurrent-packages=2 --jobs=${jobs}"
         ;;
       "false")
         parallel_install_flags=""
