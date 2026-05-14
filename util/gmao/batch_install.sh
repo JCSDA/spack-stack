@@ -320,8 +320,11 @@ function run_interactive_job() {
   host=$1
   script=$2
   reuse_build_cache=$3
+  env_name=$4
+  mode=$5
   tpn=$(tasks_per_node ${host})
   walltime="08:00:00"
+  job_name="spack.${host}.${mode}.${env_name}"
   echo "Starting batch job on ${host} with ${tpn} tasks, walltime ${walltime}, account ${ACCOUNT} for ${script} ..."
   case ${host} in
     nas)
@@ -348,7 +351,7 @@ function run_interactive_job() {
            -W block=true \
            -W umask=0022 \
            -j oe -k oed \
-           -N spack-install \
+           -N ${job_name} \
            ${script}
       ;;
     nas-toss5)
@@ -365,7 +368,7 @@ function run_interactive_job() {
            -W block=true \
            -W umask=0022 \
            -j oe -k oed \
-           -N spack-install \
+           -N ${job_name} \
            ${script}
       ;;
     discover-gmao)
@@ -377,6 +380,7 @@ function run_interactive_job() {
       fi
       salloc --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} \
              ${slurm_constraint} ${slurm_partition} \
+             --job-name=${job_name} \
              --account=${ACCOUNT} bash ${script}
       ;;
     *)
@@ -592,7 +596,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=${pbs_model_dry} \\"
             echo "[DRY-RUN]        -l walltime=08:00:00 \\"
             echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true -W umask=0022 \\"
-            echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
+            echo "[DRY-RUN]        -j oe -k oed -N spack.${host}.${mode}.${env_name} \\"
             echo "[DRY-RUN]        spack-install.${env_name}.sh"
             ;;
           nas-toss5)
@@ -600,7 +604,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=tur_ath \\"
             echo "[DRY-RUN]        -q normal -l walltime=08:00:00 \\"
             echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true -W umask=0022 \\"
-            echo "[DRY-RUN]        -j oe -k oed -N spack-install \\"
+            echo "[DRY-RUN]        -j oe -k oed -N spack.${host}.${mode}.${env_name} \\"
             echo "[DRY-RUN]        spack-install.${env_name}.sh"
             ;;
           discover-gmao)
@@ -611,6 +615,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             fi
             echo "[DRY-RUN]   salloc --nodes=1 --ntasks-per-node=${tpn_dry} --time=08:00:00 \\"
             echo "[DRY-RUN]          --constraint=mil ${slurm_extra_dry} \\"
+            echo "[DRY-RUN]          --job-name=spack.${host}.${mode}.${env_name} \\"
             echo "[DRY-RUN]          --account=${ACCOUNT} bash spack-install.${env_name}.sh"
             ;;
           *)
@@ -951,7 +956,7 @@ fi
 EOF
     chmod u+x ${install_script}
     if [[ "${submit_to_scheduler}" == "true" ]]; then
-      run_interactive_job ${host} ${install_script} ${reuse_build_cache}
+      run_interactive_job ${host} ${install_script} ${reuse_build_cache} ${env_name} ${mode}
     else
       bash ${install_script}
     fi
