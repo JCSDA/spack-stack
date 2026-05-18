@@ -128,6 +128,7 @@ packages:
     - spec: pkg-config@0.27.1
       prefix: /usr
   qt:
+    buildable: False
     externals:
     - spec: qt@5.12.6
       prefix: /contrib/spack-stack/installs/qt-5.12.6/qtbase
