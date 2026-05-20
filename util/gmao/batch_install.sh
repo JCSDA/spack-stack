@@ -195,6 +195,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror-toss4"
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    SPACK_STACK_ENVIRONMENT_DIRS=${SPACK_STACK_ENVIRONMENT_DIRS:-${PWD}/envs/toss4}
     ;;
   nas-toss5)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.1")
@@ -202,6 +203,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror-toss5"
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    SPACK_STACK_ENVIRONMENT_DIRS=${SPACK_STACK_ENVIRONMENT_DIRS:-${PWD}/envs/toss5}
     ;;
   discover-gmao)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.1")
@@ -580,6 +582,17 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         echo "[DRY-RUN] ./util/fetch_cargo_deps.py"
       fi
 
+      if [[ "${host}" == "nas" || "${host}" == "nas-toss5" ]] && \
+         [[ "${env_name_prefix}" == "ue" ]] && \
+         [[ "${compiler_name}" == "oneapi" ]]; then
+        echo "[DRY-RUN] # ectrans/ecbuild workaround (NAS oneapi only):"
+        echo "[DRY-RUN] # See: https://github.com/JCSDA/spack-stack/issues/1775#issuecomment-3898802720"
+        echo "[DRY-RUN] spack install ecbuild"
+        echo "[DRY-RUN] ./util/gmao/patch_ecbuild_ectrans.py --patch \$(spack location -i ecbuild)/.../ecbuild_add_lang_flags.cmake"
+        echo "[DRY-RUN] spack install ectrans"
+        echo "[DRY-RUN] ./util/gmao/patch_ecbuild_ectrans.py --revert \$(spack location -i ecbuild)/.../ecbuild_add_lang_flags.cmake"
+      fi
+
       echo "[DRY-RUN] Generating spack-install.${env_name}.sh and executing via:"
       if [[ "${submit_to_scheduler}" == "true" ]]; then
         tpn_dry=$(tasks_per_node ${host})
@@ -926,6 +939,27 @@ EOF
 set -e
 
 $(declare -p test_packages)
+
+# Workaround for ectrans build failure with oneapi at NAS (nas/nas-toss5).
+# ecbuild's flag checker incorrectly rejects valid Fortran flags (-march=core-avx2 -no-fma).
+# Fix: patch ecbuild cmake to force-add the flags even when the check fails,
+# install ectrans, then revert the patch. Spack skips already-installed packages,
+# so the subsequent full install proceeds normally.
+# See: https://github.com/JCSDA/spack-stack/issues/1775#issuecomment-3898802720
+if [[ "${host}" == "nas" || "${host}" == "nas-toss5" ]] && \
+   [[ "${env_name_prefix}" == "ue" ]] && \
+   [[ "${compiler_name}" == "oneapi" ]]; then
+  set -o pipefail
+  echo "Installing ecbuild before ectrans workaround ..."
+  spack install --verbose ${buildcache_install_flags} ecbuild 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}.ecbuild
+  ecbuild_flags_cmake=\$(spack location -i ecbuild)/share/ecbuild/cmake/ecbuild_add_lang_flags.cmake
+  echo "Applying ectrans/ecbuild workaround to \${ecbuild_flags_cmake} ..."
+  ${SPACK_STACK_DIR}/util/gmao/patch_ecbuild_ectrans.py --patch \${ecbuild_flags_cmake}
+  spack install --verbose ${buildcache_install_flags} ectrans 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}.ectrans
+  set +o pipefail
+  echo "Reverting ectrans/ecbuild workaround ..."
+  ${SPACK_STACK_DIR}/util/gmao/patch_ecbuild_ectrans.py --revert \${ecbuild_flags_cmake}
+fi
 
 # If no tests are required, install everything
 if [[ \${#test_packages[@]} -eq 0 ]]; then
