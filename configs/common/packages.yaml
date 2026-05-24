@@ -168,6 +168,7 @@ packages:
       - +quad_precision
       - +openmp
       - +pic
+      - +yaml
       - build_type=Release
       - any_of:
         - '@=2025.03'
