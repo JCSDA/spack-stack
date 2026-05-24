@@ -155,7 +155,7 @@ class StackEnv(object):
             # - replace "- packages:" with "packages:" (similar for modules)
             sanitized_output = re.sub(r"- {}:".format(section), "{}:".format(section), stream.getvalue())
             # - get rid of annoying single quotes and !!omap
-            sanitized_output = re.sub(r"!!omap", "", re.sub(r"'(\S+):':", "\g<1>::", sanitized_output))
+            sanitized_output = re.sub(r"!!omap", "", re.sub(r"'(\S+):':", r"\g<1>::", sanitized_output))
             with open(result_out_path, "w") as f:
                 f.write(sanitized_output)
         else:
