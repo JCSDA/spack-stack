@@ -56,8 +56,22 @@ brew install rust
 
 Use the appropriate branch or tag:
 
+### Fixed Tag - JCSDA
+
 ```bash
-git clone --recurse-submodules https://github.com/GMAO-SI-Team/spack-stack.git -b geos-testing spack-stack-dev
+git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git -b x.y.z spack-stack-x.y.z
+```
+
+### Development - JCSDA
+
+```bash
+git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git -b develop spack-stack-dev
+```
+
+### Development - SI Team
+
+```bash
+git clone --recurse-submodules https://github.com/GMAO-SI-Team/spack-stack.git -b develop spack-stack-siteam
 ```
 
 ---
