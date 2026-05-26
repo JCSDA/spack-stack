@@ -205,11 +205,16 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
     SPACK_STACK_ENVIRONMENT_DIRS=${SPACK_STACK_ENVIRONMENT_DIRS:-${PWD}/envs/toss5}
     ;;
+  discover)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.0")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/discover/swdev/jcsda/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/discover/swdev/jcsda/spack-stack/cargo-mirror"
+    ;;
   discover-gmao)
-    #SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=15.2.0")
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0")
-    #SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
-    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=15.2.0")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/cargo-mirror"
@@ -279,6 +284,13 @@ function fix_permissions() {
       fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
+    discover)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
     discover-gmao)
       nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
       if [[ ${executables} -eq 1 ]]; then
@@ -302,13 +314,16 @@ function tasks_per_node() {
   host=$1
   case ${host} in
     nas)
-      tpn=128
+      tpn=120
       ;;
     nas-toss5)
-      tpn=256
+      tpn=240
+      ;;
+    discover)
+      tpn=120
       ;;
     discover-gmao)
-      tpn=128
+      tpn=120
       ;;
     *)
       echo "ERROR, tasks_per_node command not configured for ${host}"
@@ -375,6 +390,18 @@ function run_interactive_job() {
            -j oe -k oed \
            -N ${job_name} \
            ${script}
+      ;;
+    discover)
+      slurm_constraint="--constraint=mil"
+      if [[ "${ACCOUNT}" == "s1873" ]]; then
+        slurm_partition="--partition=preops --qos=benchmark"
+      else
+        slurm_partition=""
+      fi
+      salloc --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} \
+             ${slurm_constraint} ${slurm_partition} \
+             --job-name=${job_name} \
+             --account=${ACCOUNT} bash ${script}
       ;;
     discover-gmao)
       slurm_constraint="--constraint=mil"
@@ -625,6 +652,17 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
             echo "[DRY-RUN]        -j oe -k oed -N spack.${host}.${env_name} \\"
             echo "[DRY-RUN]        spack-install.${env_name}.sh"
             ;;
+          discover)
+            if [[ "${ACCOUNT}" == "s1873" ]]; then
+              slurm_extra_dry="--partition=preops --qos=benchmark"
+            else
+              slurm_extra_dry="(default partition/qos)"
+            fi
+            echo "[DRY-RUN]   salloc --nodes=1 --ntasks-per-node=${tpn_dry} --time=08:00:00 \\"
+            echo "[DRY-RUN]          --constraint=mil ${slurm_extra_dry} \\"
+            echo "[DRY-RUN]          --job-name=spack.${host}.${env_name} \\"
+            echo "[DRY-RUN]          --account=${ACCOUNT} bash spack-install.${env_name}.sh"
+            ;;
           discover-gmao)
             if [[ "${ACCOUNT}" == "s1873" ]]; then
               slurm_extra_dry="--partition=preops --qos=benchmark"
@@ -693,6 +731,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         set -e
         ;;
       nas-toss5)
+        umask 0022
+        set +e
+        module purge
+        set -e
+        ;;
+      discover)
         umask 0022
         set +e
         module purge

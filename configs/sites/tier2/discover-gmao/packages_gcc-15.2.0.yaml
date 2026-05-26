@@ -40,7 +40,7 @@ packages:
             LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0/lib
             LD_LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0/lib
             INCLUDE: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0/include
-            MANPATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0  :w
+            MANPATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0
 
   # Testing shows we now need to pass in -lm for GCC
   p4est:
