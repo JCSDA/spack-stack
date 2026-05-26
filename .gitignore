@@ -7,3 +7,5 @@ doc/build
 deploy_logs/
 logs/
 log.*
+spack-install.*
+tmp-bootstrap-mirror/

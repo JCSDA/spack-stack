@@ -206,11 +206,13 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_ENVIRONMENT_DIRS=${SPACK_STACK_ENVIRONMENT_DIRS:-${PWD}/envs/toss5}
     ;;
   discover-gmao)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.1")
-    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    #SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=15.2.0")
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0")
+    #SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/cargo-mirror"
     ;;
   macos.gmao)
     # Detect NAG Fortran Compiler
