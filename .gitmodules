@@ -4,5 +4,5 @@
   branch = spack-stack-dev
 [submodule "repos/builtin"]
   path = repos/builtin
-  url = https://github.com/AlexanderRichert-NOAA/spack-packages
-  branch = gsi-ncdiag-1.1.3
+  url = https://github.com/jcsda/spack-packages
+  branch = spack-stack-dev
