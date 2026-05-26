@@ -5,3 +5,5 @@ cache
 .vscode
 doc/build
 deploy_logs/
+logs/
+log.*

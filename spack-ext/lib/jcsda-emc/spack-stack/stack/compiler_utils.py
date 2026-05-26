@@ -101,6 +101,12 @@ def check_preferred_compiler():
         # different) compiler for the environment instead.
         if preferred_compiler_name == compiler_name and preferred_compiler_version  == compiler_version:
             logging.info(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)} uses preferred compiler")
+        # If the package config doesn't have an entry for the package, then it should be
+        # built with the preferred compiler. However, because it failed the "if" test
+        # above, we know it is not.
+        elif not spec.name in package_config.keys():
+            errors += 1
+            logging.error(f"  ... {RED}error: {spec.name}@{spec.version}/{spec.dag_hash(length=7)} does not use intended compiler{RESET}")
         else:
             spec_required_compiler_name = None
             spec_required_compiler_version = None
@@ -147,8 +153,7 @@ def check_preferred_compiler():
                 logging.info(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)} uses explicitly preferred compiler")
             else:
                 errors += 1
-                logging.error(f"  ... {RED}error: {spec.name}@{spec.version}/{spec.dag_hash(length=7)} does not use intended compiler\n" + \
-                    f"      check also that any explicit preferred/required compiler dependencies are using Spack v1 syntax{RESET}")
+                logging.error(f"  ... {RED}error: {spec.name}@{spec.version}/{spec.dag_hash(length=7)} does not use intended compiler{RESET}")
     if errors==1:
         raise Exception(f"{RED}Detected {errors} compiler mismatch!{RESET}")
     elif errors:

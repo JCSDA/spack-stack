@@ -12,7 +12,7 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2024.2.1
+    - spec: intel-oneapi-compilers@2024.2.1 +fix_rt_linkage
       prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1
       modules:
       - tbb/2021.13
