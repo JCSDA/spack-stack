@@ -113,8 +113,8 @@ cd envs/ue-oneapi-2024.2.0
 ### GCC Environment
 
 ```bash
-spack stack create env --name ue-gcc-13.2.0 --template unified-dev --site nas --compiler=gcc-13.2.0
-cd envs/ue-gcc-13.2.0
+spack stack create env --name ue-gcc-14.2.0 --template unified-dev --site nas --compiler=gcc-14.2.0
+cd envs/ue-gcc-14.2.0
 ```
 
 ---
