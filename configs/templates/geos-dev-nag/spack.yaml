@@ -8,12 +8,13 @@ spack:
   include: []
 
   specs:
-  # NOTE: The first spec explicitly requests ~debug to ensure both a release and
-  # a debug ESMF build are concretized. On platforms where only +debug is supported
-  # (e.g., macOS with gcc-15/gfortranclang or NAG), the site's packages.yaml enforces
-  # require: ['+debug'], which overrides ~debug here and unifies both specs onto +debug.
-  - geos-gcm-env ^esmf@=9.0.0b11~debug
-  - geos-gcm-env +debug ^esmf@=9.0.0b11+debug
+  # Two builds: release (esmf ~debug) and debug (esmf +debug).
+  # The esmf debug variant is driven solely by the geos-gcm-env debug variant
+  # (see geos_gcm_env/package.py). On platforms where only +debug is supported
+  # (e.g., macOS), the site packages.yaml requires geos-gcm-env +debug, which
+  # causes both specs to resolve to +debug (only one unique build).
+  - geos-gcm-env ~debug
+  - geos-gcm-env +debug
 
 
   packages:
@@ -21,3 +22,4 @@ spack:
     esmf:
       require:
       - +python
+      - '@=9.0.0b11'

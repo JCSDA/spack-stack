@@ -600,6 +600,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         echo "[DRY-RUN] spack stack create env --name=${env_name} \\"
         echo "          --site=${host} --compiler=${compiler_name}-${compiler_version} \\"
         echo "          --template=${template} --dir=${environment_dirs} --treat-warnings-as-errors"
+        if [[ "${host}" == "macos.gmao" ]]; then
+          echo "[DRY-RUN] grep -v 'geos-gcm-env ~debug' ${env_dir}/spack.yaml  # remove ~debug spec (esmf ~debug unsupported on macOS)"
+        fi
       fi
       echo "[DRY-RUN] spack env activate -p ${env_dir}"
       if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
@@ -848,6 +851,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              --dir=${environment_dirs} \
                              --treat-warnings-as-errors \
                              2>&1 | tee ${SPACK_STACK_DIR}/logs/log.create.${env_name}.${LOG_TIMESTAMP}
+
+      # On macOS, esmf ~debug does not work with gfortranclang/GEOS, so remove
+      # the geos-gcm-env ~debug spec from the environment spack.yaml if present.
+      if [[ "${host}" == "macos.gmao" ]]; then
+        env_spack_yaml="${env_dir}/spack.yaml"
+        if grep -q "geos-gcm-env ~debug" "${env_spack_yaml}" 2>/dev/null; then
+          echo "INFO: macOS: removing 'geos-gcm-env ~debug' spec from ${env_spack_yaml}"
+          grep -v "geos-gcm-env ~debug" "${env_spack_yaml}" > "${env_spack_yaml}.tmp" && mv "${env_spack_yaml}.tmp" "${env_spack_yaml}"
+        fi
+      fi
 
       # Clean up the generated yamls in the site configuration now that the env is created
       if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
