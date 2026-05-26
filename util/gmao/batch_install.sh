@@ -398,10 +398,14 @@ function run_interactive_job() {
       else
         slurm_partition=""
       fi
+      slurm_log="${job_name}.log"
+      echo "INFO: salloc output redirected to ${slurm_log}"
       salloc --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} \
              ${slurm_constraint} ${slurm_partition} \
              --job-name=${job_name} \
-             --account=${ACCOUNT} bash ${script}
+             --account=${ACCOUNT} bash ${script} \
+             > "${slurm_log}" 2>&1
+      echo "INFO: salloc job complete, log: ${slurm_log}"
       ;;
     discover-gmao)
       slurm_constraint="--constraint=mil"
@@ -410,10 +414,14 @@ function run_interactive_job() {
       else
         slurm_partition=""
       fi
+      slurm_log="${job_name}.log"
+      echo "INFO: salloc output redirected to ${slurm_log}"
       salloc --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} \
              ${slurm_constraint} ${slurm_partition} \
              --job-name=${job_name} \
-             --account=${ACCOUNT} bash ${script}
+             --account=${ACCOUNT} bash ${script} \
+             > "${slurm_log}" 2>&1
+      echo "INFO: salloc job complete, log: ${slurm_log}"
       ;;
     *)
       echo "ERROR, run_interactive_job command not configured for ${host}"
