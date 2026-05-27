@@ -44,4 +44,6 @@ class GeosGcmEnv(BundlePackage):
 
     depends_on("perl", type="run")
 
+    depends_on("py-cmocean", type="run")
+
     # There is no need for install() since there is no code.
