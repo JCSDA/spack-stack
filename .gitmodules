@@ -1,7 +1,7 @@
 [submodule "spack"]
   path = spack
-  url = https://github.com/jcsda/spack
-  branch = spack-stack-dev
+  url = https://github.com/AlexanderHrabski-NOAA/spack
+  branch = update-spack-from-develop
 [submodule "repos/builtin"]
   path = repos/builtin
   url = https://github.com/jcsda/spack-packages
