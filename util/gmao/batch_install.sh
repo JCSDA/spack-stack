@@ -214,7 +214,8 @@ case ${SPACK_STACK_BATCH_HOST} in
     ;;
   discover-gmao)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=15.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    #SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/cargo-mirror"
@@ -234,13 +235,9 @@ case ${SPACK_STACK_BATCH_HOST} in
       export MAC_GMAO_NAG_PREFIX=$(dirname $(dirname "${MAC_GMAO_NAG_PATH}"))
     fi
 
-    if [[ -n "${SPACK_STACK_COMPILER_OPT}" ]]; then
-      IFS=',' read -r -a SPACK_STACK_BATCH_COMPILERS <<< "${SPACK_STACK_COMPILER_OPT}"
-    else
-      SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
-      if [[ -n "${MAC_GMAO_NAG_VERSION}" ]]; then
-        SPACK_STACK_BATCH_COMPILERS+=("nag@=${MAC_GMAO_NAG_VERSION}")
-      fi
+    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
+    if [[ -n "${MAC_GMAO_NAG_VERSION}" ]]; then
+      SPACK_STACK_BATCH_COMPILERS+=("nag@=${MAC_GMAO_NAG_VERSION}")
     fi
     
     # Auto-detect Apple Clang version
@@ -260,6 +257,11 @@ case ${SPACK_STACK_BATCH_HOST} in
     exit 1
     ;;
 esac
+
+# Apply -C compiler override for all hosts (not just macos.gmao)
+if [[ -n "${SPACK_STACK_COMPILER_OPT}" ]]; then
+  IFS=',' read -r -a SPACK_STACK_BATCH_COMPILERS <<< "${SPACK_STACK_COMPILER_OPT}"
+fi
 
 ##################################################################################################
 

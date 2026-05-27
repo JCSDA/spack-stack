@@ -46,3 +46,14 @@ packages:
   p4est:
     require:
     - 'ldflags="-lm"'
+
+  # GCC 15 defaults to -std=c23 where 'false' is a keyword; parallel-netcdf 1.12.3
+  # uses 'false' as an enum constant in ncmpidump.h, so force C11 mode.
+  parallel-netcdf:
+    require:
+    - 'cflags="-std=gnu11"'
+
+  # ncurses 6.5 fails with GCC 15 due to NCURSES_BOOL conversion issues; 6.6 fixes this.
+  ncurses:
+    require:
+    - '@6.6'

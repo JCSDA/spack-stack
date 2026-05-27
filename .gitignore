@@ -11,3 +11,4 @@ spack-install.*
 tmp-bootstrap-mirror/
 spack.nas.*
 spack.nas-toss5.*
+spack.discover*
