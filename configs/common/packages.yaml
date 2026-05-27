@@ -52,7 +52,7 @@ packages:
       - visibility=hidden
     bufr:
       require:
-      - '@12.1.0'
+      - '@12.3.0'
       - +python
     bufr-query:
       require:
@@ -210,7 +210,7 @@ packages:
       - '@1.4.2'
     gsi-ncdiag:
       require:
-      - '@1.1.2'
+      - '@1.1.3'
     harfbuzz:
       # cmake-based harfbuzz fails during build
       require:
