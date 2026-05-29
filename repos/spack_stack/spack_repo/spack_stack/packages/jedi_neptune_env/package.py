@@ -20,6 +20,7 @@ class JediNeptuneEnv(BundlePackage):
     version("1.0.0")
 
     variant("adp", default=False, description="Build ADP preprocessors")
+    variant("sdp", default=False, description="Build SDP preprocessors")
 
     variant("jedi", default=False, description="Build JEDI components required for JEDI-NEPTUNE")
 
@@ -29,6 +30,9 @@ class JediNeptuneEnv(BundlePackage):
 
     with when("+adp"):
         depends_on("adp-preprocessors", type="run")
+
+    with when("+sdp"):
+        depends_on("sdp-preprocessors", type="run")
 
     with when("+jedi"):
         # https://github.com/JCSDA/spack-stack/issues/2015
