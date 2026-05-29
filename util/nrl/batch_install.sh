@@ -588,7 +588,13 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     spack env activate -p ${env_dir}
 
     # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
-    sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
+    case ${host} in
+      navy-aws)
+        echo "Turning off ADP builds on ParallelWorks platforms"
+        sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
+        sed -i 's/+sdp/~sdp/g' ${env_dir}/spack.yaml
+        ;;
+    esac
 
     echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
     if [[ ! -d ${bootstrap_mirror_path} ]]; then
