@@ -1,5 +1,8 @@
 packages:
   # Modification of common packages
+  dev-utils-env:
+    require:
+    - +scalasca
 
   # All other packages listed alphabetically
   autoconf:
