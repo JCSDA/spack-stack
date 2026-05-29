@@ -53,6 +53,15 @@ packages:
     require::
     - 'fflags="-fpp -mismatch_all"'
 
+  # openblas CMake's shared library build passes GCC-specific flags (-x f95-cpp-input)
+  # that NAG does not support. Build static-only to avoid that code path.
+  # A fix has been submitted upstream: https://github.com/OpenMathLib/OpenBLAS/pull/5824
+  # Once that PR is merged and a new OpenBLAS release is available, this workaround
+  # can be removed.
+  openblas:
+    require:
+    - '~shared'
+
 
   gdbm:
     externals:
