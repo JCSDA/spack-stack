@@ -24,7 +24,7 @@ packages:
         environment:
           prepend_path:
             PATH: /usr/local/other/gcc/12.3.0/bin
-            CPATH: /usr/local/other/gcc/12.3.0/bin/include
+            CPATH: /usr/local/other/gcc/12.3.0/include
             LD_LIBRARY_PATH: '/usr/local/intel/oneapi/2025/compiler/2025.3/compiler/lib:/usr/local/other/gcc/12.3.0/lib64'
         extra_rpaths:
         - /usr/local/other/gcc/12.3.0/lib64
