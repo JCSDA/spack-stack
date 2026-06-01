@@ -5,4 +5,4 @@
 [submodule "repos/builtin"]
   path = repos/builtin
   url = https://github.com/jcsda/spack-packages
-  branch = spack-stack-2.1.0
+  branch = release/2.1
