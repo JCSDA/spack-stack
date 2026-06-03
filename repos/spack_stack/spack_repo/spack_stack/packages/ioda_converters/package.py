@@ -41,6 +41,9 @@ class IodaConverters(CMakePackage):
     depends_on("eccodes")
     depends_on("eckit")
     depends_on("eigen@3")
+    # error: could not find git for clone of yaml-cpp-populate
+    # fixed in repo Sep 25, 2025 - need only for 0.0.1.20250830
+    depends_on("git", type=("build"), when="@0.0.1.20250830")
     depends_on("gsl-lite")
     depends_on("ioda")
     depends_on("jedi-cmake", type=("build"))
