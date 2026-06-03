@@ -11,7 +11,8 @@ spack:
   - dev-utils-env
   - ewok-env
   - geos-gcm-env          ^esmf@=9.0.0b11
-  - global-workflow-env   ^esmf@=8.6.1 ^crtm@=3.1.3
+  - global-workflow-env   ^esmf@=8.8.0 ^crtm@=3.1.3
+
   # Is GMAO ready to move to crtm@3.1.3?
   - gmao-swell-env                     ^crtm@=v2.4.1-jedi.2
   - gsi-env                            ^crtm@=3.1.3
