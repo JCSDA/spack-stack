@@ -15,7 +15,7 @@ spack:
   view:
     cylc:
       root: view
-      select: [^python]
+      select: [^python, bats]
       link: run
       link_type: symlink
   include: []
@@ -24,4 +24,4 @@ spack:
   - py-cylc-flow@8.4.2
   - py-cylc-rose@1.5.1
   - py-cylc-uiserver@1.6.1
-
+  - bats

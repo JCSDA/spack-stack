@@ -34,6 +34,7 @@ class DevUtilsEnv(BundlePackage):
     depends_on("cube +gui", when="+scalasca", type="run")
   
     # Miscellaneous
+    depends_on("bats", type="run")
     depends_on("cloc", type="run")
     depends_on("rank-run", type="run")
 
