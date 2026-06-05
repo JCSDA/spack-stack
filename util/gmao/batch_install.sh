@@ -70,6 +70,8 @@ usage() {
   echo "      overrides the default compilers for the site"
   echo "  -N  Path to nagfor executable (e.g. /opt/nag/bin/nagfor);"
   echo "      forces NAG stack to be built using this specific compiler"
+  echo "  -a  Set PBS/SLURM account (default: s1873);"
+  echo "      overrides the ACCOUNT environment variable"
   echo "  -s  Submit 'spack install' to batch scheduler"
   echo "  -t  Run tests for specific thirdparty dependencies;"
   echo "      these are currently hardcoded in batch_install.sh"
@@ -80,7 +82,7 @@ usage() {
   echo
 }
 
-while getopts r:m:d:c:C:N:H:nuesth flag
+while getopts r:m:d:c:C:N:H:a:nuesth flag
 do
   case "${flag}" in
     r)
@@ -103,6 +105,9 @@ do
       ;;
     H)
       SPACK_STACK_BATCH_HOST_OPT=${OPTARG}
+      ;;
+    a)
+      ACCOUNT=${OPTARG}
       ;;
     n)
       SPACK_STACK_DRY_RUN="true"
@@ -137,6 +142,10 @@ echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CA
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
 echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
 echo "  SPACK_STACK_RUN_TESTS:                       ${SPACK_STACK_RUN_TESTS:-false}"
+echo "  ACCOUNT:                                     ${ACCOUNT:-s1873 (default)}"
+
+# Set default account if not provided via -a or environment
+ACCOUNT=${ACCOUNT:-s1873}
 
 if [[ -z ${SPACK_STACK_ROLE} ]]; then
   echo "ERROR, SPACK_STACK_ROLE not defined. Provide -r ROLE as argument"
@@ -184,22 +193,32 @@ case ${SPACK_STACK_BATCH_HOST} in
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=13.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror-toss4"
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    SPACK_STACK_ENVIRONMENT_DIRS=${SPACK_STACK_ENVIRONMENT_DIRS:-${PWD}/envs/toss4}
     ;;
   nas-toss5)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.1")
     SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror-toss5"
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    SPACK_STACK_ENVIRONMENT_DIRS=${SPACK_STACK_ENVIRONMENT_DIRS:-${PWD}/envs/toss5}
     ;;
-  discover-gmao)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.1")
+  discover)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.0")
     SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/discover/swdev/jcsda/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/discover/swdev/jcsda/spack-stack/cargo-mirror"
+    ;;
+  discover-gmao)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=15.2.0")
+    #SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("geos-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/cargo-mirror"
     ;;
   macos.gmao)
     # Detect NAG Fortran Compiler
@@ -216,13 +235,9 @@ case ${SPACK_STACK_BATCH_HOST} in
       export MAC_GMAO_NAG_PREFIX=$(dirname $(dirname "${MAC_GMAO_NAG_PATH}"))
     fi
 
-    if [[ -n "${SPACK_STACK_COMPILER_OPT}" ]]; then
-      IFS=',' read -r -a SPACK_STACK_BATCH_COMPILERS <<< "${SPACK_STACK_COMPILER_OPT}"
-    else
-      SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
-      if [[ -n "${MAC_GMAO_NAG_VERSION}" ]]; then
-        SPACK_STACK_BATCH_COMPILERS+=("nag@=${MAC_GMAO_NAG_VERSION}")
-      fi
+    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.2.0")
+    if [[ -n "${MAC_GMAO_NAG_VERSION}" ]]; then
+      SPACK_STACK_BATCH_COMPILERS+=("nag@=${MAC_GMAO_NAG_VERSION}")
     fi
     
     # Auto-detect Apple Clang version
@@ -243,6 +258,11 @@ case ${SPACK_STACK_BATCH_HOST} in
     ;;
 esac
 
+# Apply -C compiler override for all hosts (not just macos.gmao)
+if [[ -n "${SPACK_STACK_COMPILER_OPT}" ]]; then
+  IFS=',' read -r -a SPACK_STACK_BATCH_COMPILERS <<< "${SPACK_STACK_COMPILER_OPT}"
+fi
+
 ##################################################################################################
 
 function fix_permissions() {
@@ -260,6 +280,13 @@ function fix_permissions() {
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
     nas-toss5)
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      if [[ ${executables} -eq 1 ]]; then
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+      fi
+      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    discover)
       nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
       if [[ ${executables} -eq 1 ]]; then
         nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
@@ -289,13 +316,16 @@ function tasks_per_node() {
   host=$1
   case ${host} in
     nas)
-      tpn=128
+      tpn=120
       ;;
     nas-toss5)
-      tpn=256
+      tpn=240
+      ;;
+    discover)
+      tpn=120
       ;;
     discover-gmao)
-      tpn=128
+      tpn=120
       ;;
     *)
       echo "ERROR, tasks_per_node command not configured for ${host}"
@@ -311,28 +341,89 @@ function run_interactive_job() {
   host=$1
   script=$2
   reuse_build_cache=$3
+  env_name=$4
   tpn=$(tasks_per_node ${host})
-  if [[ "${reuse_build_cache}" == "true" ]]; then
-    walltime="120"
-  else
-    walltime="720"
-  fi
-  if [[ ! -n "${ACCOUNT}" ]]; then
-    echo "ERROR, environment variable ACCOUNT not set"
-    exit 1
-  fi
-  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} minutes for ${script} ..."
+  walltime="08:00:00"
+  job_name="spack.${host}.${env_name}"
+  echo "Starting batch job on ${host} with ${tpn} tasks, walltime ${walltime}, account ${ACCOUNT} for ${script} ..."
   case ${host} in
     nas)
-      module load slurm
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} bash ${script}
-      module unload slurm
+      # Determine PBS model based on login node name
+      login_node=$(hostname | cut -d "." -f 1)
+      case ${login_node} in
+        pfe*)
+          pbs_model="rom_ait"
+          ;;
+        afe*)
+          pbs_model="mil_ait"
+          ;;
+        *)
+          echo "ERROR, cannot determine PBS model from login node '${login_node}' on ${host}"
+          echo "Expected login node name starting with 'pfe' or 'afe'"
+          exit 1
+          ;;
+      esac
+      echo "  Login node: ${login_node}, PBS model: ${pbs_model}"
+       qsub -V \
+           -l select=1:ncpus=${tpn}:mpiprocs=${tpn}:model=${pbs_model} \
+           -l walltime=${walltime} \
+           -l site=needed=/home3+/nobackupp18+/nobackupp28+/vast_swbuild/swbuild4 \
+           -W group_list=${ACCOUNT} \
+           -W block=true \
+           -W umask=0022 \
+           -j oe -k oed \
+           -N ${job_name} \
+           ${script}
       ;;
     nas-toss5)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+      # All nas-toss5 login nodes start with athfe
+      login_node=$(hostname | cut -d "." -f 1)
+      if [[ ! ${login_node} == athfe* ]]; then
+        echo "WARNING, expected login node name starting with 'athfe' on ${host}, got '${login_node}'"
+      fi
+      qsub -V \
+           -l select=1:ncpus=${tpn}:mpiprocs=${tpn}:model=tur_ath \
+           -q normal \
+           -l walltime=${walltime} \
+           -l site=needed=/home3+/nobackupp18+/nobackupp28+/vast_swbuild/swbuild4 \
+           -W group_list=${ACCOUNT} \
+           -W block=true \
+           -W umask=0022 \
+           -j oe -k oed \
+           -N ${job_name} \
+           ${script}
+      ;;
+    discover)
+      slurm_constraint="--constraint=mil"
+      if [[ "${ACCOUNT}" == "s1873" ]]; then
+        slurm_partition="--partition=preops --qos=benchmark"
+      else
+        slurm_partition=""
+      fi
+      slurm_log="${job_name}.log"
+      echo "INFO: salloc output redirected to ${slurm_log}"
+      salloc --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} \
+             ${slurm_constraint} ${slurm_partition} \
+             --job-name=${job_name} \
+             --account=${ACCOUNT} bash ${script} \
+             > "${slurm_log}" 2>&1
+      echo "INFO: salloc job complete, log: ${slurm_log}"
       ;;
     discover-gmao)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=compute --account=${ACCOUNT} bash ${script}
+      slurm_constraint="--constraint=mil"
+      if [[ "${ACCOUNT}" == "s1873" ]]; then
+        slurm_partition="--partition=preops --qos=benchmark"
+      else
+        slurm_partition=""
+      fi
+      slurm_log="${job_name}.log"
+      echo "INFO: salloc output redirected to ${slurm_log}"
+      salloc --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} \
+             ${slurm_constraint} ${slurm_partition} \
+             --job-name=${job_name} \
+             --account=${ACCOUNT} bash ${script} \
+             > "${slurm_log}" 2>&1
+      echo "INFO: salloc job complete, log: ${slurm_log}"
       ;;
     *)
       echo "ERROR, run_interactive_job command not configured for ${host}"
@@ -444,23 +535,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     #############################################################
     # Add excluded combinations of compilers and templates here #
     #############################################################
-    # cylc-dev only with gcc
-    #if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    ## With clang, only neptune-dev-llvm
-    #elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev-llvm" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    ## With other compilers, skip neptune-dev-llvm
-    #elif [[ ! "${compiler_name}" == "clang" && "${template}" == "neptune-dev-llvm" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    ## FMS compiler ICE: https://github.com/NOAA-GFDL/FMS/issues/1680
-    #elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && "${template}" == "unified-dev" ]]; then
-      #echo "Skipping template ${template} with compiler ${compiler}"
-      #continue
-    #fi
     if [[ "${template}" == "geos-dev" && "${compiler_name}" == "nag" ]]; then
       echo "Skipping template ${template} with compiler ${compiler} (fms not supported by nag)"
       continue
@@ -528,14 +602,22 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         echo "[DRY-RUN] spack stack create env --name=${env_name} \\"
         echo "          --site=${host} --compiler=${compiler_name}-${compiler_version} \\"
         echo "          --template=${template} --dir=${environment_dirs} --treat-warnings-as-errors"
+        if [[ "${host}" == "macos.gmao" ]]; then
+          echo "[DRY-RUN] grep -v 'geos-gcm-env ~debug' ${env_dir}/spack.yaml  # remove ~debug spec (esmf ~debug unsupported on macOS)"
+        fi
       fi
       echo "[DRY-RUN] spack env activate -p ${env_dir}"
       if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
         echo "[DRY-RUN] spack external find --not-buildable autoconf automake bash cmake cvs doxygen gawk git-lfs groff libtool ninja npm subversion swig texinfo"
         echo "[DRY-RUN] generating spack-macos-externals.yaml and applying with 'spack config add -f'"
       fi
+      echo "[DRY-RUN] spack bootstrap list  # add local-sources and local-binaries if missing"
+      if [[ "${update_build_cache}" == "true" ]]; then
+        echo "[DRY-RUN] spack config add config:install_tree:padded_length:200"
+      fi
       echo "[DRY-RUN] spack bootstrap now"
       echo "[DRY-RUN] spack concretize --force --fresh"
+      echo "[DRY-RUN] ./util/show_duplicate_packages.py -i crtm -i crtm-fix -i esmf -i mapl -i neptune-env -i py-cython -i ip -i fms -i geos-gcm-env"
 
       if [[ "${update_source_cache}" == "true"* ]]; then
         echo "[DRY-RUN] spack mirror create -a -d <source_mirror_path>"
@@ -544,9 +626,71 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         echo "[DRY-RUN] ./util/fetch_cargo_deps.py"
       fi
 
+      if [[ "${host}" == "nas" || "${host}" == "nas-toss5" ]] && \
+         [[ "${env_name_prefix}" == "ue" ]] && \
+         [[ "${compiler_name}" == "oneapi" ]]; then
+        echo "[DRY-RUN] # ectrans/ecbuild workaround (NAS oneapi only):"
+        echo "[DRY-RUN] # See: https://github.com/JCSDA/spack-stack/issues/1775#issuecomment-3898802720"
+        echo "[DRY-RUN] spack install ecbuild"
+        echo "[DRY-RUN] ./util/gmao/patch_ecbuild_ectrans.py --patch \$(spack location -i ecbuild)/.../ecbuild_add_lang_flags.cmake"
+        echo "[DRY-RUN] spack install ectrans"
+        echo "[DRY-RUN] ./util/gmao/patch_ecbuild_ectrans.py --revert \$(spack location -i ecbuild)/.../ecbuild_add_lang_flags.cmake"
+      fi
+
       echo "[DRY-RUN] Generating spack-install.${env_name}.sh and executing via:"
       if [[ "${submit_to_scheduler}" == "true" ]]; then
-        echo "[DRY-RUN]   run_interactive_job ${host} spack-install.${env_name}.sh ${reuse_build_cache}"
+        tpn_dry=$(tasks_per_node ${host})
+        case ${host} in
+          nas)
+            login_node=$(hostname | cut -d "." -f 1)
+            case ${login_node} in
+              pfe*) pbs_model_dry="rom_ait" ;;
+              afe*) pbs_model_dry="mil_ait" ;;
+              *)    pbs_model_dry="<rom_ait|mil_ait>" ;;
+            esac
+            echo "[DRY-RUN]   qsub -V \\"
+            echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=${pbs_model_dry} \\"
+            echo "[DRY-RUN]        -l walltime=08:00:00 \\"
+            echo "[DRY-RUN]        -l site=needed=/home3+/nobackupp18+/nobackupp28+/vast_swbuild/swbuild4 \\"
+            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true -W umask=0022 \\"
+            echo "[DRY-RUN]        -j oe -k oed -N spack.${host}.${env_name} \\"
+            echo "[DRY-RUN]        spack-install.${env_name}.sh"
+            ;;
+          nas-toss5)
+            echo "[DRY-RUN]   qsub -V \\"
+            echo "[DRY-RUN]        -l select=1:ncpus=${tpn_dry}:mpiprocs=${tpn_dry}:model=tur_ath \\"
+            echo "[DRY-RUN]        -q normal -l walltime=08:00:00 \\"
+            echo "[DRY-RUN]        -l site=needed=/home3+/nobackupp18+/nobackupp28+/vast_swbuild/swbuild4 \\"
+            echo "[DRY-RUN]        -W group_list=${ACCOUNT} -W block=true -W umask=0022 \\"
+            echo "[DRY-RUN]        -j oe -k oed -N spack.${host}.${env_name} \\"
+            echo "[DRY-RUN]        spack-install.${env_name}.sh"
+            ;;
+          discover)
+            if [[ "${ACCOUNT}" == "s1873" ]]; then
+              slurm_extra_dry="--partition=preops --qos=benchmark"
+            else
+              slurm_extra_dry="(default partition/qos)"
+            fi
+            echo "[DRY-RUN]   salloc --nodes=1 --ntasks-per-node=${tpn_dry} --time=08:00:00 \\"
+            echo "[DRY-RUN]          --constraint=mil ${slurm_extra_dry} \\"
+            echo "[DRY-RUN]          --job-name=spack.${host}.${env_name} \\"
+            echo "[DRY-RUN]          --account=${ACCOUNT} bash spack-install.${env_name}.sh"
+            ;;
+          discover-gmao)
+            if [[ "${ACCOUNT}" == "s1873" ]]; then
+              slurm_extra_dry="--partition=preops --qos=benchmark"
+            else
+              slurm_extra_dry="(default partition/qos)"
+            fi
+            echo "[DRY-RUN]   salloc --nodes=1 --ntasks-per-node=${tpn_dry} --time=08:00:00 \\"
+            echo "[DRY-RUN]          --constraint=mil ${slurm_extra_dry} \\"
+            echo "[DRY-RUN]          --job-name=spack.${host}.${env_name} \\"
+            echo "[DRY-RUN]          --account=${ACCOUNT} bash spack-install.${env_name}.sh"
+            ;;
+          *)
+            echo "[DRY-RUN]   run_interactive_job ${host} spack-install.${env_name}.sh ${reuse_build_cache}"
+            ;;
+        esac
       else
         echo "[DRY-RUN]   bash spack-install.${env_name}.sh"
       fi
@@ -554,9 +698,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       if [[ "${update_build_cache}" == "true" ]]; then
         echo "[DRY-RUN] spack buildcache push -u <binary_mirror_path>"
         echo "[DRY-RUN] spack buildcache update-index local-binary"
+        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0"
       else
         echo "[DRY-RUN] spack module ${module_choice} refresh --yes --upstream-modules"
         echo "[DRY-RUN] spack stack setup-meta-modules"
+      fi
+      if [[ "${update_source_cache}" == "true" ]]; then
+        echo "[DRY-RUN] fix_permissions ${host} <source_mirror_path> 0"
+      fi
+      if [[ "${update_cargo_mirror}" == "true" ]]; then
+        echo "[DRY-RUN] fix_permissions ${host} ${cargo_mirror_path} 0"
       fi
 
       echo "[DRY-RUN] spack clean -d -f -m -p -s"
@@ -593,6 +744,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         set -e
         ;;
       nas-toss5)
+        umask 0022
+        set +e
+        module purge
+        set -e
+        ;;
+      discover)
         umask 0022
         set +e
         module purge
@@ -697,6 +854,16 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              --treat-warnings-as-errors \
                              2>&1 | tee ${SPACK_STACK_DIR}/logs/log.create.${env_name}.${LOG_TIMESTAMP}
 
+      # On macOS, esmf ~debug does not work with gfortranclang/GEOS, so remove
+      # the geos-gcm-env ~debug spec from the environment spack.yaml if present.
+      if [[ "${host}" == "macos.gmao" ]]; then
+        env_spack_yaml="${env_dir}/spack.yaml"
+        if grep -q "geos-gcm-env ~debug" "${env_spack_yaml}" 2>/dev/null; then
+          echo "INFO: macOS: removing 'geos-gcm-env ~debug' spec from ${env_spack_yaml}"
+          grep -v "geos-gcm-env ~debug" "${env_spack_yaml}" > "${env_spack_yaml}.tmp" && mv "${env_spack_yaml}.tmp" "${env_spack_yaml}"
+        fi
+      fi
+
       # Clean up the generated yamls in the site configuration now that the env is created
       if [[ "${host}" == "macos.gmao" && ! ${env_exists} == "true" ]]; then
         rm -f "${SPACK_STACK_DIR}/configs/sites/tier2/${host}/mirrors.yaml"
@@ -744,24 +911,25 @@ EOF
         spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
 
     # Check that the site has mirrors configured for local source and build caches,
-    # and extract the local path on disk. Need to strip leading "file://" from path
+    # and extract the local path on disk. Need to strip leading "file://" from path.
+    # Use awk to grab the last field since spack mirror list uses variable-width columns.
     result=$(spack mirror list | grep local-source) || \
         (echo "ERROR, no local source cache configured" && exit 1)
-    source_mirror_path=$(echo ${result} | cut -d " " -f 3)
-    source_mirror_path=${source_mirror_path:7}
+    source_mirror_path=$(echo ${result} | awk '{print $NF}')
+    source_mirror_path=${source_mirror_path#file://}
     echo "Spack source mirror path: ${source_mirror_path}"
     # For build caches, additional logic is needed. If buildcache_dir is defined,
     # update the location of the default build cache to this directory.
     result=$(spack mirror list | grep local-binary) || \
         (echo "ERROR, no local binary cache configured" && exit 1)
-    binary_mirror_path=$(echo ${result} | cut -d " " -f 3)
-    binary_mirror_path=${binary_mirror_path:7}
+    binary_mirror_path=$(echo ${result} | awk '{print $NF}')
+    binary_mirror_path=${binary_mirror_path#file://}
     # If buildcache_dir is set, update binary_mirror_path
     if [[ ! -z ${buildcache_dir} ]]; then
       sed -i "s#${binary_mirror_path}#${buildcache_dir}#g" ${env_dir}/site/mirrors.yaml
       result=$(spack mirror list | grep local-binary)
-      binary_mirror_path=$(echo ${result} | cut -d " " -f 3)
-      binary_mirror_path=${binary_mirror_path:7}
+      binary_mirror_path=$(echo ${result} | awk '{print $NF}')
+      binary_mirror_path=${binary_mirror_path#file://}
     fi
     echo "Spack binary mirror path: ${binary_mirror_path}"
 
@@ -794,6 +962,11 @@ EOF
     if [[ "${update_cargo_mirror}" == "true"* ]]; then
       set +e
       echo "Updating local cargo mirror ..."
+      export CARGO_HTTP_MULTIPLEXING=false
+      export CARGO_HTTP_TIMEOUT=600
+      export CARGO_HTTP_LOW_SPEED_LIMIT=1
+      export CARGO_HTTP_LOW_SPEED_TIMEOUT=600
+      export CARGO_NET_RETRY=10
       ./util/fetch_cargo_deps.py
       set -e
     fi
@@ -815,7 +988,7 @@ EOF
     case ${submit_to_scheduler} in
       "true")
         jobs=$(tasks_per_node ${host})
-        parallel_install_flags="--concurrent-packages=10 --jobs=${jobs}"
+        parallel_install_flags="--concurrent-packages=2 --jobs=${jobs}"
         ;;
       "false")
         parallel_install_flags=""
@@ -839,6 +1012,27 @@ EOF
 set -e
 
 $(declare -p test_packages)
+
+# Workaround for ectrans build failure with oneapi at NAS (nas/nas-toss5).
+# ecbuild's flag checker incorrectly rejects valid Fortran flags (-march=core-avx2 -no-fma).
+# Fix: patch ecbuild cmake to force-add the flags even when the check fails,
+# install ectrans, then revert the patch. Spack skips already-installed packages,
+# so the subsequent full install proceeds normally.
+# See: https://github.com/JCSDA/spack-stack/issues/1775#issuecomment-3898802720
+if [[ "${host}" == "nas" || "${host}" == "nas-toss5" ]] && \
+   [[ "${env_name_prefix}" == "ue" ]] && \
+   [[ "${compiler_name}" == "oneapi" ]]; then
+  set -o pipefail
+  echo "Installing ecbuild before ectrans workaround ..."
+  spack install --verbose ${buildcache_install_flags} ecbuild 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}.ecbuild
+  ecbuild_flags_cmake=\$(spack location -i ecbuild)/share/ecbuild/cmake/ecbuild_add_lang_flags.cmake
+  echo "Applying ectrans/ecbuild workaround to \${ecbuild_flags_cmake} ..."
+  ${SPACK_STACK_DIR}/util/gmao/patch_ecbuild_ectrans.py --patch \${ecbuild_flags_cmake}
+  spack install --verbose ${buildcache_install_flags} ectrans 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.install.${env_name}.${LOG_TIMESTAMP}.ectrans
+  set +o pipefail
+  echo "Reverting ectrans/ecbuild workaround ..."
+  ${SPACK_STACK_DIR}/util/gmao/patch_ecbuild_ectrans.py --revert \${ecbuild_flags_cmake}
+fi
 
 # If no tests are required, install everything
 if [[ \${#test_packages[@]} -eq 0 ]]; then
@@ -868,7 +1062,7 @@ fi
 EOF
     chmod u+x ${install_script}
     if [[ "${submit_to_scheduler}" == "true" ]]; then
-      run_interactive_job ${host} ${install_script} ${reuse_build_cache}
+      run_interactive_job ${host} ${install_script} ${reuse_build_cache} ${env_name}
     else
       bash ${install_script}
     fi

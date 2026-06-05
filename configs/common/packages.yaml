@@ -261,7 +261,7 @@ packages:
       - generator=make
     libpng:
       require:
-      - '@1.6.37'
+      - '@1.6.55'
       - +pic
     # libtirpc +gssapi doesn't build with oneapi@2025
     # https://github.com/JCSDA/spack-stack/issues/1441
@@ -414,7 +414,8 @@ packages:
     # https://github.com/JCSDA/spack-stack/issues/1276
     py-matplotlib:
       require:
-      - '@3.7.4'
+      - '@3.10.8'
+      #- '@3.7.4'
       #- '@3.8.0'
     # https://github.com/JCSDA/spack-stack/issues/1971
     py-netcdf4:

@@ -31,8 +31,10 @@ packages:
       prefix: /usr
   cmake:
     externals:
-    - spec: cmake@3.28.2
-      prefix: /usr/local/other/cmake/3.28.2
+    - spec: cmake@3.30.3
+      prefix: /usr/local/other/cmake/3.30.3
+    - spec: cmake@4.3.0
+      prefix: /usr/local/other/cmake/4.3.0
   coreutils:
     externals:
     - spec: coreutils@8.32
@@ -69,15 +71,10 @@ packages:
     externals:
     - spec: git@2.35.3+tcltk
       prefix: /usr
-    - spec: git@2.42.0+tcltk
-      prefix: /usr/local/other/git/2.42.0/gcc-7.5.0
+    - spec: git@2.49.0+tcltk
+      prefix: /usr/local/other/git/2.49.0/gcc-7.5.0
       modules:
-      - git/2.42.0
-    # DH*
-    #- spec: git@2.42.0~tcltk
-    #  prefix: /usr/local/other/git/2.42.0/gcc-7.5.0/libexec/git-core
-    #  modules:
-    #  - git/2.42.0
+      - git/2.49.0
   git-lfs:
     externals:
     - spec: git-lfs@3.4.0
@@ -142,4 +139,13 @@ packages:
   texinfo:
     externals:
     - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.20.3
+      prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.11
       prefix: /usr

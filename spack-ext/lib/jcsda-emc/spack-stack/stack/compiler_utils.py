@@ -41,7 +41,7 @@ def get_compiler_choice(string):
         "cxx,fortran,c=|" + \
         "c,fortran,cxx=|" + \
         "cxx,c,fortran=|" + \
-        "fortran,cxx,c=)(\S+)\s*$"
+        r"fortran,cxx,c=)(\S+)\s*$"
     COMPILER_CHOICE_REGEX = re.compile(COMPILER_CHOICE_REGEX_STRING)
     match = COMPILER_CHOICE_REGEX.match(string)
     if match:

@@ -35,8 +35,9 @@ packages:
 
   # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
   # we do the same here to avoid build failures.
-  # We also build as +debug only because testing shows that (so far)
-  # esmf + Darwin + gfortranclang needs ESMF_BOPT=g to work with GEOS
+  # We also build as +debug only because esmf ~debug does not work with
+  # gfortranclang/GEOS on macOS. The geos-gcm-env ~debug spec is removed
+  # from the environment spack.yaml by batch_install.sh on macOS.
   esmf:
     require:
     - '~openmp'

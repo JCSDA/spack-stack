@@ -1,0 +1,8 @@
+mirrors:
+  local-source:
+    url: file:///discover/nobackup/projects/gmao/SIteam/spack-stack/source-cache
+    binary: false
+  local-binary:
+    url: file:///discover/nobackup/projects/gmao/SIteam/spack-stack/build-cache
+    binary: true
+

@@ -1,0 +1,8 @@
+mirrors:
+  local-source:
+    url: file:///discover/swdev/jcsda/spack-stack/source-cache
+    binary: false
+  local-binary:
+    url: file:///discover/swdev/jcsda/spack-stack/build-cache
+    binary: true
+
