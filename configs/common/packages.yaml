@@ -387,6 +387,10 @@ packages:
     py-cartopy:
       require:
       - +plotting
+    # See py-pycparser
+    py-click:
+      require:
+      - '@8.1.8'
     # Pin py-colorama to avoid duplicate packages, hopefully can be removed soon
     py-colorama:
       require:
@@ -429,6 +433,15 @@ packages:
     py-poetry-core:
       require:
       - '@1.7'
+    # See py-pycparser
+    py-pooch:
+      require:
+      - '@1.7.0'
+    # Need older version of py-pycparser until we can update setuputils to >= 77 ?
+    # https://github.com/pydata/xarray/issues/10588
+    py-pycparser:
+      require:
+      - '@2.21'
     # Need at least py-pygithub@2.7 for self-hosted runner management
     py-pygithub:
       require:
@@ -437,6 +450,10 @@ packages:
     py-pyogrio:
       require:
       - '@0.9.0'
+    # See py-pycparser
+    py-pyparsing:
+      require:
+      - '@3.1.2'
     # To avoid duplicate packages
     py-python-dateutil:
       require:
@@ -466,7 +483,7 @@ packages:
     # To avoid duplicate packages
     py-versioneer:
       require:
-      - '@0.29'
+      - '@=0.28'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:
