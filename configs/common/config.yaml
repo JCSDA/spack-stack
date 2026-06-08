@@ -1,5 +1,9 @@
 # Set package and module installation directories
 config:
+  # Old installer - needed for py-pynacl amongst others
+  # https://github.com/spack/spack-packages/issues/5106
+  installer: old
+
   install_hash_length: 7
   install_tree:
     root: $env/install
