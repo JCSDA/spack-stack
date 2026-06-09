@@ -31,4 +31,5 @@ packages:
     - spec: openmpi@4.1.8 ~internal-hwloc +two_level_namespace
       prefix: /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-22.1.0
       modules:
+      - llvm/22.1.0
       - openmpi/4.1.8

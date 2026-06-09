@@ -47,6 +47,9 @@ packages:
     - spec: intel-oneapi-mpi@2021.17
       prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
       modules:
+      - umf/1.0.2
+      - tbb/2022.3
+      - compiler-rt/2025.3.0
       - mpi/2021.17
       - slurm
   intel-oneapi-mkl:
@@ -55,4 +58,7 @@ packages:
     - spec: intel-oneapi-mkl@2025.3
       prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
       modules:
+      - umf/1.0.2
+      - tbb/2022.3
+      - compiler-rt/2025.3.0
       - mkl/2025.3
