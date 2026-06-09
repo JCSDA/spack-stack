@@ -57,6 +57,7 @@ packages:
     externals:
     - spec: intel-oneapi-mkl@2024.2
       prefix: /cm/shared/apps/intel/oneapi-2024.2.1
+      modules:
       - intel-oneapi-2024.2.1
       - tbb/2021.13
       - compiler-rt/2024.2.1
