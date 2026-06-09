@@ -471,6 +471,10 @@ packages:
     py-setuptools:
       require:
       - '@73.0.1'
+    # See py-pycparser
+    py-sphinxcontrib-bibtex:
+      require:
+      - '@2.5.0'
     py-torch:
       require:
       - +custom-protobuf
