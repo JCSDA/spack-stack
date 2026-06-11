@@ -21,7 +21,7 @@ spack:
   include: []
 
   specs:
-  - py-cylc-flow@8.4.2
-  - py-cylc-rose@1.5.1
-  - py-cylc-uiserver@1.6.1
+  # These versions work with Python 3.11
+  - py-cylc-flow@8.5.4
+  - py-cylc-uiserver@1.7.1
   - bats

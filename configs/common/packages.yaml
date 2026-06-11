@@ -58,9 +58,6 @@ packages:
       require:
       - '@0.0.5'
       - +python
-    cairo:
-      require:
-      - +pic
     cdo:
       require:
       - ~openmp
@@ -212,11 +209,12 @@ packages:
       require:
       - '@1.1.3'
     harfbuzz:
+      # cmake-based harfbuzz fails during build; autotools is only available
+      # for the deprecated @2.9.1 which doesn't compile against ICU >= 76
+      # (-Werror=redundant-decls on u_strlen). Force meson.
       # cmake-based harfbuzz fails during build
       require:
-      - one_of:
-        - 'build_system=meson'
-        - 'build_system=autotools'
+      - 'build_system=meson'
     hdf:
       require:
       - '@4.2.15'
@@ -399,10 +397,10 @@ packages:
     py-cryptography:
       require:
       - '@42'
-    # To avoid duplicate packages
-    py-flit-core:
-      require:
-      - '@3.8.0'
+    ## To avoid duplicate packages
+    #py-flit-core:
+    #  require:
+    #  - '@3.8.0'
     py-h5py:
       require:
       - ~mpi
@@ -411,6 +409,10 @@ packages:
     py-hatchling:
       require:
       - '@1.27:'
+    ## See py-pycparser
+    #py-jsonschema:
+    #  require:
+    #  - '@4.17.3'
     # To avoid duplicate packages
     py-lxml:
       require:
