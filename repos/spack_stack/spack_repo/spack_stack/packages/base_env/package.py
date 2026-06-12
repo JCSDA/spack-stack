@@ -20,7 +20,6 @@ class BaseEnv(BundlePackage):
     version("1.0.0")
 
     # Basic utilities
-    depends_on("libbacktrace", type="run")
     depends_on("cmake", type="run")
     depends_on("git", type="run")
     depends_on("wget", type="run")

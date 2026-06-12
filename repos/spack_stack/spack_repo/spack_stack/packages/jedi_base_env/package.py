@@ -23,6 +23,7 @@ class JediBaseEnv(BundlePackage):
     variant("hdf4", default=True, description="Build hdf4 library and python hdf module")
     variant("bufrquery", default=True, description="Build bufr-query library")
 
+    depends_on("libbacktrace", type="run")
     depends_on("base-env", type="run")
     depends_on("bison", type="run")
     depends_on("blas", type="run")
