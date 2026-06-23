@@ -1,2 +1,3 @@
 mirrors:
-  local-source: file:///glade/work/epicufsrt/contrib/spack-stack/source-cache
+  local-source: file:///glade/work/epicufsrt/contrib/spack-stack/derecho/source-cache
+  local-binary: file:///glade/work/epicufsrt/contrib/spack-stack/derecho/build-cache
