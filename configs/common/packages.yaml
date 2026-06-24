@@ -397,10 +397,6 @@ packages:
     py-cryptography:
       require:
       - '@42'
-    ## To avoid duplicate packages
-    #py-flit-core:
-    #  require:
-    #  - '@3.8.0'
     py-h5py:
       require:
       - ~mpi
@@ -409,10 +405,6 @@ packages:
     py-hatchling:
       require:
       - '@1.27:'
-    ## See py-pycparser
-    #py-jsonschema:
-    #  require:
-    #  - '@4.17.3'
     # To avoid duplicate packages
     py-lxml:
       require:
