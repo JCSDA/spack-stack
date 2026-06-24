@@ -48,7 +48,7 @@ packages:
     - spec: cray-mpich@8.1.32
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/INTEL/2022.1
       modules:
-      - libfabric/1.22.0
+      - libfabric/2.3.1
       - craype-network-ofi
       - cray-mpich/8.1.32
       extra_attributes:
