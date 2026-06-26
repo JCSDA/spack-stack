@@ -18,6 +18,7 @@ packages:
       - umf/1.1.0
       - tbb/2023.0
       - compiler-rt/2026.0.0
+      - tcm/1.5
       - compiler/2026.0.0
       extra_attributes:
         compilers:
@@ -50,7 +51,7 @@ packages:
       - umf/1.1.0
       - tbb/2023.0
       - compiler-rt/2026.0.0
-      - mpi/2021.17
+      - mpi/2021.18
       - slurm
   intel-oneapi-mkl:
     buildable: false
