@@ -1,7 +1,7 @@
 packages:
   all:
     require:
-    - any_of: ['%intel-oneapi-compilers@=2025.3.0']
+    - any_of: ['%intel-oneapi-compilers@=2026.0.0']
       when: '%intel-oneapi-compilers'
     - any_of: ['%gcc@=11.2.0']
       when: '%gcc'
@@ -12,18 +12,18 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0 +fix_rt_linkage
-      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
+    - spec: intel-oneapi-compilers@2026.0.0 +fix_rt_linkage
+      prefix: /gpfs/neptune/spack-stack/oneapi-2026.0.0
       modules:
-      - umf/1.0.2
-      - tbb/2022.3
-      - compiler-rt/2025.3.0
-      - compiler/2025.3.0
+      - umf/1.1.0
+      - tbb/2023.0
+      - compiler-rt/2026.0.0
+      - compiler/2026.0.0
       extra_attributes:
         compilers:
-          c: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icx
-          cxx: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/icpx
-          fortran: /gpfs/neptune/spack-stack/oneapi-2025.3.0/compiler/2025.3/bin/ifx
+          c: /gpfs/neptune/spack-stack/oneapi-2026.0.0/compiler/2026.0/bin/icx
+          cxx: /gpfs/neptune/spack-stack/oneapi-2026.0.0/compiler/2026.0/bin/icpx
+          fortran: /gpfs/neptune/spack-stack/oneapi-2026.0.0/compiler/2026.0/bin/ifx
         environment:
           prepend_path:
             PATH: /cm/local/apps/gcc/11.2.0/bin
@@ -45,15 +45,15 @@ packages:
     buildable: false
     externals:
     - spec: intel-oneapi-mpi@2021.17
-      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
+      prefix: /gpfs/neptune/spack-stack/oneapi-2026.0.0
       modules:
-      - umf/1.0.2
-      - tbb/2022.3
-      - compiler-rt/2025.3.0
+      - umf/1.1.0
+      - tbb/2023.0
+      - compiler-rt/2026.0.0
       - mpi/2021.17
       - slurm
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.3
-      prefix: /gpfs/neptune/spack-stack/oneapi-2025.3.0
+    - spec: intel-oneapi-mkl@2026.0
+      prefix: /gpfs/neptune/spack-stack/oneapi-2026.0.0

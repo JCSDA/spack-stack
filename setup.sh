@@ -7,6 +7,9 @@ case $hostname in
   *acorn.wcoss2*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/wcoss2/setup.sh
     ;;
+  *atlantis*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/atlantis/setup.sh
+    ;;
   *blueback*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/blueback/setup.sh
     ;;
