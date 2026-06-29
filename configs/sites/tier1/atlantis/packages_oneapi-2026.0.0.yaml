@@ -8,7 +8,7 @@ packages:
   mpi:
     buildable: false
     require:
-    - intel-oneapi-mpi@2021.17
+    - intel-oneapi-mpi@2021.18
   intel-oneapi-compilers:
     buildable: false
     externals:
@@ -45,7 +45,7 @@ packages:
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.17
+    - spec: intel-oneapi-mpi@2021.18
       prefix: /gpfs/neptune/spack-stack/oneapi-2026.0.0
       modules:
       - umf/1.1.0
