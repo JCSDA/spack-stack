@@ -144,6 +144,11 @@ class StackEnv(object):
         packages_compiler_yaml_path = os.path.join(common_path, packages_compiler_yaml)
         if os.path.exists(packages_compiler_yaml_path):
             self.includes.append(os.path.join("common", packages_compiler_yaml))
+        else:
+            if self.treatwarningsaserrors:
+                raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
+            else:
+                logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
 
         lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
         modules_yaml_modulesys = f"modules_{lmod_or_tcl}.yaml"
@@ -177,6 +182,11 @@ class StackEnv(object):
         packages_compiler_yaml_path = os.path.join(site_path, packages_compiler_yaml)
         if os.path.exists(packages_compiler_yaml_path):
             self.includes.append(os.path.join(site_name, packages_compiler_yaml))
+        else:
+            if self.treatwarningsaserrors:
+                raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
+            else:
+                logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
 
         lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
         modules_yaml_modulesys = f"modules_{lmod_or_tcl}.yaml"
