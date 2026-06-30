@@ -297,7 +297,7 @@ class StackEnv(object):
                 if path_parts:
                     name = path_parts["spack_stack_ver"] + "-" + path_parts["env_name"]
                 else:
-                    name = os.path.realpath(os.path.join(upstream_path, "..")) + "-" + os.path.basename(upstream_path)
+                    name = os.path.realpath(os.path.join(upstream_path, ".."))
                 upstream = "upstreams:%s:install_tree:'%s'" % (name, upstream_path)
                 logging.info("Adding upstream path '%s'" % upstream_path)
                 spack.config.add(upstream, scope=env_scope)
