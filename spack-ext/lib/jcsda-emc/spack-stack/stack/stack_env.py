@@ -292,12 +292,12 @@ class StackEnv(object):
                     logging.warning(
                         "WARNING: Upstream path '%s' does not appear to exist!" % upstream_path
                     )
-                re_pattern = ".+/(?P<spack_stack_ver>spack-stack-[^/]+)/envs/(?P<env_name>[^/]+)"
+                re_pattern = ".+/(?P<spack_stack_ver>spack-stack-[^/]+)/.+/(?P<env_name>[^/]+)/install?$"
                 path_parts = re.match(re_pattern, upstream_path)
                 if path_parts:
                     name = path_parts["spack_stack_ver"] + "-" + path_parts["env_name"]
                 else:
-                    name = os.path.realpath(os.path.join(upstream_path, ".."))
+                    name = os.path.realpath(os.path.join(upstream_path, "..")) + "-" + os.path.basename(upstream_path)
                 upstream = "upstreams:%s:install_tree:'%s'" % (name, upstream_path)
                 logging.info("Adding upstream path '%s'" % upstream_path)
                 spack.config.add(upstream, scope=env_scope)
