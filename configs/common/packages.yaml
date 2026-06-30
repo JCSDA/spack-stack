@@ -109,19 +109,19 @@ packages:
       - +ui
     eckit:
       require:
-      - '@1.32.3'
+      - '@2.0.7'
       - linalg=eigen,lapack
       - compression=lz4,bzip2
     ecmwf-atlas:
       require:
-      - '@0.44.1'
+      - '@0.46.0'
       - +fckit
       - +trans
       - +tesselation
       - +fftw
     ectrans:
       require:
-      - '@1.7.0'
+      - '@1.8.0'
     eigen:
       require:
       - '@3.4.0'
@@ -148,14 +148,14 @@ packages:
       - ~libbsd
     fckit:
       require:
-      - '@0.14.1'
+      - '@0.14.3'
       - +eckit
     fftw:
       require:
       - '@3.3.10'
     fiat:
       require:
-      - '@1.6.1'
+      - '@2.0.0'
     flex:
       require:
       - '@2.6.4'
