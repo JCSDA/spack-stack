@@ -22,6 +22,7 @@ class Oops(CMakePackage):
     version("1.10.0.20250827", commit="91889ad09d3789f14a1184701dd80a4913d3ce3e")
 
     patch("include_algorithm.patch", when="@1.10.0.20250827")
+    patch("patch-1.10.0.atlas.mac.patch", when="@1.10.0.20250827")
 
     variant("l95", default=True, description="Build LORENZ95 toy model")
     variant("mkl", default=False, description="Use MKL for LAPACK implementation (if available)")

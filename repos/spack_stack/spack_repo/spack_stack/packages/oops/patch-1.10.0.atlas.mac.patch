@@ -1,0 +1,34 @@
+diff --git a/src/oops/util/ParallelFieldSetIO.cc b/src/oops/util/ParallelFieldSetIO.cc
+index 04e4c55c..0a07a9ba 100644
+--- a/src/oops/util/ParallelFieldSetIO.cc
++++ b/src/oops/util/ParallelFieldSetIO.cc
+@@ -80,9 +80,6 @@ atlas::FieldSet ParallelFieldSetIO::ioFieldSet(const atlas::FieldSet& nativeFiel
+             case atlas::array::DataType::KIND_INT32:
+                 ioFieldSet.add(functionSpace_.createField<int>(fieldSetConfig));
+                 break;
+-            case atlas::array::DataType::KIND_INT64:
+-                ioFieldSet.add(functionSpace_.createField<int64_t>(fieldSetConfig));
+-                break;
+             case atlas::array::DataType::KIND_REAL32:
+                 ioFieldSet.add(functionSpace_.createField<float>(fieldSetConfig));
+                 break;
+@@ -105,9 +102,6 @@ void ParallelFieldSetIO::writeFieldByTypeAndRank(const atlas::Field& field,
+         case atlas::array::DataType::KIND_INT32:
+             dispatchWriteField<int>(field, netcdfGeneralIDs, netcdfVarID);
+             break;
+-        case atlas::array::DataType::KIND_INT64:
+-            dispatchWriteField<int64_t>(field, netcdfGeneralIDs, netcdfVarID);
+-            break;
+         case atlas::array::DataType::KIND_REAL32:
+             dispatchWriteField<float>(field, netcdfGeneralIDs, netcdfVarID);
+             break;
+@@ -129,9 +123,6 @@ void ParallelFieldSetIO::readFieldByTypeAndRank(atlas::Field& field,
+         case atlas::array::DataType::KIND_INT32:
+             dispatchReadField<int>(field, netcdfGeneralIDs, netcdfVarID);
+             break;
+-        case atlas::array::DataType::KIND_INT64:
+-            dispatchReadField<int64_t>(field, netcdfGeneralIDs, netcdfVarID);
+-            break;
+         case atlas::array::DataType::KIND_REAL32:
+             dispatchReadField<float>(field, netcdfGeneralIDs, netcdfVarID);
+             break;
