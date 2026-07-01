@@ -1,0 +1,13 @@
+diff --git a/cmake/ioda-import.cmake.in b/cmake/ioda-import.cmake.in
+index 907fce15..0d7ae528 100644
+--- a/cmake/ioda-import.cmake.in
++++ b/cmake/ioda-import.cmake.in
+@@ -96,7 +96,7 @@ else()
+ 		# in the ioda-post-import.cmake file, even if it is never again used. Some
+ 		# tools (like Spack) will complain about this path and may indicate that ioda
+ 		# is a non-relocatable package, even though it is completely relocatable.
+-		set( IODA_YAML_ROOT "@IODA_YAML_ROOT@" )
++		set( IODA_YAML_ROOT "${CMAKE_CURRENT_LIST_FILE}/share/test/testinput/" )
+ 	endif()
+ endif()
+ 
