@@ -7,7 +7,7 @@ index 907fce15..0d7ae528 100644
  		# tools (like Spack) will complain about this path and may indicate that ioda
  		# is a non-relocatable package, even though it is completely relocatable.
 -		set( IODA_YAML_ROOT "@IODA_YAML_ROOT@" )
-+		set( IODA_YAML_ROOT "${CMAKE_CURRENT_LIST_FILE}/share/test/testinput/" )
++		set( IODA_YAML_ROOT "${CMAKE_CURRENT_LIST_DIR}/share/test/testinput/" )
  	endif()
  endif()
  
