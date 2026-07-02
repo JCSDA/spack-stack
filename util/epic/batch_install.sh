@@ -2,14 +2,14 @@
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 SPACK_STACK_DIR=$(dirname $(dirname ${SCRIPT_DIR}))
-
+  
 set -e
-
+  
 ##################################################################################################
 # Packages for which to run tests when "-t" is specified; caveat: must be listed in order of     #
 # their respective dependencies (e.g. A depends on B --> B comes first)                          #
 ##################################################################################################
-
+    
 SPACK_STACK_PACKAGES_TO_TEST=(
   "oops"
   "ioda"
@@ -17,26 +17,24 @@ SPACK_STACK_PACKAGES_TO_TEST=(
   "ropp-ufo"
   "ufo"
 )
-
+      
 ##################################################################################################
 # Options                                                                                        #
 ##################################################################################################
-
+    
 usage() {
   set +x
   echo
-  echo "Usage: $0 -r <ROLE> -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>]"
+  echo "Usage: $0 -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>]"
   echo
-  echo "  -r  Set role, can be 'ops' or 'dev'"
   echo "  -m  Set mode, can be 'build' or 'install';"
   echo "      build: build environments and update build caches;"
-  echo "      install: install environments using build caches"
+  echo "      install: install environments using build caches (do not update build caches)"
   echo "  -d  Build or install environments in ENV_DIRS;"
   echo "      if not set, the default location is used"
   echo "  -c  Provide location of build caches as BUILDCACHE_DIR;"
   echo "      if not set, authoritative build caches are used"
   echo "  -u  Flag to update bootstrap and source caches;"
-  echo "      requires role 'dev' and mode 'build'"
   echo "  -e  Continue builds/install in existing environments;"
   echo "      by default, exit with an error if already exist"
   echo "  -s  Submit 'spack install' to batch scheduler"
@@ -49,13 +47,10 @@ usage() {
 while getopts r:m:d:c:uesth flag
 do
   case "${flag}" in
-    r)
-      SPACK_STACK_ROLE=${OPTARG}
-      ;;
     m)
       SPACK_STACK_MODE=${OPTARG}
       ;;
-    d)
+    d) 
       SPACK_STACK_ENVIRONMENT_DIRS=$(readlink -f ${OPTARG})
       ;;
     c)
@@ -81,7 +76,6 @@ do
 done
 
 echo "INFO: $0 options:"
-echo "  SPACK_STACK_ROLE:                            ${SPACK_STACK_ROLE:-not set}"
 echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set}"
 echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
@@ -89,14 +83,6 @@ echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CA
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
 echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
 echo "  SPACK_STACK_RUN_TESTS:                       ${SPACK_STACK_RUN_TESTS:-false}"
-
-if [[ -z ${SPACK_STACK_ROLE} ]]; then
-  echo "ERROR, SPACK_STACK_ROLE not defined. Provide -r ROLE as argument"
-  exit 1
-elif [[ ! ${SPACK_STACK_ROLE} == "dev" && ! ${SPACK_STACK_ROLE} == "ops" ]]; then
-  echo "ERROR, invalid role '${SPACK_STACK_ROLE}'"
-  exit 1
-fi
 
 if [[ -z ${SPACK_STACK_MODE} ]]; then
   echo "ERROR, SPACK_STACK_MODE not defined. Provide -m MODE as argument"
@@ -106,81 +92,61 @@ elif [[ ! ${SPACK_STACK_MODE} == "build" && ! ${SPACK_STACK_MODE} == "install" ]
   exit 1
 fi
 
-# Role ops cannot write to the default (authoritative) build cache
-if [[ ${SPACK_STACK_ROLE} == "ops" && ${SPACK_STACK_MODE} == "build" && -z ${SPACK_STACK_BUILDCACHE_DIR} ]]; then
-  echo "ERROR, SPACK_STACK_BUILDCACHE_DIR not defined. Provide -c BUILDCACHE_DIR"
-  echo "as argument when role is 'ops' and mode is 'build'"
-  exit 1
-fi
-
 # Updating bootstrap and source caches requires role dev and mode build
 if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
-  if [[ ! ${SPACK_STACK_ROLE} == "dev" || ! ${SPACK_STACK_MODE} == "build" ]]; then
-    echo "ERROR, SPACK_STACK_UPDATE_DEV_CACHES requires role 'dev' and mode 'build'"
+  if [[ ! ${SPACK_STACK_MODE} == "build" ]]; then
+    echo "ERROR, SPACK_STACK_UPDATE_DEV_CACHES requires mode 'build'"
     exit 1
   fi
 fi
 
 ##################################################################################################
 
-# Remove domain name suffices and digits to determine hostname
-SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1)
+# Remove domain name suffices and digits and dashes [MSU] to determine hostname
+SPACK_STACK_BATCH_HOST=$(echo ${HOSTNAME} | cut -d "." -f 1 | cut -d "-" -f 1)
 SPACK_STACK_BATCH_HOST=${SPACK_STACK_BATCH_HOST//[0-9]/}
 
-# Workaround for ParallelWorks login nodes
-if [[ "${SPACK_STACK_BATCH_HOST}" == *"awsneptunecluster"* ]]; then
-  SPACK_STACK_BATCH_HOST="navy-aws"
-fi
-
 case ${SPACK_STACK_BATCH_HOST} in
-  atlantis)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.4.0" "clang@=22.1.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-dev-llvm" "unified-dev" "cylc-dev")
+  derecho)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.1" "gcc@=13.3.1")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/neptune_diagnostics/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/neptune_diagnostics/spack-stack/cargo-mirror"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/glade/work/epicufsrt/contrib/spack-stack/derecho/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/glade/work/epicufsrt/contrib/spack-stack/derecho/cargo-mirror"
+    # set TMPDIR to avoid full /tmp directory on derecho login nodes
+    export TMPDIR=/glade/derecho/scratch/epicufsrt
     ;;
-  blueback)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.0.4" "oneapi@=2026.0.0" "gcc@=13.3.0" "gcc@=14.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/p/app/projects/NEPTUNE/spack-stack/cargo-mirror"
+  gaea)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.2.1" "gcc@=13.3.1")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/gpfs/f6/epic/proj-shared/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/gpfs/f6/epic/proj-shared/spack-stack/cargo-mirror"
+    # hostname needs to match configs/sites/tier1/<host>
+    SPACK_STACK_BATCH_HOST="gaea-c6"
     ;;
-  narwhal)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "gcc@=13.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/p/app/projects/NEPTUNE/spack-stack/cargo-mirror"
+  hercules)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.1" "gcc@=12.2.0")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/apps/contrib/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/apps/contrib/spack-stack/cargo-mirror"
     ;;
-  nautilus)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "oneapi@=2025.3.0" "gcc@=13.3.1")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "unified-dev" "cylc-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/p/app/projects/NEPTUNE/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/p/app/projects/NEPTUNE/spack-stack/cargo-mirror"
+  orion)
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.1")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/apps/contrib/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/apps/contrib/spack-stack/cargo-mirror"
     ;;
-  navy-aws)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=13.4.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/project/spack-stack/bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/project/spack-stack/cargo-mirror"
-    ;;
-  blackpearl)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.1" "gcc@=13.2.1")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "cylc-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
-    ;;
-  bounty)
-    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.0" "gcc@=14.2.1" "gcc@=13.3.1" "clang@=22.1.0")
-    SPACK_STACK_BATCH_TEMPLATES=("neptune-dev" "neptune-dev-llvm" "unified-dev" "cylc-dev")
-    SPACK_STACK_MODULE_CHOICE="tcl"
-    SPACK_STACK_BOOTSTRAP_MIRROR="/home/dom/prod/spack-bootstrap-mirror"
-    SPACK_STACK_CARGO_MIRROR="/home/dom/prod/spack-cargo-mirror"
+  ufe)    # ursa
+    SPACK_STACK_BATCH_COMPILERS=("oneapi@=2025.3.1" "oneapi@=2025.3.1-hpcx" "gcc@=12.4.0")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_MODULE_CHOICE="lmod"
+    SPACK_STACK_BOOTSTRAP_MIRROR="/contrib/spack-stack/bootstrap-mirror"
+    SPACK_STACK_CARGO_MIRROR="/contrib/spack-stack/cargo-mirror"
+    # hostname needs to match configs/sites/tier1/<host>
+    SPACK_STACK_BATCH_HOST="ursa"
     ;;
   *)
     echo "ERROR, host ${SPACK_STACK_BATCH_HOST} not configured"
@@ -197,14 +163,28 @@ function fix_permissions() {
   echo "Repairing permissions for directory ${dir} on ${host} ..."
   set +e
   case ${host} in
-    atlantis)
-      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+    derecho)
+      nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
       if [[ ${executables} -eq 1 ]]; then
+        sleep 30
         nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
+      fi
+      nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
+      ;;
+    gaea-c6)
+      # no lfs command on gaea-c6
+      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
+      # In case the find command returns no executables
+      if [[ ${executables} -eq 1 ]]; then
+        sleep 30
+        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
+        sleep 30
       fi
       nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
-    blueback)
+    hercules)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
       if [[ ${executables} -eq 1 ]]; then
@@ -214,7 +194,7 @@ function fix_permissions() {
       fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
-    narwhal)
+    orion)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
       if [[ ${executables} -eq 1 ]]; then
@@ -224,7 +204,7 @@ function fix_permissions() {
       fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
       ;;
-    nautilus)
+    ursa)
       nice -n 19 lfs find ${dir} -type d -print0 | xargs --null chmod a+rx
       # In case the find command returns no executables
       if [[ ${executables} -eq 1 ]]; then
@@ -233,17 +213,6 @@ function fix_permissions() {
         sleep 30
       fi
       nice -n 19 lfs find ${dir} -type f -print0 | xargs --null chmod a+r
-      ;;
-    navy-aws)
-      nice -n 19 find ${dir} -type d -print0 | xargs --null chmod a+rx
-      if [[ ${executables} -eq 1 ]]; then
-        nice -n 19 find ${dir} -type f -executable -print0 | xargs --null chmod a+rx
-      fi
-      nice -n 19 find ${dir} -type f -print0 | xargs --null chmod a+r
-      ;;
-    blackpearl)
-      ;;
-    bounty)
       ;;
     *)
       echo "ERROR, xargs-chmod command not configured for ${host}"
@@ -258,20 +227,22 @@ function fix_permissions() {
 function tasks_per_node() {
   host=$1
   case ${host} in
-    atlantis)
+    derecho)
       tpn=128
       ;;
-    blueback)
-      tpn=192
-      ;;
-    narwhal)
+    gaea-c6)
       tpn=128
       ;;
-    nautilus)
-      tpn=128
+    hercules)
+      tpn=80
       ;;
-    #navy-aws)
-    #  ;;
+    orion)
+      tpn=40
+      ;;
+    ursa)
+      # occasional failures installing 'go' at tpn=128
+      tpn=64
+      ;;
     *)
       echo "ERROR, tasks_per_node command not configured for ${host}"
       exit 1
@@ -282,36 +253,71 @@ function tasks_per_node() {
 
 ##################################################################################################
 
+function epic_host_parameters() {
+  local -n host_array=$1
+  local -n epic_host=$2
+
+  # array values: ("account" "walltime" "tasks_per_node")
+  case ${epic_host} in
+    derecho)
+	    host_array=("NRAL0032" "12:00:00")
+      ;;
+    gaea-c6)
+      host_array=("epic" "720")
+      ;;
+    hercules)
+      host_array=("epic" "720")
+      ;;
+    orion)
+      host_array=("epic" "720")
+      ;;
+    ursa)
+      host_array=("epic" "720")
+      ;;
+    *)
+      echo "ERROR, host_parameters command not configured for ${host}"
+      exit 1
+      ;;
+  esac
+}
+
+##################################################################################################
+
 function run_interactive_job() {
   host=$1
   script=$2
   reuse_build_cache=$3
-  tpn=$(tasks_per_node ${host})
-  walltime="720"
-  if [[ ! -n "${ACCOUNT}" ]]; then
-    echo "ERROR, environment variable ACCOUNT not set"
+
+  # get interactive job parameters for host
+  params=()
+  epic_host_parameters params host
+  if [[ ${#params[@]} -lt 2 ]] ; then
+    echo "Incorrect number of host-specific configuration parameters for ${host}"
     exit 1
   fi
-  echo "Starting interactive job on ${host} with ${tpn} tasks and a walltime of ${walltime} minutes for ${script} ..."
+
+  account=${params[0]}
+  walltime=${params[1]}
+  tpn=$(tasks_per_node ${host})
+
+  echo "Starting interactive job on ${host} for account ${account} with ${tpn} tasks and a walltime of ${walltime} minutes for ${script} ..."
   case ${host} in
-    atlantis)
-      module load slurm
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} bash ${script}
-      module unload slurm
+    derecho)
+      module load ncarenv/25.10 &>/dev/null  # required for qcmd
+      qcmd -l select=1:ncpus=${tpn}:mpiprocs=${tpn} -l walltime=${walltime} -j oe -q main -A ${account} -- bash ${script}
       ;;
-    blueback)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+    gaea-c6)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=normal --partition=batch --clusters=c6 --account=${account} bash ${script}
       ;;
-    narwhal)
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
+    hercules)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=long --partition=development --account=${account} bash ${script}
       ;;
-    nautilus)
-      module load slurm
-      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=serial --account=${ACCOUNT} bash ${script}
-      module unload slurm
+    orion)
+      salloc --exclusive --nodes=1 --ntasks-per-node=${tpn} --time=${walltime} --qos=long --partition=development --account=${account} bash ${script}
       ;;
-    #navy-aws)
-    #  ;;
+    ursa)
+      salloc --exclusive --nodes=1 --mem=0 --ntasks-per-node=${tpn} --time=${walltime} --qos=long --account=${account} bash ${script}
+      ;;
     *)
       echo "ERROR, run_interactive_job command not configured for ${host}"
       exit 1
@@ -322,7 +328,7 @@ function run_interactive_job() {
 ##################################################################################################
 
 echo
-echo "Welcome to NRL SPACK-STACK BATCH INSTALL"
+echo "Welcome to EPIC SPACK-STACK BATCH INSTALL"
 echo
 
 if [[ ! -e "setup.sh" || ! -e ".spackstack" ]]; then
@@ -361,26 +367,19 @@ if [[ "${SPACK_STACK_MODE}" == "install" ]]; then
   update_build_cache="false"
   reuse_build_cache="true"
 elif [[ "${SPACK_STACK_MODE}" == "build" ]]; then
-  if [[ "${SPACK_STACK_ROLE}" == "ops" ]]; then
+  if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
+    update_bootstrap_mirror="true"
+    update_cargo_mirror="true"
+    update_source_cache="true"
+    update_build_cache="true"
+    reuse_build_cache="false"
+  else
     update_bootstrap_mirror="false"
     update_cargo_mirror="false"
     update_source_cache="false"
-  elif [[ "${SPACK_STACK_ROLE}" == "dev" ]]; then
-    if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
-      update_bootstrap_mirror="true"
-      update_cargo_mirror="true"
-      update_source_cache="true"
-    else
-      update_bootstrap_mirror="false"
-      update_cargo_mirror="false"
-      update_source_cache="false"
-    fi
-  else
-    echo "ERROR, invalid role ${SPACK_STACK_ROLE}"
-    exit 1
+    update_build_cache="false"
+    reuse_build_cache="true"
   fi
-  update_build_cache="true"
-  reuse_build_cache="true"
 else
   echo "ERROR, invalid mode ${SPACK_STACK_MODE}"
   exit 1
@@ -422,32 +421,19 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     if [[ "${template}" == "cylc-dev" && ! "${compiler_name}" == "gcc" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
-    # With clang, only neptune-dev-llvm 
-    elif [[ "${compiler_name}" == "clang" && ! "${template}" == "neptune-dev-llvm" ]]; then
-      echo "Skipping template ${template} with compiler ${compiler}"
-      continue
-    # With other compilers, skip neptune-dev-llvm
-    elif [[ ! "${compiler_name}" == "clang" && "${template}" == "neptune-dev-llvm" ]]; then
-      echo "Skipping template ${template} with compiler ${compiler}"
-      continue
     # FMS compiler ICE: https://github.com/NOAA-GFDL/FMS/issues/1680
     elif [[ "${compiler_name}" == "oneapi" && "${compiler_version}" == "2025.1"* && "${template}" == "unified-dev" ]]; then
       echo "Skipping template ${template} with compiler ${compiler}"
       continue
     fi
     echo "Processing template ${template} with compiler ${compiler}"
+    echo
     #############################################################
 
     # Build environment name. Prefices are defined here
     case ${template} in
       unified-dev)
         env_name_prefix="ue"
-        ;;
-      neptune-dev)
-        env_name_prefix="ne"
-        ;;
-      neptune-dev-llvm)
-        env_name_prefix="ne"
         ;;
       cylc-dev)
         env_name_prefix="ce"
@@ -476,67 +462,61 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     # Reset environment
     echo "Resetting environment ..."
     case ${host} in
-      atlantis)
+      derecho)
         umask 0022
         module purge
         case ${compiler} in
-          clang@=22.1.0)
-            module use /gpfs/neptune/spack-stack/llvm-22.1.0/modulefiles
-            module use /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-22.1.0/modulefiles
+          gcc@=13.3.1)
             ;;
-          gcc@=13.4.0)
-            module use /gpfs/neptune/spack-stack/gcc-13.4.0/modulefiles
-            module use /gpfs/neptune/spack-stack/openmpi-4.1.8/gcc-13.4.0/modulefiles
-            ;;
-          oneapi@=2025.3.0)
-            module use /gpfs/neptune/spack-stack/oneapi-2025.3.0/modulefiles
+          oneapi@=2025.3.1)
+            module use /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/modulefiles
             ;;
         esac
         ;;
-      blueback)
-        umask 0022
-        set +e
-        module purge
-        set -e
-        case ${compiler} in
-          oneapi@=2026.0.0)
-            module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0/modulefiles
-            ;;
-        esac
-        ;;
-      narwhal)
-        umask 0022
-        set +e
-        module purge
-        set -e
-        ;;
-      nautilus)
+      gaea-c6)
         umask 0022
         module purge
         case ${compiler} in
-          oneapi@=2024.2.1)
-            module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2024.2.1/modulefiles
+          gcc@=13.3.1)
             ;;
-          oneapi@=2025.3.0)
-            module use /p/app/projects/NEPTUNE/spack-stack/oneapi-2025.3.0/modulefiles
+          oneapi@=2025.2.1)
             ;;
         esac
         ;;
-      navy-aws)
+      hercules)
         umask 0022
         module purge
         case ${compiler} in
-          gcc-13.4.0)
-            module use /project/spack-stack/gcc-13.4.0/modulefiles
-            module use /project/spack-stack/openmpi-4.1.8/gcc-13.4.0/modulefiles
+          gcc@=12.2.0)
+            ;;
+          oneapi@=2025.3.1)
+            module use /apps/contrib/spack-stack/modulefiles
             ;;
         esac
         ;;
-      blackpearl)
-        ulimit -s unlimited
+      orion)
+        umask 0022
+        module purge
+        case ${compiler} in
+          # not currently supported
+          #gcc@=12.2.0)
+          #  ;;
+          oneapi@=2025.3.1)
+            module use /apps/contrib/spack-stack/modulefiles
+            ;;
+        esac
         ;;
-      bounty)
-        ulimit -s unlimited
+      ursa)
+        umask 0022
+        module purge
+        case ${compiler} in
+          gcc@=12.4.0)
+            ;;
+          oneapi@=2025.3.1)
+            ;;
+          oneapi@=2025.3.1-hpcx)
+            ;;
+        esac
         ;;
       *)
         echo "ERROR, host ${host} not configured for resetting environment"
@@ -546,7 +526,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
     # Info prints
     ulimit -a
-    module li
+    module list
 
     source setup.sh
     if [[ "${first_pass}" == "true" ]]; then
@@ -562,7 +542,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       tmp_bootstrap_mirror_path=${PWD}/tmp-bootstrap-mirror
       echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
       rm -fr ${tmp_bootstrap_mirror_path}
-      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.bootstrap-mirror.001
+      spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.${env_name}.bootstrap-mirror.001
       rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
       rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
@@ -583,18 +563,14 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
                              --template=${template} \
                              --dir=${environment_dirs} \
                              --treat-warnings-as-errors \
-                             2>&1 | tee log.create.${env_name}.001
+                             2>&1 | tee log.${env_name}.create.001
     fi
     spack env activate -p ${env_dir}
 
+    # Not pertinent to EPIC hosts; save as an illustrative example for EPIC ParallelWorks hosts
+    # and potential Enterprise GitHub or GitLab
     # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
-    case ${host} in
-      navy-aws)
-        echo "Turning off ADP builds on ParallelWorks platforms"
-        sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
-        sed -i 's/+sdp/~sdp/g' ${env_dir}/spack.yaml
-        ;;
-    esac
+    #sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
 
     echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
     if [[ ! -d ${bootstrap_mirror_path} ]]; then
@@ -637,7 +613,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     spack bootstrap now 2>&1 | tee log.bootstrap.${env_name}.001
 
     # Concretize environment, and check that spack.lock is created
-    spack concretize --force --fresh 2>&1 | tee log.concretize.${env_name}.001
+    spack concretize --force --fresh 2>&1 | tee log.${env_name}.concretize.001
     if [[ ! -e ${env_dir}/spack.lock ]]; then
       echo "ERROR during concretization of environment ${env_name}, spack.lock not found"
       exit 1
@@ -705,26 +681,26 @@ $(declare -p test_packages)
 # If no tests are required, install everything
 if [[ \${#test_packages[@]} -eq 0 ]]; then
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.001
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.${env_name}.install.001
   set +o pipefail
 else
   for (( idx=0; idx<\${#test_packages[@]}; idx++ )); do
     test_package=\${test_packages[\${idx}]}
     # First, check if this package is in this environment
     set +e
-    grep -e "\${test_package}@" log.concretize.${env_name}.001 || continue
+    grep -e "\${test_package}@" log.concretize.001 || continue
     set -e
     idx_padded=\$(printf "%03d" "\$((idx+1))")
     set -o pipefail
     spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} --only=dependencies \${test_package} \\
-      2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}-dependencies
-    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.install.${env_name}.\${idx_padded}.\${test_package}
+      2>&1 | tee log.${env_name}.install.\${idx_padded}.\${test_package}-dependencies
+    spack install --verbose --no-cache --test=root \${test_package} 2>&1 | tee log.${env_name}.install.\${idx_padded}.\${test_package}
     set +o pipefail
   done
   # idx now equals the length of the array; install the rest
   idx_padded=\$(printf "%03d" "\$((idx+1))")
   set -o pipefail
-  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.install.${env_name}.\${idx_padded}
+  spack install --verbose ${buildcache_install_flags} ${parallel_install_flags} 2>&1 | tee log.${env_name}.install.\${idx_padded}
   set +o pipefail
 fi
 EOF
@@ -743,9 +719,13 @@ EOF
 
     # In install mode, create environment modules
     if [[ "${update_build_cache}" == "false" ]]; then
-      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee log.modules.${env_name}.001
-      spack stack setup-meta-modules 2>&1 | tee log.setup-meta-modules.${env_name}.001
+      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee log.${env_name}.modules.001
+      spack stack setup-meta-modules 2>&1 | tee log.${env_name}.setup-meta-modules.001
     fi
+
+    echo ; echo -n "Copying log files to ${env_dir}..."
+    mv -f log.* ${env_dir} 2> /dev/null
+    echo -n "done" ; echo
 
     # When creating or updating buildcaches, fix permissions for mirrors.
     # Mirrors do not contain executables, therefore skip looking for them.

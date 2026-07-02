@@ -1,0 +1,3 @@
+mirrors:
+  local-source: file:///gpfs/f6/epic/proj-shared/spack-stack/source-cache
+  local-binary: file:///gpfs/f6/epic/proj-shared/spack-stack/build-cache

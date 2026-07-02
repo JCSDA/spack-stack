@@ -1,0 +1,55 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=14.2.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - "openmpi@4.1.8"
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@14.2.0 languages:='c,c++,fortran'
+      prefix: /nobackup/gmao_SIteam/gcc/gcc-14.2.0
+      modules:
+      - comp-gcc/14.2.0
+      extra_attributes:
+        compilers:
+          c: /nobackup/gmao_SIteam/gcc/gcc-14.2.0/bin/gcc
+          cxx: /nobackup/gmao_SIteam/gcc/gcc-14.2.0/bin/g++
+          fortran: /nobackup/gmao_SIteam/gcc/gcc-14.2.0/bin/gfortran
+  openmpi:
+    buildable: false
+    externals:
+    - spec: openmpi@4.1.8 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+lustre~internal-hwloc+two_level_namespace fabrics=ucx schedulers=tm %gcc@14.2.0
+      prefix: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0
+      modules:
+      - mpi-openmpi/4.1.8/gcc/14.2.0
+      extra_attributes:
+        environment:
+          set:
+            OPAL_PREFIX: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0
+            UCX_MAX_EAGER_LANES: 1
+            UCX_MAX_RNDV_LANES: 1
+            OMPI_MCA_pml: ucx
+            OMPI_MCA_btl: ^openib
+            OMPI_MCA_oob_tcp_listen_mode: listen_thread
+            OMPI_MCA_oob_tcp_if_include: ib0,ib1
+            OMPI_MCA_btl_tcp_if_include: ib0,ib1
+            OMPI_MCA_opal_warn_on_missing_libcuda: 0
+            UCX_IB_SUBNET_PREFIX: fec0:0000:0000:0008
+            OMPI_MCA_shmem_mmap_enable_nfs_warning: 0
+            OPENMPI: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0
+          prepend_path:
+            PATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0/bin
+            LIBRARY_PATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0/lib
+            LD_LIBRARY_PATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0/lib
+            CPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0/include
+            FPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0/include
+            MANPATH: /nobackup/gmao_SIteam/MPI/openmpi/4.1.8/gcc-14.2.0/share/man
+
+  # Testing shows we now need to pass in -lm for GCC
+  p4est:
+    require:
+    - 'ldflags="-lm"'

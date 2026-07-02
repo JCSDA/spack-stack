@@ -7,8 +7,20 @@ case $hostname in
   *acorn.wcoss2*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/wcoss2/setup.sh
     ;;
+  *atlantis*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/atlantis/setup.sh
+    ;;
+  *blueback*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/blueback/setup.sh
+    ;;
   *derecho*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/derecho/setup.sh
+    ;;
+  *narwhal*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/narwhal/setup.sh
+    ;;
+  *nautilus*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/nautilus/setup.sh
     ;;
 esac
 
@@ -30,31 +42,3 @@ echo "Changing bootstrap path to $(spack bootstrap root '$spack/bootstrap')"
 # Get the current hash of the spack-stack code
 export SPACK_STACK_HASH=`cd $SPACK_STACK_DIR && git rev-parse --short HEAD`
 echo "Current hash of spack-stack is ${SPACK_STACK_HASH}"
-
-## Register the spack extension
-#libpath=${SPACK_STACK_DIR}/spack-ext/lib/jcsda-emc/spack-stack
-#if [ -d ${libpath}/stack/cmd ]; then
-#  spack config --scope defaults add "config:extensions:$libpath"
-#else
-#  echo "FATAL ERROR: Could not find spack-stack extensions in ${libpath}"
-#  return 1
-#fi
-#
-### Register the jcsda-emc repos
-##msg1="Added repo with namespace"
-##msg2="Repository is already registered with Spack"
-##for repo in spack-stack; do
-##  repodir=${SPACK_STACK_DIR}/spack-ext/repos/$repo
-##  othererrors=$( ( spack repo add $repodir --scope defaults 2>&1 | grep -v -e "$msg1" -e "$msg2" ) || true )
-##  if [ $(echo "$othererrors" | grep -c .) -ne 0 ]; then
-##    echo "$othererrors"
-##    return 2
-##  fi
-##  if [ ! -d $repodir ]; then
-##    echo "FATAL ERROR: Repo directory $repodir does not exist!"
-##    return 3
-##  fi
-##done
-#
-##echo "spack-stack extensions and repos are registered"
-#echo "spack-stack extensions are registered"

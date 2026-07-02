@@ -1,0 +1,59 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=15.2.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - "openmpi@5.0.10"
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@15.2.0 languages:='c,c++,fortran'
+      prefix: /usr/local/other/gcc/gcc-15.2.0
+      modules:
+      - comp/gcc/15.2.0
+      extra_attributes:
+        compilers:
+          c: /usr/local/other/gcc/gcc-15.2.0/bin/gcc
+          cxx: /usr/local/other/gcc/gcc-15.2.0/bin/g++
+          fortran: /usr/local/other/gcc/gcc-15.2.0/bin/gfortran
+  openmpi:
+    buildable: false
+    externals:
+    - spec: openmpi@5.0.10 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+lustre~internal-hwloc+two_level_namespace fabrics=ucx schedulers=slurm %gcc@15.2.0
+      prefix: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0
+      modules:
+      - mpi/openmpi/5.0.10/gcc-15.2.0
+      extra_attributes:
+        environment:
+          set:
+            OMPI_MCA_orte_tmpdir_base: /tmp
+            OMP_STACKSIZE: 1G
+            OMPI_MCA_mca_base_component_show_load_errors: 0
+            PMIX_MCA_mca_base_component_show_load_errors: 0
+            OMPI_MCA_coll_hcoll_enable: 0
+            OPENMPI: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0
+          prepend_path:
+            PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0/bin
+            LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0/lib
+            LD_LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0/lib
+            INCLUDE: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0/include
+            MANPATH: /discover/swdev/gmao_SIteam/MPI/openmpi/5.0.10/gcc-15.2.0
+
+  # Testing shows we now need to pass in -lm for GCC
+  p4est:
+    require:
+    - 'ldflags="-lm"'
+
+  # GCC 15 defaults to -std=c23 where 'false' is a keyword; parallel-netcdf 1.12.3
+  # uses 'false' as an enum constant in ncmpidump.h, so force C11 mode.
+  parallel-netcdf:
+    require:
+    - 'cflags="-std=gnu11"'
+
+  # ncurses 6.5 fails with GCC 15 due to NCURSES_BOOL conversion issues; 6.6 fixes this.
+  ncurses:
+    require:
+    - '@6.6'

@@ -1,0 +1,48 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=14.2.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - "openmpi@4.1.6"
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@14.2.0 languages:='c,c++,fortran'
+      prefix: /usr/local/other/gcc/gcc-14.2.0
+      modules:
+      - comp/gcc/14.2.0
+      extra_attributes:
+        compilers:
+          c: /usr/local/other/gcc/gcc-14.2.0/bin/gcc
+          cxx: /usr/local/other/gcc/gcc-14.2.0/bin/g++
+          fortran: /usr/local/other/gcc/gcc-14.2.0/bin/gfortran
+  openmpi:
+    buildable: false
+    externals:
+    - spec: openmpi@4.1.6 ~cuda~cxx~cxx_exceptions~java~memchecker+pmi~static~wrapper-rpath+lustre~internal-hwloc+two_level_namespace fabrics=ucx schedulers=slurm %gcc@14.2.0
+      prefix: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-14.2.0
+      modules:
+      - mpi/openmpi/4.1.6/gcc-14.2.0
+      extra_attributes:
+        environment:
+          set:
+            OMPI_MCA_orte_tmpdir_base: /tmp
+            OMP_STACKSIZE: 1G
+            OMPI_MCA_mca_base_component_show_load_errors: 0
+            PMIX_MCA_mca_base_component_show_load_errors: 0
+            OMPI_MCA_coll_hcoll_enable: 0
+            OPENMPI: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-14.2.0
+          prepend_path:
+            PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-14.2.0/bin
+            LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-14.2.0/lib
+            LD_LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-14.2.0/lib
+            INCLUDE: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-14.2.0/include
+            MANPATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6-SLES15/gcc-14.2.0
+
+  # Testing shows we now need to pass in -lm for GCC
+  p4est:
+    require:
+    - 'ldflags="-lm"'

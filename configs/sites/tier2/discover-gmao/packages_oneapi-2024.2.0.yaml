@@ -1,0 +1,55 @@
+packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2024.2.0']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=12.3.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - "intel-oneapi-mpi@2021.13"
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2024.2.0
+      prefix: /usr/local/intel/oneapi/2024
+      modules:
+      - comp/intel/2024.2.0
+      extra_attributes:
+        compilers:
+          c: /usr/local/intel/oneapi/2024/compiler/2024.2/bin/icx
+          cxx: /usr/local/intel/oneapi/2024/compiler/2024.2/bin/icpx
+          fortran: /usr/local/intel/oneapi/2024/compiler/2024.2/bin/ifort
+        environment:
+          prepend_path:
+            PATH: /usr/local/other/gcc/12.3.0/bin
+            CPATH: /usr/local/other/gcc/12.3.0/include
+            LD_LIBRARY_PATH: '/usr/local/intel/oneapi/2024/compiler/2024.2/compiler/lib:/usr/local/other/gcc/12.3.0/lib64'
+        extra_rpaths:
+        - /usr/local/other/gcc/12.3.0/lib64
+        - /usr/local/other/gcc/12.3.0/lib
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@12.3.0 languages:='c,c++'
+      prefix: /usr/local/other/gcc/12.3.0
+      modules:
+      - comp/gcc/12.3.0
+      extra_attributes:
+        compilers:
+          c: /usr/local/other/gcc/12.3.0/bin/gcc
+          cxx: /usr/local/other/gcc/12.3.0/bin/g++
+          fortran: /usr/local/other/gcc/12.3.0/bin/gfortran
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@2021.13
+      prefix: /usr/local/intel/oneapi/2024
+      modules:
+      - mpi/impi/2021.13
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /usr/local/intel/oneapi/2024

@@ -31,9 +31,10 @@ class DevUtilsEnv(BundlePackage):
 
     # Scalasca/ScoreP
     depends_on("scalasca", when="+scalasca", type="run")
-    depends_on("cube +gui", when="+scalasca", type="run")
+    depends_on("cube", when="+scalasca", type="run")
   
     # Miscellaneous
+    depends_on("bats", type="run")
     depends_on("cloc", type="run")
     depends_on("rank-run", type="run")
 
