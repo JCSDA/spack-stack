@@ -47,6 +47,9 @@ packages:
     - spec: intel-oneapi-mpi@2021.13
       prefix: /cm/shared/apps/intel/oneapi-2024.2.1
       modules:
+      - intel-oneapi-2024.2.1
+      - tbb/2021.13
+      - compiler-rt/2024.2.1
       - mpi/2021.13
       - slurm
   intel-oneapi-mkl:
