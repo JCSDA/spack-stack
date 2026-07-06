@@ -58,9 +58,6 @@ packages:
       require:
       - '@0.0.5'
       - +python
-    cairo:
-      require:
-      - +pic
     cdo:
       require:
       - ~openmp
@@ -212,11 +209,12 @@ packages:
       require:
       - '@1.1.3'
     harfbuzz:
+      # cmake-based harfbuzz fails during build; autotools is only available
+      # for the deprecated @2.9.1 which doesn't compile against ICU >= 76
+      # (-Werror=redundant-decls on u_strlen). Force meson.
       # cmake-based harfbuzz fails during build
       require:
-      - one_of:
-        - 'build_system=meson'
-        - 'build_system=autotools'
+      - 'build_system=meson'
     hdf:
       require:
       - '@4.2.15'
@@ -387,6 +385,10 @@ packages:
     py-cartopy:
       require:
       - +plotting
+    # See py-pycparser
+    py-click:
+      require:
+      - '@8.1.8'
     # Pin py-colorama to avoid duplicate packages, hopefully can be removed soon
     py-colorama:
       require:
@@ -395,10 +397,6 @@ packages:
     py-cryptography:
       require:
       - '@42'
-    # To avoid duplicate packages
-    py-flit-core:
-      require:
-      - '@3.8.0'
     py-h5py:
       require:
       - ~mpi
@@ -429,6 +427,15 @@ packages:
     py-poetry-core:
       require:
       - '@1.7'
+    # See py-pycparser
+    py-pooch:
+      require:
+      - '@1.7.0'
+    # Need older version of py-pycparser until we can update setuputils to >= 77 ?
+    # https://github.com/pydata/xarray/issues/10588
+    py-pycparser:
+      require:
+      - '@2.21'
     # Need at least py-pygithub@2.7 for self-hosted runner management
     py-pygithub:
       require:
@@ -437,6 +444,10 @@ packages:
     py-pyogrio:
       require:
       - '@0.9.0'
+    # See py-pycparser
+    py-pyparsing:
+      require:
+      - '@3.1.2'
     # To avoid duplicate packages
     py-python-dateutil:
       require:
@@ -454,6 +465,10 @@ packages:
     py-setuptools:
       require:
       - '@73.0.1'
+    # See py-pycparser
+    py-sphinxcontrib-bibtex:
+      require:
+      - '@2.5.0'
     py-torch:
       require:
       - +custom-protobuf
@@ -466,7 +481,7 @@ packages:
     # To avoid duplicate packages
     py-versioneer:
       require:
-      - '@0.29'
+      - '@=0.28'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:

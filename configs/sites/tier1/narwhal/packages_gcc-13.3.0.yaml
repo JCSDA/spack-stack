@@ -32,9 +32,7 @@ packages:
     - spec: cray-mpich@8.1.30
       prefix: /opt/cray/pe/mpich/8.1.30/ucx/gnu/12.3
       modules:
-      - craype-network-ucx
       - cray-mpich-ucx/8.1.30
-      - libfabric/1.22.0
       extra_attributes:
         extra_rpaths:
         - /opt/cray/libfabric/1.22.0/lib64
