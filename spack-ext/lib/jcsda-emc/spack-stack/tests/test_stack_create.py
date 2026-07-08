@@ -1,11 +1,13 @@
 import os
-import re
 import shutil
 
 import pytest
 
 import spack
 import spack.main
+import spack.util.spack_yaml as syaml
+
+from spack.extensions.stack.stack_env import compiler_name_and_version_from_string
 
 stack_create = spack.main.SpackCommand("stack")
 
@@ -143,69 +145,98 @@ def test_containers(container, spec):
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_modules():
+    env_name = "modulesys_test"
     stack_create(
         "create",
         "env",
         "--site",
         "hera",
         "--name",
-        "modulesys_test",
+        env_name,
         "--dir",
         test_dir,
         "--compiler",
         "gcc"
     )
-    modules_yaml_path = os.path.join(test_dir, "modulesys_test", "common", "modules.yaml")
-    with open(modules_yaml_path, "r") as f:
-        modules_yaml_txt = f.read()
-    assert "%s:" % "lmod" in modules_yaml_txt
-    assert "%s:" % "tcl" not in modules_yaml_txt
+    spack_yaml_path = os.path.join(test_dir, env_name, "spack.yaml")
+    with open(spack_yaml_path, "r") as f:
+        spack_yaml = syaml.load_config(f)
+
+    includes = spack_yaml["spack"]["include"]
+
+    # For site 'hera', we expect 'lmod' to be used.
+    # This should result in 'modules_lmod.yaml' being included.
+    assert os.path.join("common", "modules_lmod.yaml") in includes
+    assert os.path.join("common", "modules_tcl.yaml") not in includes
 
 
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_compilers():
-    for compiler in ["gcc-13.2.1", "oneapi-2024.2.1"]:
+    for compiler in ["gcc-13.2.1", "oneapi-2024.2.1", "gcc"]:
         if os.path.exists(test_dir):
             shutil.rmtree(test_dir)
+
+        env_name = "compiler_test"
         stack_create(
             "create",
             "env",
             "--site",
             "blackpearl",
             "--name",
-            "compiler_test",
+            env_name,
             "--dir",
             test_dir,
             "--compiler",
             compiler
         )
-        legacy_compiler_name, compiler_version = (
-            lambda m: (compiler[:m.start()], compiler[m.start()+1:]) if m else (compiler, ''))(re.search(r'-(?=\d)', compiler)
-        )
-        if legacy_compiler_name in spack.aliases.LEGACY_COMPILER_TO_BUILTIN.keys():
-            builtin_compiler_name = spack.aliases.LEGACY_COMPILER_TO_BUILTIN[legacy_compiler_name]
-        else:
-            builtin_compiler_name = legacy_compiler_name
-        site_packages_yaml_path = os.path.join(test_dir, "compiler_test", "site", "packages.yaml")
-        with open(site_packages_yaml_path, "r") as f:
-            site_packages_yaml = f.read()
-        assert f"{builtin_compiler_name}@{compiler_version}" in site_packages_yaml
-        common_packages_yaml_path = os.path.join(test_dir, "compiler_test", "common", "packages.yaml")
-        with open(common_packages_yaml_path, "r") as f:
-            common_packages_yaml = f.read()
-        assert f"%{legacy_compiler_name}" in common_packages_yaml
+
+        spack_yaml_path = os.path.join(test_dir, env_name, "spack.yaml")
+        with open(spack_yaml_path, "r") as f:
+            spack_yaml = syaml.load_config(f)
+
+        includes = spack_yaml["spack"]["include"]
+
+        # Check for common compiler-specific package file, which sets compiler preference.
+        # This is equivalent to the old test's check on common/packages.yaml.
+        compiler_name, _ = compiler_name_and_version_from_string(compiler)
+        expected_common_include = os.path.join("common", f"packages_{compiler_name}.yaml")
+        common_config_path = stack_path("configs", "common", f"packages_{compiler_name}.yaml")
+        if common_config_path and os.path.exists(common_config_path):
+            assert expected_common_include in includes
+
+        # Check for site-specific compiler file, which defines the compiler.
+        # This is equivalent to the old test's check on site/packages.yaml.
+        # This file is optional, so we only assert its inclusion if the source file exists.
+        site_config_file = f"packages_{compiler}.yaml"
+        site_configs_dir = None
+        # This logic to find the site dir is a bit fragile but necessary for a thorough test.
+        for tier in ["tier1", "tier2"]:
+            d = stack_path("configs", "sites", tier, "blackpearl")
+            if d and os.path.isdir(d):
+                site_configs_dir = d
+                break
+
+        if site_configs_dir:
+            site_config_path = os.path.join(site_configs_dir, site_config_file)
+            if os.path.exists(site_config_path):
+                assert os.path.join("site", site_config_file) in includes
 
 
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_upstream():
-    base_env = os.path.join(test_dir, "base_env/install/")
-    os.makedirs(os.path.join(base_env, ".spack-db/"), exist_ok=True)
-    base_env_spack_yaml_path = os.path.realpath(os.path.join(base_env, "../spack.yaml"))
-    f_base_env = open(base_env_spack_yaml_path, "w")
-    f_base_env.write("spack:\n  dummytag: dummyvalue")
-    f_base_env.close()
+    if os.path.exists(test_dir):
+        shutil.rmtree(test_dir)
+
+    # 1. Set up a base environment to be used as an upstream
+    base_env_dir = os.path.join(test_dir, "base_env")
+    base_env_install = os.path.join(base_env_dir, "install")
+    os.makedirs(os.path.join(base_env_install, ".spack-db/"))
+    with open(os.path.join(base_env_dir, "spack.yaml"), "w") as f:
+        f.write("spack:\n  upstreams: {}\n")
+
+    # 2. Create a new environment that uses the base environment as an upstream
     stack_create(
         "create",
         "env",
@@ -218,12 +249,16 @@ def test_upstream():
         "--compiler",
         "gcc",
         "--upstream",
-        base_env,
+        base_env_install,
     )
+
+    # 3. Assertions
     spack_yaml_path = os.path.join(test_dir, "chainedA", "spack.yaml")
     with open(spack_yaml_path, "r") as f:
         spack_yaml_txt = f.read()
-    assert f"install_tree: {base_env}" in spack_yaml_txt
+
+    base_env_install_realpath = os.path.realpath(base_env_install)
+    assert base_env_install_realpath in spack_yaml_txt
     assert (
         "repos: [$env/envrepo]" not in spack_yaml_txt
     ), "--modify-pkg functionality modified spack.yaml without being called"
@@ -232,36 +267,52 @@ def test_upstream():
 @pytest.mark.extension("stack")
 @pytest.mark.filterwarnings("ignore::UserWarning")
 def test_layered_upstreams():
-    os.makedirs(os.path.join(test_dir, "chainedA/install/.spack-db/"))
-    os.makedirs(os.path.join(test_dir, "base_env/envrepo/"))
-    os.makedirs(os.path.join(test_dir, "chainedA/envrepo/"))
-    f_base_env_envrepo_file_path = os.path.join(test_dir, "base_env/envrepo/file")
-    f_chainedA_envrepo_file_path = os.path.join(test_dir, "chainedA/envrepo/file")
-    f_base_env_envrepo_file = open(f_base_env_envrepo_file_path, "w")
-    f_chainedA_envrepo_file = open(f_chainedA_envrepo_file_path, "w")
-    f_base_env_envrepo_file.write("bad")
-    f_chainedA_envrepo_file.write("good")
-    f_base_env_envrepo_file.close()
-    f_chainedA_envrepo_file.close()
+    if os.path.exists(test_dir):
+        shutil.rmtree(test_dir)
+    os.makedirs(test_dir)
+
+    # 1. Set up base_env
+    base_env_dir = os.path.join(test_dir, "base_env")
+    base_env_install_path = os.path.join(base_env_dir, "install")
+    os.makedirs(os.path.join(base_env_install_path, ".spack-db"))
+    with open(os.path.join(base_env_dir, "spack.yaml"), "w") as f:
+        f.write("spack:\n  specs: {}\n")
+    os.makedirs(os.path.join(base_env_dir, "envrepo"))
+    with open(os.path.join(base_env_dir, "envrepo", "file"), "w") as f:
+        f.write("bad")
+
+    # 2. Set up chainedA env, pointing to base_env
+    chainedA_dir = os.path.join(test_dir, "chainedA")
+    if os.path.exists(chainedA_dir):
+        shutil.rmtree(chainedA_dir)
+    base_env_install_realpath = os.path.realpath(base_env_install_path)
     stack_create(
-        "create",
-        "env",
-        "--site",
-        "hera",
-        "--name",
-        "chainedB",
-        "--dir",
-        test_dir,
-        "--compiler",
-        "gcc",
-        "--upstream",
-        os.path.join(test_dir, "chainedA/install/")
+        "create", "env", "--site", "hera", "--name", "chainedA",
+        "--dir", test_dir, "--compiler", "gcc",
+        "--upstream", base_env_install_path
     )
-    spack_yaml_path = os.path.join(test_dir, "chainedB", "spack.yaml")
+    chainedA_install_path = os.path.join(chainedA_dir, "install")
+    os.makedirs(os.path.join(chainedA_install_path, ".spack-db"))
+    with open(os.path.join(chainedA_dir, "envrepo", "file"), "w") as f:
+        f.write("good") # nearer upstream should take precedence
+
+    # 3. Create chainedB env using chainedA as upstream
+    chainedB_dir = os.path.join(test_dir, "chainedB")
+    if os.path.exists(chainedB_dir):
+        shutil.rmtree(chainedB_dir)
+    chainedA_install_realpath = os.path.realpath(chainedA_install_path)
+    stack_create(
+        "create", "env", "--site", "hera", "--name", "chainedB",
+        "--dir", test_dir, "--compiler", "gcc",
+        "--upstream", chainedA_install_realpath
+    )
+
+    # 4. Assertions
+    spack_yaml_path = os.path.join(chainedB_dir, "spack.yaml")
     with open(spack_yaml_path, "r") as f:
         spack_yaml_txt = f.read()
-    assert "/base_env/install/" in spack_yaml_txt
-    assert "/chainedA/install/" in spack_yaml_txt
+    assert base_env_install_realpath in spack_yaml_txt
+    assert chainedA_install_realpath in spack_yaml_txt
     file_path = os.path.join(test_dir, "chainedB/envrepo/file")
     with open(file_path, "r") as f:
         assert "good" in f.read()

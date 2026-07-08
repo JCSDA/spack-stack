@@ -1,5 +1,8 @@
 packages:
   # Modification of common packages
+  cairo:
+    # /usr/lib64/libgdk-x11-2.0.so: undefined reference to `cairo_xlib_surface_set_size'
+    require: +X
   zlib-api:
     buildable: False
 
@@ -48,8 +51,6 @@ packages:
     externals:
     - spec: git-lfs@2.10.0
       prefix: /p/app/projects/NEPTUNE/spack-stack/git-lfs-2.10.0
-      modules:
-      - git-lfs/2.10.0
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -70,13 +71,6 @@ packages:
     externals:
     - spec: m4@1.4.18
       prefix: /usr
-  #mysql:
-  #  buildable: False
-  #  externals:
-  #  - spec: mysql@8.0.31
-  #    prefix: /p/app/projects/NEPTUNE/spack-stack/mysql-8.0.31
-  #    modules:
-  #    - mysql/8.0.31
   perl:
     externals:
     - spec: perl@5.26.1~cpanm+shared+threads
