@@ -1,13 +1,65 @@
 diff --git a/cmake/ioda-import.cmake.in b/cmake/ioda-import.cmake.in
-index 907fce15..0d7ae528 100644
+index 907fce15..c049b2c6 100644
 --- a/cmake/ioda-import.cmake.in
 +++ b/cmake/ioda-import.cmake.in
-@@ -96,7 +96,7 @@ else()
- 		# in the ioda-post-import.cmake file, even if it is never again used. Some
- 		# tools (like Spack) will complain about this path and may indicate that ioda
- 		# is a non-relocatable package, even though it is completely relocatable.
--		set( IODA_YAML_ROOT "@IODA_YAML_ROOT@" )
-+		set( IODA_YAML_ROOT "${CMAKE_CURRENT_LIST_DIR}/share/test/testinput/" )
- 	endif()
+@@ -6,7 +6,6 @@
+ 
+ include(CMakeFindDependencyMacro)
+ 
+-
+ # These instructions parallel ioda's top-level CMakeLists.txt dependencies
+ 
+ # Required packages
+@@ -80,24 +79,3 @@ if(NOT @PROJECT_NAME@_MODULES_Fortran_COMPILER_ID STREQUAL CMAKE_Fortran_COMPILE
+             "but this build for ${PROJECT_NAME} uses incompatible compiler ${CMAKE_Fortran_COMPILER_ID}-${CMAKE_Fortran_COMPILER_VERSION}")
  endif()
  
+-# Export ioda YAML validation files directory
+-if( IS_ABSOLUTE "@CMAKE_INSTALL_DATADIR@")
+-	set( IODA_YAML_ROOT "@CMAKE_INSTALL_DATADIR@/ioda/yaml" )
+-else()
+-	if ( DEFINED _IMPORT_PREFIX )
+-		# We are in a CMake install tree
+-		set( IODA_YAML_ROOT "${_IMPORT_PREFIX}/@CMAKE_INSTALL_DATADIR@/ioda/yaml" )
+-	else()
+-		# We are in a CMake build tree. Ergo, we can use the variable set in
+-		# IODA's top-level CMakeLists.txt that points to the YAML root path
+-		# in the source tree.
+-		#
+-		# Note: a small downside of this approach is that a source tree path is hardcoded
+-		# in the ioda-post-import.cmake file, even if it is never again used. Some
+-		# tools (like Spack) will complain about this path and may indicate that ioda
+-		# is a non-relocatable package, even though it is completely relocatable.
+-		set( IODA_YAML_ROOT "@IODA_YAML_ROOT@" )
+-	endif()
+-endif()
+-
+-
+diff --git a/cmake/ioda-post-import.cmake.in b/cmake/ioda-post-import.cmake.in
+index d5fe93a8..9de02495 100644
+--- a/cmake/ioda-post-import.cmake.in
++++ b/cmake/ioda-post-import.cmake.in
+@@ -13,3 +13,23 @@ endif()
+ if( (TARGET _ioda_python) AND NOT (TARGET ioda::Python) )
+   add_library( ioda::Python ALIAS _ioda_python )
+ endif()
++
++# Export ioda YAML validation files directory
++
++# ioda_BINARY_DIR is only set if we are in a build tree somewhere
++# (either in a bundle or a standalone build).
++if( DEFINED ioda_BINARY_DIR )
++        # We are in the build tree.
++        # CMAKE_CURRENT_LIST_DIR is the old var
++        set( IODA_YAML_ROOT "${ioda_BINARY_DIR}/share/test/testinput" )
++else()
++	# We are outside of ioda's build tree.
++	if( IS_ABSOLUTE "@CMAKE_INSTALL_DATADIR@")
++		set( IODA_YAML_ROOT "@CMAKE_INSTALL_DATADIR@/ioda/yaml" )
++	else()
++		# ioda_BASE_DIR is defined by the ecbuild-generated ioda-config.cmake.
++		# See https://github.com/ecmwf/ecbuild/blob/develop/cmake/project-config.cmake.in
++		set( IODA_YAML_ROOT "${ioda_BASE_DIR}/@CMAKE_INSTALL_DATADIR@/ioda/yaml" )
++	endif()
++endif()
++
