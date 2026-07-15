@@ -257,6 +257,10 @@ packages:
       prefer:
       - build_system=cmake
       - generator=make
+    # https://github.com/JCSDA/spack-stack/issues/2058
+    libbacktrace:
+      require:
+      - +shared
     libpng:
       require:
       - '@1.6.55'
