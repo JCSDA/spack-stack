@@ -20,8 +20,8 @@ class SdpPreprocessors(MakefilePackage):
 
     #license("UNKNOWN", checked_by="github_user1")
 
-    # This is branch feature/spack
-    version("0.0.1", commit="2139ba63698da74eb0f5f706eac96da0eb851560")
+    # This is branch main as of 2027/07/02
+    version("0.1.0", commit="09db35b56b27a58f7e611bb92f3ea94dbe6c2f10")
 
     # MakefilePackage dependencies
     depends_on("c", type="build")
@@ -29,7 +29,8 @@ class SdpPreprocessors(MakefilePackage):
     depends_on("gmake", type="build")
 
     depends_on("mpi")
-    depends_on("fftw-api")
+    # Actual dependency on fftw; fftw-api doesn't work (yet)
+    depends_on("fftw")
     depends_on("lapack")
     depends_on("hdf5@1.14: +fortran")
     depends_on("netcdf-c")
