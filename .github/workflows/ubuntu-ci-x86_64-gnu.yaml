@@ -70,9 +70,10 @@ jobs:
             spack stack create env --site linux.default --template ${TEMPLATE} --name ${ENVNAME} --compiler gcc
             spack env activate ${ENVDIR}
 
-            # Turn off variants "adp" and "jedi" for neptune-dev (NRL internal only)
+            # Turn off variants "adp", "sdp", and "jedi" for neptune-dev (NRL internal only)
             if [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
               sed -i 's/+adp/~adp/g' ${ENVDIR}/spack.yaml
+              sed -i 's/+sdp/~sdp/g' ${ENVDIR}/spack.yaml
               sed -i 's/+jedi/~jedi/g' ${ENVDIR}/spack.yaml
             fi
 
