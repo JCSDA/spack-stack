@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
 import subprocess
+from pathlib import Path
 
 
 from spack_repo.builtin.build_systems.makefile import MakefilePackage
@@ -22,7 +23,7 @@ class SdpPreprocessors(MakefilePackage):
 
     version("main", branch="main")
     # This is branch bugfix/spack_take2 as of 2027/07/16
-    version("0.1.0", commit="375d2a8971ada8f2823c1cfd818e4ae4099830b8")
+    version("0.1.0", commit="4634f285d872ef21648a16d3b44f8905d162ba03")
 
     # MakefilePackage dependencies
     depends_on("c", type="build")
@@ -59,28 +60,34 @@ class SdpPreprocessors(MakefilePackage):
         # "Install" in build tree, then copy over
         with working_dir("src"):
             make("-f", "Make_ar", "install")
+        # Check for expected files, since errors from make aren't caught reliably.
+        expected_executables = [
+            "amsua_nogaps.exe",
+            "amsub_mhs_nogaps.exe",
+            "aqua_nogaps.exe",
+            "atms_nogaps.exe",
+            "atovin.exe",
+            "cris_nogaps.exe",
+            "geo_asr_nogaps.exe",
+            "geo_csr_nogaps.exe",
+            "gnss_gb_nogaps.exe",
+            "gps_nogaps.exe",
+            "iasi_nogaps.exe",
+            "mwi_nogaps.exe",
+            "omps_nogaps.exe",
+            "radiance_prep.exe",
+            "ssmis_nogaps.exe",
+            "ssmis_uas_nogaps.exe",
+        ]
+        for exe in expected_executables:
+            p = Path(join_path(self.stage.source_path, "bin", exe))
+            if not p.exists():
+                raise InstallError(f"Expected executable {exe} not found.")
+        # Copy relevant directories over to final location
         for subdir in ['bin', 'etc', 'lib', 'mod']:
             copy_tree(join_path(self.stage.source_path, subdir), join_path(prefix, subdir))
 
-    # DH* 20260529 todo: configure tests
-    #def check(self):
-    #    with working_dir("src/script"):
-    #        pass
-    #    # Serial tests
-    #    for test in ["test_paths", "test_serial"]:
-    #        test_program = which(join_path(self.stage.source_path, "src/io_tools/test/.objdir", test))
-    #        test_program()
-    #    # Parallel tests
-    #    for test in ["test_parallel"]:
-    #        mpirun = which(self.spec["mpi"].prefix.bin.mpirun)
-    #        test_program = join_path(self.stage.source_path, "src/io_tools/test/.objdir", test)
-    #        if mpirun:
-    #            mpirun("-np", "4", test_program)
-    #        else:
-    #            tty.info(f"Bypassing test {test} because mpirun not found")
-    #    # Smoke test: call main executable without arguments, according to the package,
-    #    # this prints an error message but still exits with status code zero
-    #    tty.info("Smoke test for do_satwind_processing.exe, expect 'failed--istats = 3'")
-    #    res = subprocess.run(join_path(self.stage.source_path, "bin", "do_satwind_processing.exe"))
-    #    assert res.returncode == 0
-    # *DH
+    def check(self):
+        with working_dir("src/script"):
+            test_script = which(join_path(self.stage.source_path, "src/script/run_all_test.sh"))
+            test_script()
