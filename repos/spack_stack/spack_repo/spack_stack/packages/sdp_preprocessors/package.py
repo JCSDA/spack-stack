@@ -20,8 +20,9 @@ class SdpPreprocessors(MakefilePackage):
 
     #license("UNKNOWN", checked_by="github_user1")
 
-    # This is branch main as of 2027/07/02
-    version("0.1.0", commit="09db35b56b27a58f7e611bb92f3ea94dbe6c2f10")
+    version("main", branch="main")
+    # This is branch bugfix/spack_take2 as of 2027/07/16
+    version("0.1.0", commit="375d2a8971ada8f2823c1cfd818e4ae4099830b8")
 
     # MakefilePackage dependencies
     depends_on("c", type="build")
@@ -29,8 +30,7 @@ class SdpPreprocessors(MakefilePackage):
     depends_on("gmake", type="build")
 
     depends_on("mpi")
-    # Actual dependency on fftw; fftw-api doesn't work (yet)
-    depends_on("fftw")
+    depends_on("fftw-api")
     depends_on("lapack")
     depends_on("hdf5@1.14: +fortran")
     depends_on("netcdf-c")
@@ -56,11 +56,16 @@ class SdpPreprocessors(MakefilePackage):
                 raise InstallError(f"Compiler {self.compiler.name} not configured")
 
     def install(self, spec, prefix):
+        # "Install" in build tree, then copy over
+        with working_dir("src"):
+            make("-f", "Make_ar", "install")
         for subdir in ['bin', 'etc', 'lib', 'mod']:
             copy_tree(join_path(self.stage.source_path, subdir), join_path(prefix, subdir))
 
     # DH* 20260529 todo: configure tests
     #def check(self):
+    #    with working_dir("src/script"):
+    #        pass
     #    # Serial tests
     #    for test in ["test_paths", "test_serial"]:
     #        test_program = which(join_path(self.stage.source_path, "src/io_tools/test/.objdir", test))
