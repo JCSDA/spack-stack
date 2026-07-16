@@ -23,7 +23,7 @@ class SdpPreprocessors(MakefilePackage):
 
     version("main", branch="main")
     # This is branch bugfix/spack_take2 as of 2027/07/16
-    version("0.1.0", commit="4634f285d872ef21648a16d3b44f8905d162ba03")
+    version("0.1.0", commit="6ba33e328c2d0d4c71b25e157e7f6cb435a67c99")
 
     # MakefilePackage dependencies
     depends_on("c", type="build")
@@ -89,5 +89,7 @@ class SdpPreprocessors(MakefilePackage):
 
     def check(self):
         with working_dir("src/script"):
-            test_script = which(join_path(self.stage.source_path, "src/script/run_all_test.sh"))
-            test_script()
+            res = subprocess.run("./run_all_test.sh")
+            assert res.returncode == 0
+            #test_script = which(join_path(self.stage.source_path, "src/script/run_all_test.sh"))
+            #test_script()
