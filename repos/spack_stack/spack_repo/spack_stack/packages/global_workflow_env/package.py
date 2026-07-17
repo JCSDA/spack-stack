@@ -57,6 +57,7 @@ class GlobalWorkflowEnv(BundlePackage):
     '''
     depends_on("base-env")
     depends_on("ufs-weather-model-env")
+    depends_on("ufs-utils-env")
     depends_on("ufs-pyenv")
     depends_on("parallel-netcdf")
     depends_on("netcdf-c") #ufs, base-env
@@ -111,7 +112,6 @@ class GlobalWorkflowEnv(BundlePackage):
     with when("+gdas"):
         depends_on("jedi-fv3-env", when="+gdas")
         depends_on("jedi-tools-env", when="+gdas")
-        depends_on("jedi-um-env", when="+gdas")
         depends_on("ioda", when="+gdas")
         depends_on("wrf-io")
         depends_on("nemsio")
