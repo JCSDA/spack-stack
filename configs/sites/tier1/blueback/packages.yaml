@@ -1,5 +1,8 @@
 packages:
   # Modification of common packages
+  cairo:
+    # /usr/lib64/libgdk-x11-2.0.so: undefined reference to `cairo_xlib_surface_set_size'
+    require: +X
   zlib-api:
     buildable: False
 
