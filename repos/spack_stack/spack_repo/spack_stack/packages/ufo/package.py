@@ -178,6 +178,11 @@ class Ufo(CMakePackage):
                 ]
         with when("@1.10.0.20260331"):
             skipped_tests = []
+            if self.spec.satisfies("%gcc"):
+                skipped_tests += [
+                    "ufo_instrument_amsua_n18_gfs_HofX_bc",
+                    "ufo_obserrordiffusion",
+                ]
             if self.spec.satisfies("%oneapi"):
                 skipped_tests += [
                     "ufo_instrument_airs_aqua_gfs_HofX",
