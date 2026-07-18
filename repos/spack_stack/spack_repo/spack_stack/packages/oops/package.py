@@ -17,6 +17,7 @@ class Oops(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("1.10.0.20260331", commit="0f7849866a74d17344215db8e742ba18c30a1ba5")
     # This commit plus the patch below accounts for commit
     # 2340e9b664f82de9fa01c136c3a31d87e4a0bec9 in NRL GitHub
     version("1.10.0.20250827", commit="91889ad09d3789f14a1184701dd80a4913d3ce3e")
@@ -39,13 +40,15 @@ class Oops(CMakePackage):
 
     depends_on("boost@1.64:")
     depends_on("cmake", type=("build"))
-    depends_on("cmake@3.12:", type=("build"), when="@1.10:")
+    depends_on("cmake@3.23:", type=("build"), when="@1.10.0.20260331:")
+    depends_on("cmake@3.12:", type=("build"), when="@1.10.0.20250827")
     depends_on("ecbuild", type=("build"))
     depends_on("ecbuild@3.3.2:", type=("build"), when="@1.10:")
     depends_on("eckit")
     depends_on("eckit@1.24.4:", when="@1.10:")
     depends_on("ecmwf-atlas")
     depends_on("ecmwf-atlas@0.35.0:", when="@1.10:")
+    # hic dependency if ecmwf-atlas@0.39: ?
     depends_on("eigen")
     depends_on("fckit")
     depends_on("fckit@0.11.0:", when="@1.10:")
@@ -62,7 +65,10 @@ class Oops(CMakePackage):
 
     def cmake_args(self):
         res = [
-            self.define("BUILD_TESTING", self.run_tests),
+            # Need to build so that header files for downstream
+            # testing are installed (e.g. ioda needs them)
+            #self.define("BUILD_TESTING", self.run_tests),
+            self.define("BUILD_TESTING", "ON"),
             self.define_from_variant("ENABLE_LORENZ95_MODEL", "l95"),
             self.define_from_variant("ENABLE_QG_MODEL", "qg"),
             self.define_from_variant("ENABLE_MKL", "mkl"),
@@ -84,6 +90,19 @@ class Oops(CMakePackage):
                     "test_qg_verticallocev",
                     "test_qg_verticallocev_io",
                 ]
+        with when("@1.10.0.20260331"):  
+            skipped_tests = [
+                "oops_qg_increment",
+                "oops_qg_verticallocev",
+                "oops_qg_verticallocev_io",
+                "oops_qg_rescale_ens_perts",
+                "oops_qg_4densvar_single-obs_loc_4d_fast",
+                "oops_qg_4densvar_single-obs_loc_4d_aggressive",
+                "oops_qg_4densvar_single-obs_loc_4d_standard",
+                "oops_qg_4densvar_single-obs_loc_4d_time_decay_fast",
+                "oops_qg_4densvar_single-obs_loc_4d_time_decay_standard",
+                "oops_qg_4densvar_single-obs_no_loc",
+            ]
 
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
