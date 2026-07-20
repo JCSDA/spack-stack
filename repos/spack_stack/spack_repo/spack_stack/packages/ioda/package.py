@@ -3,6 +3,8 @@
 #
 # SPDX-License-Identifier: (Apache-2.0 OR MIT)
 
+import os
+
 from spack_repo.builtin.build_systems.cmake import CMakePackage, generator
 
 from spack.package import *
@@ -104,8 +106,10 @@ class Ioda(CMakePackage):
     @run_after("install")
     def fix_ioda_yaml_root_path(self):
         with when("@2.9.0.20250826"):
+            # use either lib64 or lib depending on OS
+            libdir = "lib64" if os.path.isdir(join_path(self.prefix, "lib64")) else "lib"
             filter_file(
                 join_path(self.build_directory, "share/test/testinput/"),
                 join_path(self.prefix, "share/ioda/yaml"),
-                join_path(self.prefix, "lib64/cmake/ioda/ioda-import.cmake"),
+                join_path(self.prefix, libdir, "cmake/ioda/ioda-import.cmake"),
             )
