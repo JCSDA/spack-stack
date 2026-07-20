@@ -45,6 +45,7 @@ class GlobalWorkflowEnv(BundlePackage):
     depends_on("grib-util")
     depends_on("prod-util")
     depends_on("esmf")
+    depends_on("sp")
     depends_on("g2tmpl")
     depends_on("crtm")
     depends_on("gsi-ncdiag")
@@ -55,6 +56,7 @@ class GlobalWorkflowEnv(BundlePackage):
     #metplus dependencies
     depends_on("met", when="+metplus")
     depends_on("metplus", when="+metplus")
+    depends_on("imagemagick", when="+metplus")
 
     #uwtools dependencies
     depends_on("uwtools", when="+uwtools")
