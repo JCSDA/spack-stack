@@ -6,7 +6,7 @@ packages:
   mpi:
     buildable: false
     require:
-    - cray-mpich@8.1.32
+    - cray-mpich@8.1.29
   gcc:
     buildable: false
     externals:
@@ -29,14 +29,14 @@ packages:
   cray-mpich:
     buildable: false
     externals:
-    - spec: cray-mpich@8.1.32 +wrappers
-      prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
+    - spec: cray-mpich@8.1.29 +wrappers
+      prefix: /opt/cray/pe/mpich/8.1.29/ofi/gnu/12.3
       modules:
       #- crayenv/25.03
       - PrgEnv-gnu/8.6.0
       - gcc-native/13.2
       #- craype-network-ofi
-      - cray-mpich/8.1.32
+      - cray-mpich/8.1.29
       - libfabric/1.22.0
       - cray-pals/1.6.1
 
