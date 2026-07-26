@@ -15,7 +15,6 @@ packages:
     - spec: intel-oneapi-compilers@2025.3.2
       prefix: /glade/u/apps/common/25.10/spack/opt/spack/intel-oneapi-compilers/2025.3.2/snvt
       modules:
-      #- crayenv/25.03
       - PrgEnv-intel/8.6.0
       - intel/2025.3.2
       extra_attributes:
@@ -35,7 +34,6 @@ packages:
     - spec: gcc@13.3.1 languages:='c,c++'
       prefix: /opt/cray/pe/gcc-native/13
       modules:
-      #- crayenv/25.03
       - PrgEnv-gnu/8.6.0
       - gcc-native/13.2
       extra_attributes:
@@ -54,10 +52,8 @@ packages:
     - spec: cray-mpich@8.1.29 +wrappers
       prefix: /opt/cray/pe/mpich/8.1.29/ofi/intel/2022.1
       modules:
-      #- crayenv/25.03
       - PrgEnv-intel/8.6.0
       - intel/2025.3.2
-      #- craype-network-ofi
       - cray-mpich/8.1.29
       - libfabric/1.22.0
       - cray-pals/1.6.1
