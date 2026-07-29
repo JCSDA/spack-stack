@@ -16,7 +16,7 @@ class GlobalWorkflowEnv(BundlePackage):
     maintainers("AlexanderRichert-NOAA")
 
     version("1.0.0")
-    variant("uwtools", default=False, description="Build uwtools")
+    variant("uwtools", default=True, description="Build uwtools")
     variant("metplus", default=True, description="Build METplus to support verifiation")
     variant("gdas", default=True, description="Build for GDASApp DA support")
     variant("gsi", default=True, description="Build for GSI DA support")

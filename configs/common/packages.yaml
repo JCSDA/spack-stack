@@ -199,6 +199,10 @@ packages:
     global-workflow-env:
       require:
       - '+uwtools'
+      - '+gdas'
+      - '+gsi'
+      - '+metplus'
+      - '+ci'
     grib-util:
       require:
       - '@1.4.0'
@@ -213,8 +217,11 @@ packages:
       # for the deprecated @2.9.1 which doesn't compile against ICU >= 76
       # (-Werror=redundant-decls on u_strlen). Force meson.
       # cmake-based harfbuzz fails during build
+      # requiring +gobject eliminates a duplicate copy of harfbuzz in the unified-env
+      # due to global-workflow-env deps requesting a non-default variant
       require:
       - 'build_system=meson'
+      - +gobject
     hdf:
       require:
       - '@4.2.15'
