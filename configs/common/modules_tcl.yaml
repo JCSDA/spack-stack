@@ -151,6 +151,16 @@ modules:
       neptune-env:
         suffixes:
           ~openmp: 'noopenmp'
+      # The unified environment concretizes these two envs twice: once against
+      # crtm@3.1.3 (their own root specs) and once against crtm@v2.4.1-jedi.2,
+      # as pulled in by global-workflow-env. Suffix the latter so the module
+      # files don't clash.
+      gsi-env:
+        suffixes:
+          ^crtm@v2.4.1-jedi.2: 'crtm-2.4.1-jedi.2'
+      ufs-weather-model-env:
+        suffixes:
+          ^crtm@v2.4.1-jedi.2: 'crtm-2.4.1-jedi.2'
       libpng:
         environment:
           set:
