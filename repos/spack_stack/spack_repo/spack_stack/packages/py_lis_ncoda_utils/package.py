@@ -19,11 +19,12 @@ class PyLisNcodaUtils(PythonPackage):
     license("custom")
 
     version("develop", branch="develop")
-    #version("2024.05.23", sha256="73611e72f4a192c9b93039381fdd085c7f1fe09fbdff4bdeb285f744ad2fb05d")
+    version("2.0.0", commit="85cb17c70705e88d15c5ff191b177090a5136052")
 
     depends_on("python@3.11:", type=("build", "run"))
     depends_on("fortran", type="build")
-    
+
+    depends_on("cmake@3.15:", type="build")    
     depends_on("py-scikit-build-core", type="build")
     depends_on("py-numpy", type=("build", "run"))
     
