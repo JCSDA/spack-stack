@@ -24,6 +24,8 @@ class UfsWeatherModelEnv(BundlePackage):
     )
     variant("python", default=True, description="Include extra Python packages")
     variant("ncutils", default=True, description="Include extra NetCDF utilities (cprnc and nccmp)")
+    variant("kokkos", default=False, description="Include kokkos and kokkos-kernels")
+    #variant("cuda", default=False, description="Enable cuda support for kokkos")
 
     depends_on("cmake", type="run")
     depends_on("python", type="run")
@@ -53,5 +55,16 @@ class UfsWeatherModelEnv(BundlePackage):
     depends_on("ufs-pyenv", type="run", when="+python")
     depends_on("cprnc", type="run", when="+ncutils")
     depends_on("nccmp", type="run", when="+ncutils")
+
+    # https://github.com/JCSDA/spack-stack/issues/2081
+    # kokkos for UFS-WM atmospheric composition modeling components (CATChem & CECE)
+    # default to +openmp for both packages
+    with when("+kokkos"):
+        variant("cuda", default=False, description="Enable cuda support for kokkos")
+        depends_on("kokkos +cuda +openmp", type="run", when="+cuda")
+        depends_on("kokkos-kernel +openmp", type="run", when="+kokkos")
+
+        #depends_on("kokkos +openmp", type="run", when="+kokkos")
+        #depends_on("kokkos-kernel +openmp", type="run", when="+kokkos")
 
     # There is no need for install() since there is no code.
