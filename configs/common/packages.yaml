@@ -377,7 +377,7 @@ packages:
     # are removed, which itself is problematic.
     python:
       require:
-      - '@3.11'
+      - '@3.12'
       - ~crypt
     # Not sure about the exact version requirements, but earlier
     # versions (definitely 4.5.3 and earlier) don't work with newer
@@ -426,7 +426,7 @@ packages:
     # To avoid duplicate packages
     py-numpy:
       require:
-      - '@1'
+      - '@2'
     # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
     py-pandas:
       require:
@@ -470,9 +470,9 @@ packages:
       - '@0.17.16'
     # https://github.com/JCSDA/spack-stack/issues/1942
     # https://github.com/spack/spack-packages/issues/3695
-    py-setuptools:
-      require:
-      - '@73.0.1'
+    # NOTE: py-setuptools was pinned @73.0.1 for the py3.11 stack; removed for the
+    # py3.12/numpy2 migration since modern packages (e.g. py-xarray@2025.7) require
+    # py-setuptools@77.0.3:. Re-evaluate issue #3695 if setuptools duplicates recur.
     # See py-pycparser
     py-sphinxcontrib-bibtex:
       require:

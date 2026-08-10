@@ -1,6 +1,6 @@
 ## spack-stack AMI (Ubuntu 24.04)
 
-This document is to go over the the running and usage of this specific AMI for Ubuntu 24.04 LTS. This image has two environments: gnu (gcc-12.3), and intel (intel@2021.10.0). You can use either one of these environments for development purposes.
+This document is to go over the the running and usage of this specific AMI for Ubuntu 24.04 LTS. This image has two environments: gnu (gcc-13.3.0), and intel (intel-oneapi 2025.3.0). You can use either one of these environments for development purposes.
 
 ### Using the Snapshot
 
@@ -120,7 +120,7 @@ exit
 
 ```bash
 cd /opt
-sudo git clone -b release/2.0 --depth 1 --recursive https://github.com/jcsda/spack-stack.git
+sudo git clone -b release/2.1 --depth 1 --recursive https://github.com/jcsda/spack-stack.git
 ```
 
 ## Install Spack-Stack Steps by Compiler
@@ -147,9 +147,12 @@ spack external find --scope system \
 spack compiler find --scope system
 export SPACK_DISABLE_LOCAL_CONFIG=true
 unset SPACK_SYSTEM_CONFIG_PATH
-# ACTION: Edit the site/compilers.yaml with the following.
-#   1) Delete or comment gcc-13 refs and preserve only gcc-12
-#   2) Delete or comment clang refs.
+# ACTION: Edit the generated compiler config (site/compilers.yaml and/or the
+# compiler entries in site/packages.yaml) with the following.
+#   1) Keep a single gcc@13.3.0 spec (the system compiler installed above);
+#      delete any empty or duplicate gcc specs. Redundant/empty specs cause
+#      cryptic build errors later.
+#   2) Delete or comment clang/llvm refs.
 
 # Continue configuration.
 spack config add "packages:all:prefer:['%gcc']"
@@ -173,7 +176,7 @@ spack stack setup-meta-modules
 
 # Add a number of default module locations to the lmod startup script.
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
-module use /opt/spack-stack/envs/unified-env-gcc/install/modulefiles/Core
+module use /opt/spack-stack/envs/unified-gcc/install/modulefiles/Core
 EOF
 ```
 
@@ -379,7 +382,7 @@ spack module lmod refresh && \
 spack stack setup-meta-modules
 
 cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
-module use /opt/spack-stack/envs/unified-env-oneapi/install/modulefiles/Core
+module use /opt/spack-stack/envs/unified-oneapi/install/modulefiles/Core
 EOF
 ```
 
@@ -392,9 +395,9 @@ EOF
 
 ```bash
 # Example given for building jedi-bundle
-module use /opt/spack-stack/envs/unified-dev-gcc/install/modulefiles/Core
-module load stack-gcc/11.4.0
-module load stack-openmpi/5.0.5
+module use /opt/spack-stack/envs/unified-gcc/install/modulefiles/Core
+module load stack-gcc/13.3.0
+module load stack-openmpi/5.0.8
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
@@ -419,7 +422,7 @@ ctest
 
 ```bash
 # Build jedi-bundle with oneapi
-module use /opt/spack-stack/envs/unified-env-oneapi/install/modulefiles/Core
+module use /opt/spack-stack/envs/unified-oneapi/install/modulefiles/Core
 module load stack-intel-oneapi-compilers/2025.3.0
 module load stack-intel-oneapi-mpi/2021.17
 module load base-env

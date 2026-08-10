@@ -94,9 +94,11 @@ packages:
     externals:
     - spec: sed@4.9
       prefix: /usr
-  tar:
+  tar::
+    buildable: false
     externals:
     - spec: tar@1.35
+      prefix: /usr
   wget::
     buildable: false
     externals:
