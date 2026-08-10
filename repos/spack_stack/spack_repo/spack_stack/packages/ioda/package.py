@@ -20,6 +20,7 @@ class Ioda(CMakePackage):
     version("2.9.0.20250826", commit="6e76616001067384f7d0ca4341ad78e81527af8b")
 
     patch("ioda_cmake_import.patch", when="@2.9.0.20250826")
+    patch("ioda_yaml_root.patch", when="@2.9.0.20250826")
 
     variant("doc", default=False, description="Build IODA documentation")
     # Let's always assume IODA_BUILD_LANGUAGE_FORTRAN=on.
@@ -101,11 +102,11 @@ class Ioda(CMakePackage):
             else:
                 ctest("--timeout", "120")
 
-    @run_after("install")
-    def fix_ioda_yaml_root_path(self):
-        with when("@2.9.0.20250826"):
-            filter_file(
-                join_path(self.build_directory, "share/test/testinput/"),
-                join_path(self.prefix, "share/ioda/yaml"),
-                join_path(self.prefix, "lib64/cmake/ioda/ioda-import.cmake"),
-            )
+    #@run_after("install")
+    #def fix_ioda_yaml_root_path(self):
+    #    with when("@2.9.0.20250826"):
+    #        filter_file(
+    #            join_path(self.build_directory, "share/test/testinput/"),
+    #            join_path(self.prefix, "share/ioda/yaml"),
+    #            join_path(self.prefix, "lib64/cmake/ioda/ioda-import.cmake"),
+    #        )
