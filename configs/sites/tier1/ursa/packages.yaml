@@ -8,6 +8,12 @@ packages:
     require::
     - '@1.2.13'
 
+# Modifications of common packages
+  ufs-weather-model-env:
+    require::
+    - ~cuda
+    - +kokkos
+
 # All other packages listed alphabetically
   autoconf:
     externals:
