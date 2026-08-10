@@ -25,7 +25,6 @@ class UfsWeatherModelEnv(BundlePackage):
     variant("python", default=True, description="Include extra Python packages")
     variant("ncutils", default=True, description="Include extra NetCDF utilities (cprnc and nccmp)")
     variant("kokkos", default=False, description="Include kokkos and kokkos-kernels")
-    #variant("cuda", default=False, description="Enable cuda support for kokkos")
 
     depends_on("cmake", type="run")
     depends_on("python", type="run")
@@ -58,13 +57,31 @@ class UfsWeatherModelEnv(BundlePackage):
 
     # https://github.com/JCSDA/spack-stack/issues/2081
     # kokkos for UFS-WM atmospheric composition modeling components (CATChem & CECE)
-    # default to +openmp for both packages
+    # default to +openmp and +serial for both packages
     with when("+kokkos"):
-        variant("cuda", default=False, description="Enable cuda support for kokkos")
-        depends_on("kokkos +cuda +openmp", type="run", when="+cuda")
-        depends_on("kokkos-kernel +openmp", type="run", when="+kokkos")
+        variant("cuda", default=False, description="Enable cuda support")
+        variant("openmp", default=False, description="Build the OpenMP backend")
+        variant("serial", default=False, description="Build the serial backend")
 
-        #depends_on("kokkos +openmp", type="run", when="+kokkos")
-        #depends_on("kokkos-kernel +openmp", type="run", when="+kokkos")
+        depends_on("kokkos", type="run")
+        depends_on("kokkos-kernel", type="run")
+
+        # cuda
+        depends_on("kokkos +cuda", type=("build", "run"), when="+cuda")
+        depends_on("kokkos ~cuda", type=("build", "run"), when="~cuda")
+        depends_on("kokkos-kernel +cuda", type=("build", "run"), when="+cuda")
+        depends_on("kokkos-kernel ~cuda", type=("build", "run"), when="~cuda")
+
+        # openmp backend
+        depends_on("kokkos +openmp", type=("build", "run"), when="+openmp")
+        depends_on("kokkos ~openmp", type=("build", "run"). when="~openmp")
+        depends_on("kokkos-kernel +openmp", type=("build", "run"), when="+openmp")
+        depends_on("kokkos-kernel ~openmp", type=("build", "run"). when="~openmp")
+
+        # serial backend
+        depends_on("kokkos +serial", type=("build", "run"), when="+serial")
+        depends_on("kokkos ~serial", type=("build", "run"), when="~serial")
+        depends_on("kokkos-kernel +serial", type=("build", "run"), when="+serial")
+        depends_on("kokkos-kernel ~serial", type=("build", "run"), when="~serial")
 
     # There is no need for install() since there is no code.
