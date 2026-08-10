@@ -427,6 +427,10 @@ packages:
     py-numpy:
       require:
       - '@1'
+    # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
+    py-pandas:
+      require:
+      - '@:2'
     # To avoid duplicate packages
     py-poetry-core:
       require:
