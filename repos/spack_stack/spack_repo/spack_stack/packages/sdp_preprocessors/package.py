@@ -22,8 +22,10 @@ class SdpPreprocessors(MakefilePackage):
     #license("UNKNOWN", checked_by="github_user1")
 
     version("main", branch="main")
-    # This is branch bugfix/spack_take2 as of 2027/07/16
-    version("0.1.0", commit="6ba33e328c2d0d4c71b25e157e7f6cb435a67c99")
+    ## This is branch bugfix/spack_take2 as of 2027/07/16
+    #version("0.1.0", commit="6ba33e328c2d0d4c71b25e157e7f6cb435a67c99")
+    # This is branch dev-mchone as of 2027/08/10
+    version("0.1.0", commit="10320de9b9309cb9a5045f249954a21ce68413c6")
 
     # MakefilePackage dependencies
     depends_on("c", type="build")
