@@ -64,24 +64,24 @@ class UfsWeatherModelEnv(BundlePackage):
         variant("serial", default=False, description="Build the serial backend")
 
         depends_on("kokkos", type="run")
-        depends_on("kokkos-kernel", type="run")
+        depends_on("kokkos-kernels", type="run")
 
         # cuda
-        depends_on("kokkos +cuda", type=("build", "run"), when="+cuda")
-        depends_on("kokkos ~cuda", type=("build", "run"), when="~cuda")
-        depends_on("kokkos-kernel +cuda", type=("build", "run"), when="+cuda")
-        depends_on("kokkos-kernel ~cuda", type=("build", "run"), when="~cuda")
+        depends_on("kokkos +cuda", type="run", when="+cuda")
+        depends_on("kokkos ~cuda", type="run", when="~cuda")
+        depends_on("kokkos-kernels +cuda", type="run", when="+cuda")
+        depends_on("kokkos-kernels ~cuda", type="run", when="~cuda")
 
         # openmp backend
-        depends_on("kokkos +openmp", type=("build", "run"), when="+openmp")
-        depends_on("kokkos ~openmp", type=("build", "run"). when="~openmp")
-        depends_on("kokkos-kernel +openmp", type=("build", "run"), when="+openmp")
-        depends_on("kokkos-kernel ~openmp", type=("build", "run"). when="~openmp")
+        depends_on("kokkos +openmp", type="run", when="+openmp")
+        depends_on("kokkos ~openmp", type="run", when="~openmp")
+        depends_on("kokkos-kernels +openmp", type="run", when="+openmp")
+        depends_on("kokkos-kernels ~openmp", type="run", when="~openmp")
 
         # serial backend
-        depends_on("kokkos +serial", type=("build", "run"), when="+serial")
-        depends_on("kokkos ~serial", type=("build", "run"), when="~serial")
-        depends_on("kokkos-kernel +serial", type=("build", "run"), when="+serial")
-        depends_on("kokkos-kernel ~serial", type=("build", "run"), when="~serial")
+        depends_on("kokkos +serial", type="run", when="+serial")
+        depends_on("kokkos ~serial", type="run", when="~serial")
+        depends_on("kokkos-kernels +serial", type="run", when="+serial")
+        depends_on("kokkos-kernels ~serial", type="run", when="~serial")
 
     # There is no need for install() since there is no code.

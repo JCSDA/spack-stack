@@ -255,7 +255,7 @@ packages:
       - ~cuda
       - +openmp
       - +serial
-    kokkos-kernel:
+    kokkos-kernels:
       require:
       - '@5.1.1'
       - ~cuda
