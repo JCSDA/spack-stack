@@ -90,5 +90,3 @@ class SdpPreprocessors(MakefilePackage):
         with working_dir("src/script"):
             res = subprocess.run("./run_all_test.sh")
             assert res.returncode == 0
-            #test_script = which(join_path(self.stage.source_path, "src/script/run_all_test.sh"))
-            #test_script()
