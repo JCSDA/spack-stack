@@ -73,6 +73,7 @@ jobs:
             # Turn off certain variants for neptune-dev (NRL internal only)
             if [[ "${TEMPLATE}" == *"neptune-dev"* ]]; then
               sed -i 's/+adp/~adp/g' ${ENVDIR}/spack.yaml
+              sed -i 's/+sdp/~sdp/g' ${ENVDIR}/spack.yaml
               sed -i 's/+jedi/~jedi/g' ${ENVDIR}/spack.yaml
               sed -i 's/+lis-ncoda-utils/~lis-ncoda-utils/g' ${ENVDIR}/spack.yaml
             fi

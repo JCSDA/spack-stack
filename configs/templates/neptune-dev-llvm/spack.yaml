@@ -13,12 +13,7 @@ spack:
   - neptune-env +debug +openmp +espc +ncview ^esmf@=9.0.0b11
   - neptune-env ~debug ~openmp +espc +ncview ^esmf@=9.0.0b11
   - neptune-env +debug ~openmp +espc +ncview ^esmf@=9.0.0b11
-  # Until we can build the entire set of dependencies for
-  # neptune-python-env and jedi-neptune-env, we need to
-  # add the required packages for the NEPTUNE standalone
-  # model manually
-  #- neptune-python-env    ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
-  #- jedi-neptune-env +adp ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
+
   - py-numpy
   - crtm@3.1.3
 
