@@ -18,7 +18,7 @@ class AdpPreprocessors(MakefilePackage):
 
     maintainers("climbfuji")
 
-    #license("UNKNOWN", checked_by="github_user1")
+    license("custom", checked_by="climbfuji")
 
     # These are not official versions; 1.1.1 lives in @climbfuji's fork.
     version("1.1.2", commit="729b0e7572a497b1103d0b8b1e6ff3972efd0d29")

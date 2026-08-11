@@ -19,13 +19,10 @@ class SdpPreprocessors(MakefilePackage):
 
     maintainers("climbfuji")
 
-    #license("UNKNOWN", checked_by="github_user1")
+    license("custom", checked_by="climbfuji")
 
     version("main", branch="main")
-    ## This is branch bugfix/spack_take2 as of 2027/07/16
-    #version("0.1.0", commit="6ba33e328c2d0d4c71b25e157e7f6cb435a67c99")
-    # This is branch dev-mchone as of 2027/08/10
-    version("0.1.0", commit="10320de9b9309cb9a5045f249954a21ce68413c6")
+    version("0.1.0", commit="eb2965331779a1962c0c31e382827f00e3db6de8")
 
     # MakefilePackage dependencies
     depends_on("c", type="build")
