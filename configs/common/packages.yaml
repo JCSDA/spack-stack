@@ -401,6 +401,14 @@ packages:
     py-cryptography:
       require:
       - '@42'
+    # No tutorials extras; prevent py-pandas-datareader dep with broken configparser call
+    py-arch:
+      require:
+      - ~tutorial
+    # Exclude @:2021.3.0 (broken configparser call), which its default +bag/+delayed variants select
+    py-dask:
+      require:
+      - '@2023.4.1:'
     py-h5py:
       require:
       - ~mpi
@@ -486,10 +494,10 @@ packages:
       require:
       - '@1.26.20'
       # OR - '@1.26.12' ?
-    # To avoid duplicate packages
+    # Not '@=0.28'; py-pyogrio needs 0.28 and py-partd/py-dask 0.29, build-only so a split is fine
     py-versioneer:
       require:
-      - '@=0.28'
+      - '@0.28:'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:
