@@ -9,10 +9,17 @@ packages:
     - '@1.2.13'
 
 # Modifications of common packages
+  # GPUs on ursa are H100
   ufs-weather-model-env:
     require::
-    - ~cuda
     - +kokkos
+
+  kokkos:
+    require:
+    - '+cuda cuda_arch=90'
+  kokkos-kernels:
+    require:
+    - '+cuda'
 
 # All other packages listed alphabetically
   autoconf:

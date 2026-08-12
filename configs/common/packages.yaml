@@ -252,13 +252,11 @@ packages:
     kokkos:
       require:
       - '@5.1.1'
-      - ~cuda
       - +openmp
       - +serial
     kokkos-kernels:
       require:
       - '@5.1.1'
-      - ~cuda
       - +openmp
       - +serial
     landsfcutil:

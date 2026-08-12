@@ -58,30 +58,9 @@ class UfsWeatherModelEnv(BundlePackage):
     # https://github.com/JCSDA/spack-stack/issues/2081
     # kokkos for UFS-WM atmospheric composition modeling components (CATChem & CECE)
     # default to +openmp and +serial for both packages
+    # kokkos and kokkos-kernels are spec'd in common/packages.yaml and <site>/packages.yaml
     with when("+kokkos"):
-        variant("cuda", default=False, description="Enable cuda support")
-        variant("openmp", default=False, description="Build the OpenMP backend")
-        variant("serial", default=False, description="Build the serial backend")
-
         depends_on("kokkos", type="run")
         depends_on("kokkos-kernels", type="run")
-
-        # cuda
-        depends_on("kokkos +cuda", type="run", when="+cuda")
-        depends_on("kokkos ~cuda", type="run", when="~cuda")
-        depends_on("kokkos-kernels +cuda", type="run", when="+cuda")
-        depends_on("kokkos-kernels ~cuda", type="run", when="~cuda")
-
-        # openmp backend
-        depends_on("kokkos +openmp", type="run", when="+openmp")
-        depends_on("kokkos ~openmp", type="run", when="~openmp")
-        depends_on("kokkos-kernels +openmp", type="run", when="+openmp")
-        depends_on("kokkos-kernels ~openmp", type="run", when="~openmp")
-
-        # serial backend
-        depends_on("kokkos +serial", type="run", when="+serial")
-        depends_on("kokkos ~serial", type="run", when="~serial")
-        depends_on("kokkos-kernels +serial", type="run", when="+serial")
-        depends_on("kokkos-kernels ~serial", type="run", when="~serial")
 
     # There is no need for install() since there is no code.
