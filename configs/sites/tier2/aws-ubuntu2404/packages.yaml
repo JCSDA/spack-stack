@@ -56,6 +56,10 @@ packages:
     externals:
     - spec: gawk@5.2.1
       prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.21
+      prefix: /usr
   git:
     externals:
     - spec: git@2.43.0~tcltk
@@ -68,9 +72,17 @@ packages:
     externals:
     - spec: grep@3.11
       prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.3
+      prefix: /usr
   groff:
     externals:
     - spec: groff@1.23.0
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.7
       prefix: /usr
   m4:
     externals:

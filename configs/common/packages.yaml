@@ -103,9 +103,9 @@ packages:
       - +netcdf
       - +png
       - +tools
+    # uwtools@2.17: needs ecflow@5.16:; leave the version to the concretizer
     ecflow:
       require:
-      - '@5.11.4'
       - +ui
     eckit:
       require:
@@ -377,8 +377,11 @@ packages:
     # are removed, which itself is problematic.
     python:
       require:
-      - '@3.12'
-      - ~crypt
+      - '@3.13'
+      # The crypt variant only exists for python<=3.12 since the module was dropped.
+      # An unconditional ~crypt caps python at 3.12
+      - spec: ~crypt
+        when: '@:3.12'
     # Not sure about the exact version requirements, but earlier
     # versions (definitely 4.5.3 and earlier) don't work with newer
     # py-setuptools (version 68 and later) because of a breaking
@@ -397,10 +400,6 @@ packages:
     py-colorama:
       require:
       - '@0.4.6'
-    # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
-    py-cryptography:
-      require:
-      - '@42'
     # No tutorials extras; prevent py-pandas-datareader dep with broken configparser call
     py-arch:
       require:
@@ -469,10 +468,6 @@ packages:
       require:
       - '@2'
     # To avoid duplicate packages
-    py-requests:
-      require:
-      - '@2.32.3'
-    # To avoid duplicate packages
     py-ruamel-yaml:
       require:
       - '@0.17.16'
@@ -538,9 +533,10 @@ packages:
     upp:
       require:
       - '@10.0.10'
+    # Upper bound keeps the branch version 'main' out; spack sorts it above 2.x
     uwtools:
       require:
-      - '@2.7.2'
+      - '@2.17:2'
     w3emc:
       require:
       - '@2.13.0'
