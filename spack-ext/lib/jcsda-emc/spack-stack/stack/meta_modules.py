@@ -289,12 +289,11 @@ def setup_meta_modules():
             if any(core_compiler in x for x in compiler_list):
                 raise Exception("Not supported: spack-stack compilers in core compilers")
 
-    # Determine the preferred compiler. Exactly one of the compilers used for the
-    # stack must match it.
+    # Determine the preferred compiler.
     preferred_compiler = get_preferred_compiler(spack.config)
     logging.info("  ... preferred compiler: {}".format(preferred_compiler))
 
-    # Check that exactly one compiler matches the preferred compiler.
+    # Check that exactly one compiler spec matches the preferred compiler.
     preferred_compiler_specs = [c for c in compilers if c.name == preferred_compiler]
     if len(preferred_compiler_specs) != 1:
         raise Exception(f"Expected 1 preferred spec for '{preferred_compiler}'. Found "
