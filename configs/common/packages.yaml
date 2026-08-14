@@ -58,6 +58,13 @@ packages:
       require:
       - '@0.0.5'
       - +python
+    # cairo@1.18.0: is uses the meson recipe. The meson build enforces variants
+    # that are all-enabled or all-disabled. The "all-enabled" variants are set to help
+    # the concretizer resolve the correct version without disabling all variants.
+    cairo:
+      require:
+      - '@1.18:'
+      - +zlib+ft+fc+png+pdf
     cdo:
       require:
       - ~openmp
@@ -107,6 +114,7 @@ packages:
     ecflow:
       require:
       - +ui
+      - '@5.18:'
     eckit:
       require:
       - '@1.32.3'
@@ -438,6 +446,11 @@ packages:
     py-pandas:
       require:
       - '@:2'
+      # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
+      # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
+      # into py-xarray/met/metplus/jedi-base-env. This constraints py-pandas to @0.28
+      # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
+      - ^py-versioneer@0.28
     # To avoid duplicate packages
     py-poetry-core:
       require:
@@ -467,6 +480,10 @@ packages:
     py-python-dateutil:
       require:
       - '@2'
+    # To avoid duplicate packages, pin to recent version.
+    py-requests:
+      require:
+      - '@2.32:'
     # To avoid duplicate packages
     py-ruamel-yaml:
       require:

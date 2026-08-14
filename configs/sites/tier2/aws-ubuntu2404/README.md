@@ -1,6 +1,6 @@
 ## spack-stack AMI (Ubuntu 24.04)
 
-This document is to go over the the running and usage of this specific AMI for Ubuntu 24.04 LTS. This image has two environments: gnu (gcc-13.3.0), and intel (intel-oneapi 2025.3.0). You can use either one of these environments for development purposes.
+This document is to go over the the running and usage of this specific AMI for Ubuntu 24.04 LTS. This image has two environments: gnu (gcc-13.3.0), and intel (intel-oneapi 2026.1.1). You can use either one of these environments for development purposes.
 
 ### Using the Snapshot
 
@@ -193,7 +193,7 @@ sudo su -
 wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB | gpg --dearmor | tee /usr/share/keyrings/oneapi-archive-keyring.gpg > /dev/null
 echo "deb [signed-by=/usr/share/keyrings/oneapi-archive-keyring.gpg] https://apt.repos.intel.com/oneapi all main" | tee /etc/apt/sources.list.d/oneAPI.list
 apt update
-apt install intel-oneapi-compiler-dpcpp-cpp-2025.3 intel-oneapi-compiler-fortran-2025.3 intel-oneapi-mpi-devel-2021.17 intel-oneapi-tbb-devel-2022.3 intel-oneapi-mkl-devel-2025.3 -y
+apt install intel-oneapi-compiler-dpcpp-cpp-2026.1 intel-oneapi-compiler-fortran-2026.1 intel-oneapi-mpi-devel-2021.18 intel-oneapi-tbb-devel-2023.1 intel-oneapi-mkl-devel-2026.1 -y
 
 exit
 ```
@@ -211,33 +211,40 @@ cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
 module use /opt/intel/oneapi/modulefiles
 EOF
 
-# Create combined module file.
+# Create combined module file. Note that the compiler modulefile has a "tcm"
+# prerequisite; omitting it fails the load with "Cannot load module
+# compiler/2026.1.1. At least one of these module(s) must be loaded: tcm".
 mkdir /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/
-cat << 'EOF' >> /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/2025.3.0
+cat << 'EOF' >> /opt/intel/oneapi/modulefiles/intel-oneapi-full-env/2026.1.1
 #%Module1.0
 ##
-## intel-oneapi-full-env/2025.3.0
+## intel-oneapi-full-env/2026.1.1
 ## Intel oneAPI full module environment
 
 proc ModulesHelp { } {
     puts stderr "intel-oneapi-full-env defines the entire module set used for spack-stack intel builds"
 }
 module-whatis "intel-oneapi-full-env defines the entire module set used for spack-stack intel builds"
-module load umf/1.0.2
-module load tbb/2022.3
-module load compiler-rt/2025.3.0
-module load compiler/2025.3.0
-module load mkl/2025.3
-module load compiler-intel-llvm/2025.3.0
+module load umf/1.1.0
+module load tcm/1.5
+module load tbb/2023.1
+module load compiler-rt/2026.1.1
+module load compiler/2026.1.1
+module load mkl/2026.1
+module load compiler-intel-llvm/2026.1.1
 EOF
 ```
 
 #### Install Intel OneAPI Spack-Stack Environment
 
+The steps below are how this site config was generated. Note that the oneAPI
+modules must **not** be loaded during `spack install` -- see "The module-load
+trap" at the end of this section.
+
 ```bash
 sudo su -
 
-module load intel-oneapi-full-env/2025.3.0
+module load intel-oneapi-full-env/2026.1.1
 export FC=ifx
 export CXX=icpx
 export CC=icx
@@ -248,16 +255,6 @@ source ./setup.sh
 spack stack create env --site linux.default --template unified-dev --name unified-oneapi --compiler oneapi
 cd envs/unified-oneapi
 spack env activate -p .
-
-
-# Before finding packages you need to go into ./common/packages.yaml
-# and comment out gmake requirements to prevent gmake from being
-# over-constrained.
-#   pico ./common/packages.yaml
-# Near the top of the file find and comment out these three lines.
-#  gmake:
-#    require:
-#    - '%gcc'
 
 
 # Find external packages for the site config.
@@ -276,31 +273,30 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
   intel-oneapi-runtime:
     buildable: false
     externals:
-    - spec: intel-oneapi-runtime@2025.3.0
+    - spec: intel-oneapi-runtime@2026.1.1
       prefix: /opt/intel/oneapi
       modules:
-      - compiler-rt/2025.3.0
+      - compiler-rt/2026.1.1
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.3
+    # No "modules:" here on purpose - see "The module-load trap" below.
+    - spec: intel-oneapi-mkl@2026.1
       prefix: /opt/intel/oneapi
-      modules:
-      - mkl/2025.3
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.17
+    - spec: intel-oneapi-mpi@2021.18
       prefix: /opt/intel/oneapi
       modules:
-      - mpi/2021.17
+      - mpi/2021.18
   intel-oneapi-tbb:
     buildable: false
     externals:
-    - spec: intel-oneapi-tbb@2022.3
+    - spec: intel-oneapi-tbb@2023.1
       prefix: /opt/intel/oneapi
       modules:
-      - tbb/2022.3
+      - tbb/2023.1
 EOF
 
 spack compiler find --scope system
@@ -318,28 +314,27 @@ pico ${PWD}/site/packages.yaml
 #   intel-oneapi-compilers:
 #     buildable: false
 #     externals:
-#     - spec: intel-oneapi-compilers@2025.3.0
+#     - spec: intel-oneapi-compilers@2026.1.1
 #       prefix: /opt/intel/oneapi
 #       modules:
-#       - umf/1.0.2
-#       - tbb/2022.3
-#       - compiler-rt/2025.3.0
-#       - compiler/2025.3.0
+#       - umf/1.1.0
+#       - tcm/1.5
+#       - tbb/2023.1
+#       - compiler-rt/2026.1.1
+#       - compiler/2026.1.1
 #       extra_attributes:
 #         compilers:
-#           c: /opt/intel/oneapi/compiler/2025.3/bin/icx
-#           fortran: /opt/intel/oneapi/compiler/2025.3/bin/ifx
-#           cxx: /opt/intel/oneapi/compiler/2025.3/bin/icpx
+#           c: /opt/intel/oneapi/compiler/2026.1/bin/icx
+#           fortran: /opt/intel/oneapi/compiler/2026.1/bin/ifx
+#           cxx: /opt/intel/oneapi/compiler/2026.1/bin/icpx
 #   gcc:
 #     buildable: false
 #     externals:
 #     - spec: gcc@13.3.0 languages:='c,c++,fortran'
 #       ....
 
-export SPACK_DISABLE_LOCAL_CONFIG=true
-unset SPACK_SYSTEM_CONFIG_PATH
-
-# Edit the spack.yaml to include these clauses.
+# Edit the spack.yaml to include these clauses. Note this must happen before
+# SPACK_SYSTEM_CONFIG_PATH is unset, or it writes to /packages.yaml.
 cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
     all:
       prefer:
@@ -354,7 +349,7 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
       - '%fortran=gcc %c,cxx=oneapi'
       - '%fortran=gcc %c=oneapi'
       providers:
-        mpi: [intel-oneapi-mpi@2021.17]
+        mpi: [intel-oneapi-mpi@2021.18]
     met:
       variants: +python +grib2 +graphics +lidar2nc +modis
     openmpi:
@@ -375,6 +370,12 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
       - +libyaml
 EOF
 
+export SPACK_DISABLE_LOCAL_CONFIG=true
+unset SPACK_SYSTEM_CONFIG_PATH
+
+# Purge the oneAPI modules before installing - see the trap below.
+module purge
+
 spack concretize 2>&1 | tee log.concretize
 ${SPACK_STACK_DIR}/util/show_duplicate_packages.py
 spack install --fail-fast -j 12 2>&1 | tee log.install
@@ -385,6 +386,19 @@ cat << 'EOF' >> /etc/profile.d/z01_lmod.sh
 module use /opt/spack-stack/envs/unified-oneapi/install/modulefiles/Core
 EOF
 ```
+
+#### The module-load trap
+
+Spack loads an external's `modules:` itself and treats a load that does not change
+`LOADEDMODULES` as a failure. So any oneAPI module already loaded in your shell
+makes `spack install` die with a misleading `ModuleLoadError` partway through.
+Purge before installing, and let spack do the loading.
+
+For the same reason no two externals may list the same module. That is why
+`intel-oneapi-mkl` above has no `modules:`: it would load before the compilers
+entry and miss its `tbb`/`compiler-rt` prereqs, but listing those on mkl collides
+with the compilers entry. It needs neither -- the recipe sets `MKLROOT` from
+`prefix`.
 
 </details>
 
@@ -423,8 +437,8 @@ ctest
 ```bash
 # Build jedi-bundle with oneapi
 module use /opt/spack-stack/envs/unified-oneapi/install/modulefiles/Core
-module load stack-intel-oneapi-compilers/2025.3.0
-module load stack-intel-oneapi-mpi/2021.17
+module load stack-intel-oneapi-compilers/2026.1.1
+module load stack-intel-oneapi-mpi/2021.18
 module load base-env
 module load jedi-mpas-env
 module load jedi-fv3-env
