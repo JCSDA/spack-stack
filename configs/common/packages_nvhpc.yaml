@@ -1,0 +1,107 @@
+packages:
+  # Compiler preferences
+  c:
+    prefer:
+    - nvhpc
+  cxx:
+    prefer:
+    - nvhpc
+  fortran:
+    prefer:
+    - nvhpc
+  # Virtual provider settings
+  blas:
+    require:
+    - nvhpc
+  curl:
+    require:
+    - '%c=gcc'
+  fftw-api:
+    require:
+    - fftw
+    #- nvpl-fft
+  file:
+    require:
+    - '%c=gcc'
+  lapack:
+    require:
+    - nvhpc
+  # Individual package settings
+  antlr:
+    require:
+    - '%c,cxx=gcc'
+  bison:
+    require:
+    - '%c,cxx=gcc'
+  cmake:
+    require:
+    - '%c,cxx=gcc'
+  ectrans:
+    require:
+    - +fftw
+  #elfutils:
+  #  require:
+  #  - '@0.191:'
+  #libelf:
+  #  buildable: false
+  gmake:
+    require:
+    - '%c=gcc'
+  go:
+    require:
+    - '%c,cxx=gcc'
+  # https://github.com/NOAA-EMC/NCEPLIBS-ip/issues/320
+  ip:
+    require:
+    - ~openmp
+  libbsd:
+    require:
+    - '%c=gcc'
+  libffi:
+    require:
+    - '%c=gcc'
+  libiconv:
+    require:
+    - '%c=gcc'
+  libmd:
+    require:
+    - '%c=gcc'
+  libxml2:
+    require:
+    - '%c=gcc'
+  ninja:
+    require:
+    - '%c=gcc'
+  nco:
+    require:
+    - '%c,cxx=gcc'
+  numactl:
+    require:
+    - '%c=gcc'
+  patchelf:
+    require:
+    - '%c=gcc'
+  pkg-config:
+    require:
+    - '%c=gcc'
+  python:
+    require:
+    - '%c=gcc'
+  py-cython:
+    require:
+    - '%c=gcc'
+  #py-maturin:
+  #  require:
+  #  - '%c=gcc'
+  py-mpi4py:
+    require:
+    - '%c,cxx=gcc'  
+  py-numpy:
+    require:
+    - '%c,cxx=gcc'
+  rust:
+    require:
+    - '%c,cxx=gcc'
+  zstd:
+    require:
+    - '%c,cxx=gcc'

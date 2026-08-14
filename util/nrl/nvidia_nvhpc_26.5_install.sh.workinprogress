@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+
+# Utility script to install Intel oneAPI 2026.0.0, fix non-ascii characters
+# in the Intel auto-generated modulefiles (bug filed with Intel to correct
+# upstream) on non-Cray systems, or to create a single module on Cray systems.
+
+# Missing: patching of libirc.so and libimf.so to add the missing symbolic
+# links to libc.so.6 and libm.so.6.
+
+""""
+ 1009  wget https://developer.download.nvidia.com/hpc-sdk/26.5/nvhpc_2026_265_Linux_x86_64_cuda_13.2.tar.gz
+ 1010  ls
+ 1011  tar xpzf nvhpc_2026_265_Linux_x86_64_cuda_13.2.tar.gz
+ 1012  ls
+ 1013  ls nvhpc_2026_265_Linux_x86_64_cuda_13.2
+ 1014  nvhpc_2026_265_Linux_x86_64_cuda_13.2/install --help
+ 1015  nvhpc_2026_265_Linux_x86_64_cuda_13.2/install -h
+ 1016  nvhpc_2026_265_Linux_x86_64_cuda_13.2/install
+ 1017  ls /home/dom/prod/nvhpc-26.5/modulefiles/nvhpc/26.5
+ 1018  ls /home/dom/prod/nvhpc-26.5/modulefiles
+ 1019  pwd
+ 1020  ls
+ 1021  rm -fr nvhpc_2026_265_Linux_x86_64_cuda_13.2
+ 1022  ls ../modulefiles/
+ 1023  ls ..
+ 1024  find ../Linux_x86_64/ -iname '*nvpl*'
+ 1025  find .. -iname '*nvpl*'
+ 1026  [wd
+ 1027  pwd
+ 1028  cd ..
+ 1029  ls
+ 1030  cd Linux_x86_64/26.5/math_libs/
+ 1031  ls
+ 1032  ls -l 13.2/lib64/
+ 1033  pwd
+ 1034  history
+ 
+ 
+ [dom@bounty nvhpc-26.5]$ ln -sf Linux_x86_64/26.5/compilers/include .
+[dom@bounty nvhpc-26.5]$ pwd
+/home/dom/prod/nvhpc-26.5
+
+""""
+
+set -eu
+
+umask 0022
+module purge
+
+if [ "$#" -lt 1 ]; then
+  echo "Error: Not enough arguments. Provide Intel oneAPI installation prefix."
+  exit 1
+fi
+
+wget https://developer.download.nvidia.com/hpc-sdk/26.5/nvhpc_2026_265_Linux_x86_64_cuda_13.2.tar.gz
+tar xpzf nvhpc_2026_265_Linux_x86_64_cuda_13.2.tar.gz
+nvhpc_2026_265_Linux_x86_64_cuda_13.2/install
+
+NVHPC_INSTALL_DIR=${1}
+NVHPC_VERSION="2026.0.0"
+COMPILER_VERSION="2026.0"
+MKL_VERSION="2026.0"
+NVHPC_DOWNLOAD_URL=https://registrationcenter-download.intel.com/akdlm/IRC_NAS/71180075-e4e3-4c6f-bbbb-19017ed0cf7d/intel-oneapi-toolkit-2026.0.0.198_offline.sh
+
+mkdir -p ${NVHPC_INSTALL_DIR}/src
+cd ${NVHPC_INSTALL_DIR}/src
+wget ${NVHPC_DOWNLOAD_URL}
+NVHPC_INSTALL_SCRIPT="${NVHPC_DOWNLOAD_URL##*/}"
+sh ./${NVHPC_INSTALL_SCRIPT} -a --silent --eula accept --install-dir ${NVHPC_INSTALL_DIR} --intel-sw-improvement-program-consent decline 2>&1 | tee log.install
+
+# Check that compiler and mkl versions are correct
+if [ ! -d "${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}" ]; then
+  echo "Error, directory ${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION} does not exist"
+  exit 1
+fi
+if [ ! -d "${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}" ]; then
+  echo "Error, directory ${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION} does not exist"
+  exit 1
+fi
+
+# Create modulefiles - special modules for Cray, Intel auto-generated modules elsewhere
+HOSTNAME=$(hostname)
+if [[ "${HOSTNAME}" == *"blueback"* || "${HOSTNAME}" == *"narwhal"* ]]; then
+  mkdir -p ${NVHPC_INSTALL_DIR}/modulefiles/intel-oneapi
+  cat << EOF > ${NVHPC_INSTALL_DIR}/modulefiles/intel-oneapi/2026.0.0
+#%Module
+#
+# Intel oneAPI module
+#
+
+conflict intel
+conflict intel-classic
+conflict intel-oneapi
+
+set INTEL_CURPATH     ${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}
+set INTEL_LEVEL       ${COMPILER_VERSION}
+
+setenv INTEL_PATH           \$INTEL_CURPATH
+setenv INTEL_VERSION        \$INTEL_LEVEL
+setenv INTEL_COMPILER_TYPE  "NVHPC"
+
+prepend-path {LD_LIBRARY_PATH} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}/opt/compiler/lib:${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}/lib}
+setenv {OCL_ICD_FILENAMES} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}/lib/libintelocl.so}
+setenv {CMPLR_ROOT} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}}
+prepend-path {CMAKE_PREFIX_PATH} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}}
+prepend-path {NLSPATH} {}
+prepend-path {LIBRARY_PATH} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}/lib}
+prepend-path {DIAGUTIL_PATH} {}
+prepend-path {MANPATH} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}/share/man}
+prepend-path {PATH} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}/bin}
+prepend-path {PKG_CONFIG_PATH} {${NVHPC_INSTALL_DIR}/compiler/${COMPILER_VERSION}/lib/pkgconfig}
+prepend-path {LD_LIBRARY_PATH} {${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}/lib}
+prepend-path {CMAKE_PREFIX_PATH} {${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}/lib/cmake}
+prepend-path {CPATH} {${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}/include}
+prepend-path {LIBRARY_PATH} {${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}/lib}
+setenv {MKLROOT} {${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}}
+prepend-path {PATH} {${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}/bin}
+prepend-path {PKG_CONFIG_PATH} {${NVHPC_INSTALL_DIR}/mkl/${MKL_VERSION}/lib/pkgconfig}
+
+proc ModulesHelp { } {
+    global INTEL_LEVEL
+    global INTEL_CURPATH
+}
+
+# This module was produced with dom-gen 0.0.1
+
+module-whatis   "Intel oneAPI compiler"
+EOF
+
+else
+  cd ${NVHPC_INSTALL_DIR}
+  ./modulefiles-setup.sh --output-dir=${NVHPC_INSTALL_DIR}/modulefiles --ignore-latest 2>&1 | tee log.modulefiles
+  # Fix non-ascii symbols in Intel modulefiles; must follow links
+  for file in `find ./modulefiles -type l`; do
+    echo $file
+    sed -i --follow-symlinks 's/®//g' $file
+  done
+fi

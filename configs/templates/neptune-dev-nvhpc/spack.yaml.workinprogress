@@ -1,0 +1,32 @@
+# spack-stack hash: 5ff752c0
+# spack hash: 0a2c2f21d5
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include:
+  - site/packages_nvhpc-26.5.yaml
+  - site
+  - common/packages_nvhpc.yaml
+  - common/modules_tcl.yaml
+  - common
+
+  specs:
+  #- dev-utils-env
+  - neptune-env ~debug +openmp +espc ~ncview ^esmf@=9.0.0b11
+  #- neptune-env +debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  #- neptune-env ~debug ~openmp +espc +ncview ^esmf@=9.0.0b11
+  #- neptune-env +debug ~openmp +espc +ncview ^esmf@=9.0.0b11
+
+  #- py-numpy
+  #- crtm@3.1.3
+
+  packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python
+  develop:
+    ip:
+      spec: ip@=5.4.0
