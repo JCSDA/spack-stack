@@ -294,12 +294,11 @@ def setup_meta_modules():
     preferred_compiler = get_preferred_compiler(spack.config)
     logging.info("  ... preferred compiler: {}".format(preferred_compiler))
 
-    preferred_compiler_specs = [x for x in compilers if x.name == preferred_compiler]
-    if not preferred_compiler_specs:
-        raise Exception(f"No compiler matching the preferred compiler '{preferred_compiler}' in {compiler_list}")
-    if len(preferred_compiler_specs) > 1:
-        raise Exception(f"Multiple compilers matching the preferred compiler "
-                        f"'{preferred_compiler}': {preferred_compiler_specs}")
+    # Check that exactly one compiler matches the preferred compiler.
+    preferred_compiler_specs = [c for c in compilers if c.name == preferred_compiler]
+    if len(preferred_compiler_specs) != 1:
+        raise Exception(f"Expected 1 preferred spec for '{preferred_compiler}'. Found "
+                        f"{len(preferred_compiler_specs)} matching specs in:\n{compilers}")
     preferred_compiler_spec = preferred_compiler_specs[0]
 
     # Sort compilers so that the preferred compiler comes last; the MODULEPATHS
