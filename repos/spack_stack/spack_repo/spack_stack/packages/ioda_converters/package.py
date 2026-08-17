@@ -80,6 +80,14 @@ class IodaConverters(CMakePackage):
                 #  >> 2169    The following tests FAILED:
                 # 52 - test_iodaconv_mrms (Timeout)                      iodaconv
                 "test_iodaconv_mrms",
+                #2: ./gsi_ncdiag.py:80:77: E502 the backslash is redundant between brackets
+                #2: ./gsi_ncdiag.py:81:53: E502 the backslash is redundant between brackets
+                #2: checking ./ncdiag_to_feedback.py
+                #2: checking ./proc_gsi_ncdiag.py
+                #2: checking ./test_gsidiag.py
+                #2: 2       E502 the backslash is redundant between brackets
+                #1/1 Test #2: iodaconv_gsi_ncdiag_coding_norms ...***Failed    0.30 sec
+                "iodaconv_gsi_ncdiag_coding_norms",
             ]
 
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)

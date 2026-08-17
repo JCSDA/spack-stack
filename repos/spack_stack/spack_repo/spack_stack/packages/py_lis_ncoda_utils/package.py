@@ -22,6 +22,7 @@ class PyLisNcodaUtils(PythonPackage):
     version("2.0.0", commit="85cb17c70705e88d15c5ff191b177090a5136052")
 
     depends_on("python@3.11:", type=("build", "run"))
+    depends_on("c", type="build")
     depends_on("fortran", type="build")
 
     depends_on("cmake@3.15:", type="build")    

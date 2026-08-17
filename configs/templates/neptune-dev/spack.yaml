@@ -27,7 +27,7 @@ spack:
   - neptune-env ~debug ~openmp +espc +ncview ^esmf@=9.0.0b11
   - neptune-env +debug ~openmp +espc +ncview ^esmf@=9.0.0b11
   - neptune-python-env +gittools +lis-ncoda-utils ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
-  - jedi-neptune-env +adp +jedi                   ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
+  - jedi-neptune-env +adp +sdp +jedi              ^neptune-env ~debug +openmp +espc +ncview ^esmf@=9.0.0b11
   - crtm@3.1.3
 
   packages:

@@ -14,16 +14,19 @@ class AdpPreprocessors(MakefilePackage):
     """Unified, model-agnostic software system that processes atmospheric observations for the Navy's numerical weather prediction data assimilation systems"""
 
     homepage = "https://github.nrlmry.navy.mil/ADP/adp-preprocessors/wiki"
-    #git = "https://github.nrlmry.navy.mil/ADP/adp-preprocessors.git"
-    git = "https://github.nrlmry.navy.mil/climbfuji/adp-preprocessors.git"
+    git = "https://github.nrlmry.navy.mil/ADP/adp-preprocessors.git"
 
     maintainers("climbfuji")
 
-    #license("UNKNOWN", checked_by="github_user1")
+    license("custom", checked_by="climbfuji")
 
-    # Update commit once 1.2.0 is released
-    version("1.2.0", commit="c6f15e46496309c3893416ba4ccec7f003b93550")
-    version("1.1.0", commit="b2d9d4ffb472eff9ab973ef2a12f574d92c9754b")
+    # These are not official versions; 1.1.1 lives in @climbfuji's fork.
+    version("1.1.2", commit="729b0e7572a497b1103d0b8b1e6ff3972efd0d29")
+    version(
+        "1.1.1",
+        git="https://github.nrlmry.navy.mil/climbfuji/adp-preprocessors.git",
+        commit="c6f15e46496309c3893416ba4ccec7f003b93550"
+    )
 
     # MakefilePackage dependencies
     depends_on("c", type="build")
@@ -58,7 +61,7 @@ class AdpPreprocessors(MakefilePackage):
                 raise InstallError(f"Compiler {self.compiler.name} not configured")
 
     def install(self, spec, prefix):
-        for subdir in ['bin', 'lib', 'mod']:
+        for subdir in ['bin', 'etc', 'lib', 'mod']:
             copy_tree(join_path(self.stage.source_path, subdir), join_path(prefix, subdir))
 
     def check(self):
