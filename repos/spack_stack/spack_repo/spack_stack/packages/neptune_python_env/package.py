@@ -37,7 +37,6 @@ class NeptunePythonEnv(BundlePackage):
     depends_on("py-pycodestyle", type="run")
     depends_on("py-pybind11", type="run")
     depends_on("py-pyhdf", type="run")
-    depends_on("py-pyyaml", type="run")
     depends_on("py-regionmask", type="run")
     depends_on("py-scipy", type="run")
     depends_on("py-xarray", type="run")
