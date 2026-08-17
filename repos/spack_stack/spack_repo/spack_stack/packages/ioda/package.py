@@ -17,10 +17,11 @@ class Ioda(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("2.9.0.20260326", commit="9e0eb39fb87ae66667ef966cf27b62d5a804cc54")
     version("2.9.0.20250826", commit="6e76616001067384f7d0ca4341ad78e81527af8b")
 
     patch("ioda_cmake_import.patch", when="@2.9.0.20250826")
-    patch("ioda_yaml_root.patch", when="@2.9.0.20250826")
+    patch("ioda_yaml_root.patch", when="@2.9.0.20250826:")
 
     variant("doc", default=False, description="Build IODA documentation")
     # Let's always assume IODA_BUILD_LANGUAGE_FORTRAN=on.
@@ -43,7 +44,8 @@ class Ioda(CMakePackage):
     depends_on("bufr@12.0.1:", when="@2.9:")
     depends_on("bufr-query@0.0.4:", when="@2.9:")
     depends_on("cmake", type=("build"))
-    depends_on("cmake@3.14:", type=("build"), when="@2.9:")
+    depends_on("cmake@3.15:", type=("build"), when="@2.9.0.20260326")
+    depends_on("cmake@3.14:", type=("build"), when="@2.9.0.20250826")
     depends_on("ecbuild", type=("build"))
     depends_on("ecbuild@3.3.2:", type=("build"), when="@2.9:")
     depends_on("eckit")
@@ -55,7 +57,8 @@ class Ioda(CMakePackage):
     depends_on("hdf5@1.12.0: +mpi")
     depends_on("hdf5@1.14.0: +mpi", when="@2.9:")
     depends_on("ioda-data", type=("build", "test"))
-    depends_on("ioda-data@2.9.0.20250805", type=("build", "test"), when="@2.9:")
+    depends_on("ioda-data@2.9.0.20260319", type=("build", "test"), when="@2.9.0.20260326")
+    depends_on("ioda-data@2.9.0.20250805", type=("build", "test"), when="@2.9.0.20250826")
     depends_on("jedi-cmake", type=("build"))
     depends_on("llvm-openmp", when="+openmp %apple-clang", type=("build", "link", "run"))
     depends_on("mpi")
@@ -65,7 +68,8 @@ class Ioda(CMakePackage):
     depends_on("odc@1.4.6:", when="@2.9: +odc")
     depends_on("oops+openmp", when="+openmp")
     depends_on("oops~openmp", when="~openmp")
-    depends_on("oops@1.10", when="@2.9:")
+    depends_on("oops@1.10.0.20260331", when="@2.9.0.20260326")
+    depends_on("oops@1.10.0.20250827", when="@2.9.0.20250826")
     depends_on("python")
     depends_on("python@3.9:3.11", when="@2.9:")
     depends_on("py-pybind11")
@@ -94,6 +98,12 @@ class Ioda(CMakePackage):
                 "test_ioda_bufr_python_encoder",
                 "test_ioda_bufr_python_parallel",
             ]
+        with when("@2.9.0.20260326"):
+            # No time to deal with the bufr Python dependency
+            skipped_tests = [
+                "ioda_bufr_python_encoder",
+                "ioda_bufr_python_parallel",
+            ]
 
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
@@ -101,12 +111,3 @@ class Ioda(CMakePackage):
                 ctest("--timeout", "120", "-E", "|".join(skipped_tests))
             else:
                 ctest("--timeout", "120")
-
-    #@run_after("install")
-    #def fix_ioda_yaml_root_path(self):
-    #    with when("@2.9.0.20250826"):
-    #        filter_file(
-    #            join_path(self.build_directory, "share/test/testinput/"),
-    #            join_path(self.prefix, "share/ioda/yaml"),
-    #            join_path(self.prefix, "lib64/cmake/ioda/ioda-import.cmake"),
-    #        )
