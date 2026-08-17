@@ -19,7 +19,7 @@ packages:
     - '+cuda cuda_arch=90'
   kokkos-kernels:
     require:
-    - '+cuda'
+    - '+cuda cuda_arch=90'
 
 # All other packages listed alphabetically
   autoconf:
