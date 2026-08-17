@@ -56,5 +56,6 @@ class NeptuneEnv(BundlePackage):
     depends_on("py-f90nml", type="run")
     depends_on("py-python-dateutil", type="run")
     depends_on("py-pyyaml", type="run")
+    depends_on("py-ruamel-yaml", type="run")
 
     # There is no need for install() since there is no code.
