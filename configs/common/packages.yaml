@@ -249,6 +249,16 @@ packages:
     jedi-cmake:
       require:
       - '@1.4.0'
+    kokkos:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
+    kokkos-kernels:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
     landsfcutil:
       require:
       - '@2.4.2'
@@ -257,6 +267,10 @@ packages:
       prefer:
       - build_system=cmake
       - generator=make
+    # https://github.com/JCSDA/spack-stack/issues/2058
+    libbacktrace:
+      require:
+      - +shared
     libpng:
       require:
       - '@1.6.55'
@@ -423,6 +437,10 @@ packages:
     py-numpy:
       require:
       - '@1'
+    # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
+    py-pandas:
+      require:
+      - '@:2'
     # To avoid duplicate packages
     py-poetry-core:
       require:

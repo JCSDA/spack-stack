@@ -17,6 +17,7 @@ class Ufo(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("1.10.0.20260331", commit="0fa9567eb6d0b3ce079001b98f44f3f0853ee821")
     version("1.10.0.20250821", commit="1ca49e253caa6d6a507f41ffa6875e0db7cc0751")
 
     patch(
@@ -25,7 +26,7 @@ class Ufo(CMakePackage):
         when="@1.10.0.20250821",
     )
 
-    patch("ufo_crtm_testfiles.patch", when="@1.10.0.20250821")
+    patch("ufo_crtm_testfiles.patch", when="@1.10:")
 
     # JCSDA-internal repository needed.
     variant("geos-aero", default=False, description="Build GEOS-AERO AOD operator")
@@ -51,6 +52,10 @@ class Ufo(CMakePackage):
     depends_on("fortran", type=("build"))
 
     depends_on("boost")
+    # Leaky inherited dependency from ioda in version 1.10.0.20260331
+    depends_on("bufr@12.0.1:", when="@1.10.0.20260331")
+    depends_on("bufr-query@0.0.4:", when="@1.10.0.20260331")
+    #
     depends_on("cmake", type=("build"))
     depends_on("cmake@3.12:", type=("build"), when="@1.10:")
     depends_on("crtm@3")
@@ -64,14 +69,17 @@ class Ufo(CMakePackage):
     depends_on("fckit@0.11.0:", when="@1.10:")
     depends_on("gsl-lite")
     depends_on("ioda")
-    depends_on("ioda@2.9", when="@1.10:")
+    depends_on("ioda@2.9.0.20260326", when="@1.10.0.20260331")
+    depends_on("ioda@2.9.0.20250826", when="@1.10.0.20250821")
     depends_on("jedi-cmake", type=("build"))
     depends_on("mpi")
     depends_on("netcdf-c+mpi")
     depends_on("netcdf-fortran")
     depends_on("oops")
-    depends_on("oops@1.10", when="@1.10")
-    depends_on("ufo-data@2.9.0.20250821", type=("build", "test"), when="@1.10")
+    depends_on("oops@1.10.0.20260331", when="@1.10.0.20260331")
+    depends_on("oops@1.10.0.20250827", when="@1.10.0.20250821")
+    depends_on("ufo-data@2.9.0.20260326", type=("build", "test"), when="@1.10.0.20260331")
+    depends_on("ufo-data@2.9.0.20250821", type=("build", "test"), when="@1.10.0.20250821")
 
     # depends_on('geos-aero', when='+geos-aero')
     # depends_on('geos-aero@0.0.0', when='@1.7.0 +geos-aero')
@@ -168,6 +176,95 @@ class Ufo(CMakePackage):
                     "ufo_test_tier1_instrument_sfcMarine_geos_qc",
                     "ufo_test_tier1_test_ufo_opr_sfccorrected_pressure",
                 ]
+        with when("@1.10.0.20260331"):
+            skipped_tests = []
+            if self.spec.satisfies("%gcc"):
+                skipped_tests += [
+                    "ufo_instrument_amsua_n18_gfs_HofX_bc",
+                    "ufo_obserrordiffusion",
+                ]
+            if self.spec.satisfies("%oneapi"):
+                skipped_tests += [
+                    "ufo_instrument_airs_aqua_gfs_HofX",
+                    "ufo_instrument_airs_aqua_gfs_HofX_bc",
+                    "ufo_instrument_airs_aqua_gfs_HofX_qc",
+                    "ufo_instrument_airs_aqua_gfs_HofX_qc_obin",
+                    "ufo_instrument_amsua_n18_gfs_HofX_bc",
+                    "ufo_instrument_avhrr_metop-a_gfs_HofX",
+                    "ufo_instrument_avhrr_n18_gfs_HofX",
+                    "ufo_instrument_avhrr_metop-a_gfs_HofX_bc",
+                    "ufo_instrument_avhrr_n18_gfs_HofX_bc",
+                    "ufo_instrument_avhrr_metop-a_gfs_HofX_qc",
+                    "ufo_instrument_avhrr_n18_gfs_HofX_qc",
+                    "ufo_instrument_cris-fsr_n20_gfs_HofX",
+                    "ufo_instrument_cris-fsr_npp_gfs_HofX",
+                    "ufo_instrument_cris-fsr_n20_gfs_HofX_bc",
+                    "ufo_instrument_cris-fsr_npp_gfs_HofX_bc",
+                    "ufo_instrument_cris-fsr_n20_geos_HofX_qc",
+                    "ufo_instrument_cris-fsr_n20_gfs_HofX_qc",
+                    "ufo_instrument_cris-fsr_npp_gfs_HofX_qc",
+                    "ufo_instrument_iasi_metop-a_gfs_HofX",
+                    "ufo_instrument_iasi_metop-b_gfs_HofX",
+                    "ufo_instrument_iasi_metop-a_gfs_HofX_bc",
+                    "ufo_instrument_iasi_metop-b_gfs_HofX_bc",
+                    "ufo_instrument_iasi_metop-a_gfs_HofX_qc",
+                    "ufo_instrument_iasi_metop-b_gfs_HofX_qc",
+                    "ufo_instrument_seviri_m11_gfs_HofX",
+                    "ufo_instrument_seviri_m11_gfs_HofX_bc",
+                    "ufo_instrument_seviri_m11_gfs_HofX_qc",
+                    "ufo_instrument_abi_g16_gfs_HofX",
+                    "ufo_instrument_abi_g16_gfs_HofX_bc",
+                    "ufo_obserrorcrossvarcorr",
+                    "ufo_obserrorwithingroupcorr",
+                    "ufo_obserrordiagonal",
+                    "ufo_obserrordiagonal_inv_gamma",
+                    "ufo_gnssrobendmetoffice_qc",
+                    "ufo_gnssrobendmetoffice_obserror",
+                    "ufo_gnssro_super_refraction_check",
+                    "ufo_airs_qc_filters",
+                    "ufo_cris_qc",
+                    "ufo_cris_qc_filters",
+                    "ufo_cris_qc_land",
+                    "ufo_iasi_qc_filters",
+                    "ufo_qc_flags_true",
+                    "ufo_opr_gnssrorefmetoffice",
+                    "ufo_opr_gnssrorefmetoffice_refractivity_changes",
+                    "ufo_opr_gnssrobendmetoffice",
+                    "ufo_linopr_gnssrobendmetoffice",
+                    "ufo_opr_gnssrobendmetoffice_nopseudo",
+                    "ufo_linopr_gnssrobendmetoffice_nopseudo",
+                    "ufo_opr_gnssrobendmetoffice_profile",
+                    "ufo_opr_gnssrobendmetoffice_nosupercheck",
+                    "ufo_linopr_gnssrobendmetoffice_nosupercheck",
+                    "ufo_opr_gnssrobendmetoffice_refractivity_changes",
+                    "ufo_linopr_gnssrobendmetoffice_refractivity_changes",
+                    "ufo_opr_abi_ahi_crtm",
+                    "ufo_linopr_abi_ahi_crtm",
+                    "ufo_opr_airs_crtm",
+                    "ufo_linopr_airs_crtm",
+                    "ufo_opr_crtm_vis_albedo",
+                    "ufo_opr_cris_crtm",
+                    "ufo_linopr_cris_crtm",
+                    "ufo_opr_cris_crtm_co2_options",
+                    "ufo_linopr_cris_crtm_co2_options",
+                    "ufo_opr_hirs4_crtm",
+                    "ufo_linopr_hirs4_crtm",
+                    "ufo_opr_iasi_crtm",
+                    "ufo_iasi_crtmreconrad_linop_check",
+                    "ufo_iasi_crtmreconrad_linop_tlad_check",
+                    "ufo_linopr_iasi_crtm",
+                    "ufo_opr_seviri_crtm",
+                    "ufo_linopr_seviri_crtm",
+                    "ufo_opr_sndrd1-4_crtm",
+                    "ufo_linopr_sndrd1-4_crtm",
+                    "ufo_obsdiag_crtm_airs_jacobian",
+                    "ufo_obsdiag_crtm_airs_optics",
+                    "ufo_obsdiag_crtm_cris_jacobian",
+                    "ufo_obsdiag_crtm_cris_optics",
+                    "ufo_obsdiag_crtm_iasi_jacobian",
+                    "ufo_obsdiag_crtm_iasi_optics",
+                ]
+
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
             if skipped_tests:

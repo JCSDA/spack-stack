@@ -17,6 +17,7 @@ class UfoData(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("2.9.0.20260326", commit="e61d7c0e601e3699062009be109212566aea7ba8")
     version("2.9.0.20250821", commit="9078290c2eb68050af9941113a311200bb06aba8")
 
     generator("make")

@@ -17,18 +17,8 @@ class IodaData(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("2.9.0.20260319", commit="2886c75398b4b3bdd3a4235298af188370727c2e")
     version("2.9.0.20250805", commit="c6f8842648ea473eebc9f66d7c27e2204e5220d6")
-
-#    patch("ioda_cmake_import.patch", when="@2.9.0.20250826")
-#
-#    variant("doc", default=False, description="Build IODA documentation")
-#    # Let's always assume IODA_BUILD_LANGUAGE_FORTRAN=on.
-#    # variant('fortran', default=True, description='Build the ioda Fortran interface')
-#    variant("odc", default=True, description="Build ODC bindings")
-#    # ioda has no explicit OpenMP calls, but header files from Eigen and oops do use openmp.
-#    variant("openmp", default=True, description="Build with OpenMP support")
-#    # Let's always BUILD_PYTHON_BINDINGS.
-#    # variant('python', default=True, description='Build the ioda Python interface')
 
     generator("make")
 

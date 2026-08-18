@@ -131,69 +131,32 @@ class StackEnv(object):
         ), """Set one and only one value ('lmod' or 'tcl') under 'modules:default:enable'
            in site modules.yaml, or use '--modulesys {tcl,lmod}'"""
         return lmod_or_tcl_list[0]
-
-    def _copy_or_merge_includes(self, section, default_in_path, update_in_path, result_out_path):
-        """Given two potential config files, merge the two (update the former with the latter)
-        into an output config file. If only one of them exists, copy that file to the output.
-        Do nothing if neither of them exists."""
-        if os.path.exists(default_in_path) and \
-                os.path.exists(update_in_path):
-            logging.info(f"  Merging {default_in_path} and ...\n  ... {update_in_path} (the latter overwrites the former) ...\n  ... into {result_out_path}")
-            with open(default_in_path, "r") as f:
-                default_in_yaml = syaml.load_config(f)
-            with open(update_in_path, "r") as f:
-                update_in_yaml = syaml.load_config(f)
-            #
-            default_in_data = default_in_yaml[section]
-            update_in_data = update_in_yaml[section]
-            result_data = spack.schema.merge_yaml(default_in_data, update_in_data)
-            result_out_yaml = OrderedDict()
-            result_out_yaml[section] = result_data
-            # Write file, but sanitize the output.
-            stream = io.StringIO()
-            syaml.dump_config(result_out_yaml, stream)
-            # - replace "- packages:" with "packages:" (similar for modules)
-            sanitized_output = re.sub(r"- {}:".format(section), "{}:".format(section), stream.getvalue())
-            # - get rid of annoying single quotes and !!omap
-            sanitized_output = re.sub(r"!!omap", "", re.sub(r"'(\S+):':", r"\g<1>::", sanitized_output))
-            with open(result_out_path, "w") as f:
-                f.write(sanitized_output)
-        else:
-            source = None
-            destination = result_out_path
-            if os.path.exists(update_in_path):
-                source = update_in_path
-            elif os.path.exists(default_in_path):
-                source = default_in_path
-            if source:
-                logging.info(f"  Copying {source} ...\n  ... to {destination}")
-                shutil.copy(source, destination)
-
+    
     def _copy_common_includes(self):
-        """Copy common directory into environment"""
-        self.includes.append("common")
+        """Copy common directory into environment and add includes to spack.yaml."""
         env_common_dir = os.path.join(self.env_dir(), "common")
         logging.info(f"Copying common includes from {common_path} ...\n  ... to {env_common_dir}")
-        shutil.copytree(
-            common_path, env_common_dir, ignore=shutil.ignore_patterns("modules*.yaml", "packages*.yaml")
-        )
-        # Merge or copy common module config(s)
-        lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
-        modules_yaml_path = os.path.join(common_path, "modules.yaml")
-        modules_yaml_modulesys_path = os.path.join(common_path, f"modules_{lmod_or_tcl}.yaml")
-        destination = os.path.join(env_common_dir, "modules.yaml")
-        self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
-        # Merge or copy common package config(s)
-        packages_yaml_path = os.path.join(common_path, "packages.yaml")
+        shutil.copytree(common_path, env_common_dir)
+
+        # Add includes for common configs. Higher precedence items are added first.
         (compiler_name, _) = compiler_name_and_version_from_string(self.compiler)
-        packages_compiler_yaml_path = os.path.join(common_path, f"packages_{compiler_name}.yaml")
-        if not os.path.exists(packages_compiler_yaml_path):
+        packages_compiler_yaml = f"packages_{compiler_name}.yaml"
+        packages_compiler_yaml_path = os.path.join(common_path, packages_compiler_yaml)
+        if os.path.exists(packages_compiler_yaml_path):
+            self.includes.append(os.path.join("common", packages_compiler_yaml))
+        else:
             if self.treatwarningsaserrors:
                 raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
             else:
                 logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
-        destination = os.path.join(env_common_dir, "packages.yaml")
-        self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
+
+        lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
+        modules_yaml_modulesys = f"modules_{lmod_or_tcl}.yaml"
+        modules_yaml_modulesys_path = os.path.join(common_path, modules_yaml_modulesys)
+        if os.path.exists(modules_yaml_modulesys_path):
+            self.includes.append(os.path.join("common", modules_yaml_modulesys))
+
+        self.includes.append("common")
 
     def site_configs_dir(self):
         site_configs_dir = None
@@ -204,34 +167,34 @@ class StackEnv(object):
         raise Exception(f"Site {self.site} not found in {[site_path_tier1, site_path_tier2]}")
 
     def _copy_site_includes(self):
-        """Copy site directory into environment"""
+        """Copy site directory into environment and add includes to spack.yaml."""
         if not self.site:
             raise Exception("Site is not set")
 
         site_name = "site"
-        self.includes.append(site_name)
         site_path = self.site_configs_dir()
         env_site_dir = os.path.join(self.env_dir(), site_name)
         logging.info(f"Copying site includes from {self.site_configs_dir()} ...\n  ... to {env_site_dir}")
-        shutil.copytree(
-            self.site_configs_dir(), env_site_dir, ignore=shutil.ignore_patterns("modules*.yaml", "packages*.yaml")
-        )
-        # Merge or copy site module config(s)
-        lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
-        modules_yaml_path = os.path.join(site_path, "modules.yaml")
-        modules_yaml_modulesys_path = os.path.join(site_path, f"modules_{lmod_or_tcl}.yaml")
-        destination = os.path.join(env_site_dir, "modules.yaml")
-        self._copy_or_merge_includes("modules", modules_yaml_path, modules_yaml_modulesys_path, destination)
-        # Merge or copy site package config(s), issue a warning if compiler-dependent package config doesn't exist
-        packages_yaml_path = os.path.join(site_path, "packages.yaml")
-        packages_compiler_yaml_path = os.path.join(site_path, f"packages_{self.compiler}.yaml")
-        if not os.path.exists(packages_compiler_yaml_path):
+        shutil.copytree(self.site_configs_dir(), env_site_dir)
+
+        # Add includes for site configs. Higher precedence items are added first.
+        packages_compiler_yaml = f"packages_{self.compiler}.yaml"
+        packages_compiler_yaml_path = os.path.join(site_path, packages_compiler_yaml)
+        if os.path.exists(packages_compiler_yaml_path):
+            self.includes.append(os.path.join(site_name, packages_compiler_yaml))
+        else:
             if self.treatwarningsaserrors:
                 raise Exception(f"\n{packages_compiler_yaml_path} not found, please check if this is correct\n")
             else:
                 logging.warning(f"\nWARNING: {packages_compiler_yaml_path} not found, please check if this is correct\n")
-        destination = os.path.join(env_site_dir, "packages.yaml")
-        self._copy_or_merge_includes("packages", packages_yaml_path, packages_compiler_yaml_path, destination)
+
+        lmod_or_tcl = self.get_lmod_or_tcl(self.site_configs_dir())
+        modules_yaml_modulesys = f"modules_{lmod_or_tcl}.yaml"
+        modules_yaml_modulesys_path = os.path.join(site_path, modules_yaml_modulesys)
+        if os.path.exists(modules_yaml_modulesys_path):
+            self.includes.append(os.path.join(site_name, modules_yaml_modulesys))
+
+        self.includes.append(site_name)
 
     def get_upstream_realpaths(self, upstream_path):
         spack_yaml_path = os.path.realpath(os.path.join(upstream_path, "../spack.yaml"))
@@ -329,7 +292,7 @@ class StackEnv(object):
                     logging.warning(
                         "WARNING: Upstream path '%s' does not appear to exist!" % upstream_path
                     )
-                re_pattern = ".+/(?P<spack_stack_ver>spack-stack-[^/]+)/envs/(?P<env_name>[^/]+)"
+                re_pattern = ".+/(?P<spack_stack_ver>spack-stack-[^/]+)/.+/(?P<env_name>[^/]+)/install?$"
                 path_parts = re.match(re_pattern, upstream_path)
                 if path_parts:
                     name = path_parts["spack_stack_ver"] + "-" + path_parts["env_name"]

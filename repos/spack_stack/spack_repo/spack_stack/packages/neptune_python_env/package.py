@@ -21,6 +21,7 @@ class NeptunePythonEnv(BundlePackage):
     version("1.5.0")
 
     variant("gittools", default=False, description="Build additional tools for Git/GitHub")
+    variant("lis-ncoda-utils", default=False, description="Build LIS/NCODA utilities")
 
     depends_on("neptune-env", type="run")
     # Enable the Python variant for ESMF
@@ -36,7 +37,6 @@ class NeptunePythonEnv(BundlePackage):
     depends_on("py-pycodestyle", type="run")
     depends_on("py-pybind11", type="run")
     depends_on("py-pyhdf", type="run")
-    depends_on("py-pyyaml", type="run")
     depends_on("py-regionmask", type="run")
     depends_on("py-scipy", type="run")
     depends_on("py-xarray", type="run")
@@ -49,5 +49,8 @@ class NeptunePythonEnv(BundlePackage):
     with when("+gittools"):
         depends_on("gh", type="run")
         depends_on("py-pygithub", type="run")
+
+    with when("+lis-ncoda-utils"):
+        depends_on("py-lis-ncoda-utils", type="run")
 
     # There is no need for install() since there is no code.
