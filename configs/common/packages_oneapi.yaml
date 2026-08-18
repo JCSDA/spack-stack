@@ -78,7 +78,3 @@ packages:
     rust:
       require:
       - '%c,cxx=gcc'
-    # glib@2.88 with the meson@1.11 build system fails to build for intel-oneapi-compilers@2025.3.1
-    glib:
-      require:
-      - '%c=gcc'
