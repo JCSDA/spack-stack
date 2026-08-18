@@ -17,7 +17,24 @@ a wide range of numerical weather prediction and data assimilation systems.
 - Run `spack dependents <spec>` before anything destructive —
   `spack uninstall --dependents` can take down half an env.
 
+## Contents
+
+| § | Section | TL;DR |
+|---|---|---|
+| 1 | Orientation | Repo map, submodules, recipe paths, where docs live |
+| 2 | Build procedure | The 7-step spine; admin vs non-admin prerequisites |
+| 3 | Output discipline | tee everything, grep logs, never stream, background installs |
+| 4 | Configuration model | Configs are snapshotted; merge precedence; promotion |
+| 5 | Sharp edges | The traps that waste days |
+| 6 | Debugging | Error extraction → build-env → lock queries → symptom table |
+| 7 | New releases | Reconciling spack / spack-stack / machine drift |
+| 8 | Caches | Staging scratch vs binary build-cache mirrors |
+| 9 | Utilities and docs | `util/` catalog; Wiki vs in-repo READMEs |
+
 ## 1. Orientation
+
+Wiki: [Preconfigured Sites](https://github.com/JCSDA/spack-stack/wiki/Preconfigured-Sites) (tier1) ·
+[Configurable Sites](https://github.com/JCSDA/spack-stack/wiki/Configurable-Sites) (tier2)
 
 - `configs/common/` — cross-site defaults, including per-compiler
   `packages_<compiler>.yaml`.
@@ -46,9 +63,12 @@ yaml is the documentation.
 
 ## 2. Build procedure
 
+Wiki: [New Site Configs](https://github.com/JCSDA/spack-stack/wiki/New-Site-Configs) ·
+[New and chained environments for existing sites](https://github.com/JCSDA/spack-stack/wiki/New-and-chained-environments-for-existing-sites) ·
+[Supported Compilers](https://github.com/JCSDA/spack-stack/wiki/Supported-Compilers)
+
 Which steps you need: **new site** — all. **New env on a site that already has a
-config** — 1–2 then 5–7. **New release** — read §7 first. Upstream guide:
-[New Site Configs](https://github.com/JCSDA/spack-stack/wiki/New-Site-Configs).
+config** — 1–2 then 5–7. **New release** — read §7 first.
 
 ### Step 0 — Prerequisites (the admin / non-admin fork)
 
@@ -75,11 +95,18 @@ git clone -b <ref> --recurse-submodules https://github.com/jcsda/spack-stack.git
 cd spack-stack && source setup.sh
 
 # 2. Create the environment (SNAPSHOTS configs — see §4)
+#    New site? use --site linux.default and derive the real config in step 3.
 spack stack create env --site <site> --template <template> \
     --name <env-name> --compiler <gcc|oneapi|intel|apple-clang>
 cd envs/<env-name> && spack env activate -p .
 
-# 3. NEW SITES ONLY — derive externals/compilers into the env's site/ scope
+# 3. NEW SITES ONLY — derive externals/compilers into the env's site/ scope.
+# - Compilers: Multiple versions of site compilers are often found. Edit the
+#   `site/packages.yaml` to ensure that exactly one external compiler of each
+#   target type is available. For example, if targeting gcc-13, eliminate
+#   external references to gcc11, 12, and 14.
+# - Vendor MPI libraries often fail to auto-detect and must be hand written as an
+#   external in `site/packages.yaml`.
 unset SPACK_DISABLE_LOCAL_CONFIG
 export SPACK_SYSTEM_CONFIG_PATH="$(pwd)/site"
 spack external find --scope system --exclude python --exclude cmake ...  # site-specific
@@ -101,25 +128,6 @@ spack install --fail-fast -j <N> 2>&1 | tee log.install
 spack module lmod refresh          # or tcl; add --upstream-modules for chained envs
 spack stack setup-meta-modules     # generates the stack-<compiler>/stack-<mpi> modules
 ```
-
-Per-step notes (verify any flag against *this* checkout with `spack <cmd> -h`):
-
-- **1**: `--recurse-submodules` is mandatory. `--depth 1` builds fine but makes
-  submodules shallow — never judge staleness by commit counts then.
-- **2**: `linux.default`/`macos.default` hold *only* a `modules.yaml`; everything
-  else is derived in step 3. `--modify-pkg <pkg>` copies a recipe into an
-  env-local `envrepo/` — right on releases; on develop, edit `repos/builtin`.
-- **3**: skip entirely when the site config is complete (§5.2). Vendor MPI rarely
-  auto-detects — hand-write its `externals:` block. After `compiler find`, prune
-  `site/packages.yaml` to exactly one good spec per compiler; empty or duplicate
-  compiler specs cause unintelligible errors later. Mixed Intel builds: GCC
-  provides `c,c++` but **not** `fortran`.
-- **4**: `spack config add` writes to the env's own `spack.yaml`, which is lost
-  unless folded in at promotion (§4). OneAPI needs several extras — copy the
-  shape from the aws-ubuntu2404 README.
-- **5**: `check-preferred-compiler` errors only for off-compiler specs with **no**
-  entry in the package config — declare intentional deviations with
-  `require: ['%c,cxx=gcc']` and it reports them as explicit rather than failing.
 
 ## 3. Output discipline (critical for agents)
 
@@ -143,6 +151,8 @@ grep -E "^> .*error:" log.install | sed 's/^> //' | sort | uniq -c | sort -rn | 
 ```
 
 ## 4. Configuration model
+
+Wiki: [Configuration Files And Templates](https://github.com/JCSDA/spack-stack/wiki/Configuration-Files-And-Templates)
 
 `spack stack create env` **snapshots** configs: it *copies* `configs/common/` and
 `configs/sites/<site>/` into `envs/<name>/{common,site}/`. Editing `configs/`
@@ -210,11 +220,12 @@ unconstrained solve. Query `spack.lock` instead (§6).
 
 ## 6. Debugging
 
+Wiki: [Known Issues](https://github.com/JCSDA/spack-stack/wiki/Known-Issues) — check it before any deep dive.
+
 Triage: concretize failure → `==> Error:` near the end of `log.concretize`, no
 `spack.lock` written (usually §5.3/§5.5 or duplicates, below). Install failure →
 `log.install`. Module-generation tracebacks from `meta_modules.py` are env/config
-mismatches and say so. Check the wiki's
-[Known Issues](https://github.com/JCSDA/spack-stack/wiki/Known-Issues) first.
+mismatches and say so.
 
 Extract the error with the `> `-prefix histogram from §3, then:
 
@@ -287,6 +298,9 @@ fixed — stop them *cascading* by pinning the flexible middle package to one si
 
 ## 7. New releases (drift reconciliation)
 
+Wiki: the per-release `Release-x.y.z` page (e.g.
+[Release 2.1.1](https://github.com/JCSDA/spack-stack/wiki/Release-2.1.1)) and its `post-release-updates` companion.
+
 Same spine; the work is absorbing drift in spack-stack, in spack itself, and in
 the machine. Clone fresh at the release branch — never `git pull` an old tree
 across a major bump, since submodule pins must land together. Read the release's
@@ -305,6 +319,9 @@ Trust the old README for the *shape* of a build; re-derive every *value*.
 
 ## 8. Caches — two different things
 
+Wiki: [Spack Mirrors](https://github.com/JCSDA/spack-stack/wiki/Spack-Mirrors) — also covers air-gapped installs and
+cargo/go mirrors.
+
 **Staging cache** (`config.yaml`: `build_stage`, `source_cache`, `misc_cache`) —
 where spack unpacks and compiles. Pure scratch; `spack clean -a` purges it.
 **The paths are absolute**, so two working trees on one machine share them —
@@ -320,16 +337,20 @@ mirror — a deliberate infra decision, never a silent default.
 
 ## 9. Utilities and docs
 
+Wiki: [Utilities](https://github.com/JCSDA/spack-stack/wiki/Utilities)
+
 | Script (`util/`) | Purpose |
 |---|---|
 | `show_duplicate_packages.py [-i PKG ...]` | duplicate versions in `spack.lock`; `-i` **ignores** (§3) |
 | `parallel_install.sh N M [args]` | N parallel installs × M jobs each; source it |
-| `ldd_check.py` / `check_libirc.sh` / `check_permissions.sh` | unresolved libs / leaked Intel `libirc.so` / world-readability |
+| `ldd_check.py` / `check_libirc.sh` / `check_permissions.sh` | unresolved libs / leaked Intel `libirc.so` ([background](https://github.com/JCSDA/spack-stack/wiki/Intel-oneAPI-compilers-and-libirc.so)) / world-readability |
 | `modules_config_check.py` | `modules_lmod.yaml` vs `modules_tcl.yaml` drift |
 | `get_version_list.sh [ENV]` | markdown version table for a release Wiki page |
 | `fetch_cargo_deps.py` / `fetch_go_deps.py` | pre-fetch Rust/Go deps for firewalled builds |
 
 "Update the docs" splits two ways. Build procedure, release notes and site
-listings go to the **Wiki** (clone `spack-stack.wiki.git`); a single machine's
+listings go to the **Wiki** (clone `spack-stack.wiki.git`; pre-2.0 version
+tables live in [Package Versions PreV2](https://github.com/JCSDA/spack-stack/wiki/Package-Versions-PreV2)). A single
+machine's
 concrete transcript goes in the `README.md` in that site's config dir, shipped
 with the config it documents.
