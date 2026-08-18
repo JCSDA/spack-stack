@@ -340,7 +340,7 @@ packages:
     # ninja - when adding information here, also check Discover site config
     odc:
       require:
-      - '@1.6.1'
+      - '@1.6.3'
       - ~fortran
     openmpi:
       require:
