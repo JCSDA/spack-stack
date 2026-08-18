@@ -1,9 +1,8 @@
 # AGENTS.md — spack-stack
 
 Guidance for AI coding agents working in this repository. spack-stack is
-JCSDA/EMC's spack-based distribution of the JEDI/UFS software stack; "building"
-it means taking a machine and producing a working install tree plus Lmod/Tcl
-modules that users `module load`.
+spack-based distribution of software dependencies and packages supporting
+a wide range of numerical weather prediction and data assimilation systems.
 
 ## Ground rules for agents
 
