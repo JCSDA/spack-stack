@@ -13,16 +13,10 @@ packages:
   blas:
     require:
     - nvhpc
-  curl:
-    require:
-    - '%c=gcc'
   fftw-api:
     require:
     - fftw
     #- nvpl-fft
-  file:
-    require:
-    - '%c=gcc'
   lapack:
     require:
     - nvhpc
@@ -36,14 +30,15 @@ packages:
   cmake:
     require:
     - '%c,cxx=gcc'
+  curl:
+    require:
+    - '%c=gcc'
   ectrans:
     require:
     - +fftw
-  #elfutils:
-  #  require:
-  #  - '@0.191:'
-  #libelf:
-  #  buildable: false
+  file:
+    require:
+    - '%c=gcc'
   gmake:
     require:
     - '%c=gcc'
@@ -90,9 +85,6 @@ packages:
   py-cython:
     require:
     - '%c=gcc'
-  #py-maturin:
-  #  require:
-  #  - '%c=gcc'
   py-mpi4py:
     require:
     - '%c,cxx=gcc'  
