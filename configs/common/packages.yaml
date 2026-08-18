@@ -249,6 +249,16 @@ packages:
     jedi-cmake:
       require:
       - '@1.4.0'
+    kokkos:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
+    kokkos-kernels:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
     landsfcutil:
       require:
       - '@2.4.2'
