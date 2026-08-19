@@ -302,6 +302,8 @@ def setup_meta_modules():
 
     # Sort compilers so that the preferred compiler comes last; the MODULEPATHS
     # are prepended giving the preferred compiler the highest precedence.
+    # Python sorts tuples lexicographically, and booleans are ordered as integers:
+    # False == 0, True == 1
     compilers = sorted(compilers, key=lambda x: (x == preferred_compiler_spec, x))
 
     # Get mpi providers (currently only one mpi provider is supported)
