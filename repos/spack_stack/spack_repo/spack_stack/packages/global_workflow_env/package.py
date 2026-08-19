@@ -16,37 +16,63 @@ class GlobalWorkflowEnv(BundlePackage):
     maintainers("AlexanderRichert-NOAA")
 
     version("1.0.0")
-    variant("python", default=True, description="Build Python dependencies")
-    variant("uwtools", default=False, description="Build uwtools")
+    variant("uwtools", default=True, description="Build uwtools")
+    variant("metplus", default=True, description="Build METplus to support verifiation")
+    variant("gdas", default=True, description="Build for GDASApp DA support")
+    variant("gsi", default=True, description="Build for GSI DA support")
+    variant("ci", default=True, description="Build for automated CI testing")
 
-    depends_on("ufs-pyenv", when="+python")
-    depends_on("prod-util")
-    depends_on("grib-util")
+    # Core: python, cmake, git, hdf5, netcdf-c, netcdf-fortran
+    depends_on("base-env")
+
+    # UFS deps
+    depends_on("ufs-weather-model-env")
+    depends_on("ufs-utils-env")
+
+    # global workflow deps
+    depends_on("py-wxflow")
+    depends_on("py-jinja2")
+    depends_on("py-pyyaml")
+    depends_on("py-numpy")
+    depends_on("py-netcdf4")
+    depends_on("py-xarray")
+    depends_on("py-pandas")
+    depends_on("py-python-dateutil")
+    depends_on("py-f90nml")
+    depends_on("wgrib2")
     depends_on("nco")
     depends_on("cdo")
-    depends_on("netcdf-c")
-    depends_on("netcdf-fortran")
+    depends_on("grib-util")
+    depends_on("prod-util")
     depends_on("esmf")
-    depends_on("bacio")
-    depends_on("g2")
+    depends_on("sp")
     depends_on("g2tmpl")
-    depends_on("gh")
-    depends_on("w3nco")
-    depends_on("w3emc")
-    depends_on("sp", when="^ip@:4")
-    depends_on("ip")
-    depends_on("nemsio")
-    depends_on("nemsiogfs")
-    depends_on("ncio")
-    depends_on("landsfcutil")
-    depends_on("sigio")
-    depends_on("bufr")
-    depends_on("wgrib2")
-    depends_on("met")
-    depends_on("metplus")
-    depends_on("gsi-ncdiag")
     depends_on("crtm")
-    depends_on("py-wxflow", when="+python")
+    depends_on("gsi-ncdiag")
+    depends_on("bufr")
+    depends_on("jasper")
+    depends_on("libpng")
+
+    #metplus dependencies
+    depends_on("met", when="+metplus")
+    depends_on("metplus", when="+metplus")
+    depends_on("imagemagick", when="+metplus")
+
+    #uwtools dependencies
     depends_on("uwtools", when="+uwtools")
+
+    # GDASApp dependencies
+    with when("+gdas"):
+        depends_on("jedi-fv3-env")
+        depends_on("jedi-tools-env")
+        depends_on("ioda")
+        depends_on("pigz")
+
+    # GSI dependencies
+    depends_on("gsi-env", when="+gsi")
+
+    # CI dependencies
+    depends_on("py-pygithub", when="+ci")
+    depends_on("gh", when="+ci")
 
     # There is no need for install() since there is no code.
