@@ -117,19 +117,19 @@ packages:
       - '@5.18:'
     eckit:
       require:
-      - '@1.32.3'
+      - '@2.0.7'
       - linalg=eigen,lapack
       - compression=lz4,bzip2
     ecmwf-atlas:
       require:
-      - '@0.44.1'
+      - '@0.46.0'
       - +fckit
       - +trans
       - +tesselation
       - +fftw
     ectrans:
       require:
-      - '@1.7.0'
+      - '@1.8.0'
     eigen:
       require:
       - '@3.4.0'
@@ -156,14 +156,14 @@ packages:
       - ~libbsd
     fckit:
       require:
-      - '@0.14.1'
+      - '@0.14.3'
       - +eckit
     fftw:
       require:
       - '@3.3.10'
     fiat:
       require:
-      - '@1.6.1'
+      - '@2.0.0'
     flex:
       require:
       - '@2.6.4'
@@ -207,6 +207,10 @@ packages:
     global-workflow-env:
       require:
       - '+uwtools'
+      - '+gdas'
+      - '+gsi'
+      - '+metplus'
+      - '+ci'
     grib-util:
       require:
       - '@1.4.0'
@@ -221,8 +225,11 @@ packages:
       # for the deprecated @2.9.1 which doesn't compile against ICU >= 76
       # (-Werror=redundant-decls on u_strlen). Force meson.
       # cmake-based harfbuzz fails during build
+      # requiring +gobject eliminates a duplicate copy of harfbuzz in the unified-env
+      # due to global-workflow-env deps requesting a non-default variant
       require:
       - 'build_system=meson'
+      - +gobject
     hdf:
       require:
       - '@4.2.15'
@@ -257,6 +264,16 @@ packages:
     jedi-cmake:
       require:
       - '@1.4.0'
+    kokkos:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
+    kokkos-kernels:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
     landsfcutil:
       require:
       - '@2.4.2'
@@ -338,7 +355,7 @@ packages:
     # ninja - when adding information here, also check Discover site config
     odc:
       require:
-      - '@1.6.1'
+      - '@1.6.3'
       - ~fortran
     openmpi:
       require:

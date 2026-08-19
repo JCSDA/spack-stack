@@ -24,7 +24,6 @@ class UfsUtilsEnv(BundlePackage):
     depends_on("g2")
     depends_on("g2tmpl")
     depends_on("ip")
-    depends_on("ip2")
     depends_on("nemsio")
     depends_on("nemsiogfs")
     depends_on("sp", when="^ip@:4")

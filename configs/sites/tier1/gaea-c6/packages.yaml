@@ -10,6 +10,19 @@ packages:
     - spec: zlib@1.2.13
       prefix: /usr
 
+# Modifications of common packages
+  # GPUs on ursa are H100
+  ufs-weather-model-env:
+    require::
+    - +kokkos
+
+  kokkos:
+    require:
+    - '~cuda'
+  kokkos-kernels:
+    require:
+    - '~cuda'
+
   autoconf:
     externals:
     - spec: autoconf@2.69
