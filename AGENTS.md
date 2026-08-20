@@ -23,7 +23,7 @@ a wide range of numerical weather prediction and data assimilation systems.
 |---|---|---|
 | 1 | Orientation | Repo map, submodules, recipe paths, where docs live |
 | 2 | Build procedure | The 7-step spine; admin vs non-admin prerequisites |
-| 3 | Output discipline | tee everything, grep logs, never stream, background installs |
+| 3 | Output discipline | tee output to logs and background-run for verbose and slow commands like concretize and install |
 | 4 | Configuration model | Configs are snapshotted; merge precedence; promotion |
 | 5 | Sharp edges | The traps that waste days |
 | 6 | Debugging | Error extraction → build-env → lock queries → symptom table |
@@ -90,6 +90,8 @@ and `mpi: buildable: false`). Copy an existing HPC site dir.
 ### Steps 1–7 — The spine
 
 ```bash
+set -o pipefail
+
 # 1. Clone at the RIGHT ref (release/X.Y for reproducible builds, develop for latest)
 git clone -b <ref> --recurse-submodules https://github.com/jcsda/spack-stack.git
 cd spack-stack && source setup.sh
@@ -131,22 +133,31 @@ spack stack setup-meta-modules     # generates the stack-<compiler>/stack-<mpi> 
 
 ## 3. Output discipline (critical for agents)
 
-spack emits enormous output. Never stream a concretize or install log into your
-context.
+Some spack commands emit enormous output. Never stream a concretize or install
+log into your context.
 
-1. Always `2>&1 | tee log.<step>` — every long command, every time.
-2. Run `spack install` **in the background** (hours), then inspect the file:
-   `tail -n 40 log.install`, `grep -niE 'error:|failed' log.install | tail -50`.
-3. Never `cat` a generated `packages.yaml` or `spack.lock` — grep them or read
-   line ranges. To see what concretized, query `spack.lock` (§6), not the log.
-4. `show_duplicate_packages.py` output is small — read it fully. `-i <pkg>`
+Always `2>&1 | tee log.<step>` for every long command, and do not accept
+the full output into your context.
+
+Start every shell with `set -o pipefail`. A pipeline returns its *last*
+element's status, so without it `cmd | tee log` returns tee's `0` and a
+failed build reports success to the harness (this also improves behavior
+when chaining commands with `&&` or catching failures with `set -e`).
+
+More notes on context discipline:
+ * `spack install` - Takes hours, run in the background. On failure, verify
+   with `tail -n 40 log.install`. When a spack install fails it will prefix
+   failure log lines with `> ` to make them easier to grep out of the long log.
+ * Do not `cat` a generated `packages.yaml` or `spack.lock`; grep them or read
+   line ranges. Note that `spack.lock` is a large one-line JSON object. There
+   is advice in §6 on querying this file.
+ * `show_duplicate_packages.py` output is small — read it fully. `-i <pkg>`
    **ignores** a package; it is NOT a focus flag. `unified-dev` intentionally
    duplicates some, so the canonical check is
    `show_duplicate_packages.py -i fms -i crtm -i crtm-fix -i esmf -i mapl -i py-cython`.
-5. On failure, spack prefixes the lines that matter with `> `. Start here — it
-   collapses "58 errors" into one line saying it is the same error 58 times:
 
 ```bash
+# Find and deduplicate errors from an install log.
 grep -E "^> .*error:" log.install | sed 's/^> //' | sort | uniq -c | sort -rn | head
 ```
 
