@@ -1,8 +1,6 @@
 WSL 2 Alma Linux 9 installation notes for NVHPC 26.5 compiler
 
-# Download and install nvhpc - interactive install only,
-# cannot provide command line arguments.
-
+# Download and install nvhpc, for example:
 wget https://developer.download.nvidia.com/hpc-sdk/26.5/nvhpc_2026_265_Linux_x86_64_cuda_13.2.tar.gz
 tar xpzf nvhpc_2026_265_Linux_x86_64_cuda_13.2.tar.gz
 nvhpc_2026_265_Linux_x86_64_cuda_13.2/install
