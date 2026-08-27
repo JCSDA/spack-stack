@@ -10,6 +10,9 @@ case $hostname in
   *atlantis*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/atlantis/setup.sh
     ;;
+  *barfoot*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier2/barfoot/setup.sh
+    ;;
   *blueback*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/blueback/setup.sh
     ;;

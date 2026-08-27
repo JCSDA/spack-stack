@@ -1,0 +1,60 @@
+packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2026.1.0']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=14.3.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - cray-mpich@9.1.0
+  intel-oneapi-compilers:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-compilers@2026.1.0 +fix_rt_linkage
+      prefix: /p/global/heinzell/spack-stack/oneapi-2026.1.0
+      modules:
+      - PrgEnv-intel/8.7.0
+      - intel-oneapi/2026.1.0
+      extra_attributes:
+        compilers:
+          c: /p/global/heinzell/spack-stack/oneapi-2026.1.0/compiler/2026.1/bin/icx
+          cxx: /p/global/heinzell/spack-stack/oneapi-2026.1.0/compiler/2026.1/bin/icpx
+          fortran: /p/global/heinzell/spack-stack/oneapi-2026.1.0/compiler/2026.1/bin/ifx
+        environment:
+          set:
+            CONFIG_SITE: ''
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@14.3.0 languages:='c,c++'
+      prefix: /opt/cray/pe/gcc-native/14
+      modules:
+      - PrgEnv-gnu/8.7.0
+      - gcc-native/14
+      extra_attributes:
+        compilers:
+          c: /opt/cray/pe/gcc-native/14/bin/gcc
+          cxx: /opt/cray/pe/gcc-native/14/bin/g++
+          fortran: /opt/cray/pe/gcc-native/14/bin/gfortran
+        environment:
+          set:
+            CONFIG_SITE: ''
+            PE_GCC_EXTERNAL: native
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@9.1.0
+      prefix: /opt/cray/pe/mpich/9.1.0/ofi/intel/2022.1
+      modules:
+      - cray-mpich/9.1.0
+      #extra_attributes:
+      #  environment:
+      #    prepend_path:
+      #      CMAKE_PREFIX_PATH: /p/app/projects/NEPTUNE/spack-stack/cmake-findmpi
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2026.1
+      prefix: /p/global/heinzell/spack-stack/oneapi-2026.1.0

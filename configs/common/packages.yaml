@@ -150,6 +150,10 @@ packages:
       require:
       - '@0.14.3'
       - +eckit
+    ffmpeg:
+      require:
+      - ~gpl
+      - ~nonfree
     fftw:
       require:
       - '@3.3.10'
@@ -465,6 +469,10 @@ packages:
     py-pygithub:
       require:
       - '@2.7:'
+    # See py-pycparser
+    py-imageio:
+      require:
+      - '@2.37.0'
     # This version builds with Intel oneAPI compilers, newer versions don't
     py-pyogrio:
       require:

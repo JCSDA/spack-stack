@@ -31,6 +31,7 @@ class NeptunePythonEnv(BundlePackage):
     depends_on("py-cartopy", type="run")
     depends_on("py-cfgrib", type="run")
     depends_on("py-h5py", type="run")
+    depends_on("py-imageio", type="run")
     depends_on("py-matplotlib", type="run")
     depends_on("py-netcdf4", type="run")
     depends_on("py-pandas", type="run")
