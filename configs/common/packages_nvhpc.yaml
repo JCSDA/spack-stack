@@ -21,6 +21,9 @@ packages:
     require:
     - nvhpc
   # Individual package settings
+  util-linux-uuid:
+    require:
+    - '%c,cxx=gcc'
   antlr:
     require:
     - '%c,cxx=gcc'
@@ -91,6 +94,10 @@ packages:
   py-numpy:
     require:
     - '%c,cxx=gcc'
+  py-pyyaml:
+    require:
+    - '@=6.0.3'
+    - +libyaml
   rust:
     require:
     - '%c,cxx=gcc'
