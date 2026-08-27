@@ -289,21 +289,22 @@ def setup_meta_modules():
             if any(core_compiler in x for x in compiler_list):
                 raise Exception("Not supported: spack-stack compilers in core compilers")
 
-    # Determine the preferred compiler and sort the list of compilers so that
-    # the preferred compiler comes last. This is so that all other compilers
-    # populate the MODULEPATHS_SAVE list before the preferred compiler
-    # takes it and adds it to the stack-COMPILER metamodule. Likewise, we need
-    # to save the list of compiler substitutions from the preferred compiler
-    # so that we have access to it when we build the MPI meta module.
+    # Determine the preferred compiler.
     preferred_compiler = get_preferred_compiler(spack.config)
     logging.info("  ... preferred compiler: {}".format(preferred_compiler))
 
-    # Sort the list using a custom key
-    def custom_sort_key(entry):
-        # Return a tuple where the first element is 1 if the entry contains the word, else 0
-        # The second element is the entry itself for natural sorting within groups
-        return (1 if preferred_compiler in entry else 0, entry)
-    compilers = sorted(compilers, key=custom_sort_key)
+    # Check that exactly one compiler spec matches the preferred compiler.
+    preferred_compiler_specs = [c for c in compilers if c.name == preferred_compiler]
+    if len(preferred_compiler_specs) != 1:
+        raise Exception(f"Expected 1 preferred spec for '{preferred_compiler}'. Found "
+                        f"{len(preferred_compiler_specs)} matching specs in:\n{compilers}")
+    preferred_compiler_spec = preferred_compiler_specs[0]
+
+    # Sort compilers so that the preferred compiler comes last; the MODULEPATHS
+    # are prepended giving the preferred compiler the highest precedence.
+    # Python sorts tuples lexicographically, and booleans are ordered as integers:
+    # False == 0, True == 1
+    compilers = sorted(compilers, key=lambda x: (x == preferred_compiler_spec, x))
 
     # Get mpi providers (currently only one mpi provider is supported)
     mpi_providers = q.providers_for("mpi")
@@ -327,9 +328,6 @@ def setup_meta_modules():
     # Create compiler modules
     logging.info("Creating compiler modules ...")
 
-    # Initialize saved substitutes to None (populate for preferred compiler later)
-    COMPILER_SUBSTITUTES_SAVE = None
-
     # Collect and save modulepaths for the preferred compiler
     MODULEPATHS_SAVE = []
 
@@ -348,8 +346,7 @@ def setup_meta_modules():
             module_choice = module_choice
         )
 
-    # Create compiler modules
-    COMPILER_META_MODULE = None
+    # Collect the modulepaths for all compilers.
     for compiler in compilers:
         logging.info(f"  ... configuring compiler {compiler.name}@{compiler.version}")
 
@@ -374,105 +371,102 @@ def setup_meta_modules():
                 module_choice = module_choice
             )
 
-        # The remainder of the loop is only needed for the preferred compiler
-        if not compiler.name in preferred_compiler:
-            continue
+    # Create the meta module for the preferred compiler. This is done after the loop
+    # above so that MODULEPATHS_SAVE holds the modulepaths for all compilers, and the
+    # substitutes are kept so that we have access to them when we build the MPI meta
+    # module.
+    compiler = preferred_compiler_spec
+    compiler_subs = SUBSTITUTES_TEMPLATE.copy()
 
-        logging.info(
-            "  ... configuring stack compiler {}@{}".format(compiler.name, compiler.version)
-        )
-        compiler_module_dir = os.path.join(meta_module_dir, "stack-" + compiler.name)
-        compiler_module_file = os.path.join(
-            compiler_module_dir, str(compiler.version) + MODULE_FILE_EXTENSION[module_choice]
-        )
-        # Save this for later use
-        COMPILER_META_MODULE = f"stack-{compiler.name}/{str(compiler.version)}"
-        substitutes = SUBSTITUTES_TEMPLATE.copy()
+    logging.info(
+        "  ... configuring stack compiler {}@{}".format(compiler.name, compiler.version)
+    )
+    compiler_module_dir = os.path.join(meta_module_dir, "stack-" + compiler.name)
+    compiler_module_file = os.path.join(
+        compiler_module_dir, str(compiler.version) + MODULE_FILE_EXTENSION[module_choice]
+    )
+    # Save this for later use
+    COMPILER_META_MODULE = f"stack-{compiler.name}/{str(compiler.version)}"
 
-        if not compiler.external:
-            raise Exception(f"spack-built compiler {compiler} not yet supported")
+    if not compiler.external:
+        raise Exception(f"spack-built compiler {compiler} not yet supported")
 
-        # Use existing modules for external mpi providers; otherwise, use spack-built module
-        if compiler.external and compiler.external_modules:
-            for module in compiler.external_modules:
-                substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-        else:
-            module = "{}/{}".format(compiler.name, compiler.version)
-            substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-        substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
-        logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
+    # Use existing modules for external mpi providers; otherwise, use spack-built module
+    if compiler.external and compiler.external_modules:
+        for module in compiler.external_modules:
+            compiler_subs["MODULELOADS"] += module_load_command(module_choice, module)
+    else:
+        module = "{}/{}".format(compiler.name, compiler.version)
+        compiler_subs["MODULELOADS"] += module_load_command(module_choice, module)
+    compiler_subs["MODULELOADS"] = compiler_subs["MODULELOADS"].rstrip("\n")
+    logging.debug("  ... ... MODULELOADS: {}".format(compiler_subs["MODULELOADS"]))
 
-        # Compiler environment variables; names are lowercase in spack
-        substitutes["CC"] = compiler.extra_attributes.get("compilers", {}).get("c", "")
-        substitutes["CXX"] = compiler.extra_attributes.get("compilers", {}).get("cxx", "")
-        substitutes["F77"] = compiler.extra_attributes.get("compilers", {}).get("fortran", "")
-        substitutes["FC"] = compiler.extra_attributes.get("compilers", {}).get("fortran", "")
-        logging.debug("  ... ... CC  : {}".format(substitutes["CC"]))
-        logging.debug("  ... ... CXX : {}".format(substitutes["CXX"]))
-        logging.debug("  ... ... F77 : {}".format(substitutes["F77"]))
-        logging.debug("  ... ... FC  : {}".format(substitutes["FC"]))
+    # Compiler environment variables; names are lowercase in spack
+    compiler_subs["CC"] = compiler.extra_attributes.get("compilers", {}).get("c", "")
+    compiler_subs["CXX"] = compiler.extra_attributes.get("compilers", {}).get("cxx", "")
+    compiler_subs["F77"] = compiler.extra_attributes.get("compilers", {}).get("fortran", "")
+    compiler_subs["FC"] = compiler.extra_attributes.get("compilers", {}).get("fortran", "")
+    logging.debug("  ... ... CC  : {}".format(compiler_subs["CC"]))
+    logging.debug("  ... ... CXX : {}".format(compiler_subs["CXX"]))
+    logging.debug("  ... ... F77 : {}".format(compiler_subs["F77"]))
+    logging.debug("  ... ... FC  : {}".format(compiler_subs["FC"]))
 
-        # Compiler flags; names are lowercase in spack
-        if "flags" in compiler.extra_attributes.keys():
-            for flag_name in compiler.extra_attributes["flags"].keys():
-                flag_values = compiler.extra_attributes["flags"][flag_name]
-                substitutes["COMPFLAGS"] += setenv_command(
-                    module_choice, flag_name.upper(), flag_values
-                )
-        substitutes["COMPFLAGS"] = substitutes["COMPFLAGS"].rstrip("\n")
-        logging.debug("  ... ... COMPFLAGS: {}".format(substitutes["COMPFLAGS"]))
+    # Compiler flags; names are lowercase in spack
+    if "flags" in compiler.extra_attributes.keys():
+        for flag_name in compiler.extra_attributes["flags"].keys():
+            flag_values = compiler.extra_attributes["flags"][flag_name]
+            compiler_subs["COMPFLAGS"] += setenv_command(
+                module_choice, flag_name.upper(), flag_values
+            )
+    compiler_subs["COMPFLAGS"] = compiler_subs["COMPFLAGS"].rstrip("\n")
+    logging.debug("  ... ... COMPFLAGS: {}".format(compiler_subs["COMPFLAGS"]))
 
-        # Environment variables
-        if "environment" in compiler.extra_attributes.keys():
-            for action in compiler.extra_attributes["environment"].keys():
-                for env_name in compiler.extra_attributes["environment"][action]:
-                    env_values = compiler.extra_attributes["environment"][action][env_name]
-                    substitutes["ENVVARS"] += envmod_command(
-                        module_choice,
-                        action,
-                        env_name,
-                        env_values
-                    )
-        # https://github.com/JCSDA/spack-stack/issues/1903
-        # Attempt to locate directory "compiler" in the same directory where
-        # "icx" resides. If found, add it to PATH in the compiler module
-        if compiler.name=="intel-oneapi-compilers":
-            path_to_icx = os.path.dirname(substitutes["CC"])
-            if os.path.isdir(os.path.join(path_to_icx, "compiler")):
-                substitutes["ENVVARS"] +=  prepend_path_command(
+    # Environment variables
+    if "environment" in compiler.extra_attributes.keys():
+        for action in compiler.extra_attributes["environment"].keys():
+            for env_name in compiler.extra_attributes["environment"][action]:
+                env_values = compiler.extra_attributes["environment"][action][env_name]
+                compiler_subs["ENVVARS"] += envmod_command(
                     module_choice,
-                    "PATH",
-                    os.path.join(path_to_icx, "compiler"),
+                    action,
+                    env_name,
+                    env_values
                 )
-        substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
-        logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
+    # https://github.com/JCSDA/spack-stack/issues/1903
+    # Attempt to locate directory "compiler" in the same directory where
+    # "icx" resides. If found, add it to PATH in the compiler module
+    if compiler.name=="intel-oneapi-compilers":
+        path_to_icx = os.path.dirname(compiler_subs["CC"])
+        if os.path.isdir(os.path.join(path_to_icx, "compiler")):
+            compiler_subs["ENVVARS"] +=  prepend_path_command(
+                module_choice,
+                "PATH",
+                os.path.join(path_to_icx, "compiler"),
+            )
+    compiler_subs["ENVVARS"] = compiler_subs["ENVVARS"].rstrip("\n")
+    logging.debug("  ... ... ENVVARS  : {}".format(compiler_subs["ENVVARS"]))
 
-        # Spack compiler module hierarchy - append all saved modulepaths
-        for modulepath in MODULEPATHS_SAVE:
-            substitutes["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
-        substitutes["MODULEPATHS"] = substitutes["MODULEPATHS"].rstrip("\n")
-        logging.debug("  ... ... MODULEPATHS  : {}".format(substitutes["MODULEPATHS"]))
+    # Spack compiler module hierarchy - append all saved modulepaths
+    for modulepath in MODULEPATHS_SAVE:
+        compiler_subs["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
+    compiler_subs["MODULEPATHS"] = compiler_subs["MODULEPATHS"].rstrip("\n")
+    logging.debug("  ... ... MODULEPATHS  : {}".format(compiler_subs["MODULEPATHS"]))
 
-        # Read compiler template into module_content string
-        with open(COMPILER_TEMPLATES[module_choice]) as f:
-            module_content = f.read()
+    # Read compiler template into module_content string
+    with open(COMPILER_TEMPLATES[module_choice]) as f:
+        module_content = f.read()
 
-        # Substitute variables in module_content
-        for key in substitutes.keys():
-            module_content = module_content.replace("@{}@".format(key), substitutes[key])
+    # Substitute variables in module_content
+    for key in compiler_subs.keys():
+        module_content = module_content.replace("@{}@".format(key), compiler_subs[key])
 
-        # Write compiler module
-        if not os.path.isdir(compiler_module_dir):
-            os.makedirs(compiler_module_dir)
-        with open(compiler_module_file, "w") as f:
-            f.write(module_content)
-        logging.info("  ... writing {}".format(compiler_module_file))
-        number_of_meta_modules_written += 1
-
-        # If this is the last compiler in the list (i.e. the preferred compiler),
-        # then save the substitutes for later when building the MPI meta module
-        if compiler == compilers[-1]:
-            COMPILER_SUBSTITUTES_SAVE = substitutes
+    # Write compiler module
+    if not os.path.isdir(compiler_module_dir):
+        os.makedirs(compiler_module_dir)
+    with open(compiler_module_file, "w") as f:
+        f.write(module_content)
+    logging.info("  ... writing {}".format(compiler_module_file))
+    number_of_meta_modules_written += 1
 
     # Collect and save modulepaths for MPI with preferred compiler
     MODULEPATHS_SAVE = []
@@ -502,6 +496,7 @@ def setup_meta_modules():
                 module_choice = module_choice
             )
 
+        # Collect the modulepaths for all compilers (preferred compiler last)
         for compiler in compilers:
             logging.info(
                 "  ... configuring stack mpi library {}@{} for compiler {}@{}".format(
@@ -533,128 +528,134 @@ def setup_meta_modules():
                     module_choice = module_choice
                 )
 
-            # The remainder of the loop is only needed for the preferred compiler
-            if not compiler.name in preferred_compiler:
-                continue
+        # Create the mpi meta module for the preferred compiler. This is done after the
+        # loop above so that MODULEPATHS_SAVE holds the modulepaths for all compilers.
+        compiler = preferred_compiler_spec
 
-            # Path and name for mpi module file
-            mpi_module_dir = os.path.join(
-                module_dir, compiler_alias, str(compiler.version), "stack-" + mpi_provider.name
-            )
-            mpi_module_file = os.path.join(
-                mpi_module_dir, str(mpi_provider.version).split("-")[0] + MODULE_FILE_EXTENSION[module_choice]
-            )
-            # Save this for later
-            MPI_META_MODULE = f"stack-{mpi_provider.name}/{str(mpi_provider.version).split('-')[0]}"
+        # Module paths are short names for tcl modules
+        if module_choice == "lmod":
+            compiler_alias = compiler.name
+        else:
+            compiler_alias = ALIASES[compiler.name]
 
-            substitutes = SUBSTITUTES_TEMPLATE.copy()
-            # Use existing modules for external mpi providers; otherwise, use spack-built module
-            if mpi_provider.external and mpi_provider.external_modules:
-                for module in mpi_provider.external_modules:
-                    substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-            else:
-                module = "{}/{}".format(mpi_provider.name, mpi_provider.version)
+        # Path and name for mpi module file
+        mpi_module_dir = os.path.join(
+            module_dir, compiler_alias, str(compiler.version), "stack-" + mpi_provider.name
+        )
+        mpi_module_file = os.path.join(
+            mpi_module_dir, str(mpi_provider.version).split("-")[0] + MODULE_FILE_EXTENSION[module_choice]
+        )
+        # Save this for later
+        MPI_META_MODULE = f"stack-{mpi_provider.name}/{str(mpi_provider.version).split('-')[0]}"
+
+        substitutes = SUBSTITUTES_TEMPLATE.copy()
+        # Use existing modules for external mpi providers; otherwise, use spack-built module
+        if mpi_provider.external and mpi_provider.external_modules:
+            for module in mpi_provider.external_modules:
                 substitutes["MODULELOADS"] += module_load_command(module_choice, module)
-            substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
-            logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
+        else:
+            module = "{}/{}".format(mpi_provider.name, mpi_provider.version)
+            substitutes["MODULELOADS"] += module_load_command(module_choice, module)
+        substitutes["MODULELOADS"] = substitutes["MODULELOADS"].rstrip("\n")
+        logging.debug("  ... ... MODULELOADS: {}".format(substitutes["MODULELOADS"]))
 
-            # Set mpi_ROOT, MPI_ROOT,  and other versions of it used by Cray
-            substitutes["MPIROOT"] = setenv_command(module_choice, "mpi_ROOT", mpi_provider.prefix)
-            substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_ROOT", mpi_provider.prefix)
-            substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_HOME", mpi_provider.prefix)
-            substitutes["MPIROOT"] += setenv_command(module_choice, "MPICH_DIR", mpi_provider.prefix)
-            for line in substitutes["MPIROOT"].split('\n'):
-                logging.debug("  ... ... MPIROOT: {}".format(line))
+        # Set mpi_ROOT, MPI_ROOT,  and other versions of it used by Cray
+        substitutes["MPIROOT"] = setenv_command(module_choice, "mpi_ROOT", mpi_provider.prefix)
+        substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_ROOT", mpi_provider.prefix)
+        substitutes["MPIROOT"] += setenv_command(module_choice, "MPI_HOME", mpi_provider.prefix)
+        substitutes["MPIROOT"] += setenv_command(module_choice, "MPICH_DIR", mpi_provider.prefix)
+        for line in substitutes["MPIROOT"].split('\n'):
+            logging.debug("  ... ... MPIROOT: {}".format(line))
 
-            # Compiler wrapper environment variables
-            # Note: This doesn't return the correct names, see
-            # https://github.com/JCSDA/spack-stack/pull/1782#discussion_r2401650644
-            #substitutes["MPICC"] = mpi_provider.prefix.bin.mpicc
-            #substitutes["MPICXX"] = mpi_provider.prefix.bin.mpicxx
-            #substitutes["MPIF77"] = mpi_provider.prefix.bin.mpif77
-            #substitutes["MPIF90"] = mpi_provider.prefix.bin.mpif90
-            ## Special case when using intel-oneapi-compilers with ifort instead of ifx
-            #if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers" and \
-            #        not "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-            #    substitutes["MPIF77"] = substitutes["MPIF77"].replace("mpiifx", "mpiifort")
-            #    substitutes["MPIF90"] = substitutes["MPIF90"].replace("mpiifx", "mpiifort")
-            if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
-                if os.path.exists(os.path.join(mpi_provider.prefix.bin, "mpiicx")):
-                    mpi_provider_prefix = mpi_provider.prefix.bin
-                elif os.path.exists(os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin", "mpiicx")):
-                    mpi_provider_prefix = os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin")
-                else:
-                    raise Exception("Unable to locate 'mpiicx'")
-                substitutes["MPICC"]  = os.path.join(mpi_provider_prefix, "mpiicx")
-                substitutes["MPICXX"] = os.path.join(mpi_provider_prefix, "mpiicpx")
-                if "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and not "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifx")
-                    substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifx")
-                elif not "ifx" in COMPILER_SUBSTITUTES_SAVE["FC"] and "ifort" in COMPILER_SUBSTITUTES_SAVE["FC"]:
-                    substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifort")
-                    substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifort")
-                else:
-                    raise Exception(f"For {mpi_provider.name}, cannot determine MPI wrapper from FC={COMPILER_SUBSTITUTES_SAVE['FC']}")
-            elif mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers-classic":
-                if os.path.exists(os.path.join(mpi_provider.prefix.bin, "mpiicc")):
-                    mpi_provider_prefix = mpi_provider.prefix.bin
-                elif os.path.exists(os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin", "mpiicc")):
-                    mpi_provider_prefix = os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin")
-                else:
-                    raise Exception("Unable to locate 'mpiicc'")
-                substitutes["MPICC"]  = os.path.join(mpi_provider_prefix, "mpiicc")
-                substitutes["MPICXX"] = os.path.join(mpi_provider_prefix, "mpiicpc")
+        # Compiler wrapper environment variables
+        # Note: This doesn't return the correct names, see
+        # https://github.com/JCSDA/spack-stack/pull/1782#discussion_r2401650644
+        #substitutes["MPICC"] = mpi_provider.prefix.bin.mpicc
+        #substitutes["MPICXX"] = mpi_provider.prefix.bin.mpicxx
+        #substitutes["MPIF77"] = mpi_provider.prefix.bin.mpif77
+        #substitutes["MPIF90"] = mpi_provider.prefix.bin.mpif90
+        ## Special case when using intel-oneapi-compilers with ifort instead of ifx
+        #if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers" and \
+        #        not "ifx" in compiler_subs["FC"] and "ifort" in compiler_subs["FC"]:
+        #    substitutes["MPIF77"] = substitutes["MPIF77"].replace("mpiifx", "mpiifort")
+        #    substitutes["MPIF90"] = substitutes["MPIF90"].replace("mpiifx", "mpiifort")
+        if mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers":
+            if os.path.exists(os.path.join(mpi_provider.prefix.bin, "mpiicx")):
+                mpi_provider_prefix = mpi_provider.prefix.bin
+            elif os.path.exists(os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin", "mpiicx")):
+                mpi_provider_prefix = os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin")
+            else:
+                raise Exception("Unable to locate 'mpiicx'")
+            substitutes["MPICC"]  = os.path.join(mpi_provider_prefix, "mpiicx")
+            substitutes["MPICXX"] = os.path.join(mpi_provider_prefix, "mpiicpx")
+            if "ifx" in compiler_subs["FC"] and not "ifort" in compiler_subs["FC"]:
+                substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifx")
+                substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifx")
+            elif not "ifx" in compiler_subs["FC"] and "ifort" in compiler_subs["FC"]:
                 substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifort")
                 substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifort")
             else:
-                substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpicc")
-                substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpic++")
-                substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpif77")
-                substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpif90")
+                raise Exception(f"For {mpi_provider.name}, cannot determine MPI wrapper from FC={compiler_subs['FC']}")
+        elif mpi_provider.name == "intel-oneapi-mpi" and compiler.name == "intel-oneapi-compilers-classic":
+            if os.path.exists(os.path.join(mpi_provider.prefix.bin, "mpiicc")):
+                mpi_provider_prefix = mpi_provider.prefix.bin
+            elif os.path.exists(os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin", "mpiicc")):
+                mpi_provider_prefix = os.path.join(mpi_provider.prefix, "mpi", str(mpi_provider.version), "bin")
+            else:
+                raise Exception("Unable to locate 'mpiicc'")
+            substitutes["MPICC"]  = os.path.join(mpi_provider_prefix, "mpiicc")
+            substitutes["MPICXX"] = os.path.join(mpi_provider_prefix, "mpiicpc")
+            substitutes["MPIF77"] = os.path.join(mpi_provider_prefix, "mpiifort")
+            substitutes["MPIF90"] = os.path.join(mpi_provider_prefix, "mpiifort")
+        else:
+            substitutes["MPICC"]  = os.path.join(mpi_provider.prefix.bin, "mpicc")
+            substitutes["MPICXX"] = os.path.join(mpi_provider.prefix.bin, "mpic++")
+            substitutes["MPIF77"] = os.path.join(mpi_provider.prefix.bin, "mpif77")
+            substitutes["MPIF90"] = os.path.join(mpi_provider.prefix.bin, "mpif90")
 
-            # Also set the direct compiler environment variables
-            substitutes["CC"]  = COMPILER_SUBSTITUTES_SAVE["CC"]
-            substitutes["CXX"] = COMPILER_SUBSTITUTES_SAVE["CXX"]
-            substitutes["F77"] = COMPILER_SUBSTITUTES_SAVE["F77"]
-            substitutes["FC"]  = COMPILER_SUBSTITUTES_SAVE["FC"]
+        # Also set the direct compiler environment variables
+        substitutes["CC"]  = compiler_subs["CC"]
+        substitutes["CXX"] = compiler_subs["CXX"]
+        substitutes["F77"] = compiler_subs["F77"]
+        substitutes["FC"]  = compiler_subs["FC"]
 
-            # Environment variables
-            if "environment" in mpi_provider.extra_attributes.keys():
-                for action in mpi_provider.extra_attributes["environment"].keys():
-                    for env_name in mpi_provider.extra_attributes["environment"][action]:
-                        env_values = mpi_provider.extra_attributes["environment"][action][env_name]
-                        substitutes["ENVVARS"] += envmod_command(
-                            module_choice,
-                            action,
-                            env_name,
-                            env_values
-                        )
-            substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
-            logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
+        # Environment variables
+        if "environment" in mpi_provider.extra_attributes.keys():
+            for action in mpi_provider.extra_attributes["environment"].keys():
+                for env_name in mpi_provider.extra_attributes["environment"][action]:
+                    env_values = mpi_provider.extra_attributes["environment"][action][env_name]
+                    substitutes["ENVVARS"] += envmod_command(
+                        module_choice,
+                        action,
+                        env_name,
+                        env_values
+                    )
+        substitutes["ENVVARS"] = substitutes["ENVVARS"].rstrip("\n")
+        logging.debug("  ... ... ENVVARS  : {}".format(substitutes["ENVVARS"]))
 
-            # Spack mpi+compiler module hierarchy - append all saved modulepaths
-            for modulepath in MODULEPATHS_SAVE:
-                substitutes["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
-            substitutes["MODULEPATHS"] = substitutes["MODULEPATHS"].rstrip("\n")
-            logging.debug("  ... ... MODULEPATHS  : {}".format(substitutes["MODULEPATHS"]))
+        # Spack mpi+compiler module hierarchy - append all saved modulepaths
+        for modulepath in MODULEPATHS_SAVE:
+            substitutes["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
+        substitutes["MODULEPATHS"] = substitutes["MODULEPATHS"].rstrip("\n")
+        logging.debug("  ... ... MODULEPATHS  : {}".format(substitutes["MODULEPATHS"]))
 
-            # Read mpi module template into module_content string
-            with open(MPI_TEMPLATES[module_choice]) as f:
-                module_content = f.read()
+        # Read mpi module template into module_content string
+        with open(MPI_TEMPLATES[module_choice]) as f:
+            module_content = f.read()
 
-            # Substitute variables in module_content
-            for key in substitutes.keys():
-                module_content = module_content.replace(
-                    "@{}@".format(key), substitutes[key]
-                )
+        # Substitute variables in module_content
+        for key in substitutes.keys():
+            module_content = module_content.replace(
+                "@{}@".format(key), substitutes[key]
+            )
 
-            # Write mpi module
-            if not os.path.isdir(mpi_module_dir):
-                os.makedirs(mpi_module_dir)
-            with open(mpi_module_file, "w") as f:
-                f.write(module_content)
-            logging.info("  ... writing {}".format(mpi_module_file))
-            number_of_meta_modules_written += 1
+        # Write mpi module
+        if not os.path.isdir(mpi_module_dir):
+            os.makedirs(mpi_module_dir)
+        with open(mpi_module_file, "w") as f:
+            f.write(module_content)
+        logging.info("  ... writing {}".format(mpi_module_file))
+        number_of_meta_modules_written += 1
 
     # Write stack virtual environment meta modules
     view_config = spack.config.get("view")
