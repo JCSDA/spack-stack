@@ -1,7 +1,7 @@
 packages:
   all:
     require:
-    - any_of: ['%intel-oneapi-compilers@=2024.2.0']
+    - any_of: ['%intel-oneapi-compilers@=2026.1.0']
       when: '%intel-oneapi-compilers'
     - any_of: ['%gcc@=13.3.0']
       when: '%gcc'
@@ -12,21 +12,19 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2024.2.0 +fix_rt_linkage
-      prefix: /opt/intel/oneapi_2024.2.0.634
+    - spec: intel-oneapi-compilers@2026.1.0 +fix_rt_linkage
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.1.0
       modules:
       - PrgEnv-intel/8.5.0
-      - intel-oneapi/2024.2
+      - intel-oneapi/2026.1.0
       extra_attributes:
         compilers:
-          c: /opt/intel/oneapi_2024.2.0.634/compiler/2024.2/bin/icx
-          cxx: /opt/intel/oneapi_2024.2.0.634/compiler/2024.2/bin/icpx
-          fortran: /opt/intel/oneapi_2024.2.0.634/compiler/2024.2/bin/ifort
+          c: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.1.0/compiler/2026.1/bin/icx
+          cxx: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.1.0/compiler/2026.1/bin/icpx
+          fortran: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.1.0/compiler/2026.1/bin/ifx
         environment:
           set:
             CONFIG_SITE: ''
-            # Force ifort not ifx
-            INTEL_COMPILER_TYPE: 'RECOMMENDED'
   gcc:
     buildable: false
     externals:
@@ -59,5 +57,5 @@ packages:
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2024.2
-      prefix: /opt/intel/oneapi_2024.2.0.634
+    - spec: intel-oneapi-mkl@2026.1
+      prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.1.0

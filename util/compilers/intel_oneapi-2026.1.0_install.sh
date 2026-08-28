@@ -10,7 +10,9 @@
 set -eu
 
 umask 0022
+set +e
 module purge
+set -e
 
 if [ "$#" -lt 1 ]; then
   echo "Error: Not enough arguments. Provide Intel oneAPI installation prefix."
