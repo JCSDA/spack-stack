@@ -58,6 +58,13 @@ packages:
       require:
       - '@0.0.5'
       - +python
+    # cairo@1.18.0: is uses the meson recipe. The meson build enforces variants
+    # that are all-enabled or all-disabled. The "all-enabled" variants are set to help
+    # the concretizer resolve the correct version without disabling all variants.
+    cairo:
+      require:
+      - '@1.18:'
+      - +zlib+ft+fc+png+pdf
     cdo:
       require:
       - ~openmp
@@ -103,10 +110,11 @@ packages:
       - +netcdf
       - +png
       - +tools
+    # uwtools@2.17: needs ecflow@5.16:; leave the version to the concretizer
     ecflow:
       require:
-      - '@5.11.4'
       - +ui
+      - '@5.18:'
     eckit:
       require:
       - '@2.0.7'
@@ -398,8 +406,11 @@ packages:
     # are removed, which itself is problematic.
     python:
       require:
-      - '@3.11'
-      - ~crypt
+      - '@3.13'
+      # The crypt variant only exists for python<=3.12 since the module was dropped.
+      # An unconditional ~crypt caps python at 3.12
+      - spec: ~crypt
+        when: '@:3.12'
     # Not sure about the exact version requirements, but earlier
     # versions (definitely 4.5.3 and earlier) don't work with newer
     # py-setuptools (version 68 and later) because of a breaking
@@ -418,10 +429,14 @@ packages:
     py-colorama:
       require:
       - '@0.4.6'
-    # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
-    py-cryptography:
+    # No tutorials extras; prevent py-pandas-datareader dep with broken configparser call
+    py-arch:
       require:
-      - '@42'
+      - ~tutorial
+    # Exclude @:2021.3.0 (broken configparser call), which its default +bag/+delayed variants select
+    py-dask:
+      require:
+      - '@2023.4.1:'
     py-h5py:
       require:
       - ~mpi
@@ -447,11 +462,16 @@ packages:
     # To avoid duplicate packages
     py-numpy:
       require:
-      - '@1'
+      - '@2'
     # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
     py-pandas:
       require:
       - '@:2'
+      # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
+      # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
+      # into py-xarray/met/metplus/jedi-base-env. This constraints py-pandas to @0.28
+      # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
+      - ^py-versioneer@0.28
     # To avoid duplicate packages
     py-poetry-core:
       require:
@@ -485,19 +505,19 @@ packages:
     py-python-dateutil:
       require:
       - '@2'
-    # To avoid duplicate packages
+    # To avoid duplicate packages, pin to recent version.
     py-requests:
       require:
-      - '@2.32.3'
+      - '@2.32:'
     # To avoid duplicate packages
     py-ruamel-yaml:
       require:
       - '@0.17.16'
     # https://github.com/JCSDA/spack-stack/issues/1942
     # https://github.com/spack/spack-packages/issues/3695
-    py-setuptools:
-      require:
-      - '@73.0.1'
+    # NOTE: py-setuptools was pinned @73.0.1 for the py3.11 stack; removed for the
+    # py3.12/numpy2 migration since modern packages (e.g. py-xarray@2025.7) require
+    # py-setuptools@77.0.3:. Re-evaluate issue #3695 if setuptools duplicates recur.
     # See py-pycparser
     py-sphinxcontrib-bibtex:
       require:
@@ -511,10 +531,10 @@ packages:
       require:
       - '@1.26.20'
       # OR - '@1.26.12' ?
-    # To avoid duplicate packages
+    # Not '@=0.28'; py-pyogrio needs 0.28 and py-partd/py-dask 0.29, build-only so a split is fine
     py-versioneer:
       require:
-      - '@=0.28'
+      - '@0.28:'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:
@@ -555,9 +575,10 @@ packages:
     upp:
       require:
       - '@10.0.10'
+    # Upper bound keeps the branch version 'main' out; spack sorts it above 2.x
     uwtools:
       require:
-      - '@2.7.2'
+      - '@2.17:2'
     w3emc:
       require:
       - '@2.13.0'

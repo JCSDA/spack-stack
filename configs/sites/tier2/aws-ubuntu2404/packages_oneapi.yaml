@@ -14,23 +14,25 @@ packages:
     - '%fortran=gcc %c,cxx=oneapi'
     - '%fortran=gcc %c=oneapi'
     providers:
-      mpi:: [intel-oneapi-mpi@2021.17]
+      mpi:: [intel-oneapi-mpi@2021.18]
 
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0
+    - spec: intel-oneapi-compilers@2026.1.1
       prefix: /opt/intel/oneapi
       modules:
-       - umf/1.0.2
-       - tbb/2022.3
-       - compiler-rt/2025.3.0
-       - compiler/2025.3.0
+       - umf/1.1.0
+       # 2026.1's compiler modulefile adds a "tcm" prereq that 2025.3 lacks
+       - tcm/1.5
+       - tbb/2023.1
+       - compiler-rt/2026.1.1
+       - compiler/2026.1.1
       extra_attributes:
         compilers:
-          fortran: /opt/intel/oneapi/compiler/2025.3/bin/ifx
-          c: /opt/intel/oneapi/compiler/2025.3/bin/icx
-          cxx: /opt/intel/oneapi/compiler/2025.3/bin/icpx
+          fortran: /opt/intel/oneapi/compiler/2026.1/bin/ifx
+          c: /opt/intel/oneapi/compiler/2026.1/bin/icx
+          cxx: /opt/intel/oneapi/compiler/2026.1/bin/icpx
   openmpi:
     buildable: false
   mpich:
@@ -38,7 +40,7 @@ packages:
   mpi:
     buildable: false
     require:
-    - intel-oneapi-mpi@2021.17
+    - intel-oneapi-mpi@2021.18
   gcc:
     externals:
     - spec: gcc@13.3.0 languages:='c,c++,fortran'
@@ -52,24 +54,33 @@ packages:
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.3
+    # Deliberately NO "modules:" here. The mkl/2026.1 modulefile declares prereqs
+    # on tbb and compiler-rt, and spack loads externals in DAG order -- for e.g.
+    # "ip" it loads intel-oneapi-mkl BEFORE intel-oneapi-compilers, so mkl would
+    # be loaded without its prereqs and fail with
+    #   ModuleLoadError: Module 'mkl/2026.1' could not be loaded.
+    # Adding tbb/compiler-rt here instead collides with the compilers entry
+    # below: spack's load_module() treats an already-loaded module (no change to
+    # LOADEDMODULES) as a failure, so the second load of tbb would error.
+    # None of it is needed -- the intel-oneapi-mkl package sets MKLROOT and
+    # PKG_CONFIG_PATH from component_prefix (= prefix/mkl/<version>) under the
+    # default +envmods, and resolves libs/headers from prefix.
+    - spec: intel-oneapi-mkl@2026.1
       prefix: /opt/intel/oneapi
-      modules:
-      - mkl/2025.3
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.17
+    - spec: intel-oneapi-mpi@2021.18
       modules:
-      - mpi/2021.17
+      - mpi/2021.18
       prefix: /opt/intel/oneapi
   intel-oneapi-tbb:
     buildable: false
     externals:
-    - spec: intel-oneapi-tbb@2022.3
+    - spec: intel-oneapi-tbb@2023.1
       prefix: /opt/intel/oneapi
       modules:
-      - tbb/2022.3
+      - tbb/2023.1
 
   # Package constraints.
   jedi-base-env:

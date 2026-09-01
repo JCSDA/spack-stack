@@ -56,6 +56,10 @@ packages:
     nco:
       require:
       - '%c,cxx=gcc'
+    # The py-numpy cannot be built with oneAPI.
+    py-numpy:
+      require:
+      - '%c,cxx=gcc'
     oops:
       require:
       - +mkl

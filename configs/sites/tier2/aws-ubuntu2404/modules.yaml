@@ -8,7 +8,6 @@ modules:
       - apple-clang
       - gcc
       - intel-oneapi-compilers
-      - llvm
       # MPI modules
       - cray-mpich
       - intel-mpi
