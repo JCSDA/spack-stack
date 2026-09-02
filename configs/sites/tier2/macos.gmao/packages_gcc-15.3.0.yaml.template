@@ -4,7 +4,7 @@ packages:
   cxx:
     require: [apple-clang@@APPLE_CLANG_VERSION@]
   fortran:
-    require: [gcc@15.2.0]
+    require: [gcc@15.3.0]
   mpi:
     require: [openmpi@=5.0.10]
   apple-clang:
@@ -18,10 +18,12 @@ packages:
   gcc:
     buildable: False
     externals:
-    - spec: gcc@15.2.0 languages:='fortran'
+    - spec: gcc@15.3.0 languages:='fortran'
       prefix: @BREW_PREFIX@
       extra_attributes:
         compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
           fortran: @BREW_PREFIX@/bin/gfortran-15
 
   openmpi:

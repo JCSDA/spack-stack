@@ -2,6 +2,20 @@ packages:
   all:
     target: [x86_64_v3]
 ### Modification of common packages
+  # Classic ifort can produce benign target-flag diagnostics which make
+  # ecbuild's compiler-flag probes fail. Trust the project-supplied flags.
+  ectrans:
+    require:
+    - spec: +trust_ecbuild_flags
+      when: '%oneapi'
+  oops:
+    require:
+    - spec: +trust_ecbuild_flags
+      when: '%oneapi'
+  ioda:
+    require:
+    - spec: +trust_ecbuild_flags
+      when: '%oneapi'
   # Problems building shared hdf-eos2 with Intel, not needed
   hdf-eos2:
     variants: ~shared
@@ -9,6 +23,13 @@ packages:
     variants: +python +grib2 +graphics +lidar2nc +modis
   zlib-api:
     buildable: False
+  # mimalloc is vendored and downloaded via FetchContent; fails on air-gapped compute nodes
+  arrow:
+    require:
+    - '~mimalloc'
+  gdal:
+    require:
+    - '~arrow'
 ### All other external packages listed alphabetically
   automake:
     externals:
@@ -52,8 +73,8 @@ packages:
       prefix: /usr
   gh:
     externals:
-    - spec: gh@2.78.0
-      prefix: /nobackup/gmao_SIteam/gh/2.78.0
+    - spec: gh@2.96.0
+      prefix: /nobackup/gmao_SIteam/gh/2.96.0
   git:
     buildable: False
     externals:

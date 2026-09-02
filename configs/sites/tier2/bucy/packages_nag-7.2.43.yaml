@@ -1,0 +1,25 @@
+packages:
+  c:
+    require: [gcc@=12.1.0]
+  cxx:
+    require: [gcc@=12.1.0]
+  fortran:
+    require: [nag@=7.2.43]
+  mpi:
+    buildable: false
+    require: [openmpi@=5.0.3]
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@=12.1.0 languages:='c,c++'
+      prefix: /ford1/local/gcc/gcc-12.1.0
+  nag:
+    buildable: false
+    externals:
+    - spec: nag@=7.2.43 languages:='fortran'
+      prefix: /ford1/share/gmao_SIteam/nag/7.2.43
+  openmpi:
+    buildable: false
+    externals:
+    - spec: openmpi@=5.0.3
+      prefix: /ford1/share/gmao_SIteam/MPI/openmpi/5.0.3-GillesNAGPatch/nag-7.2.43

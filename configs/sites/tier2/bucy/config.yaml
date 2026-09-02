@@ -1,0 +1,6 @@
+config:
+  build_jobs: 6
+  build_stage: /ford1/share/gmao_SIteam/spack-stack/cache/build_stage
+  test_stage: /ford1/share/gmao_SIteam/spack-stack/cache/test_stage
+  source_cache: /ford1/share/gmao_SIteam/spack-stack/cache/source_cache
+  misc_cache: /ford1/share/gmao_SIteam/spack-stack/cache/misc_cache

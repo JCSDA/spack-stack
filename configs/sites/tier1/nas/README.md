@@ -1,6 +1,6 @@
 # How to Build **spack-stack** at NAS
 
-This guide documents how to build **spack-stack** on NASA NAS systems. The previous install process used three stages across compute and login nodes, but recent testing shows installation can now be done directly on a compute node.
+This guide documents how to build **spack-stack** on NASA NAS systems. Use `util/gmao/batch_install.sh` for normal full-stack builds: it performs the internet-facing preparation on the login node and submits the offline install to PBS.
 
 ---
 
@@ -11,6 +11,7 @@ This guide documents how to build **spack-stack** on NASA NAS systems. The previ
 - [Clone spack-stack](#clone-spack-stack)
 - [Obtain an Interactive Compute Node](#obtain-an-interactive-compute-node)
 - [Setup spack-stack](#setup-spack-stack)
+- [Using batch_install.sh (recommended)](#using-batch_installsh-recommended)
 - [Create Environments](#create-environments)
   - [oneAPI - ifx Environment](#oneapi---ifx-environment)
   - [oneAPI - ifort Environment](#oneapi---ifort-environment)
@@ -72,7 +73,7 @@ git clone --recurse-submodules https://github.com/JCSDA/spack-stack.git -b spack
 NAS login nodes allow only **2 processes**, so use:
 
 ```bash
-qsub -I -V -X -l select=1:ncpus=128:mpiprocs=128:model=mil_ait -l walltime=12:00:00 -W group_list=s1873 -m b -N Interactive
+qsub -I -V -X -l select=1:ncpus=128:mpiprocs=128:model=mil_ait -q normal -l walltime=12:00:00 -W group_list=s1873 -m b -N Interactive
 ```
 
 This gives a **Milan** compute node for up to 12 hours.
@@ -89,6 +90,48 @@ Run on a **login node with internet**:
 cd spack-stack-2.1.0
 . setup.sh
 ```
+
+---
+
+## Using batch_install.sh (recommended)
+
+Run the script from a NAS login node. It creates and concretizes the environments, populates required mirrors on the login node, and—with `-s`—submits the install to a PBS compute node. The generated PBS job exports the shared Cargo mirror and sets `CARGO_NET_OFFLINE=true`, so Rust builds do not try to access the network.
+
+Start by checking the command that would run:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m build -H nas -s -n
+```
+
+For a new environment, use `-u` once to populate the bootstrap, source, and Cargo mirrors before the offline build job starts:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m build -H nas -s -u
+```
+
+For a failed build or a later retry, retain the environment with `-e` and normally omit `-u`:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m build -H nas -s -e
+```
+
+After the build cache is populated, generate usable Tcl module files with the install mode:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m install -H nas -s -e
+```
+
+Use `-C oneapi@=2024.2.0` or `-C oneapi@=2025.3.0` to work on only one compiler environment. `-o` (or `--concretize-only`) stops after concretization, and `--help` displays all accepted options.
+
+With `-s`, NAS requests one 120-task PBS node for eight hours; the script caps each package build at 24 jobs and normally permits two independent package builds. If the filesystem reports `OSError: [Errno 37] No locks available`, an exclusive recovery job may use `-L` (or `--disable-locks`): it creates a job-local Spack configuration with locking disabled and serializes package builds. Do not use `-L` while any other process can modify the same install tree.
+
+The `-p`, `-q`, and `--constraint` options are Discover-specific and do not apply to NAS PBS jobs.
+
+---
+
+## Manual workflow (fallback)
+
+The sections below describe the older manual workflow. Prefer `batch_install.sh` above for full-stack builds, especially when Rust packages are present.
 
 ---
 
@@ -113,8 +156,8 @@ cd envs/ue-oneapi-2024.2.0
 ### GCC Environment
 
 ```bash
-spack stack create env --name ue-gcc-14.2.0 --template unified-dev --site nas --compiler=gcc-14.2.0
-cd envs/ue-gcc-14.2.0
+spack stack create env --name ue-gcc-15.2.0 --template unified-dev --site nas --compiler=gcc-15.2.0
+cd envs/ue-gcc-15.2.0
 ```
 
 ---
@@ -156,6 +199,19 @@ spack mirror create -a -d /swbuild/gmao_SIteam/spack-stack/source-cache
 > ⚠️ **Do not run this outside an activated environment.**
 > Otherwise Spack will attempt to mirror **every** known package/version.
 
+### If one source fails while updating the cache
+
+The `-u` source-cache update mirrors many packages concurrently. If one reachable Git source fails to mirror, fetch that concrete spec serially on the login node instead of submitting an offline compute-node job without its source:
+
+```bash
+. ./setup.sh
+spack -e envs/<build-environment> mirror create \
+  -d /swbuild/gmao_SIteam/spack-stack/source-cache \
+  <spec>
+```
+
+For example, `<spec>` can be `ioda-data@2.12.0`. After the command succeeds, resume `batch_install.sh` without `-u`. If the direct fetch also fails, investigate repository access or the package's source metadata before retrying.
+
 ---
 
 ## Pre-Fetch Cargo Dependencies (LOGIN NODE ONLY)
@@ -163,11 +219,11 @@ spack mirror create -a -d /swbuild/gmao_SIteam/spack-stack/source-cache
 Rust packages frequently require network access during build. Pre-fetch their dependencies:
 
 ```bash
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
 ../../util/fetch_cargo_deps.py
 ```
 
-> ⚠️ **Set `CARGO_HOME` on compute nodes** before running `spack install`.
+> ⚠️ **Set `SPACK_CARGO_HOME` and `CARGO_NET_OFFLINE=true` on compute nodes** before running `spack install`.
 
 ---
 
@@ -176,7 +232,8 @@ export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
 Run installation on a **compute node**:
 
 ```bash
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export CARGO_NET_OFFLINE=true
 spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install ; bell
 ```
 
@@ -231,17 +288,19 @@ Typical commands were:
 
 ```bash
 # Step 1 (compute node)
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export CARGO_NET_OFFLINE=true
 spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature \
   --only dependencies py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
 
 # Step 2 (afe login node)
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
 spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error --no-check-signature \
   py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.rust-and-ecflow ; bell
 
 # Step 3 (compute node)
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export CARGO_NET_OFFLINE=true
 spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install.after-cargo ; bell
 ```
 

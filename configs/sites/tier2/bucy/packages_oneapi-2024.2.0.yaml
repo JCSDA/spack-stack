@@ -1,0 +1,13 @@
+packages:
+  all:
+    require:
+    - any_of: ['%oneapi@=2024.2.0']
+      when: '%oneapi'
+  mpi:
+    buildable: false
+    require: [intel-oneapi-mpi@=2021.13]
+  intel-oneapi-mpi:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mpi@=2021.13
+      prefix: /ford1/share/gmao_SIteam/intel/oneapi/mpi/2021.13

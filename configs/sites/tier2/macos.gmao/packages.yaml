@@ -3,6 +3,27 @@ packages:
   netcdf-c:
     require: [+shared]
 
+  # On macOS use the native backend to avoid the gtk3agg dependency chain
+  # (gtk3agg pulls in gtkplus -> wayland -> graphviz -> poppler -> gnupg ->
+  #  pinentry -> emacs -> tree-sitter -> node-js@:20.15.1 -> python@:3.12)
+  py-matplotlib:
+    require:
+    - 'backend=macosx'
+
+  # node-js@20.11.0:20.15.1 and @21.2.0:22.2.0 cap python@:3.12.
+  # @20.16.0:20.20.2 supports python@:3.14; skip the problematic 21.x range.
+  node-js:
+    require:
+    - '@20.16.0:20.20.2'
+
+  # ninja@:1.11 depends on python@:3.12 (build dep). The homebrew external is
+  # @1.13.2 but buildable:false means the solver must pick from externals only.
+  # Without this floor the ASP solver sometimes picks @:1.11 as the "only"
+  # candidate and then fails because no external satisfies that version range.
+  ninja:
+    require:
+    - '@1.12:'
+
   openblas:
     require:
     - '~dynamic_dispatch'
@@ -24,3 +45,8 @@ packages:
     externals:
     - spec: perl@5.34.1~cpanm+opcode+open+shared+threads
       prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.25.0
+      prefix: /Users/mathomp4/.homebrew/brew
+    buildable: false

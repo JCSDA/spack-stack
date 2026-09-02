@@ -96,7 +96,7 @@ packages:
       - +fix
     ecbuild:
       require:
-      - '@3.12.0'
+      - '@3.15.2'
     eccodes:
       require:
       - '@2.33.0'
@@ -105,7 +105,8 @@ packages:
       - +tools
     ecflow:
       require:
-      - '@5.11.4'
+      # ecFlow 5.18.0 supports CMake 4; older releases require CMake 3.
+      - '@5.18.0'
       - +ui
     eckit:
       require:
@@ -165,7 +166,10 @@ packages:
       - '@2.6.4'
     fms:
       require:
-      - precision=32,64
+      - spec: precision=32,64
+        when: '@:2025.03'
+      - spec: precision=mixed
+        when: '@2025.04:'
       - +quad_precision
       - +openmp
       - +pic
@@ -174,6 +178,7 @@ packages:
       - any_of:
         - '@=2025.03'
         - '@=2024.03'
+        - '@=2026.01.01'
       - any_of:
         - +gfs_phys constants=GFS
         - ~gfs_phys constants=GEOS
@@ -200,6 +205,14 @@ packages:
     gfsio:
       require:
       - '@1.4.2'
+    # py-greenlet@:3.0 requires python@:3.12; @3.1: has no upper cap
+    py-greenlet:
+      require:
+      - '@3.1:'
+    # 2025.7.0 supports Python 3.13 without Dask 2026's Setuptools-SCM 9 requirement.
+    py-dask:
+      require:
+      - '@2025.7.0'
     global-workflow-env:
       require:
       - '+uwtools'
@@ -234,7 +247,7 @@ packages:
       - ~netcdf
     hdf5:
       require:
-      - '@1.14.5'
+      - '@2.1.0'
       - +hl
       - +fortran
       - +mpi
@@ -326,9 +339,13 @@ packages:
     nemsiogfs:
       require:
       - '@2.5.4'
+    # Note: per spack, the first is "preferred", so if you
+    # need 1.9.0.1, you need to explicitly request it in your spec.
     nccmp:
       require:
-      - '@1.9.0.1'
+      - any_of:
+        - '@1.11.0.0'
+        - '@1.9.0.1'
     ncio:
       require:
       - '@1.1.2'
@@ -355,7 +372,6 @@ packages:
       - ~fortran
     openmpi:
       require:
-      - ~internal-hwloc
       - +two_level_namespace
     openssl:
       require:
@@ -364,6 +380,10 @@ packages:
     p4est:
       require:
       - '@2.8.7'
+    # pmix+docs pulls in py-recommonmark -> py-sphinx@:6.1 -> python@:3.12
+    pmix:
+      require:
+      - ~docs
     # Earlier versions of pango don't build on Blueback because of
     # a bug in finding the correct Python interpreter from spack.
     pango:
@@ -373,10 +393,11 @@ packages:
       require:
       - '@2.6.2'
       - +pnetcdf
-    # DH* CAN WE UPDATE? NEED A NEW SHARED-INTEL PATCH?
+    # 1.14.1 fixes a GCC 15 build failure. The old oneAPI shared-intel
+    # linkage workaround applied only to 1.12.3 and is intentionally not used.
     parallel-netcdf:
       require:
-      - '@1.12.3'
+      - '@1.14.1'
     pflogger:
       require:
       - +mpi
@@ -396,10 +417,10 @@ packages:
     # Turn off crypt variant for Python; this leads to build errors
     # with Intel in py-cryptography unless external curl and openssl
     # are removed, which itself is problematic.
+    # Note: crypt variant only exists for python@:3.12; python@3.13 removed it entirely.
     python:
       require:
-      - '@3.11'
-      - ~crypt
+      - '@3.13'
     # Not sure about the exact version requirements, but earlier
     # versions (definitely 4.5.3 and earlier) don't work with newer
     # py-setuptools (version 68 and later) because of a breaking
@@ -407,8 +428,10 @@ packages:
     py-beautifulsoup4:
       require:
       - '@4.12.3:'
+    # py-cartopy@:0.22 requires py-numpy@:1; @0.24.0 caps python@:3.12; @0.24.1: allows python@3.10:3.14
     py-cartopy:
       require:
+      - '@0.24.1:'
       - +plotting
     # See py-pycparser
     py-click:
@@ -421,10 +444,18 @@ packages:
     # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
     py-cryptography:
       require:
-      - '@42'
+      - '@46'
+    py-cython:
+      require:
+      - '@3.2.4'
     py-h5py:
       require:
+      - '@3.16'
       - ~mpi
+    # py-ipykernel@5.x requires python@3.6:3.9; @6.11: has no upper cap
+    py-ipykernel:
+      require:
+      - '@6.11:'
     # Needed to fix issues of older versions (e.g. 1.13.0) with newer Python and
     # newer python packages: "ValueError: Unknown classifier in field project.classifiers ..."
     py-hatchling:
@@ -433,7 +464,7 @@ packages:
     # To avoid duplicate packages
     py-lxml:
       require:
-      - '@5.2.2'
+      - '@6.0.2'
     # https://github.com/JCSDA/spack-stack/issues/1276
     py-matplotlib:
       require:
@@ -441,30 +472,44 @@ packages:
       #- '@3.7.4'
       #- '@3.8.0'
     # https://github.com/JCSDA/spack-stack/issues/1971
+    # py-netcdf4@:1.6 requires py-numpy@:1; @1.7: allows numpy@2
     py-netcdf4:
       require:
       - ~mpi
+      - '@1.7:'
+    # py-pandas@:2.2.1 requires py-numpy@:1; @:2.2.2 requires python@:3.12
+    # ~performance disables optional py-bottleneck and py-numexpr dependencies
+    # (py-numexpr fails to build with oneapi icpx; py-bottleneck pulls in py-maturin/rust)
+    # Sites with rust/icpx available can override with +performance in their site packages.yaml
+    py-pandas:
+      require:
+      - '@3:'
+      prefer:
+      - '~performance'
+    # 0.11.1 replaces the Versioneer-based build that breaks with Python 3.12+.
+    py-pandas-datareader:
+      require:
+      - '@0.11.1'
     # To avoid duplicate packages
     py-numpy:
       require:
-      - '@1'
-    # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
-    py-pandas:
-      require:
-      - '@:2'
+      - '@2.1:'
     # To avoid duplicate packages
     py-poetry-core:
       require:
-      - '@1.7'
+      - '@2.3.2'
     # See py-pycparser
     py-pooch:
       require:
       - '@1.7.0'
+    py-pytest:
+      require:
+      - '@9:'
     # Need older version of py-pycparser until we can update setuputils to >= 77 ?
     # https://github.com/pydata/xarray/issues/10588
     py-pycparser:
       require:
-      - '@2.21'
+      - '@3.0'
     # Need at least py-pygithub@2.7 for self-hosted runner management
     py-pygithub:
       require:
@@ -480,7 +525,7 @@ packages:
     # See py-pycparser
     py-pyparsing:
       require:
-      - '@3.1.2'
+      - '@3.3.2'
     # To avoid duplicate packages
     py-python-dateutil:
       require:
@@ -492,29 +537,42 @@ packages:
     # To avoid duplicate packages
     py-ruamel-yaml:
       require:
-      - '@0.17.16'
+      - '@0.18:'
+    # py-ruamel-yaml-clib@:0.2.8 requires python@:3.12; @0.2.12: allows 3.13
+    py-ruamel-yaml-clib:
+      require:
+      - '@0.2.12:'
     # https://github.com/JCSDA/spack-stack/issues/1942
     # https://github.com/spack/spack-packages/issues/3695
     py-setuptools:
       require:
-      - '@73.0.1'
+      - '@80:'
+    # py-sphinx@:6.1 requires python@:3.12; @6.2: allows 3.13
+    py-sphinx:
+      require:
+      - '@6.2:'
     # See py-pycparser
     py-sphinxcontrib-bibtex:
       require:
       - '@2.5.0'
     py-torch:
       require:
+      - '@2.10:'
       - +custom-protobuf
       - ~mkldnn
+      # PyTorch 2.12 does not honor the recipe's USE_XPU=OFF setting when
+      # built through PEP 517. With oneAPI, Kineto then enables its XPU/PTI
+      # plugin, but the installed oneAPI toolkit does not provide PTI CMake
+      # configuration files. Re-enable once that forwarding issue is fixed.
+      - ~kineto
     # To avoid duplicate packages
     py-urllib3:
       require:
-      - '@1.26.20'
-      # OR - '@1.26.12' ?
-    # To avoid duplicate packages
-    py-versioneer:
+      - '@2.6.3'
+    # py-xarray@:2024.5 requires py-numpy@:1; @2024.7 caps py-pandas@2.1; @2025.7: allows numpy@2 + pandas@2.2: (pandas@3: ok)
+    py-xarray:
       require:
-      - '@=0.28'
+      - '@2025.7:'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:
@@ -557,7 +615,7 @@ packages:
       - '@10.0.10'
     uwtools:
       require:
-      - '@2.7.2'
+      - '@2.17.0'
     w3emc:
       require:
       - '@2.13.0'

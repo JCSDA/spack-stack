@@ -1,0 +1,13 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=15.2.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require: [openmpi@=5.0.4]
+  openmpi:
+    buildable: false
+    externals:
+    - spec: openmpi@=5.0.4
+      prefix: /ford1/share/gmao_SIteam/MPI/openmpi/5.0.4/gcc-15.2.0

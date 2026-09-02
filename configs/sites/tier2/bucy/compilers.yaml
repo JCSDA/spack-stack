@@ -1,0 +1,79 @@
+compilers:
+- compiler:
+    spec: gcc@=15.2.0
+    paths:
+      cc: /ford1/share/gmao_SIteam/gcc/gcc-15.2.0/bin/gcc
+      cxx: /ford1/share/gmao_SIteam/gcc/gcc-15.2.0/bin/g++
+      f77: /ford1/share/gmao_SIteam/gcc/gcc-15.2.0/bin/gfortran
+      fc: /ford1/share/gmao_SIteam/gcc/gcc-15.2.0/bin/gfortran
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: gcc@=16.1.0
+    paths:
+      cc: /ford1/share/gmao_SIteam/gcc/gcc-16.1.0/bin/gcc
+      cxx: /ford1/share/gmao_SIteam/gcc/gcc-16.1.0/bin/g++
+      f77: /ford1/share/gmao_SIteam/gcc/gcc-16.1.0/bin/gfortran
+      fc: /ford1/share/gmao_SIteam/gcc/gcc-16.1.0/bin/gfortran
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+- compiler:
+    spec: oneapi@=2024.2.0
+    paths:
+      cc: /ford1/share/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icx
+      cxx: /ford1/share/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/icpx
+      f77: /ford1/share/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
+      fc: /ford1/share/gmao_SIteam/intel/oneapi/compiler/2024.2/bin/ifort
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths:
+    - /ford1/local/gcc/gcc-12.1.0/lib64
+- compiler:
+    spec: oneapi@=2025.3.0
+    paths:
+      cc: /ford1/share/gmao_SIteam/intel/oneapi/2025/compiler/2025.3/bin/icx
+      cxx: /ford1/share/gmao_SIteam/intel/oneapi/2025/compiler/2025.3/bin/icpx
+      f77: /ford1/share/gmao_SIteam/intel/oneapi/2025/compiler/2025.3/bin/ifx
+      fc: /ford1/share/gmao_SIteam/intel/oneapi/2025/compiler/2025.3/bin/ifx
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths:
+    - /ford1/share/gmao_SIteam/gcc/gcc-13.3.0/lib64
+- compiler:
+    spec: nag@=7.2.43
+    paths:
+      cc: /ford1/local/gcc/gcc-12.1.0/bin/gcc
+      cxx: /ford1/local/gcc/gcc-12.1.0/bin/g++
+      f77: /ford1/share/gmao_SIteam/nag/7.2.43/bin/nagfor
+      fc: /ford1/share/gmao_SIteam/nag/7.2.43/bin/nagfor
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment:
+      set:
+        NAG_KUSARI_FILE: /ford1/share/gmao_SIteam/nag/nag.key
+    extra_rpaths:
+    - /ford1/local/gcc/gcc-12.1.0/lib64
+    - /ford1/share/gmao_SIteam/nag/7.2.43/lib
+- compiler:
+    spec: llvm@=22.1.0
+    paths:
+      cc: /ford1/share/gmao_SIteam/llvm-flang/22.1.0/bin/clang
+      cxx: /ford1/share/gmao_SIteam/llvm-flang/22.1.0/bin/clang++
+      f77: /ford1/share/gmao_SIteam/llvm-flang/22.1.0/bin/flang
+      fc: /ford1/share/gmao_SIteam/llvm-flang/22.1.0/bin/flang
+    operating_system: rhel8
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []

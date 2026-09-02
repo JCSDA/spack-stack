@@ -13,8 +13,10 @@ spack:
   # (see geos_gcm_env/package.py). On platforms where only +debug is supported
   # (e.g., macOS), the site packages.yaml requires geos-gcm-env +debug, which
   # causes both specs to resolve to +debug (only one unique build).
-  - geos-gcm-env ~debug
-  - geos-gcm-env +debug
+  #
+  # Also, NAG cannot build FMS yet (due to use of cray pointers)
+  - geos-gcm-env ~debug ~fms ~cdo
+  - geos-gcm-env +debug ~fms ~cdo
 
 
   packages:

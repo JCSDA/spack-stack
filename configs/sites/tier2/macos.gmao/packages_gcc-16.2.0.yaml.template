@@ -4,7 +4,7 @@ packages:
   cxx:
     require: [apple-clang@@APPLE_CLANG_VERSION@]
   fortran:
-    require: [llvm@21.1.3 ~clang +flang]
+    require: [gcc@16.2.0]
   mpi:
     require: [openmpi@=5.0.10]
   apple-clang:
@@ -15,14 +15,16 @@ packages:
         compilers:
           c: /usr/bin/clang
           cxx: /usr/bin/clang++
-  llvm:
+  gcc:
     buildable: False
     externals:
-    - spec: llvm@21.1.3 ~clang +flang languages:='fortran'
+    - spec: gcc@16.2.0 languages:='fortran'
       prefix: @BREW_PREFIX@
       extra_attributes:
         compilers:
-          fortran: @BREW_PREFIX@/bin/flang
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+          fortran: @BREW_PREFIX@/bin/gfortran-16
 
   openmpi:
     require::
@@ -32,6 +34,16 @@ packages:
     - '+fortran'
     # GEOS requires a flat namespace to link properly on macOS
     - '~two_level_namespace'
+
+  # ESMF by default for Darwin.gfortranclang turns off OpenMP, so
+  # we do the same here to avoid build failures.
+  # We also build as +debug only because esmf ~debug does not work with
+  # gfortranclang/GEOS on macOS. The geos-gcm-env ~debug spec is removed
+  # from the environment spack.yaml by batch_install.sh on macOS.
+  esmf:
+    require:
+    - '~openmp'
+    - '+debug'
 
   gdbm:
     externals:

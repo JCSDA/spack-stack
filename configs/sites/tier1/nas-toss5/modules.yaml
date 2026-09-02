@@ -2,6 +2,24 @@ modules:
   default:
     enable::
     - tcl
+    # RPATH is sufficient for stack libraries. Avoid making every generated
+    # package module append lib/lib64 to LD_LIBRARY_PATH: a long path adds
+    # substantial process-launch overhead, especially for MPI launchers.
+    prefix_inspections::
+      bin:
+      - PATH
+      man:
+      - MANPATH
+      share/man:
+      - MANPATH
+      share/aclocal:
+      - ACLOCAL_PATH
+      include:
+      - CPATH
+      lib/pkgconfig:
+      - PKG_CONFIG_PATH
+      lib64/pkgconfig:
+      - PKG_CONFIG_PATH
     tcl:
       include:
       # List of packages for which we need modules that are blacklisted by default

@@ -1,0 +1,83 @@
+packages:
+  # Discover's NAG programming environment uses GCC for C/C++ and NAG for
+  # Fortran.  Keep the language requirements explicit rather than attaching a
+  # single compiler constraint to every package.
+  c:
+    require: [gcc@=12.3.0]
+  cxx:
+    require: [gcc@=12.3.0]
+  fortran:
+    require: [nag@=7.2.7238]
+  mpi:
+    buildable: false
+    require:
+    - openmpi@=4.1.6
+
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@=12.3.0 languages:='c,c++'
+      prefix: /usr/local/other/gcc/12.3.0
+      modules:
+      - comp/gcc/12.3.0
+      extra_attributes:
+        compilers:
+          c: /usr/local/other/gcc/12.3.0/bin/gcc
+          cxx: /usr/local/other/gcc/12.3.0/bin/g++
+
+  nag:
+    buildable: false
+    externals:
+    - spec: nag@=7.2.7238 languages:='fortran'
+      prefix: /discover/nobackup/projects/gmao/SIteam/comp/SLES-15/nag/7.2.38
+      modules:
+      - comp/gcc/12.3.0
+      - comp/nag/7.2-7238
+      extra_attributes:
+        compilers:
+          fortran: /discover/nobackup/projects/gmao/SIteam/comp/SLES-15/nag/7.2.38/bin/nagfor
+
+  openmpi:
+    buildable: false
+    externals:
+    # This OpenMPI was built with GCC 12.3 C/C++ compilers and NAG Fortran.
+    # Do not constrain it to either compiler in the spec: the language
+    # requirements above describe the mixed toolchain accurately.
+    - spec: openmpi@=4.1.6+fortran~cxx~cxx_exceptions~cuda~java~memchecker+pmi~static~wrapper-rpath+two_level_namespace schedulers=slurm
+      prefix: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0
+      modules:
+      - comp/gcc/12.3.0
+      - comp/nag/7.2-7238
+      - mpi/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0
+      extra_attributes:
+        environment:
+          set:
+            OMPI_MCA_orte_tmpdir_base: /tmp
+            OMP_STACKSIZE: 1G
+            OMPI_MCA_mca_base_component_show_load_errors: 0
+            PMIX_MCA_mca_base_component_show_load_errors: 0
+            OPENMPI: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0
+          prepend_path:
+            PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0/bin
+            LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0/lib
+            LD_LIBRARY_PATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0/lib
+            INCLUDE: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0/include
+            MANPATH: /discover/swdev/gmao_SIteam/MPI/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0/share/man
+
+  # NAG needs explicit preprocessing and type-safety flags for netCDF-Fortran.
+  netcdf-fortran:
+    require:
+    - 'fflags="-fpp -mismatch_all"'
+
+  # The shared-library link path in Parallel-NetCDF 1.12.3 inherits
+  # -pthread through libtool. Its NAG handling forwards one copy directly to
+  # ld, which rejects it. The GEOS NAG environment only needs static PNetCDF.
+  parallel-netcdf:
+    require:
+    - '~shared'
+
+  # The OpenBLAS shared-library CMake path passes GCC-specific flags that NAG
+  # does not support.  Static-only avoids that path.
+  openblas:
+    require:
+    - '~shared'

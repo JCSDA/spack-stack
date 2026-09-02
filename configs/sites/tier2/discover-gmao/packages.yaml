@@ -3,6 +3,24 @@ packages:
   ewok-env:
     require:
     - '+ecflow'
+  # Classic ifort can produce benign target-flag diagnostics which make
+  # ecbuild's compiler-flag probes fail. Trust the project-supplied flags.
+  ectrans:
+    require:
+    - spec: +trust_ecbuild_flags
+      when: '%oneapi'
+  oops:
+    require:
+    - spec: +trust_ecbuild_flags
+      when: '%oneapi'
+  ioda:
+    require:
+    - spec: +trust_ecbuild_flags
+      when: '%oneapi'
+  # Completion-index generation can hang during isolated offline builds.
+  awscli-v2:
+    require:
+    - '~autocomplete'
   # Problems building shared hdf-eos2 with Intel, not needed
   hdf-eos2:
     variants: ~shared
@@ -77,8 +95,13 @@ packages:
       - git/2.49.0
   git-lfs:
     externals:
-    - spec: git-lfs@3.4.0
-      prefix: /usr/local/other/git-lfs/3.4.0
+    - spec: git-lfs@3.7.1
+      prefix: /discover/swdev/gmao_SIteam/other/SLES15.4/git-lfs/3.7.1
+  gh:
+    buildable: False
+    externals:
+    - spec: gh@2.96.0
+      prefix: /discover/swdev/gmao_SIteam/gh
   gmake:
     externals:
     - spec: gmake@4.2.1
@@ -98,6 +121,10 @@ packages:
   m4:
     externals:
     - spec: m4@1.4.18
+      prefix: /usr
+  ncurses:
+    externals:
+    - spec: ncurses@6.1 +termlib abi=6
       prefix: /usr
   openssh:
     externals:

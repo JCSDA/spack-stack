@@ -11,13 +11,12 @@ packages:
     - "cray-mpich@8.1.33"
   intel-oneapi-compilers:
     externals:
-    - spec: intel-oneapi-compilers@2024.2.0
+    - spec: intel-oneapi-compilers@2024.2.0 +fix_rt_linkage
       prefix: /nasa/intel/oneapi-test
       modules:
       - cray-libpals/1.7.1
       - cray-pals/1.7.1
       - craype-x86-turin
-      - libfabric/12.0
       - craype-network-ofi
       - cray-dsmml/0.3.1
       - PrgEnv-intel/8.6.0
@@ -29,24 +28,24 @@ packages:
           fortran: /nasa/intel/oneapi-test/compiler/2024.2/bin/ifort
         environment:
           prepend_path:
-            PATH: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin
-            CPATH: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/include
-            LD_LIBRARY_PATH: '/nasa/intel/oneapi-test/compiler/2024.2/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib64'
+            PATH: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/bin
+            CPATH: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/include
+            LD_LIBRARY_PATH: '/nasa/intel/oneapi-test/compiler/2024.2/lib/:/nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/lib64'
         extra_rpaths:
-        - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib64
-        - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/lib
+        - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/lib64
+        - /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/lib
   gcc:
     buildable: false
     externals:
     - spec: gcc@12.5.0 languages:='c,c++'
-      prefix: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5
+      prefix: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild
       modules:
-      - comp-gcc/12.5.0-TOSS5
+      - comp-gcc/12.5.0-rebuild
       extra_attributes:
         compilers:
-          c: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin/gcc
-          cxx: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin/g++
-          fortran: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5/bin/gfortran
+          c: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/bin/gcc
+          cxx: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/bin/g++
+          fortran: /nobackup/gmao_SIteam/gcc/gcc-12.5.0-TOSS5-rebuild/bin/gfortran
   cray-mpich:
     buildable: false
     externals:
@@ -56,7 +55,6 @@ packages:
       - cray-libpals/1.7.1
       - cray-pals/1.7.1
       - craype-x86-turin
-      - libfabric/12.0
       - craype-network-ofi
       - cray-dsmml/0.3.1
       - cray-mpich/8.1.33

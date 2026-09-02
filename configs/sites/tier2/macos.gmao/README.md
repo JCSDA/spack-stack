@@ -10,8 +10,7 @@ Default macOS for GMAO
 - [Setup spack-stack](#setup-spack-stack)
 - [Using batch\_install.sh script](#using-batch_installsh-script)
   - [First run](#first-run)
-  - [Subsequent builds](#subsequent-builds)
-  - [Installing from build caches](#installing-from-build-caches)
+  - [Subsequent local installs](#subsequent-local-installs)
   - [Loading the stack](#loading-the-stack)
 - [Building the stack by hand](#building-the-stack-by-hand)
   - [Create Environments](#create-environments)
@@ -89,7 +88,7 @@ cd spack-stack-dev
 
 ## Using batch_install.sh script
 
-The `batch_install.sh` script automates the creation of environments (e.g., `gcc` and `clang` builds), populating your Spack bootstrap caches, and running the Spack installation pipeline.
+The `batch_install.sh` script automates environment creation, local mirror setup, package installation, and module generation. On macOS, use its one-step `local` mode: it installs directly into the final environment and publishes the resulting binaries to your private local buildcache for reuse by later installs.
 
 ### Usage help
 
@@ -99,51 +98,44 @@ The `batch_install.sh` script automates the creation of environments (e.g., `gcc
 
 ### Compiler Selection and Auto-Detection
 
-By default, `batch_install.sh` builds the `gcc@=15.2.0` stack. 
+By default, `batch_install.sh` builds the `gcc@=15.3.0` stack. 
 
 The script will automatically detect your currently active version of Apple Clang (e.g. `apple-clang@21.0.0`) and substitute it into the templates. If the NAG Fortran compiler (`nagfor`) is found in your `PATH`, the script will automatically detect its version as well and add it to the build queue (e.g., `nag@=7.2.7243`). 
 
 If your NAG compiler is installed in a non-standard location and not in your `PATH`, you can explicitly provide its path using the `-N` flag:
 
 ```bash
-./util/gmao/batch_install.sh -N /path/to/your/nag/bin/nagfor -r dev -m build -H macos.gmao -e
+./util/gmao/batch_install.sh -N /path/to/your/nag/bin/nagfor -m local -H macos.gmao -e
 ```
 
 If you want to explicitly override the compilers built by the script entirely, use the `-C` flag with a comma-separated list of Spack compiler specs:
 
 ```bash
-./util/gmao/batch_install.sh -C "gcc@=15.2.0,nag@=7.2.7243" -r dev -m build -H macos.gmao -e
+./util/gmao/batch_install.sh -C "gcc@=15.3.0,nag@=7.2.7243" -m local -H macos.gmao -e
 ```
 
 *Note: For every compiler you specify, you must have a corresponding `packages_<compiler_name>-<version>.yaml.template` file in this site directory.*
 
-### First run (Building Bootstrap and Source Caches)
+### First run
 
-When you first run the script on a new machine, you need to use the `-u` option. This tells Spack to build the bootstrap mirror and source caches locally before attempting to register them.
+On a new machine, use `-u` to populate private bootstrap, source, and Cargo mirrors before installation.
 
 ```bash
-./util/gmao/batch_install.sh -r dev -m build -H macos.gmao -u -e
+./util/gmao/batch_install.sh -m local -H macos.gmao -u
 ```
 
-- `-r dev -m build`: Sets the developer mode and tells Spack to build the environments.
+- `-m local`: Performs a one-step workstation install. It reuses matching packages from the local cache, builds missing packages in the final environment, publishes the resulting binaries to the local cache, and generates modules and meta-modules when complete.
 - `-H macos.gmao`: Overrides hostname detection. This is required to force the script to use this specific generic macOS site, avoiding issues where VPNs or routers mask the real hostname.
-- `-u`: Updates and populates the bootstrap/source caches.
-- `-e`: Allows continuing builds in existing environments (prevents the script from failing if the environment directories were just created).
+- `-u`: Updates and populates the private bootstrap, source, and Cargo mirrors.
 
-### Subsequent builds
+Use `-e` only to resume an existing environment after a failed or interrupted installation.
 
-Once the initial caches are set up, you can run builds without the `-u` flag:
+### Subsequent local installs
 
-```bash
-./util/gmao/batch_install.sh -r dev -m build -H macos.gmao -e
-```
-
-### Installing from build caches
-
-If you are just installing environments using already populated build caches (the typical workflow for users after the initial maintainer setup), use `-m install`:
+Once the local mirrors are set up, omit `-u`:
 
 ```bash
-./util/gmao/batch_install.sh -r dev -m install -H macos.gmao -e
+./util/gmao/batch_install.sh -m local -H macos.gmao -e
 ```
 
 ### Generating `.yaml.generated` files
@@ -154,21 +146,21 @@ To prevent cluttering the site configuration directory, the script writes these 
 
 Once the installation and module generation are complete, you can point your shell to the newly built modules. OpenMPI is built specifically with `~two_level_namespace` to support flat namespace linking required by GEOS. 
 
-To ensure executables (like MAPL tests) running under macOS System Integrity Protection (SIP) can properly resolve runtime paths (RPATHs) when using compilers like NAG, the `macos.gmao` site-level `modules.yaml` configuration explicitly permits exporting `DYLD_LIBRARY_PATH` and `DYLD_FALLBACK_LIBRARY_PATH` variables into your environment when loading modules.
+macOS System Integrity Protection (SIP) removes `DYLD_*` variables from child processes. The module configuration therefore also preserves module-derived library paths in `SPACK_DYLD_FALLBACK_LIBRARY_PATH`. GEOS run scripts can restore that value to `DYLD_FALLBACK_LIBRARY_PATH` immediately before launching the model.
 
-Depending on which compiler you built, you will need to add the correct `install/modulefiles/Core` directory to your `module use` path.
+Depending on which compiler you built, add its `modules/Core` directory to your `module use` path.
 
 #### Loading the GCC Stack
 
 ```bash
-module use -a /path/to/spack-stack/envs/ge-gcc-15.2.0-build/install/modulefiles/Core
+module use -a /path/to/spack-stack/envs/ge-gcc-15.3.0/modules/Core
 module load stack-gcc stack-openmpi geos-gcm-env
 ```
 
 #### Loading the NAG Stack
 
 ```bash
-module use -a /path/to/spack-stack/envs/ge-nag-7.2.7243-build/install/modulefiles/Core
+module use -a /path/to/spack-stack/envs/ge-nag-7.2.7243/modules/Core
 module load stack-nag stack-openmpi geos-gcm-env
 ```
 
@@ -187,13 +179,13 @@ You only need to create each environment once. Our `macos.gmao` site configurati
 #### GCC Environment
 
 ```bash
-spack stack create env --name ge-gcc-15.2.0 --template geos-dev --site macos.gmao --compiler=gcc-15.2.0
+spack stack create env --name ge-gcc-15.3.0 --template geos-dev --site macos.gmao --compiler=gcc-15.3.0
 ```
 
 #### NAG Environment
 
 ```bash
-spack stack create env --name genag-nag-7.2.7243 --template geos-dev-nag --site macos.gmao --compiler=nag-7.2.7243
+spack stack create env --name ge-nag-7.2.7243 --template geos-dev-nag --site macos.gmao --compiler=nag-7.2.7243
 ```
 
 ---
@@ -203,11 +195,11 @@ spack stack create env --name genag-nag-7.2.7243 --template geos-dev-nag --site 
 Navigate to the environment directory you wish to work on. For example, if you built the GCC stack:
 
 ```bash
-cd envs/ge-gcc-15.2.0-build
+cd envs/ge-gcc-15.3.0
 spack env activate -p .
 ```
 
-> **Note:** If you are building or debugging a different compiler stack, be sure to `cd` into that specific environment directory instead (e.g., `envs/ge-nag-7.2.7243-build` or `envs/ge-clang-22.1.3-build`).
+> **Note:** If you are building or debugging a different compiler stack, be sure to `cd` into that specific environment directory instead (e.g., `envs/ge-nag-7.2.7243` or `envs/ge-clang-22.1.8`).
 
 > **Important:** Run this in *every* terminal where you plan to run Spack commands for this environment.
 
@@ -241,18 +233,18 @@ spack mirror create -a -d $HOME/spack-stack-mirrors/spack-source-mirror
 Rust packages frequently require network access during the build. Pre-fetch their dependencies to the cargo mirror:
 
 ```bash
-export CARGO_HOME=$HOME/spack-stack-mirrors/spack-cargo-mirror
+export SPACK_CARGO_HOME=$HOME/spack-stack-mirrors/spack-cargo-mirror
 ../../util/fetch_cargo_deps.py
 ```
 
-> ⚠️ **Set `CARGO_HOME` in your environment before running `spack install`.**
+> ⚠️ **Set `SPACK_CARGO_HOME` in your environment before running `spack install`.**
 
 ---
 
 ### Install Packages
 
 ```bash
-export CARGO_HOME=$HOME/spack-stack-mirrors/spack-cargo-mirror
+export SPACK_CARGO_HOME=$HOME/spack-stack-mirrors/spack-cargo-mirror
 spack install -j 6 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install ; bell
 ```
 
@@ -291,4 +283,3 @@ spack build-env <package> -- bash --norc --noprofile
 ```
 
 This drops you into a clean bash shell with the exact environment variables, compiler wrappers, and dependencies loaded that Spack uses during the build.
-

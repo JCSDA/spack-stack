@@ -12,10 +12,10 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0
+    - spec: intel-oneapi-compilers@2025.3.0 +fix_rt_linkage
       prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
-      - comp-intel/2025.3.0
+      - comp-intel/2025.3
       extra_attributes:
         compilers:
           c: /nobackup/gmao_SIteam/intel/oneapi/compiler/2025.3/bin/icx

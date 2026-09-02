@@ -1,0 +1,8 @@
+packages:
+  zlib-api:
+    require: [zlib]
+  zlib:
+    buildable: false
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr

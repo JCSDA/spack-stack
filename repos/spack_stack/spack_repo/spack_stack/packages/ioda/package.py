@@ -31,6 +31,11 @@ class Ioda(CMakePackage):
     variant("openmp", default=True, description="Build with OpenMP support")
     # Let's always BUILD_PYTHON_BINDINGS.
     # variant('python', default=True, description='Build the ioda Python interface')
+    variant(
+        "trust_ecbuild_flags",
+        default=False,
+        description="Skip ecbuild compiler-flag probes",
+    )
 
     generator("make")
 
@@ -71,7 +76,8 @@ class Ioda(CMakePackage):
     depends_on("oops@1.10.0.20260331", when="@2.9.0.20260326")
     depends_on("oops@1.10.0.20250827", when="@2.9.0.20250826")
     depends_on("python")
-    depends_on("python@3.9:3.11", when="@2.9:")
+    # IODA 2.9 works with the Python 3.13 stack used by spack-stack.
+    depends_on("python@3.9:3.13", when="@2.9")
     depends_on("py-pybind11")
     depends_on("py-pycodestyle", type=("build", "test"))
     depends_on("py-netcdf4", type=("build", "test"))
@@ -83,6 +89,8 @@ class Ioda(CMakePackage):
             self.define("BUILD_TESTING", self.run_tests),
             self.define_from_variant("ENABLE_IODA_DOC", "doc"),
         ]
+        if "+trust_ecbuild_flags" in self.spec:
+            res.append(self.define("ECBUILD_TRUST_FLAGS", True))
         return res
 
     def setup_build_environment(self, env: EnvironmentModifications) -> None:
@@ -104,7 +112,6 @@ class Ioda(CMakePackage):
                 "ioda_bufr_python_encoder",
                 "ioda_bufr_python_parallel",
             ]
-
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
             if skipped_tests:

@@ -6,6 +6,11 @@ Usage:
     python3 monitor_install.py <logfile>          # monitor from current end (live)
     python3 monitor_install.py -f <logfile>       # scan from beginning of file (live)
     python3 monitor_install.py -r <logfile>       # read full file, print report, exit
+
+Live mode exits automatically when:
+  - All packages are installed (current == total in the Installing line)
+  - A spack error is detected
+  - No new log output for --timeout seconds (default: 300)
 """
 
 import sys
@@ -26,19 +31,36 @@ def format_bar(current, total, bar_len=30):
     return f"[{bar}] {current:>4}/{total}  {pct:5.1f}%"
 
 
-def monitor(logfile, from_start=False):
+def monitor(logfile, from_start=False, timeout=300):
+    idle_seconds = 0
+    last_total = None
+
     with open(logfile) as f:
         if not from_start:
             f.seek(0, 2)  # seek to end for live monitoring
         while True:
             line = f.readline()
             if not line:
+                idle_seconds += 1
+                if idle_seconds >= timeout:
+                    print(f"\nNo new output for {timeout}s - assuming build finished or crashed.")
+                    break
                 time.sleep(1)
                 continue
+
+            idle_seconds = 0
             m = pattern_installing.search(line)
             if m:
                 pkg, current, total = m.group(1), m.group(2), m.group(3)
+                last_total = total
                 print(f"{format_bar(current, total)}  {pkg}", flush=True)
+                if current == total:
+                    print("\nAll packages installed successfully.")
+                    break
+
+            if pattern_error.search(line):
+                print("\nBuild error detected - exiting monitor.")
+                break
 
 
 def report(logfile):
@@ -93,13 +115,15 @@ def main():
                         help="Scan from beginning of file instead of tailing live")
     parser.add_argument("-r", "--report", action="store_true",
                         help="Read full file, show progress, print summary, then exit")
+    parser.add_argument("-t", "--timeout", type=int, default=300,
+                        help="Seconds of log inactivity before exiting live mode (default: 300)")
     args = parser.parse_args()
 
     try:
         if args.report:
             report(args.logfile)
         else:
-            monitor(args.logfile, from_start=args.from_start)
+            monitor(args.logfile, from_start=args.from_start, timeout=args.timeout)
     except KeyboardInterrupt:
         print("\nDone monitoring.")
     except FileNotFoundError:
