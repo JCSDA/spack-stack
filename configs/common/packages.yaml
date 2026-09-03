@@ -452,6 +452,10 @@ packages:
     py-pandas:
       require:
       - '@:2'
+    # See py-pycparser
+    py-pandas-datareader:
+      require:
+      - '@:0.10'
     # To avoid duplicate packages
     py-poetry-core:
       require:
