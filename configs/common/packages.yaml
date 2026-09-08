@@ -481,9 +481,10 @@ packages:
     # ~performance disables optional py-bottleneck and py-numexpr dependencies
     # (py-numexpr fails to build with oneapi icpx; py-bottleneck pulls in py-maturin/rust)
     # Sites with rust/icpx available can override with +performance in their site packages.yaml
+    # We require pandas 2.3.3 for ioda/oops
     py-pandas:
       require:
-      - '@3:'
+      - '@2.3.3'
       prefer:
       - '~performance'
     # 0.11.1 replaces the Versioneer-based build that breaks with Python 3.12+.
