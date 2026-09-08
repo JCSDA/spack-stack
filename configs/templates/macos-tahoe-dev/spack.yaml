@@ -1,0 +1,17 @@
+# Template for JEDI Skylab development
+#
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+  - jedi-metal-env
+
+  packages:
+    # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
+    parallelio:
+      require:
+      - +pnetcdf

@@ -9,6 +9,8 @@ packages:
     buildable: false
   libiconv:
     buildable: false
+  libtirpc:
+    buildable: false
   wgrib2:
     require::
     - '~openmp'
