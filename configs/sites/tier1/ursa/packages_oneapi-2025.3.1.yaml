@@ -30,6 +30,7 @@ packages:
     - spec: intel-oneapi-mpi@2021.17
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2025.3.1/intel-oneapi-mpi-2021.17.1-emmz2zv6lx5ypzmlc3csouqffu7mwnwr
       modules:
+      - intel-oneapi-compilers/2025.3.1
       - intel-oneapi-mpi/2021.17.1
   intel-oneapi-mkl:
     buildable: False
@@ -37,6 +38,7 @@ packages:
     - spec: intel-oneapi-mkl@2025.3
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2025.3.1/intel-oneapi-mkl-2025.3.0-z5owhveid7qlq4erbay2seqzs65y3etu
       modules:
+      - intel-oneapi-compilers/2025.3.1
       - intel-oneapi-mkl/2025.3.0
   intel-oneapi-tbb:
     buildable: False

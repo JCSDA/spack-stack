@@ -13,6 +13,12 @@ packages:
       require:
       - zlib
     # Individual package settings
+    arborx:
+      require:
+      - '@2.1'
+      - +mpi
+      - +openmp
+      - +serial
     awscli-v2:
       require:
       - ~examples
