@@ -9,7 +9,7 @@ from spack_repo.builtin.build_systems.bundle import BundlePackage
 from spack.package import *
 
 
-class JediTahoeEnv(BundlePackage):
+class JediMetalEnv(BundlePackage):
     """Minimum  development environment for macos tahoe"""
 
     homepage = "https://github.com/jcsda/spack-stack"
@@ -45,7 +45,7 @@ class JediTahoeEnv(BundlePackage):
     depends_on("nccmp", type="run")
 
     # Miscellaneous
-    depends_on("rank-run", type="run")
+#    depends_on("rank-run", type="run")
 
     # There is no need for install() since there is no code.
 #    depends_on("base-env", type="run") ######### END ##########################
@@ -60,7 +60,7 @@ class JediTahoeEnv(BundlePackage):
     depends_on("ecbuild", type="run")
     depends_on("eccodes", type="run")
     depends_on("eckit", type="run")
-    depends_on("ecmwf-atlas", type="run")
+#    depends_on("ecmwf-atlas", type="run")
     depends_on("eigen", type="run")
     depends_on("fckit", type="run")
     depends_on("fftw-api", when="+fftw", type="run")

@@ -7,10 +7,14 @@ packages:
     - '+shared'
   git:
     buildable: false
-  libiconv:
-    buildable: false
-  libtirpc:
-    buildable: false
+#  libiconv:
+#    buildable: false
+#  libtirpc:
+#    buildable: false
+#  openblas:
+#    buildable: false
+#  gdbm:
+#    buildable: false
   wgrib2:
     require::
     - '~openmp'
