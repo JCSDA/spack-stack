@@ -24,7 +24,8 @@ class UfsWeatherModelEnv(BundlePackage):
     )
     variant("python", default=True, description="Include extra Python packages")
     variant("ncutils", default=True, description="Include extra NetCDF utilities (cprnc and nccmp)")
-    variant("kokkos", default=False, description="Include kokkos and kokkos-kernels")
+    variant("kokkos", default=False, description="Enable kokkos and kokkos-kernels")
+    variant("arborx", default=False, description="Enable arborx")
 
     depends_on("cmake", type="run")
     depends_on("python", type="run")
@@ -62,5 +63,9 @@ class UfsWeatherModelEnv(BundlePackage):
     with when("+kokkos"):
         depends_on("kokkos", type="run")
         depends_on("kokkos-kernels", type="run")
+
+    with when("+arborx"):
+        depends_on("arborx", type="run")
+        requires("+kokkos", msg="Arborx requires +kokkos")
 
     # There is no need for install() since there is no code.
