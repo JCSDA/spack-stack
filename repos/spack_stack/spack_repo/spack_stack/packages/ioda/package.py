@@ -56,6 +56,8 @@ class Ioda(CMakePackage):
     depends_on("gsl-lite")
     depends_on("hdf5@1.12.0: +mpi")
     depends_on("hdf5@1.14.0: +mpi", when="@2.9:")
+    # ioda-data is fetched with git-lfs, which must be in the PATH of the
+    # shell that runs Spack.
     depends_on("ioda-data", type=("build", "test"))
     depends_on("ioda-data@2.9.0.20260319", type=("build", "test"), when="@2.9.0.20260326")
     depends_on("ioda-data@2.9.0.20250805", type=("build", "test"), when="@2.9.0.20250826")
