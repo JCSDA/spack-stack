@@ -11,10 +11,10 @@ packages:
 #    buildable: false
 #  libtirpc:
 #    buildable: false
-#  openblas:
-#    buildable: false
-#  gdbm:
-#    buildable: false
+  openblas:
+    buildable: false
+  gdbm:
+    buildable: false
   wgrib2:
     require::
     - '~openmp'

@@ -51,7 +51,7 @@ class JediMetalEnv(BundlePackage):
 #    depends_on("base-env", type="run") ######### END ##########################
 
     depends_on("bison", type="run")
-    depends_on("blas", type="run")
+#    depends_on("blas", type="run")     YT: failed
     depends_on("boost", type="run")
 #    depends_on("bufr", type="run")
 #    depends_on("bufr-query", when="+bufrquery", type="run")
