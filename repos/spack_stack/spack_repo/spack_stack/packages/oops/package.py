@@ -77,6 +77,17 @@ class Oops(CMakePackage):
         ]
         return res
 
+    def setup_build_environment(self, env: EnvironmentModifications) -> None:
+        """Wrapper until spack has a real implementation of setup_test_environment()"""
+        if self.run_tests:
+            self.setup_test_environment(env)
+
+    def setup_test_environment(self, env: EnvironmentModifications):
+        """For OpenMPI, allow oversubscribing of MPI tasks"""
+        if self.spec.satisfies("^[virtuals=mpi] openmpi"):
+            env.set("OMPI_MCA_rmaps_base_oversubscribe", "1")
+            env.set("PRTE_MCA_rmaps_default_mapping_policy", ":oversubscribe")
+
     def check(self):
         skipped_tests = None
         with when("@1.10.0.20250827"):

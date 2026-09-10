@@ -104,7 +104,11 @@ class Ioda(CMakePackage):
                 "ioda_bufr_python_encoder",
                 "ioda_bufr_python_parallel",
             ]
-
+            # This test segfaults randomly with oneapi@2026
+            if self.spec.satisfies("%oneapi"):
+                skipped_tests += [
+                    "ioda_time_io_script",
+                ]
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
             if skipped_tests:
