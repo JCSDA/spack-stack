@@ -60,10 +60,16 @@ class IodaConverters(CMakePackage):
     depends_on("py-eccodes", type=("build", "test"))
     depends_on("py-h5py", type=("build", "test"))
     depends_on("py-netcdf4", type=("build", "test"))
-    depends_on("py-pandas", type=("build", "test"))
+    # https://github.com/JCSDA/spack-stack/issues/2116
+    depends_on("py-pandas@:2", type=("build", "test"))
     depends_on("py-pyhdf", type=("build", "test"))
     depends_on("py-pyyaml", type=("build", "test"))
+    depends_on("py-scipy", type=("build", "test"))
     depends_on("py-xarray", type=("build", "test"))
+
+    # https://github.com/JCSDA/spack-stack/issues/2116
+    patch("ioda-converters-numpy2-ma-scalar-dtype.patch", when="^py-numpy@2")
+    patch("ioda-converters-numpy2-api-and-precision.patch", when="^py-numpy@2")
 
     def cmake_args(self):
         res = [

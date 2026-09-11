@@ -31,12 +31,10 @@ spack:
   - crtm@v2.4.1-jedi.2
   - crtm@3.1.3
 
-  # Mapl with various esmf tags
-  - mapl@2.53.0 ^esmf@8.6.1
+  # Mapl with specific esmf tags (list all to avoid duplicate packages)
   - mapl@2.53.4 ^esmf@8.8.0
 
   # Various esmf tags (list all to avoid duplicate packages)
-  - esmf@=8.6.1
   - esmf@=8.8.0
   - esmf@=9.0.0b11
 

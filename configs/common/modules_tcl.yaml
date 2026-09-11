@@ -119,6 +119,7 @@ modules:
       - intel-oneapi-compilers
       - intel-oneapi-compilers-classic
       - llvm
+      - nvhpc
       # By default, do not create MPI modules
       - cray-mpich
       - intel-mpi

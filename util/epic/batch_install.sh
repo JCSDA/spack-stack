@@ -460,6 +460,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Reset environment
+    # see configs/sites/tier1/<host>/setup.sh for site-specific module settings
     echo "Resetting environment ..."
     case ${host} in
       derecho)
@@ -469,7 +470,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           gcc@=13.3.1)
             ;;
           oneapi@=2025.3.1)
-            module use /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/modulefiles
             ;;
         esac
         ;;
@@ -490,7 +490,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           gcc@=12.2.0)
             ;;
           oneapi@=2025.3.1)
-            module use /apps/contrib/spack-stack/modulefiles
             ;;
         esac
         ;;
@@ -502,7 +501,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           #gcc@=12.2.0)
           #  ;;
           oneapi@=2025.3.1)
-            module use /apps/contrib/spack-stack/modulefiles
             ;;
         esac
         ;;

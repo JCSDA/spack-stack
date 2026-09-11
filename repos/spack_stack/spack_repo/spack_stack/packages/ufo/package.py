@@ -78,6 +78,8 @@ class Ufo(CMakePackage):
     depends_on("oops")
     depends_on("oops@1.10.0.20260331", when="@1.10.0.20260331")
     depends_on("oops@1.10.0.20250827", when="@1.10.0.20250821")
+    # ufo-data is fetched with git-lfs, which must be in the PATH of the
+    # shell that runs Spack.
     depends_on("ufo-data@2.9.0.20260326", type=("build", "test"), when="@1.10.0.20260331")
     depends_on("ufo-data@2.9.0.20250821", type=("build", "test"), when="@1.10.0.20250821")
 

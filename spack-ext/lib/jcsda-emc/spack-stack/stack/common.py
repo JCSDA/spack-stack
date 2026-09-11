@@ -20,6 +20,7 @@ ALIASES = {
     "intel-oneapi-compilers-classic" : "intel",
     "intel-oneapi-compilers" : "oneapi",
     "llvm" : "llvm",
+    "nvhpc" : "nvhpc",
     # MPI
     "cray-mpich" : "cray-mpich",
     "intel-oneapi-mpi" : "impi",

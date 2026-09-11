@@ -1,0 +1,37 @@
+packages:
+  all:
+    require:
+    - any_of: ['%nvhpc@=26.5']
+      when: '%nvhpc'
+    - any_of: ['%gcc@=11.5.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    #- "nvhpc@=26.5"
+    - "openmpi@=5.0.10"
+  nvhpc:
+    buildable: false
+    externals:
+    - spec: nvhpc@26.5+blas+lapack~mpi
+      prefix: /home/dom/prod/nvhpc-26.5
+      extra_attributes:
+        compilers:
+          c: /home/dom/prod/nvhpc-26.5/Linux_x86_64/26.5/compilers/bin/nvc
+          cxx: /home/dom/prod/nvhpc-26.5/Linux_x86_64/26.5/compilers/bin/nvc++
+          fortran: /home/dom/prod/nvhpc-26.5/Linux_x86_64/26.5/compilers/bin/nvfortran
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@11.5.0 languages:='c,c++'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+  openmpi:
+    buildable: false
+    externals:
+    - spec: openmpi@5.0.10 ~internal-hwloc +two_level_namespace
+      prefix: /home/dom/prod/nvhpc-26.5/Linux_x86_64/26.5/comm_libs/13.2/hpcx/hpcx-2.50/ompi5

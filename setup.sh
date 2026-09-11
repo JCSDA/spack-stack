@@ -10,17 +10,26 @@ case $hostname in
   *atlantis*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/atlantis/setup.sh
     ;;
+  *barfoot*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier2/barfoot/setup.sh
+    ;;
   *blueback*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/blueback/setup.sh
     ;;
   *derecho*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/derecho/setup.sh
     ;;
+  *Hercules*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/hercules/setup.sh
+    ;;
   *narwhal*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/narwhal/setup.sh
     ;;
   *nautilus*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/nautilus/setup.sh
+    ;;
+  *Orion*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier1/orion/setup.sh
     ;;
 esac
 
