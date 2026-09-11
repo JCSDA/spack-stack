@@ -71,7 +71,8 @@ class Ioda(CMakePackage):
     depends_on("oops@1.10.0.20260331", when="@2.9.0.20260326")
     depends_on("oops@1.10.0.20250827", when="@2.9.0.20250826")
     depends_on("python")
-    depends_on("python@3.9:3.11", when="@2.9:")
+    # https://github.com/JCSDA/spack-stack/issues/2116
+    depends_on("python@3.9:3.13", when="@2.9:")
     depends_on("py-pybind11")
     depends_on("py-pycodestyle", type=("build", "test"))
     depends_on("py-netcdf4", type=("build", "test"))
