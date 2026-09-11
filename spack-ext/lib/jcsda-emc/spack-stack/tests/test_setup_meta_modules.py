@@ -56,6 +56,9 @@ packages:
           c: /usr/bin/gcc
           cxx: /usr/bin/g++
           fortran: /usr/bin/gfortran
+        environment:
+          unset:
+          - DUMMYVAR
   mpi:
     buildable: false
   openmpi:

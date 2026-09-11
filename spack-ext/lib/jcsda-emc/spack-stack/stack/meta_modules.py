@@ -95,19 +95,26 @@ def envmod_command(module_choice, action, env_name, env_values):
     elif action == "unset":
         module_action = "unsetenv"
     elif action == "append_path":
-        if module_choice == "lmod":
-            module_action = "append_path"
-        else:
-            module_action = "append-path"
+        module_action = "append_path" if module_choice == "lmod" else "append-path"
     elif action == "prepend_path":
-        if module_choice == "lmod":
-            module_action = "prepend_path"
-        else:
-            module_action = "prepend-path"
-    if module_choice == "lmod":
-        return f'{module_action}("{env_name}", "{env_values}")\n'#.format(module_action, env_name, env_values)
+        module_action = "prepend_path" if module_choice == "lmod" else "prepend-path"
+    elif action == "remove_path":
+        module_action = "remove_path" if module_choice == "lmod" else "remove-path"
     else:
-        return f"{module_action} {{{env_name}}} {{{env_values}}}\n"#.format(module_action, env_name, env_values)
+        raise ValueError(
+            "Unsupported environment modification action '{}' "
+            "in extra_attributes:environment".format(action)
+        )
+    if module_choice == "lmod":
+        if action == "unset":
+            return f'{module_action}("{env_name}")\n'
+        else:
+            return f'{module_action}("{env_name}", "{env_values}")\n'
+    else:
+        if action == "unset":
+            return f"{module_action} {{{env_name}}}\n"
+        else:
+            return f"{module_action} {{{env_name}}} {{{env_values}}}\n"
 
 
 def module_load_command(module_choice, module):
@@ -123,10 +130,6 @@ end\n"""
 
 def modulepath_prepend_command(module_choice, modulepath):
     return envmod_command(module_choice, "prepend_path", "MODULEPATH", modulepath)
-    #if module_choice == "lmod":
-    #    return 'prepend_path("MODULEPATH", "{}")\n'.format(modulepath)
-    #else:
-    #    return "prepend-path {{MODULEPATH}} {{{}}}\n".format(modulepath)
 
 
 def substitute_config_vars(config_str):
@@ -425,7 +428,10 @@ def setup_meta_modules():
     if "environment" in compiler.extra_attributes.keys():
         for action in compiler.extra_attributes["environment"].keys():
             for env_name in compiler.extra_attributes["environment"][action]:
-                env_values = compiler.extra_attributes["environment"][action][env_name]
+                if action == "unset":
+                    env_values = None
+                else:
+                    env_values = compiler.extra_attributes["environment"][action][env_name]
                 compiler_subs["ENVVARS"] += envmod_command(
                     module_choice,
                     action,
@@ -623,7 +629,10 @@ def setup_meta_modules():
         if "environment" in mpi_provider.extra_attributes.keys():
             for action in mpi_provider.extra_attributes["environment"].keys():
                 for env_name in mpi_provider.extra_attributes["environment"][action]:
-                    env_values = mpi_provider.extra_attributes["environment"][action][env_name]
+                    if action == "unset":
+                        env_values = None
+                    else:
+                        env_values = mpi_provider.extra_attributes["environment"][action][env_name]
                     substitutes["ENVVARS"] += envmod_command(
                         module_choice,
                         action,
