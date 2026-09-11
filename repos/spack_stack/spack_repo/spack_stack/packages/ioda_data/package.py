@@ -9,7 +9,17 @@ from spack.package import *
 
 
 class IodaData(CMakePackage):
-    """Test data for IODA (Interface for Observation Data Access)"""
+    """Test data for IODA (Interface for Observation Data Access)
+
+    NOTE: This test data repository uses git-lfs test which is invoked
+    by 'git clone'/'git checkout' during the fetch stage. Spack's fetch
+    stage runs in its own process environment, *not* in the build
+    environment, therefore a git-lfs build dependency would not ensure a
+    successful clone. A git-lfs executable must be in the PATH of spack's
+    environment  via a local install or a module load call (e.g. 'module
+    load git-lfs'), otherwise fetching fails.
+    - ref: https://github.com/JCSDA/spack-stack/issues/2109.
+    """
 
     homepage = "https://github.com/JCSDA-internal/ioda-data"
     git = "https://github.com/JCSDA-internal/ioda-data.git"
