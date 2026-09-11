@@ -1,0 +1,107 @@
+diff --git a/src/compo/airnow2ioda_nc.py b/src/compo/airnow2ioda_nc.py
+index acf0fbf..b784b6d 100755
+--- a/src/compo/airnow2ioda_nc.py
++++ b/src/compo/airnow2ioda_nc.py
+@@ -97,7 +97,8 @@ def read_monitor_file(sitefile, is_epa):
+ 
+ 
+ def filter_bad_values(df):
+-    df.loc[(df.obs > 3000) | (df.obs < 0), 'obs'] = np.NaN
++    # np.NaN was removed in numpy 2.0; use np.nan
++    df.loc[(df.obs > 3000) | (df.obs < 0), 'obs'] = np.nan
+     return df
+ 
+ 
+diff --git a/src/gsi_ncdiag/gsi_ncdiag.py b/src/gsi_ncdiag/gsi_ncdiag.py
+index 18d1791..f1b0b34 100755
+--- a/src/gsi_ncdiag/gsi_ncdiag.py
++++ b/src/gsi_ncdiag/gsi_ncdiag.py
+@@ -1190,7 +1190,9 @@ def grabobsidx(obsdata, platform, var):
+         codes = uv_bufrtypes[platform]
+     else:
+         codes = conv_bufrtypes[platform]
+-    idx = np.logical_and(np.in1d(code, codes), idx2)
++    # np.in1d was removed in numpy 2.0; np.isin is the drop-in replacement
++    # (identical for the 1-D inputs used here).
++    idx = np.logical_and(np.isin(code, codes), idx2)
+ 
+     return idx
+ 
+diff --git a/src/marine/ndbc_hfradar2ioda.py b/src/marine/ndbc_hfradar2ioda.py
+index 3345b5d..e24e6f2 100755
+--- a/src/marine/ndbc_hfradar2ioda.py
++++ b/src/marine/ndbc_hfradar2ioda.py
+@@ -65,7 +65,10 @@ class Observation(object):
+                 qcKey = vName[j], iconv.OqcName()
+                 if vals_u[i] != '--':
+                     count += 1
+-                    obs_date = int(time[i])
++                    # numpy 2 no longer converts a size-1, non-0-d array with
++                    # int(); .item() is the explicit form and still raises if
++                    # the slice holds more than one element.
++                    obs_date = int(time[i].item())
+                     locKey = lats[i], lons[i], obs_date
+                     if j == 0:
+                         self.data[locKey][valKey] = vals_u[i]
+diff --git a/src/pyiodaconv/meteo_utils.py b/src/pyiodaconv/meteo_utils.py
+index 750a07b..2ee02ae 100644
+--- a/src/pyiodaconv/meteo_utils.py
++++ b/src/pyiodaconv/meteo_utils.py
+@@ -61,6 +61,14 @@ class meteo_utils(object):
+         temp_K  - temperature (k)
+         '''
+ 
++        # Evaluate in double precision. Under numpy < 2, combining a numpy
++        # float32 scalar with a Python float promoted the result to float64;
++        # NEP 50 (numpy >= 2) keeps it float32, which loses several digits in
++        # the polynomial fit below. Coerce explicitly so the result no longer
++        # depends on the dtype the caller happens to pass in.
++        pres_Pa = float(pres_Pa)
++        temp_K = float(temp_K)
++
+         es = self.e_sub_s(temp_K)
+ 
+         # Even at P=1050hPa and T=55C, sat. vap. pres only contributes to ~15% of total pressure.
+@@ -81,6 +89,13 @@ class meteo_utils(object):
+         polynomial fit of Goff-Gratch (1946) formulation. (Walko, 1991)
+         '''
+ 
++        # Evaluate in double precision. Under numpy < 2, combining a numpy
++        # float32 scalar with a Python float promoted the result to float64;
++        # NEP 50 (numpy >= 2) keeps it float32, which loses several digits in
++        # the polynomial fit below. Coerce explicitly so the result no longer
++        # depends on the dtype the caller happens to pass in.
++        temp_K = float(temp_K)
++
+         c = [610.5851, 44.40316, 1.430341, 0.2641412e-1, 0.2995057e-3, 0.2031998e-5, 0.6936113e-8, 0.2564861e-11, -0.3704404e-13]
+         x = max(-80., temp_K-self.C_2_K)
+         es = c[0]+x*(c[1]+x*(c[2]+x*(c[3]+x*(c[4]+x*(c[5]+x*(c[6]+x*(c[7]+x*c[8])))))))
+@@ -113,6 +128,14 @@ class meteo_utils(object):
+         temp_K  - temperature (k)
+         '''
+ 
++        # Evaluate in double precision. Under numpy < 2, combining a numpy
++        # float32 scalar with a Python float promoted the result to float64;
++        # NEP 50 (numpy >= 2) keeps it float32, which loses several digits in
++        # the polynomial fit below. Coerce explicitly so the result no longer
++        # depends on the dtype the caller happens to pass in.
++        pres_Pa = float(pres_Pa)
++        temp_K = float(temp_K)
++
+         esi = self.e_sub_i(temp_K)
+ 
+         # Even at P=1050hPa and T=55C, sat. vap. pres only contributes to ~15% of total pressure.
+@@ -133,6 +156,13 @@ class meteo_utils(object):
+         polynomial fit of Goff-Gratch (1946) formulation. (Walko, 1991)
+         '''
+ 
++        # Evaluate in double precision. Under numpy < 2, combining a numpy
++        # float32 scalar with a Python float promoted the result to float64;
++        # NEP 50 (numpy >= 2) keeps it float32, which loses several digits in
++        # the polynomial fit below. Coerce explicitly so the result no longer
++        # depends on the dtype the caller happens to pass in.
++        temp_K = float(temp_K)
++
+         c = [.609868993E03, .499320233E02, .184672631E01, .402737184E-1, .565392987E-3, .521693933E-5, .307839583E-7, .105785160E-9, .161444444E-12]
+         x = max(-80., temp_K-self.C_2_K)
+         esi = c[0]+x*(c[1]+x*(c[2]+x*(c[3]+x*(c[4]+x*(c[5]+x*(c[6]+x*(c[7]+x*c[8])))))))
