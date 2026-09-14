@@ -212,6 +212,9 @@ packages:
     externals:
     - spec: texinfo@5.1
       prefix: /usr
+  # Site ecflow is an external at 5.8.4; uwtools@2.17 requires ecflow@5.16:.
+  uwtools:
+    require:: ['@2.11']
   wget:
     externals:
     - spec: wget@1.14

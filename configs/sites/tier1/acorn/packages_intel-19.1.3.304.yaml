@@ -107,7 +107,7 @@ packages:
   py-maturin:
     require: ['%gcc']
   py-numpy:
-    require:: ['@1.26', '%gcc']
+    require:: ['@2', '%gcc']
   py-scipy:
     require: ['@1.10.1']
   qt:

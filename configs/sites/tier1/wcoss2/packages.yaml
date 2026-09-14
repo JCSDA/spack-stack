@@ -57,7 +57,7 @@ packages:
     require:: ['@4.9.2', '+mpi', '~parallel-netcdf', '~dap', '~blosc', '~szip']
   py-colorama:: {}
   py-pandas:
-    require:: ['~excel']
+    require:: ['~excel', '@:2', '^py-versioneer@0.28']
   scotch:
     require::
       - '@7.0.7'

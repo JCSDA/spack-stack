@@ -31,5 +31,6 @@ packages:
     - '@1.4.2 ~mkl'
   py-numpy:
     require::
+    - '@2'
     - '^openblas'
   # *DH

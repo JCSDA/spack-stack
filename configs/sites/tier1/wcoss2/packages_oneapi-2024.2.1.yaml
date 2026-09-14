@@ -103,7 +103,7 @@ packages:
   proj:
     require: ['@9.4.1']
   py-numpy::
-    require:: ['@1.26']
+    require:: ['@2']
   subversion:
     require: ['%gcc']
   zlib-ng:
