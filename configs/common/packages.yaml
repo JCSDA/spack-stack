@@ -117,10 +117,12 @@ packages:
       - +png
       - +tools
     # uwtools@2.17: needs ecflow@5.16:; leave the version to the concretizer
+    # ecflow@5.18 is not compatible with py-pybind11@3.0:
     ecflow:
       require:
       - +ui
       - '@5.18:'
+      - ^py-pybind11@:2
     eckit:
       require:
       - '@2.0.7'
