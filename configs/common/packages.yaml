@@ -429,10 +429,6 @@ packages:
     py-cartopy:
       require:
       - +plotting
-    # See py-pycparser
-    py-click:
-      require:
-      - '@8.1.8'
     # Pin py-colorama to avoid duplicate packages, hopefully can be removed soon
     py-colorama:
       require:
@@ -480,39 +476,18 @@ packages:
       # into py-xarray/met/metplus/jedi-base-env. This constraints py-pandas to @0.28
       # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
       - ^py-versioneer@0.28
-    # See py-pycparser
-    py-pandas-datareader:
-      require:
-      - '@:0.10'
     # To avoid duplicate packages
     py-poetry-core:
       require:
       - '@1.7'
-    # See py-pycparser
-    py-pooch:
-      require:
-      - '@1.7.0'
-    # Need older version of py-pycparser until we can update setuputils to >= 77 ?
-    # https://github.com/pydata/xarray/issues/10588
-    py-pycparser:
-      require:
-      - '@2.21'
     # Need at least py-pygithub@2.7 for self-hosted runner management
     py-pygithub:
       require:
       - '@2.7:'
-    # See py-pycparser
-    py-imageio:
-      require:
-      - '@2.37.0'
     # This version builds with Intel oneAPI compilers, newer versions don't
     py-pyogrio:
       require:
       - '@0.9.0'
-    # See py-pycparser
-    py-pyparsing:
-      require:
-      - '@3.1.2'
     # To avoid duplicate packages
     py-python-dateutil:
       require:
@@ -530,10 +505,6 @@ packages:
     # NOTE: py-setuptools was pinned @73.0.1 for the py3.11 stack; removed for the
     # py3.12/numpy2 migration since modern packages (e.g. py-xarray@2025.7) require
     # py-setuptools@77.0.3:. Re-evaluate issue #3695 if setuptools duplicates recur.
-    # See py-pycparser
-    py-sphinxcontrib-bibtex:
-      require:
-      - '@2.5.0'
     py-torch:
       require:
       - +custom-protobuf

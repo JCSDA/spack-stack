@@ -1,8 +1,5 @@
 packages:
   # Package constraints.
-  awscli-v2:
-    require:
-    - "@2.22.4"
   ewok-env:
     require:
     - +ecflow

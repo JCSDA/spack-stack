@@ -26,6 +26,11 @@ packages:
     bison:
       require:
       - '%c,cxx=gcc'
+    # pango/harfbuzz/gobject-introspection need cairo+gobject; without pinning it
+    # the concretizer builds cairo both ways and the two collide on one modulefile.
+    cairo:
+      require:
+      - +gobject
     cmake:
       require:
       - '%c,cxx=gcc'
@@ -69,6 +74,11 @@ packages:
     patchelf:
       require:
       - '%c=gcc'
+    # Require a recent py-sphinx; unpinned the concretizer prefers 6.X. The old sphinx creates version
+    # splits in py-attrs, py-docutils, and py-eccodes affecting jedi-base-env and jedi-fv3-env.
+    py-sphinx:
+      require:
+      - '@9:'
     py-maturin:
       require:
       - '%c=gcc'
