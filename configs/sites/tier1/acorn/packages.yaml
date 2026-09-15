@@ -41,7 +41,7 @@ packages:
     require:: ['%oneapi']
   py-colorama:: {}
   py-pandas:
-    require:: ['~excel', '@:2', '^py-versioneer@0.28']
+    require: ['~excel']
   subversion:
     require: ['~serf', '+pic']
   zlib-ng:
