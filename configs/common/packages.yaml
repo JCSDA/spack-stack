@@ -473,7 +473,7 @@ packages:
       - '@:2'
       # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
       # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
-      # into py-xarray/met/metplus/jedi-base-env. This constraints py-pandas to @0.28
+      # into py-xarray/met/metplus/jedi-base-env. This constraints py-versioneer to @0.28
       # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
       - ^py-versioneer@0.28
     # To avoid duplicate packages
