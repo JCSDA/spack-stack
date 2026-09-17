@@ -67,10 +67,12 @@ packages:
     # cairo@1.18.0: is uses the meson recipe. The meson build enforces variants
     # that are all-enabled or all-disabled. The "all-enabled" variants are set to help
     # the concretizer resolve the correct version without disabling all variants.
+    # pango/harfbuzz/gobject-introspection need cairo+gobject; without pinning it
+    # the concretizer builds cairo both ways and the two collide on one modulefile.
     cairo:
       require:
       - '@1.18:'
-      - +zlib+ft+fc+png+pdf
+      - +zlib+ft+fc+png+pdf+gobject
     cdo:
       require:
       - ~openmp
@@ -466,7 +468,7 @@ packages:
     # To avoid duplicate packages
     py-numpy:
       require:
-      - '@2'
+      - '@=2.4.6'
     # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
     py-pandas:
       require:

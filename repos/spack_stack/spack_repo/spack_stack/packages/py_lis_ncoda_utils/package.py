@@ -29,7 +29,8 @@ class PyLisNcodaUtils(PythonPackage):
     depends_on("cmake@3.15:", type="build")    
     depends_on("py-scikit-build-core", type="build")
     depends_on("py-numpy", type=("build", "run"))
-    
+    depends_on("meson", type="build", when="^python@3.12:")
+
     depends_on("py-cfgrib", type="run")
     depends_on("py-h5py", type="run")
     depends_on("py-netcdf4", type="run")
