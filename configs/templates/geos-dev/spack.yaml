@@ -24,4 +24,4 @@ spack:
     esmf:
       require:
       - +python
-      - '@=9.0.0b11'
+      - '@=9.0.0b18'

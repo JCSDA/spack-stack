@@ -154,7 +154,7 @@ packages:
         - '@=8.6.1 snapshot=none'
         - '@=8.8.0 snapshot=none'
         - '@=8.9.1 snapshot=none'
-        - '@=9.0.0b11 snapshot=b11'
+        - '@=9.0.0b18 snapshot=b18'
       - any_of:
         - 'fflags="-fp-model precise" cxxflags="-fp-model precise"'
         when: '%intel'
