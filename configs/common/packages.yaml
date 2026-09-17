@@ -427,7 +427,7 @@ packages:
       require:
       - '@4.12.3:'
     # Pin to avoid duplicates
-    py-bind11:
+    py-pybind11:
       require:
       - '@:2'
     py-cartopy:
