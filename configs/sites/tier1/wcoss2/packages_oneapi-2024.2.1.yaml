@@ -102,8 +102,6 @@ packages:
     require: ['build_system=meson']
   proj:
     require: ['@9.4.1']
-  py-numpy::
-    require:: ['@1.26']
   subversion:
     require: ['%gcc']
   zlib-ng:

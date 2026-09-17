@@ -56,6 +56,10 @@ packages:
     nco:
       require:
       - '%c,cxx=gcc'
+    # The py-numpy cannot be built with oneAPI.
+    py-numpy:
+      require:
+      - '%c,cxx=gcc'
     oops:
       require:
       - +mkl
@@ -65,6 +69,11 @@ packages:
     patchelf:
       require:
       - '%c=gcc'
+    # Require a recent py-sphinx; unpinned the concretizer prefers 6.X. The old sphinx creates version
+    # splits in py-attrs, py-docutils, and py-eccodes affecting jedi-base-env and jedi-fv3-env.
+    py-sphinx:
+      require:
+      - '@9:'
     py-maturin:
       require:
       - '%c=gcc'
