@@ -26,11 +26,6 @@ packages:
     bison:
       require:
       - '%c,cxx=gcc'
-    # pango/harfbuzz/gobject-introspection need cairo+gobject; without pinning it
-    # the concretizer builds cairo both ways and the two collide on one modulefile.
-    cairo:
-      require:
-      - +gobject
     cmake:
       require:
       - '%c,cxx=gcc'
