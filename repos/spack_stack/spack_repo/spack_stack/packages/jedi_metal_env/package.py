@@ -20,7 +20,7 @@ class JediMetalEnv(BundlePackage):
     version("1.0.0")
 
     variant("fftw", default=True, description="Build fftw")
-    variant("hdf4", default=True, description="Build hdf4 library and python hdf module")
+#    variant("hdf4", default=True, description="Build hdf4 library and python hdf module")
 
 #    depends_on("base-env", type="run") ########################################
     # Basic utilities
@@ -46,10 +46,10 @@ class JediMetalEnv(BundlePackage):
     depends_on("fftw-api", when="+fftw", type="run")
     depends_on("flex", type="run")
     depends_on("gsl-lite", type="run")
-    depends_on("hdf", when="+hdf4", type="run")
+#    depends_on("hdf", when="+hdf4", type="run")
     depends_on("jedi-cmake", type="run")
     depends_on("netcdf-cxx4", type="run")
-    depends_on("ncview", type="run")
+#    depends_on("ncview", type="run")
     depends_on("udunits", type="run")
 
     depends_on("parallel-netcdf", type="run")

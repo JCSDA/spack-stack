@@ -7,10 +7,8 @@ packages:
     - '+shared'
   git:
     buildable: false
-#  libiconv:
-#    buildable: false
-#  libtirpc:
-#    buildable: false
+  libiconv:
+    buildable: false
   openblas:
     buildable: false
   gdbm:
