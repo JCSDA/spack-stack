@@ -78,22 +78,78 @@ packages:
   libszip:
     require:
     - '%c=gcc'
+  xz:
+    require:
+    - one_of:
+      - '%c=gcc'
+      - '%c=llvm'
+  gmake:
+    require:
+    - any_of:
+      - '%c=gcc'
+      - '%c=llvm'
 """
     site_packages_yaml = os.path.join(env_dir, "site", "packages.yaml")
     if os.path.exists(site_packages_yaml):
-        raise Exception("Not implemented: appending to existing {site_packages_yaml}")
+        os.remove(site_packages_yaml)
     with open(site_packages_yaml, 'w') as f:
         f.write(packages_definition)
 
     cmd = spack.main.SpackCommand("add")
-    cmd("gcc", "openmpi", "zlib", "libszip")
+    cmd("gcc", "openmpi", "zlib", "libszip", "xz", "gmake")
 
     cmd = spack.main.SpackCommand("concretize")
     cmd("--force", "--fresh")
 
     spack_stack_cmd("check-preferred-compiler")
 
-    filter_file("%c=gcc", "%c=llvm", site_packages_yaml, string=True)
+    packages_definition = """
+packages:
+  gcc:
+    externals:
+    - spec: gcc@11.5.0 languages:='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+  llvm:
+    externals:
+    - spec: llvm@21.1.0
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/clang
+          cxx: /usr/bin/clang++
+          fortran: /usr/bin/flang-new
+  mpi:
+    buildable: false
+  openmpi:
+    externals:
+    - spec: openmpi@5.0.8 ~internal-hwloc +two_level_namespace
+      prefix: /usr
+  zlib:
+    prefer:
+    - '%c=llvm'
+  libszip:
+    require:
+    - '%c=llvm'
+  xz:
+    require:
+    - one_of:
+      - '%c=gcc'
+      - '%c=llvm'
+  gmake:
+    require:
+    - any_of:
+      - '%c=gcc'
+      - '%c=llvm'
+"""
+    if os.path.exists(site_packages_yaml):
+        os.remove(site_packages_yaml)
+    with open(site_packages_yaml, 'w') as f:
+        f.write(packages_definition)
 
     with pytest.raises(Exception) as error:
         spack_stack_cmd("check-preferred-compiler")
