@@ -15,7 +15,7 @@ packages:
     - spec: intel-oneapi-compilers@2026.0.0 +fix_rt_linkage
       prefix: /p/app/projects/NEPTUNE/spack-stack/oneapi-2026.0.0
       modules:
-      - PrgEnv-intel/8.6.0
+      - PrgEnv-intel/8.7.0
       - intel-oneapi/2026.0.0
       extra_attributes:
         compilers:
@@ -31,7 +31,7 @@ packages:
     - spec: gcc@13.3.0 languages:='c,c++'
       prefix: /usr
       modules:
-      - PrgEnv-gnu/8.6.0
+      - PrgEnv-gnu/8.7.0
       - gcc-native/13.2
       extra_attributes:
         compilers:

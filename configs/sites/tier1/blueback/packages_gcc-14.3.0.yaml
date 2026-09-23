@@ -13,7 +13,7 @@ packages:
     - spec: gcc@14.3.0 languages:='c,c++,fortran'
       prefix: /usr
       modules:
-      - PrgEnv-gnu/8.6.0
+      - PrgEnv-gnu/8.7.0
       - gcc-native/14.2
       extra_attributes:
         compilers:
