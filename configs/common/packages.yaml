@@ -467,7 +467,7 @@ packages:
     py-netcdf4:
       require:
       - ~mpi
-    # To avoid duplicate packages - use either 2.4.6 or 2.3.3 (needed for py-pandas +performace)
+    # To avoid duplicate packages - use either 2.4.6 or 2.3.3 (needed for py-pandas +performance)
     py-numpy:
       require:
       - one_of:
