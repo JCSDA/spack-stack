@@ -467,14 +467,21 @@ packages:
     py-netcdf4:
       require:
       - ~mpi
-    # To avoid duplicate packages
+    # To avoid duplicate packages - use either 2.4.6 or 2.3.3 (needed for py-pandas +performance)
     py-numpy:
       require:
-      - '@=2.4.6'
-    # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
+      - one_of:
+        - '@2.4.6'
+        - '@2.3.3'
+      prefer:
+      - '@2.4.6'
+    # Restrict py-pandas to versions 2 and older. Users wanting the +performance variant
+    # must 'require' it in their site config.
     py-pandas:
       require:
       - '@:2'
+      prefer:
+      - '~performance'
       # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
       # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
       # into py-xarray/met/metplus/jedi-base-env. This constraints py-versioneer to @0.28
