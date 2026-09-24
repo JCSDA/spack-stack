@@ -19,10 +19,16 @@ class JediPythonEnv(BundlePackage):
 
     # Mirrors the jedi-base-env variant so py-pyhdf tracks the hdf4 library
     variant("hdf4", default=True, description="Build hdf4 library and python hdf module")
+    variant("bufrquery", default=True, description="Build bufr-query library")
 
     depends_on("jedi-base-env", type="run")
     depends_on("jedi-base-env +hdf4", when="+hdf4", type="run")
     depends_on("jedi-base-env ~hdf4", when="~hdf4", type="run")
+
+    # bufr is built +python in configs/common/packages.yaml, so it carries a
+    # py-numpy run dependency; bufr-query is its python-bindings companion.
+    depends_on("bufr", type="run")
+    depends_on("bufr-query", when="+bufrquery", type="run")
 
     # Python packages
     depends_on("py-eccodes", type="run")
