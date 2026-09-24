@@ -54,19 +54,9 @@ class JediBaseEnv(BundlePackage):
     #depends_on("sp", type="run", when="^ip@:4")
     depends_on("udunits", type="run")
 
-    # Python packages
-    depends_on("py-eccodes", type="run")
-    depends_on("py-f90nml", type="run")
-    depends_on("py-h5py", type="run")
-    depends_on("py-netcdf4", type="run")
-    depends_on("py-pandas", type="run")
-    depends_on("py-pycodestyle", type="run")
+    # Python packages. Everything else moved to jedi-python-env; py-pybind11
+    # stays because core JEDI packages link its headers.
     depends_on("py-pybind11", type="run")
-    depends_on("py-pyhdf", when="+hdf4", type="run")
-    depends_on("py-python-dateutil", type="run")
-    depends_on("py-pyyaml", type="run")
-    depends_on("py-scipy", type="run")
-    depends_on("py-xarray", type="run")
 
     conflicts(
         "platform=darwin %gcc",

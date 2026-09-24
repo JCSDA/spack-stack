@@ -26,6 +26,7 @@ class JediNeptuneEnv(BundlePackage):
     variant("jedi", default=False, description="Build JEDI components required for JEDI-NEPTUNE")
 
     depends_on("jedi-base-env", type="run")
+    depends_on("jedi-python-env", type="run")
     depends_on("neptune-env", type="run")
     depends_on("neptune-python-env", type="run")
 

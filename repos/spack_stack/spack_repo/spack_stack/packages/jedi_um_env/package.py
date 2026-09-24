@@ -20,6 +20,7 @@ class JediUmEnv(BundlePackage):
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
+    depends_on("jedi-python-env", type="run")
     depends_on("ectrans", type="run")
     depends_on("fiat", type="run")
     depends_on("shumlib", type="run")
