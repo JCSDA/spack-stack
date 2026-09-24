@@ -13,7 +13,7 @@ class JediPythonEnv(BundlePackage):
     homepage = "https://github.com/jcsda/spack-stack"
     git = "https://github.com/jcsda/spack-stack.git"
 
-    maintainers("climbfuji", "srherbener")
+    maintainers("eap", "srherbener")
 
     version("1.0.0")
 
