@@ -84,7 +84,9 @@ packages:
 
   # Package constraints.
   jedi-base-env:
-    require: [+fftw, +hdf4, +bufrquery]
+    require: [+fftw, +hdf4]
+  jedi-python-env:
+    require: [+bufrquery]
   eccodes:
     require:
     - "jp2k=jasper"
