@@ -522,6 +522,9 @@ packages:
     py-versioneer:
       require:
       - '@0.28:'
+    py-zarr:
+      require:
+      - '@3:'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:
