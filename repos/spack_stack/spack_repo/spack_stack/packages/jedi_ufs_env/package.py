@@ -18,6 +18,7 @@ class JediUfsEnv(BundlePackage):
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
+    depends_on("jedi-python-env", type="run")
     depends_on("fms +gfs_phys constants=GFS", type="run")
 
     depends_on("bacio", type="run")
