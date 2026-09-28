@@ -5,6 +5,9 @@ packages:
     require: [apple-clang@@APPLE_CLANG_VERSION@]
   fortran:
     require: [llvm@23.1.1 +clang +flang]
+    # Override Spack's macOS default preference for GCC so meta-modules
+    # have exactly one preferred compiler.
+    prefer:: [llvm]
   mpi:
     require: [openmpi@=5.0.10]
   apple-clang:
@@ -39,3 +42,9 @@ packages:
     externals:
     - spec: gdbm@1.26
       prefix: @BREW_PREFIX@/opt/gdbm
+
+  # Cartopy's optional plotting dependency pulls in SciPy, which Meson cannot
+  # link with LLVM Flang on macOS. Override the shared +plotting requirement.
+  py-cartopy:
+    require::
+    - ~plotting
