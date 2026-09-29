@@ -370,7 +370,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     # Note: clang (aka flang) is on hold for macOS until we move to
     # 1. FMS 2025 (for GEOS purposes)
     # 2. ESMF PR https://github.com/esmf-org/esmf/pull/558 is merged and released/tagged
-    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.3.0" "gcc@=16.2.0" "clang@=23.1.1")
+    SPACK_STACK_BATCH_COMPILERS=("gcc@=15.3.0" "gcc@=16.2.0" "clang@=23.1.2")
     #SPACK_STACK_BATCH_COMPILERS=("gcc@=15.3.0" "gcc@=16.2.0" )
     if [[ -n "${MAC_GMAO_NAG_VERSION}" ]]; then
       SPACK_STACK_BATCH_COMPILERS+=("nag@=${MAC_GMAO_NAG_VERSION}")

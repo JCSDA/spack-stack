@@ -199,7 +199,7 @@ cd envs/ge-gcc-15.3.0
 spack env activate -p .
 ```
 
-> **Note:** If you are building or debugging a different compiler stack, be sure to `cd` into that specific environment directory instead (e.g., `envs/ge-nag-7.2.7243` or `envs/ge-clang-23.1.1`).
+> **Note:** If you are building or debugging a different compiler stack, be sure to `cd` into that specific environment directory instead (e.g., `envs/ge-nag-7.2.7243` or `envs/ge-clang-23.1.2`).
 
 > **Important:** Run this in *every* terminal where you plan to run Spack commands for this environment.
 

@@ -4,7 +4,7 @@ packages:
   cxx:
     require: [apple-clang@@APPLE_CLANG_VERSION@]
   fortran:
-    require: [llvm@23.1.1 +clang +flang]
+    require: [llvm@23.1.2 +clang +flang]
     # Override Spack's macOS default preference for GCC so meta-modules
     # have exactly one preferred compiler.
     prefer:: [llvm]
@@ -21,7 +21,7 @@ packages:
   llvm:
     buildable: False
     externals:
-    - spec: llvm@23.1.1 +clang +flang ~lld ~lldb ~offload ~libomptarget
+    - spec: llvm@23.1.2 +clang +flang ~lld ~lldb ~offload ~libomptarget
       prefix: @BREW_PREFIX@/opt/llvm
       extra_attributes:
         compilers:
