@@ -15,7 +15,7 @@ packages:
     - spec: intel-oneapi-compilers@2025.3.2
       prefix: /glade/u/apps/common/25.10/spack/opt/spack/intel-oneapi-compilers/2025.3.2/snvt
       modules:
-      - ncarenv-basic/25.10
+      - ncarenv/25.10
       - intel/2025.3.2
       extra_attributes:
         compilers:
@@ -37,7 +37,7 @@ packages:
     - spec: gcc@14.3.0 languages:='c,c++'
       prefix: /glade/u/apps/common/25.10/spack/opt/spack/gcc/14.3.0/nw2m
       modules:
-      - ncarenv-basic/25.10
+      - ncarenv/25.10
       - gcc/14.3.0
       extra_attributes:
         compilers:
@@ -54,7 +54,7 @@ packages:
     - spec: cray-mpich@8.1.32 +wrappers
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/intel/2022.1
       modules:
-      - ncarenv-basic/25.10
+      - ncarenv/25.10
       - intel/2025.3.2
       - cray-mpich/8.1.32
       - libfabric/1.22.0

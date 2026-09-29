@@ -2,6 +2,7 @@
 
 import logging
 import re
+from collections.abc import Mapping
 
 import spack
 import spack.environment as ev
@@ -47,6 +48,18 @@ def get_compiler_choice(string):
     if match:
         return match.group(3)
     return None
+
+
+def iter_constraint_strings(value):
+    """Recursively flatten nested Spack config values like one_of/any_of."""
+    if isinstance(value, (str, bytes)):
+        yield value
+    elif isinstance(value, Mapping):
+        for nested in value.values():
+            yield from iter_constraint_strings(nested)
+    elif isinstance(value, (list, tuple)):
+        for nested in value:
+            yield from iter_constraint_strings(nested)
 
 
 def check_preferred_compiler():
@@ -112,46 +125,41 @@ def check_preferred_compiler():
             spec_required_compiler_version = None
             spec_preferred_compiler_name = None
             spec_preferred_compiler_version = None
+            spec_required_compilers = []
+            spec_preferred_compilers = []
             for key, value in package_config[spec.name].items():
-                # To simplify parsing, turn scalar values into CommentedSeq of length 1
-                if isinstance(value, (str, bytes)):
-                    values = CommentedSeq([value])
-                else:
-                    values = value
-                # Loop through all values to check for required or preferred compilers
-                for entry in values:
+                if key.lower() not in ("require", "prefer"):
+                    continue
+                for entry in iter_constraint_strings(value):
+                    if not isinstance(entry, (str, bytes)):
+                        continue
+                    entry = entry.lower()
+                    choice = get_compiler_choice(entry)
+                    if not choice:
+                        continue
                     if key.lower() == "require":
-                        choice = get_compiler_choice(entry.lower())
-                        # Not a compiler preference, carry on
-                        if not choice:
-                            continue
-                        # Check that the explicitly required compiler is a valid (existing)
-                        # compiler for this environment. This requirement may be relaxed in
-                        # the future if we start building compilers in spack environments.
                         if any(choice in c for c in compilers):
                             (spec_required_compiler_name, spec_required_compiler_version) = get_compiler_name_and_version(choice)
+                            spec_required_compilers.append((spec_required_compiler_name, spec_required_compiler_version))
                     elif key.lower() == "prefer":
-                        choice = get_compiler_choice(entry.lower())
-                        # Not a compiler preference, carry on
-                        if not choice:
-                            continue
-                        # Check that the explicitly preferred compiler is a valid (existing)
-                        # compiler for this environment. This requirement may be relaxed in
-                        # the future if we start building compilers in spack environments.
                         if any(choice in c for c in compilers):
                             (spec_preferred_compiler_name, spec_preferred_compiler_version) = get_compiler_name_and_version(choice)
-                # If we have a hard requirement for a compiler, we can stop scanning the spec package config
-                if spec_required_compiler_name:
-                    break
-            if spec_required_compiler_name == compiler_name and \
-                ( (not spec_required_compiler_version or not compiler_version) or \
-                  (spec_required_compiler_version==compiler_version) ):
-                logging.info(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)} uses explicitly required compiler")
-            elif spec_preferred_compiler_name == compiler_name and \
-                ( (not spec_preferred_compiler_version or not compiler_version) or \
-                  (spec_preferred_compiler_version==compiler_version) ):
-                logging.info(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)} uses explicitly preferred compiler")
-            else:
+                            spec_preferred_compilers.append((spec_preferred_compiler_name, spec_preferred_compiler_version))
+            ok = False
+            for (spec_required_compiler_name, spec_required_compiler_version) in spec_required_compilers:
+                if spec_required_compiler_name == compiler_name and \
+                    ( (not spec_required_compiler_version or not compiler_version) or \
+                      (spec_required_compiler_version==compiler_version) ):
+                    logging.info(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)} uses explicitly required compiler")
+                    ok = True
+            if not ok:
+                for (spec_preferred_compiler_name, spec_preferred_compiler_version) in spec_preferred_compilers:
+                    if spec_preferred_compiler_name == compiler_name and \
+                        ( (not spec_preferred_compiler_version or not compiler_version) or \
+                          (spec_preferred_compiler_version==compiler_version) ):
+                        logging.info(f"  ... {spec.name}@{spec.version}/{spec.dag_hash(length=7)} uses explicitly preferred compiler")
+                        ok = True
+            if not ok:
                 errors += 1
                 logging.error(f"  ... {RED}error: {spec.name}@{spec.version}/{spec.dag_hash(length=7)} does not use intended compiler{RESET}")
     if errors==1:
