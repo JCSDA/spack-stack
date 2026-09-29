@@ -27,6 +27,6 @@ for compiler in $COMPILERS; do
     fi
     # Check for duplicates and fail before doing the "real" concretization:
     spack_wrapper log.concretize concretize --fresh
-    ${SPACK_STACK_DIR:?}/util/show_duplicate_packages.py -i crtm-fix -i crtm -i esmf -i mapl -i neptune-env
+    ${SPACK_STACK_DIR:?}/util/show_duplicate_packages.py -i crtm-fix -i crtm -i esmf -i mapl -i neptune-env -i py-setuptools-scm
   done
 done
