@@ -362,9 +362,11 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
       - 'cxxflags="-O1"'
     jedi-base-env:
       require:
-      - ~bufrquery
       - +fftw
       - +hdf4
+    jedi-python-env:
+      require:
+      - ~bufrquery
     py-pyyaml:
       require:
       - +libyaml

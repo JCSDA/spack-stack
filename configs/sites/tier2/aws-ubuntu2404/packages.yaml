@@ -18,7 +18,9 @@ packages:
     require:
     - "@1.7.2"
   jedi-base-env:
-    require: [+fftw, +hdf4, +bufrquery]
+    require: [+fftw, +hdf4]
+  jedi-python-env:
+    require: [+bufrquery]
 
   # System packages.
   autoconf:

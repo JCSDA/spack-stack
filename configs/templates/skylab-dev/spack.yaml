@@ -15,6 +15,7 @@ spack:
   - jedi-geos-env         ^esmf@=8.9.1
   - jedi-mpas-env
   - jedi-neptune-env      ^esmf@=9.0.0b18
+  - jedi-python-env
   - jedi-tools-env
   - jedi-ufs-env          ^esmf@=8.8.0
   - neptune-env           ^esmf@=9.0.0b18

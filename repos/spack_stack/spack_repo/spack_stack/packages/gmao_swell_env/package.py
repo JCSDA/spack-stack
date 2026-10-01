@@ -20,6 +20,7 @@ class GmaoSwellEnv(BundlePackage):
 
     # Main JEDI modules
     depends_on("jedi-base-env", type="run")
+    depends_on("jedi-python-env", type="run")
 
     # Add CRTM 2.4.0
     depends_on("crtm", type="run")
