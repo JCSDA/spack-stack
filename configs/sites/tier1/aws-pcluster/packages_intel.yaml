@@ -26,9 +26,6 @@ packages:
   ectrans:
     require::
     - '@1.2.0 ~mkl +fftw'
-  gsibec:
-    require::
-    - '@1.4.4 ~mkl'
   py-numpy:
     require::
     - '@2'
