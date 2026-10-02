@@ -73,8 +73,6 @@ packages:
     require:: ['@1.2.0', '+fftw']
   glib:
     require: ['%gcc']
-  gsibec:
-    require: ['@1.4.2']
   libtiff:
     require: ['build_system=cmake']
   nco:
