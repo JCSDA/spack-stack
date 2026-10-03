@@ -26,6 +26,8 @@ packages:
         environment:
           prepend_path:
             LD_LIBRARY_PATH: '/usr/lib:/usr/lib64'
+            # EPIC-installed oneAPI compiler module
+            MODULEPATH: '/apps/contrib/spack-stack/modulefiles'
   intel-oneapi-mkl:
     buildable: false
     externals:

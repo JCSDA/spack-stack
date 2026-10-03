@@ -59,6 +59,8 @@ packages:
         environment:
           unset:
           - DUMMYVAR
+          prepend_path:
+            MODULEPATH: /opt/test-compiler-modulefiles
   mpi:
     buildable: false
   openmpi:
@@ -88,6 +90,15 @@ packages:
         os.path.exists(expected_comp_meta_module),
         f"Expected module {expected_comp_meta_module} not found"
     )
+
+    # The compiler's MODULEPATH must be set before the module loads that need it
+    with open(expected_comp_meta_module) as f:
+        comp_meta_module = f.read()
+    modulepath_line = "prepend-path {MODULEPATH} {/opt/test-compiler-modulefiles}"
+    load_line = "module load gcc/11.5.0"
+    assert modulepath_line in comp_meta_module
+    assert load_line in comp_meta_module
+    assert comp_meta_module.index(modulepath_line) < comp_meta_module.index(load_line)
 
     expected_mpi_meta_module = os.path.join(module_dir, "gcc", "11.5.0", "stack-openmpi", "5.0.8")
     assert(
