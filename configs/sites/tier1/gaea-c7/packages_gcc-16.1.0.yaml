@@ -14,7 +14,6 @@ packages:
       prefix: /opt/cray/pe/mpich/9.0.1/ofi/gnu/11.2
       modules:
       - libfabric/2.5.1
-#     - craype-network-ofi
       - cray-mpich/9.2.0
   gcc:
     buildable: False
@@ -30,7 +29,6 @@ packages:
           fortran: /sw/gaea-c7/gcc/16.1.0/bin/gfortran
         environment:
           set:
-#RV         CONFIG_SITE: '' #--is this needed?
             PE_GCC_EXTERNAL: native
           prepend_path:
             LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/25.09.0/GNU/12.2/x86_64/lib:/usr/lib/gcc/x86_64-redhat-linux/11'
