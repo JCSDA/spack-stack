@@ -31,7 +31,11 @@ packages:
           fortran: /sw/gaea-c7/oneapi/2026.0.0/2026.0/bin/ifx
         environment:
           prepend_path:
-            LD_LIBRARY_PATH: '/opt/cray/libfabric/1.20.1/lib64:/opt/cray/pe/libsci/26.03.0/INTEL/2025.0/x86_64/lib:/usr/lib/gcc/x86_64-redhat-linux/11:/opt/intel/oneapi/compiler/2025.2/lib:/sw/gaea-c7/spack/envs/env_26.06/opt/intel-oneapi-compilers-2026.0.0/cray-mpich-9.2.0-lzfemapfroqogwtmoesox5z5us4btivi/lib'
+            LD_LIBRARY_PATH: "/opt/cray/libfabric/1.20.1/lib64:\
+              /opt/cray/pe/libsci/26.03.0/INTEL/2025.0/x86_64/lib:\
+              /usr/lib/gcc/x86_64-redhat-linux/11:\
+              /opt/intel/oneapi/compiler/2025.2/lib:\
+              /sw/gaea-c7/spack/envs/env_26.06/opt/intel-oneapi-compilers-2026.0.0/cray-mpich-9.2.0-lzfemapfroqogwtmoesox5z5us4btivi/lib"
   intel-oneapi-mkl:
     buildable: False
     externals:
