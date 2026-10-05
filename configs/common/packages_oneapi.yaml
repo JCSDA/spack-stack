@@ -63,9 +63,6 @@ packages:
     oops:
       require:
       - +mkl
-    parallel-netcdf:
-      require:
-      - +shared-intel
     patchelf:
       require:
       - '%c=gcc'
