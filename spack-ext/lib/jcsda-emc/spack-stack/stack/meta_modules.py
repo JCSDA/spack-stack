@@ -424,9 +424,7 @@ def setup_meta_modules():
     compiler_subs["COMPFLAGS"] = compiler_subs["COMPFLAGS"].rstrip("\n")
     logging.debug("  ... ... COMPFLAGS: {}".format(compiler_subs["COMPFLAGS"]))
 
-    # Environment variables. A change to MODULEPATH goes with MODULEPATHS,
-    # which the template emits before MODULELOADS: the compiler's modules may
-    # be found only in the directories it adds.
+    # MODULEPATH must be set before the module loads, https://github.com/JCSDA/spack-stack/issues/2144
     compiler_modulepaths = ""
     if "environment" in compiler.extra_attributes.keys():
         for action in compiler.extra_attributes["environment"].keys():
