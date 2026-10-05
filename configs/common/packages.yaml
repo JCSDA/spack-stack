@@ -389,8 +389,6 @@ packages:
       require:
       - '@2.6.2'
       - +pnetcdf
-    # 1.14.1 fixes a GCC 15 build failure. The old oneAPI shared-intel
-    # linkage workaround applied only to 1.12.3 and is intentionally not used.
     parallel-netcdf:
       require:
       - '@1.14.1'
