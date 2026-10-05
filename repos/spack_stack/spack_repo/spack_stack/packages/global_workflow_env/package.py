@@ -67,6 +67,7 @@ class GlobalWorkflowEnv(BundlePackage):
         depends_on("jedi-tools-env")
         depends_on("ioda")
         depends_on("pigz")
+        depends_on("py-pyresample")
 
     # GSI dependencies
     depends_on("gsi-env", when="+gsi")
