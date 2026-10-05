@@ -4,5 +4,5 @@
   branch = spack-stack-dev
 [submodule "repos/builtin"]
   path = repos/builtin
-  url = https://github.com/jcsda/spack-packages
+  url = https://github.com/Hang-Lei-NOAA/spack-packages
   branch = spack-stack-dev
