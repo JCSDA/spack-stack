@@ -105,7 +105,7 @@ packages:
       - +link-little-endian
       - +link-netcdf
       - +link-testfiles
-    # Attention - when updating also check the various jcsda-omd-bundles env packages
+    # Attention - when updating also check the various env packages
     crtm:
       require:
       - +fix
