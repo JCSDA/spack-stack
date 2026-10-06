@@ -13,7 +13,7 @@ packages:
     - spec: gcc@14.3.0 languages:='c,c++,fortran'
       prefix: /glade/u/apps/common/25.10/spack/opt/spack/gcc/14.3.0/nw2m
       modules:
-      - ncarenv-basic/25.10
+      - ncarenv/25.10
       - gcc/14.3.0
       extra_attributes:
         compilers:
@@ -33,7 +33,7 @@ packages:
     - spec: cray-mpich@8.1.32 +wrappers
       prefix: /opt/cray/pe/mpich/8.1.32/ofi/gnu/12.3
       modules:
-      - ncarenv-basic/25.10
+      - ncarenv/25.10
       - gcc/14.3.0
       - cray-mpich/8.1.32
       - libfabric/1.22.0
