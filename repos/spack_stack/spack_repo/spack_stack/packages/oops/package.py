@@ -25,6 +25,7 @@ class Oops(CMakePackage):
 
     patch("include_algorithm.patch", when="@1.10.0.20250827")
     patch("patch-1.10.0.atlas.mac.patch", when="@1.10.0.20250827")
+    patch("v1p13_dfscalc.patch", when="@1.13.0.20260914")
 
     variant("l95", default=True, description="Build LORENZ95 toy model")
     variant("mkl", default=False, description="Use MKL for LAPACK implementation (if available)")
