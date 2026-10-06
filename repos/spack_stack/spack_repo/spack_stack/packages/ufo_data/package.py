@@ -27,8 +27,9 @@ class UfoData(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
-    version("2.9.0.20260326", commit="e61d7c0e601e3699062009be109212566aea7ba8")
-    version("2.9.0.20250821", commit="9078290c2eb68050af9941113a311200bb06aba8")
+    version("1.13.0.20260922", commit="4039a869b197b229f3fd9d8264c44f2e8b958061")
+    version("1.10.0.20260326", commit="e61d7c0e601e3699062009be109212566aea7ba8")
+    version("1.10.0.20250821", commit="9078290c2eb68050af9941113a311200bb06aba8")
 
     generator("make")
 
@@ -36,11 +37,11 @@ class UfoData(CMakePackage):
     depends_on("cxx", type=("build"))
 
     depends_on("cmake", type=("build"))
-    depends_on("cmake@3.12:", type=("build"), when="@2.9:")
+    depends_on("cmake@3.12:", type=("build"), when="@1.10:")
     depends_on("ecbuild", type=("build"))
-    depends_on("ecbuild@3.3.2:", type=("build"), when="@2.9:")
+    depends_on("ecbuild@3.3.2:", type=("build"), when="@1.10:")
 
-    patch("disable_tests.patch", when="@2.9.0.20250821")
+    patch("disable_tests.patch", when="@1.10.0.20250821")
 
     def install(self, spec, prefix):
         install_tree(self.stage.source_path, prefix)
