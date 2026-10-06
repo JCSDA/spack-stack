@@ -36,7 +36,7 @@ Tasks
 - [ ] Clear project board (no open pull requests other than for specific site configs or documentation)
 - [ ] Prepare Wiki page for release (https://github.com/jcsda/spack-stack/wiki)
 - [ ] Roll out release x.y.z from release branch `release/x.y` and update documentation (readthedocs), site config, and wiki page each time
-    - [ ] Acorn (NOAA-EMC)
+    - [ ] Acorn (NOAA OMD)
     - [ ] Atlantis (NRL)
     - [ ] Blueback (NRL)
     - [ ] Derecho (NCAR)
