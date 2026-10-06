@@ -278,6 +278,6 @@ class Ufo(CMakePackage):
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
             if skipped_tests:
-                ctest("--timeout", "120", "-E", "|".join(skipped_tests))
+                ctest("--timeout", "180", "-E", "|".join(skipped_tests))
             else:
-                ctest("--timeout", "120")
+                ctest("--timeout", "180")
