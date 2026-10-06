@@ -17,6 +17,7 @@ class Oops(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("1.13.0.20260914", commit="e57f82239807aa5382729cbe29d8573a6a6cd996")
     version("1.10.0.20260331", commit="0f7849866a74d17344215db8e742ba18c30a1ba5")
     # This commit plus the patch below accounts for commit
     # 2340e9b664f82de9fa01c136c3a31d87e4a0bec9 in NRL GitHub
@@ -47,8 +48,9 @@ class Oops(CMakePackage):
     depends_on("eckit")
     depends_on("eckit@1.24.4:", when="@1.10:")
     depends_on("ecmwf-atlas")
+    # atlas@0.39: must be built with hic;
+    # this option is always on in spack
     depends_on("ecmwf-atlas@0.35.0:", when="@1.10:")
-    # hic dependency if ecmwf-atlas@0.39: ?
     depends_on("eigen")
     depends_on("fckit")
     depends_on("fckit@0.11.0:", when="@1.10:")
@@ -114,6 +116,7 @@ class Oops(CMakePackage):
                 "oops_qg_4densvar_single-obs_loc_4d_time_decay_standard",
                 "oops_qg_4densvar_single-obs_no_loc",
             ]
+        # oops@1.13.0.20260914 - all tests pass with gcc@14.2.1 and oneapi@2026.1.0
 
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
