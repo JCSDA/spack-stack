@@ -1,2 +1,3 @@
 config:
   build_jobs: 8
+  locks: false
