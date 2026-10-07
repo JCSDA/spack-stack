@@ -7,19 +7,18 @@
 @eap
 # NASA
 @mathomp4
-# NOAA EMC
+# NOAA OMD
 @alexanderrichert-noaa
 @hang-lei-noaa
+@alysonstahl-noaa
 # NRL
 @climbfuji
 
 # Org-specific files * directories:
-# NOAA EMC
+# NOAA OMD
 /configs/sites/tier1/acorn/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
 /configs/sites/tier1/wcoss2/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
-/configs/sites/tier2/emc-rhel/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
 /configs/templates/nco/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
-/configs/templates_NOT_YET_CONVERTED_TO_SPACK_v1/ufs-weather-model-static/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
 /repos/spack_stack/spack_repo/spack_stack/packages/nceplibs_env/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
 /repos/spack_stack/spack_repo/spack_stack/packages/upp_env/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
 /util/acorn/ @AlexanderRichert-NOAA @Hang-Lei-NOAA @AlysonStahl-NOAA
