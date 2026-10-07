@@ -19,6 +19,10 @@ packages:
     lapack:
       require:
       - intel-oneapi-mkl
+    # Force fixing libirc.so/libimf.so in intel-oneapi-runtime
+    intel-oneapi-compilers:
+      require:
+      - +fix_rt_linkage
     # Individual package settings
     antlr:
       require:

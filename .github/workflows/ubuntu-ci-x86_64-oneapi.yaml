@@ -174,9 +174,6 @@ jobs:
             spack install --fail-fast --source --no-check-signature 2>&1 | tee log.install.${ENVNAME}.all
             spack buildcache create -u local-binary
 
-            # Check for libirc.so in shared libraries (returns 1=error if found)
-            ${SPACK_STACK_DIR}/util/check_libirc.sh
-
             # Remove buildcache config settings
             spack config remove config:install_tree:padded_length
 
@@ -212,9 +209,6 @@ jobs:
 
           # Check shared libraries
           ${SPACK_STACK_DIR}/util/ldd_check.py $SPACK_ENV 2>&1 | tee log.ldd_check
-
-          # Check for libirc.so in shared libraries (returns 1=error if found)
-          ${SPACK_STACK_DIR}/util/check_libirc.sh
 
           # Create modules
           spack clean -a
