@@ -7,7 +7,7 @@ modules:
     tcl:
       projections:
         # Note: These translations of compiler and MPI library names must match the ALIASES
-        # dictionary in spack-ext/lib/jcsda-emc/spack-stack/stack/meta_modules.py
+        # dictionary in spack-ext/lib/spack-stack/stack/meta_modules.py
         # Defaults
         '^intel-oneapi-compilers-classic^intel-oneapi-mpi': 'impi/{^mpi.version}/intel/{compiler.version}/{name}/{version}'
         '^intel-oneapi-compilers-classic^mpi': '{^mpi.name}/{^mpi.version}/intel/{compiler.version}/{name}/{version}'
