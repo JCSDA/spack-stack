@@ -250,7 +250,7 @@ packages:
       - ~netcdf
     hdf5:
       require:
-      - '@1.14.5'
+      - '@2.1.0'
       - +hl
       - +fortran
       - +mpi
@@ -389,10 +389,9 @@ packages:
       require:
       - '@2.6.2'
       - +pnetcdf
-    # DH* CAN WE UPDATE? NEED A NEW SHARED-INTEL PATCH?
     parallel-netcdf:
       require:
-      - '@1.12.3'
+      - '@1.14.1'
     pflogger:
       require:
       - +mpi
