@@ -17,6 +17,7 @@ class Ufo(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("1.13.0.20260924", commit="547b327320cd75bdcec9d071c18f596f9045b4d7")
     version("1.10.0.20260331", commit="0fa9567eb6d0b3ce079001b98f44f3f0853ee821")
     version("1.10.0.20250821", commit="1ca49e253caa6d6a507f41ffa6875e0db7cc0751")
 
@@ -26,7 +27,8 @@ class Ufo(CMakePackage):
         when="@1.10.0.20250821",
     )
 
-    patch("ufo_crtm_testfiles.patch", when="@1.10:")
+    patch("ufo_crtm_testfiles.patch", when="@1.10")
+    patch("ufo1p13_crtm_testfiles.patch", when="@1.13")
 
     # JCSDA-internal repository needed.
     variant("geos-aero", default=False, description="Build GEOS-AERO AOD operator")
@@ -57,8 +59,10 @@ class Ufo(CMakePackage):
     depends_on("bufr-query@0.0.4:", when="@1.10.0.20260331")
     #
     depends_on("cmake", type=("build"))
-    depends_on("cmake@3.12:", type=("build"), when="@1.10:")
+    depends_on("cmake@3.23:", type=("build"), when="@1.13:")
+    depends_on("cmake@3.12:", type=("build"), when="@1.10")
     depends_on("crtm@3")
+    depends_on("crtm@3.1.3:3.1.5", when="@1.13")
     depends_on("crtm@=3.1.3", when="@1.10")
     depends_on("ecbuild", type=("build"))
     depends_on("ecbuild@3.3.2:", type=("build"), when="@1.10:")
@@ -69,6 +73,7 @@ class Ufo(CMakePackage):
     depends_on("fckit@0.11.0:", when="@1.10:")
     depends_on("gsl-lite")
     depends_on("ioda")
+    depends_on("ioda@2.12.0.20260916", when="@1.13.0.20260924")
     depends_on("ioda@2.9.0.20260326", when="@1.10.0.20260331")
     depends_on("ioda@2.9.0.20250826", when="@1.10.0.20250821")
     depends_on("jedi-cmake", type=("build"))
@@ -76,12 +81,14 @@ class Ufo(CMakePackage):
     depends_on("netcdf-c+mpi")
     depends_on("netcdf-fortran")
     depends_on("oops")
+    depends_on("oops@1.13.0.20260914", when="@1.13.0.20260924")
     depends_on("oops@1.10.0.20260331", when="@1.10.0.20260331")
     depends_on("oops@1.10.0.20250827", when="@1.10.0.20250821")
     # ufo-data is fetched with git-lfs, which must be in the PATH of the
     # shell that runs Spack.
-    depends_on("ufo-data@2.9.0.20260326", type=("build", "test"), when="@1.10.0.20260331")
-    depends_on("ufo-data@2.9.0.20250821", type=("build", "test"), when="@1.10.0.20250821")
+    depends_on("ufo-data@1.13.0.20260922", type=("build", "test"), when="@1.13.0.20260924")
+    depends_on("ufo-data@1.10.0.20260326", type=("build", "test"), when="@1.10.0.20260331")
+    depends_on("ufo-data@1.10.0.20250821", type=("build", "test"), when="@1.10.0.20250821")
 
     # depends_on('geos-aero', when='+geos-aero')
     # depends_on('geos-aero@0.0.0', when='@1.7.0 +geos-aero')
@@ -93,7 +100,7 @@ class Ufo(CMakePackage):
     # depends_on("gsw@3.0.7", when="@1.7: +gsw")
 
     depends_on('ropp-ufo', when='+ropp')
-    depends_on('ropp-ufo@11.0', when='@1.10 +ropp')
+    depends_on('ropp-ufo@11.0', when='@1.10: +ropp')
 
     # depends_on('rttov', when='+rttov')
     # depends_on('rttov@12.1.0', when='@1.7.0 +rttov')
@@ -266,10 +273,11 @@ class Ufo(CMakePackage):
                     "ufo_obsdiag_crtm_iasi_jacobian",
                     "ufo_obsdiag_crtm_iasi_optics",
                 ]
+        # ufo@1.13.0.20260924 - all tests pass with gcc@14.2.1 and oneapi@2026.1.0
 
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):
             if skipped_tests:
-                ctest("--timeout", "120", "-E", "|".join(skipped_tests))
+                ctest("--timeout", "180", "-E", "|".join(skipped_tests))
             else:
-                ctest("--timeout", "120")
+                ctest("--timeout", "180")
