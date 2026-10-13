@@ -424,7 +424,8 @@ def setup_meta_modules():
     compiler_subs["COMPFLAGS"] = compiler_subs["COMPFLAGS"].rstrip("\n")
     logging.debug("  ... ... COMPFLAGS: {}".format(compiler_subs["COMPFLAGS"]))
 
-    # Environment variables
+    # MODULEPATH must be set before the module loads, https://github.com/JCSDA/spack-stack/issues/2144
+    compiler_modulepaths = ""
     if "environment" in compiler.extra_attributes.keys():
         for action in compiler.extra_attributes["environment"].keys():
             for env_name in compiler.extra_attributes["environment"][action]:
@@ -432,12 +433,16 @@ def setup_meta_modules():
                     env_values = None
                 else:
                     env_values = compiler.extra_attributes["environment"][action][env_name]
-                compiler_subs["ENVVARS"] += envmod_command(
+                command = envmod_command(
                     module_choice,
                     action,
                     env_name,
                     env_values
                 )
+                if env_name == "MODULEPATH":
+                    compiler_modulepaths += command
+                else:
+                    compiler_subs["ENVVARS"] += command
     # https://github.com/JCSDA/spack-stack/issues/1903
     # Attempt to locate directory "compiler" in the same directory where
     # "icx" resides. If found, add it to PATH in the compiler module
@@ -455,6 +460,7 @@ def setup_meta_modules():
     # Spack compiler module hierarchy - append all saved modulepaths
     for modulepath in MODULEPATHS_SAVE:
         compiler_subs["MODULEPATHS"] += modulepath_prepend_command(module_choice, modulepath)
+    compiler_subs["MODULEPATHS"] += compiler_modulepaths
     compiler_subs["MODULEPATHS"] = compiler_subs["MODULEPATHS"].rstrip("\n")
     logging.debug("  ... ... MODULEPATHS  : {}".format(compiler_subs["MODULEPATHS"]))
 
