@@ -32,6 +32,16 @@ spack:
 # spack-stack.
 check_file = ".spackstack"
 
+default_config_yamls = [
+    "concretizer.yaml",
+    "config.yaml",
+    "include.yaml",
+    "mirrors.yaml",
+    "modules.yaml",
+    "packages.yaml",
+    "repos.yaml",
+    "toolchains.yaml",
+]
 
 def get_git_revision_short_hash(path) -> str:
     return (
@@ -136,13 +146,14 @@ class StackEnv(object):
         """Copy common directory into environment and add includes to spack.yaml."""
         env_common_dir = os.path.join(self.env_dir(), "common")
         logging.info(f"Copying common includes from {common_path} ...\n  ... to {env_common_dir}")
-        shutil.copytree(common_path, env_common_dir)
+        os.makedirs(env_common_dir, exist_ok=True)
 
         # Add includes for common configs. Higher precedence items are added first.
         (compiler_name, _) = compiler_name_and_version_from_string(self.compiler)
         packages_compiler_yaml = f"packages_{compiler_name}.yaml"
         packages_compiler_yaml_path = os.path.join(common_path, packages_compiler_yaml)
         if os.path.exists(packages_compiler_yaml_path):
+            shutil.copy(packages_compiler_yaml_path, env_common_dir)
             self.includes.append(os.path.join("common", packages_compiler_yaml))
         else:
             if self.treatwarningsaserrors:
@@ -154,8 +165,13 @@ class StackEnv(object):
         modules_yaml_modulesys = f"modules_{lmod_or_tcl}.yaml"
         modules_yaml_modulesys_path = os.path.join(common_path, modules_yaml_modulesys)
         if os.path.exists(modules_yaml_modulesys_path):
+            shutil.copy(modules_yaml_modulesys_path, env_common_dir)
             self.includes.append(os.path.join("common", modules_yaml_modulesys))
 
+        for config_yaml in default_config_yamls:
+            config_yaml_path = os.path.join(common_path, config_yaml)
+            if os.path.exists(config_yaml_path):
+                shutil.copy(config_yaml_path, env_common_dir)
         self.includes.append("common")
 
     def site_configs_dir(self):
@@ -175,12 +191,13 @@ class StackEnv(object):
         site_path = self.site_configs_dir()
         env_site_dir = os.path.join(self.env_dir(), site_name)
         logging.info(f"Copying site includes from {self.site_configs_dir()} ...\n  ... to {env_site_dir}")
-        shutil.copytree(self.site_configs_dir(), env_site_dir)
+        os.makedirs(env_site_dir, exist_ok = True)
 
         # Add includes for site configs. Higher precedence items are added first.
         packages_compiler_yaml = f"packages_{self.compiler}.yaml"
         packages_compiler_yaml_path = os.path.join(site_path, packages_compiler_yaml)
         if os.path.exists(packages_compiler_yaml_path):
+            shutil.copy(packages_compiler_yaml_path, env_site_dir)
             self.includes.append(os.path.join(site_name, packages_compiler_yaml))
         else:
             if self.treatwarningsaserrors:
@@ -192,8 +209,13 @@ class StackEnv(object):
         modules_yaml_modulesys = f"modules_{lmod_or_tcl}.yaml"
         modules_yaml_modulesys_path = os.path.join(site_path, modules_yaml_modulesys)
         if os.path.exists(modules_yaml_modulesys_path):
+            shutil.copy(modules_yaml_modulesys_path, env_site_dir)
             self.includes.append(os.path.join(site_name, modules_yaml_modulesys))
 
+        for config_yaml in default_config_yamls:
+            config_yaml_path = os.path.join(site_path, config_yaml)
+            if os.path.exists(config_yaml_path):
+                shutil.copy(config_yaml_path, env_site_dir)
         self.includes.append(site_name)
 
     def get_upstream_realpaths(self, upstream_path):
