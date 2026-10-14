@@ -5,7 +5,7 @@
 set -ex
 
 WORKDIR=${1}
-export CARGO_HOME=${SPACK_CARGO_HOME:-${CARGO_HOME}}
+export CARGO_HOME=${SPACK_CARGO_HOME:?SPACK_CARGO_HOME must be set}
 export RUSTUP_HOME=${CARGO_HOME}/rustup
 
 mkdir -p ${WORKDIR}
