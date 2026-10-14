@@ -12,7 +12,7 @@ class AiEnv(BundlePackage):
 
     # DH* TODO UPDATE FROM INTERNAL TO PUBLIC
     homepage = "https://github.com/JCSDA/spack-stack"
-    git = "https://github.comJCSDA/spack-stack.git"
+    git = "https://github.com/JCSDA/spack-stack.git"
 
     maintainers("climbfuji", "srherbener")
 
