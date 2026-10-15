@@ -155,6 +155,10 @@ modules:
           ^esmf@8.9.1+debug ~openmp snapshot=none: 'esmf-8.9.1-debug-noopenmp'
           ^esmf@8.9.1~debug +openmp snapshot=none: 'esmf-8.9.1'
           ^esmf@8.9.1+debug +openmp snapshot=none: 'esmf-8.9.1-debug'
+          ^esmf@9.0.0~debug ~openmp snapshot=b18: 'esmf-9.0.0b18-noopenmp'
+          ^esmf@9.0.0+debug ~openmp snapshot=b18: 'esmf-9.0.0b18-debug-noopenmp'
+          ^esmf@9.0.0~debug +openmp snapshot=b18: 'esmf-9.0.0b18'
+          ^esmf@9.0.0+debug +openmp snapshot=b18: 'esmf-9.0.0b18-debug'
       fms:
         suffixes:
           constants=GFS: 'gfs-constants'

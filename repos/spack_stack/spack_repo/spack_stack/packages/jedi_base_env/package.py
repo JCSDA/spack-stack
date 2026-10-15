@@ -21,15 +21,12 @@ class JediBaseEnv(BundlePackage):
     # Need to find a free fftw provider for fftw-api ...
     variant("fftw", default=True, description="Build fftw")
     variant("hdf4", default=True, description="Build hdf4 library and python hdf module")
-    variant("bufrquery", default=True, description="Build bufr-query library")
 
     depends_on("libbacktrace", type="run")
     depends_on("base-env", type="run")
     depends_on("bison", type="run")
     depends_on("blas", type="run")
     depends_on("boost", type="run")
-    depends_on("bufr", type="run")
-    depends_on("bufr-query", when="+bufrquery", type="run")
     # Force users to load manually
     # depends_on("crtm@v2.4.1-jedi", type="run")
     depends_on("ecbuild", type="run")
@@ -54,19 +51,9 @@ class JediBaseEnv(BundlePackage):
     #depends_on("sp", type="run", when="^ip@:4")
     depends_on("udunits", type="run")
 
-    # Python packages
-    depends_on("py-eccodes", type="run")
-    depends_on("py-f90nml", type="run")
-    depends_on("py-h5py", type="run")
-    depends_on("py-netcdf4", type="run")
-    depends_on("py-pandas", type="run")
-    depends_on("py-pycodestyle", type="run")
+    # Python packages. Everything else moved to jedi-python-env; py-pybind11
+    # stays because core JEDI packages link its headers.
     depends_on("py-pybind11", type="run")
-    depends_on("py-pyhdf", when="+hdf4", type="run")
-    depends_on("py-python-dateutil", type="run")
-    depends_on("py-pyyaml", type="run")
-    depends_on("py-scipy", type="run")
-    depends_on("py-xarray", type="run")
 
     conflicts(
         "platform=darwin %gcc",

@@ -479,13 +479,13 @@ packages:
     py-pandas:
       require:
       - '@:2'
-      prefer:
-      - '~performance'
       # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
       # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
       # into py-xarray/met/metplus/jedi-base-env. This constraints py-versioneer to @0.28
       # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
       - ^py-versioneer@0.28
+      prefer:
+      - '~performance'
     # To avoid duplicate packages
     py-poetry-core:
       require:
@@ -517,8 +517,14 @@ packages:
     # py-setuptools@77.0.3:. Re-evaluate issue #3695 if setuptools duplicates recur.
     py-torch:
       require:
+      - '@2.10:'
       - +custom-protobuf
       - ~mkldnn
+      # PyTorch 2.12 does not honor the recipe's USE_XPU=OFF setting when
+      # built through PEP 517. With oneAPI, Kineto then enables its XPU/PTI
+      # plugin, but the installed oneAPI toolkit does not provide PTI CMake
+      # configuration files. Re-enable once that forwarding issue is fixed.
+      - ~kineto
     # To avoid duplicate packages
     py-urllib3:
       require:
