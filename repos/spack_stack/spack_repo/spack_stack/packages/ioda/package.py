@@ -32,6 +32,11 @@ class Ioda(CMakePackage):
     variant("openmp", default=True, description="Build with OpenMP support")
     # Let's always BUILD_PYTHON_BINDINGS.
     # variant('python', default=True, description='Build the ioda Python interface')
+    variant(
+        "trust_ecbuild_flags",
+        default=False,
+        description="Skip ecbuild compiler-flag probes",
+    )
 
     generator("make")
 
@@ -90,6 +95,8 @@ class Ioda(CMakePackage):
             self.define("BUILD_TESTING", self.run_tests),
             self.define_from_variant("ENABLE_IODA_DOC", "doc"),
         ]
+        if "+trust_ecbuild_flags" in self.spec:
+            res.append(self.define("ECBUILD_TRUST_FLAGS", True))
         return res
 
     def setup_build_environment(self, env: EnvironmentModifications) -> None:
