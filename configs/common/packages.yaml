@@ -477,13 +477,13 @@ packages:
     py-pandas:
       require:
       - '@:2'
-      prefer:
-      - '~performance'
       # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
       # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
       # into py-xarray/met/metplus/jedi-base-env. This constraints py-versioneer to @0.28
       # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
       - ^py-versioneer@0.28
+      prefer:
+      - '~performance'
     # To avoid duplicate packages
     py-poetry-core:
       require:
