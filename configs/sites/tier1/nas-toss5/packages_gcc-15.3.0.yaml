@@ -1,0 +1,77 @@
+packages:
+  all:
+    require:
+    - any_of: ['%gcc@=15.3.0']
+      when: '%gcc'
+  mpi:
+    buildable: false
+    require:
+    - "cray-mpich@8.1.33"
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@15.3.0 languages:='c,c++,fortran'
+      prefix: /nobackup/gmao_SIteam/gcc/gcc-15.3.0-TOSS5
+      modules:
+      - cray-libpals/1.7.1
+      - cray-pals/1.7.1
+      - craype-x86-turin
+      - craype-network-ofi
+      - cray-dsmml/0.3.1
+      - PrgEnv-gnu/8.6.0
+      - comp-gcc/15.3.0
+      extra_attributes:
+        # PrgEnv-gnu provides binutils from gcc-toolset-14.  Spack build
+        # environments can contain /usr/lib64 in LD_LIBRARY_PATH, which
+        # otherwise makes that ld load the incompatible system libctf.
+        environment:
+          prepend_path:
+            LD_LIBRARY_PATH: /opt/rh/gcc-toolset-14/root/usr/lib64
+        compilers:
+          c: /nobackup/gmao_SIteam/gcc/gcc-15.3.0-TOSS5/bin/gcc
+          cxx: /nobackup/gmao_SIteam/gcc/gcc-15.3.0-TOSS5/bin/g++
+          fortran: /nobackup/gmao_SIteam/gcc/gcc-15.3.0-TOSS5/bin/gfortran
+  cray-mpich:
+    buildable: false
+    externals:
+    - spec: cray-mpich@8.1.33
+      prefix: /opt/cray/pe/mpich/8.1.33/ofi/gnu/11.2
+      modules:
+      - cray-libpals/1.7.1
+      - cray-pals/1.7.1
+      - craype-x86-turin
+      - craype-network-ofi
+      - cray-dsmml/0.3.1
+      # This site module sets the MPICH wrapper compilers and requires PrgEnv-gnu.
+      # Spack may activate this MPI external without first activating the GCC external.
+      - PrgEnv-gnu/8.6.0
+      - comp-gcc/15.3.0
+      - cray-mpich/8.1.33
+      - mpi/mpich-gfortran
+      extra_attributes:
+        environment:
+          set:
+            MPICH_CC: gcc
+            MPICH_CXX: g++
+            MPICH_FC: gfortran
+            CC: gcc
+            CXX: g++
+            FC: gfortran
+
+  intel-oneapi-mkl:
+    buildable: false
+    externals:
+    - spec: intel-oneapi-mkl@2024.2
+      prefix: /nasa/intel/oneapi-test
+
+  # Testing shows we now need to pass in -lm for GCC
+  p4est:
+    require:
+    - 'ldflags="-lm"'
+
+  harfbuzz:
+    # Pango needs HarfBuzz's GObject bindings, but this TOSS5 GCC toolchain
+    # cannot link g-ir-scanner's temporary helper due to its libctf runtime.
+    # The generated GIR metadata is not needed by the stack.
+    require:
+    - ~introspection

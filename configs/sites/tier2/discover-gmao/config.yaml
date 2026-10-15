@@ -1,8 +1,12 @@
 config:
   build_jobs: 6
 
+  # Discover's install tree uses GPFS, where filesystem locks can fail.
+  # Only one Spack process should modify the install tree at a time.
+  locks: false
+
   # Overrides for spack build and staging areas to speed up builds
-  # and avoid errors with Lustre file locking and xattr issues
+  # and avoid errors with GPFS file locking and xattr issues
   build_stage:  /discover/nobackup/projects/gmao/SIteam/spack-stack/cache/build_stage
   test_stage:   /discover/nobackup/projects/gmao/SIteam/spack-stack/cache/test_stage
   source_cache: /discover/nobackup/projects/gmao/SIteam/spack-stack/cache/source_cache
