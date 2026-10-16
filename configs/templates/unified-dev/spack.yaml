@@ -8,8 +8,6 @@ spack:
   include: []
 
   specs:
-  # ai-env brings in py-torch (expensive); it is not included here. GMAO's
-  # util/gmao/batch_install.sh adds it to new environments with --with-ai.
   - dev-utils-env
   - ewok-env
   - geos-gcm-env@11.10.0 ~debug +cdo +fms ^esmf@=9.0.0b18
