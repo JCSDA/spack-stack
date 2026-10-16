@@ -6,7 +6,7 @@ packages:
   mpi:
     buildable: False
     require:
-    - "openmpi@4.1.8"
+    - "openmpi@5.0.11"
   llvm:
     externals:
     - spec: llvm@22.1.7 +flang ~libomptarget
@@ -21,15 +21,10 @@ packages:
         extra_rpaths:
         - /gpfs/neptune/spack-stack/llvm-22.1.7/lib
         - /gpfs/neptune/spack-stack/llvm-22.1.7/lib/x86_64-unknown-linux-gnu
-  hwloc:
-    buildable: False
-    externals:
-    - spec: hwloc@2.13.0
-      prefix: /gpfs/neptune/spack-stack/llvm-22.1.7
   openmpi:
     externals:
-    - spec: openmpi@4.1.8 ~internal-hwloc +two_level_namespace
-      prefix: /gpfs/neptune/spack-stack/openmpi-4.1.8/llvm-22.1.7
+    - spec: openmpi@5.0.11 ~internal-hwloc +two_level_namespace
+      prefix: /gpfs/neptune/spack-stack/openmpi-5.0.11/llvm-22.1.7
       modules:
       - llvm/22.1.7
-      - openmpi/4.1.8
+      - openmpi/5.0.11
