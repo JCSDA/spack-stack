@@ -8,14 +8,15 @@ spack:
   include: []
 
   specs:
+  # ai-env brings in py-torch (expensive); it is not included here. GMAO's
+  # util/gmao/batch_install.sh adds it to new environments with --with-ai.
   - dev-utils-env
   - ewok-env
-  - geos-gcm-env          ^esmf@=9.0.0b18
-  - global-workflow-env   ^esmf@=9.0.0b17 ^crtm@=3.1.3
+  - geos-gcm-env@11.10.0 ~debug +cdo +fms ^esmf@=9.0.0b18
+  - global-workflow-env   ^esmf@=9.0.0b17 ^crtm@=3.1.5
 
-  # Is GMAO ready to move to crtm@3.1.3?
-  - gmao-swell-env                     ^crtm@=v2.4.1-jedi.2
-  - gsi-env                            ^crtm@=3.1.3
+  - gmao-swell-env                        ^crtm@=3.1.5
+  - gsi-env                               ^crtm@=3.1.5
   - jedi-fv3-env
   - jedi-geos-env         ^esmf@=9.0.0b18
   - jedi-mpas-env
@@ -25,12 +26,8 @@ spack:
   - neptune-env           ^esmf@=9.0.0b18
   - neptune-python-env    ^esmf@=9.0.0b18
   - soca-env
-  - ufs-srw-app-env       ^esmf@=9.0.0b17 ^crtm@=3.1.3
-  - ufs-weather-model-env ^esmf@=9.0.0b17 ^crtm@=3.1.3
-
-  # Various crtm tags (list all to avoid duplicate packages)
-  - crtm@v2.4.1-jedi.2
-  - crtm@3.1.3
+  - ufs-srw-app-env       ^esmf@=9.0.0b17 ^crtm@=3.1.5
+  - ufs-weather-model-env ^esmf@=9.0.0b17 ^crtm@=3.1.5
 
   # Mapl with specific esmf tags (list all to avoid duplicate packages)
   - mapl@2.69.1 ^esmf@=9.0.0b17

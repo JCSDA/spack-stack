@@ -22,9 +22,7 @@ spack:
   - neptune-python-env    ^esmf@=9.0.0b18
   - soca-env
 
-  # Various crtm tags (list all to avoid duplicate packages)
-  - crtm@v2.4.1-jedi.2
-  - crtm@3.1.2
+  - crtm@3.1.5
 
   # Mapl with various esmf tags
   - mapl@2.69.1 ^esmf@=9.0.0b17

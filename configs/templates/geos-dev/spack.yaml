@@ -13,11 +13,14 @@ spack:
   # (see geos_gcm_env/package.py). On platforms where only +debug is supported
   # (e.g., macOS), the site packages.yaml requires geos-gcm-env +debug, which
   # causes both specs to resolve to +debug (only one unique build).
-  - geos-gcm-env ~debug
-  - geos-gcm-env +debug
+  - geos-gcm-env@11.10.0 ~debug +cdo +fms
+  - geos-gcm-env@11.10.0 +debug +cdo +fms
+  - geos-gcm-env@12.1.0 ~debug +cdo +fms
+  - geos-gcm-env@12.1.0 +debug +cdo +fms
 
   # Various fms builds
   - fms@=2024.03 ~gfs_phys constants=GEOS
+  - fms@=2026.01.01 ~gfs_phys constants=GEOS
 
   packages:
     # Turn on python variant for esmf
@@ -25,3 +28,11 @@ spack:
       require:
       - +python
       - '@=9.0.0b18'
+    # Use one CDO build (with fftw3 and GRIB2 via eccodes) for all
+    # GEOS-GCM-ENV versions. Without this, the solver may pick different
+    # variants per geos-gcm-env version when other environments (e.g. ai-env)
+    # are present.
+    cdo:
+      require:
+      - +fftw3
+      - grib2=eccodes
