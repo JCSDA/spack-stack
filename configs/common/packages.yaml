@@ -315,7 +315,7 @@ packages:
       - '@4.15.3:'
     mapl:
       require:
-      - '@2.61'
+      - '@2.69'
       - ~shared
       - ~f2py
       - +pflogger
