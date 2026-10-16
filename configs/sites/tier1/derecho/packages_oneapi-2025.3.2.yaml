@@ -12,7 +12,7 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.2
+    - spec: intel-oneapi-compilers@2025.3.2 +fix_rt_linkage
       prefix: /glade/u/apps/common/25.10/spack/opt/spack/intel-oneapi-compilers/2025.3.2/snvt
       modules:
       - ncarenv/25.10
