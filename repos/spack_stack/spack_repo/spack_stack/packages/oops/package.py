@@ -32,6 +32,11 @@ class Oops(CMakePackage):
     variant("openmp", default=True, description="Build oops with OpenMP support")
     variant("qg", default=True, description="Build QG toy model")
     variant('gptl', default=False, description='Use GPTL profiling library (if available)')
+    variant(
+        "trust_ecbuild_flags",
+        default=False,
+        description="Skip ecbuild compiler-flag probes",
+    )
 
     generator("make")
 
@@ -78,6 +83,8 @@ class Oops(CMakePackage):
             self.define_from_variant("OPENMP", "openmp"),
             self.define_from_variant("ENABLE_GPTL", "gptl"),
         ]
+        if "+trust_ecbuild_flags" in self.spec:
+            res.append(self.define("ECBUILD_TRUST_FLAGS", True))
         return res
 
     def setup_build_environment(self, env: EnvironmentModifications) -> None:

@@ -314,7 +314,7 @@ pico ${PWD}/site/packages.yaml
 #   intel-oneapi-compilers:
 #     buildable: false
 #     externals:
-#     - spec: intel-oneapi-compilers@2026.1.1
+#     - spec: intel-oneapi-compilers@2026.1.1 +fix_rt_linkage
 #       prefix: /opt/intel/oneapi
 #       modules:
 #       - umf/1.1.0
@@ -362,9 +362,11 @@ cat << 'EOF' >> ${SPACK_SYSTEM_CONFIG_PATH}/packages.yaml
       - 'cxxflags="-O1"'
     jedi-base-env:
       require:
-      - ~bufrquery
       - +fftw
       - +hdf4
+    jedi-python-env:
+      require:
+      - ~bufrquery
     py-pyyaml:
       require:
       - +libyaml
