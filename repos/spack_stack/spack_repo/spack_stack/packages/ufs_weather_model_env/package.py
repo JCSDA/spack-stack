@@ -50,6 +50,7 @@ class UfsWeatherModelEnv(BundlePackage):
     depends_on("scotch", type="run")
     depends_on("sp", type="run", when="^ip@:4")
     depends_on("w3emc", type="run")
+    depends_on("yaml-cpp", type="run")
     depends_on("zlib-api", type="run")
 
     depends_on("ufs-pyenv", type="run", when="+python")
