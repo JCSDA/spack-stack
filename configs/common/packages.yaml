@@ -151,10 +151,8 @@ packages:
       - +shared
       - +external-parallelio
       - any_of:
-        - '@=8.6.1 snapshot=none'
-        - '@=8.8.0 snapshot=none'
-        - '@=8.9.1 snapshot=none'
-        - '@=9.0.0b18 snapshot=b18'
+        - '@=9.0.0b17'
+        - '@=9.0.0b18'
       - any_of:
         - 'fflags="-fp-model precise" cxxflags="-fp-model precise"'
         when: '%intel'
@@ -250,7 +248,7 @@ packages:
       - ~netcdf
     hdf5:
       require:
-      - '@1.14.5'
+      - '@2.1.0'
       - +hl
       - +fortran
       - +mpi
@@ -313,7 +311,7 @@ packages:
       - '@4.15.3:'
     mapl:
       require:
-      - '@2.53'
+      - '@2.61'
       - ~shared
       - ~f2py
       - +pflogger
@@ -389,10 +387,9 @@ packages:
       require:
       - '@2.6.2'
       - +pnetcdf
-    # DH* CAN WE UPDATE? NEED A NEW SHARED-INTEL PATCH?
     parallel-netcdf:
       require:
-      - '@1.12.3'
+      - '@1.14.1'
     pflogger:
       require:
       - +mpi
@@ -480,13 +477,13 @@ packages:
     py-pandas:
       require:
       - '@:2'
-      prefer:
-      - '~performance'
       # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
       # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
       # into py-xarray/met/metplus/jedi-base-env. This constraints py-versioneer to @0.28
       # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
       - ^py-versioneer@0.28
+      prefer:
+      - '~performance'
     # To avoid duplicate packages
     py-poetry-core:
       require:
@@ -518,8 +515,14 @@ packages:
     # py-setuptools@77.0.3:. Re-evaluate issue #3695 if setuptools duplicates recur.
     py-torch:
       require:
+      - '@2.10:'
       - +custom-protobuf
       - ~mkldnn
+      # PyTorch 2.12 does not honor the recipe's USE_XPU=OFF setting when
+      # built through PEP 517. With oneAPI, Kineto then enables its XPU/PTI
+      # plugin, but the installed oneAPI toolkit does not provide PTI CMake
+      # configuration files. Re-enable once that forwarding issue is fixed.
+      - ~kineto
     # To avoid duplicate packages
     py-urllib3:
       require:
@@ -529,6 +532,9 @@ packages:
     py-versioneer:
       require:
       - '@0.28:'
+    py-zarr:
+      require:
+      - '@3:'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:
