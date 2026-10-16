@@ -4,6 +4,7 @@ on:
     paths-ignore:
       - 'configs/sites/**'
       - '!configs/sites/tier2/*.default/*'
+      - 'util/gmao/**'
       - '**.md'
       - '.github/CODEOWNERS'
       - '.github/pull_request_template.md'
