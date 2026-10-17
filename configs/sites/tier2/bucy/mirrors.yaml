@@ -1,0 +1,7 @@
+mirrors:
+  local-source:
+    url: file:///ford1/share/gmao_SIteam/spack-stack/source-mirror
+    binary: false
+  local-binary:
+    url: file:///ford1/share/gmao_SIteam/spack-stack/build-mirror
+    binary: true

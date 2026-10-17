@@ -1,0 +1,25 @@
+packages:
+  all:
+    require:
+    - any_of: ['%llvm@=23.1.0']
+      when: '%llvm'
+  mpi:
+    buildable: false
+    require: [openmpi@=5.0.10]
+  llvm:
+    buildable: false
+    externals:
+    - spec: llvm@=23.1.0 +flang ~libomptarget
+      prefix: /ford1/share/gmao_SIteam/llvm-flang/23.1.0
+      extra_attributes:
+        compilers:
+          c: /ford1/share/gmao_SIteam/llvm-flang/23.1.0/bin/clang
+          cxx: /ford1/share/gmao_SIteam/llvm-flang/23.1.0/bin/clang++
+          fortran: /ford1/share/gmao_SIteam/llvm-flang/23.1.0/bin/flang
+  openmpi:
+    buildable: false
+    externals:
+    # Built with internal hwloc/pmix/libevent, no ucx/slurm/lustre. The
+    # ~internal-hwloc flag only satisfies the common/packages.yaml requirement.
+    - spec: openmpi@=5.0.10 ~cuda~cxx~cxx_exceptions~java~memchecker~static~wrapper-rpath~internal-hwloc+two_level_namespace %llvm@=23.1.0
+      prefix: /ford1/share/gmao_SIteam/MPI/openmpi/5.0.10/llvm-flang-23.1.0
