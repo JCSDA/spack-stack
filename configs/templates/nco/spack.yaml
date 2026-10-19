@@ -19,7 +19,7 @@ spack:
   - cdo
   - cfitsio
   - cmake
-  - crtm@=3.1.2
+  - crtm@=3.1.5
   - curl
   - ecflow
   - eckit
@@ -81,7 +81,7 @@ spack:
   - sp
   - subversion
   - udunits
-  - upp ^crtm@=2.4.0.1
+  - upp
   - w3emc
   - w3nco
   - wgrib2
