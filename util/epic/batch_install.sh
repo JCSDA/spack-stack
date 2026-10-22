@@ -426,9 +426,10 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
 
   # Check compiler build argument to build the desired spack-stack
   if [[ ${compiler} =~ "${SPACK_STACK_COMPILER_BUILD_OPT}" || "all" == "${SPACK_STACK_COMPILER_BUILD_OPT}" ]]; then
-    echo "Building spack-stack with ${compiler} compiler"
+    # Success, do nothing
+    :
   else
-    echo "Skipping spack-stack build with ${compiler} compiler"
+    # Compiler not selected, try next item
     continue
   fi
 
