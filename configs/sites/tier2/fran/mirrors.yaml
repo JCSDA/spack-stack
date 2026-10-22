@@ -1,0 +1,3 @@
+mirrors:
+  local-source: file:///p/work1/heinzell/spack-stack/source-cache
+  local-binary: file:///p/work1/heinzell/spack-stack/build-cache

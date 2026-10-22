@@ -19,8 +19,14 @@ case $hostname in
   *derecho*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/derecho/setup.sh
     ;;
+  *fran*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier2/fran/setup.sh
+    ;;
   *Hercules*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/hercules/setup.sh
+    ;;
+  *jean*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier2/jean/setup.sh
     ;;
   *narwhal*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/narwhal/setup.sh
@@ -30,6 +36,9 @@ case $hostname in
     ;;
   *Orion*)
     . ${SPACK_STACK_DIR}/configs/sites/tier1/orion/setup.sh
+    ;;
+  *wheat*)
+    . ${SPACK_STACK_DIR}/configs/sites/tier2/wheat/setup.sh
     ;;
 esac
 
