@@ -34,6 +34,7 @@ usage() {
   echo "      if not set, the default location is used"
   echo "  -c  Provide location of build caches as BUILDCACHE_DIR;"
   echo "      if not set, authoritative build caches are used"
+  echo "  -b  Set compiler build option, can be 'gcc', 'oneapi', or 'all' - the default;"
   echo "  -u  Flag to update bootstrap and source caches;"
   echo "  -e  Continue builds/install in existing environments;"
   echo "      by default, exit with an error if already exist"
@@ -44,7 +45,7 @@ usage() {
   echo
 }
 
-while getopts r:m:d:c:uesth flag
+while getopts r:m:d:c:b:uestvh flag
 do
   case "${flag}" in
     m)
@@ -55,6 +56,9 @@ do
       ;;
     c)
       SPACK_STACK_BUILDCACHE_DIR=$(readlink -f ${OPTARG})
+      ;;
+    b)
+      SPACK_STACK_COMPILER_BUILD_OPT="${OPTARG}"
       ;;
     u)
       SPACK_STACK_UPDATE_DEV_CACHES="true"
@@ -79,6 +83,7 @@ echo "INFO: $0 options:"
 echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set}"
 echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
+echo "  SPACK_STACK_COMPILER_BUILD_OPT:              ${SPACK_STACK_COMPILER_BUILD_OPT-all}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
 echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
@@ -99,6 +104,17 @@ if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
     exit 1
   fi
 fi
+
+# Check for valid compiler build options
+case "${SPACK_STACK_COMPILER_BUILD_OPT}" in 
+  all|gcc|oneapi)
+    echo "Valid compiler build option: ${SPACK_STACK_COMPILER_BUILD_OPT}"
+    ;;
+  *)
+    echo "ERROR, invalid compiler build option: ${SPACK_STACK_COMPILER_BUILD_OPT}. Allowed values are: all, gcc, oneapi"
+    exit 1
+    ;;
+esac
 
 ##################################################################################################
 
@@ -406,6 +422,15 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
   if [[ ! ${compiler} == *"@="* ]]; then
     echo "ERROR, '@=' not found in compiler string '${compiler}'"
     exit 1
+  fi
+
+  # Check compiler build argument to build the desired spack-stack
+  if [[ ${compiler} =~ "${SPACK_STACK_COMPILER_BUILD_OPT}" || "all" == "${SPACK_STACK_COMPILER_BUILD_OPT}" ]]; then
+    # Success, do nothing
+    :
+  else
+    # Compiler not selected, try next item
+    continue
   fi
 
   compiler_name=$(echo ${compiler} | cut -d "@" -f 1)
