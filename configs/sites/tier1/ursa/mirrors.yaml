@@ -1,4 +1,3 @@
 mirrors:
-  spack-public:
-    binary: false
-    url: https://mirror.spack.io
+  local-source: file:///contrib/spack-stack/source-cache
+  local-binary: file:///contrib/spack-stack/build-cache
