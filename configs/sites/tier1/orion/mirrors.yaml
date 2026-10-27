@@ -1,2 +1,3 @@
 mirrors:
-  local-source: file:///work/noaa/epic/role-epic/spack-stack/source-cache
+  local-source: file:///apps/contrib/spack-stack/source-cache
+  local-binary: file:///apps/contrib/spack-stack/build-cache
