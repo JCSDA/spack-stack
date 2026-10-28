@@ -1378,6 +1378,18 @@ fi
 export SPACK_CARGO_HOME=${cargo_mirror_path}
 export CARGO_NET_OFFLINE=true
 
+# Discover's /tmp may disallow execution, which breaks configure checks such
+# as FFmpeg's temporary shell script. Use a private directory per install job
+# on the shared filesystem, independently of Spack's build stage setting.
+if [[ "${host}" == "discover" || "${host}" == "discover-gmao" ]]; then
+  build_tmpdir_root=/discover/nobackup/projects/gmao/SIteam/spack-stack/build-tmpdir
+  mkdir -p "\${build_tmpdir_root}"
+  build_tmpdir=\$(mktemp -d "\${build_tmpdir_root}/\${USER}.\${SLURM_JOB_ID:-local}.XXXXXX")
+  export TMPDIR="\${build_tmpdir}"
+  trap 'rm -rf -- "\${build_tmpdir}"' EXIT
+  echo "INFO: using TMPDIR=\${TMPDIR}"
+fi
+
 if [[ "${SPACK_STACK_DISABLE_LOCKS}" == "true" ]]; then
   # Spack's package workers do not inherit command-line configuration or the
   # environment's config scopes. Give every worker a private user config scope
