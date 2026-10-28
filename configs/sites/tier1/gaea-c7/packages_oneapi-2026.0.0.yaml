@@ -20,7 +20,7 @@ packages:
   intel-oneapi-compilers:
     buildable: False
     externals:
-    - spec: intel-oneapi-compilers@2026.0.0
+    - spec: intel-oneapi-compilers@2026.0.0 +fix_rt_linkage
       prefix: /sw/gaea-c7/oneapi/2026.0.0
       modules:
         - oneapi/2026.0.0

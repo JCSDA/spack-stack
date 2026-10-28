@@ -12,7 +12,7 @@ packages:
   intel-oneapi-compilers:
     buildable: False
     externals:
-    - spec: intel-oneapi-compilers@2025.3.1
+    - spec: intel-oneapi-compilers@2025.3.1 +fix_rt_linkage
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/intel-oneapi-compilers-2025.3.1-yqgrg5v3jonwexcjwd3xu3rzvwcp4ejk
       modules:
       - intel-oneapi-compilers/2025.3.1

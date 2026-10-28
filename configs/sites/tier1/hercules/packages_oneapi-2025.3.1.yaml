@@ -14,7 +14,7 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.1
+    - spec: intel-oneapi-compilers@2025.3.1 +fix_rt_linkage
       prefix: /apps/contrib/spack-stack/installs/oneapi-2025.3.1
       modules:
       - intel-oneapi-compilers/2025.3.1
