@@ -1435,6 +1435,13 @@ elif [[ "${host}" == "discover-gmao" ]] && \
   module load comp/gcc/12.3.0 comp/nag/7.2-7238 mpi/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0
 fi
 
+# Some Discover MPI modules (e.g. mpi/openmpi/5.0.10/gcc-15.2.0) run
+# setenv("TMPDIR", "/tmp"), so restore our private TMPDIR after module loads.
+if [[ -n "\${build_tmpdir:-}" ]]; then
+  export TMPDIR="\${build_tmpdir}"
+  echo "INFO: TMPDIR after module preload: \${TMPDIR}"
+fi
+
 $(declare -p test_packages)
 
 # If no tests are required, install everything
