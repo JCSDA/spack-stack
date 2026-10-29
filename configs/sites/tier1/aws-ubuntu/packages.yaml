@@ -1,0 +1,121 @@
+packages:
+  # Package constraints.
+  ewok-env:
+    require:
+    - +ecflow
+  # Soft preference, as on other tier1 sites. With gcc 14, +lidar2nc and +modis
+  # are dropped: they need hdf-eos2, and common pins hdf-eos2@2.20v1.00, which
+  # conflicts with %gcc@14: (3.0+ is required).
+  met:
+    variants: +python +grib2 +graphics +lidar2nc +modis
+  py-netcdf4:
+    require:
+    - "@1.7.2"
+  jedi-base-env:
+    require: [+fftw, +hdf4]
+  # jedi-ufs-env needs +bufrquery; unconstrained, the root splits in two.
+  jedi-python-env:
+    require: [+bufrquery]
+  # Unconstrained, jedi-tools-env falls back to py-myst-parser@1/py-sphinx@6,
+  # which cap py-attrs@:21 and py-docutils@:0.19 and split py-attrs, py-eccodes,
+  # py-rasterio, jedi-python-env and awscli-v2. common/packages_oneapi.yaml
+  # already requires py-sphinx@9: for the same reason.
+  py-myst-parser:
+    require: ['@5:']
+  py-sphinx:
+    require: ['@9:']
+  fontconfig:
+    variants: +pic
+  pixman:
+    variants: +pic
+  cairo:
+    variants: +pic
+
+  # System packages (Ubuntu 26.04). Derived with `spack external find`
+  # excluding cmake, curl, openssl, openssh, python and zlib (the multiarch
+  # libdir breaks pmix's zlib detection). coreutils (uutils) and binutils
+  # (2.46, no gold) aren't detected and are left for spack to build if needed.
+  autoconf:
+    externals:
+    - spec: autoconf@2.72
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.18.1
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.12
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.10.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@5.3.2
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.23.2
+      prefix: /usr
+  git:
+    externals:
+    - spec: git@2.53.0~tcltk
+      prefix: /usr
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.7.1
+      prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.4.1
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.12
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.23.0
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.5.4
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.21
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.40.1~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@2.5.1
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.9
+      prefix: /usr
+  tar:
+    buildable: false
+    externals:
+    - spec: tar@1.35
+      prefix: /usr
+  wget:
+    buildable: false
+    externals:
+    - spec: wget@1.25.0
+      prefix: /usr
+  # Not auto-detected (qmake is a qtchooser shim); apt qtbase5-dev. common requires qt@5.
+  qt:
+    buildable: false
+    externals:
+    - spec: qt@5.15.18
+      prefix: /usr

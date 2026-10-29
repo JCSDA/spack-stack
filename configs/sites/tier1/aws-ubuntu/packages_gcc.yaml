@@ -1,0 +1,13 @@
+packages:
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@14.3.0 languages:='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc-14
+          cxx: /usr/bin/g++-14
+          fortran: /usr/bin/gfortran-14
+  mpi:
+    require: ['openmpi@5.0.10']
