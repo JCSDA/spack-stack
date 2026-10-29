@@ -7,9 +7,8 @@ This document covers building and using the spack-stack 2.2 AMI for Ubuntu 26.04
 Here is an example `aws cli` command-line to run a pre-built snapshot with your designated key-pair.
 
 ```bash
-# TODO: fill in the 2.2 / Ubuntu 26.04 AMI and snapshot IDs once published.
 aws ec2 run-instances \
-   --image-id "ami-XXXXXXXXXXXXXXXXX" --instance-type "m6i.4xlarge" \
+   --image-id "ami-0eec3117bdb2e6147" --instance-type "m6i.4xlarge" \
    --key-name YOUR-KEYPAIR \
    --block-device-mappings '{"DeviceName":"/dev/sda1","Ebs":{"Encrypted":false,"DeleteOnTermination":true,"Iops":3000,"SnapshotId":"snap-XXXXXXXXXXXXXXXXX","VolumeSize":200,"VolumeType":"gp3","Throughput":125}}' \
    --network-interfaces '{"SubnetId":"subnet-072fb62ff85b32a7a","AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-0091fa8e748fbe355"]}' \
