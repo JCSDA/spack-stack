@@ -1378,6 +1378,18 @@ fi
 export SPACK_CARGO_HOME=${cargo_mirror_path}
 export CARGO_NET_OFFLINE=true
 
+# Discover's /tmp may disallow execution, which breaks configure checks such
+# as FFmpeg's temporary shell script. Use a private directory per install job
+# on the shared filesystem, independently of Spack's build stage setting.
+if [[ "${host}" == "discover" || "${host}" == "discover-gmao" ]]; then
+  build_tmpdir_root=/discover/nobackup/projects/gmao/SIteam/spack-stack/build-tmpdir
+  mkdir -p "\${build_tmpdir_root}"
+  build_tmpdir=\$(mktemp -d "\${build_tmpdir_root}/\${USER}.\${SLURM_JOB_ID:-local}.XXXXXX")
+  export TMPDIR="\${build_tmpdir}"
+  trap 'rm -rf -- "\${build_tmpdir}"' EXIT
+  echo "INFO: using TMPDIR=\${TMPDIR}"
+fi
+
 if [[ "${SPACK_STACK_DISABLE_LOCKS}" == "true" ]]; then
   # Spack's package workers do not inherit command-line configuration or the
   # environment's config scopes. Give every worker a private user config scope
@@ -1421,6 +1433,13 @@ elif [[ "${host}" == "discover-gmao" ]] && \
   # requires the two compiler modules before the compiler-specific MPI module.
   echo "INFO: preloading comp/gcc/12.3.0, comp/nag/7.2-7238, and mpi/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0"
   module load comp/gcc/12.3.0 comp/nag/7.2-7238 mpi/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0
+fi
+
+# Some Discover MPI modules (e.g. mpi/openmpi/5.0.10/gcc-15.2.0) run
+# setenv("TMPDIR", "/tmp"), so restore our private TMPDIR after module loads.
+if [[ -n "\${build_tmpdir:-}" ]]; then
+  export TMPDIR="\${build_tmpdir}"
+  echo "INFO: TMPDIR after module preload: \${TMPDIR}"
 fi
 
 $(declare -p test_packages)
