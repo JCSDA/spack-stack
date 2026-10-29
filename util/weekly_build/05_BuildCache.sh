@@ -2,6 +2,8 @@
 
 set -ex
 
+if [ "$PUSH_TO_BUILDCACHE" == NO ]; then return 0 ; fi
+
 if [ -z $SETUPDONE ]; then . ShellSetup.sh $* ; fi
 
 cd $RUNDIR/$RUNID
