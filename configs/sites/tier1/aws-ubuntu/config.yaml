@@ -1,0 +1,7 @@
+config:
+  build_jobs: 8
+
+  # Build stage and caches use the common defaults under
+  # ${SPACK_STACK_DIR}/cache on the root disk. Don't point them at /tmp: on
+  # Ubuntu 26.04 /tmp is a RAM-backed tmpfs (half of RAM, with per-user quotas),
+  # and a unified-env build fills it ("Disk quota exceeded").
