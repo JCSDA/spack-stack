@@ -143,6 +143,10 @@ modules:
             'MADIS_ROOT': '{prefix}'
       mapl:
         suffixes:
+          ^esmf@=8.9.1~debug ~openmp: 'esmf-8.9.1-noopenmp'
+          ^esmf@=8.9.1+debug ~openmp: 'esmf-8.9.1-debug-noopenmp'
+          ^esmf@=8.9.1~debug +openmp: 'esmf-8.9.1'
+          ^esmf@=8.9.1+debug +openmp: 'esmf-8.9.1-debug'
           ^esmf@=9.0.0~debug ~openmp: 'esmf-9.0.0-noopenmp'
           ^esmf@=9.0.0+debug ~openmp: 'esmf-9.0.0-debug-noopenmp'
           ^esmf@=9.0.0~debug +openmp: 'esmf-9.0.0'
