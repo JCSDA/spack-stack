@@ -13,6 +13,18 @@ packages:
   parallelio:
     require:
     - +pnetcdf
+  jedi-base-env:
+    require: [+fftw, +hdf4]
+  # jedi-ufs-env needs +bufrquery; unconstrained, the root splits in two.
+  jedi-python-env:
+    require: [+bufrquery]
+  # Unconstrained, jedi-tools-env falls back to py-myst-parser@1/py-sphinx@6,
+  # which cap py-attrs@:21 and py-docutils@:0.19 and split py-attrs, py-eccodes,
+  # py-rasterio, jedi-python-env and awscli-v2 (see tier1/aws-ubuntu).
+  py-myst-parser:
+    require: ['@5:']
+  py-sphinx:
+    require: ['@9:']
   pixman:
     variants: +pic
   py-awscrt:
@@ -28,45 +40,38 @@ packages:
     require:
     - "@1.7.2"
 
-  # System packages installed during the container build.
+  # System packages installed during the container build (Ubuntu 26.04).
+  # coreutils is uutils on 26.04 and isn't detected by spack; llvm-14 is no
+  # longer available and nothing in the stack needs it.
   autoconf:
     externals:
-    - spec: autoconf@2.71
-      prefix: /usr
-  coreutils:
-    externals:
-    - spec: coreutils@9.4
+    - spec: autoconf@2.72
       prefix: /usr
   diffutils:
     buildable: false
     externals:
-    - spec: diffutils@3.10
+    - spec: diffutils@3.12
       prefix: /usr
   findutils:
     externals:
-    - spec: findutils@4.9.0
+    - spec: findutils@4.10.0
       prefix: /usr
   git:
     buildable: false
     externals:
-    - spec: git@2.43.0~tcltk
+    - spec: git@2.53.0~tcltk
       prefix: /usr
   git-lfs:
     buildable: false
     externals:
-    - spec: git-lfs@3.4.1
+    - spec: git-lfs@3.7.1
       prefix: /usr
   grep:
     externals:
-    - spec: grep@3.11
-      prefix: /usr
-  llvm:
-    buildable: false
-    externals:
-    - spec: llvm@14.0.6
+    - spec: grep@3.12
       prefix: /usr
   perl:
     buildable: false
     externals:
-    - spec: perl@5.38.2
+    - spec: perl@5.40.1~cpanm+opcode+open+shared+threads
       prefix: /usr
