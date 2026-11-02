@@ -253,6 +253,8 @@ On the very first run, use `-u` to populate the bootstrap, source, and cargo mir
 - `-s`: Submits the install step to SLURM.
 - No `-e` needed since the environment directories do not exist yet.
 
+**Shared cache permissions (discover and discover-gmao only):** after updating the bootstrap, source, binary, and cargo mirrors, `batch_install.sh` makes them group-writable by the `sispack` group (`chgrp` plus `chmod g+rwXs`) so that any SI Team developer can update them. Install trees (environments) are not touched this way. Set `SPACK_STACK_SHARED_GROUP` to use a different group. This step is skipped on other hosts (NAS, bucy, macOS) where the group does not exist.
+
 #### Step 2 — Rebuild or retry runs
 
 After the first run, the environment directories exist and the caches are populated. Drop `-u` and add `-e`:

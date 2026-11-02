@@ -502,9 +502,9 @@ function fix_permissions() {
       exit 1
       ;;
   esac
-  # Shared caches (mirrors) are also group-writable so that members of the
-  # shared group can update them; install trees never pass group_write.
-  if [[ ${group_write} -eq 1 && ${host} != "macos.gmao" ]]; then
+  # Shared caches (mirrors) are also group-writable on discover (the only host with the sispack group)
+  # so members can update them; install trees never pass group_write.
+  if [[ ${group_write} -eq 1 && ( ${host} == "discover" || ${host} == "discover-gmao" ) ]]; then
     shared_group=${SPACK_STACK_SHARED_GROUP:-sispack}
     nice -n 19 find ${dir} ! -group ${shared_group} -print0 | xargs --null --no-run-if-empty chgrp ${shared_group}
     nice -n 19 find ${dir} -type d -print0 | xargs --null chmod g+rwxs

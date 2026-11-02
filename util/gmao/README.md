@@ -59,6 +59,8 @@ Run with `-h` for full usage:
 | `--with-ai` | Add `ai-env` (py-torch + `jedi-base-env`) to the root specs of newly created environments. Expensive, so off by default; not applied to existing environments (`-e`). Combine with `--suffix=ai` to keep the name distinct. |
 | `--suffix=LABEL` | Append `-LABEL` to environment names (after the date when combined with `--datestamp`), e.g. `ge-gcc-15.3.0-20261007-swelltest`. Off by default. |
 
+**Shared cache permissions:** on `discover` and `discover-gmao` only, mirror updates are followed by a `chgrp`/`chmod g+rwXs` to group `sispack` (override with `SPACK_STACK_SHARED_GROUP`) so SI Team members can all update the shared caches. Install trees are not made group-writable. Skipped on NAS, bucy, and macOS.
+
 ### Supported sites
 
 The script detects the current site from `$HOSTNAME` (stripping digits and domain), or you can override with `-H`:
