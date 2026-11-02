@@ -36,14 +36,14 @@ packages:
       - spack-apps/2026.10
       - nvhpc/26.9
 
-# System gcc (no module needed, nvhpc module stays loaded); also the CUDA 13.3 host compiler.
+  # System gcc (no module needed, nvhpc module stays loaded); also the CUDA 13.3 host compiler.
   gcc:
     buildable: false
     require:
     - '@11.5.0'
     externals:
     - spec: gcc@11.5.0 languages:='c,c++,fortran'
-      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj
+      prefix: /usr
       extra_attributes:
         compilers:
           c: /usr/bin/gcc
@@ -59,6 +59,11 @@ packages:
       - spack-apps/2026.10
       - nvhpc/26.9
 
+  # libsm and others include <uuid/uuid.h>, which ossp-uuid does not provide
+  uuid:
+    require:
+    - util-linux-uuid
+
   # Ursa GPUs H100: CUDA build for H100 (cuda_arch=90)
   kokkos:
     require:
@@ -71,9 +76,53 @@ packages:
     require:
     - '+cuda cuda_arch=90'
 
-
+  # Packages that nvc/nvc++ cannot build: use gcc
+  # nvc rejects GNU computed goto and inline asm .previous directives
+  alsa-lib:
+    require:
+    - '%c=gcc'
   # Build with gcc; ecflow+ui (boost, qt) is C++ heavy
   ecflow:
+    require:
+    - '%c,cxx=gcc'
+  # GNU-specific inline assembly; depends on alsa-lib
+  ffmpeg:
+    require:
+    - '%c,cxx=gcc'
+  # nvc++ rejects GNU warning flags (-Wold-style-cast, -Wnon-virtual-dtor)
+  flatbuffers:
+    require:
+    - '%cxx=gcc'
+  # nvc rejects -ansi
+  fribidi:
+    require:
+    - '%c=gcc'
+  # nvhpc-export-symbols.patch does not apply to gettext@1.0
+  gettext:
+    require:
+    - '%c,cxx=gcc'
+  # nvc rejects gnulib's GCC warning flags (-Wimplicit-fallthrough, -Wno-sign-conversion, ...)
+  gperf:
+    require:
+    - '%c,cxx=gcc'
+  # nvc rejects -Wno-psabi; build also parses GCC preprocessor output (gpg-error.def)
+  libgpg-error:
+    require:
+    - '%c=gcc'
+  # nvc++ rejects GNU alias attribute in pcrecpp.cc
+  pcre:
+    require:
+    - '%c,cxx=gcc'
+  # nvc++ 26.9 crashes: "LLVM ERROR: Broken module found"
+  proj:
+    require:
+    - '%c,cxx=gcc'
+  # util-linux-uuid is C only; '::' replaces common's '%c,cxx=gcc', which cannot be satisfied
+  util-linux-uuid:
+    require::
+    - '%c=gcc'
+  # nvc++ rejects -Weffc++ and -pedantic-errors
+  yaml-cpp:
     require:
     - '%c,cxx=gcc'
   # zlib has its own require:: in packages.yaml, bypassing the 'all' rule
