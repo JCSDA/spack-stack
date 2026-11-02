@@ -1,0 +1,82 @@
+packages:
+  all:
+    require:
+    - any_of: ['%nvhpc@=26.9']
+      when: '%nvhpc'
+    - any_of: ['%gcc@=11.5.0']
+      when: '%gcc'
+
+  mpi:
+    buildable: false
+    require:
+    - 'openmpi@5.0.10rc2'
+
+  nvhpc:
+    buildable: false
+    externals:
+    - spec: nvhpc@26.9+blas+lapack~mpi
+      prefix: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi
+      modules:
+      - spack-apps/2026.10
+      - nvhpc/26.9
+      extra_attributes:
+        compilers:
+          c: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/compilers/bin/nvc
+          cxx: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/compilers/bin/nvc++
+          fortran: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/compilers/bin/nvfortran
+
+  openmpi:
+    buildable: false
+    require::
+    - '+internal-hwloc'
+    externals:
+    - spec: openmpi@5.0.10rc2 +internal-hwloc +internal-pmix +internal-libevent +two_level_namespace
+      prefix: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3/hpcx/hpcx-2.50/ompi5
+      modules:
+      - spack-apps/2026.10
+      - nvhpc/26.9
+
+# System gcc (no module needed, nvhpc module stays loaded); also the CUDA 13.3 host compiler.
+  gcc:
+    buildable: false
+    require:
+    - '@11.5.0'
+    externals:
+    - spec: gcc@11.5.0 languages:='c,c++,fortran'
+      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/gcc-12.4.0-dsgnou52lpn2tus6mohdmcw5mjqmqrhj
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+
+  cuda:
+    buildable: false
+    externals:
+    - spec: cuda@13.3
+      prefix: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/cuda/13.3
+      modules:
+      - spack-apps/2026.10
+      - nvhpc/26.9
+
+  # Ursa GPUs H100: CUDA build for H100 (cuda_arch=90)
+  kokkos:
+    require:
+    - '+cuda cuda_arch=90'
+    - '+wrapper'
+  kokkos-kernels:
+    require:
+    - '+cuda cuda_arch=90'
+  arborx:
+    require:
+    - '+cuda cuda_arch=90'
+
+
+  # Build with gcc; ecflow+ui (boost, qt) is C++ heavy
+  ecflow:
+    require:
+    - '%c,cxx=gcc'
+  # zlib has its own require:: in packages.yaml, bypassing the 'all' rule
+  zlib:
+    require:
+    - '%c=gcc'
