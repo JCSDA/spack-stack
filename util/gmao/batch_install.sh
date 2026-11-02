@@ -456,6 +456,7 @@ function fix_permissions() {
   host=$1
   dir=$2
   executables=$3
+  group_write=${4:-0}
   echo "Repairing permissions for directory ${dir} on ${host} ..."
   set +e
   case ${host} in
@@ -501,6 +502,14 @@ function fix_permissions() {
       exit 1
       ;;
   esac
+  # Shared caches (mirrors) are also group-writable so that members of the
+  # shared group can update them; install trees never pass group_write.
+  if [[ ${group_write} -eq 1 && ${host} != "macos.gmao" ]]; then
+    shared_group=${SPACK_STACK_SHARED_GROUP:-sispack}
+    nice -n 19 find ${dir} ! -group ${shared_group} -print0 | xargs --null --no-run-if-empty chgrp ${shared_group}
+    nice -n 19 find ${dir} -type d -print0 | xargs --null chmod g+rwxs
+    nice -n 19 find ${dir} -type f -print0 | xargs --null chmod g+rw
+  fi
   set -e
 }
 
@@ -989,20 +998,20 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       if [[ "${update_build_cache}" == "true" ]]; then
         echo "[DRY-RUN] spack buildcache push -u <binary_mirror_path>"
         echo "[DRY-RUN] spack buildcache update-index local-binary"
-        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0"
+        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0 1"
       elif [[ "${publish_build_cache}" == "true" ]]; then
         echo "[DRY-RUN] spack buildcache push -u <binary_mirror_path>"
         echo "[DRY-RUN] spack buildcache update-index local-binary"
-        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0"
+        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0 1"
       else
         echo "[DRY-RUN] spack module ${module_choice} refresh --yes --upstream-modules"
         echo "[DRY-RUN] spack stack setup-meta-modules"
       fi
       if [[ "${update_source_cache}" == "true" ]]; then
-        echo "[DRY-RUN] fix_permissions ${host} <source_mirror_path> 0"
+        echo "[DRY-RUN] fix_permissions ${host} <source_mirror_path> 0 1"
       fi
       if [[ "${update_cargo_mirror}" == "true" ]]; then
-        echo "[DRY-RUN] fix_permissions ${host} ${cargo_mirror_path} 0"
+        echo "[DRY-RUN] fix_permissions ${host} ${cargo_mirror_path} 0 1"
       fi
 
       echo "[DRY-RUN] spack clean -d -f -m -p -s"
@@ -1093,7 +1102,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       # Update buildcache index
       spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
       # Fix permissions for the bootstrap mirror
-      fix_permissions ${host} ${bootstrap_mirror_path} 0
+      fix_permissions ${host} ${bootstrap_mirror_path} 0 1
       update_bootstrap_mirror="false"
       # When spack creates a bootstrap mirror, it populates the "spack" scope
       # with compilers and packages it finds, which can create problems later
@@ -1504,13 +1513,13 @@ EOF
     # When creating or updating buildcaches, fix permissions for mirrors.
     # Mirrors do not contain executables, therefore skip looking for them.
     if [[ "${update_source_cache}" == "true" ]]; then
-      fix_permissions ${host} ${source_mirror_path} 0
+      fix_permissions ${host} ${source_mirror_path} 0 1
     fi
     if [[ "${publish_build_cache}" == "true" ]]; then
-      fix_permissions ${host} ${binary_mirror_path} 0
+      fix_permissions ${host} ${binary_mirror_path} 0 1
     fi
     if [[ "${update_cargo_mirror}" == "true" ]]; then
-      fix_permissions ${host} ${cargo_mirror_path} 0
+      fix_permissions ${host} ${cargo_mirror_path} 0 1
     fi
 
     # Clean up (don't remove software and configuration needed to bootstrap Spack)
