@@ -42,6 +42,7 @@ packages:
     - spec: intel-oneapi-mkl@2025.3.1
       prefix: /sw/gaea-c7/spack/envs/env_26.06/opt/intel-oneapi-compilers-2025.3.1/intel-oneapi-mkl-2025.3.1-xxdwsuy4jxt34coagmd66yhi33u2fy6v
       modules:
+      - oneapi/2025.3.1
       - intel-oneapi-mkl/2025.3.1
   gcc:
     buildable: False
