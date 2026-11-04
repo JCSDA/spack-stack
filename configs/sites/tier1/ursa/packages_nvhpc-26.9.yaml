@@ -75,14 +75,17 @@ packages:
   arborx:
     require:
     - '+cuda cuda_arch=90'
+
+  # Fortran flags for nvfortran
+  # gfsio, landsfcutil, sfcio, sigio: free-form sources with .f suffix;
+  # upstream CMake sets free-form/big-endian flags only for Intel/GNU
+  gfsio:
+    require:
+    - "fflags='-Mfree -byteswapio'"
   # hdf5 2.x hl/fortran targets miss the MPI Fortran module dir (HPC-X keeps mpi_f08.mod in lib/)
   hdf5:
     require:
     - "fflags='-I/apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3/hpcx/hpcx-2.50/ompi5/lib'"
-  # Free-form sources with .f suffix; upstream CMake sets free-form/big-endian flags only for Intel/GNU
-  gfsio:
-    require:
-    - "fflags='-Mfree -byteswapio'"
   # landsfcutil_d is not built with -r8 under NVHPC (CMake sets it for Intel only); needs a patch
   landsfcutil:
     require:
@@ -103,6 +106,10 @@ packages:
   ecflow:
     require:
     - '%c,cxx=gcc'
+  # nvc rejects -Wold-style-definition
+  elfutils:
+    require:
+    - '%c=gcc'
   # GNU-specific inline assembly; depends on alsa-lib
   ffmpeg:
     require:
@@ -111,16 +118,35 @@ packages:
   flatbuffers:
     require:
     - '%cxx=gcc'
+  # nvc rejects -Wmissing-declarations
+  fontconfig:
+    require:
+    - '%c=gcc'
   # nvc rejects -ansi
   fribidi:
     require:
     - '%c=gcc'
+  # nvc++ cannot parse libertiff templates ("type name is not allowed")
+  gdal:
+    require:
+    - '%c,cxx=gcc'
   # nvhpc-export-symbols.patch does not apply to gettext@1.0
   gettext:
     require:
     - '%c,cxx=gcc'
+  # meson does not add a PIC flag for nvc ("Can't link non-PIC static library")
+  glib:
+    require:
+    - '%c,cxx=gcc'
+  glib-bootstrap:
+    require:
+    - '%c,cxx=gcc'
   # nvc rejects gnulib's GCC warning flags (-Wimplicit-fallthrough, -Wno-sign-conversion, ...)
   gperf:
+    require:
+    - '%c,cxx=gcc'
+  # nvc rejects -nodefaultlibs when linking libicudata
+  icu4c:
     require:
     - '%c,cxx=gcc'
   # nvc rejects -Wno-psabi; build also parses GCC preprocessor output (gpg-error.def)
@@ -131,10 +157,42 @@ packages:
   pcre:
     require:
     - '%c,cxx=gcc'
+  # meson does not add a PIC flag for nvc ("Can't link non-PIC static library")
+  pixman:
+    require:
+    - '%c=gcc'
   # nvc++ 26.9 crashes: "LLVM ERROR: Broken module found"
   proj:
     require:
     - '%c,cxx=gcc'
+  # Python is built with gcc; pip passes its CFLAGS (-fno-strict-overflow) to nvc
+  py-awscrt:
+    require:
+    - '%c,cxx=gcc'
+  py-cffi:
+    require:
+    - '%c=gcc'
+  py-crc32c:
+    require:
+    - '%c=gcc'
+  py-kiwisolver:
+    require:
+    - '%c,cxx=gcc'
+  py-lxml:
+    require:
+    - '%c=gcc'
+  py-msgpack:
+    require:
+    - '%c=gcc'
+  py-pillow:
+    require:
+    - '%c=gcc'
+  py-psutil:
+    require:
+    - '%c=gcc'
+  py-ruamel-yaml-clib:
+    require:
+    - '%c=gcc'
   # util-linux-uuid is C only; '::' replaces common's '%c,cxx=gcc', which cannot be satisfied
   util-linux-uuid:
     require::
