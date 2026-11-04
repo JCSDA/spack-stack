@@ -17,7 +17,7 @@ packages:
     - spec: intel-oneapi-compilers@2025.3.1
       prefix: /apps/contrib/spack-stack/installs/oneapi-2025.3.1
       modules:
-      - intel-oneapi-compilers/2025.3.1
+      - intel-oneapi-compilers/2025.3.1 +fix_rt_linkage
       extra_attributes:
         compilers:
           c: /apps/contrib/spack-stack/installs/oneapi-2025.3.1/compiler/2025.3/bin/icx

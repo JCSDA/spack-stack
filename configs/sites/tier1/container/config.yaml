@@ -1,5 +1,8 @@
 config:
-  build_jobs: 10
+  # Old installer (see common/config.yaml): build_jobs is per package, so this
+  # runs up to concurrent_packages x build_jobs compile jobs (32 on 16 cores).
+  build_jobs: 8
+  concurrent_packages: 4
 
   # Container-specific paths for build and staging areas.
   # Use /tmp for transient build data (not preserved in final image).

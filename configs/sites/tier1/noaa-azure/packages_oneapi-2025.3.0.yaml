@@ -12,44 +12,39 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0
+    - spec: intel-oneapi-compilers@2025.3.0 +fix_rt_linkage
       prefix: /pw/apps/intel/2025.3.0
       modules:
-      - tbb/2022.3
-      - compiler-rt/2025.3.0
-      - umf/1.0.2
-      - compiler/2025.3.0
+      - intel/2025.3.0/tbb/2022.3
+      - intel/2025.3.0/compiler-rt/2025.3.0
+      - intel/2025.3.0/umf/1.0.2
+      - intel/2025.3.0/compiler/2025.3.0
       extra_attributes:
         compilers:
           c: /pw/apps/intel/2025.3.0/compiler/2025.3/bin/icx
           cxx: /pw/apps/intel/2025.3.0/compiler/2025.3/bin/icpx
           fortran: /pw/apps/intel/2025.3.0/compiler/2025.3/bin/ifx
-        environment:
-          set:
-            MODULES_AUTO_HANDLING: '1'
-          prepend_path:
-            MODULEPATH: /pw/apps/modules/intel/2025.3.0
   intel-oneapi-mpi:
     buildable: false
     externals:
     - spec: intel-oneapi-mpi@2021.17
       prefix: /pw/apps/intel/2025.3.0
       modules:
-      - mpi/2021.17
+      - intel/2025.3.0/mpi/2021.17
   intel-oneapi-mkl:
     buildable: false
     externals:
     - spec: intel-oneapi-mkl@2025.3
       prefix: /pw/apps/intel/2025.3.0
       modules:
-      - mkl/2025.3
+      - intel/2025.3.0/mkl/2025.3
   intel-oneapi-tbb:
     buildable: false
     externals:
     - spec: intel-oneapi-tbb@2022.3
       prefix: /pw/apps/intel/2025.3.0
       modules:
-      - tbb/2022.3
+      - intel/2025.3.0/tbb/2022.3
   gcc:
     buildable: false
     externals:

@@ -2,9 +2,9 @@
 # See the README.md for building instructions.
 
 ## ---------- build base container used by builder and runtime ----------
-FROM ubuntu:24.04 AS ubuntu_base
+FROM ubuntu:26.04 AS ubuntu_base
 
-ARG BUILD_JOBS=4
+ARG BUILD_JOBS=8
 ARG SPACK_STACK_TEMPLATE=unified-dev
 
 SHELL ["/bin/bash", "-c"]
@@ -22,14 +22,14 @@ RUN set -euo pipefail; \
     apt-get -yqq update && \
     apt-get -yqq upgrade && \
     apt-get -yqq install --no-install-recommends \
-        # Core build tools.
+        # Core build tools. build-essential pulls in the default gcc-15; we add
+        # gcc-14 alongside it, since spack-stack supports gcc up to 14.x.
         build-essential \
-        gcc-13 \
-        gcc++-13 \
-        gfortran-13 \
-        cpp-13 \
+        gcc-14 \
+        g++-14 \
+        gfortran-14 \
+        cpp-14 \
         make \
-        llvm-14 \
         autoconf \
         # External dependencies.
         libcurl4-openssl-dev \
@@ -55,10 +55,11 @@ RUN set -euo pipefail; \
         locales && \
     locale-gen en_US.UTF-8 && \
     # Update alternatives for compilers and tools
-    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-13 100 && \
-    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-13 100 && \
-    update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-13 100 && \
-    update-alternatives --install /usr/bin/llvm-config llvm-config /usr/bin/llvm-config-14 100 && \
+    # Make gcc-14 the default gcc/g++/gfortran for container users. Spack uses
+    # the -14 binaries by full path (see packages_gcc.yaml).
+    update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-14 100 && \
+    update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-14 100 && \
+    update-alternatives --install /usr/bin/gfortran gfortran /usr/bin/gfortran-14 100 && \
     # Install the intel
     apt install -y apt-utils gpg && \
     wget -O- https://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB \
@@ -68,11 +69,11 @@ RUN set -euo pipefail; \
         | tee /etc/apt/sources.list.d/oneAPI.list && \
     apt update && \
     apt install -y \
-        intel-oneapi-compiler-dpcpp-cpp-2025.3 \
-        intel-oneapi-compiler-fortran-2025.3 \
-        intel-oneapi-mpi-devel-2021.17 \
-        intel-oneapi-tbb-devel-2022.3 \
-        intel-oneapi-mkl-devel-2025.3 && \
+        intel-oneapi-compiler-dpcpp-cpp-2026.1 \
+        intel-oneapi-compiler-fortran-2026.1 \
+        intel-oneapi-mpi-devel-2021.18 \
+        intel-oneapi-tbb-devel-2023.1 \
+        intel-oneapi-mkl-devel-2026.1 && \
     /opt/intel/oneapi/modulefiles-setup.sh --output-dir=/opt/intel/oneapi/modulefiles && \
     echo "source /etc/profile.d/modules.sh && module use /opt/intel/oneapi/modulefiles" > /etc/profile.d/z01_oneapi_modules.sh && \
     rm -rf /var/lib/apt/lists/*
@@ -82,7 +83,12 @@ RUN set -euo pipefail; \
 FROM ubuntu_base AS builder
 
 ENV SPACK_STACK_DIR=/opt/spack-stack \
-    SPACK_ROOT=/opt/spack-stack/spack
+    SPACK_ROOT=/opt/spack-stack/spack \
+    # Spack loads the oneAPI compiler/MPI modules itself (also during
+    # concretization). RUN shells don't source /etc/profile.d, so point spack at
+    # environment-modules and the oneAPI modulefiles explicitly.
+    MODULESHOME=/usr/share/modules \
+    MODULEPATH=/opt/intel/oneapi/modulefiles
 
 
 # Copy spack-stack from build context. Note the build context must be the
@@ -97,7 +103,8 @@ COPY --exclude=configs/sites/tier1/container/Dockerfile.oneapi \
 
 # Create spack-stack environment
 WORKDIR /opt/spack-stack
-RUN mkdir -p /tmp/spack-stack && \
+RUN set -o pipefail && \
+    mkdir -p /tmp/spack-stack && \
     source setup.sh && \
     spack stack create env \
         --site container \
@@ -110,8 +117,11 @@ RUN mkdir -p /tmp/spack-stack && \
     spack concretize 2>&1 | tee log.concretize
 
 # Build the spack environment.
-RUN  source setup.sh &&  cd ${SPACK_STACK_DIR}/envs/container && spack env activate . && \
-        spack install --fail-fast -j ${BUILD_JOBS} 2>&1 | tee log.install
+# Spack loads the external oneAPI modules under LC_ALL=<build_language> (default
+# C). In the C locale environment-modules prints the "®" in Intel's umf
+# modulefile as a bare Latin-1 byte, which spack fails to decode as UTF-8.
+RUN  set -o pipefail && source setup.sh &&  cd ${SPACK_STACK_DIR}/envs/container && spack env activate . && \
+        spack -c config:build_language:C.UTF-8 install --fail-fast -j ${BUILD_JOBS} 2>&1 | tee log.install
 
 # Setup modules and meta-modules.
 RUN source setup.sh &&  cd ${SPACK_STACK_DIR}/envs/container && spack env activate . && \
@@ -140,16 +150,19 @@ RUN echo "ulimit -s unlimited" > /etc/spack_container_rc.sh \
     && echo "# TCL module path for the spack-stack environment." >> /etc/spack_container_rc.sh \
     && echo "source /etc/profile.d/modules.sh" >> /etc/spack_container_rc.sh \
     && echo "module use /opt/intel/oneapi/modulefiles" >> /etc/spack_container_rc.sh \
-    && echo "module use /opt/spack-software/modulefiles" >> /etc/spack_container_rc.sh \
     && echo "module use /opt/spack-software/modulefiles/Core" >> /etc/spack_container_rc.sh \
     && echo "# Bash function to load modules necessary to build the JEDI bundle." >> /etc/spack_container_rc.sh \
     && echo "load_jedi_bundle_env() {" >> /etc/spack_container_rc.sh \
     && echo "    module purge" >> /etc/spack_container_rc.sh \
-    && echo "    module load stack-intel-oneapi-compilers" >> /etc/spack_container_rc.sh \
-    && echo "    module load stack-intel-oneapi-mpi" >> /etc/spack_container_rc.sh \
+    && echo "    module load stack-intel-oneapi-compilers/2026.1.1" >> /etc/spack_container_rc.sh \
+    && echo "    module load stack-intel-oneapi-mpi/2021.18" >> /etc/spack_container_rc.sh \
     && echo "    module load base-env" >> /etc/spack_container_rc.sh \
     && echo "    module load jedi-mpas-env" >> /etc/spack_container_rc.sh \
+    && echo "    module load jedi-python-env" >> /etc/spack_container_rc.sh \
     && echo "    module load py-fortranformat" >> /etc/spack_container_rc.sh \
+    && echo "    module load py-matplotlib" >> /etc/spack_container_rc.sh \
+    && echo "    module load py-cartopy" >> /etc/spack_container_rc.sh \
+    && echo "    module load py-pyproj" >> /etc/spack_container_rc.sh \
     && echo "    module load jedi-fv3-env" >> /etc/spack_container_rc.sh \
     && echo "    module load ewok-env" >> /etc/spack_container_rc.sh \
     && echo "    module load ip" >> /etc/spack_container_rc.sh \
@@ -165,6 +178,13 @@ RUN useradd -U -k /etc/skel -s /bin/bash -d /home/nonroot -m nonroot --uid 43891
  && printf "[credential]\n    helper = cache --timeout=7200\n" >> /home/nonroot/.gitconfig \
  && mkdir /home/nonroot/.pmix \
  && chown -R nonroot:nonroot /home/nonroot/.gitconfig /home/nonroot/.pmix
+
+# Fail the build if the stack meta-modules don't load the oneAPI compilers and
+# MPI in the final image.
+RUN source /etc/spack_container_rc.sh && \
+    module load stack-intel-oneapi-compilers/2026.1.1 stack-intel-oneapi-mpi/2021.18 && \
+    module is-loaded compiler/2026.1.1 && module is-loaded mpi/2021.18 && \
+    which icx icpx ifx mpiifx
 
 # Ensure the container rc is run by non-login shells too.
 ENV BASH_ENV=/etc/spack_container_rc.sh
