@@ -75,6 +75,24 @@ packages:
   arborx:
     require:
     - '+cuda cuda_arch=90'
+  # hdf5 2.x hl/fortran targets miss the MPI Fortran module dir (HPC-X keeps mpi_f08.mod in lib/)
+  hdf5:
+    require:
+    - "fflags='-I/apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3/hpcx/hpcx-2.50/ompi5/lib'"
+  # Free-form sources with .f suffix; upstream CMake sets free-form/big-endian flags only for Intel/GNU
+  gfsio:
+    require:
+    - "fflags='-Mfree -byteswapio'"
+  # landsfcutil_d is not built with -r8 under NVHPC (CMake sets it for Intel only); needs a patch
+  landsfcutil:
+    require:
+    - "fflags='-Mfree'"
+  sfcio:
+    require:
+    - "fflags='-Mfree -byteswapio'"
+  sigio:
+    require:
+    - "fflags='-Mfree -byteswapio'"
 
   # Packages that nvc/nvc++ cannot build: use gcc
   # nvc rejects GNU computed goto and inline asm .previous directives
