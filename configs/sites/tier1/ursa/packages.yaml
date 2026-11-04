@@ -14,6 +14,11 @@ packages:
     - +kokkos
     - +arborx
 
+  # To avoid duplicate packages - py-arch and py-statsmodels need py-setuptools-scm@8
+  py-setuptools-scm:
+    require:
+    - '@8.2.1'
+
   # GPUs on ursa are H100
   # add: '+cuda cuda_arch=90' to kokkos / kokkos-kernels / arborx if building with CUDA support
   # add: '+wrapper' to kokkos
@@ -60,13 +65,6 @@ packages:
     externals:
     - spec: doxygen@1.11.0+graphviz~mscgen
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/doxygen-1.11.0-dbhxblaakcrhvmlrbgixvapnagjb2vkx
-  ecflow:
-    buildable: False
-    externals:
-    - spec: ecflow@5.11.4
-      prefix: /apps/spack-2024-12/linux-rocky9-x86_64/gcc-11.4.1/ecflow-5.11.4-a5ggcmayx6yesbqgbacifgvkstamchoy
-      modules:
-      - ecflow/5.11.4
   file:
     externals:
     - spec: file@5.39
