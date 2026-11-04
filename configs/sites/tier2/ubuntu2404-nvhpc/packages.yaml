@@ -116,7 +116,7 @@ packages:
   pkg-config:
     buildable: False
   # No system python external: Ubuntu 24.04 ships 3.12 and common requires
-  # python@3.13, so spack builds it (as on aws-ubuntu2404).
+  # python@3.13, so spack builds it (the tier1 aws-ubuntu site also excludes it).
   sed:
     externals:
     - spec: sed@4.9

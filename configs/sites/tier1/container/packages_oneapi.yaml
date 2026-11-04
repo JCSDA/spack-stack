@@ -1,65 +1,123 @@
 packages:
+
+  # Compilers.
+  # Language preferences for oneAPI come from common/packages_oneapi.yaml. Don't
+  # add "all: prefer: ['%oneapi']": it acts as a dependency constraint and makes
+  # spack rebuild system externals.
   all:
-    prefer:
-    - '%oneapi'
-    providers:
-      mpi: [intel-oneapi-mpi@2021.17]
-  mpi:
-    require: [intel-oneapi-mpi@2021.17]
-  # Compilers and meta packages.
+    conflict:
+    - '%c=oneapi %fortran=gcc'
+    - '%c,cxx=oneapi %fortran=gcc'
+    - '%c=gcc %fortran=oneapi'
+    - '%c,cxx=gcc %fortran=oneapi'
+    - '%fortran=oneapi %c=gcc'
+    - '%fortran=oneapi %c,cxx=gcc'
+    - '%fortran=gcc %c,cxx=oneapi'
+    - '%fortran=gcc %c=oneapi'
+
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0 +fix_rt_linkage
+    - spec: intel-oneapi-compilers@2026.1.1 +fix_rt_linkage
       prefix: /opt/intel/oneapi
       modules:
-      - umf/1.0.2
-      - tbb/2022.3
-      - compiler-rt/2025.3.2
-      - compiler/2025.3.2
+       - umf/1.1.0
+       # 2026.1's compiler modulefile adds a "tcm" prereq that 2025.3 lacks
+       - tcm/1.5
+       - tbb/2023.1
+       - compiler-rt/2026.1.1
+       - compiler/2026.1.1
       extra_attributes:
         compilers:
-          c: /opt/intel/oneapi/compiler/2025.3/bin/icx
-          cxx: /opt/intel/oneapi/compiler/2025.3/bin/icpx
-          fortran: /opt/intel/oneapi/compiler/2025.3/bin/ifx
+          fortran: /opt/intel/oneapi/compiler/2026.1/bin/ifx
+          c: /opt/intel/oneapi/compiler/2026.1/bin/icx
+          cxx: /opt/intel/oneapi/compiler/2026.1/bin/icpx
+        # Ubuntu 26.04's default gcc is 15. Left alone, icx/icpx pick the newest
+        # installed GCC for libstdc++ headers and libs, and ifx links its
+        # runtime. Pin them to gcc 14 so they match the gcc env.
+        flags:
+          cflags: --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/14
+          cxxflags: --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/14
+          fflags: -gcc-name=/usr/bin/gcc-14 -gxx-name=/usr/bin/g++-14
+  openmpi:
+    buildable: false
+  mpich:
+    buildable: false
+  mpi:
+    buildable: false
+    require:
+    - intel-oneapi-mpi@2021.18
   gcc:
     externals:
-    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+    - spec: gcc@14.3.0 languages:='c,c++,fortran'
       prefix: /usr
       extra_attributes:
         compilers:
-          c: /usr/bin/gcc
-          cxx: /usr/bin/g++
-          fortran: /usr/bin/gfortran
+          c: /usr/bin/gcc-14
+          cxx: /usr/bin/g++-14
+          fortran: /usr/bin/gfortran-14
     buildable: false
   intel-oneapi-mkl:
     buildable: false
     externals:
-    - spec: intel-oneapi-mkl@2025.3
+    # Deliberately NO "modules:" here. The mkl/2026.1 modulefile declares prereqs
+    # on tbb and compiler-rt, and spack loads externals in DAG order -- for e.g.
+    # "ip" it loads intel-oneapi-mkl BEFORE intel-oneapi-compilers, so mkl would
+    # be loaded without its prereqs and fail with
+    #   ModuleLoadError: Module 'mkl/2026.1' could not be loaded.
+    # Adding tbb/compiler-rt here instead collides with the compilers entry
+    # below: spack's load_module() treats an already-loaded module (no change to
+    # LOADEDMODULES) as a failure, so the second load of tbb would error.
+    # None of it is needed -- the intel-oneapi-mkl package sets MKLROOT and
+    # PKG_CONFIG_PATH from component_prefix (= prefix/mkl/<version>) under the
+    # default +envmods, and resolves libs/headers from prefix.
+    - spec: intel-oneapi-mkl@2026.1
       prefix: /opt/intel/oneapi
-      modules:
-      - mkl/2025.3
   intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: intel-oneapi-mpi@2021.17
+    - spec: intel-oneapi-mpi@2021.18
       modules:
-      - mpi/2021.17
+      - mpi/2021.18
       prefix: /opt/intel/oneapi
   intel-oneapi-tbb:
     buildable: false
     externals:
-    - spec: intel-oneapi-tbb@2022.3
+    - spec: intel-oneapi-tbb@2023.1
       prefix: /opt/intel/oneapi
       modules:
-      - tbb/2022.3
-  mpich:
-    buildable: false
-  openmpi:
-    buildable: false
-  mkl:
+      - tbb/2023.1
+
+  # Package constraints.
+  # Avoid duplicates. Unpinned, gmao-swell-env and py-pyresample pull two
+  # py-dask versions, which splits py-setuptools-scm (8 vs 9) and cascades into
+  # py-netcdf4, py-xarray, py-zarr and jedi-python-env. The gcc env settles on
+  # 2024.12.1 without a pin.
+  py-dask:
+    require: ['@2024.12.1']
+  # Unconstrained, one met concretizes ~graphics. Keep common's +shared-intel.
+  met:
+    require: ['+graphics +shared-intel']
+  jedi-base-env:
+    require: [+fftw, +hdf4]
+  jedi-python-env:
+    require: [+bufrquery]
+  eccodes:
     require:
-    - intel-oneapi-mkl
-  py-numpy:
+    - "jp2k=jasper"
+  jasper:
     require:
-    - '^intel-oneapi-mkl'
+    - +jpeg
+  curl:
+    require: ['+nghttp2']
+  py-pyyaml:
+    require:
+    - +libyaml
+  # aws-ubuntu uses the apt qt5 as an external; the container builds qt, and
+  # qt 5.15 fails to compile with icpx (qfloat16_f16c.c redefinitions). Build it
+  # with gcc as common/packages_oneapi.yaml suggests. '@5' repeats common's
+  # requirement, which this one replaces.
+  qt:
+    require:
+    - '@5'
+    - '%c,cxx=gcc'

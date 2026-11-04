@@ -1,9 +1,10 @@
 packages:
 
   # Compilers.
+  # Language preferences for oneAPI come from common/packages_oneapi.yaml. Don't
+  # add "all: prefer: ['%oneapi']": it acts as a dependency constraint and makes
+  # spack rebuild system externals.
   all:
-    prefer:
-    - '%oneapi'
     conflict:
     - '%c=oneapi %fortran=gcc'
     - '%c,cxx=oneapi %fortran=gcc'
@@ -13,8 +14,6 @@ packages:
     - '%fortran=oneapi %c,cxx=gcc'
     - '%fortran=gcc %c,cxx=oneapi'
     - '%fortran=gcc %c=oneapi'
-    providers:
-      mpi:: [intel-oneapi-mpi@2021.18]
 
   intel-oneapi-compilers:
     buildable: false
@@ -33,6 +32,13 @@ packages:
           fortran: /opt/intel/oneapi/compiler/2026.1/bin/ifx
           c: /opt/intel/oneapi/compiler/2026.1/bin/icx
           cxx: /opt/intel/oneapi/compiler/2026.1/bin/icpx
+        # Ubuntu 26.04's default gcc is 15. Left alone, icx/icpx pick the newest
+        # installed GCC for libstdc++ headers and libs, and ifx links its
+        # runtime. Pin them to gcc 14 so they match the gcc env.
+        flags:
+          cflags: --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/14
+          cxxflags: --gcc-install-dir=/usr/lib/gcc/x86_64-linux-gnu/14
+          fflags: -gcc-name=/usr/bin/gcc-14 -gxx-name=/usr/bin/g++-14
   openmpi:
     buildable: false
   mpich:
@@ -43,13 +49,13 @@ packages:
     - intel-oneapi-mpi@2021.18
   gcc:
     externals:
-    - spec: gcc@13.3.0 languages:='c,c++,fortran'
+    - spec: gcc@14.3.0 languages:='c,c++,fortran'
       prefix: /usr
       extra_attributes:
         compilers:
-          c: /usr/bin/gcc
-          cxx: /usr/bin/g++
-          fortran: /usr/bin/gfortran
+          c: /usr/bin/gcc-14
+          cxx: /usr/bin/g++-14
+          fortran: /usr/bin/gfortran-14
     buildable: false
   intel-oneapi-mkl:
     buildable: false
@@ -83,6 +89,15 @@ packages:
       - tbb/2023.1
 
   # Package constraints.
+  # Avoid duplicates. Unpinned, gmao-swell-env and py-pyresample pull two
+  # py-dask versions, which splits py-setuptools-scm (8 vs 9) and cascades into
+  # py-netcdf4, py-xarray, py-zarr and jedi-python-env. The gcc env settles on
+  # 2024.12.1 without a pin.
+  py-dask:
+    require: ['@2024.12.1']
+  # Unconstrained, one met concretizes ~graphics. Keep common's +shared-intel.
+  met:
+    require: ['+graphics +shared-intel']
   jedi-base-env:
     require: [+fftw, +hdf4]
   jedi-python-env:
