@@ -1,7 +1,7 @@
 packages:
   all:
     require:
-    - any_of: ['%nvhpc@=26.9']
+    - any_of: ['%nvhpc@=26.5']
       when: '%nvhpc'
     - any_of: ['%gcc@=13.3.0']
       when: '%gcc'
@@ -12,16 +12,16 @@ packages:
   nvhpc:
     buildable: false
     externals:
-    - spec: nvhpc@26.9+blas+lapack~mpi
-      prefix: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.9
+    - spec: nvhpc@26.5+blas+lapack~mpi
+      prefix: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.5
       modules:
       - PrgEnv-nvidia/8.7.0
-      - nvhpc/26.9
+      - nvhpc/26.5
       extra_attributes:
         compilers:
-          c: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.9/Linux_x86_64/26.9/compilers/bin/nvc
-          cxx: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.9/Linux_x86_64/26.9/compilers/bin/nvc++
-          fortran: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.9/Linux_x86_64/26.9/compilers/bin/nvfortran
+          c: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.5/Linux_x86_64/26.5/compilers/bin/nvc
+          cxx: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.5/Linux_x86_64/26.5/compilers/bin/nvc++
+          fortran: /p/app/projects/NEPTUNE/spack-stack/nvhpc-26.5/Linux_x86_64/26.5/compilers/bin/nvfortran
         environment:
           set:
             CONFIG_SITE: ''
