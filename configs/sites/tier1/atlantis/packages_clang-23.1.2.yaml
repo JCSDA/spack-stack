@@ -1,0 +1,30 @@
+packages:
+  all:
+    require:
+    - any_of: ['%llvm@=23.1.2']
+      when: '%llvm'
+  mpi:
+    buildable: False
+    require:
+    - "openmpi@5.0.11"
+  llvm:
+    externals:
+    - spec: llvm@23.1.2 +flang ~libomptarget
+      prefix: /gpfs/neptune/spack-stack/llvm-23.1.2
+      modules:
+      - llvm/23.1.2
+      extra_attributes:
+        compilers:
+          c: /gpfs/neptune/spack-stack/llvm-23.1.2/bin/clang
+          cxx: /gpfs/neptune/spack-stack/llvm-23.1.2/bin/clang++
+          fortran: /gpfs/neptune/spack-stack/llvm-23.1.2/bin/flang-new
+        extra_rpaths:
+        - /gpfs/neptune/spack-stack/llvm-23.1.2/lib
+        - /gpfs/neptune/spack-stack/llvm-23.1.2/lib/x86_64-unknown-linux-gnu
+  openmpi:
+    externals:
+    - spec: openmpi@5.0.11 ~internal-hwloc +two_level_namespace
+      prefix: /gpfs/neptune/spack-stack/openmpi-5.0.11/llvm-23.1.2
+      modules:
+      - llvm/23.1.2
+      - openmpi/5.0.11
