@@ -253,6 +253,8 @@ On the very first run, use `-u` to populate the bootstrap, source, and cargo mir
 - `-s`: Submits the install step to SLURM.
 - No `-e` needed since the environment directories do not exist yet.
 
+**Shared cache permissions (discover and discover-gmao only):** after updating the bootstrap, source, binary, and cargo mirrors, `batch_install.sh` makes them group-writable by the `sispack` group (`chgrp` plus `chmod g+rwXs`) so that any SI Team developer can update them. Install trees (environments) are not touched this way. Set `SPACK_STACK_SHARED_GROUP` to use a different group. This step is skipped on other hosts (NAS, bucy, macOS) where the group does not exist.
+
 #### Step 2 — Rebuild or retry runs
 
 After the first run, the environment directories exist and the caches are populated. Drop `-u` and add `-e`:
@@ -460,6 +462,7 @@ The following flags are less commonly used. The descriptions below reflect our b
 | `-c BUILDCACHE_DIR` | Use a custom build cache directory. Required with `-r ops -m build` for operational partners who do not have write access to the shared mirrors. |
 | `-d ENV_DIRS` | Override the default environment directory (default: `envs/` in the repo root). |
 | `-C COMPILERS` | Comma-separated list of compilers to build (e.g., `gcc@=15.2.0,oneapi@=2025.3.0`). Overrides the site defaults. |
+| `-T TEMPLATES` | Comma-separated list of templates to build (e.g., `geos-dev` or `unified-dev,geos-dev`). Overrides the host's default templates. |
 | `-p` / `--partition` | Override the SLURM partition. Defaults to `preops` when account is `s1873`, otherwise unset. |
 | `-q` / `--qos` | Override the SLURM QOS. Defaults to `benchmark` when account is `s1873`, otherwise unset. |
 | `--constraint` | Override the SLURM node constraint. Defaults to `mil` (Milan nodes). No short form (`-c`/`-C` are taken). |
