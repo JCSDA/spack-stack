@@ -1004,6 +1004,9 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
         echo "[DRY-RUN] spack buildcache update-index local-binary"
         echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0 1"
       else
+        if [[ "${host}" == "nas-toss5" ]]; then
+          echo "[DRY-RUN] Remove empty PATH entries for module refresh"
+        fi
         echo "[DRY-RUN] spack module ${module_choice} refresh --yes --upstream-modules"
         echo "[DRY-RUN] spack stack setup-meta-modules"
       fi
@@ -1506,7 +1509,13 @@ EOF
 
     # In install mode, create environment modules
     if [[ "${update_build_cache}" == "false" ]]; then
-      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.modules.${env_name}.${LOG_TIMESTAMP}
+      # On TOSS5, empty PATH entries make Spack embed the inherited PATH in Intel MKL modules.
+      (
+        if [[ "${host}" == "nas-toss5" ]]; then
+          export PATH="$(printf '%s' "$PATH" | sed -e 's/::*/:/g' -e 's/^://' -e 's/:$//')"
+        fi
+        spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.modules.${env_name}.${LOG_TIMESTAMP}
+      )
       spack stack setup-meta-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.setup-meta-modules.${env_name}.${LOG_TIMESTAMP}
     fi
 
