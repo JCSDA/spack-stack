@@ -12,6 +12,13 @@ This guide documents how to build **spack-stack** on NASA NAS systems. Use `util
 - [Obtain an Interactive Compute Node](#obtain-an-interactive-compute-node)
 - [Setup spack-stack](#setup-spack-stack)
 - [Using batch_install.sh (recommended)](#using-batch_installsh-recommended)
+  - [Roles and modes](#roles-and-modes)
+  - [The -H flag](#the--h-flag)
+  - [The -e flag](#the--e-flag)
+  - [The --datestamp and --suffix flags](#the---datestamp-and---suffix-flags)
+  - [Environment names](#environment-names)
+  - [Loading the stack](#loading-the-stack)
+  - [Additional options reference](#additional-options-reference)
 - [Create Environments](#create-environments)
   - [oneAPI - ifx Environment](#oneapi---ifx-environment)
   - [oneAPI - ifort Environment](#oneapi---ifort-environment)
@@ -126,6 +133,85 @@ Use `-C oneapi@=2024.2.0` or `-C oneapi@=2025.3.0` to work on only one compiler 
 With `-s`, NAS requests one 120-task PBS node for eight hours; the script caps each package build at 24 jobs and normally permits two independent package builds. If the filesystem reports `OSError: [Errno 37] No locks available`, an exclusive recovery job may use `-L` (or `--disable-locks`): it creates a job-local Spack configuration with locking disabled and serializes package builds. Do not use `-L` while any other process can modify the same install tree.
 
 The `-p`, `-q`, and `--constraint` options are Discover-specific and do not apply to NAS PBS jobs.
+
+---
+
+### Roles and modes
+
+The script requires two key flags on every invocation:
+
+- **`-r ROLE`** — either `dev` or `ops`
+- **`-m MODE`** — either `build` or `install`
+
+| Role + Mode | What it does |
+|---|---|
+| `-r dev -m build` | For SI Team developers with write access to the shared mirrors. Builds packages from source and writes results to the **default shared build cache**. |
+| `-r dev -m install` | Installs packages from the shared build cache (no compilation) and generates module files. |
+| `-r ops -m build` | For operational partners **without** write access to the shared mirrors. Builds packages and writes to a **custom build cache** specified with `-c BUILDCACHE_DIR`. Allows partners to maintain their own binary cache independently. |
+| `-r ops -m install` | Installs packages from the shared build cache and generates module files. |
+
+The `-m install` step is **required** to generate usable module files. A `-m build` run alone does not produce modules.
+
+---
+
+### The -H flag
+
+Always pass `-H nas` explicitly on NAS. Without `-H`, the script autodetects the site from `$HOSTNAME`; explicit `-H` avoids any ambiguity.
+
+---
+
+### The -e flag
+
+The `-e` flag tells the script to continue even if the environment directories already exist. Without it, the script exits with an error if any target environment directory is present.
+
+- On the **very first run**, you do not need `-e` (the directories do not exist yet).
+- On **every subsequent run** (rebuilds, retries, installs), you must pass `-e`.
+
+---
+
+### Environment names
+
+The script creates one environment per compiler under `envs/` (relative to the repository root, unless overridden with `-d`):
+
+| Mode | Environment names created |
+|---|---|
+| `build` | `ue-oneapi-2024.2.0-build`, `ue-oneapi-2025.3.0-build`, `ue-gcc-15.2.0-build`; with the `geos-dev` template, `ge-` equivalents (e.g. `ge-oneapi-2024.2.0-build`) |
+| `install` | `ue-oneapi-2024.2.0`, `ue-oneapi-2025.3.0`, `ue-gcc-15.2.0`; with the `geos-dev` template, `ge-` equivalents (e.g. `ge-oneapi-2024.2.0`) |
+
+The `ue-` prefix comes from the `unified-dev` template and `ge-` from `geos-dev`; both are built by default on this site. Use `-C` (comma-separated, e.g. `-C oneapi@=2024.2.0`) to select compilers and `-T` (comma-separated, e.g. `-T unified-dev`) to select templates.
+
+---
+
+### Loading the stack
+
+After the `install` step completes, point your shell to the generated module files:
+
+```bash
+module use -a /path/to/spack-stack/envs/ue-oneapi-2024.2.0/install/modulefiles/Core
+module load stack-intel-oneapi-compilers stack-intel-oneapi-mpi
+```
+
+Replace `ue-oneapi-2024.2.0` with the appropriate environment name for your compiler of choice.
+
+---
+
+### Additional options reference
+
+| Flag | Description |
+|---|---|
+| `-c BUILDCACHE_DIR` | Use a custom build cache directory. Required with `-r ops -m build`. |
+| `-d ENV_DIRS` | Override the default environment directory (default: `envs/` in the repo root). |
+| `-C COMPILERS` | Comma-separated list of compilers to build (e.g., `oneapi@=2024.2.0,gcc@=15.2.0`). Overrides the site defaults. |
+| `-T TEMPLATES` | Comma-separated list of templates to build (e.g., `geos-dev` or `unified-dev,geos-dev`). Overrides the host's default templates (`unified-dev` and `geos-dev`). |
+| `-a ACCOUNT` | Override the PBS account (default: `s1873`). |
+| `-o` / `--concretize-only` | Concretize environments and stop before installation. |
+| `-n` | Dry run: print what would be executed. |
+| `-L` / `--disable-locks` | Disable Spack install locks and serialize package installs for an isolated recovery run only. |
+| `-t` | Run tests for specific third-party dependencies after installation (list hardcoded in `batch_install.sh`). |
+| `-u` | Populate bootstrap, source, and cargo mirrors. Requires `-r dev -m build`. First run or cache refresh only. |
+| `--datestamp` | Append `-YYYYMMDD` to environment names. Off by default. |
+| `--suffix=LABEL` | Append `-LABEL` to environment names. Off by default. |
+| `--with-ai` | Add `ai-env` (py-torch + `jedi-base-env`) to newly created environments. Expensive; off by default. |
 
 ---
 

@@ -23,7 +23,7 @@ The primary script for building and installing spack-stack environments. It auto
 ### Usage
 
 ```
-batch_install.sh -r <ROLE> -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>] [-H <HOSTNAME>]
+batch_install.sh -r <ROLE> -m <MODE> [-d <ENV_DIRS>] [-c <BUILDCACHE_DIR>] [-C <COMPILERS>] [-T <TEMPLATES>] [-H <HOSTNAME>]
 ```
 
 Run with `-h` for full usage:
@@ -37,7 +37,7 @@ Run with `-h` for full usage:
 | Flag | Description |
 |---|---|
 | `-r ROLE` | Role: `dev` (SI Team developers with write access to shared mirrors, writes to default build cache) or `ops` (operational partners without write access, requires `-c` to specify their own build cache). |
-| `-m MODE` | Mode: `build` (compile + populate build cache) or `install` (install from cache + generate modules). |
+| `-m MODE` | Mode: `build` (compile + populate build cache), `install` (install from cache + generate modules), or `local` (one-step per-machine install and cache update; `macos.gmao` and `bucy`; `-r` not required). |
 | `-H HOSTNAME` | Override hostname autodetection. Usually required (e.g. `-H discover-gmao`, `-H macos.gmao`). |
 | `-s` | Submit the install step to the batch scheduler (SLURM/PBS) instead of running interactively. |
 | `-e` | Continue if environment directories already exist. Required on all runs after the first. |
@@ -51,11 +51,15 @@ Run with `-h` for full usage:
 | `-c BUILDCACHE_DIR` | Custom build cache path. Required with `-r ops -m build`. |
 | `-d ENV_DIRS` | Override the default environment directory. |
 | `-C COMPILERS` | Comma-separated compiler list, overrides site defaults. |
+| `-T TEMPLATES` | Comma-separated template list (e.g. `geos-dev` or `unified-dev,geos-dev`), overrides the host's default templates. |
+| `-L` / `--disable-locks` | Disable Spack install locks and serialize package installs. Use only when this is the sole process modifying the install tree. |
 | `-N NAGFOR_PATH` | Path to `nagfor` executable for NAG compiler detection (macOS only). |
 | `-t` | Run tests for hardcoded third-party packages after installation. |
 | `--datestamp` | Append `-YYYYMMDD` (today) to environment names, e.g. `ge-gcc-15.3.0-20261007`. Off by default. |
 | `--with-ai` | Add `ai-env` (py-torch + `jedi-base-env`) to the root specs of newly created environments. Expensive, so off by default; not applied to existing environments (`-e`). Combine with `--suffix=ai` to keep the name distinct. |
 | `--suffix=LABEL` | Append `-LABEL` to environment names (after the date when combined with `--datestamp`), e.g. `ge-gcc-15.3.0-20261007-swelltest`. Off by default. |
+
+**Shared cache permissions:** on `discover` and `discover-gmao` only, mirror updates are followed by a `chgrp`/`chmod g+rwXs` to group `sispack` (override with `SPACK_STACK_SHARED_GROUP`) so SI Team members can all update the shared caches. Install trees are not made group-writable. Skipped on NAS, bucy, and macOS.
 
 ### Supported sites
 

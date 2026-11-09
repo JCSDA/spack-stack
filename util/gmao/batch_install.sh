@@ -98,6 +98,8 @@ usage() {
   echo "      by default, exit with an error if already exist"
   echo "  -C  Set a comma-separated list of compilers to use (e.g. gcc@=15.3.0,nag@=7.2.7243);"
   echo "      overrides the default compilers for the site"
+  echo "  -T  Set a comma-separated list of templates to use (e.g. geos-dev or unified-dev,geos-dev);"
+  echo "      overrides the default templates for the host"
   echo "  -N  Path to nagfor executable (e.g. /opt/nag/bin/nagfor);"
   echo "      forces NAG stack to be built using this specific compiler"
   echo "  -a  Set PBS/SLURM account (default: s1873);"
@@ -214,7 +216,7 @@ while [[ $# -gt 0 ]]; do
 done
 set -- "${normalized_args[@]}"
 
-while getopts r:m:d:c:C:N:H:a:p:q:nouestLh flag
+while getopts r:m:d:c:C:T:N:H:a:p:q:nouestLh flag
 do
   case "${flag}" in
     r)
@@ -231,6 +233,9 @@ do
       ;;
     C)
       SPACK_STACK_COMPILER_OPT=${OPTARG}
+      ;;
+    T)
+      SPACK_STACK_TEMPLATE_OPT=${OPTARG}
       ;;
     N)
       SPACK_STACK_NAGFOR_PATH=${OPTARG}
@@ -282,6 +287,7 @@ echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set
 echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
 echo "  SPACK_STACK_BATCH_HOST_OPT:                  ${SPACK_STACK_BATCH_HOST_OPT:-autodetect}"
+echo "  SPACK_STACK_TEMPLATE_OPT:                    ${SPACK_STACK_TEMPLATE_OPT:-use host default}"
 echo "  SPACK_STACK_ENV_SUFFIX:                      ${SPACK_STACK_ENV_SUFFIX:-none}"
 echo "  SPACK_STACK_ENV_DATESTAMP:                   ${SPACK_STACK_ENV_DATESTAMP:-false}"
 echo "  SPACK_STACK_WITH_AI:                         ${SPACK_STACK_WITH_AI:-false}"
@@ -345,7 +351,7 @@ fi
 case ${SPACK_STACK_BATCH_HOST} in
   nas)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=15.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev" "geos-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror-toss4"
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
@@ -353,7 +359,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     ;;
   nas-toss5)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=15.3.0")
-    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev" "geos-dev")
     SPACK_STACK_MODULE_CHOICE="tcl"
     SPACK_STACK_BOOTSTRAP_MIRROR="/swbuild/gmao_SIteam/spack-stack/bootstrap-mirror-toss5"
     SPACK_STACK_CARGO_MIRROR="/swbuild/gmao_SIteam/spack-stack/cargo-mirror"
@@ -361,7 +367,7 @@ case ${SPACK_STACK_BATCH_HOST} in
     ;;
   discover)
     SPACK_STACK_BATCH_COMPILERS=("oneapi@=2024.2.0" "oneapi@=2025.3.0" "gcc@=14.2.0" "gcc@=15.2.0")
-    SPACK_STACK_BATCH_TEMPLATES=("unified-dev")
+    SPACK_STACK_BATCH_TEMPLATES=("unified-dev" "geos-dev")
     SPACK_STACK_MODULE_CHOICE="lmod"
     SPACK_STACK_BOOTSTRAP_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/bootstrap-mirror"
     SPACK_STACK_CARGO_MIRROR="/discover/nobackup/projects/gmao/SIteam/spack-stack/cargo-mirror"
@@ -439,12 +445,18 @@ if [[ -n "${SPACK_STACK_COMPILER_OPT}" ]]; then
   IFS=',' read -r -a SPACK_STACK_BATCH_COMPILERS <<< "${SPACK_STACK_COMPILER_OPT}"
 fi
 
+# Apply -T template override for all hosts
+if [[ -n "${SPACK_STACK_TEMPLATE_OPT}" ]]; then
+  IFS=',' read -r -a SPACK_STACK_BATCH_TEMPLATES <<< "${SPACK_STACK_TEMPLATE_OPT}"
+fi
+
 ##################################################################################################
 
 function fix_permissions() {
   host=$1
   dir=$2
   executables=$3
+  group_write=${4:-0}
   echo "Repairing permissions for directory ${dir} on ${host} ..."
   set +e
   case ${host} in
@@ -490,6 +502,14 @@ function fix_permissions() {
       exit 1
       ;;
   esac
+  # Shared caches (mirrors) are also group-writable on discover (the only host with the sispack group)
+  # so members can update them; install trees never pass group_write.
+  if [[ ${group_write} -eq 1 && ( ${host} == "discover" || ${host} == "discover-gmao" ) ]]; then
+    shared_group=${SPACK_STACK_SHARED_GROUP:-sispack}
+    nice -n 19 find ${dir} ! -group ${shared_group} -print0 | xargs --null --no-run-if-empty chgrp ${shared_group}
+    nice -n 19 find ${dir} -type d -print0 | xargs --null chmod g+rwxs
+    nice -n 19 find ${dir} -type f -print0 | xargs --null chmod g+rw
+  fi
   set -e
 }
 
@@ -978,20 +998,23 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       if [[ "${update_build_cache}" == "true" ]]; then
         echo "[DRY-RUN] spack buildcache push -u <binary_mirror_path>"
         echo "[DRY-RUN] spack buildcache update-index local-binary"
-        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0"
+        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0 1"
       elif [[ "${publish_build_cache}" == "true" ]]; then
         echo "[DRY-RUN] spack buildcache push -u <binary_mirror_path>"
         echo "[DRY-RUN] spack buildcache update-index local-binary"
-        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0"
+        echo "[DRY-RUN] fix_permissions ${host} <binary_mirror_path> 0 1"
       else
+        if [[ "${host}" == "nas-toss5" ]]; then
+          echo "[DRY-RUN] Remove empty PATH entries for module refresh"
+        fi
         echo "[DRY-RUN] spack module ${module_choice} refresh --yes --upstream-modules"
         echo "[DRY-RUN] spack stack setup-meta-modules"
       fi
       if [[ "${update_source_cache}" == "true" ]]; then
-        echo "[DRY-RUN] fix_permissions ${host} <source_mirror_path> 0"
+        echo "[DRY-RUN] fix_permissions ${host} <source_mirror_path> 0 1"
       fi
       if [[ "${update_cargo_mirror}" == "true" ]]; then
-        echo "[DRY-RUN] fix_permissions ${host} ${cargo_mirror_path} 0"
+        echo "[DRY-RUN] fix_permissions ${host} ${cargo_mirror_path} 0 1"
       fi
 
       echo "[DRY-RUN] spack clean -d -f -m -p -s"
@@ -1082,7 +1105,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       # Update buildcache index
       spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
       # Fix permissions for the bootstrap mirror
-      fix_permissions ${host} ${bootstrap_mirror_path} 0
+      fix_permissions ${host} ${bootstrap_mirror_path} 0 1
       update_bootstrap_mirror="false"
       # When spack creates a bootstrap mirror, it populates the "spack" scope
       # with compilers and packages it finds, which can create problems later
@@ -1435,6 +1458,13 @@ elif [[ "${host}" == "discover-gmao" ]] && \
   module load comp/gcc/12.3.0 comp/nag/7.2-7238 mpi/openmpi/4.1.6/nag_7.2.7238-gcc_12.3.0
 fi
 
+# Some Discover MPI modules (e.g. mpi/openmpi/5.0.10/gcc-15.2.0) run
+# setenv("TMPDIR", "/tmp"), so restore our private TMPDIR after module loads.
+if [[ -n "\${build_tmpdir:-}" ]]; then
+  export TMPDIR="\${build_tmpdir}"
+  echo "INFO: TMPDIR after module preload: \${TMPDIR}"
+fi
+
 $(declare -p test_packages)
 
 # If no tests are required, install everything
@@ -1479,20 +1509,26 @@ EOF
 
     # In install mode, create environment modules
     if [[ "${update_build_cache}" == "false" ]]; then
-      spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.modules.${env_name}.${LOG_TIMESTAMP}
+      # On TOSS5, empty PATH entries make Spack embed the inherited PATH in Intel MKL modules.
+      (
+        if [[ "${host}" == "nas-toss5" ]]; then
+          export PATH="$(printf '%s' "$PATH" | sed -e 's/::*/:/g' -e 's/^://' -e 's/:$//')"
+        fi
+        spack module ${module_choice} refresh --yes --upstream-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.modules.${env_name}.${LOG_TIMESTAMP}
+      )
       spack stack setup-meta-modules 2>&1 | tee ${SPACK_STACK_DIR}/logs/log.setup-meta-modules.${env_name}.${LOG_TIMESTAMP}
     fi
 
     # When creating or updating buildcaches, fix permissions for mirrors.
     # Mirrors do not contain executables, therefore skip looking for them.
     if [[ "${update_source_cache}" == "true" ]]; then
-      fix_permissions ${host} ${source_mirror_path} 0
+      fix_permissions ${host} ${source_mirror_path} 0 1
     fi
     if [[ "${publish_build_cache}" == "true" ]]; then
-      fix_permissions ${host} ${binary_mirror_path} 0
+      fix_permissions ${host} ${binary_mirror_path} 0 1
     fi
     if [[ "${update_cargo_mirror}" == "true" ]]; then
-      fix_permissions ${host} ${cargo_mirror_path} 0
+      fix_permissions ${host} ${cargo_mirror_path} 0 1
     fi
 
     # Clean up (don't remove software and configuration needed to bootstrap Spack)
