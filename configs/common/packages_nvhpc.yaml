@@ -42,6 +42,25 @@ packages:
   file:
     require:
     - '%c=gcc'
+  # nvfortran does not support REAL(16)
+  fms:
+    require::
+    - spec: precision=32,64
+      when: '@:2025.03'
+    - spec: precision=mixed
+      when: '@2025.04:'
+    - ~quad_precision
+    - +openmp
+    - +pic
+    - +yaml
+    - build_type=Release
+    - any_of:
+      - '@=2025.03'
+      - '@=2024.03'
+      - '@=2026.01.01'
+    - any_of:
+      - +gfs_phys constants=GFS
+      - ~gfs_phys constants=GEOS
   gmake:
     require:
     - '%c=gcc'
@@ -67,6 +86,13 @@ packages:
   libxml2:
     require:
     - '%c=gcc'
+  # pflogger 1.18.1 does not compile with nvfortran
+  mapl:
+    require::
+    - '@2.69'
+    - ~shared
+    - ~f2py
+    - ~pflogger
   ninja:
     require:
     - '%c=gcc'

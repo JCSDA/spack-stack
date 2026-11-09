@@ -35,6 +35,12 @@ packages:
       modules:
       - spack-apps/2026.10
       - nvhpc/26.9
+      extra_attributes:
+        environment:
+          set:
+            NVCOMPILER_COMM_LIBS_HOME: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3
+          prepend_path:
+            PATH: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3/hpcx/hpcx-2.50/ompi5/bin
 
   # System gcc (no module needed, nvhpc module stays loaded); also the CUDA 13.3 host compiler.
   gcc:
@@ -175,6 +181,9 @@ packages:
   py-crc32c:
     require:
     - '%c=gcc'
+  py-cftime:
+    require:
+    - '%c=gcc'
   py-kiwisolver:
     require:
     - '%c,cxx=gcc'
@@ -182,6 +191,9 @@ packages:
     require:
     - '%c=gcc'
   py-msgpack:
+    require:
+    - '%c=gcc'
+  py-netcdf4:
     require:
     - '%c=gcc'
   py-pillow:
