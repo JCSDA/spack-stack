@@ -1,0 +1,28 @@
+# UFS Weather Model environment 
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+  - ufs-weather-model-env ^esmf@=9.0.0b17 ^crtm@=3.1.5
+  - mapl@2.69.1 ^esmf@=9.0.0b17
+  - esmf@=9.0.0b17
+  - fms +gfs_phys constants=GFS
+
+  packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python
+    # Avoid duplicate builds of parallelio +pnetcdf and ~pnetcdf
+    parallelio:
+      require:
+      - +pnetcdf
+
+  config:
+    install_tree:
+      padded_length: 200
+
