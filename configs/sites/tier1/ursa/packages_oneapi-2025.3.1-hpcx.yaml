@@ -15,6 +15,7 @@ packages:
     - spec: hpcx-mpi@2.18.1
       prefix: /apps/hpcx-v2.18.1-gcc-mlnx_ofed-redhat9-cuda12-x86_64/ompi-mt-oneapi2025
       modules:
+      - intel-oneapi-compilers/2025.3.1
       - hpc-x/2.18.1-mt-oneapi2025
   intel-oneapi-compilers:
     buildable: False
@@ -37,6 +38,7 @@ packages:
     - spec: intel-oneapi-mkl@2025.3
       prefix: /apps/spack-2024-12/linux-rocky9-x86_64/oneapi-2025.3.1/intel-oneapi-mkl-2025.3.0-z5owhveid7qlq4erbay2seqzs65y3etu
       modules:
+      - intel-oneapi-compilers/2025.3.1
       - intel-oneapi-mkl/2025.3.0
   gcc:
     buildable: False

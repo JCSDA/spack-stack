@@ -1,6 +1,6 @@
 # How to Build **spack-stack** at NAS on TOSS5
 
-This guide documents how to build **spack-stack** on NASA NAS TOSS5 systems. The previous install process used three stages across compute and login nodes, but recent testing shows installation can now be done directly on a compute node.
+This guide documents how to build **spack-stack** on NASA NAS TOSS5 systems. Use `util/gmao/batch_install.sh` for normal full-stack builds: it performs the internet-facing preparation on the login node and submits the offline install to PBS.
 
 ---
 
@@ -11,6 +11,14 @@ This guide documents how to build **spack-stack** on NASA NAS TOSS5 systems. The
 - [Clone spack-stack](#clone-spack-stack)
 - [Obtain an Interactive Compute Node](#obtain-an-interactive-compute-node)
 - [Setup spack-stack](#setup-spack-stack)
+- [Using batch_install.sh (recommended)](#using-batch_installsh-recommended)
+  - [Roles and modes](#roles-and-modes)
+  - [The -H flag](#the--h-flag)
+  - [The -e flag](#the--e-flag)
+  - [The --datestamp and --suffix flags](#the---datestamp-and---suffix-flags)
+  - [Environment names](#environment-names)
+  - [Loading the stack](#loading-the-stack)
+  - [Additional options reference](#additional-options-reference)
 - [Create Environments](#create-environments)
   - [oneAPI - ifx Environment](#oneapi---ifx-environment)
   - [oneAPI - ifort Environment](#oneapi---ifort-environment)
@@ -90,6 +98,159 @@ cd spack-stack-2.1.0
 
 ---
 
+## Using batch_install.sh (recommended)
+
+Run the script from a NAS TOSS5 login node. It creates and concretizes the environments, populates required mirrors on the login node, and—with `-s`—submits the install to a PBS compute node. The generated PBS job exports the shared Cargo mirror and sets `CARGO_NET_OFFLINE=true`, so Rust builds do not try to access the network.
+
+Start by checking the command that would run:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s -n
+```
+
+For a new environment, use `-u` once to populate the bootstrap, source, and Cargo mirrors before the offline build job starts:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s -u
+```
+
+For a failed build or a later retry, retain the environment with `-e` and normally omit `-u`:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s -e
+```
+
+After the build cache is populated, generate usable Tcl module files with the install mode:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m install -H nas-toss5 -s -e
+```
+
+Use `-C oneapi@=2024.2.0` or `-C oneapi@=2025.3.0` to work on only one compiler environment. `-o` (or `--concretize-only`) stops after concretization, and `--help` displays all accepted options.
+
+With `-s`, NAS TOSS5 requests one 240-task Turin PBS node for eight hours; the script caps each package build at 24 jobs and normally permits two independent package builds. If the filesystem reports `OSError: [Errno 37] No locks available`, an exclusive recovery job may use `-L` (or `--disable-locks`): it creates a job-local Spack configuration with locking disabled and serializes package builds. Do not use `-L` while any other process can modify the same install tree.
+
+The `-p`, `-q`, and `--constraint` options are Discover-specific and do not apply to NAS PBS jobs.
+
+---
+
+### Roles and modes
+
+The script requires two key flags on every invocation:
+
+- **`-r ROLE`** — either `dev` or `ops`
+- **`-m MODE`** — either `build` or `install`
+
+| Role + Mode | What it does |
+|---|---|
+| `-r dev -m build` | For SI Team developers with write access to the shared mirrors. Builds packages from source and writes results to the **default shared build cache**. |
+| `-r dev -m install` | Installs packages from the shared build cache (no compilation) and generates module files. |
+| `-r ops -m build` | For operational partners **without** write access to the shared mirrors. Builds packages and writes to a **custom build cache** specified with `-c BUILDCACHE_DIR`. Allows partners to maintain their own binary cache independently. |
+| `-r ops -m install` | Installs packages from the shared build cache and generates module files. |
+
+The `-m install` step is **required** to generate usable module files. A `-m build` run alone does not produce modules.
+
+---
+
+### The -H flag
+
+Always pass `-H nas-toss5` explicitly on NAS TOSS5. Without `-H`, the script autodetects the site from `$HOSTNAME`; explicit `-H` avoids any ambiguity.
+
+---
+
+### The -e flag
+
+The `-e` flag tells the script to continue even if the environment directories already exist. Without it, the script exits with an error if any target environment directory is present.
+
+- On the **very first run**, you do not need `-e` (the directories do not exist yet).
+- On **every subsequent run** (rebuilds, retries, installs), you must pass `-e`.
+
+---
+
+### Environment names
+
+The script creates one environment per compiler under `envs/` (relative to the repository root, unless overridden with `-d`):
+
+| Mode | Environment names created |
+|---|---|
+| `build` | `ue-oneapi-2024.2.0-build`, `ue-oneapi-2025.3.0-build`, `ue-gcc-15.3.0-build`; with the `geos-dev` template, `ge-` equivalents (e.g. `ge-oneapi-2024.2.0-build`) |
+| `install` | `ue-oneapi-2024.2.0`, `ue-oneapi-2025.3.0`, `ue-gcc-15.3.0`; with the `geos-dev` template, `ge-` equivalents (e.g. `ge-oneapi-2024.2.0`) |
+
+The `ue-` prefix comes from the `unified-dev` template and `ge-` from `geos-dev`; both are built by default on this site. Use `-C` (comma-separated, e.g. `-C oneapi@=2024.2.0`) to select compilers and `-T` (comma-separated, e.g. `-T unified-dev`) to select templates.
+
+---
+
+### Loading the stack
+
+After the `install` step completes, point your shell to the generated module files:
+
+```bash
+module use -a /path/to/spack-stack/envs/ue-oneapi-2024.2.0/install/modulefiles/Core
+module load stack-intel-oneapi-compilers stack-intel-oneapi-mpi
+```
+
+Replace `ue-oneapi-2024.2.0` with the appropriate environment name for your compiler of choice.
+
+---
+
+### Additional options reference
+
+| Flag | Description |
+|---|---|
+| `-c BUILDCACHE_DIR` | Use a custom build cache directory. Required with `-r ops -m build`. |
+| `-d ENV_DIRS` | Override the default environment directory (default: `envs/` in the repo root). |
+| `-C COMPILERS` | Comma-separated list of compilers to build (e.g., `oneapi@=2024.2.0,gcc@=15.3.0`). Overrides the site defaults. |
+| `-T TEMPLATES` | Comma-separated list of templates to build (e.g., `geos-dev` or `unified-dev,geos-dev`). Overrides the host's default templates (`unified-dev` and `geos-dev`). |
+| `-a ACCOUNT` | Override the PBS account (default: `s1873`). |
+| `-o` / `--concretize-only` | Concretize environments and stop before installation. |
+| `-n` | Dry run: print what would be executed. |
+| `-L` / `--disable-locks` | Disable Spack install locks and serialize package installs for an isolated recovery run only. |
+| `-t` | Run tests for specific third-party dependencies after installation (list hardcoded in `batch_install.sh`). |
+| `-u` | Populate bootstrap, source, and cargo mirrors. Requires `-r dev -m build`. First run or cache refresh only. |
+| `--datestamp` | Append `-YYYYMMDD` to environment names. Off by default. |
+| `--suffix=LABEL` | Append `-LABEL` to environment names. Off by default. |
+| `--with-ai` | Add `ai-env` (py-torch + `jedi-base-env`) to newly created environments. Expensive; off by default. |
+
+---
+
+### The --datestamp and --suffix flags
+
+By default, environments are named `<prefix>-<compiler>-<version>` (e.g. `ge-gcc-15.3.0`). To build an environment that others may be using and that you are less likely to remove by accident, tag its name:
+
+```bash
+# Append today's date: ge-gcc-15.3.0-YYYYMMDD
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s --datestamp
+
+# Append a custom label: ge-gcc-15.3.0-swelltest
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s --suffix=swelltest
+
+# Both: ge-gcc-15.3.0-YYYYMMDD-swelltest
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s --datestamp --suffix=swelltest
+```
+
+The tag is placed after any `-build` marker. A tagged environment is a separate directory, so it does not collide with untagged ones; use the same options together with `-e` to continue it.
+
+To include py-torch (`ai-env`, which also brings in `jedi-base-env`) in a new environment, add `--with-ai`; it is expensive, so it is off by default:
+
+```bash
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s --with-ai --suffix=ai
+```
+
+Torch is heavy, so check first with a dry run (`-n`) and then concretize only (`-o`) before building:
+
+```bash
+./util/gmao/batch_install.sh -n -r dev -m build -H nas-toss5 -s --with-ai --suffix=ai
+./util/gmao/batch_install.sh -r dev -m build -H nas-toss5 -s --with-ai --suffix=ai -o
+```
+
+`--with-ai` only applies to newly created environments, not ones continued with `-e`.
+
+## Manual workflow (fallback)
+
+The sections below describe the older manual workflow. Prefer `batch_install.sh` above for full-stack builds, especially when Rust packages are present.
+
+---
+
 ## Create Environments
 
 You only need to create each environment once.
@@ -154,6 +315,19 @@ spack mirror create -a -d /swbuild/gmao_SIteam/spack-stack/source-cache
 > ⚠️ **Do not run this outside an activated environment.**
 > Otherwise Spack will attempt to mirror **every** known package/version.
 
+### If one source fails while updating the cache
+
+The `-u` source-cache update mirrors many packages concurrently. If one reachable Git source fails to mirror, fetch that concrete spec serially on the login node instead of submitting an offline compute-node job without its source:
+
+```bash
+. ./setup.sh
+spack -e envs/<build-environment> mirror create \
+  -d /swbuild/gmao_SIteam/spack-stack/source-cache \
+  <spec>
+```
+
+For example, `<spec>` can be `ioda-data@2.12.0`. After the command succeeds, resume `batch_install.sh` without `-u`. If the direct fetch also fails, investigate repository access or the package's source metadata before retrying.
+
 ---
 
 ## Pre-Fetch Cargo Dependencies (LOGIN NODE ONLY)
@@ -161,11 +335,11 @@ spack mirror create -a -d /swbuild/gmao_SIteam/spack-stack/source-cache
 Rust packages frequently require network access during build. Pre-fetch their dependencies:
 
 ```bash
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
 ../../util/fetch_cargo_deps.py
 ```
 
-> ⚠️ **Set `CARGO_HOME` on compute nodes** before running `spack install`.
+> ⚠️ **Set `SPACK_CARGO_HOME` and `CARGO_NET_OFFLINE=true` on compute nodes** before running `spack install`.
 
 ---
 
@@ -174,7 +348,8 @@ export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
 Run installation on a **compute node**:
 
 ```bash
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export CARGO_NET_OFFLINE=true
 spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install ; bell
 ```
 
@@ -229,17 +404,19 @@ Typical commands were:
 
 ```bash
 # Step 1 (compute node)
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export CARGO_NET_OFFLINE=true
 spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature \
   --only dependencies py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.deps-for-rust-and-ecflow ; bell
 
 # Step 2 (athfe login node)
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
 spack install -j 2 -p 1 --verbose --fail-fast --show-log-on-error --no-check-signature \
   py-cryptography py-maturin py-rpds-py ecflow 2>&1 | tee log.install.rust-and-ecflow ; bell
 
 # Step 3 (compute node)
-export CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export SPACK_CARGO_HOME=/swbuild/gmao_SIteam/spack-stack/cargo-mirror
+export CARGO_NET_OFFLINE=true
 spack install -j 16 --verbose --fail-fast --show-log-on-error --no-check-signature 2>&1 | tee log.install.after-cargo ; bell
 ```
 

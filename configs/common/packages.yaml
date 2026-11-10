@@ -13,6 +13,12 @@ packages:
       require:
       - zlib
     # Individual package settings
+    arborx:
+      require:
+      - '@2.1'
+      - +mpi
+      - +openmp
+      - +serial
     awscli-v2:
       require:
       - ~examples
@@ -58,6 +64,15 @@ packages:
       require:
       - '@0.0.5'
       - +python
+    # cairo@1.18.0: is uses the meson recipe. The meson build enforces variants
+    # that are all-enabled or all-disabled. The "all-enabled" variants are set to help
+    # the concretizer resolve the correct version without disabling all variants.
+    # pango/harfbuzz/gobject-introspection need cairo+gobject; without pinning it
+    # the concretizer builds cairo both ways and the two collide on one modulefile.
+    cairo:
+      require:
+      - '@1.18:'
+      - +zlib+ft+fc+png+pdf+gobject
     cdo:
       require:
       - ~openmp
@@ -90,38 +105,39 @@ packages:
       - +link-little-endian
       - +link-netcdf
       - +link-testfiles
-    # Attention - when updating also check the various jcsda-emc-bundles env packages
+    # Attention - when updating also check the various env packages
     crtm:
       require:
       - +fix
     ecbuild:
       require:
-      - '@3.12.0'
+      - '@3.15.2'
     eccodes:
       require:
       - '@2.33.0'
       - +netcdf
       - +png
       - +tools
+    # uwtools@2.17: needs ecflow@5.16:; leave the version to the concretizer
     ecflow:
       require:
-      - '@5.11.4'
       - +ui
+      - '@5.18:'
     eckit:
       require:
-      - '@1.32.3'
+      - '@2.0.7'
       - linalg=eigen,lapack
       - compression=lz4,bzip2
     ecmwf-atlas:
       require:
-      - '@0.44.1'
+      - '@0.46.0'
       - +fckit
       - +trans
       - +tesselation
       - +fftw
     ectrans:
       require:
-      - '@1.7.0'
+      - '@1.8.0'
     eigen:
       require:
       - '@3.4.0'
@@ -135,10 +151,8 @@ packages:
       - +shared
       - +external-parallelio
       - any_of:
-        - '@=8.6.1 snapshot=none'
-        - '@=8.8.0 snapshot=none'
-        - '@=8.9.1 snapshot=none'
-        - '@=9.0.0b11 snapshot=b11'
+        - '@=9.0.0b17'
+        - '@=9.0.0b18'
       - any_of:
         - 'fflags="-fp-model precise" cxxflags="-fp-model precise"'
         when: '%intel'
@@ -148,20 +162,27 @@ packages:
       - ~libbsd
     fckit:
       require:
-      - '@0.14.1'
+      - '@0.14.3'
       - +eckit
+    ffmpeg:
+      require:
+      - ~gpl
+      - ~nonfree
     fftw:
       require:
       - '@3.3.10'
     fiat:
       require:
-      - '@1.6.1'
+      - '@2.0.0'
     flex:
       require:
       - '@2.6.4'
     fms:
       require:
-      - precision=32,64
+      - spec: precision=32,64
+        when: '@:2025.03'
+      - spec: precision=mixed
+        when: '@2025.04:'
       - +quad_precision
       - +openmp
       - +pic
@@ -170,6 +191,7 @@ packages:
       - any_of:
         - '@=2025.03'
         - '@=2024.03'
+        - '@=2026.01.01'
       - any_of:
         - +gfs_phys constants=GFS
         - ~gfs_phys constants=GEOS
@@ -199,12 +221,16 @@ packages:
     global-workflow-env:
       require:
       - '+uwtools'
+      - '+gdas'
+      - '+gsi'
+      - '+metplus'
+      - '+ci'
     grib-util:
       require:
       - '@1.4.0'
     gsibec:
       require:
-      - '@1.4.2'
+      - '@1.4.4'
     gsi-ncdiag:
       require:
       - '@1.1.3'
@@ -213,8 +239,11 @@ packages:
       # for the deprecated @2.9.1 which doesn't compile against ICU >= 76
       # (-Werror=redundant-decls on u_strlen). Force meson.
       # cmake-based harfbuzz fails during build
+      # requiring +gobject eliminates a duplicate copy of harfbuzz in the unified-env
+      # due to global-workflow-env deps requesting a non-default variant
       require:
       - 'build_system=meson'
+      - +gobject
     hdf:
       require:
       - '@4.2.15'
@@ -223,7 +252,7 @@ packages:
       - ~netcdf
     hdf5:
       require:
-      - '@1.14.5'
+      - '@2.1.0'
       - +hl
       - +fortran
       - +mpi
@@ -249,6 +278,16 @@ packages:
     jedi-cmake:
       require:
       - '@1.4.0'
+    kokkos:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
+    kokkos-kernels:
+      require:
+      - '@5.1.1'
+      - +openmp
+      - +serial
     landsfcutil:
       require:
       - '@2.4.2'
@@ -276,7 +315,7 @@ packages:
       - '@4.15.3:'
     mapl:
       require:
-      - '@2.53'
+      - '@2.69'
       - ~shared
       - ~f2py
       - +pflogger
@@ -305,9 +344,13 @@ packages:
     nemsiogfs:
       require:
       - '@2.5.4'
+    # Note: per spack, the first is "preferred", so if you
+    # need 1.11.0.0, you need to explicitly request it in your spec.
     nccmp:
       require:
-      - '@1.9.0.1'
+      - any_of:
+        - '@1.9.0.1'
+        - '@1.11.0.0'
     ncio:
       require:
       - '@1.1.2'
@@ -330,7 +373,7 @@ packages:
     # ninja - when adding information here, also check Discover site config
     odc:
       require:
-      - '@1.6.1'
+      - '@1.6.3'
       - ~fortran
     openmpi:
       require:
@@ -352,10 +395,9 @@ packages:
       require:
       - '@2.6.2'
       - +pnetcdf
-    # DH* CAN WE UPDATE? NEED A NEW SHARED-INTEL PATCH?
     parallel-netcdf:
       require:
-      - '@1.12.3'
+      - '@1.14.1'
     pflogger:
       require:
       - +mpi
@@ -377,8 +419,11 @@ packages:
     # are removed, which itself is problematic.
     python:
       require:
-      - '@3.11'
-      - ~crypt
+      - '@3.13'
+      # The crypt variant only exists for python<=3.12 since the module was dropped.
+      # An unconditional ~crypt caps python at 3.12
+      - spec: ~crypt
+        when: '@:3.12'
     # Not sure about the exact version requirements, but earlier
     # versions (definitely 4.5.3 and earlier) don't work with newer
     # py-setuptools (version 68 and later) because of a breaking
@@ -386,21 +431,25 @@ packages:
     py-beautifulsoup4:
       require:
       - '@4.12.3:'
+    # Pin to avoid duplicates
+    py-pybind11:
+      require:
+      - '@:2'
     py-cartopy:
       require:
       - +plotting
-    # See py-pycparser
-    py-click:
-      require:
-      - '@8.1.8'
     # Pin py-colorama to avoid duplicate packages, hopefully can be removed soon
     py-colorama:
       require:
       - '@0.4.6'
-    # Pin to version 42 to avoid maturin dependency that breaks Intel oneAPI builds
-    py-cryptography:
+    # No tutorials extras; prevent py-pandas-datareader dep with broken configparser call
+    py-arch:
       require:
-      - '@42'
+      - ~tutorial
+    # Exclude @:2021.3.0 (broken configparser call), which its default +bag/+delayed variants select
+    py-dask:
+      require:
+      - '@2023.4.1:'
     py-h5py:
       require:
       - ~mpi
@@ -423,27 +472,30 @@ packages:
     py-netcdf4:
       require:
       - ~mpi
-    # To avoid duplicate packages
+    # To avoid duplicate packages - use either 2.4.6 or 2.3.3 (needed for py-pandas +performance)
     py-numpy:
       require:
-      - '@1'
-    # Restrict py-pandas to older versions compatible with py-numpy and py-xarray
+      - one_of:
+        - '@2.4.6'
+        - '@2.3.3'
+      prefer:
+      - '@2.4.6'
+    # Restrict py-pandas to versions 2 and older. Users wanting the +performance variant
+    # must 'require' it in their site config.
     py-pandas:
       require:
       - '@:2'
+      # py-versioneer is unavoidably duplicated by pins in py-pyogrio (@0.28) and
+      # py-partd (@0.29). py-pandas is unconstrained and can further cascade splits
+      # into py-xarray/met/metplus/jedi-base-env. This constraints py-versioneer to @0.28
+      # (shared with py-pyogrio) so only py-versioneer itself is duplicated.
+      - ^py-versioneer@0.28
+      prefer:
+      - '~performance'
     # To avoid duplicate packages
     py-poetry-core:
       require:
       - '@1.7'
-    # See py-pycparser
-    py-pooch:
-      require:
-      - '@1.7.0'
-    # Need older version of py-pycparser until we can update setuputils to >= 77 ?
-    # https://github.com/pydata/xarray/issues/10588
-    py-pycparser:
-      require:
-      - '@2.21'
     # Need at least py-pygithub@2.7 for self-hosted runner management
     py-pygithub:
       require:
@@ -452,44 +504,45 @@ packages:
     py-pyogrio:
       require:
       - '@0.9.0'
-    # See py-pycparser
-    py-pyparsing:
-      require:
-      - '@3.1.2'
     # To avoid duplicate packages
     py-python-dateutil:
       require:
       - '@2'
-    # To avoid duplicate packages
+    # To avoid duplicate packages, pin to recent version.
     py-requests:
       require:
-      - '@2.32.3'
+      - '@2.32:'
     # To avoid duplicate packages
     py-ruamel-yaml:
       require:
       - '@0.17.16'
     # https://github.com/JCSDA/spack-stack/issues/1942
     # https://github.com/spack/spack-packages/issues/3695
-    py-setuptools:
-      require:
-      - '@73.0.1'
-    # See py-pycparser
-    py-sphinxcontrib-bibtex:
-      require:
-      - '@2.5.0'
+    # NOTE: py-setuptools was pinned @73.0.1 for the py3.11 stack; removed for the
+    # py3.12/numpy2 migration since modern packages (e.g. py-xarray@2025.7) require
+    # py-setuptools@77.0.3:. Re-evaluate issue #3695 if setuptools duplicates recur.
     py-torch:
       require:
+      - '@2.10:'
       - +custom-protobuf
       - ~mkldnn
+      # PyTorch 2.12 does not honor the recipe's USE_XPU=OFF setting when
+      # built through PEP 517. With oneAPI, Kineto then enables its XPU/PTI
+      # plugin, but the installed oneAPI toolkit does not provide PTI CMake
+      # configuration files. Re-enable once that forwarding issue is fixed.
+      - ~kineto
     # To avoid duplicate packages
     py-urllib3:
       require:
       - '@1.26.20'
       # OR - '@1.26.12' ?
-    # To avoid duplicate packages
+    # Not '@=0.28'; py-pyogrio needs 0.28 and py-partd/py-dask 0.29, build-only so a split is fine
     py-versioneer:
       require:
-      - '@=0.28'
+      - '@0.28:'
+    py-zarr:
+      require:
+      - '@3:'
     # On a per-site basis, either set qt to buildable: false
     # or add requirement to build with gcc for Intel oneAPI
     qt:
@@ -530,9 +583,10 @@ packages:
     upp:
       require:
       - '@10.0.10'
+    # Upper bound keeps the branch version 'main' out; spack sorts it above 2.x
     uwtools:
       require:
-      - '@2.7.2'
+      - '@2.17:2'
     w3emc:
       require:
       - '@2.13.0'

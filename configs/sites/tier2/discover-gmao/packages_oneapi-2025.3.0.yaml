@@ -12,7 +12,7 @@ packages:
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2025.3.0
+    - spec: intel-oneapi-compilers@2025.3.0 +fix_rt_linkage
       prefix: /usr/local/intel/oneapi/2025
       modules:
       - comp/intel/2025.3.0
@@ -47,6 +47,8 @@ packages:
     - spec: intel-oneapi-mpi@2021.17
       prefix: /usr/local/intel/oneapi/2025
       modules:
+      # mpi/impi/2021.17 requires this compiler module to be loaded first.
+      - comp/intel/2025.3.0
       - mpi/impi/2021.17
   intel-oneapi-mkl:
     buildable: false

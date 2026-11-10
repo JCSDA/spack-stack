@@ -24,6 +24,8 @@ class NeptuneEnv(BundlePackage):
     variant("ncview", default=False, description="Build ncview")
     variant("debug", default=False, description="Build debug version of selected dependencies")
     variant("openmp", default=True, description="Build OpenMP-enabled versions of dependencies")
+    # Because spack doesn't support "with when not"
+    variant("nvhpc", default=False, description="Flag to signal building with nvhpc")
 
     depends_on("base-env", type="run")
 
@@ -37,7 +39,9 @@ class NeptuneEnv(BundlePackage):
     depends_on("p4est", type="run")
     depends_on("w3emc", type="run")
     depends_on("ip ~openmp", type="run", when="~openmp")
-    depends_on("ip +openmp", type="run", when="+openmp")
+    # https://github.com/NOAA-EMC/NCEPLIBS-ip/issues/320
+    depends_on("ip ~openmp", type="run", when="+openmp +nvhpc")
+    depends_on("ip +openmp", type="run", when="+openmp ~nvhpc")
     depends_on("esmf ~debug ~openmp", type="run", when="~debug ~openmp")
     depends_on("esmf ~debug +openmp", type="run", when="~debug +openmp")
     depends_on("esmf +debug ~openmp", type="run", when="+debug ~openmp")

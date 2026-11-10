@@ -1,0 +1,22 @@
+# Template for NEPTUNE development
+#
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+  #- dev-utils-env
+  - neptune-env ~debug +openmp +nvhpc +espc ~ncview ^esmf@=9.0.0b18
+  - neptune-env +debug +openmp +nvhpc +espc ~ncview ^esmf@=9.0.0b18
+  - neptune-env ~debug ~openmp +nvhpc +espc ~ncview ^esmf@=9.0.0b18
+  - neptune-env +debug ~openmp +nvhpc +espc ~ncview ^esmf@=9.0.0b18
+  #- py-numpy
+
+  packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - ~python

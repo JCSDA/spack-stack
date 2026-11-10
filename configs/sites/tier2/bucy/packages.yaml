@@ -1,0 +1,119 @@
+packages:
+  all:
+    target: [x86_64_v3]
+  # Existing tools (RHEL 8 system or GMAO shared installs). Not marked
+  # buildable:false so spack can still build a newer one if needed.
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.16.1
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.30
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@4.4.3
+      prefix: /ford1/share/gmao_SIteam/Utilities/cmake-4.4.3
+  coreutils:
+    externals:
+    - spec: coreutils@8.30
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.6.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.1+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.19.8.1
+      prefix: /usr
+  gh:
+    externals:
+    - spec: gh@2.88.1
+      prefix: /ford1/share/gmao_SIteam/gh
+  git:
+    externals:
+    - spec: git@2.49.0
+      prefix: /ford1/share/gmao_SIteam/git/git-2.49.0
+  git-lfs:
+    externals:
+    - spec: git-lfs@3.7.1
+      prefix: /ford1/share/gmao_SIteam/git-lfs/3.7.1
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.1
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.3
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@8.0p1
+      prefix: /usr
+  pkgconf:
+    externals:
+    - spec: pkgconf@1.4.2
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.5
+      prefix: /usr
+  # tar 1.35 fails to build against the newer system libacl headers
+  # (conflicting acl_get_file_at declarations), so force the system tar.
+  tar:
+    buildable: false
+    externals:
+    - spec: tar@1.30
+      prefix: /usr
+  texinfo:
+    externals:
+    - spec: texinfo@6.5
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.19.5
+      prefix: /usr
+  zlib:
+    buildable: false
+    externals:
+    - spec: zlib@1.2.11
+      prefix: /usr
+  zlib-api:
+    require: [zlib]
+  # GEOS requires nccmp 1.11.0.0; use it everywhere so the stack has a single nccmp
+  nccmp:
+    require:
+    - '@1.11.0.0'

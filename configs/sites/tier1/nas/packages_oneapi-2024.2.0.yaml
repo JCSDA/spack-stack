@@ -8,11 +8,12 @@ packages:
   mpi:
     buildable: false
     require:
-    - "mpt@2.30"
+    # Select mpiifort for the ifort compiler stack instead of the default mpiifx.
+    - "intel-oneapi-mpi@2021.13 +classic-names"
   intel-oneapi-compilers:
     buildable: false
     externals:
-    - spec: intel-oneapi-compilers@2024.2.0
+    - spec: intel-oneapi-compilers@2024.2.0 +fix_rt_linkage
       prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
       - comp-intel/2024.2.0-ifort
@@ -41,13 +42,13 @@ packages:
           c: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gcc
           cxx: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/g++
           fortran: /nobackup/gmao_SIteam/gcc/gcc-12.3.0-TOSS4/bin/gfortran
-  mpt:
+  intel-oneapi-mpi:
     buildable: false
     externals:
-    - spec: mpt@2.30
-      prefix: /nasa/hpe/mpt/2.30_rhel810
+    - spec: intel-oneapi-mpi@2021.13 +classic-names
+      prefix: /nobackup/gmao_SIteam/intel/oneapi
       modules:
-      - mpi-hpe/mpt.2.30
+      - mpi-impi/2021.13
   intel-oneapi-mkl:
     buildable: false
     externals:

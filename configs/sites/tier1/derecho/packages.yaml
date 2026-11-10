@@ -1,6 +1,7 @@
 packages:
 # Modification of common packages
   all:
+    target: [zen3]
     providers:
       zlib-api:: [zlib]
   # Tell esmf that this is not a 'normal' Cray ...

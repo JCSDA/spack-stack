@@ -62,9 +62,13 @@ packages:
     require:
     - '~shared'
 
+  # Cartopy's optional plotting dependency pulls in SciPy, whose Meson build
+  # does not support NAG's Fortran standard options.
+  py-cartopy:
+    require::
+    - ~plotting
 
   gdbm:
     externals:
     - spec: gdbm@1.26
       prefix: @BREW_PREFIX@/opt/gdbm
-

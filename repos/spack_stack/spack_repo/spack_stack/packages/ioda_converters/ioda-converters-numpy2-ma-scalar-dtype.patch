@@ -1,0 +1,235 @@
+diff --git a/src/compo/mopitt_co_nc2ioda.py b/src/compo/mopitt_co_nc2ioda.py
+index 1f60e97..ca86406 100755
+--- a/src/compo/mopitt_co_nc2ioda.py
++++ b/src/compo/mopitt_co_nc2ioda.py
+@@ -124,10 +124,19 @@ class mopitt(object):
+ 
+             # convert all concentrations and column to correct units to avoid single precision issues
+             u_conv = avogadro / scm2sm
+-            xa_gd = xa_gd * vmr2col / u_conv
+-            xa_tc = xa_tc / u_conv
+-            xr_tc = xr_tc / u_conv
+-            er_tc = er_tc / u_conv
++            # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++            # so an operation between a masked array and a Python scalar widens the
++            # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++            # See https://github.com/numpy/numpy/issues/27029
++            # vmr2col and u_conv are not exactly representable in float32, so it is
++            # not enough to cast the result: numpy < 2 also narrowed the Python
++            # scalar to the array's dtype before operating (value-based casting),
++            # and doing the arithmetic in float64 changes the last bits. Narrow the
++            # scalars explicitly to keep the computation in the array's precision.
++            xa_gd = xa_gd * xa_gd.dtype.type(vmr2col) / xa_gd.dtype.type(u_conv)
++            xa_tc = xa_tc / xa_tc.dtype.type(u_conv)
++            xr_tc = xr_tc / xr_tc.dtype.type(u_conv)
++            er_tc = er_tc / er_tc.dtype.type(u_conv)
+ 
+             # mopitt number of levels is dependent on surface pressure, for data points with sp<900hPa
+             # nlevs<10. IODA and UFO cannot handle variable nlayers_kernel for a given instrument
+@@ -169,7 +178,8 @@ class mopitt(object):
+ 
+                 self.outdata[('aprioriTerm', 'RetrievalAncillaryData')] = ap_tc[flg]
+                 self.outdata[('averagingKernel', 'RetrievalAncillaryData')] = ak_tc_dimless[flg]
+-                self.outdata[('pressureVertice', 'RetrievalAncillaryData')] = hPa2Pa * pr_gd[flg]
++                self.outdata[('pressureVertice', 'RetrievalAncillaryData')] = \
++                    (hPa2Pa * pr_gd[flg]).astype(pr_gd.dtype)
+ 
+                 self.outdata[self.varDict[iodavar]['valKey']] = xr_tc[flg]
+                 self.outdata[self.varDict[iodavar]['errKey']] = er_tc[flg]
+@@ -188,7 +198,8 @@ class mopitt(object):
+                 self.outdata[('averagingKernel', 'RetrievalAncillaryData')] = np.concatenate((
+                     self.outdata[('averagingKernel', 'RetrievalAncillaryData')], ak_tc_dimless[flg]))
+                 self.outdata[('pressureVertice', 'RetrievalAncillaryData')] = np.concatenate((
+-                    self.outdata[('pressureVertice', 'RetrievalAncillaryData')], hPa2Pa * pr_gd[flg]))
++                    self.outdata[('pressureVertice', 'RetrievalAncillaryData')],
++                    (hPa2Pa * pr_gd[flg]).astype(pr_gd.dtype)))
+ 
+                 self.outdata[self.varDict[iodavar]['valKey']] = np.concatenate(
+                     (self.outdata[self.varDict[iodavar]['valKey']], xr_tc[flg]))
+diff --git a/src/compo/tropomi_no2_co_nc2ioda.py b/src/compo/tropomi_no2_co_nc2ioda.py
+index 0d3f26a..a2b94ea 100755
+--- a/src/compo/tropomi_no2_co_nc2ioda.py
++++ b/src/compo/tropomi_no2_co_nc2ioda.py
+@@ -145,7 +145,12 @@ class tropomi(object):
+                     groups['DETAILED_RESULTS'].variables['surface_albedo_2325'][:].ravel()
+                 albedo2 = ncd.groups['PRODUCT'].groups['SUPPORT_DATA'].\
+                     groups['DETAILED_RESULTS'].variables['surface_albedo_2335'][:].ravel()
+-                albedo = 0.5 * (albedo1 + albedo2)
++                # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++                # so an operation between a masked array and a Python scalar widens the
++                # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++                # Cast back explicitly so the intended netCDF type is written.
++                # See https://github.com/numpy/numpy/issues/27029
++                albedo = (0.5 * (albedo1 + albedo2)).astype(albedo1.dtype)
+ 
+             # get angles
+             sza = ncd.groups['PRODUCT'].groups['SUPPORT_DATA'].\
+diff --git a/src/conventional/saber2ioda.py b/src/conventional/saber2ioda.py
+index ccb4632..212f711 100755
+--- a/src/conventional/saber2ioda.py
++++ b/src/conventional/saber2ioda.py
+@@ -195,10 +195,16 @@ def get_data_from_file(obs_file_handle):
+     obs_data[('pressure', META_DATA_NAME)] *= 100.0
+ 
+     # Handle longitudes to be within [-180, 180)
++    # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++    # so an operation between a masked array and a Python scalar widens the
++    # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++    # Cast back explicitly so the intended netCDF type is written.
++    # See https://github.com/numpy/numpy/issues/27029
++    longitudes = obs_data[('longitude', META_DATA_NAME)]
+     obs_data[('longitude', META_DATA_NAME)] = numpy.ma.where(
+-        obs_data[('longitude', META_DATA_NAME)] > 180,
+-        obs_data[('longitude', META_DATA_NAME)] - 360,
+-        obs_data[('longitude', META_DATA_NAME)]
++        longitudes > 180,
++        (longitudes - 360).astype(longitudes.dtype),
++        longitudes
+     )
+ 
+     # Handle time conversion
+diff --git a/src/land/imsfv3_scf2ioda.py b/src/land/imsfv3_scf2ioda.py
+index ea977a6..d3da70b 100755
+--- a/src/land/imsfv3_scf2ioda.py
++++ b/src/land/imsfv3_scf2ioda.py
+@@ -99,10 +99,15 @@ class imsFV3(object):
+         sncv = sncv.astype('float32')
+         sndv = sndv.astype('float32')
+ 
+-        qcflg = 0*sncv.astype('int32')
+-        qdflg = 0*sndv.astype('int32')
+-        errsc = 0.0*sncv
+-        errsd = 0.0*sndv
++        # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++        # so an operation between a masked array and a Python scalar widens the
++        # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++        # Cast back explicitly so the intended netCDF type is written.
++        # See https://github.com/numpy/numpy/issues/27029
++        qcflg = (0*sncv.astype('int32')).astype('int32')
++        qdflg = (0*sndv.astype('int32')).astype('int32')
++        errsc = (0.0*sncv).astype(sncv.dtype)
++        errsd = (0.0*sndv).astype(sndv.dtype)
+         errsd[:] = 80.
+ 
+         times = get_observation_time(self.filename, sncv, ncd)
+diff --git a/src/marine/glider2ioda.py b/src/marine/glider2ioda.py
+index d7486e0..a10abc3 100755
+--- a/src/marine/glider2ioda.py
++++ b/src/marine/glider2ioda.py
+@@ -63,8 +63,13 @@ class Profile(object):
+         with np.errstate(invalid='ignore'):
+             salinity = np.float32(ncd.variables['salinity'][:])
+         errs = np.float32(np.matlib.repmat(0.2, len(lons), 1))
+-        Tqcs = ncd.variables['temperature_qc'][:]-1
+-        Sqcs = ncd.variables['salinity_qc'][:]-1
++        # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++        # so an operation between a masked array and a Python scalar widens the
++        # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++        # Cast back explicitly so the intended netCDF type is written.
++        # See https://github.com/numpy/numpy/issues/27029
++        Tqcs = (ncd.variables['temperature_qc'][:]-1).astype('int32')
++        Sqcs = (ncd.variables['salinity_qc'][:]-1).astype('int32')
+         errs = np.squeeze(errs)
+         ncd.close()
+ 
+diff --git a/src/marine/pace_oc2ioda.py b/src/marine/pace_oc2ioda.py
+index e6689b1..4342f2a 100755
+--- a/src/marine/pace_oc2ioda.py
++++ b/src/marine/pace_oc2ioda.py
+@@ -131,7 +131,13 @@ def read_input(input_args):
+ 
+     obs_data[output_var_names[0], global_config['oval_name']] = data_in['chlor_a']
+     # There is not any obs error in the dataset. we need to come up with a reasonable obs error later
+-    obs_data[output_var_names[0], global_config['oerr_name']] = data_in['chlor_a']*0.0
++    # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++    # so an operation between a masked array and a Python scalar widens the
++    # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++    # Cast back explicitly so the intended netCDF type is written.
++    # See https://github.com/numpy/numpy/issues/27029
++    obs_data[output_var_names[0], global_config['oerr_name']] = \
++        (data_in['chlor_a']*0.0).astype(data_in['chlor_a'].dtype)
+     obs_data[output_var_names[0], global_config['opqc_name']] = data_in['l2_flags']
+ 
+     return (obs_data, basetime, GlobalAttrs)
+diff --git a/src/marine/viirs_modis_l2_oc2ioda.py b/src/marine/viirs_modis_l2_oc2ioda.py
+index 62dfd61..b58d129 100755
+--- a/src/marine/viirs_modis_l2_oc2ioda.py
++++ b/src/marine/viirs_modis_l2_oc2ioda.py
+@@ -135,11 +135,16 @@ def read_input(input_args):
+ 
+     if global_config['output_poc']:
+         obs_data[output_var_names[0], obsValName] = data_in['poc']
+-        obs_data[output_var_names[0], obsErrName] = data_in['poc']*0.0
++        # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++        # so an operation between a masked array and a Python scalar widens the
++        # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++        # Cast back explicitly so the intended netCDF type is written.
++        # See https://github.com/numpy/numpy/issues/27029
++        obs_data[output_var_names[0], obsErrName] = (data_in['poc']*0.0).astype(data_in['poc'].dtype)
+         obs_data[output_var_names[0], qcName] = data_in['l2_flags']
+     if global_config['output_chl']:
+         obs_data[output_var_names[1], obsValName] = data_in['chlor_a']
+-        obs_data[output_var_names[1], obsErrName] = data_in['chlor_a']*0.0
++        obs_data[output_var_names[1], obsErrName] = (data_in['chlor_a']*0.0).astype(data_in['chlor_a'].dtype)
+         obs_data[output_var_names[1], qcName] = data_in['l2_flags']
+ 
+     return (obs_data, GlobalAttrs, time_units)
+diff --git a/src/ncepbufr/bufr_ncep_prepbufr_adpupa.py b/src/ncepbufr/bufr_ncep_prepbufr_adpupa.py
+index 19b656e..121dbba 100755
+--- a/src/ncepbufr/bufr_ncep_prepbufr_adpupa.py
++++ b/src/ncepbufr/bufr_ncep_prepbufr_adpupa.py
+@@ -74,7 +74,13 @@ def test_bufr_to_ioda(DATA_PATH, OUTPUT_PATH, date):
+     # to get updated, and then before writing into the output ioda file, the masked array
+     # function filled() needs to be called which will convert the values marked invalid
+     # to the fill value.
+-    hrdr = (r.get('timeOffset') * 3600).astype(np.int64)
++    # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++    # so an operation between a masked array and a Python scalar widens the
++    # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++    # Cast back explicitly so the intended netCDF type is written.
++    # See https://github.com/numpy/numpy/issues/27029
++    timeOffset = r.get('timeOffset')
++    hrdr = (timeOffset * 3600).astype(timeOffset.dtype).astype(np.int64)
+     np.ma.set_fill_value(hrdr, long_missing_value)
+     print("cycleTimeSinceEpoch")
+     cycleTimeSinceEpoch = np.int64(calendar.timegm(time.strptime(date, '%Y%m%d%H%M')))
+diff --git a/src/ncepbufr/prepbufr_adpsfc_api.py b/src/ncepbufr/prepbufr_adpsfc_api.py
+index 7dd4370..77c6e7a 100755
+--- a/src/ncepbufr/prepbufr_adpsfc_api.py
++++ b/src/ncepbufr/prepbufr_adpsfc_api.py
+@@ -57,7 +57,14 @@ def test_bufr_to_ioda(DATA_PATH, OUTPUT_PATH, date):
+    # function filled() needs to be called which will convert the values marked invalid
+    # to the fill value.
+    print("Get time")
+-   dhr = (r.get('obsTimeMinusCycleTime') * 3600).astype(np.int64)  # Needs to be converted to seconds since Epoch time from [-3,3]
++   # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++   # so an operation between a masked array and a Python scalar widens the
++   # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++   # Cast back explicitly so the intended netCDF type is written.
++   # See https://github.com/numpy/numpy/issues/27029
++   obsTimeMinusCycleTime = r.get('obsTimeMinusCycleTime')
++   # Needs to be converted to seconds since Epoch time from [-3,3]
++   dhr = (obsTimeMinusCycleTime * 3600).astype(obsTimeMinusCycleTime.dtype).astype(np.int64)
+    np.ma.set_fill_value(dhr, long_missing_value)
+    print("cycleTimeSinceEpoch") #For now, file time is put in manually 
+    cycleTimeSinceEpoch = np.int64(calendar.timegm(time.strptime(date, '%Y%m%d%H%M')))
+diff --git a/src/ncepbufr/prepbufr_sfcshp_api.py b/src/ncepbufr/prepbufr_sfcshp_api.py
+index 4dc4d99..2a3f811 100755
+--- a/src/ncepbufr/prepbufr_sfcshp_api.py
++++ b/src/ncepbufr/prepbufr_sfcshp_api.py
+@@ -60,7 +60,14 @@ def test_bufr_to_ioda(DATA_PATH, OUTPUT_PATH, date):
+    # function filled() needs to be called which will convert the values marked invalid
+    # to the fill value.
+    print("Get time")
+-   dhr = (r.get('obsTimeMinusCycleTime') * 3600).astype(np.int64)  # Needs to be converted to seconds since Epoch time from [-3,3]
++   # numpy >= 2 does not apply NEP 50 weak-scalar promotion inside numpy.ma,
++   # so an operation between a masked array and a Python scalar widens the
++   # result to float64/int64 (it kept the array's dtype under numpy 1.x).
++   # Cast back explicitly so the intended netCDF type is written.
++   # See https://github.com/numpy/numpy/issues/27029
++   obsTimeMinusCycleTime = r.get('obsTimeMinusCycleTime')
++   # Needs to be converted to seconds since Epoch time from [-3,3]
++   dhr = (obsTimeMinusCycleTime * 3600).astype(obsTimeMinusCycleTime.dtype).astype(np.int64)
+    np.ma.set_fill_value(dhr, long_missing_value)
+    print("cycleTimeSinceEpoch") #For now, file time is put in manually 
+    cycleTimeSinceEpoch = np.int64(calendar.timegm(time.strptime(date, '%Y%m%d%H%M')))

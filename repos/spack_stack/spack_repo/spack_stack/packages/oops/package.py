@@ -17,6 +17,7 @@ class Oops(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("1.13.0.20260914", commit="e57f82239807aa5382729cbe29d8573a6a6cd996")
     version("1.10.0.20260331", commit="0f7849866a74d17344215db8e742ba18c30a1ba5")
     # This commit plus the patch below accounts for commit
     # 2340e9b664f82de9fa01c136c3a31d87e4a0bec9 in NRL GitHub
@@ -24,12 +25,18 @@ class Oops(CMakePackage):
 
     patch("include_algorithm.patch", when="@1.10.0.20250827")
     patch("patch-1.10.0.atlas.mac.patch", when="@1.10.0.20250827")
+    patch("v1p13_dfscalc.patch", when="@1.13.0.20260914")
 
     variant("l95", default=True, description="Build LORENZ95 toy model")
     variant("mkl", default=False, description="Use MKL for LAPACK implementation (if available)")
     variant("openmp", default=True, description="Build oops with OpenMP support")
     variant("qg", default=True, description="Build QG toy model")
     variant('gptl', default=False, description='Use GPTL profiling library (if available)')
+    variant(
+        "trust_ecbuild_flags",
+        default=False,
+        description="Skip ecbuild compiler-flag probes",
+    )
 
     generator("make")
 
@@ -47,8 +54,9 @@ class Oops(CMakePackage):
     depends_on("eckit")
     depends_on("eckit@1.24.4:", when="@1.10:")
     depends_on("ecmwf-atlas")
+    # atlas@0.39: must be built with hic;
+    # this option is always on in spack
     depends_on("ecmwf-atlas@0.35.0:", when="@1.10:")
-    # hic dependency if ecmwf-atlas@0.39: ?
     depends_on("eigen")
     depends_on("fckit")
     depends_on("fckit@0.11.0:", when="@1.10:")
@@ -75,7 +83,20 @@ class Oops(CMakePackage):
             self.define_from_variant("OPENMP", "openmp"),
             self.define_from_variant("ENABLE_GPTL", "gptl"),
         ]
+        if "+trust_ecbuild_flags" in self.spec:
+            res.append(self.define("ECBUILD_TRUST_FLAGS", True))
         return res
+
+    def setup_build_environment(self, env: EnvironmentModifications) -> None:
+        """Wrapper until spack has a real implementation of setup_test_environment()"""
+        if self.run_tests:
+            self.setup_test_environment(env)
+
+    def setup_test_environment(self, env: EnvironmentModifications):
+        """For OpenMPI, allow oversubscribing of MPI tasks"""
+        if self.spec.satisfies("^[virtuals=mpi] openmpi"):
+            env.set("OMPI_MCA_rmaps_base_oversubscribe", "1")
+            env.set("PRTE_MCA_rmaps_default_mapping_policy", ":oversubscribe")
 
     def check(self):
         skipped_tests = None
@@ -103,6 +124,7 @@ class Oops(CMakePackage):
                 "oops_qg_4densvar_single-obs_loc_4d_time_decay_standard",
                 "oops_qg_4densvar_single-obs_no_loc",
             ]
+        # oops@1.13.0.20260914 - all tests pass with gcc@14.2.1 and oneapi@2026.1.0
 
         ctest = Executable(self.spec["cmake"].prefix.bin.ctest)
         with working_dir(self.build_directory):

@@ -34,6 +34,7 @@ usage() {
   echo "      if not set, the default location is used"
   echo "  -c  Provide location of build caches as BUILDCACHE_DIR;"
   echo "      if not set, authoritative build caches are used"
+  echo "  -b  Set compiler build option, can be 'gcc', 'oneapi', or 'all' - the default;"
   echo "  -u  Flag to update bootstrap and source caches;"
   echo "  -e  Continue builds/install in existing environments;"
   echo "      by default, exit with an error if already exist"
@@ -44,7 +45,7 @@ usage() {
   echo
 }
 
-while getopts r:m:d:c:uesth flag
+while getopts r:m:d:c:b:uestvh flag
 do
   case "${flag}" in
     m)
@@ -55,6 +56,9 @@ do
       ;;
     c)
       SPACK_STACK_BUILDCACHE_DIR=$(readlink -f ${OPTARG})
+      ;;
+    b)
+      SPACK_STACK_COMPILER_BUILD_OPT="${OPTARG}"
       ;;
     u)
       SPACK_STACK_UPDATE_DEV_CACHES="true"
@@ -79,6 +83,7 @@ echo "INFO: $0 options:"
 echo "  SPACK_STACK_MODE:                            ${SPACK_STACK_MODE:-not set}"
 echo "  SPACK_STACK_ENVIRONMENT_DIRS:                ${SPACK_STACK_ENVIRONMENT_DIRS:-${SPACK_STACK_DIR}/envs}"
 echo "  SPACK_STACK_BUILDCACHE_DIR:                  ${SPACK_STACK_BUILDCACHE_DIR:-use default caches}"
+echo "  SPACK_STACK_COMPILER_BUILD_OPT:              ${SPACK_STACK_COMPILER_BUILD_OPT-all}"
 echo "  SPACK_STACK_UPDATE_DEV_CACHES:               ${SPACK_STACK_UPDATE_DEV_CACHES:-false}"
 echo "  SPACK_STACK_IGNORE_ENV_EXIST:                ${SPACK_STACK_IGNORE_ENV_EXIST:-false}"
 echo "  SPACK_STACK_SUBMIT_TO_SCHEDULER:             ${SPACK_STACK_SUBMIT_TO_SCHEDULER:-false}"
@@ -99,6 +104,17 @@ if [[ ${SPACK_STACK_UPDATE_DEV_CACHES} == "true" ]]; then
     exit 1
   fi
 fi
+
+# Check for valid compiler build options
+case "${SPACK_STACK_COMPILER_BUILD_OPT}" in 
+  all|gcc|oneapi)
+    echo "Valid compiler build option: ${SPACK_STACK_COMPILER_BUILD_OPT}"
+    ;;
+  *)
+    echo "ERROR, invalid compiler build option: ${SPACK_STACK_COMPILER_BUILD_OPT}. Allowed values are: all, gcc, oneapi"
+    exit 1
+    ;;
+esac
 
 ##################################################################################################
 
@@ -339,8 +355,14 @@ fi
 host=${SPACK_STACK_BATCH_HOST}
 module_choice=${SPACK_STACK_MODULE_CHOICE}
 bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
+# Per-release bootstrap metadata directory, so different spack versions don't overwrite each other
+spack_root=${PWD}/spack
+bootstrap_tag=$(sed -n 's|^BINARY_TARBALL = ".*/download/\([^/]*\)/.*|\1|p' \
+                  ${spack_root}/lib/spack/spack/cmd/bootstrap.py)
+bootstrap_hash=$(cat ${spack_root}/share/spack/bootstrap/github-actions-v2/{clingo,gnupg,patchelf}.json  | sha256sum | cut -c1-8)
+bootstrap_metadata_path=${bootstrap_mirror_path}/metadata/${bootstrap_tag:-unknown}-${bootstrap_hash}
 cargo_mirror_path=${SPACK_STACK_CARGO_MIRROR}
-export CARGO_HOME=${cargo_mirror_path}
+export SPACK_CARGO_HOME=${cargo_mirror_path}
 
 if [[ -z ${SPACK_STACK_ENVIRONMENT_DIRS} ]]; then
   environment_dirs=${PWD}/envs
@@ -408,6 +430,15 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     exit 1
   fi
 
+  # Check compiler build argument to build the desired spack-stack
+  if [[ ${compiler} =~ "${SPACK_STACK_COMPILER_BUILD_OPT}" || "all" == "${SPACK_STACK_COMPILER_BUILD_OPT}" ]]; then
+    # Success, do nothing
+    :
+  else
+    # Compiler not selected, try next item
+    continue
+  fi
+
   compiler_name=$(echo ${compiler} | cut -d "@" -f 1)
   compiler_version=$(echo ${compiler} | cut -d "=" -f 2)
 
@@ -460,6 +491,7 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     fi
 
     # Reset environment
+    # see configs/sites/tier1/<host>/setup.sh for site-specific module settings
     echo "Resetting environment ..."
     case ${host} in
       derecho)
@@ -469,7 +501,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           gcc@=13.3.1)
             ;;
           oneapi@=2025.3.1)
-            module use /glade/work/epicufsrt/contrib/spack-stack/derecho/installs/oneapi-2025.3.1/modulefiles
             ;;
         esac
         ;;
@@ -490,7 +521,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           gcc@=12.2.0)
             ;;
           oneapi@=2025.3.1)
-            module use /apps/contrib/spack-stack/modulefiles
             ;;
         esac
         ;;
@@ -502,7 +532,6 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
           #gcc@=12.2.0)
           #  ;;
           oneapi@=2025.3.1)
-            module use /apps/contrib/spack-stack/modulefiles
             ;;
         esac
         ;;
@@ -543,7 +572,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
       rm -fr ${tmp_bootstrap_mirror_path}
       spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.${env_name}.bootstrap-mirror.001
-      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      # Shared cache (files stored by checksum/name); metadata goes to a per-release dir
+      mkdir -p ${bootstrap_mirror_path}/bootstrap_cache ${bootstrap_metadata_path}
+      rsync -a ${tmp_bootstrap_mirror_path}/bootstrap_cache/ ${bootstrap_mirror_path}/bootstrap_cache/
+      rsync -a ${tmp_bootstrap_mirror_path}/metadata/ ${bootstrap_metadata_path}/
+      sed -i "s|url: \.\./\.\./bootstrap_cache|url: ${bootstrap_mirror_path}/bootstrap_cache|" \
+          ${bootstrap_metadata_path}/{sources,binaries}/metadata.yaml
       rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
       spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
@@ -572,15 +606,20 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
     #sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
 
-    echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
-    if [[ ! -d ${bootstrap_mirror_path} ]]; then
-      echo "ERROR, directory ${bootstrap_mirror_path} not found"
+    echo "Registering bootstrap mirror ${bootstrap_metadata_path} ..."
+    if [[ ! -d ${bootstrap_mirror_path}/bootstrap_cache ]]; then
+      echo "ERROR, bootstrap cache ${bootstrap_mirror_path}/bootstrap_cache not found"
       exit 1
     fi
+    if [[ ! -d ${bootstrap_metadata_path} ]]; then
+      echo "ERROR, directory ${bootstrap_metadata_path} not found (run with -u to create it)"
+      exit 1
+    fi
+
     spack bootstrap list | grep local-sources || \
-        spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+        spack bootstrap add --trust local-sources ${bootstrap_metadata_path}/sources
     spack bootstrap list | grep local-binaries || \
-        spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+        spack bootstrap add --trust local-binaries ${bootstrap_metadata_path}/binaries
 
     # Check that the site has mirrors configured for local source and build caches,
     # and extract the local path on disk. Need to strip leading "file://" from path

@@ -1,0 +1,43 @@
+# Template for GEOS development with the LLVM Flang compiler.
+#
+# GEOS 11.10.0 requires FMS 2024.03, which is not supported by Flang.
+spack:
+  concretizer:
+    unify: when_possible
+
+  view: false
+  include: []
+
+  specs:
+  # Two builds: release (esmf ~debug) and debug (esmf +debug).
+  # The macOS site configuration requires +debug, so these resolve to one build.
+  - geos-gcm-env@12.1.0 ~debug +cdo +fms
+  - geos-gcm-env@12.1.0 +debug +cdo +fms
+
+  - fms@=2026.01.01 ~gfs_phys constants=GEOS
+
+  packages:
+    # Turn on python variant for esmf
+    esmf:
+      require:
+      - +python
+      - '@=9.0.0b18'
+
+    # PnetCDF is unneeded for GEOS and does not build with Flang on macOS.
+    parallelio:
+      require::
+      - '@2.6.2'
+      - ~pnetcdf
+
+    # Homebrew LLVM Flang on Apple Silicon does not support REAL(16).
+    fms:
+      require::
+      - ~quad_precision
+
+    # Use the same CDO variants (fftw3 and GRIB2 via eccodes) as geos-dev,
+    # so the stacks are consistent and do not change when other
+    # environments (e.g. ai-env) are present.
+    cdo:
+      require:
+      - +fftw3
+      - grib2=eccodes

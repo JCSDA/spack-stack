@@ -1,8 +1,8 @@
 packages:
   # Modification of common packages
-  ewok-env:
+  qt:
     require:
-    - '~ecflow'
+    - '%c,cxx=gcc'
   zlib-api:
     buildable: False
 

@@ -22,6 +22,7 @@ class SdpPreprocessors(MakefilePackage):
     license("custom", checked_by="climbfuji")
 
     version("main", branch="main")
+    version("0.2.0", commit="683b172a7a94c87cdd1e69603bdc8c8d1a546bf8")
     version("0.1.0", commit="eb2965331779a1962c0c31e382827f00e3db6de8")
 
     # MakefilePackage dependencies

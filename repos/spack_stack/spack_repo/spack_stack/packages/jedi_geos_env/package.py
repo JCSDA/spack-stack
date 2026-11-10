@@ -18,6 +18,7 @@ class JediGeosEnv(BundlePackage):
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
+    depends_on("jedi-python-env", type="run")
     #depends_on("blas", type="run")
     depends_on("mepo", type="run")
     depends_on("esmf", type="run")

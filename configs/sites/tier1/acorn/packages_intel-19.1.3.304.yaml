@@ -90,8 +90,6 @@ packages:
     require: ['@:2.74.3']
   go:
     require: ['%gcc']
-  gsibec:
-    require: ['@1.4.2']
   harfbuzz:
     require: ['%gcc']
   libffi:
@@ -107,7 +105,7 @@ packages:
   py-maturin:
     require: ['%gcc']
   py-numpy:
-    require:: ['@1.26', '%gcc']
+    require: ['%gcc']
   py-scipy:
     require: ['@1.10.1']
   qt:

@@ -12,13 +12,14 @@ class AiEnv(BundlePackage):
 
     # DH* TODO UPDATE FROM INTERNAL TO PUBLIC
     homepage = "https://github.com/JCSDA/spack-stack"
-    git = "https://github.comJCSDA/spack-stack.git"
+    git = "https://github.com/JCSDA/spack-stack.git"
 
     maintainers("climbfuji", "srherbener")
 
     version("1.0.0")
 
     depends_on("jedi-base-env", type="run")
+    depends_on("jedi-python-env", type="run")
     depends_on("py-torch", type="run")
 
     # There is no need for install() since there is no code.

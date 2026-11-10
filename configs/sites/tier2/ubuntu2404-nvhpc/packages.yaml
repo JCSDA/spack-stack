@@ -115,13 +115,8 @@ packages:
     buildable: False
   pkg-config:
     buildable: False
-  python:
-    externals:
-    - spec: python@3.12.3+bz2+crypt+ctypes+dbm+lzma~nis+pyexpat~pythoncmd+readline+sqlite3+ssl~tkinter+uuid+zlib
-      prefix: /usr
-    require:
-    - '@3.12.3'
-    buildable: False
+  # No system python external: Ubuntu 24.04 ships 3.12 and common requires
+  # python@3.13, so spack builds it (as on aws-ubuntu2404).
   sed:
     externals:
     - spec: sed@4.9

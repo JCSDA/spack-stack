@@ -87,8 +87,6 @@ packages:
     require:: ['~curl']
   glib:
     require: ['%gcc']
-  gsibec:
-    require: ['@1.4.2']
   harfbuzz:
     require:
     - any_of: ['@:2.9 %gcc', '@11: %oneapi']
@@ -102,8 +100,6 @@ packages:
     require: ['build_system=meson']
   proj:
     require: ['@9.4.1']
-  py-numpy::
-    require:: ['@1.26']
   subversion:
     require: ['%gcc']
   zlib-ng:

@@ -19,6 +19,7 @@ class PyLisNcodaUtils(PythonPackage):
     license("custom")
 
     version("develop", branch="develop")
+    version("2.1.0", commit="608d265b8351cdd9a32a75912f6caef1e17d5014")
     version("2.0.0", commit="85cb17c70705e88d15c5ff191b177090a5136052")
 
     depends_on("python@3.11:", type=("build", "run"))
@@ -28,7 +29,8 @@ class PyLisNcodaUtils(PythonPackage):
     depends_on("cmake@3.15:", type="build")    
     depends_on("py-scikit-build-core", type="build")
     depends_on("py-numpy", type=("build", "run"))
-    
+    depends_on("meson", type="build", when="^python@3.12:")
+
     depends_on("py-cfgrib", type="run")
     depends_on("py-h5py", type="run")
     depends_on("py-netcdf4", type="run")

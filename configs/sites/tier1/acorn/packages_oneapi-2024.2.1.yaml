@@ -73,8 +73,6 @@ packages:
     require:: ['@1.2.0', '+fftw']
   glib:
     require: ['%gcc']
-  gsibec:
-    require: ['@1.4.2']
   libtiff:
     require: ['build_system=cmake']
   nco:
@@ -85,8 +83,6 @@ packages:
     require: ['build_system=meson']
   proj:
     require: ['@9.4.1']
-  py-numpy::
-    require:: ['@1.26']
   subversion:
     require: ['%gcc']
   zlib-ng:

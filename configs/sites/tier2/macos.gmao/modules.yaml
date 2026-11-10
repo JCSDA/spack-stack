@@ -1,4 +1,13 @@
 modules:
+  # DYLD_* is removed when a SIP-protected macOS executable starts. Preserve
+  # the module-derived loader search path in an ordinary variable as well.
+  prefix_inspections:
+    ./lib:
+    - DYLD_FALLBACK_LIBRARY_PATH
+    - SPACK_DYLD_FALLBACK_LIBRARY_PATH
+    ./lib64:
+    - DYLD_FALLBACK_LIBRARY_PATH
+    - SPACK_DYLD_FALLBACK_LIBRARY_PATH
   default:
     enable::
     - lmod
@@ -27,6 +36,25 @@ modules:
           set:
             'TMPDIR': '/tmp'
             'OMPI_MCA_btl': '^tcp'
+      # Homebrew-backed modules add the entire Homebrew bin directory to PATH.
+      # Keep the external compiler and tool settings, but do not let them
+      # override the Spack Python selected by the loaded Python modules.
+      gcc:
+        filter:
+          exclude_env_vars:
+          - PATH
+      cmake:
+        filter:
+          exclude_env_vars:
+          - PATH
+      ninja:
+        filter:
+          exclude_env_vars:
+          - PATH
+      wget:
+        filter:
+          exclude_env_vars:
+          - PATH
       all:
         filter:
           exclude_env_vars:

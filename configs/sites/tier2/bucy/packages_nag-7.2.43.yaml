@@ -1,0 +1,39 @@
+packages:
+  c:
+    require: [gcc@=12.1.0]
+  cxx:
+    require: [gcc@=12.1.0]
+  fortran:
+    require: [nag@=7.2.43]
+  mpi:
+    buildable: false
+    require: [openmpi@=5.0.3]
+  gcc:
+    buildable: false
+    externals:
+    - spec: gcc@=12.1.0 languages:='c,c++'
+      prefix: /ford1/local/gcc/gcc-12.1.0
+      extra_attributes:
+        compilers:
+          c: /ford1/local/gcc/gcc-12.1.0/bin/gcc
+          cxx: /ford1/local/gcc/gcc-12.1.0/bin/g++
+  nag:
+    buildable: false
+    externals:
+    - spec: nag@=7.2.43 languages:='fortran'
+      prefix: /ford1/share/gmao_SIteam/nag/7.2.43
+      extra_attributes:
+        compilers:
+          fortran: /ford1/share/gmao_SIteam/nag/7.2.43/bin/nagfor
+        environment:
+          set:
+            NAG_KUSARI_FILE: /ford1/share/gmao_SIteam/nag/nag.key
+        extra_rpaths:
+        - /ford1/local/gcc/gcc-12.1.0/lib64
+        - /ford1/share/gmao_SIteam/nag/7.2.43/lib
+  openmpi:
+    buildable: false
+    externals:
+    # Built with internal hwloc/pmix/libevent. ~internal-hwloc satisfies common/packages.yaml.
+    - spec: openmpi@=5.0.3 ~cuda~cxx~cxx_exceptions~java~memchecker~static~wrapper-rpath~internal-hwloc+two_level_namespace %c=gcc@=12.1.0 %fortran=nag@=7.2.43
+      prefix: /ford1/share/gmao_SIteam/MPI/openmpi/5.0.3-GillesNAGPatch/nag-7.2.43

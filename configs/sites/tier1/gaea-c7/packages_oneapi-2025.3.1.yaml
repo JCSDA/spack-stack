@@ -1,0 +1,60 @@
+packages:
+  all:
+    require:
+    - any_of: ['%intel-oneapi-compilers@=2025.3.1']
+      when: '%intel-oneapi-compilers'
+    - any_of: ['%gcc@=16.1.0']
+      when: '%gcc'
+  mpi:
+    buildable: False
+    require:
+      - cray-mpich@9.2.0
+  cray-mpich:
+    buildable: False
+    externals:
+    - spec: cray-mpich@9.2.0
+      prefix: /sw/gaea-c7/spack/envs/env_26.06/opt/intel-oneapi-compilers-2025.3.1/cray-mpich-9.2.0-lijx55dkid53jsvrnyfmzcy3i43cbqga
+      modules:
+      - cray-mpich/9.2.0
+      - libfabric/2.5.1
+  intel-oneapi-compilers:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-compilers@2025.3.1
+      prefix: /sw/gaea-c7/oneapi/2025.3.1
+      modules:
+        - oneapi/2025.3.1
+      extra_attributes:
+        compilers:
+          c: /sw/gaea-c7/oneapi/2025.3.1/2025.3/bin/icx
+          cxx: /sw/gaea-c7/oneapi/2025.3.1/2025.3/bin/icpx
+          fortran: /sw/gaea-c7/oneapi/2025.3.1/2025.3/bin/ifx
+        environment:
+          prepend_path:
+            LD_LIBRARY_PATH: "/opt/cray/libfabric/1.20.1/lib64:\
+              /opt/cray/pe/libsci/25.03.0/INTEL/2025.0/x86_64/lib:\
+              /usr/lib/gcc/x86_64-redhat-linux/11:\
+              /opt/intel/oneapi/compiler/2025.2/lib:\
+              /sw/gaea-c7/spack/envs/env_26.06/opt/intel-oneapi-compilers-2025.3.1/cray-mpich-9.2.0-lijx55dkid53jsvrnyfmzcy3i43cbqga/lib"
+  intel-oneapi-mkl:
+    buildable: False
+    externals:
+    - spec: intel-oneapi-mkl@2025.3.1
+      prefix: /sw/gaea-c7/spack/envs/env_26.06/opt/intel-oneapi-compilers-2025.3.1/intel-oneapi-mkl-2025.3.1-xxdwsuy4jxt34coagmd66yhi33u2fy6v
+      modules:
+      - intel-oneapi-mkl/2025.3.1
+  gcc:
+    buildable: False
+    externals:
+    - spec: gcc@16.1.0 languages:='c,c++'
+      prefix: /sw/gaea-c7/gcc/16.1.0/bin
+      modules:
+        - gcc/16.1.0
+      extra_attributes:
+        compilers:
+          c: /sw/gaea-c7/gcc/16.1.0/bin/gcc
+          cxx: /sw/gaea-c7/gcc/16.1.0/bin/g++
+          fortran: /sw/gaea-c7/gcc/16.1.0/bin/gfortran
+        environment: 
+          set:
+            PE_GCC_EXTERNAL: native

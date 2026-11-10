@@ -1,0 +1,115 @@
+packages:
+  # Modification of common packages
+  #cairo:
+  #  # /usr/lib64/libgdk-x11-2.0.so: undefined reference to `cairo_xlib_surface_set_size'
+  #  require: +X
+  #zlib-api:
+  #  buildable: False
+
+  # All other packages listed alphabetically
+  autoconf:
+    externals:
+    - spec: autoconf@2.69
+      prefix: /usr
+  automake:
+    externals:
+    - spec: automake@1.15.1
+      prefix: /usr
+  bash:
+    externals:
+    - spec: bash@4.4.23
+      prefix: /usr
+  binutils:
+    externals:
+    - spec: binutils@2.45.0~gold+headers
+      prefix: /usr
+  bison:
+    externals:
+    - spec: bison@3.0.4
+      prefix: /usr
+  cmake:
+    externals:
+    - spec: cmake@3.28.3
+      prefix: /usr
+  coreutils:
+    externals:
+    - spec: coreutils@8.32
+      prefix: /usr
+  diffutils:
+    externals:
+    - spec: diffutils@3.6
+      prefix: /usr
+  findutils:
+    externals:
+    - spec: findutils@4.10.0
+      prefix: /usr
+  flex:
+    externals:
+    - spec: flex@2.6.4+lex
+      prefix: /usr
+  gawk:
+    externals:
+    - spec: gawk@4.2.1
+      prefix: /usr
+  gettext:
+    externals:
+    - spec: gettext@0.21.1
+      prefix: /usr
+  git:
+    buildable: False
+    externals:
+    - spec: git@2.51.0+tcltk
+      prefix: /usr
+  gmake:
+    externals:
+    - spec: gmake@4.2.1
+      prefix: /usr
+  grep:
+    externals:
+    - spec: grep@3.11
+      prefix: /usr
+  groff:
+    externals:
+    - spec: groff@1.22.4
+      prefix: /usr
+  libtool:
+    externals:
+    - spec: libtool@2.4.6
+      prefix: /usr
+  m4:
+    externals:
+    - spec: m4@1.4.18
+      prefix: /usr
+  openssh:
+    externals:
+    - spec: openssh@9.6p1
+      prefix: /usr
+  perl:
+    externals:
+    - spec: perl@5.26.1~cpanm+opcode+open+shared+threads
+      prefix: /usr
+  pkg-config:
+    externals:
+    - spec: pkg-config@0.29.2
+      prefix: /usr
+  sed:
+    externals:
+    - spec: sed@4.9
+      prefix: /usr
+  subversion:
+    externals:
+    - spec: subversion@1.14.1
+      prefix: /usr
+  tar:
+    externals:
+    - spec: tar@1.34
+      prefix: /usr
+  wget:
+    externals:
+    - spec: wget@1.24.5
+      prefix: /usr
+  zlib:
+    buildable: False
+    externals:
+    - spec: zlib@1.2.13
+      prefix: /usr
