@@ -1,0 +1,219 @@
+packages:
+  all:
+    require:
+    - any_of: ['%nvhpc@=26.9']
+      when: '%nvhpc'
+    - any_of: ['%gcc@=11.5.0']
+      when: '%gcc'
+
+  mpi:
+    buildable: false
+    require:
+    - 'openmpi@5.0.10rc2'
+
+  nvhpc:
+    buildable: false
+    externals:
+    - spec: nvhpc@26.9+blas+lapack~mpi
+      prefix: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi
+      modules:
+      - spack-apps/2026.10
+      - nvhpc/26.9
+      extra_attributes:
+        compilers:
+          c: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/compilers/bin/nvc
+          cxx: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/compilers/bin/nvc++
+          fortran: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/compilers/bin/nvfortran
+
+  openmpi:
+    buildable: false
+    require::
+    - '+internal-hwloc'
+    externals:
+    - spec: openmpi@5.0.10rc2 +internal-hwloc +internal-pmix +internal-libevent +two_level_namespace
+      prefix: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3/hpcx/hpcx-2.50/ompi5
+      modules:
+      - spack-apps/2026.10
+      - nvhpc/26.9
+      extra_attributes:
+        environment:
+          set:
+            NVCOMPILER_COMM_LIBS_HOME: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3
+          prepend_path:
+            PATH: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3/hpcx/hpcx-2.50/ompi5/bin
+
+  # System gcc (no module needed, nvhpc module stays loaded); also the CUDA 13.3 host compiler.
+  gcc:
+    buildable: false
+    require:
+    - '@11.5.0'
+    externals:
+    - spec: gcc@11.5.0 languages:='c,c++,fortran'
+      prefix: /usr
+      extra_attributes:
+        compilers:
+          c: /usr/bin/gcc
+          cxx: /usr/bin/g++
+          fortran: /usr/bin/gfortran
+
+  cuda:
+    buildable: false
+    externals:
+    - spec: cuda@13.3
+      prefix: /apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/cuda/13.3
+      modules:
+      - spack-apps/2026.10
+      - nvhpc/26.9
+
+  # libsm and others include <uuid/uuid.h>, which ossp-uuid does not provide
+  uuid:
+    require:
+    - util-linux-uuid
+
+  # Ursa GPUs H100: CUDA build for H100 (cuda_arch=90)
+  kokkos:
+    require:
+    - '+cuda cuda_arch=90'
+    - '+wrapper'
+  kokkos-kernels:
+    require:
+    - '+cuda cuda_arch=90'
+  arborx:
+    require:
+    - '+cuda cuda_arch=90'
+
+  # Fortran flags for nvfortran
+  # gfsio, landsfcutil, sfcio, sigio: free-form sources with .f suffix;
+  # upstream CMake sets free-form/big-endian flags only for Intel/GNU
+  gfsio:
+    require:
+    - "fflags='-Mfree -byteswapio'"
+  # hdf5 2.x hl/fortran targets miss the MPI Fortran module dir (HPC-X keeps mpi_f08.mod in lib/)
+  hdf5:
+    require:
+    - "fflags='-I/apps/spack-2026-10/linux-x86_64/nvhpc-26.9-5ltv4xi/Linux_x86_64/26.9/comm_libs/13.3/hpcx/hpcx-2.50/ompi5/lib'"
+  # landsfcutil_d is not built with -r8 under NVHPC (CMake sets it for Intel only); needs a patch
+  landsfcutil:
+    require:
+    - "fflags='-Mfree'"
+  sfcio:
+    require:
+    - "fflags='-Mfree -byteswapio'"
+  sigio:
+    require:
+    - "fflags='-Mfree -byteswapio'"
+
+  # Packages that nvc/nvc++ cannot build: use gcc
+  # nvc rejects GNU computed goto and inline asm .previous directives
+  alsa-lib:
+    require:
+    - '%c=gcc'
+  # Build with gcc; ecflow+ui (boost, qt) is C++ heavy
+  ecflow:
+    require:
+    - '%c,cxx=gcc'
+  # nvc rejects -Wold-style-definition
+  elfutils:
+    require:
+    - '%c=gcc'
+  # GNU-specific inline assembly; depends on alsa-lib
+  ffmpeg:
+    require:
+    - '%c,cxx=gcc'
+  # nvc++ rejects GNU warning flags (-Wold-style-cast, -Wnon-virtual-dtor)
+  flatbuffers:
+    require:
+    - '%cxx=gcc'
+  # nvc rejects -Wmissing-declarations
+  fontconfig:
+    require:
+    - '%c=gcc'
+  # nvc rejects -ansi
+  fribidi:
+    require:
+    - '%c=gcc'
+  # nvc++ cannot parse libertiff templates ("type name is not allowed")
+  gdal:
+    require:
+    - '%c,cxx=gcc'
+  # nvhpc-export-symbols.patch does not apply to gettext@1.0
+  gettext:
+    require:
+    - '%c,cxx=gcc'
+  # meson does not add a PIC flag for nvc ("Can't link non-PIC static library")
+  glib:
+    require:
+    - '%c,cxx=gcc'
+  glib-bootstrap:
+    require:
+    - '%c,cxx=gcc'
+  # nvc rejects gnulib's GCC warning flags (-Wimplicit-fallthrough, -Wno-sign-conversion, ...)
+  gperf:
+    require:
+    - '%c,cxx=gcc'
+  # nvc rejects -nodefaultlibs when linking libicudata
+  icu4c:
+    require:
+    - '%c,cxx=gcc'
+  # nvc rejects -Wno-psabi; build also parses GCC preprocessor output (gpg-error.def)
+  libgpg-error:
+    require:
+    - '%c=gcc'
+  # nvc++ rejects GNU alias attribute in pcrecpp.cc
+  pcre:
+    require:
+    - '%c,cxx=gcc'
+  # meson does not add a PIC flag for nvc ("Can't link non-PIC static library")
+  pixman:
+    require:
+    - '%c=gcc'
+  # nvc++ 26.9 crashes: "LLVM ERROR: Broken module found"
+  proj:
+    require:
+    - '%c,cxx=gcc'
+  # Python is built with gcc; pip passes its CFLAGS (-fno-strict-overflow) to nvc
+  py-awscrt:
+    require:
+    - '%c,cxx=gcc'
+  py-cffi:
+    require:
+    - '%c=gcc'
+  py-crc32c:
+    require:
+    - '%c=gcc'
+  py-cftime:
+    require:
+    - '%c=gcc'
+  py-kiwisolver:
+    require:
+    - '%c,cxx=gcc'
+  py-lxml:
+    require:
+    - '%c=gcc'
+  py-msgpack:
+    require:
+    - '%c=gcc'
+  py-netcdf4:
+    require:
+    - '%c=gcc'
+  py-pillow:
+    require:
+    - '%c=gcc'
+  py-psutil:
+    require:
+    - '%c=gcc'
+  py-ruamel-yaml-clib:
+    require:
+    - '%c=gcc'
+  # util-linux-uuid is C only; '::' replaces common's '%c,cxx=gcc', which cannot be satisfied
+  util-linux-uuid:
+    require::
+    - '%c=gcc'
+  # nvc++ rejects -Weffc++ and -pedantic-errors
+  yaml-cpp:
+    require:
+    - '%c,cxx=gcc'
+  # zlib has its own require:: in packages.yaml, bypassing the 'all' rule
+  zlib:
+    require:
+    - '%c=gcc'
