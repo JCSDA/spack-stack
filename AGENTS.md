@@ -36,7 +36,7 @@ The policy above is binding. In practice:
 | § | Section | TL;DR |
 |---|---|---|
 | 1 | Orientation | Repo map, submodules, recipe paths, where docs live |
-| 2 | Build procedure | The 7-step spine; admin vs non-admin prerequisites |
+| 2 | Build procedure | Points to the Wiki and CI workflows; new-site vs existing-site paths |
 | 3 | Output discipline | tee output to logs and background-run for verbose and slow commands like concretize and install |
 | 4 | Configuration model | Configs are snapshotted; merge precedence; promotion |
 | 5 | Sharp edges | The traps that waste days |
@@ -66,15 +66,13 @@ Wiki: [Preconfigured Sites](https://github.com/JCSDA/spack-stack/wiki/Preconfigu
   created environments, untracked.
 
 `source setup.sh` in every fresh shell before anything else. Linux is the primary
-target; on Windows use WSL, on macOS prefer a Linux VM.
+target. On Windows use WSL, on macOS native installs are possible but some users
+prefer a Linux VM via OrbStack (if the target environment is unclear, ask the user).
 
 **Docs live in the GitHub Wiki, not the repo** — there is no `doc/` tree and
-`.readthedocs.yml` is vestigial. Per-site transcripts are the `README.md` inside
-each site config dir; `tier2/aws-ubuntu2404/README.md` is the best **admin**
-one, and it *derives* its site config from `--site linux.default`, which is the
-canonical new-site pattern. For the **HPC** shape read a current tier1 site such as
-`tier1/derecho/` (per-compiler `packages_<compiler>-<ver>.yaml`, `setup.sh`) —
-the yaml is the documentation.
+`.readthedocs.yml` is vestigial. If you are working on a site that already has a
+config under `configs/sites/`, the `README.md` in that site's directory is often
+worth reading first.
 
 ## 2. Build procedure
 
@@ -82,68 +80,17 @@ Wiki: [New Site Configs](https://github.com/JCSDA/spack-stack/wiki/New-Site-Conf
 [New and chained environments for existing sites](https://github.com/JCSDA/spack-stack/wiki/New-and-chained-environments-for-existing-sites) ·
 [Supported Compilers](https://github.com/JCSDA/spack-stack/wiki/Supported-Compilers)
 
-Which steps you need: **new site** — all. **New env on a site that already has a
-config** — 1–2 then 5–7. **New release** — read §7 first.
+Read the Wiki pages above for details and explaination on the build procedure.
+For a continuously tested record of the same procedure, read the CI workflows
+in `.github/workflows/` (e.g. `ubuntu-ci-x86_64-gnu.yaml`): they create an env
+from `--site linux.default`, derive the site config, concretize, install and
+generate modules.
 
-### Step 0 — Prerequisites (the admin / non-admin fork)
-
-Work out which you are first (`whoami`, `sudo -v`, is there already a `module`
-system?). On shared/HPC systems, missing prerequisites are the sysadmins' to
-provide — request them, don't shadow-install.
-
-**Admin** — you provide build tooling, compilers, a module system and any vendor
-toolchain; follow the aws-ubuntu2404 README. Two things bite: spack's Lua
-modulefiles need **Lmod ≥ 7.0** and **Ubuntu's packaged lmod does not qualify**;
-and for vendor compilers, build one combined `intel-oneapi-full-env/<ver>`
-module and load it while deriving config (§5.1).
-
-**Non-admin / HPC** — never build a compiler. Declare the existing system modules
-as externals (`buildable: false` + `modules: [...]`, plus `all: providers: mpi:`
-and `mpi: buildable: false`). Copy an existing HPC site dir.
-
-### Steps 1–7 — The spine
-
-```bash
-set -o pipefail
-
-# 1. Clone at the RIGHT ref (release/X.Y for reproducible builds, develop for latest)
-git clone -b <ref> --recurse-submodules https://github.com/jcsda/spack-stack.git
-cd spack-stack && source setup.sh
-
-# 2. Create the environment (SNAPSHOTS configs — see §4)
-#    New site? use --site linux.default and derive the real config in step 3.
-spack stack create env --site <site> --template <template> \
-    --name <env-name> --compiler <name>[-<ver>]   # gcc, gcc-14.3.0, ...; selects site/packages_<that>.yaml
-cd envs/<env-name> && spack env activate -p .
-
-# 3. NEW SITES ONLY — derive externals/compilers into the env's site/ scope.
-# - Compilers: Multiple versions of site compilers are often found. Edit the
-#   `site/packages.yaml` to ensure that exactly one external compiler of each
-#   target type is available. For example, if targeting gcc-13, eliminate
-#   external references to gcc11, 12, and 14.
-# - Vendor MPI libraries often fail to auto-detect and must be hand written as an
-#   external in `site/packages.yaml`.
-unset SPACK_DISABLE_LOCAL_CONFIG
-export SPACK_SYSTEM_CONFIG_PATH="$(pwd)/site"
-spack external find --scope system --exclude python --exclude cmake ...  # site-specific
-spack compiler find --scope system
-export SPACK_DISABLE_LOCAL_CONFIG=true && unset SPACK_SYSTEM_CONFIG_PATH
-
-# 4. Configure MPI provider, preferences, pins
-spack config add "packages:all:providers:mpi:[openmpi@5.0.8]"   # example — use the site's MPI
-
-# 5. Concretize and sanity-check — ALWAYS tee (§3)
-spack concretize --fresh 2>&1 | tee log.concretize
-${SPACK_STACK_DIR}/util/show_duplicate_packages.py   # -i <pkg> IGNORES known dups
-spack stack check-preferred-compiler
-
-# 6. Install — hours long; run in background, inspect the log file (§3)
-spack install --fail-fast -j <N> 2>&1 | tee log.install
-
-# 7. Modules
-spack module lmod refresh          # or tcl; add --upstream-modules for chained envs
-spack stack setup-meta-modules     # generates the stack-<compiler>/stack-<mpi> modules
-```
+The **new-site** path is distinct from, and mostly a superset of, the
+**existing-site** path: it adds deriving externals and compilers into the env's
+`site/` scope (`spack external find` / `spack compiler find`) before
+concretizing. If your site already has a config, skip those steps. **New
+release** — read §7 first.
 
 ## 3. Output discipline (critical for agents)
 
@@ -209,11 +156,11 @@ re-run `create env` from a clean checkout to confirm it reproduces the env.
 ## 5. Sharp edges
 
 **1. External `modules:` fail late** — any site whose externals use `modules:`
-(all HPC, plus admin sites with vendor toolchains). Spack judges a module load
-by whether `$LOADEDMODULES` *changed*, not by exit status. Already-loaded
-modules are skipped (fixed in the spack submodule), so preloading the toolchain
-or listing one module in two externals is harmless. A `ModuleLoadError` now
-means the load really failed:
+(all HPC, plus admin sites with vendor toolchains). Spack loads each external's
+`modules:` at build time and raises `ModuleLoadError` if the module is not in
+`$LOADEDMODULES` afterwards. Modules that are already loaded are accepted, so
+preloading the toolchain or listing one module in two externals is fine. A
+`ModuleLoadError` means the load really failed:
 
 - Wrong name, or its directory was never `module use`d.
 - A prereq is missing. Each `modules:` list must be self-sufficient and in
@@ -237,7 +184,8 @@ the config for its *variants*, not its version. Scope them: `- spec: ~crypt` +
 
 **4. Every external needs `prefix:` or `modules:`** (and `buildable: false`).
 With `modules:` alone spack infers the prefix from the modulefile; add `prefix:`
-if it infers the wrong one. Spack silently drops an external with neither and *builds* the package instead, which can then hit
+if it infers the wrong one. A `prefix:` only replaces that inference: the
+`modules:` are still loaded at build time. Spack silently drops an external with neither and *builds* the package instead, which can then hit
 recipe bugs — a prefix-less `tar` died with
 `KeyError: 'No spec with name xz in tar@1.35'`.
 
@@ -327,9 +275,8 @@ fixed — stop them *cascading* by pinning the flexible middle package to one si
 ## 7. New releases (drift reconciliation)
 
 Wiki: the per-release `Release-x.y.z` page (e.g.
-[Release 2.1.1](https://github.com/JCSDA/spack-stack/wiki/Release-2.1.1)) and its `post-release-updates` companion.
-
-Same spine; the work is absorbing drift in spack-stack, in spack itself, and in
+[Release 2.2.0](https://github.com/JCSDA/spack-stack/wiki/Release-2.2.0)) and its `post-release-updates` companion.
+Same procedure as §2; the work is absorbing drift in spack-stack, in spack itself, and in
 the machine. Clone fresh at the release branch — never `git pull` an old tree
 across a major bump, since submodule pins must land together. Read the release's
 Wiki page and its `post-release-updates` page first, then re-derive externals and
