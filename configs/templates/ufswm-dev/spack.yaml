@@ -22,7 +22,4 @@ spack:
       require:
       - +pnetcdf
 
-  config:
-    install_tree:
-      padded_length: 200
 
