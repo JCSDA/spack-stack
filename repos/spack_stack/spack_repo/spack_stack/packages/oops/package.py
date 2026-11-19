@@ -17,6 +17,7 @@ class Oops(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("1.13.0.20261029", commit="80bf6ba66b56fe1c6f90ea98e8772e30661d615c")
     version("1.13.0.20260914", commit="e57f82239807aa5382729cbe29d8573a6a6cd996")
     version("1.10.0.20260331", commit="0f7849866a74d17344215db8e742ba18c30a1ba5")
     # This commit plus the patch below accounts for commit

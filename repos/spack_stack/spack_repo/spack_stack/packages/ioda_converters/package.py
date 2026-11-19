@@ -17,6 +17,9 @@ class IodaConverters(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    # Note for next versions: in November 2026, the PYTHONPATH was fixed to
+    # include "site-packages". This will require downstream changes.
+    version("1.0.0.20261029", commit="da41d838de407c1421b663e91a8776b6d7bb7405")
     version("0.0.1.20250830", commit="a91f432d9d50940910605e689cd1cf93a1ce3798")
 
     patch(
@@ -46,11 +49,13 @@ class IodaConverters(CMakePackage):
     depends_on("git", type=("build"), when="@0.0.1.20250830")
     depends_on("gsl-lite")
     depends_on("ioda")
+    depends_on("ioda@2.12.0.20261029", when="1.0.0.20261029")
     depends_on("jedi-cmake", type=("build"))
     depends_on("mpi")
     depends_on("netcdf-cxx")
     depends_on("netcdf-fortran")
     depends_on("oops")
+    depends_on("oops@1.13.0.20261029", when="1.0.0.20261029")
     depends_on("py-cartopy")
     depends_on("py-pybind11")
 
@@ -68,8 +73,8 @@ class IodaConverters(CMakePackage):
     depends_on("py-xarray", type=("build", "test"))
 
     # https://github.com/JCSDA/spack-stack/issues/2116
-    patch("ioda-converters-numpy2-ma-scalar-dtype.patch", when="^py-numpy@2")
-    patch("ioda-converters-numpy2-api-and-precision.patch", when="^py-numpy@2")
+    patch("ioda-converters-numpy2-ma-scalar-dtype.patch", when="@0.0.1.20250830 ^py-numpy@2")
+    patch("ioda-converters-numpy2-api-and-precision.patch", when="@0.0.1.20250830 ^py-numpy@2")
 
     def cmake_args(self):
         res = [

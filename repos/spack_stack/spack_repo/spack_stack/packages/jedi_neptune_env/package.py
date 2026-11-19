@@ -17,6 +17,7 @@ class JediNeptuneEnv(BundlePackage):
 
     maintainers("climbfuji", "areineke")
 
+    version("1.3.0")
     version("1.2.0")
     version("1.1.0")
     version("1.0.0")
@@ -65,3 +66,11 @@ class JediNeptuneEnv(BundlePackage):
         depends_on("ioda-converters@0.0.1.20250830", type="build")
         depends_on("ropp-ufo@11.0.20251022", type="build")
         depends_on("ufo@1.13.0.20260924 +ropp", type="build")
+
+    with when("@1.3.0 +jedi"):
+        depends_on("oops@1.13.0.20261029", type="build")
+        depends_on("crtm@3.1.5", type="build")
+        depends_on("ioda@2.12.0.20261029", type="build")
+        depends_on("ioda-converters@1.0.0.20261029", type="build")
+        depends_on("ropp-ufo@11.0.20251022", type="build")
+        depends_on("ufo@1.13.0.20261029 +ropp", type="build")
