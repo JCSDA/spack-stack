@@ -252,6 +252,8 @@ On the very first run, use `-u` to populate the bootstrap, source, and cargo mir
 - `-s`: Submits the install step to SLURM.
 - No `-e` needed since the environment directories do not exist yet.
 
+**Shared cache permissions (discover and discover-gmao only):** after updating the bootstrap, source, binary, and cargo mirrors, `batch_install.sh` makes them group-writable by the `sispack` group (`chgrp` plus `chmod g+rwXs`) so that any SI Team developer can update them. Install trees (environments) are not touched this way. Set `SPACK_STACK_SHARED_GROUP` to use a different group. This step is skipped on other hosts (NAS, bucy, macOS) where the group does not exist.
+
 #### If one source fails while updating the cache
 
 The `-u` source-cache update mirrors many packages concurrently. If one reachable Git source fails to mirror, fetch that concrete spec serially on the login node instead of sending an offline compute-node job without its source:
@@ -293,10 +295,10 @@ The script creates one environment per compiler under `envs/` (relative to the r
 
 | Mode | Environment names created |
 |---|---|
-| `build` | `ue-gcc-14.2.0-build`, `ue-gcc-15.2.0-build`, `ue-oneapi-2024.2.0-build`, `ue-oneapi-2025.3.0-build` |
-| `install` | `ue-gcc-14.2.0`, `ue-gcc-15.2.0`, `ue-oneapi-2024.2.0`, `ue-oneapi-2025.3.0` |
+| `build` | `ue-gcc-14.2.0-build`, `ue-gcc-15.2.0-build`, `ue-oneapi-2024.2.0-build`, `ue-oneapi-2025.3.0-build`; with the `geos-dev` template, `ge-` equivalents (e.g. `ge-oneapi-2024.2.0-build`) |
+| `install` | `ue-gcc-14.2.0`, `ue-gcc-15.2.0`, `ue-oneapi-2024.2.0`, `ue-oneapi-2025.3.0`; with the `geos-dev` template, `ge-` equivalents (e.g. `ge-oneapi-2024.2.0`) |
 
-The `ue-` prefix comes from the `unified-dev` template used by this site.
+The `ue-` prefix comes from the `unified-dev` template and `ge-` from `geos-dev`. Both templates are built by default on this site; use `-T unified-dev` or `-T geos-dev` to build only one.
 
 ---
 
@@ -477,6 +479,7 @@ The following flags are less commonly used. The descriptions below reflect our b
 | `-p` / `--partition` | Override the SLURM partition. Defaults to `preops` when account is `s1873`, otherwise unset. |
 | `-q` / `--qos` | Override the SLURM QOS. Defaults to `benchmark` when account is `s1873`, otherwise unset. |
 | `--constraint` | Override the SLURM node constraint. Defaults to `mil` (Milan nodes). No short form (`-c`/`-C` are taken). |
+| `-T TEMPLATES` | Comma-separated list of templates to build (e.g., `geos-dev` or `unified-dev,geos-dev`). Overrides the host's default templates (`unified-dev` and `geos-dev` on `discover`). |
 | `--datestamp` | Append `-YYYYMMDD` to environment names. Off by default. |
 | `--with-ai` | Add `ai-env` (py-torch + `jedi-base-env`) to newly created environments. Expensive; off by default. |
 | `--suffix=LABEL` | Append `-LABEL` to environment names. Off by default. |

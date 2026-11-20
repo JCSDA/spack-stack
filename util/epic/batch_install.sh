@@ -355,6 +355,12 @@ fi
 host=${SPACK_STACK_BATCH_HOST}
 module_choice=${SPACK_STACK_MODULE_CHOICE}
 bootstrap_mirror_path=${SPACK_STACK_BOOTSTRAP_MIRROR}
+# Per-release bootstrap metadata directory, so different spack versions don't overwrite each other
+spack_root=${PWD}/spack
+bootstrap_tag=$(sed -n 's|^BINARY_TARBALL = ".*/download/\([^/]*\)/.*|\1|p' \
+                  ${spack_root}/lib/spack/spack/cmd/bootstrap.py)
+bootstrap_hash=$(cat ${spack_root}/share/spack/bootstrap/github-actions-v2/{clingo,gnupg,patchelf}.json  | sha256sum | cut -c1-8)
+bootstrap_metadata_path=${bootstrap_mirror_path}/metadata/${bootstrap_tag:-unknown}-${bootstrap_hash}
 cargo_mirror_path=${SPACK_STACK_CARGO_MIRROR}
 export SPACK_CARGO_HOME=${cargo_mirror_path}
 
@@ -566,7 +572,12 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
       echo "Creating bootstrap mirror ${tmp_bootstrap_mirror_path} ..."
       rm -fr ${tmp_bootstrap_mirror_path}
       spack bootstrap mirror --binary-packages ${tmp_bootstrap_mirror_path} 2>&1 | tee log.${env_name}.bootstrap-mirror.001
-      rsync -a ${tmp_bootstrap_mirror_path}/ ${bootstrap_mirror_path}/
+      # Shared cache (files stored by checksum/name); metadata goes to a per-release dir
+      mkdir -p ${bootstrap_mirror_path}/bootstrap_cache ${bootstrap_metadata_path}
+      rsync -a ${tmp_bootstrap_mirror_path}/bootstrap_cache/ ${bootstrap_mirror_path}/bootstrap_cache/
+      rsync -a ${tmp_bootstrap_mirror_path}/metadata/ ${bootstrap_metadata_path}/
+      sed -i "s|url: \.\./\.\./bootstrap_cache|url: ${bootstrap_mirror_path}/bootstrap_cache|" \
+          ${bootstrap_metadata_path}/{sources,binaries}/metadata.yaml
       rm -fr ${tmp_bootstrap_mirror_path}
       # Update buildcache index
       spack buildcache update-index ${bootstrap_mirror_path}/bootstrap_cache
@@ -595,15 +606,20 @@ for compiler in "${SPACK_STACK_BATCH_COMPILERS[@]}"; do
     # Workaround for ParallelWorks (no NRL Enterprise GitHub access yet)
     #sed -i 's/+adp/~adp/g' ${env_dir}/spack.yaml
 
-    echo "Registering bootstrap mirror ${bootstrap_mirror_path} ..."
-    if [[ ! -d ${bootstrap_mirror_path} ]]; then
-      echo "ERROR, directory ${bootstrap_mirror_path} not found"
+    echo "Registering bootstrap mirror ${bootstrap_metadata_path} ..."
+    if [[ ! -d ${bootstrap_mirror_path}/bootstrap_cache ]]; then
+      echo "ERROR, bootstrap cache ${bootstrap_mirror_path}/bootstrap_cache not found"
       exit 1
     fi
+    if [[ ! -d ${bootstrap_metadata_path} ]]; then
+      echo "ERROR, directory ${bootstrap_metadata_path} not found (run with -u to create it)"
+      exit 1
+    fi
+
     spack bootstrap list | grep local-sources || \
-        spack bootstrap add --trust local-sources ${bootstrap_mirror_path}/metadata/sources
+        spack bootstrap add --trust local-sources ${bootstrap_metadata_path}/sources
     spack bootstrap list | grep local-binaries || \
-        spack bootstrap add --trust local-binaries ${bootstrap_mirror_path}/metadata/binaries
+        spack bootstrap add --trust local-binaries ${bootstrap_metadata_path}/binaries
 
     # Check that the site has mirrors configured for local source and build caches,
     # and extract the local path on disk. Need to strip leading "file://" from path
