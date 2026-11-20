@@ -43,6 +43,11 @@ packages:
     externals:
     - spec: gawk@4.2.1
       prefix: /usr
+  gh:
+    buildable: False
+    externals:
+    - spec: gh@2.104.0
+      prefix: /gpfs/neptune/spack-stack/gh-2.104.0
   git:
     buildable: False
     externals:
