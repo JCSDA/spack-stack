@@ -27,6 +27,7 @@ class IodaData(CMakePackage):
     maintainers("climbfuji")
 
     version("develop", branch="develop", no_cache=True)
+    version("2.12.0.20261019", commit="0eb9a0fd39b9c97b2221b48969a421b17fd2f24c")
     version("2.12.0.20260916", commit="53389ebb0b2fa30e8f07bb8510854681727dcba8")
     version("2.9.0.20260319", commit="2886c75398b4b3bdd3a4235298af188370727c2e")
     version("2.9.0.20250805", commit="c6f8842648ea473eebc9f66d7c27e2204e5220d6")
