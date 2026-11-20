@@ -5,3 +5,9 @@ modules:
     tcl:
       include:
       - python
+      # common/modules_tcl.yaml excludes compiler and MPI modules. The stack-gcc
+      # and stack-openmpi meta-modules load gcc/<ver> and openmpi/<ver>, so the
+      # gcc env needs them. The oneAPI meta-modules load Intel's own modulefiles
+      # (the externals' modules:), so those packages stay excluded.
+      - gcc
+      - openmpi

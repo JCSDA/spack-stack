@@ -151,6 +151,7 @@ packages:
       - +shared
       - +external-parallelio
       - any_of:
+        - '@=8.9.1'
         - '@=9.0.0b17'
         - '@=9.0.0b18'
       - any_of:

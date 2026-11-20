@@ -28,9 +28,11 @@ spack:
   - ufs-weather-model-env ^esmf@=9.0.0b17 ^crtm@=3.1.5
 
   # Mapl with specific esmf tags (list all to avoid duplicate packages)
+  - mapl@2.69.1 ^esmf@=8.9.1
   - mapl@2.69.1 ^esmf@=9.0.0b17
 
   # Various esmf tags (list all to avoid duplicate packages)
+  - esmf@=8.9.1
   - esmf@=9.0.0b17
   - esmf@=9.0.0b18
 
